@@ -6,7 +6,7 @@ import {
   deleteSessionStore,
   getSessionStore,
 } from "@typebot.io/runtime-session-store";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { computeCurrentProgress } from "../computeCurrentProgress";
 import { assertOriginIsAllowed } from "../helpers/assertOriginIsAllowed";
 import { filterPotentiallySensitiveLogs } from "../logs/filterPotentiallySensitiveLogs";
@@ -43,7 +43,7 @@ export const startChatInputSchema = z.object({
       "If set to `true`, it will only register the session and not start the bot. This is used for 3rd party chat platforms as it can require a session to be registered before sending the first message.",
     ),
   prefilledVariables: z
-    .record(z.unknown())
+    .record(z.string(), z.unknown())
     .optional()
     .describe(
       "[More info about prefilled variables.](../../editor/variables#prefilled-variables)",

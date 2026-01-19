@@ -4,9 +4,9 @@ import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import prisma from "@typebot.io/prisma";
 import { getExportFileName } from "@typebot.io/results/getExportFileName";
 import { streamAllResultsToCsv } from "@typebot.io/results/streamAllResultsToCsv";
-import { z } from "@typebot.io/zod";
 import { NonRetriableError } from "inngest";
 import { PassThrough } from "stream";
+import { z } from "zod";
 import { inngest } from "../client";
 
 const updateDataSchema = z.discriminatedUnion("status", [

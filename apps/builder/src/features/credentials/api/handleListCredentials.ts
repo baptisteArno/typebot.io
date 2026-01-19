@@ -3,7 +3,7 @@ import { credentialsTypeSchema } from "@typebot.io/credentials/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
 
 const deletedCredentialsTypes = ["zemanticAi", "zemantic-ai"];

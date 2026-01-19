@@ -8,7 +8,7 @@ import {
   deleteSessionStore,
   getSessionStore,
 } from "@typebot.io/runtime-session-store";
-import type { z } from "@typebot.io/zod";
+import type { z } from "zod";
 import { continueBotFlow } from "../../continueBotFlow";
 import { assertOriginIsAllowed } from "../../helpers/assertOriginIsAllowed";
 import { parseDynamicTheme } from "../../parseDynamicTheme";

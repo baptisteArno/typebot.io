@@ -3,7 +3,7 @@ import {
   publicProcedure,
 } from "@typebot.io/config/orpc/builder/middlewares";
 import { workspaceSchema } from "@typebot.io/workspaces/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { invoiceSchema } from "../schemas/invoice";
 import { subscriptionSchema } from "../schemas/subscription";
 import {

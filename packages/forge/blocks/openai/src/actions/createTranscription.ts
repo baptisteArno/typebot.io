@@ -7,12 +7,16 @@ export const createTranscription = createAction({
   auth,
   baseOptions,
   options: option.object({
-    url: option.string.layout({
-      label: "Audio URL",
+    url: option.string.meta({
+      layout: {
+        label: "Audio URL",
+      },
     }),
-    transcriptionVariableId: option.string.layout({
-      label: "Save result to",
-      inputType: "variableDropdown",
+    transcriptionVariableId: option.string.meta({
+      layout: {
+        label: "Save result to",
+        inputType: "variableDropdown",
+      },
     }),
   }),
   getSetVariableIds: (options) =>

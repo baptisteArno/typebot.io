@@ -6,7 +6,7 @@ import { createToastORPCError } from "@typebot.io/lib/createToastORPCError";
 import { ky } from "@typebot.io/lib/ky";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const getSystemTokenInfoInputSchema = z.object({
   token: z.string().optional(),

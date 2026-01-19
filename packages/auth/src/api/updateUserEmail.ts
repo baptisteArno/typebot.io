@@ -2,7 +2,7 @@ import { ORPCError } from "@orpc/server";
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import prisma from "@typebot.io/prisma";
 import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const updateUserEmail = authenticatedProcedure
   .input(

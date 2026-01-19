@@ -3,7 +3,7 @@ import { datesAreOnSameDay } from "@typebot.io/lib/datesAreOnSameDay";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
 import { workspaceSchema } from "@typebot.io/workspaces/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { getUserModeInWorkspace } from "../helpers/getUserRoleInWorkspace";
 import { isReadWorkspaceFobidden } from "../helpers/isReadWorkspaceFobidden";
 

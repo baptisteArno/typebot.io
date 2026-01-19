@@ -5,7 +5,7 @@ import prisma from "@typebot.io/prisma";
 import { archiveResults } from "@typebot.io/results/archiveResults";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
 
 export const deleteTypebotInputSchema = z.object({

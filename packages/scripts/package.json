@@ -58,7 +58,6 @@
     "stripe": "^17.1.0",
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
-    "@typebot.io/zod": "workspace:*",
     "@typebot.io/emails": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/blocks-bubbles": "workspace:*",
@@ -66,7 +65,8 @@
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/rich-text": "workspace:*",
     "ai": "^4.3.19",
-    "p-limit": "^7.2.0"
+    "p-limit": "^7.2.0",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",

@@ -3,7 +3,7 @@ import {
   itemBaseSchemas,
 } from "@typebot.io/blocks-base/schemas";
 import { conditionSchema } from "@typebot.io/conditions/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { LogicBlockType } from "../constants";
 
 export const conditionItemSchemas = {

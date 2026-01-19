@@ -1,5 +1,5 @@
 import { Plan } from "@typebot.io/prisma/enum";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 const userEvent = z.object({
   userId: z.string(),

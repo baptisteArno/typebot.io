@@ -6,7 +6,7 @@ import type {
   DomainVerificationStatus,
 } from "@typebot.io/schemas/features/customDomains";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
 import type {
   DomainConfigResponse,

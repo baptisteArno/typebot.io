@@ -18,11 +18,11 @@
     "@typebot.io/react": "workspace:*",
     "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/ui": "workspace:*",
-    "@typebot.io/zod": "workspace:*",
     "motion": "^12.23.25",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "vite": "7.0.0"
+    "vite": "7.0.0",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@content-collections/core": "0.9.1",

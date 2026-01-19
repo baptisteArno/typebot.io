@@ -2,7 +2,7 @@ import {
   ComparisonOperators,
   LogicalOperator,
 } from "@typebot.io/conditions/constants";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { maxTypingEmulationMaxDelay, rememberUserStorages } from "./constants";
 
 export const systemMessagesSchema = z.object({

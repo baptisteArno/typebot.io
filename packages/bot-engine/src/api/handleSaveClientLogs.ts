@@ -1,7 +1,7 @@
 import { ORPCError } from "@orpc/server";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { logInSessionSchema } from "@typebot.io/logs/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { assertOriginIsAllowed } from "../helpers/assertOriginIsAllowed";
 import { shortenLogDetails } from "../logs/helpers/shortenLogDetails";
 import { saveLogs } from "../queries/saveLogs";

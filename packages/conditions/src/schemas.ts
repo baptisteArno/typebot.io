@@ -1,4 +1,4 @@
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { ComparisonOperators, LogicalOperator } from "./constants";
 
 const comparisonSchema = z.object({

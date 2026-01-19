@@ -2,10 +2,10 @@ import { evaluateIsHidden } from "@typebot.io/forge/helpers/evaluateIsHidden";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
-import type { ZodLayoutMetadata } from "@typebot.io/zod";
 import type { JSX, ReactNode } from "react";
-import type { ZodTypeAny, z } from "zod";
+import type { z } from "zod";
 import { getZodInnerSchema } from "../../helpers/getZodInnerSchema";
+import { getZodLayoutMetadata } from "../../helpers/getZodLayoutMetadata";
 import { ZodFieldLayout } from "./ZodFieldLayout";
 
 export const ZodObjectLayout = ({
@@ -26,9 +26,9 @@ export const ZodObjectLayout = ({
   onDataChange: (value: any) => void;
 }): JSX.Element | null => {
   const innerSchema = getZodInnerSchema(schema);
-  const shape =
-    "shape" in innerSchema ? innerSchema.shape : innerSchema._def.shape();
-  const layout = innerSchema._def.layout;
+  if (!isZodObject(innerSchema)) return null;
+  const shape = innerSchema.shape;
+  const layout = getZodLayoutMetadata(innerSchema);
   if (evaluateIsHidden(layout?.isHidden, blockOptions)) return null;
   const nodes = Object.keys(shape).reduce<{
     nodes: ReactNode[];
@@ -36,10 +36,10 @@ export const ZodObjectLayout = ({
   }>(
     (nodes, key, index) => {
       if (ignoreKeys?.includes(key)) return nodes;
-      const keySchema = getZodInnerSchema(shape[key]);
-      const layout = keySchema._def.layout as
-        | ZodLayoutMetadata<ZodTypeAny>
-        | undefined;
+      const rawSchema = shape[key];
+      if (!isZodType(rawSchema)) return nodes;
+      const keySchema = getZodInnerSchema(rawSchema);
+      const layout = getZodLayoutMetadata(keySchema);
 
       if (evaluateIsHidden(layout?.isHidden, blockOptions)) return nodes;
       if (layout && layout.accordion && !isInAccordion) {
@@ -55,19 +55,23 @@ export const ZodObjectLayout = ({
               <Accordion.Item>
                 <Accordion.Trigger>{layout.accordion}</Accordion.Trigger>
                 <Accordion.Panel>
-                  {accordionKeys.map((accordionKey, idx) => (
-                    <ZodFieldLayout
-                      key={accordionKey + idx}
-                      schema={shape[accordionKey]}
-                      data={data?.[accordionKey]}
-                      onDataChange={(val) =>
-                        onDataChange({ ...data, [accordionKey]: val })
-                      }
-                      blockDef={blockDef}
-                      blockOptions={blockOptions}
-                      isInAccordion
-                    />
-                  ))}
+                  {accordionKeys.map((accordionKey, idx) => {
+                    const accordionSchema = shape[accordionKey];
+                    if (!isZodType(accordionSchema)) return null;
+                    return (
+                      <ZodFieldLayout
+                        key={accordionKey + idx}
+                        schema={accordionSchema}
+                        data={data?.[accordionKey]}
+                        onDataChange={(val) =>
+                          onDataChange({ ...data, [accordionKey]: val })
+                        }
+                        blockDef={blockDef}
+                        blockOptions={blockOptions}
+                        isInAccordion
+                      />
+                    );
+                  })}
                 </Accordion.Panel>
               </Accordion.Item>
             </Accordion.Root>,
@@ -103,11 +107,21 @@ export const ZodObjectLayout = ({
 
 const getObjectKeysWithSameAccordionAttr = (accordion: string, shape: any) =>
   Object.keys(shape).reduce<string[]>((keys, currentKey) => {
-    const innerSchema = getZodInnerSchema(shape[currentKey]);
-    const l = innerSchema._def.layout as
-      | ZodLayoutMetadata<ZodTypeAny>
-      | undefined;
+    const rawSchema = shape[currentKey];
+    if (!isZodType(rawSchema)) return keys;
+    const innerSchema = getZodInnerSchema(rawSchema);
+    const l = getZodLayoutMetadata(innerSchema);
     return !l?.accordion || l.accordion !== accordion
       ? keys
       : [...keys, currentKey];
   }, []);
+
+const isZodObject = (
+  schema: z.ZodTypeAny,
+): schema is z.ZodObject<z.ZodRawShape> => schema.type === "object";
+
+const isZodType = (value: unknown): value is z.ZodTypeAny =>
+  typeof value === "object" &&
+  value !== null &&
+  "def" in value &&
+  "type" in value;

@@ -6,9 +6,9 @@ import {
   type TypebotV6,
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
-import { z } from "@typebot.io/zod";
 import { Context, Effect, Option, Ref, Schema, Stream } from "effect";
 import * as Papaparse from "papaparse";
+import { z } from "zod";
 import { convertResultsToTableData } from "./convertResultsToTableData";
 import { parseBlockIdVariableIdMap } from "./parseBlockIdVariableIdMap";
 import { parseColumnsOrder } from "./parseColumnsOrder";

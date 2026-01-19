@@ -4,8 +4,8 @@ import { ky } from "@typebot.io/lib/ky";
 import prisma from "@typebot.io/prisma";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
 import { HTTPError } from "ky";
+import { z } from "zod";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
 
 export const createCustomDomainInputSchema = z.object({

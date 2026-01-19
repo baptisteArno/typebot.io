@@ -1,6 +1,6 @@
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { clientUserSchema } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   acceptTermsOutputSchema,
   handleAcceptTerms,

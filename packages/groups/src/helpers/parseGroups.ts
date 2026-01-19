@@ -1,6 +1,6 @@
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import type { TypebotV6Version } from "@typebot.io/schemas/versions";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   type GroupV5,
   type GroupV6,

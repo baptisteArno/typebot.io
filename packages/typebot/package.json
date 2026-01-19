@@ -12,14 +12,14 @@
     "@typebot.io/settings": "workspace:*",
     "@typebot.io/theme": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "@typebot.io/zod": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/events": "workspace:*",
-    "effect": "^3.19.14"
+    "effect": "^3.19.14",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

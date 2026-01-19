@@ -3,7 +3,7 @@ import {
   ComparisonOperators,
   LogicalOperator,
 } from "@typebot.io/conditions/constants";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { IntegrationBlockType } from "../constants";
 import { GoogleSheetsAction, totalRowsToExtractOptions } from "./constants";
 

@@ -1,4 +1,4 @@
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { EventType } from "./constants";
 
 const eventBaseSchema = z.object({

@@ -8,9 +8,9 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@typebot.io/zod": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "@typebot.io/runtime-session-store": "workspace:*"
+    "@typebot.io/runtime-session-store": "workspace:*",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",

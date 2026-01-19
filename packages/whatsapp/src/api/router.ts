@@ -3,7 +3,7 @@ import {
   publicProcedure as builderPublicProcedure,
 } from "@typebot.io/config/orpc/builder/middlewares";
 import { publicProcedure as chatPublicProcedure } from "@typebot.io/config/orpc/viewer/middlewares";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { WEBHOOK_SUCCESS_MESSAGE } from "../constants";
 import { whatsAppWebhookRequestBodySchema } from "../schemas";
 import { handleGenerateVerificationToken } from "./handleGenerateVerificationToken";

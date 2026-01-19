@@ -4,7 +4,7 @@ import {
   workspaceMemberSchema,
   workspaceSchema,
 } from "@typebot.io/workspaces/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   createWorkspaceInputSchema,
   handleCreateWorkspace,

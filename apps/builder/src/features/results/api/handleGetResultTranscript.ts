@@ -6,7 +6,7 @@ import type { Answer } from "@typebot.io/results/schemas/answers";
 import { SessionStore } from "@typebot.io/runtime-session-store";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const getResultTranscriptInputSchema = z.object({
   typebotId: z

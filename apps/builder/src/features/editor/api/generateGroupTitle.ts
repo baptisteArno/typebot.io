@@ -1,12 +1,13 @@
 import { ORPCError } from "@orpc/server";
+import { zodToSchema } from "@typebot.io/ai/zodToSchema";
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import prisma from "@typebot.io/prisma";
 import { defaultGroupTitleGenPrompt } from "@typebot.io/user/constants";
 import { groupTitlesAutoGenerationSchema } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
 import { generateObject } from "ai";
+import { z } from "zod";
 import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
 
 export const generateGroupTitle = authenticatedProcedure
@@ -105,13 +106,14 @@ export const generateGroupTitle = authenticatedProcedure
       });
       if (!aiModel)
         throw new ORPCError("BAD_REQUEST", { message: "Model not found" });
+      const titleSchema = z.object({
+        title: z.string(),
+      });
       const {
         object: { title },
       } = await generateObject({
         model: aiModel,
-        schema: z.object({
-          title: z.string(),
-        }),
+        schema: zodToSchema(titleSchema),
         prompt: (prompt ?? defaultGroupTitleGenPrompt)
           .replace("[[typebotName]]", typebot.name)
           .replace("[[groupContent]]", groupContent),

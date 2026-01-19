@@ -19,15 +19,19 @@ export const getUsers = createAction({
         }),
       ])
       .optional()
-      .layout({
-        accordion: "Filter",
+      .meta({
+        layout: {
+          accordion: "Filter",
+        },
       }),
     responseMapping: option
       .saveResponseArray(
         Object.values(responseDataLabels) as [string, ...string[]],
       )
-      .layout({
-        accordion: "Save in variables",
+      .meta({
+        layout: {
+          accordion: "Save in variables",
+        },
       }),
   }),
   getSetVariableIds: (options) =>

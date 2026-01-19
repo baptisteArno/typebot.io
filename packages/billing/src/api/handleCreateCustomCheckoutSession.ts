@@ -4,8 +4,8 @@ import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
 import type { User } from "@typebot.io/user/schemas";
 import { isAdminWriteWorkspaceForbidden } from "@typebot.io/workspaces/isAdminWriteWorkspaceForbidden";
-import { z } from "@typebot.io/zod";
 import Stripe from "stripe";
+import { z } from "zod";
 
 export const createCustomCheckoutSessionInputSchema = z.object({
   email: z.string(),

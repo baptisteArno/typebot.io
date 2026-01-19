@@ -1,4 +1,4 @@
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { abTestBlockSchemas } from "./abTest/schema";
 import { conditionBlockSchemas } from "./condition/schema";
 import { jumpBlockSchema } from "./jump/schema";

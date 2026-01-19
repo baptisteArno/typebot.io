@@ -9,7 +9,7 @@ import type { Prisma } from "@typebot.io/prisma/types";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import { resumeWhatsAppFlow } from "@typebot.io/whatsapp/resumeWhatsAppFlow";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const executeTestWebhookWhatsAppInputSchema = z.object({
   params: z.object({

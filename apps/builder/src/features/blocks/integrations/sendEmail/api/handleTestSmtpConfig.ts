@@ -1,6 +1,6 @@
 import { ORPCError } from "@orpc/server";
-import { z } from "@typebot.io/zod";
 import { createTransport } from "nodemailer";
+import { z } from "zod";
 
 export const testSmtpConfigInputSchema = z.object({
   from: z.object({

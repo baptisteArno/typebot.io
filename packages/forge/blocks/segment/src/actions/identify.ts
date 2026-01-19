@@ -5,29 +5,39 @@ export const identify = createAction({
   auth,
   name: "Identify User",
   options: option.object({
-    userId: option.string.layout({
-      label: "User ID",
-      isRequired: true,
+    userId: option.string.meta({
+      layout: {
+        label: "User ID",
+        isRequired: true,
+      },
     }),
-    email: option.string.layout({
-      label: "Email",
-      isRequired: false,
+    email: option.string.meta({
+      layout: {
+        label: "Email",
+        isRequired: false,
+      },
     }),
     traits: option
       .array(
         option.object({
-          key: option.string.layout({
-            label: "Key",
-            isRequired: true,
+          key: option.string.meta({
+            layout: {
+              label: "Key",
+              isRequired: true,
+            },
           }),
-          value: option.string.layout({
-            label: "Value",
-            isRequired: true,
+          value: option.string.meta({
+            layout: {
+              label: "Value",
+              isRequired: true,
+            },
           }),
         }),
       )
-      .layout({
-        itemLabel: "trait",
+      .meta({
+        layout: {
+          itemLabel: "trait",
+        },
       }),
   }),
 });

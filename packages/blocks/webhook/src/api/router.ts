@@ -1,5 +1,5 @@
 import { protectedProcedure } from "@typebot.io/config/orpc/viewer/middlewares";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   executeTestWebhookInputSchema,
   handleExecuteTestWebhook,

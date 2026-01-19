@@ -6,7 +6,7 @@ import {
   bItemSchemas,
 } from "@typebot.io/blocks-logic/abTest/schema";
 import { conditionItemSchemas } from "@typebot.io/blocks-logic/condition/schema";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 const itemSchemas = {
   v5: z.union([

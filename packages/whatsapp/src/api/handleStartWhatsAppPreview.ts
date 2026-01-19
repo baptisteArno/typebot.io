@@ -15,7 +15,7 @@ import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebo
 import type { User } from "@typebot.io/user/schemas";
 import { sendChatReplyToWhatsApp } from "@typebot.io/whatsapp/sendChatReplyToWhatsApp";
 import { sendWhatsAppMessage } from "@typebot.io/whatsapp/sendWhatsAppMessage";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const startWhatsAppPreviewInputSchema = z.object({
   to: z

@@ -23,7 +23,7 @@
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "@typebot.io/zod": "workspace:*"
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

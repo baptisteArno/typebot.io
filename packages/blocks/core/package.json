@@ -7,7 +7,6 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@typebot.io/zod": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
     "@typebot.io/conditions": "workspace:*",
     "@typebot.io/lib": "workspace:*",
@@ -16,7 +15,8 @@
     "@typebot.io/blocks-bubbles": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/blocks-logic": "workspace:*",
-    "@typebot.io/blocks-integrations": "workspace:*"
+    "@typebot.io/blocks-integrations": "workspace:*",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

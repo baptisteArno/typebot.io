@@ -10,7 +10,7 @@ import { generatePresignedUrl } from "@typebot.io/lib/s3/deprecated/generatePres
 import { byId, isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const getUploadUrlInputSchema = z.object({
   typebotId: z.string(),

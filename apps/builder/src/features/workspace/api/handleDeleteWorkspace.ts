@@ -4,8 +4,8 @@ import { removeObjectsFromWorkspace } from "@typebot.io/lib/s3/removeObjectsRecu
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
 import Stripe from "stripe";
+import { z } from "zod";
 import { isAdminWriteWorkspaceForbidden } from "../helpers/isAdminWriteWorkspaceForbidden";
 
 export const deleteWorkspaceInputSchema = z.object({

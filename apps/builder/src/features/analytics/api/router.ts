@@ -1,6 +1,6 @@
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { statsSchema } from "@typebot.io/results/schemas/answers";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { edgeWithTotalVisitsSchema, totalAnswersSchema } from "../schemas";
 import {
   getInDepthAnalyticsDataInputSchema,

@@ -28,7 +28,7 @@ import {
   type ForgedBlock,
   forgedBlockSchema,
 } from "@typebot.io/forge-repository/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import type { ItemV6 } from "./items/schema";
 import { type StartBlock, startBlockSchema } from "./start/schemas";
 

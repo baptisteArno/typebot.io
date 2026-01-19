@@ -5,7 +5,7 @@ import type { Prisma } from "@typebot.io/prisma/types";
 import { folderSchema } from "@typebot.io/schemas/features/folder";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 
 export const createFolderInputSchema = z.object({

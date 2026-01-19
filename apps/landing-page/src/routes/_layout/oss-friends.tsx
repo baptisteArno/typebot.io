@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { Card } from "@/components/Card";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { createMetaTags } from "@/lib/createMetaTags";

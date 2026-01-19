@@ -4,7 +4,7 @@ import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
 import { downloadMedia } from "@typebot.io/whatsapp/downloadMedia";
 import { isReadWorkspaceFobidden } from "@typebot.io/workspaces/isReadWorkspaceFobidden";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const getWhatsAppMediaPreviewInputSchema = z.object({
   typebotId: z.string(),

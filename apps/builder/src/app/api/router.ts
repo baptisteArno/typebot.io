@@ -4,7 +4,7 @@ import { billingRouter } from "@typebot.io/billing/api/router";
 import { publicProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { fileUploadBuilderRouter } from "@typebot.io/file-input-block/api/router";
 import { builderWhatsAppRouter } from "@typebot.io/whatsapp/api/router";
-import z from "zod";
+import { z } from "zod";
 import { analyticsRouter } from "@/features/analytics/api/router";
 import { googleSheetsRouter } from "@/features/blocks/integrations/googleSheets/api/router";
 import { httpRequestRouter } from "@/features/blocks/integrations/httpRequest/api/router";

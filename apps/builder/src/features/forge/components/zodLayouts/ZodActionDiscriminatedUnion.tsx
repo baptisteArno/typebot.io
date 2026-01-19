@@ -1,15 +1,18 @@
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
-import type { z } from "@typebot.io/zod";
 import { useMemo } from "react";
+import { z } from "zod";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { getDiscriminatedUnionOptionsMap } from "./getDiscriminatedUnionOptionsMap";
 import { ZodObjectLayout } from "./ZodObjectLayout";
 
 type Props = {
   blockDef?: ForgedBlockDefinition;
   blockOptions?: ForgedBlock["options"];
-  schema: z.ZodOptional<z.ZodDiscriminatedUnion<"action", z.ZodObject<any>[]>>;
+  schema: z.ZodOptional<
+    z.ZodDiscriminatedUnion<readonly z.ZodObject<any>[], string>
+  >;
   onDataChange: (options: ForgedBlock["options"]) => void;
 };
 
@@ -19,9 +22,11 @@ export const ZodActionDiscriminatedUnion = ({
   schema,
   onDataChange,
 }: Props) => {
-  const innerSchema = schema._def.innerType;
+  const innerSchema = schema.unwrap();
+  if (!isZodDiscriminatedUnion(innerSchema)) return null;
+  const optionsMap = getDiscriminatedUnionOptionsMap(innerSchema);
   const currentOptions = blockOptions?.action
-    ? innerSchema._def.optionsMap.get(blockOptions?.action)
+    ? optionsMap.get(blockOptions?.action)
     : undefined;
   const keysBeforeActionField = useMemo(() => {
     if (!currentOptions) return [];
@@ -35,9 +40,7 @@ export const ZodActionDiscriminatedUnion = ({
       <BasicSelect
         value={blockOptions?.action}
         onChange={(item) => onDataChange({ ...blockOptions, action: item })}
-        items={
-          [...innerSchema._def.optionsMap.keys()].filter(isDefined) as string[]
-        }
+        items={[...optionsMap.keys()].filter(isDefined)}
         placeholder="Select an action"
       />
       {currentOptions && (
@@ -53,3 +56,8 @@ export const ZodActionDiscriminatedUnion = ({
     </>
   );
 };
+
+const isZodDiscriminatedUnion = (
+  schema: z.ZodTypeAny,
+): schema is z.ZodDiscriminatedUnion<readonly z.ZodObject<any>[], string> =>
+  schema instanceof z.ZodDiscriminatedUnion;

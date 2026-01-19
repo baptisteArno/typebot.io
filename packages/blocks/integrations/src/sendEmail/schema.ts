@@ -1,5 +1,5 @@
 import { blockBaseSchema } from "@typebot.io/blocks-base/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { IntegrationBlockType } from "../constants";
 
 export const sendEmailOptionsSchema = z.object({

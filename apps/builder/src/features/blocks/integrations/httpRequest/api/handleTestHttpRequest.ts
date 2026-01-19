@@ -20,7 +20,7 @@ import {
 import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
 import type { User } from "@typebot.io/user/schemas";
 import { variableSchema } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { canReadTypebots } from "@/helpers/databaseRules";
 
 export const testHttpRequestInputSchema = z.object({

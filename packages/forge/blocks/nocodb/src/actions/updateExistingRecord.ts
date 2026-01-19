@@ -6,16 +6,20 @@ export const updateExistingRecord = createAction({
   auth,
   name: "Update Existing Record",
   options: option.object({
-    tableId: option.string.layout({
-      label: "Table ID",
-      isRequired: true,
-      moreInfoTooltip:
-        "Can be found by clicking on the 3 dots next to the table name.",
+    tableId: option.string.meta({
+      layout: {
+        label: "Table ID",
+        isRequired: true,
+        moreInfoTooltip:
+          "Can be found by clicking on the 3 dots next to the table name.",
+      },
     }),
-    viewId: option.string.layout({
-      label: "View ID",
-      moreInfoTooltip:
-        "Can be found by clicking on the 3 dots next to the view name.",
+    viewId: option.string.meta({
+      layout: {
+        label: "View ID",
+        moreInfoTooltip:
+          "Can be found by clicking on the 3 dots next to the view name.",
+      },
     }),
     filter: option
       .filter({
@@ -23,22 +27,30 @@ export const updateExistingRecord = createAction({
         isJoinerHidden: ({ filter }) =>
           !filter?.comparisons || filter.comparisons.length < 2,
       })
-      .layout({
-        accordion: "Select Records",
+      .meta({
+        layout: {
+          accordion: "Select Records",
+        },
       }),
     updates: option
       .array(
         option.object({
-          fieldName: option.string.layout({
-            label: "Enter a field name",
+          fieldName: option.string.meta({
+            layout: {
+              label: "Enter a field name",
+            },
           }),
-          value: option.string.layout({
-            placeholder: "Enter a value",
+          value: option.string.meta({
+            layout: {
+              placeholder: "Enter a value",
+            },
           }),
         }),
       )
-      .layout({
-        accordion: "Updates",
+      .meta({
+        layout: {
+          accordion: "Updates",
+        },
       }),
   }),
 });

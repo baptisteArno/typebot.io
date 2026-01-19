@@ -15,7 +15,7 @@ import {
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 import {
   sanitizeFolderId,

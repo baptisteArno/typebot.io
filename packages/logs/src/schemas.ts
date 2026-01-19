@@ -1,5 +1,5 @@
 import type { Prisma } from "@typebot.io/prisma/types";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const logSchema = z.object({
   id: z.string(),

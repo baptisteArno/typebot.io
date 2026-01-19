@@ -2,41 +2,41 @@
 title: Options
 ---
 
-The Forge library extends the [Zod](https://github.com/colinhacks/zod) library. This means that you can use any Zod schema to validate the data that you want to store for your block. The Forge extends the zod schemas with the `layout` function property that allows you to define the layout of the data in the Typebot editor.
+The Forge library extends the [Zod](https://github.com/colinhacks/zod) library. This means that you can use any Zod schema to validate the data that you want to store for your block. The Forge stores layout metadata on schemas using Zod's `meta()` API so the Typebot editor can render the right inputs.
 
 Options extends the `z.ZodObject<any>` schema.
 
 The Forge provide convenient functions to create the options schema for you. Even though you could provide straight Zod schemas, we highly recommend using `option` functions to create the options schema.
 
-Here is an example of how a schema can be created using the `option` and `layout` functions:
+Here is an example of how a schema can be created using the `option` helpers and `meta()`:
 
 ```ts
 option.object({
-  token: option.string.layout({
+  token: option.string.meta({ layout: {
     label: 'Token',
     isRequired: true,
     placeholder: 'Type your token...',
     helperText: 'You can find your token [here](https://).',
-  }),
-  role: option.enum(['user', 'admin']).layout({
+  } }),
+  role: option.enum(['user', 'admin']).meta({ layout: {
     defaultValue: 'user',
     label: 'Role',
-  }),
-  phoneNumber: option.string.layout({
+  } }),
+  phoneNumber: option.string.meta({ layout: {
     accordion: 'Advanced settings',
     label: 'Phone number',
     placeholder: 'Type your phone number...',
-  }),
-  address: option.string.layout({
+  } }),
+  address: option.string.meta({ layout: {
     accordion: 'Advanced settings',
     label: 'Address',
     placeholder: 'Type your address...',
-  }),
-  isTestModeEnabled: option.boolean.layout({
+  } }),
+  isTestModeEnabled: option.boolean.meta({ layout: {
     label: 'Test mode',
     defaultValue: true,
     helperText: 'Enable test mode to use a test account.',
-  }),
+  } }),
 })
 ```
 
@@ -57,11 +57,11 @@ option.object({
 Example:
 
 ```ts
-option.string.layout({
+option.string.meta({ layout: {
   label: 'Name',
   placeholder: 'Type a name...',
   withVariableButton: false,
-})
+} })
 ```
 
 <Frame>
@@ -76,11 +76,11 @@ option.string.layout({
 Example:
 
 ```ts
-option.number.layout({
+option.number.meta({ layout: {
   label: 'Temperature',
   defaultValue: 1,
   direction: 'row',
-})
+} })
 ```
 
 <Frame>
@@ -93,10 +93,10 @@ option.number.layout({
 ## Boolean
 
 ```ts
-option.boolean.layout({
+option.boolean.meta({ layout: {
   label: 'Test mode',
   moreInfoTooltip: 'Enable test mode to use a test account.',
-})
+} })
 ```
 
 {' '}
@@ -113,10 +113,10 @@ option.boolean.layout({
 Example:
 
 ```ts
-option.enum(['user', 'admin']).layout({
+option.enum(['user', 'admin']).meta({ layout: {
   label: 'Role',
   defaultValue: 'user',
-})
+} })
 ```
 
 <Frame>
@@ -134,14 +134,14 @@ Example:
 option.discriminatedUnion('type', [
   option.object({
     type: option.literal('user'),
-    name: option.string.layout({ placeholder: 'Type a name...' }),
+    name: option.string.meta({ layout: { placeholder: 'Type a name...' } }),
   }),
   option.object({
     type: option.literal('admin'),
-    name: option.string.layout({ placeholder: 'Type a name...' }),
-    phoneNumber: option.string.layout({
+    name: option.string.meta({ layout: { placeholder: 'Type a name...' } }),
+    phoneNumber: option.string.meta({ layout: {
       placeholder: 'Type a phone number...',
-    }),
+    } }),
   }),
 ])
 ```
@@ -172,10 +172,10 @@ Example:
 - A list of names
 
   ```ts
-  option.array(option.string.layout({ placeholder: 'Type a name...' })).layout({
+  option.array(option.string.meta({ layout: { placeholder: 'Type a name...' } })).meta({ layout: {
     label: 'Names',
     itemLabel: 'name',
-  })
+  } })
   ```
 
   <Frame>
@@ -194,9 +194,9 @@ Use this to save the response of an array of options in variables.
 For example if you want your user to be able to save the response of an HTTP request to variables:
 
 ```ts
-option.saveResponseArray(['Message content', 'Total tokens']).layout({
+option.saveResponseArray(['Message content', 'Total tokens']).meta({ layout: {
   accordion: 'Save response',
-})
+} })
 ```
 
 You provide the list of all the possible response values to save.
@@ -227,12 +227,12 @@ You provide the list of all the possible response values to save.
 
 ```ts
 option.object({
-  temperature: option.number.layout({
+  temperature: option.number.meta({ layout: {
     accordion: 'Advanced settings',
-  }),
-  humidity: option.number.layout({
+  } }),
+  humidity: option.number.meta({ layout: {
     accordion: 'Advanced settings',
-  }),
+  } }),
 })
 ```
 
@@ -272,9 +272,9 @@ option.object({
   Set this if you'd like your input to provide a dropdown of dynamically fetched items.
 
 ```ts
-option.string.layout({
+option.string.meta({ layout: {
   fetcher: 'fetchModels',
-})
+} })
 ```
 
 `fetchModels` should match the `id` of the fetcher that you defined in the

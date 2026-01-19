@@ -7,7 +7,7 @@ import {
   deleteSessionStore,
   getSessionStore,
 } from "@typebot.io/runtime-session-store";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { computeCurrentProgress } from "../computeCurrentProgress";
 import { continueBotFlow } from "../continueBotFlow";
 import { assertOriginIsAllowed } from "../helpers/assertOriginIsAllowed";

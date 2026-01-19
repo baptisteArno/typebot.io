@@ -3,7 +3,7 @@ import { getFileTempUrl } from "@typebot.io/lib/s3/getFileTempUrl";
 import prisma from "@typebot.io/prisma";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const getResultBlockFileInputSchema = z.object({
   typebotId: z.string(),

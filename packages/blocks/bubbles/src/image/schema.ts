@@ -1,5 +1,5 @@
 import { blockBaseSchema } from "@typebot.io/blocks-base/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { BubbleBlockType } from "../constants";
 
 export const imageBubbleContentSchema = z.object({

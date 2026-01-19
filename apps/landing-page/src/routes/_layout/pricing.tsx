@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { EnterprisePlanCard } from "@/features/pricing/EnterprisePlanCard";
 import { Faq } from "@/features/pricing/Faq";

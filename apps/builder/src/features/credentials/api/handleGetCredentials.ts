@@ -2,7 +2,7 @@ import { ORPCError } from "@orpc/server";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
 
 export const getCredentialsInputSchema = z.discriminatedUnion("scope", [

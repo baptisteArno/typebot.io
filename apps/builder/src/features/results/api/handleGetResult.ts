@@ -3,7 +3,7 @@ import prisma from "@typebot.io/prisma";
 import { resultWithAnswersSchema } from "@typebot.io/results/schemas/results";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const getResultInputSchema = z.object({
   typebotId: z

@@ -3,7 +3,7 @@ import {
   optionBaseSchema,
 } from "@typebot.io/blocks-base/schemas";
 import { singleVariableOrNumberSchema } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { InputBlockType } from "../constants";
 import { textInputOptionsBaseSchema } from "../text/schema";
 import { localeRegex, NumberInputStyle, NumberInputUnit } from "./constants";

@@ -1,6 +1,6 @@
 import { useRouter } from "@tanstack/react-router";
-import type { z } from "@typebot.io/zod";
 import { useEffect } from "react";
+import type { z } from "zod";
 import {
   trackPageView,
   type trackPageViewBodySchema,

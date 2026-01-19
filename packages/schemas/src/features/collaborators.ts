@@ -1,6 +1,6 @@
 import { CollaborationType } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const collaboratorSchema = z.object({
   type: z.nativeEnum(CollaborationType),

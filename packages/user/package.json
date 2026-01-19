@@ -7,8 +7,8 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@typebot.io/zod": "workspace:*",
-    "@typebot.io/prisma": "workspace:*"
+    "@typebot.io/prisma": "workspace:*",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

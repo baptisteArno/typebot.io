@@ -8,7 +8,7 @@ import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { forgedBlockHandlers } from "@typebot.io/forge-repository/handlers";
 import type { ToastErrorData } from "@typebot.io/lib/toastErrorData";
 import prisma from "@typebot.io/prisma";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
 
 const baseInputSchema = z.object({

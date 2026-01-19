@@ -4,8 +4,8 @@ import type { GoogleSheetsCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
 import { OAuth2Client } from "google-auth-library";
+import { z } from "zod";
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
 
 export const getAccessTokenInputSchema = z.object({

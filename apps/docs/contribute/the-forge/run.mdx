@@ -236,9 +236,9 @@ export const bookEvent = createAction({
   name: "Book event",
   options: option.object({
     // ... options
-    saveResultInVariableId: option.string.layout({
+    saveResultInVariableId: option.string.meta({ layout: {
       inputType: "variableDropdown",
-    }),
+    } }),
   }),
   getEmbedSaveVariableId: (options) => options.saveResultInVariableId,
 });

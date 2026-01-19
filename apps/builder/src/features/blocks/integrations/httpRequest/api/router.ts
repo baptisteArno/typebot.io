@@ -1,6 +1,6 @@
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   getResultExampleInputSchema,
   handleGetResultExample,
@@ -65,7 +65,7 @@ export const httpRequestRouter = {
     .output(
       z.object({
         resultExample: z
-          .record(z.unknown())
+          .record(z.string(), z.unknown())
           .describe("Can contain any fields."),
       }),
     )

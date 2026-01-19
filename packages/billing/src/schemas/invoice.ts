@@ -1,4 +1,4 @@
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const invoiceSchema = z.object({
   id: z.string(),

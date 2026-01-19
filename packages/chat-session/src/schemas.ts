@@ -19,7 +19,7 @@ import {
   setVariableHistoryItemSchema,
   variableWithValueSchema,
 } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 const typebotInSessionStatePick = {
   version: true,
@@ -268,5 +268,5 @@ const chatSessionSchema = z.object({
     .describe(
       "Used in WhatsApp runtime to avoid concurrent replies from the bot",
     ),
-}) satisfies z.ZodType<Prisma.ChatSession, z.ZodTypeDef, unknown>;
+}) satisfies z.ZodType<Prisma.ChatSession>;
 export type ChatSession = z.infer<typeof chatSessionSchema>;

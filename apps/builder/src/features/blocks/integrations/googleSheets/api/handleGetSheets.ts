@@ -1,7 +1,7 @@
 import { ORPCError } from "@orpc/server";
 import { getGoogleSpreadsheet } from "@typebot.io/credentials/getGoogleSpreadsheet";
 import { isDefined } from "@typebot.io/lib/utils";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const getSheetsInputSchema = z.object({
   credentialsId: z.string(),

@@ -135,5 +135,6 @@ export const pixelObjectProperties: {
 ];
 
 export const defaultPixelOptions = {
+  eventType: undefined,
   isInitSkip: false,
 } as const satisfies PixelBlock["options"];

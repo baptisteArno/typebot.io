@@ -1,6 +1,6 @@
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { collaboratorSchema } from "@typebot.io/schemas/features/collaborators";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   createInvitationInputSchema,
   handleCreateInvitation,

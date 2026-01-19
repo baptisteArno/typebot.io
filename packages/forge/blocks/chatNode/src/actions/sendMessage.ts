@@ -7,24 +7,32 @@ export const sendMessage = createAction({
   name: "Send Message",
   turnableInto: undefined,
   options: option.object({
-    botId: option.string.layout({
-      label: "Bot ID",
-      placeholder: "68c052c5c3680f63",
-      moreInfoTooltip:
-        "The bot_id you want to ask question to. You can find it at the end of your ChatBot URl in your dashboard",
+    botId: option.string.meta({
+      layout: {
+        label: "Bot ID",
+        placeholder: "68c052c5c3680f63",
+        moreInfoTooltip:
+          "The bot_id you want to ask question to. You can find it at the end of your ChatBot URl in your dashboard",
+      },
     }),
-    threadId: option.string.layout({
-      label: "Thread ID",
-      moreInfoTooltip:
-        "Used to remember the conversation with the user. If empty, a new thread is created.",
+    threadId: option.string.meta({
+      layout: {
+        label: "Thread ID",
+        moreInfoTooltip:
+          "Used to remember the conversation with the user. If empty, a new thread is created.",
+      },
     }),
-    message: option.string.layout({
-      label: "Message",
-      placeholder: "Hi, what can I do with ChatNode",
-      inputType: "textarea",
+    message: option.string.meta({
+      layout: {
+        label: "Message",
+        placeholder: "Hi, what can I do with ChatNode",
+        inputType: "textarea",
+      },
     }),
-    responseMapping: option.saveResponseArray(["Message", "Thread ID"]).layout({
-      accordion: "Save response",
+    responseMapping: option.saveResponseArray(["Message", "Thread ID"]).meta({
+      layout: {
+        accordion: "Save response",
+      },
     }),
   }),
   getSetVariableIds: ({ responseMapping }) =>

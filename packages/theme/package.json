@@ -10,8 +10,8 @@
   "dependencies": {
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/zod": "workspace:*",
-    "@typebot.io/ui": "workspace:*"
+    "@typebot.io/ui": "workspace:*",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

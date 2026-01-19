@@ -7,7 +7,7 @@ import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { canWriteTypebots } from "@/helpers/databaseRules";
 
 export const unsubscribeHttpRequestInputSchema = z.object({

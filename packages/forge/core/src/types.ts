@@ -1,7 +1,7 @@
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import type { WithoutVariables } from "@typebot.io/variables/types";
-import type { z } from "@typebot.io/zod";
 import type { JSX, SVGProps } from "react";
+import type { z } from "zod";
 
 export type VariableStore = {
   get: (variableId: string) => string | (string | null)[] | null | undefined;
@@ -36,12 +36,16 @@ export type FunctionToExecute = {
   content: string;
 };
 
+type BivariantCallback<TArg, TResult> = {
+  bivarianceHack(arg: TArg): TResult;
+}["bivarianceHack"];
+
 export type TurnableIntoParam<T = {}> = {
   blockId: string;
   /**
    * If defined will be used to convert the existing block options into the new block options.
    */
-  transform?: (options: T) => any;
+  transform?: BivariantCallback<T, unknown>;
 };
 
 export type ActionHandler<
@@ -117,17 +121,19 @@ export type ActionDefinition<
   Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
 > = {
   name: string;
-  parseBlockNodeLabel?: (
-    options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>,
-  ) => string;
+  parseBlockNodeLabel?: BivariantCallback<
+    WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>,
+    string
+  >;
   fetchers?: FetcherDefinition[];
   options?: Options;
   turnableInto?: TurnableIntoParam<z.infer<Options>>[];
-  getSetVariableIds?: (options: z.infer<Options>) => string[];
-  getStreamVariableId?: (options: z.infer<Options>) => string | undefined;
-  getEmbedSaveVariableId?: (
-    options: WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>,
-  ) => string | undefined;
+  getSetVariableIds?: BivariantCallback<z.infer<Options>, string[]>;
+  getStreamVariableId?: BivariantCallback<z.infer<Options>, string | undefined>;
+  getEmbedSaveVariableId?: BivariantCallback<
+    WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>,
+    string | undefined
+  >;
   /**
    * Used for AI generation in the builder if enabled by the user.
    */
@@ -250,7 +256,7 @@ export type BlockDefinition<
   auth?: Auth;
   options?: BaseOptions | undefined;
   fetchers?: FetcherDefinition[];
-  actions: ActionDefinition<Auth, BaseOptions>[];
+  actions: ActionDefinition<Auth, BaseOptions, z.ZodObject<z.ZodRawShape>>[];
 };
 
 export type FetchItemsParams<T> = T extends ActionDefinition<

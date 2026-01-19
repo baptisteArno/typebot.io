@@ -33,31 +33,35 @@ export const OpenAISettings = ({
 }: Props) => {
   const { workspace } = useWorkspace();
   const { isOpen, onOpen, onClose } = useOpenControls();
+  const emptyOptions = {
+    task: undefined,
+    credentialsId: undefined,
+    baseUrl: undefined,
+    apiVersion: undefined,
+  } satisfies OpenAIBlock["options"];
+  const baseOptions = options ?? emptyOptions;
 
   const updateCredentialsId = (credentialsId: string | undefined) => {
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       credentialsId,
     });
   };
 
   const updateTask = (task: OpenAITask | undefined) => {
-    onOptionsChange({
-      credentialsId: options?.credentialsId,
-      task,
-    } as OpenAIBlock["options"]);
+    onOptionsChange(buildOptionsForTask(task, baseOptions));
   };
 
   const updateBaseUrl = (baseUrl: string) => {
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       baseUrl,
     });
   };
 
   const updateApiVersion = (apiVersion: string) => {
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       apiVersion,
     });
   };
@@ -125,6 +129,32 @@ export const OpenAISettings = ({
       )}
     </div>
   );
+};
+
+const buildOptionsForTask = (
+  task: OpenAITask | undefined,
+  baseOptions: OpenAIBlock["options"],
+) => {
+  const baseFields = {
+    credentialsId: baseOptions?.credentialsId,
+    baseUrl: baseOptions?.baseUrl,
+    apiVersion: baseOptions?.apiVersion,
+  };
+
+  if (!task) return { ...baseFields, task: undefined };
+
+  if (task === "Create image")
+    return {
+      ...baseFields,
+      task,
+      advancedOptions: {},
+      responseMapping: [],
+    };
+
+  return {
+    ...baseFields,
+    task,
+  };
 };
 
 const OpenAITaskSettings = ({

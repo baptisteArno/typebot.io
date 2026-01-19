@@ -1,6 +1,6 @@
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { publicProcedure } from "@typebot.io/config/orpc/viewer/middlewares";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   generateUploadUrlV1InputSchema,
   handleGenerateUploadUrlV1,

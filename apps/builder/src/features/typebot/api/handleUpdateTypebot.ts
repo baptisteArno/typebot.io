@@ -8,7 +8,7 @@ import {
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
 import {

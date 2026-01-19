@@ -1,6 +1,6 @@
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { folderSchema } from "@typebot.io/schemas/features/folder";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   createFolderInputSchema,
   handleCreateFolder,

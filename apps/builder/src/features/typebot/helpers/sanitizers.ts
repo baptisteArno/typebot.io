@@ -69,19 +69,24 @@ const sanitizeBlock = async (
 ): Promise<Block> => {
   if (!("options" in block) || !block.options) return block;
 
-  if (
-    enableSafetyFlags &&
-    (block.type === LogicBlockType.SCRIPT ||
-      block.type === LogicBlockType.SET_VARIABLE)
-  ) {
+  if (enableSafetyFlags && block.type === LogicBlockType.SCRIPT) {
     return {
       ...block,
       options: {
         ...block.options,
         isUnsafe:
           block.options.isExecutedOnClient === true ||
-          (block.type === LogicBlockType.SCRIPT &&
-            block.options.isExecutedOnClient === undefined),
+          block.options.isExecutedOnClient === undefined,
+      },
+    };
+  }
+
+  if (enableSafetyFlags && block.type === LogicBlockType.SET_VARIABLE) {
+    return {
+      ...block,
+      options: {
+        ...block.options,
+        isUnsafe: block.options.isExecutedOnClient === true,
       },
     };
   }

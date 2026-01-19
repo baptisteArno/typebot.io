@@ -1,8 +1,8 @@
 import type { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { variableWithValueSchema } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
 import type { JSX } from "react";
+import { z } from "zod";
 import { answerInputSchema, answerSchema } from "./answers";
 
 export const resultSchema = z.object({

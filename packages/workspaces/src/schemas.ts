@@ -1,6 +1,6 @@
 import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const workspaceMemberSchema = z.object({
   workspaceId: z.string(),

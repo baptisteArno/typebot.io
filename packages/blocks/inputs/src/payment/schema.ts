@@ -2,7 +2,7 @@ import {
   blockBaseSchema,
   optionBaseSchema,
 } from "@typebot.io/blocks-base/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { InputBlockType } from "../constants";
 import { PaymentProvider } from "./constants";
 

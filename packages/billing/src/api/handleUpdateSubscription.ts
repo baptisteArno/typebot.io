@@ -6,8 +6,8 @@ import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import type { User } from "@typebot.io/user/schemas";
 import { isAdminWriteWorkspaceForbidden } from "@typebot.io/workspaces/isAdminWriteWorkspaceForbidden";
 import { workspaceSchema } from "@typebot.io/workspaces/schemas";
-import { z } from "@typebot.io/zod";
 import Stripe from "stripe";
+import { z } from "zod";
 import { createCheckoutSessionUrl } from "../helpers/createCheckoutSessionUrl";
 
 export const updateSubscriptionInputSchema = z.object({

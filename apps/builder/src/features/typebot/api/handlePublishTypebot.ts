@@ -21,7 +21,7 @@ import { publicTypebotSchemaV6 } from "@typebot.io/typebot/schemas/publicTypebot
 import { typebotV6Schema } from "@typebot.io/typebot/schemas/typebot";
 import type { User } from "@typebot.io/user/schemas";
 import { variableSchema } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { parseTypebotPublishEvents } from "@/features/telemetry/helpers/parseTypebotPublishEvents";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
 

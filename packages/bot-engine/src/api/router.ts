@@ -8,7 +8,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@typebot.io/config/orpc/viewer/middlewares";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   chatReplySchema,
   sendMessageInputSchema,

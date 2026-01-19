@@ -3,7 +3,7 @@ import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const getMakeComBlocksInputSchema = z.object({
   typebotId: z.string(),

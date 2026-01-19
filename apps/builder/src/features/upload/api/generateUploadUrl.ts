@@ -3,7 +3,7 @@ import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewa
 import { env } from "@typebot.io/env";
 import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
 import prisma from "@typebot.io/prisma";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
 

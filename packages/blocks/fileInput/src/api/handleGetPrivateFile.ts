@@ -2,7 +2,7 @@ import { ORPCError } from "@orpc/server";
 import { getFileTempUrl } from "@typebot.io/lib/s3/getFileTempUrl";
 import prisma from "@typebot.io/prisma";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const getPrivateFileInputSchema = z.object({
   rest: z.string(),

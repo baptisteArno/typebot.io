@@ -13,8 +13,8 @@
     "build": "tsup src/index.ts --format esm"
   },
   "dependencies": {
-    "@t3-oss/env-nextjs": "^0.11.1",
-    "zod": "^3.23.8"
+    "@t3-oss/env-nextjs": "^0.13.10",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "tsup": "^8.5.0",

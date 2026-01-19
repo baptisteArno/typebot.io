@@ -5,7 +5,7 @@ import { migratePublicTypebot } from "@typebot.io/typebot/migrations/migrateType
 import { publicTypebotSchema } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const getPublishedTypebotInputSchema = z.object({
   typebotId: z

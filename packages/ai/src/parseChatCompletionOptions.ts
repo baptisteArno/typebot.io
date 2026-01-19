@@ -1,13 +1,15 @@
 import { option } from "@typebot.io/forge";
-import type { z } from "@typebot.io/zod";
+import type { z } from "zod";
 import { chatCompletionResponseValues } from "./constants";
 import type { baseOptions } from "./legacy/chatCompletionBaseOptions";
 import { toolsSchema } from "./schemas";
 
 const nativeMessageContentSchema = {
-  content: option.string.layout({
-    inputType: "textarea",
-    placeholder: "Content",
+  content: option.string.meta({
+    layout: {
+      inputType: "textarea",
+      placeholder: "Content",
+    },
   }),
 };
 
@@ -31,14 +33,18 @@ const assistantMessageItemSchema = option
 
 const dialogueMessageItemSchema = option.object({
   role: option.literal("Dialogue"),
-  dialogueVariableId: option.string.layout({
-    inputType: "variableDropdown",
-    placeholder: "Dialogue variable",
+  dialogueVariableId: option.string.meta({
+    layout: {
+      inputType: "variableDropdown",
+      placeholder: "Dialogue variable",
+    },
   }),
-  startsBy: option.enum(["user", "assistant"]).layout({
-    label: "starts by",
-    direction: "row",
-    defaultValue: "user",
+  startsBy: option.enum(["user", "assistant"]).meta({
+    layout: {
+      label: "starts by",
+      direction: "row",
+      defaultValue: "user",
+    },
   }),
 });
 
@@ -57,12 +63,14 @@ type Props = {
 
 export const parseChatCompletionOptions = ({ models }: Props) =>
   option.object({
-    model: option.string.layout({
-      placeholder: "Select a model",
-      label: "Model",
-      helperText: models.helperText,
-      autoCompleteItems: models.type === "static" ? models.models : undefined,
-      fetcher: models.type === "fetcher" ? models.id : undefined,
+    model: option.string.meta({
+      layout: {
+        placeholder: "Select a model",
+        label: "Model",
+        helperText: models.helperText,
+        autoCompleteItems: models.type === "static" ? models.models : undefined,
+        fetcher: models.type === "fetcher" ? models.id : undefined,
+      },
     }),
     messages: option
       .array(
@@ -73,18 +81,28 @@ export const parseChatCompletionOptions = ({ models }: Props) =>
           dialogueMessageItemSchema,
         ]),
       )
-      .layout({ accordion: "Messages", itemLabel: "message", isOrdered: true }),
+      .meta({
+        layout: {
+          accordion: "Messages",
+          itemLabel: "message",
+          isOrdered: true,
+        },
+      }),
     tools: toolsSchema,
-    temperature: option.number.layout({
-      accordion: "Advanced settings",
-      label: "Temperature",
-      direction: "row",
-      defaultValue: 1,
+    temperature: option.number.meta({
+      layout: {
+        accordion: "Advanced settings",
+        label: "Temperature",
+        direction: "row",
+        defaultValue: 1,
+      },
     }),
     responseMapping: option
       .saveResponseArray(chatCompletionResponseValues)
-      .layout({
-        accordion: "Save response",
+      .meta({
+        layout: {
+          accordion: "Save response",
+        },
       }),
   });
 

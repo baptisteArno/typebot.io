@@ -12,7 +12,7 @@ import {
   typebotV5Schema,
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   createTypebotInputSchema,
   handleCreateTypebot,

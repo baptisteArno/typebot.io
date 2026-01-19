@@ -5,8 +5,8 @@ import { decrypt } from "@typebot.io/credentials/decrypt";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
 import { type ClientOptions, OpenAI } from "openai";
+import { z } from "zod";
 import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
 
 export const listModelsInputSchema = z.object({

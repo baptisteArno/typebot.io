@@ -6,7 +6,7 @@ import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
 import prisma from "@typebot.io/prisma";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const generateUploadUrlV1InputSchema = z.object({
   filePathProps: z

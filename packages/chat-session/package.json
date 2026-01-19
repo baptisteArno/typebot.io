@@ -7,7 +7,6 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@typebot.io/zod": "workspace:*",
     "@typebot.io/theme": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",
@@ -16,7 +15,8 @@
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/chat-api": "workspace:*",
-    "@sentry/nextjs": "^10.32.1"
+    "@sentry/nextjs": "^10.32.1",
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

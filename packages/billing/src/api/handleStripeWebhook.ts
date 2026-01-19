@@ -4,8 +4,8 @@ import prisma from "@typebot.io/prisma";
 import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { Settings } from "@typebot.io/settings/schemas";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
-import { z } from "@typebot.io/zod";
 import { Stripe } from "stripe";
+import { z } from "zod";
 import { prices } from "../constants";
 
 export const stripeWebhookInputSchema = z.object({
