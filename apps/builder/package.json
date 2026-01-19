@@ -1,6 +1,9 @@
 {
   "name": "builder",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "dev": "dotenv -e ./.env -e ../../.env -- next dev -p 3000",
