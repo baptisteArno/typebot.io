@@ -48,7 +48,7 @@
   },
   "packageManager": "bun@1.3.6",
   "engines": {
-    "node": "^22"
+    "node": "22.x"
   },
   "trustedDependencies": [
     "@biomejs/biome",
