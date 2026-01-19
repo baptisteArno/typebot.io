@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
 import prisma from "@typebot.io/prisma";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { sessionStateSchema } from "../schemas";
 
 export const getSession = async (sessionId: string) => {

@@ -8,7 +8,7 @@ import { typebotV6Versions } from "@typebot.io/schemas/versions";
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import { themeSchema } from "@typebot.io/theme/schemas";
 import { variableSchema } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   preprocessColumnsWidthResults,
   preprocessTypebot,
@@ -29,39 +29,36 @@ const isDomainNameWithPathNameCompatible = (str: string) =>
     str,
   );
 
-export const typebotV5Schema = z.preprocess(
-  preprocessTypebot,
-  z.object({
-    version: z.enum(["3", "4", "5"]),
-    id: z.string(),
-    name: z.string(),
-    events: z.preprocess((val) => (val === undefined ? null : val), z.null()),
-    groups: z.array(groupV5Schema),
-    edges: z.array(edgeSchema),
-    variables: z.array(variableSchema),
-    theme: themeSchema,
-    selectedThemeTemplateId: z.string().nullable(),
-    settings: settingsSchema,
-    createdAt: z.coerce.date(),
-    updatedAt: z.coerce.date(),
-    icon: z.string().nullable(),
-    folderId: z.string().nullable(),
-    publicId: z
-      .string()
-      .refine((str) => /^[a-zA-Z0-9-.]+$/.test(str))
-      .nullable(),
-    customDomain: z
-      .string()
-      .refine(isDomainNameWithPathNameCompatible)
-      .nullable(),
-    workspaceId: z.string(),
-    resultsTablePreferences: resultsTablePreferencesSchema.nullable(),
-    isArchived: z.boolean(),
-    isClosed: z.boolean(),
-    whatsAppCredentialsId: z.string().nullable(),
-    riskLevel: z.number().nullable(),
-  }) satisfies z.ZodType<Prisma.Typebot, z.ZodTypeDef, unknown>,
-)._def.schema;
+export const typebotV5Schema = z.object({
+  version: z.enum(["3", "4", "5"]),
+  id: z.string(),
+  name: z.string(),
+  events: z.preprocess((val) => (val === undefined ? null : val), z.null()),
+  groups: z.array(groupV5Schema),
+  edges: z.array(edgeSchema),
+  variables: z.array(variableSchema),
+  theme: themeSchema,
+  selectedThemeTemplateId: z.string().nullable(),
+  settings: settingsSchema,
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
+  icon: z.string().nullable(),
+  folderId: z.string().nullable(),
+  publicId: z
+    .string()
+    .refine((str) => /^[a-zA-Z0-9-.]+$/.test(str))
+    .nullable(),
+  customDomain: z
+    .string()
+    .refine(isDomainNameWithPathNameCompatible)
+    .nullable(),
+  workspaceId: z.string(),
+  resultsTablePreferences: resultsTablePreferencesSchema.nullable(),
+  isArchived: z.boolean(),
+  isClosed: z.boolean(),
+  whatsAppCredentialsId: z.string().nullable(),
+  riskLevel: z.number().nullable(),
+}) satisfies z.ZodType<Prisma.Typebot>;
 export type TypebotV5 = z.infer<typeof typebotV5Schema>;
 
 export const typebotV6Schema = typebotV5Schema.extend({

@@ -3,8 +3,8 @@ import { env } from "@typebot.io/env";
 import { ky } from "@typebot.io/lib/ky";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
 import { HTTPError } from "ky";
+import { z } from "zod";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
 
 export const deleteCustomDomainInputSchema = z.object({

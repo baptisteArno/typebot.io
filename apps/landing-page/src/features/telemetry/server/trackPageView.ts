@@ -14,7 +14,7 @@ import {
 } from "@typebot.io/telemetry/cookies/helpers";
 import { isBot } from "@typebot.io/telemetry/isBot";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const trackPageViewBodySchema = z.object({
   url: z.string(),

@@ -60,15 +60,22 @@ export const GoogleSheetsSettings = ({
     () => data?.sheets?.find((s) => s.id === options?.sheetId),
     [data?.sheets, options?.sheetId],
   );
+  const emptyOptions = {
+    action: undefined,
+    credentialsId: undefined,
+    sheetId: undefined,
+    spreadsheetId: undefined,
+  } satisfies GoogleSheetsBlock["options"];
+  const baseOptions = options ?? emptyOptions;
   const handleCredentialsIdChange = (credentialsId: string | undefined) =>
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       credentialsId,
     });
   const handleSpreadsheetIdChange = (spreadsheetId: string | undefined) =>
-    onOptionsChange({ ...options, spreadsheetId });
+    onOptionsChange({ ...baseOptions, spreadsheetId });
   const handleSheetIdChange = (sheetId: string | undefined) =>
-    onOptionsChange({ ...options, sheetId });
+    onOptionsChange({ ...baseOptions, sheetId });
 
   const handleActionChange = (action: GoogleSheetsAction | undefined) =>
     onOptionsChange({

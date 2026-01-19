@@ -5,19 +5,27 @@ export const openWebWidget = createAction({
   auth,
   name: "Open Web Widget",
   options: option.object({
-    userId: option.string.layout({
-      label: "User ID",
+    userId: option.string.meta({
+      layout: {
+        label: "User ID",
+      },
     }),
-    name: option.string.layout({
-      label: "Name",
+    name: option.string.meta({
+      layout: {
+        label: "Name",
+      },
     }),
-    email: option.string.layout({
-      label: "Email",
+    email: option.string.meta({
+      layout: {
+        label: "Email",
+      },
     }),
-    webWidgetKey: option.string.layout({
-      label: "Web Widget Key",
-      helperText:
-        "[Finding web widget key](https://docs.typebot.io/editor/blocks/integrations/zendesk#open-web-widget)",
+    webWidgetKey: option.string.meta({
+      layout: {
+        label: "Web Widget Key",
+        helperText:
+          "[Finding web widget key](https://docs.typebot.io/editor/blocks/integrations/zendesk#open-web-widget)",
+      },
     }),
   }),
 });

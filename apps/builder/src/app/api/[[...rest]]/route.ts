@@ -1,7 +1,7 @@
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
-import { ZodToJsonSchemaConverter } from "@orpc/zod";
+import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import * as Sentry from "@sentry/nextjs";
 import { authenticateWithBearerToken } from "@typebot.io/auth/helpers/authenticateWithBearerToken";
 import { auth } from "@typebot.io/auth/lib/nextAuth";

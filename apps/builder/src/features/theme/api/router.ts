@@ -1,6 +1,6 @@
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { themeTemplateSchema } from "@typebot.io/theme/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   deleteThemeTemplateInputSchema,
   handleDeleteThemeTemplate,

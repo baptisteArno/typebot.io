@@ -1,5 +1,5 @@
 import prisma from "@typebot.io/prisma";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const isPublicIdAvailableInputSchema = z.object({
   publicId: z.string(),

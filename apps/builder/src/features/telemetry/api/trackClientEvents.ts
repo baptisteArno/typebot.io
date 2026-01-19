@@ -3,7 +3,7 @@ import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewa
 import prisma from "@typebot.io/prisma";
 import { clientSideCreateEventSchema } from "@typebot.io/telemetry/schemas";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 

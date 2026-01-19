@@ -56,7 +56,6 @@
     "@typebot.io/user": "workspace:*",
     "@typebot.io/whatsapp": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
-    "@typebot.io/zod": "workspace:*",
     "@uiw/codemirror-extensions-langs": "^4.23.8",
     "@uiw/codemirror-theme-github": "^4.23.8",
     "@uiw/codemirror-theme-tokyo-night": "^4.23.8",
@@ -103,8 +102,8 @@
     "tinycolor2": "^1.6.0",
     "unsplash-js": "^7.0.18",
     "use-debounce": "^9.0.4",
-    "zod": "^3.23.8",
-    "zod-validation-error": "^3.4.0",
+    "zod": "^4.0.0",
+    "zod-validation-error": "^5.0.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

@@ -1,21 +1,27 @@
 import { option } from "@typebot.io/forge";
-import type { z } from "@typebot.io/zod";
+import type { z } from "zod";
 import type { baseOptions } from "./legacy/chatCompletionBaseOptions";
 
 const extractInfoBaseShape = {
-  variableId: option.string.layout({
-    inputType: "variableDropdown",
+  variableId: option.string.meta({
+    layout: {
+      inputType: "variableDropdown",
+    },
   }),
-  description: option.string.layout({
-    label: "Description",
-    accordion: "Advanced",
+  description: option.string.meta({
+    layout: {
+      label: "Description",
+      accordion: "Advanced",
+    },
   }),
-  isRequired: option.boolean.layout({
-    label: "Is required",
-    moreInfoTooltip:
-      "If set to false, there is a chance the variable will be empty",
-    accordion: "Advanced",
-    defaultValue: true,
+  isRequired: option.boolean.meta({
+    layout: {
+      label: "Is required",
+      moreInfoTooltip:
+        "If set to false, there is a chance the variable will be empty",
+      accordion: "Advanced",
+      defaultValue: true,
+    },
   }),
 };
 
@@ -45,16 +51,18 @@ export const variablesToExtractSchema = option
       option
         .object({
           type: option.literal("enum"),
-          values: option
-            .array(option.string)
-            .layout({ itemLabel: "possible value", mergeWithLastField: true }),
+          values: option.array(option.string).meta({
+            layout: { itemLabel: "possible value", mergeWithLastField: true },
+          }),
         })
         .extend(extractInfoBaseShape),
     ]),
   )
-  .layout({
-    itemLabel: "variable mapping",
-    accordion: "Schema",
+  .meta({
+    layout: {
+      itemLabel: "variable mapping",
+      accordion: "Schema",
+    },
   });
 
 type Props = {
@@ -71,20 +79,24 @@ type Props = {
 
 export const parseGenerateVariablesOptions = ({ models }: Props) =>
   option.object({
-    model: option.string.layout({
-      placeholder: "Select a model",
-      label: "Model",
-      helperText: models.helperText,
-      autoCompleteItems: models.type === "static" ? models.models : undefined,
-      fetcher: models.type === "fetcher" ? models.id : undefined,
+    model: option.string.meta({
+      layout: {
+        placeholder: "Select a model",
+        label: "Model",
+        helperText: models.helperText,
+        autoCompleteItems: models.type === "static" ? models.models : undefined,
+        fetcher: models.type === "fetcher" ? models.id : undefined,
+      },
     }),
-    prompt: option.string.layout({
-      label: "Prompt",
-      placeholder: "Type your text here",
-      inputType: "textarea",
-      isRequired: true,
-      moreInfoTooltip:
-        'Meant to guide the model on what to generate. i.e. "Generate a role-playing game character", "Extract the company name from this text", etc.',
+    prompt: option.string.meta({
+      layout: {
+        label: "Prompt",
+        placeholder: "Type your text here",
+        inputType: "textarea",
+        isRequired: true,
+        moreInfoTooltip:
+          'Meant to guide the model on what to generate. i.e. "Generate a role-playing game character", "Extract the company name from this text", etc.',
+      },
     }),
     variablesToExtract: variablesToExtractSchema,
   });

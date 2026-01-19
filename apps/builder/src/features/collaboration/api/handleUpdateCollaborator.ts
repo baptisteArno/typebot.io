@@ -1,7 +1,7 @@
 import prisma from "@typebot.io/prisma";
 import { CollaborationType } from "@typebot.io/prisma/enum";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { canEditGuests } from "@/helpers/databaseRules";
 
 export const updateCollaboratorInputSchema = z.object({

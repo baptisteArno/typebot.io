@@ -2,14 +2,16 @@ import { getChatCompletionStreamVarId } from "@typebot.io/ai/getChatCompletionSt
 import { toolsSchema } from "@typebot.io/ai/schemas";
 import { createAction, option } from "@typebot.io/forge";
 import { isDefined } from "@typebot.io/lib/utils";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { auth } from "../auth";
 import { anthropicModels, defaultAnthropicMaxTokens } from "../constants";
 
 const nativeMessageContentSchema = {
-  content: option.string.layout({
-    inputType: "textarea",
-    placeholder: "Content",
+  content: option.string.meta({
+    layout: {
+      inputType: "textarea",
+      placeholder: "Content",
+    },
   }),
 };
 
@@ -27,22 +29,28 @@ const assistantMessageItemSchema = option
 
 const dialogueMessageItemSchema = option.object({
   role: option.literal("Dialogue"),
-  dialogueVariableId: option.string.layout({
-    inputType: "variableDropdown",
-    placeholder: "Dialogue variable",
+  dialogueVariableId: option.string.meta({
+    layout: {
+      inputType: "variableDropdown",
+      placeholder: "Dialogue variable",
+    },
   }),
-  startsBy: option.enum(["user", "assistant"]).layout({
-    label: "starts by",
-    direction: "row",
-    defaultValue: "user",
+  startsBy: option.enum(["user", "assistant"]).meta({
+    layout: {
+      label: "starts by",
+      direction: "row",
+      defaultValue: "user",
+    },
   }),
 });
 
 export const options = option.object({
-  model: option.string.layout({
-    placeholder: "Select a model",
-    autoCompleteItems: anthropicModels,
-    label: "Model",
+  model: option.string.meta({
+    layout: {
+      placeholder: "Select a model",
+      autoCompleteItems: anthropicModels,
+      label: "Model",
+    },
   }),
   messages: option
     .array(
@@ -52,25 +60,33 @@ export const options = option.object({
         dialogueMessageItemSchema,
       ]),
     )
-    .layout({ accordion: "Messages", itemLabel: "message", isOrdered: true }),
+    .meta({
+      layout: { accordion: "Messages", itemLabel: "message", isOrdered: true },
+    }),
   tools: toolsSchema,
-  systemMessage: option.string.layout({
-    accordion: "Advanced Settings",
-    label: "System prompt",
-    direction: "row",
-    inputType: "textarea",
+  systemMessage: option.string.meta({
+    layout: {
+      accordion: "Advanced Settings",
+      label: "System prompt",
+      direction: "row",
+      inputType: "textarea",
+    },
   }),
-  temperature: option.number.layout({
-    accordion: "Advanced Settings",
-    label: "Temperature",
-    direction: "row",
-    placeholder: "1",
+  temperature: option.number.meta({
+    layout: {
+      accordion: "Advanced Settings",
+      label: "Temperature",
+      direction: "row",
+      placeholder: "1",
+    },
   }),
-  maxTokens: option.number.layout({
-    accordion: "Advanced Settings",
-    label: "Max Tokens",
-    direction: "row",
-    defaultValue: defaultAnthropicMaxTokens,
+  maxTokens: option.number.meta({
+    layout: {
+      accordion: "Advanced Settings",
+      label: "Max Tokens",
+      direction: "row",
+      defaultValue: defaultAnthropicMaxTokens,
+    },
   }),
   responseMapping: z.preprocess(
     (val) =>
@@ -81,8 +97,10 @@ export const options = option.object({
               : res,
           )
         : undefined,
-    option.saveResponseArray(["Message content"] as const).layout({
-      accordion: "Save Response",
+    option.saveResponseArray(["Message content"] as const).meta({
+      layout: {
+        accordion: "Save Response",
+      },
     }),
   ),
 });

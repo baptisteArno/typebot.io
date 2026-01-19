@@ -1,6 +1,6 @@
 import { ORPCError } from "@orpc/server";
 import { env } from "@typebot.io/env";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const subscribePreviewWebhookInputSchema = z.object({
   "hub.challenge": z.string(),

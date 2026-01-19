@@ -10,10 +10,10 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "@typebot.io/zod": "workspace:*",
     "ai": "^4.3.19",
     "ky": "^1.2.4",
-    "@typebot.io/runtime-session-store": "workspace:*"
+    "@typebot.io/runtime-session-store": "workspace:*",
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

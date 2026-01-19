@@ -1,4 +1,4 @@
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { chatwootBlockSchema } from "./chatwoot/schema";
 import { googleAnalyticsBlockSchema } from "./googleAnalytics/schema";
 import { googleSheetsBlockSchemas } from "./googleSheets/schema";

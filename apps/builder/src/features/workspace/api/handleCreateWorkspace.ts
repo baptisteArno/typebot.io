@@ -4,7 +4,7 @@ import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import type { User } from "@typebot.io/user/schemas";
 import { parseWorkspaceDefaultPlan } from "@typebot.io/workspaces/parseWorkspaceDefaultPlan";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 const MAX_FREE_WORKSPACES_PER_USER = 2;
 const WORKSPACE_CREATION_COOLDOWN_MS = 24 * 60 * 60 * 1000;

@@ -15,10 +15,10 @@
     "@typebot.io/env": "workspace:*",
     "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
-    "@typebot.io/zod": "workspace:*",
     "@typebot.io/settings": "workspace:*",
     "@typebot.io/user": "workspace:*",
-    "micro": "^10.0.1"
+    "micro": "^10.0.1",
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",

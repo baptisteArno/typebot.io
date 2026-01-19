@@ -3,8 +3,8 @@ import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
 import { isReadWorkspaceFobidden } from "@typebot.io/workspaces/isReadWorkspaceFobidden";
-import { z } from "@typebot.io/zod";
 import Stripe from "stripe";
+import { z } from "zod";
 
 export const getUsageInputSchema = z.object({
   workspaceId: z

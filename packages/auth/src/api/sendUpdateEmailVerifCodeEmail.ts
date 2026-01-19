@@ -3,8 +3,8 @@ import { formatEmail } from "@typebot.io/bot-engine/blocks/inputs/email/formatEm
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { sendVerificationCodeEmail as sendEmail } from "@typebot.io/emails/transactional/VerificationCodeEmail";
 import prisma from "@typebot.io/prisma";
-import { z } from "@typebot.io/zod";
 import { customAlphabet } from "nanoid";
+import { z } from "zod";
 import { isEmailLegit } from "../helpers/emailValidation";
 import oneMinRateLimiter from "../lib/oneMinRateLimiter";
 

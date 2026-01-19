@@ -3,7 +3,7 @@ import { env } from "@typebot.io/env";
 import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
 import type { AuthDefinition, OAuthDefinition } from "@typebot.io/forge/types";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const authorizeOAuthInputSchema = z.object({
   blockType: z.string(),

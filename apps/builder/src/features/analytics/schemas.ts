@@ -1,5 +1,5 @@
 import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const totalAnswersSchema = z.object({
   blockId: z.string(),

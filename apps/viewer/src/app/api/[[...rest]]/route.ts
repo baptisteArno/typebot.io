@@ -2,7 +2,7 @@ import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
 import { CORSPlugin } from "@orpc/server/plugins";
-import { ZodToJsonSchemaConverter } from "@orpc/zod";
+import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import { authenticateWithBearerToken } from "@typebot.io/auth/helpers/authenticateWithBearerToken";
 import {
   audioMessageSchema,
@@ -14,6 +14,10 @@ import {
 import { createContext } from "@typebot.io/config/orpc/viewer/context";
 import type { NextRequest } from "next/server";
 import { appRouter } from "./router";
+
+type RouteContext<_T> = {
+  params: Promise<{ rest?: string[] }>;
+};
 
 const handler = new OpenAPIHandler(appRouter, {
   interceptors: [

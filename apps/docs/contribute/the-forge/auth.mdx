@@ -21,11 +21,11 @@ Example:
 
 ```ts
 option.object({
-  apiKey: option.string.layout({
+  apiKey: option.string.meta({ layout: {
     isRequired: true,
     label: "API key",
     withVariableButton: false,
-  }),
+  } }),
 });
 ```
 

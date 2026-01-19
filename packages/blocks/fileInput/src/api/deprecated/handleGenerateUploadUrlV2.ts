@@ -9,7 +9,7 @@ import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const generateUploadUrlV2InputSchema = z.object({
   sessionId: z.string(),

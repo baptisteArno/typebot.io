@@ -1,6 +1,6 @@
 import { blockBaseSchema } from "@typebot.io/blocks-base/schemas";
 import type { Element } from "@typebot.io/rich-text/plate";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { BubbleBlockType } from "../constants";
 
 export const textBubbleContentSchema = z.object({

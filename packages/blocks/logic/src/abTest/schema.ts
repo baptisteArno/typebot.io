@@ -2,7 +2,7 @@ import {
   blockBaseSchema,
   itemBaseSchemas,
 } from "@typebot.io/blocks-base/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { LogicBlockType } from "../constants";
 
 export const aItemSchemas = {

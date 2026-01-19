@@ -2,7 +2,7 @@ import { ORPCError } from "@orpc/server";
 import prisma from "@typebot.io/prisma";
 import type { Stats } from "@typebot.io/results/schemas/answers";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { canReadTypebots } from "@/helpers/databaseRules";
 import { defaultTimeFilter, timeFilterValues } from "../constants";
 import {

@@ -1,6 +1,6 @@
 import { blockBaseSchema } from "@typebot.io/blocks-base/schemas";
 import { singleVariableOrNumberSchema } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { BubbleBlockType } from "../constants";
 
 export const embedBubbleContentSchema = z.object({

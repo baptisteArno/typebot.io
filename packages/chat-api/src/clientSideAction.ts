@@ -4,7 +4,7 @@ import { nativeMessageSchema } from "@typebot.io/blocks-integrations/openai/sche
 import { pixelOptionsSchema } from "@typebot.io/blocks-integrations/pixel/schema";
 import { redirectOptionsSchema } from "@typebot.io/blocks-logic/redirect/schema";
 import { listVariableValue } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 const startPropsToInjectSchema = z.object({
   googleAnalyticsId: z.string().optional(),

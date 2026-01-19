@@ -1,7 +1,7 @@
 import { generateId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const createApiTokenInputSchema = z.object({
   name: z.string(),

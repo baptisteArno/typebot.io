@@ -1,7 +1,7 @@
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { logSchema } from "@typebot.io/logs/schemas";
 import { resultWithAnswersSchema } from "@typebot.io/results/schemas/results";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   deleteResultsInputSchema,
   handleDeleteResults,

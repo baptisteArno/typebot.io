@@ -1,6 +1,6 @@
 import { blockBaseSchema } from "@typebot.io/blocks-base/schemas";
 import { singleVariableOrNumberSchema } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { IntegrationBlockType } from "../constants";
 
 export const googleAnalyticsOptionsSchema = z.object({

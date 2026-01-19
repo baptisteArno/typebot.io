@@ -7,7 +7,6 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@typebot.io/zod": "workspace:*",
     "@typebot.io/openai-block": "workspace:*",
     "@typebot.io/cal-com-block": "workspace:*",
     "@typebot.io/chat-node-block": "workspace:*",
@@ -26,7 +25,8 @@
     "@typebot.io/perplexity-block": "workspace:*",
     "@typebot.io/deepseek-block": "workspace:*",
     "@typebot.io/blink-block": "workspace:*",
-    "@typebot.io/gmail-block": "workspace:*"
+    "@typebot.io/gmail-block": "workspace:*",
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

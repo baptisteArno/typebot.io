@@ -5,7 +5,7 @@ import {
   Scripts,
   useNavigate,
 } from "@tanstack/react-router";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import css from "@/assets/globals.css?url";
 import { CookieConsentBot } from "@/components/CookieConsentBot";
 import { Footer } from "@/components/footer/Footer";

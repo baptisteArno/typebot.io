@@ -1,6 +1,6 @@
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { canReadTypebots } from "@/helpers/databaseRules";
 
 export const listInvitationsInputSchema = z.object({

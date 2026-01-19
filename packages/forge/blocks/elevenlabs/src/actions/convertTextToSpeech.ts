@@ -13,25 +13,33 @@ export const convertTextToSpeech = createAction({
   name: "Convert text to speech",
   auth,
   options: option.object({
-    text: option.string.layout({
-      label: "Text",
-      inputType: "textarea",
-      placeholder: "Enter the text to convert to speech",
+    text: option.string.meta({
+      layout: {
+        label: "Text",
+        inputType: "textarea",
+        placeholder: "Enter the text to convert to speech",
+      },
     }),
-    voiceId: option.string.layout({
-      fetcher: voicesFetcher.id,
-      label: "Voice",
-      placeholder: "Select a voice",
+    voiceId: option.string.meta({
+      layout: {
+        fetcher: voicesFetcher.id,
+        label: "Voice",
+        placeholder: "Select a voice",
+      },
     }),
-    modelId: option.string.layout({
-      fetcher: modelsFetcher.id,
-      label: "Model",
-      placeholder: "Select a model",
+    modelId: option.string.meta({
+      layout: {
+        fetcher: modelsFetcher.id,
+        label: "Model",
+        placeholder: "Select a model",
+      },
     }),
-    saveUrlInVariableId: option.string.layout({
-      label: "Save audio URL in variable",
-      placeholder: "Select a variable",
-      inputType: "variableDropdown",
+    saveUrlInVariableId: option.string.meta({
+      layout: {
+        label: "Save audio URL in variable",
+        placeholder: "Select a variable",
+        inputType: "variableDropdown",
+      },
     }),
   }),
   fetchers: [voicesFetcher, modelsFetcher],

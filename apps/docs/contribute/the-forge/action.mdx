@@ -14,14 +14,14 @@ export const sendMessage = createAction({
   auth,
   name: "Send message",
   options: option.object({
-    chatId: option.string.layout({
+    chatId: option.string.meta({ layout: {
       label: "Chat ID",
       placeholder: "@username",
-    }),
-    text: option.string.layout({
+    } }),
+    text: option.string.meta({ layout: {
       label: "Message text",
       input: "textarea",
-    }),
+    } }),
   }),
 });
 ```

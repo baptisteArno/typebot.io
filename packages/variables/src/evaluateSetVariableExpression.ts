@@ -3,6 +3,7 @@ import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { executeFunction } from "./executeFunction";
 import { parseVariables } from "./parseVariables";
 import type { Variable, VariableWithValue } from "./schemas";
+
 export const evaluateSetVariableExpression = async (
   expression:
     | {

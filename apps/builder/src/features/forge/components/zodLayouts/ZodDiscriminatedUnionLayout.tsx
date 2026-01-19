@@ -1,8 +1,9 @@
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
-import type { z } from "@typebot.io/zod";
+import type { z } from "zod";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { getDiscriminatedUnionOptionsMap } from "./getDiscriminatedUnionOptionsMap";
 import { ZodObjectLayout } from "./ZodObjectLayout";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -17,25 +18,22 @@ export const ZodDiscriminatedUnionLayout = ({
 }: {
   discriminant: string;
   data: any;
-  schema: z.ZodDiscriminatedUnion<string, z.ZodObject<any>[]>;
+  schema: z.ZodDiscriminatedUnion<readonly z.ZodObject<any>[], string>;
   dropdownPlaceholder: string;
   blockDef?: ForgedBlockDefinition;
   blockOptions?: ForgedBlock["options"];
   onDataChange: (value: string) => void;
 }) => {
+  const optionsMap = getDiscriminatedUnionOptionsMap(schema);
   const currentOptions = data?.[discriminant]
-    ? schema._def.optionsMap.get(data?.[discriminant])
+    ? optionsMap.get(data?.[discriminant])
     : undefined;
   return (
     <>
       <BasicSelect
         value={data?.[discriminant]}
         onChange={(item) => onDataChange({ ...data, [discriminant]: item })}
-        items={
-          [...schema._def.optionsMap.keys()].filter((key) =>
-            isDefined(key),
-          ) as string[]
-        }
+        items={[...optionsMap.keys()].filter((key) => isDefined(key))}
         placeholder={dropdownPlaceholder}
       />
       {currentOptions && (

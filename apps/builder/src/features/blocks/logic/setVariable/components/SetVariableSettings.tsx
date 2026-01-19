@@ -39,21 +39,27 @@ const setVarTypes = valueTypes.filter(
 
 export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
   const { typebot, updateVariable } = useTypebot();
+  const emptyOptions = {
+    type: undefined,
+  } satisfies SetVariableBlock["options"];
+  const baseOptions = options ?? emptyOptions;
   const selectedVariable = typebot?.variables.find(
     (variable) => variable.id === options?.variableId,
   );
 
   const updateVariableId = (variable?: Pick<Variable, "id">) =>
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       variableId: variable?.id,
     });
 
-  const updateValueType = (type?: string) =>
+  const updateValueType = (type?: string) => {
+    const nextType = valueTypes.find((value) => value === type);
     onOptionsChange({
-      ...options,
-      type: type as NonNullable<SetVariableBlock["options"]>["type"],
+      ...baseOptions,
+      type: nextType,
     });
+  };
 
   const updateIsSessionVariable = (isSavingInResults: boolean) => {
     if (!selectedVariable?.id) return;
@@ -130,96 +136,104 @@ const SetVariableValue = ({
   options: SetVariableBlock["options"];
   onOptionsChange: (options: SetVariableBlock["options"]) => void;
 }): JSX.Element | null => {
+  const emptyOptions = {
+    type: undefined,
+  } satisfies SetVariableBlock["options"];
+  const baseOptions = options ?? emptyOptions;
   const updateExpression = (expressionToEvaluate: string) =>
     onOptionsChange({
-      ...options,
-      type: isDefined(options?.type) ? "Custom" : undefined,
+      ...baseOptions,
+      type: isDefined(baseOptions.type) ? "Custom" : undefined,
       expressionToEvaluate,
     });
 
   const updateClientExecution = (isExecutedOnClient: boolean) =>
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       isExecutedOnClient,
     });
 
   const updateListVariableId = (variable?: Pick<Variable, "id">) => {
-    if (!options || (options.type !== "Pop" && options.type !== "Shift"))
-      return;
+    if (baseOptions.type !== "Pop" && baseOptions.type !== "Shift") return;
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       saveItemInVariableId: variable?.id,
     });
   };
 
   const updateItemVariableId = (variable?: Pick<Variable, "id">) => {
-    if (!options || options.type !== "Map item with same index") return;
+    if (baseOptions.type !== "Map item with same index") return;
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       mapListItemParams: {
-        ...options.mapListItemParams,
+        ...baseOptions.mapListItemParams,
         baseItemVariableId: variable?.id,
       },
     });
   };
 
   const updateBaseListVariableId = (variable?: Pick<Variable, "id">) => {
-    if (!options || options.type !== "Map item with same index") return;
+    if (baseOptions.type !== "Map item with same index") return;
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       mapListItemParams: {
-        ...options.mapListItemParams,
+        ...baseOptions.mapListItemParams,
         baseListVariableId: variable?.id,
       },
     });
   };
 
   const updateTargetListVariableId = (variable?: Pick<Variable, "id">) => {
-    if (!options || options.type !== "Map item with same index") return;
+    if (baseOptions.type !== "Map item with same index") return;
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       mapListItemParams: {
-        ...options.mapListItemParams,
+        ...baseOptions.mapListItemParams,
         targetListVariableId: variable?.id,
       },
     });
   };
 
   const updateItem = (item: string) => {
-    if (!options || options.type !== "Append value(s)") return;
+    if (baseOptions.type !== "Append value(s)") return;
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       item,
     });
   };
 
   const updateIsCode = (radio: "Text" | "Code") => {
-    if (options?.type && options.type !== "Custom") return;
+    if (baseOptions.type && baseOptions.type !== "Custom") return;
+    const currentExpressionDescription =
+      "expressionDescription" in baseOptions
+        ? baseOptions.expressionDescription
+        : undefined;
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       expressionDescription:
-        radio !== "Code" ? undefined : options?.expressionDescription,
+        radio !== "Code" ? undefined : currentExpressionDescription,
       isCode: radio === "Code",
     });
   };
 
   const updateSaveErrorInVariableId = (variable?: Pick<Variable, "id">) => {
-    if (options?.type && options.type !== "Custom") return;
+    if (baseOptions.type && baseOptions.type !== "Custom") return;
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       saveErrorInVariableId: variable?.id,
     });
   };
 
   const updateExpressionDescription = (description: string) => {
-    if (options?.type && options.type !== "Custom") return;
+    if (baseOptions.type && baseOptions.type !== "Custom") return;
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       expressionDescription: description,
     });
   };
 
-  const updateIsUnsafe = () => onOptionsChange({ ...options, isUnsafe: false });
+  const updateIsUnsafe = () =>
+    onOptionsChange({ ...baseOptions, isUnsafe: false });
 
   switch (options?.type) {
     case "Custom":

@@ -6,7 +6,7 @@ import {
 import { fileUploadViewerRouter } from "@typebot.io/file-input-block/api/router";
 import { webhookRouter } from "@typebot.io/webhook-block/api/router";
 import { chatWhatsAppRouter } from "@typebot.io/whatsapp/api/router";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   getMakeComBlocksInputSchema,
   handleGetMakeComBlocks,

@@ -421,14 +421,16 @@ import type { AuthDefinition } from '@typebot.io/forge/types'
           ${
             rest.type === "apiKey"
               ? `schema: option.object({
-                    apiKey: option.string.layout({
-                      label: 'API key',
-                      isRequired: true,
-                      inputType: 'password',
-                      helperText:
-                        'You can generate an API key [here](<INSERT_URL>).',
-                      withVariableButton: false,
-                      isDebounceDisabled: true,
+                    apiKey: option.string.meta({
+                      layout: {
+                        label: 'API key',
+                        isRequired: true,
+                        inputType: 'password',
+                        helperText:
+                          'You can generate an API key [here](<INSERT_URL>).',
+                        withVariableButton: false,
+                        isDebounceDisabled: true,
+                      },
                     }),
                   }),`
               : rest.type === "oauth"

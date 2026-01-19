@@ -1,4 +1,4 @@
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { IntegrationBlockType } from "../constants";
 import { httpBlockSchemas } from "../httpRequest/schema";
 

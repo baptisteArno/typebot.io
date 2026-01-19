@@ -1,13 +1,13 @@
 import { evaluateIsHidden } from "@typebot.io/forge/helpers/evaluateIsHidden";
+import type { ZodLayoutMetadata } from "@typebot.io/forge/zodLayout";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { cx } from "@typebot.io/ui/lib/cva";
-import type { ZodLayoutMetadata } from "@typebot.io/zod";
 import Markdown, { type Components } from "react-markdown";
-import type { ZodTypeAny, z } from "zod";
+import { z } from "zod";
 import { BasicAutocompleteInputWithVariableButton } from "@/components/inputs/BasicAutocompleteInput";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
@@ -25,21 +25,21 @@ import { PrimitiveList } from "@/components/PrimitiveList";
 import { TableList } from "@/components/TableList";
 import { TagsInput } from "@/components/TagsInput";
 import { getZodInnerSchema } from "../../helpers/getZodInnerSchema";
+import { getZodLayoutMetadata } from "../../helpers/getZodLayoutMetadata";
 import { ForgeSelectInput } from "../ForgeSelectInput";
 import { ZodDiscriminatedUnionLayout } from "./ZodDiscriminatedUnionLayout";
 import { ZodObjectLayout } from "./ZodObjectLayout";
 
-const parseEnumItems = (
-  schema: z.ZodTypeAny,
-  layout?: ZodLayoutMetadata<ZodTypeAny>,
-) => {
+const parseEnumItems = (schema: z.ZodTypeAny, layout?: ZodLayoutMetadata) => {
+  if (!isZodEnum(schema)) return [];
+  const rawValues = schema.options.filter(isString);
   const values = layout?.hiddenItems
-    ? schema._def.values.filter((v: string) => !layout.hiddenItems?.includes(v))
-    : schema._def.values;
+    ? rawValues.filter((value) => !layout.hiddenItems?.includes(value))
+    : rawValues;
   if (layout?.toLabels)
-    return values.map((v: string) => ({
-      label: layout.toLabels!(v),
-      value: v,
+    return values.map((value) => ({
+      label: layout.toLabels!(value),
+      value,
     }));
   return values;
 };
@@ -77,7 +77,7 @@ export const ZodFieldLayout = ({
   onDataChange: (val: any) => void;
 }) => {
   const innerSchema = getZodInnerSchema(schema);
-  const layout = innerSchema._def.layout;
+  const layout = getZodLayoutMetadata(innerSchema);
 
   if (evaluateIsHidden(layout?.isHidden, blockOptions)) return null;
 
@@ -106,11 +106,15 @@ export const ZodFieldLayout = ({
     );
   }
 
-  switch (innerSchema._def.typeName) {
-    case "ZodObject":
+  const defType = innerSchema.type;
+  const isDiscriminatedUnion = isZodDiscriminatedUnion(innerSchema);
+
+  switch (defType) {
+    case "object": {
+      if (!isZodObject(innerSchema)) return null;
       return (
         <ZodObjectLayout
-          schema={innerSchema as z.ZodObject<any>}
+          schema={innerSchema}
           data={data}
           onDataChange={onDataChange}
           isInAccordion={isInAccordion}
@@ -118,61 +122,21 @@ export const ZodFieldLayout = ({
           blockOptions={blockOptions}
         />
       );
-    case "ZodDiscriminatedUnion": {
-      return (
-        <ZodDiscriminatedUnionLayout
-          discriminant={innerSchema._def.discriminator}
-          data={data}
-          schema={
-            innerSchema as z.ZodDiscriminatedUnion<string, z.ZodObject<any>[]>
-          }
-          dropdownPlaceholder={
-            layout?.placeholder ?? `Select a ${innerSchema._def.discriminator}`
-          }
-          onDataChange={onDataChange}
-        />
-      );
     }
-    case "ZodArray": {
-      return (
-        <ZodArrayContent
-          data={data}
-          schema={innerSchema}
-          blockDef={blockDef}
-          blockOptions={blockOptions}
-          layout={layout}
-          onDataChange={onDataChange}
-        />
-      );
-    }
-    case "ZodEnum": {
-      return (
-        <Field.Root>
-          {layout?.label && (
-            <Field.Label>
-              {layout.label}
-              {layout.moreInfoTooltip && (
-                <MoreInfoTooltip>{layout.moreInfoTooltip}</MoreInfoTooltip>
-              )}
-            </Field.Label>
-          )}
-          <BasicSelect
-            value={data}
-            defaultValue={layout?.defaultValue}
-            onChange={onDataChange}
-            items={parseEnumItems(innerSchema, layout)}
-            placeholder={layout?.placeholder}
+    case "union": {
+      if (isDiscriminatedUnion) {
+        return (
+          <ZodDiscriminatedUnionLayout
+            discriminant={innerSchema.def.discriminator}
+            data={data}
+            schema={innerSchema}
+            dropdownPlaceholder={
+              layout?.placeholder ?? `Select a ${innerSchema.def.discriminator}`
+            }
+            onDataChange={onDataChange}
           />
-          {layout?.helperText && (
-            <Field.Description>
-              <Markdown components={mdComponents}>{layout.helperText}</Markdown>
-            </Field.Description>
-          )}
-        </Field.Root>
-      );
-    }
-    case "ZodNumber":
-    case "ZodUnion": {
+        );
+      }
       return (
         <Field.Root>
           {layout?.label && (
@@ -196,7 +160,73 @@ export const ZodFieldLayout = ({
         </Field.Root>
       );
     }
-    case "ZodBoolean": {
+    case "array": {
+      if (!isZodArray(innerSchema)) return null;
+      return (
+        <ZodArrayContent
+          data={data}
+          schema={innerSchema}
+          blockDef={blockDef}
+          blockOptions={blockOptions}
+          layout={layout}
+          onDataChange={onDataChange}
+        />
+      );
+    }
+    case "enum": {
+      const enumDefaultValue = isString(layout?.defaultValue)
+        ? layout.defaultValue
+        : undefined;
+      return (
+        <Field.Root>
+          {layout?.label && (
+            <Field.Label>
+              {layout.label}
+              {layout.moreInfoTooltip && (
+                <MoreInfoTooltip>{layout.moreInfoTooltip}</MoreInfoTooltip>
+              )}
+            </Field.Label>
+          )}
+          <BasicSelect
+            value={data}
+            defaultValue={enumDefaultValue}
+            onChange={onDataChange}
+            items={parseEnumItems(innerSchema, layout)}
+            placeholder={layout?.placeholder}
+          />
+          {layout?.helperText && (
+            <Field.Description>
+              <Markdown components={mdComponents}>{layout.helperText}</Markdown>
+            </Field.Description>
+          )}
+        </Field.Root>
+      );
+    }
+    case "number": {
+      return (
+        <Field.Root>
+          {layout?.label && (
+            <Field.Label>
+              {layout.label}
+              {layout.moreInfoTooltip && (
+                <MoreInfoTooltip>{layout.moreInfoTooltip}</MoreInfoTooltip>
+              )}
+            </Field.Label>
+          )}
+          <BasicNumberInput
+            defaultValue={data ?? layout?.defaultValue}
+            onValueChange={onDataChange}
+            placeholder={layout?.placeholder}
+          />
+          {layout?.helperText && (
+            <Field.Description>
+              <Markdown components={mdComponents}>{layout.helperText}</Markdown>
+            </Field.Description>
+          )}
+        </Field.Root>
+      );
+    }
+    case "boolean": {
       return (
         <Field.Root className="flex-row items-center">
           <Switch
@@ -205,14 +235,14 @@ export const ZodFieldLayout = ({
           />
           <Field.Label>
             {layout?.label ?? propName ?? ""}{" "}
-            {layout.moreInfoTooltip && (
+            {layout?.moreInfoTooltip && (
               <MoreInfoTooltip>{layout.moreInfoTooltip}</MoreInfoTooltip>
             )}
           </Field.Label>
         </Field.Root>
       );
     }
-    case "ZodString": {
+    case "string": {
       if (layout?.autoCompleteItems) {
         return (
           <Field.Root>
@@ -424,22 +454,27 @@ const ZodArrayContent = ({
   isInAccordion,
   onDataChange,
 }: {
-  schema: z.ZodTypeAny;
+  schema: z.ZodArray<z.ZodTypeAny>;
   data: any;
   blockDef?: ForgedBlockDefinition;
   blockOptions?: ForgedBlock["options"];
-  layout: ZodLayoutMetadata<ZodTypeAny> | undefined;
+  layout: ZodLayoutMetadata | undefined;
   isInAccordion?: boolean;
   onDataChange: (val: any) => void;
 }) => {
-  const type = schema._def.type._def.innerType?._def.typeName;
-  if (type === "ZodString" || type === "ZodNumber" || type === "ZodEnum")
+  const elementSchema = schema.element;
+  const elementType = getZodInnerSchema(elementSchema).type;
+  if (
+    elementType === "string" ||
+    elementType === "number" ||
+    elementType === "enum"
+  )
     return (
       <Field.Root
         className={cx(layout?.mergeWithLastField ? "mt-[-3px]" : undefined)}
       >
         {layout?.label && <Field.Label>{layout.label}</Field.Label>}
-        {type === "ZodString" ? (
+        {elementType === "string" ? (
           <TagsInput items={data} onValueChange={onDataChange} />
         ) : (
           <div
@@ -459,7 +494,7 @@ const ZodArrayContent = ({
             >
               {({ item, onItemChange }) => (
                 <ZodFieldLayout
-                  schema={schema._def.type}
+                  schema={elementSchema}
                   data={item}
                   blockDef={blockDef}
                   blockOptions={blockOptions}
@@ -485,7 +520,7 @@ const ZodArrayContent = ({
       {({ item, onItemChange }) => (
         <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border max-w-full">
           <ZodFieldLayout
-            schema={schema._def.type}
+            schema={elementSchema}
             blockDef={blockDef}
             blockOptions={blockOptions}
             data={item}
@@ -497,3 +532,20 @@ const ZodArrayContent = ({
     </TableList>
   );
 };
+
+const isString = (value: unknown): value is string => typeof value === "string";
+
+const isZodEnum = (schema: z.ZodTypeAny): schema is z.ZodEnum =>
+  schema.type === "enum";
+
+const isZodObject = (
+  schema: z.ZodTypeAny,
+): schema is z.ZodObject<z.ZodRawShape> => schema.type === "object";
+
+const isZodArray = (schema: z.ZodTypeAny): schema is z.ZodArray<z.ZodTypeAny> =>
+  schema.type === "array";
+
+const isZodDiscriminatedUnion = (
+  schema: z.ZodTypeAny,
+): schema is z.ZodDiscriminatedUnion<readonly z.ZodObject<any>[], string> =>
+  schema instanceof z.ZodDiscriminatedUnion;

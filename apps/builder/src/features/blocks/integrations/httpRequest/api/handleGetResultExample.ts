@@ -6,7 +6,7 @@ import prisma from "@typebot.io/prisma";
 import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
 import type { User } from "@typebot.io/user/schemas";
 import { variableSchema } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { fetchLinkedTypebots } from "@/features/blocks/logic/typebotLink/helpers/fetchLinkedTypebots";
 import { canReadTypebots } from "@/helpers/databaseRules";
 

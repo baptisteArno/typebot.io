@@ -7,8 +7,8 @@ import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
-import { z } from "@typebot.io/zod";
 import PartySocket from "partysocket";
+import { z } from "zod";
 
 export const executeTestWebhookInputSchema = z.object({
   params: z.object({

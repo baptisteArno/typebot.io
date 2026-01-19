@@ -4,9 +4,10 @@ import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { executeFunction } from "@typebot.io/variables/executeFunction";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
 import type { Tool } from "ai";
+import { z } from "zod";
 import type { Tools } from "./schemas";
+import { zodToSchema } from "./zodToSchema";
 
 export const parseTools = ({
   tools,
@@ -42,10 +43,10 @@ export const parseTools = ({
 
 const parseParameters = (
   parameters: NonNullable<Tools>[number]["parameters"],
-): z.ZodTypeAny => {
-  if (!parameters || parameters?.length === 0) return z.object({});
+) => {
+  if (!parameters || parameters?.length === 0) return zodToSchema(z.object({}));
 
-  const shape: z.ZodRawShape = {};
+  const shape: Record<string, z.ZodTypeAny> = {};
   parameters.forEach((param) => {
     if (!param.name) return;
     switch (param.type) {
@@ -59,8 +60,10 @@ const parseParameters = (
         shape[param.name] = z.boolean();
         break;
       case "enum": {
-        if (!param.values || param.values.length === 0) return;
-        shape[param.name] = z.enum(param.values as any);
+        if (!param.values) return;
+        const values = param.values.filter(isDefined);
+        if (!isNonEmptyArray(values)) return;
+        shape[param.name] = z.enum(values);
         break;
       }
     }
@@ -70,5 +73,10 @@ const parseParameters = (
       shape[param.name] = shape[param.name]!.optional();
   });
 
-  return z.object(shape);
+  return zodToSchema(z.object(shape));
 };
+
+const isNonEmptyArray = <T>(items: T[]): items is [T, ...T[]] =>
+  items.length > 0;
+
+const isDefined = <T>(value: T | undefined): value is T => value !== undefined;

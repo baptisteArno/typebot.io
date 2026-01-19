@@ -1,8 +1,8 @@
 import { GraphNavigation } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
-const displayedInAppNotificationsSchema = z.record(z.boolean());
+const displayedInAppNotificationsSchema = z.record(z.string(), z.boolean());
 
 export const groupTitlesAutoGenerationSchema = z.object({
   isEnabled: z.boolean().optional(),

@@ -1,5 +1,5 @@
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 const mediaSchema = z
   .object({

@@ -1,6 +1,6 @@
 import { env } from "@typebot.io/env";
-import { z } from "@typebot.io/zod";
 import { OAuth2Client } from "google-auth-library";
+import { z } from "zod";
 
 export const googleSheetsScopes = [
   "https://www.googleapis.com/auth/userinfo.email",

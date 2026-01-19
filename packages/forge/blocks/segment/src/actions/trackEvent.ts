@@ -5,29 +5,39 @@ export const trackEvent = createAction({
   auth,
   name: "Track",
   options: option.object({
-    eventName: option.string.layout({
-      label: "Name",
-      isRequired: true,
+    eventName: option.string.meta({
+      layout: {
+        label: "Name",
+        isRequired: true,
+      },
     }),
-    userId: option.string.layout({
-      label: "User ID",
-      isRequired: true,
+    userId: option.string.meta({
+      layout: {
+        label: "User ID",
+        isRequired: true,
+      },
     }),
     properties: option
       .array(
         option.object({
-          key: option.string.layout({
-            label: "Key",
-            isRequired: true,
+          key: option.string.meta({
+            layout: {
+              label: "Key",
+              isRequired: true,
+            },
           }),
-          value: option.string.layout({
-            label: "Value",
-            isRequired: true,
+          value: option.string.meta({
+            layout: {
+              label: "Value",
+              isRequired: true,
+            },
           }),
         }),
       )
-      .layout({
-        itemLabel: "property",
+      .meta({
+        layout: {
+          itemLabel: "property",
+        },
       }),
   }),
 });

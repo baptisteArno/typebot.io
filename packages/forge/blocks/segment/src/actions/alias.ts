@@ -5,14 +5,18 @@ export const alias = createAction({
   auth,
   name: "Alias",
   options: option.object({
-    userId: option.string.layout({
-      label: "User ID",
-      isRequired: true,
-      moreInfoTooltip: "New ID of the user.",
+    userId: option.string.meta({
+      layout: {
+        label: "User ID",
+        isRequired: true,
+        moreInfoTooltip: "New ID of the user.",
+      },
     }),
-    previousId: option.string.layout({
-      label: "Previous ID",
-      moreInfoTooltip: "Previous ID of the user to alias.",
+    previousId: option.string.meta({
+      layout: {
+        label: "Previous ID",
+        moreInfoTooltip: "Previous ID of the user to alias.",
+      },
     }),
   }),
 });

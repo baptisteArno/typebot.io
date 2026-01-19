@@ -37,7 +37,7 @@ import { togetherAiBlock } from "@typebot.io/together-ai-block";
 import { togetherAiBlockSchema } from "@typebot.io/together-ai-block/schemas";
 import { zendeskBlock } from "@typebot.io/zendesk-block";
 import { zendeskBlockSchema } from "@typebot.io/zendesk-block/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const forgedBlockSchemas = {
   [openAIBlock.id]: openAIBlockSchema,

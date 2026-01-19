@@ -28,21 +28,29 @@ type Props = {
 type Item = NonNullable<NonNullable<PixelBlock["options"]>["params"]>[number];
 
 export const PixelSettings = ({ options, onOptionsChange }: Props) => {
+  const emptyOptions = {
+    eventType: undefined,
+    pixelId: undefined,
+    isInitSkip: undefined,
+    params: undefined,
+  } satisfies PixelBlock["options"];
+  const baseOptions = options ?? emptyOptions;
+
   const updateIsInitSkipped = (isChecked: boolean) =>
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       isInitSkip: isChecked,
     });
 
   const updatePixelId = (pixelId: string) =>
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       pixelId: isEmpty(pixelId) ? undefined : pixelId,
     });
 
   const updateIsTrackingEventEnabled = (isChecked: boolean) =>
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       params: isChecked && !options?.params ? [] : undefined,
     });
 
@@ -50,21 +58,21 @@ export const PixelSettings = ({ options, onOptionsChange }: Props) => {
     eventType: (typeof pixelEventTypes)[number] | "Custom" | undefined,
   ) =>
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       params: [],
       eventType,
     });
 
   const updateParams = (params: NonNullable<PixelBlock["options"]>["params"]) =>
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       params,
     });
 
   const updateEventName = (name: string) => {
-    if (options?.eventType !== "Custom") return;
+    if (baseOptions.eventType !== "Custom") return;
     onOptionsChange({
-      ...options,
+      ...baseOptions,
       name: isEmpty(name) ? undefined : name,
     });
   };

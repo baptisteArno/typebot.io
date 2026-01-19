@@ -4,7 +4,7 @@ import {
   type User,
   updateUserSchema,
 } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const updateUserInputSchema = z.object({
   updates: updateUserSchema.partial(),

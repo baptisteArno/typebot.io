@@ -3,7 +3,10 @@ import type {
   CardsItem,
 } from "@typebot.io/blocks-inputs/cards/schema";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
-import type { Variable } from "@typebot.io/variables/schemas";
+import type {
+  Variable,
+  VariableWithUnknowValue,
+} from "@typebot.io/variables/schemas";
 import type { ParsedReply } from "../../types";
 import { injectVariableValuesInCardsBlock } from "./injectVariableValuesInCardsBlock";
 
@@ -43,7 +46,7 @@ export const parseCardsReply = (
   if (!matchedItem) return { status: "fail" };
 
   const variablesToUpdate = block.options?.saveResponseMapping?.reduce<
-    Variable[]
+    VariableWithUnknowValue[]
   >((acc, mapping) => {
     if (!mapping.variableId || !mapping.field) return acc;
     const existingVariable = variables.find(
@@ -69,8 +72,11 @@ export const parseCardsReply = (
     ) {
       value = matchedItem.options.internalValue;
     }
+    if (value === undefined) return acc;
     acc.push({
-      ...existingVariable,
+      id: existingVariable.id,
+      name: existingVariable.name,
+      isSessionVariable: existingVariable.isSessionVariable,
       value,
     });
     return acc;

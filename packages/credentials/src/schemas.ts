@@ -1,5 +1,5 @@
 import { forgedCredentialsSchemas } from "@typebot.io/forge-repository/credentials";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const credentialsBaseSchema = z.object({
   id: z.string(),

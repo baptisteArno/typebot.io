@@ -1,5 +1,5 @@
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   getAccessTokenInputSchema,
   handleGetAccessToken,

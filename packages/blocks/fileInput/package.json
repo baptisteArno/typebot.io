@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@orpc/server": "^1.13.4",
-    "@typebot.io/zod": "workspace:*",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/lib": "workspace:*",
@@ -18,7 +17,8 @@
     "@typebot.io/env": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/blocks-logic": "workspace:*",
-    "@typebot.io/typebot": "workspace:*"
+    "@typebot.io/typebot": "workspace:*",
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

@@ -5,33 +5,45 @@ export const identifyGroup = createAction({
   auth,
   name: "Identify Group",
   options: option.object({
-    distinctId: option.string.layout({
-      label: "Distinct ID",
-      isRequired: false,
+    distinctId: option.string.meta({
+      layout: {
+        label: "Distinct ID",
+        isRequired: false,
+      },
     }),
-    groupType: option.string.layout({
-      label: "Type",
-      isRequired: true,
+    groupType: option.string.meta({
+      layout: {
+        label: "Type",
+        isRequired: true,
+      },
     }),
-    groupKey: option.string.layout({
-      label: "Key",
-      isRequired: true,
+    groupKey: option.string.meta({
+      layout: {
+        label: "Key",
+        isRequired: true,
+      },
     }),
     properties: option
       .array(
         option.object({
-          key: option.string.layout({
-            label: "Key",
-            isRequired: true,
+          key: option.string.meta({
+            layout: {
+              label: "Key",
+              isRequired: true,
+            },
           }),
-          value: option.string.layout({
-            label: "Value",
-            isRequired: true,
+          value: option.string.meta({
+            layout: {
+              label: "Value",
+              isRequired: true,
+            },
           }),
         }),
       )
-      .layout({
-        itemLabel: "property",
+      .meta({
+        layout: {
+          itemLabel: "property",
+        },
       }),
   }),
 });

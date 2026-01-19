@@ -4,7 +4,7 @@ import {
   domainResponseSchema,
   domainVerificationStatusSchema,
 } from "@typebot.io/schemas/features/customDomains";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import {
   createCustomDomainInputSchema,
   handleCreateCustomDomain,

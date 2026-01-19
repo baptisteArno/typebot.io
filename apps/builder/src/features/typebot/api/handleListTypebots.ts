@@ -2,7 +2,7 @@ import { ORPCError } from "@orpc/server";
 import prisma from "@typebot.io/prisma";
 import { getTypebotAccessRight } from "@typebot.io/typebot/helpers/getTypebotAccessRight";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 
 export const listTypebotsInputSchema = z.object({

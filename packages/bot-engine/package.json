@@ -40,7 +40,6 @@
     "@typebot.io/theme": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "@typebot.io/zod": "workspace:*",
     "chrono-node": "2.7.6",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
@@ -52,7 +51,8 @@
     "openai": "^6.9.1",
     "qs": "^6.11.2",
     "stripe": "^17.1.0",
-    "undici": "^7.16.0"
+    "undici": "^7.16.0",
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",

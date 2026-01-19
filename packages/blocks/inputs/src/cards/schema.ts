@@ -4,7 +4,7 @@ import {
   optionBaseSchema,
 } from "@typebot.io/blocks-base/schemas";
 import { conditionSchema } from "@typebot.io/conditions/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { InputBlockType } from "../constants";
 import { cardMappableFields } from "./constants";
 

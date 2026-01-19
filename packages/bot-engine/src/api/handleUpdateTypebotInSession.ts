@@ -5,7 +5,7 @@ import prisma from "@typebot.io/prisma";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const updateTypebotInSessionInputSchema = z.object({
   sessionId: z.string(),

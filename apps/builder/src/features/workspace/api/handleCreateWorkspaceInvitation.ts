@@ -6,7 +6,7 @@ import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { User } from "@typebot.io/user/schemas";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const createWorkspaceInvitationInputSchema = z.object({
   workspaceId: z.string(),

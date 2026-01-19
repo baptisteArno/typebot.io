@@ -1,5 +1,5 @@
 import prisma from "@typebot.io/prisma";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const verifyIfPhoneNumberAvailableInputSchema = z.object({
   phoneNumberDisplayName: z.string(),

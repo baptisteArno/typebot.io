@@ -11,20 +11,26 @@ export const queryKnowledgeBase = createAction({
   auth,
   fetchers: [knowledgeBasesFetcher],
   options: option.object({
-    datasetId: option.string.layout({
-      label: "Knowledge Base ID",
-      isRequired: true,
-      fetcher: knowledgeBasesFetcher.id,
+    datasetId: option.string.meta({
+      layout: {
+        label: "Knowledge Base ID",
+        isRequired: true,
+        fetcher: knowledgeBasesFetcher.id,
+      },
     }),
-    query: option.string.layout({
-      label: "Query",
-      isRequired: true,
-      inputType: "textarea",
+    query: option.string.meta({
+      layout: {
+        label: "Query",
+        isRequired: true,
+        inputType: "textarea",
+      },
     }),
     responseMapping: option
       .saveResponseArray(["Retrieved chunks"] as const)
-      .layout({
-        accordion: "Save response",
+      .meta({
+        layout: {
+          accordion: "Save response",
+        },
       }),
   }),
   getSetVariableIds: (options) =>

@@ -23,11 +23,11 @@ export const createChatCompletion = createAction({
   name: "Create chat completion",
   auth,
   options: option.object({
-    model: option.string.layout({
+    model: option.string.meta({ layout: {
       fetcher: modelsFetcher.id, // Reference the fetcher by its id
       label: "Model",
       placeholder: "Select a model",
-    }),
+    } }),
     // ... other options
   }),
   fetchers: [modelsFetcher], // Register the fetcher

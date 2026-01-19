@@ -2,7 +2,7 @@ import {
   blockSchemaV5,
   blockSchemaV6,
 } from "@typebot.io/blocks-core/schemas/schema";
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 
 export const groupV5Schema = z.object({
   id: z.string(),

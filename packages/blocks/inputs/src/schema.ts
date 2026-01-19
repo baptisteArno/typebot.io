@@ -1,4 +1,4 @@
-import { z } from "@typebot.io/zod";
+import { z } from "zod";
 import { cardsBlockSchema } from "./cards/schema";
 import { buttonsInputSchemas } from "./choice/schema";
 import { dateInputSchema } from "./date/schema";
