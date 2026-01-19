@@ -1,22 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { templates } from "@typebot.io/templates";
 import { useState } from "react";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
+import { currentBaseUrl } from "@/constants";
 import { TemplatesFilterSidebar } from "@/features/templates/TemplatesFilterSidebar";
 import { TemplatesGrid } from "@/features/templates/TemplatesGrid";
 import { TemplatesHero } from "@/features/templates/TemplatesHero";
 import { TemplatesSearchBar } from "@/features/templates/TemplatesSearchBar";
-import { templates } from "@/features/templates/templatesData";
 import { createMetaTags } from "@/lib/createMetaTags";
 
 export const Route = createFileRoute("/_layout/templates/")({
   head: () => ({
     meta: createMetaTags({
-      title: "Templates | Typebot",
+      title: "Chatbot Templates | Typebot",
       description:
-        "Explore our collection of ready-to-use chatbot templates. Find the perfect starting point for your next project.",
+        "Browse ready-to-use chatbot templates for lead gen, support, surveys, and e-commerce. Start fast and customize.",
       imagePath: "/images/default-og.png",
       path: "/templates",
     }),
+    links: [{ rel: "canonical", href: `${currentBaseUrl}/templates` }],
   }),
   component: RouteComponent,
 });
@@ -44,10 +46,21 @@ function RouteComponent() {
 
   const filteredTemplates = templates.filter((template) => {
     const query = searchQuery.toLowerCase();
+    const templateTitle = getTemplateTitle(template);
     const matchesSearch =
       searchQuery === "" ||
       template.name.toLowerCase().includes(query) ||
+      templateTitle.toLowerCase().includes(query) ||
+      template.summary.toLowerCase().includes(query) ||
       template.description.toLowerCase().includes(query) ||
+      template.highlights.some(
+        (highlight) =>
+          highlight.title.toLowerCase().includes(query) ||
+          highlight.description.toLowerCase().includes(query),
+      ) ||
+      template.bestFor.some((item) => item.toLowerCase().includes(query)) ||
+      (template.collects?.some((item) => item.toLowerCase().includes(query)) ??
+        false) ||
       template.useCase.toLowerCase().includes(query) ||
       template.features.some((feature) =>
         feature.toLowerCase().includes(query),
@@ -59,17 +72,21 @@ function RouteComponent() {
 
     const matchesFeatures =
       !selectedFilters.Features?.length ||
-      selectedFilters.Features.some((feature) =>
-        template.features.includes(
-          feature as (typeof template.features)[number],
-        ),
+      template.features.some((feature) =>
+        selectedFilters.Features?.includes(feature),
       );
 
     return matchesSearch && matchesUseCase && matchesFeatures;
   });
 
+  const jsonLd = createTemplatesItemListJsonLd();
+
   return (
     <ContentPageWrapper>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="flex flex-col w-full gap-8">
         <TemplatesHero />
         <div className="flex gap-8 w-full">
@@ -99,3 +116,23 @@ function RouteComponent() {
     </ContentPageWrapper>
   );
 }
+
+const createTemplatesItemListJsonLd = () => {
+  const itemListElement = templates.map((template, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: getTemplateTitle(template),
+    url: `${currentBaseUrl}/templates/${template.slug}`,
+    description: template.summary,
+  }));
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Typebot Chatbot Templates",
+    itemListElement,
+  } satisfies Record<string, unknown>;
+};
+
+const getTemplateTitle = (template: (typeof templates)[number]) =>
+  `${template.name} Chatbot Template`;

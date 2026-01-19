@@ -1,17 +1,16 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
+import type { Template } from "@typebot.io/templates";
+import { templates } from "@typebot.io/templates";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { ButtonLink, CtaButtonLink } from "@/components/link";
-import { dashboardUrl } from "@/constants";
+import { currentBaseUrl, dashboardUrl } from "@/constants";
 import { TemplateCard } from "@/features/templates/TemplateCard";
-import { templates } from "@/features/templates/templatesData";
 import { createMetaTags } from "@/lib/createMetaTags";
 
 export const Route = createFileRoute("/_layout/templates/$slug")({
   loader: async ({ params }) => {
-    const template = templates.find(
-      (t) => t.fileName.replace(".json", "") === params.slug,
-    );
+    const template = templates.find((t) => t.slug === params.slug);
 
     if (!template) {
       throw redirect({
@@ -28,10 +27,10 @@ export const Route = createFileRoute("/_layout/templates/$slug")({
   head: ({ loaderData }) => ({
     meta: loaderData
       ? createMetaTags({
-          title: `${loaderData.template.name} Template | Typebot`,
-          description: loaderData.template.description,
+          title: `${getTemplateTitle(loaderData.template)} | Typebot`,
+          description: loaderData.template.summary,
           imagePath: "/images/default-og.png",
-          path: `/templates/${loaderData.template.fileName.replace(".json", "")}`,
+          path: `/templates/${loaderData.template.slug}`,
         })
       : [],
   }),
@@ -40,9 +39,24 @@ export const Route = createFileRoute("/_layout/templates/$slug")({
 
 function RouteComponent() {
   const { template, relatedTemplates } = Route.useLoaderData();
+  const slug = template.slug;
+  const templateTitle = getTemplateTitle(template);
+  const structuredData = createTemplateStructuredData(template, slug);
 
   return (
     <ContentPageWrapper className="md:pt-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData.template),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData.breadcrumbs),
+        }}
+      />
       <div className="flex flex-col gap-12 max-w-5xl mx-auto w-full">
         <ButtonLink
           to="/templates"
@@ -57,7 +71,7 @@ function RouteComponent() {
             <span className="text-5xl md:text-6xl">{template.emoji}</span>
             <div className="flex flex-col gap-2">
               <h1 className="text-3xl md:text-4xl font-bold text-balance leading-tight">
-                {template.name}
+                {templateTitle}
               </h1>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <span>By</span>
@@ -75,13 +89,53 @@ function RouteComponent() {
             ))}
           </div>
 
-          <p className="text-lg text-muted-foreground text-pretty">
-            {template.description}
-          </p>
+          <div className="flex flex-col gap-3">
+            <p className="text-lg text-muted-foreground text-pretty">
+              {template.summary}
+            </p>
+            <p className="text-base text-muted-foreground text-pretty">
+              {template.description}
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="flex flex-col gap-3">
+              <h2 className="text-lg font-semibold">Best for</h2>
+              <ul className="flex flex-col gap-2 text-sm text-muted-foreground list-disc list-inside">
+                {template.bestFor.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            {template.collects && (
+              <div className="flex flex-col gap-3">
+                <h2 className="text-lg font-semibold">Data you collect</h2>
+                <ul className="flex flex-col gap-2 text-sm text-muted-foreground list-disc list-inside">
+                  {template.collects.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <h2 className="text-lg font-semibold">Key takeaways</h2>
+            <ul className="flex flex-col gap-2 text-sm text-muted-foreground list-disc list-inside">
+              {template.highlights.map((highlight) => (
+                <li key={highlight.title}>
+                  <strong className="text-foreground">
+                    {highlight.title}:
+                  </strong>{" "}
+                  {highlight.description}
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <div className="pt-2">
             <CtaButtonLink
-              href={`${dashboardUrl}?template=${template.fileName.replace(".json", "")}`}
+              href={`${dashboardUrl}?template=${slug}`}
               target="_blank"
             >
               Use this template
@@ -105,3 +159,59 @@ function RouteComponent() {
     </ContentPageWrapper>
   );
 }
+
+const createTemplateStructuredData = (template: Template, slug: string) => {
+  const url = `${currentBaseUrl}/templates/${slug}`;
+  const keywords = ["chatbot template", template.useCase, ...template.features]
+    .filter((keyword) => keyword.length > 0)
+    .join(", ");
+
+  const templateJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: getTemplateTitle(template),
+    description: template.summary,
+    url,
+    inLanguage: "en",
+    publisher: {
+      "@type": "Organization",
+      name: "Typebot",
+      url: currentBaseUrl,
+    },
+    about: template.useCase,
+    keywords,
+  } satisfies Record<string, unknown>;
+
+  const breadcrumbsJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: currentBaseUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Templates",
+        item: `${currentBaseUrl}/templates`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: getTemplateTitle(template),
+        item: url,
+      },
+    ],
+  } satisfies Record<string, unknown>;
+
+  return {
+    template: templateJsonLd,
+    breadcrumbs: breadcrumbsJsonLd,
+  };
+};
+
+const getTemplateTitle = (template: Template) =>
+  `${template.name} Chatbot Template`;

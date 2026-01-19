@@ -57,6 +57,7 @@
         "@typebot.io/react": "workspace:*",
         "@typebot.io/runtime-session-store": "workspace:*",
         "@typebot.io/settings": "workspace:*",
+        "@typebot.io/templates": "workspace:*",
         "@typebot.io/theme": "workspace:*",
         "@typebot.io/typebot": "workspace:*",
         "@typebot.io/ui": "workspace:*",
@@ -164,6 +165,7 @@
         "@typebot.io/prisma": "workspace:*",
         "@typebot.io/react": "workspace:*",
         "@typebot.io/telemetry": "workspace:*",
+        "@typebot.io/templates": "workspace:*",
         "@typebot.io/ui": "workspace:*",
         "motion": "^12.23.25",
         "react": "^19.2.3",
@@ -1302,6 +1304,13 @@
         "posthog-node": "^5.8.2",
         "zod": "^4.3.5",
       },
+      "devDependencies": {
+        "@typebot.io/tsconfig": "workspace:*",
+      },
+    },
+    "packages/templates": {
+      "name": "@typebot.io/templates",
+      "version": "0.0.1",
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
       },
@@ -3108,6 +3117,8 @@
     "@typebot.io/settings": ["@typebot.io/settings@workspace:packages/settings"],
 
     "@typebot.io/telemetry": ["@typebot.io/telemetry@workspace:packages/telemetry"],
+
+    "@typebot.io/templates": ["@typebot.io/templates@workspace:packages/templates"],
 
     "@typebot.io/theme": ["@typebot.io/theme@workspace:packages/theme"],
 
