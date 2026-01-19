@@ -1,6 +1,7 @@
 import { useTranslate } from "@tolgee/react";
 import { sendRequest } from "@typebot.io/lib/utils";
 import { Standard } from "@typebot.io/react";
+import { templates as templatesData } from "@typebot.io/templates";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
@@ -8,7 +9,6 @@ import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useCallback, useEffect, useState } from "react";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { toast } from "@/lib/toast";
-import { useTemplates } from "../hooks/useTemplates";
 import type { TemplateProps } from "../types";
 
 type Props = {
@@ -26,7 +26,7 @@ export const TemplatesDialog = ({
 }: Props) => {
   const { t } = useTranslate();
   const [typebot, setTypebot] = useState<Typebot>();
-  const templates = useTemplates();
+  const templates = templatesData;
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateProps>(
     templates[0],
   );
@@ -185,7 +185,7 @@ export const TemplatesDialog = ({
                 {selectedTemplate.emoji}{" "}
                 <span className="ml-2">{selectedTemplate.name}</span>
               </h2>
-              <p>{selectedTemplate.description}</p>
+              <p>{selectedTemplate.summary}</p>
             </div>
             <Button onClick={onUseThisTemplateClick} disabled={isLoading}>
               {t("templates.modal.useTemplateButton.label")}

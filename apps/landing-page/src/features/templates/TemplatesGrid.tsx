@@ -1,6 +1,6 @@
+import type { Template } from "@typebot.io/templates";
 import { Button } from "@typebot.io/ui/components/Button";
 import { TemplateCard } from "./TemplateCard";
-import type { Template } from "./templatesData";
 
 type Props = {
   templates: Template[];

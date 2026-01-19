@@ -1,4 +1,5 @@
 import { createServerFileRoute } from "@tanstack/react-start/server";
+import { templates } from "@typebot.io/templates";
 import { currentBaseUrl } from "@/constants";
 import { allPosts } from "@/content-collections";
 
@@ -25,7 +26,13 @@ export const ServerRoute = createServerFileRoute("/sitemap.xml").methods({
       { loc: `${currentBaseUrl}/about`, lastmod: "2025-07-05" },
       { loc: `${currentBaseUrl}/oss-friends`, lastmod: "2025-07-05" },
       { loc: `${currentBaseUrl}/blog`, lastmod: "2025-07-05" },
+      { loc: `${currentBaseUrl}/templates`, lastmod: templatesIndexLastmod },
     ] satisfies SitemapUrlEntry[];
+
+    const templateEntries: SitemapUrlEntry[] = templates.map((template) => ({
+      loc: `${currentBaseUrl}/templates/${template.slug}`,
+      lastmod: template.updatedAt,
+    }));
 
     const contentEntries: SitemapUrlEntry[] = Array.from(
       new Set(allPosts.map((p) => p._meta.path)),
@@ -48,6 +55,7 @@ export const ServerRoute = createServerFileRoute("/sitemap.xml").methods({
 
     const xml = generateSitemapXml([
       ...staticEntries,
+      ...templateEntries,
       ...contentEntries,
       ...blogContentEntries,
     ]);
@@ -60,6 +68,12 @@ export const ServerRoute = createServerFileRoute("/sitemap.xml").methods({
     });
   },
 });
+
+const templatesIndexLastmod = templates.reduce(
+  (latest, template) =>
+    template.updatedAt > latest ? template.updatedAt : latest,
+  "2026-01-05",
+);
 
 const transformPathToSitemapUrlEntry = (path: string) => {
   const post = allPosts.find((p) => p._meta.path === path);

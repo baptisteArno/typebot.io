@@ -1,7 +1,7 @@
+import { features, useCases } from "@typebot.io/templates";
 import { Checkbox } from "@typebot.io/ui/components/Checkbox";
 import { Label } from "@typebot.io/ui/components/Label";
 import { Popover } from "@typebot.io/ui/components/Popover";
-import { features, useCases } from "./templatesData";
 
 type FilterCategory = {
   label: string;

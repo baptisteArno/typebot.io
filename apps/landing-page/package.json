@@ -16,6 +16,7 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/react": "workspace:*",
+    "@typebot.io/templates": "workspace:*",
     "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/ui": "workspace:*",
     "motion": "^12.23.25",
