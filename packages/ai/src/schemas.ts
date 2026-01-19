@@ -1,5 +1,6 @@
 import { option } from "@typebot.io/forge";
-import type { z } from "zod";
+import { isDefined } from "@typebot.io/lib/utils";
+import { z } from "zod";
 
 const parameterBase = {
   name: option.string.meta({
@@ -86,8 +87,25 @@ const functionToolItemSchema = option.object({
   }),
 });
 
-export const toolsSchema = option
-  .array(option.discriminatedUnion("type", [functionToolItemSchema]))
+const normalizeToolsInput = (value: unknown) => {
+  if (!Array.isArray(value)) return value;
+  return value.map(normalizeToolItem).filter(isDefined);
+};
+
+export const toolsSchema = z
+  .preprocess(
+    normalizeToolsInput,
+    option.array(option.discriminatedUnion("type", [functionToolItemSchema])),
+  )
   .meta({ layout: { accordion: "Tools", itemLabel: "tool" } });
 
 export type Tools = z.infer<typeof toolsSchema>;
+
+const normalizeToolItem = (item: unknown) => {
+  if (!isRecord(item)) return undefined;
+  if (typeof item.type === "string") return item;
+  return { ...item, type: "function" };
+};
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
