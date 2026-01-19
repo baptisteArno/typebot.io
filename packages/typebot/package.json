@@ -19,7 +19,7 @@
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/events": "workspace:*",
     "effect": "^3.19.14",
-    "zod": "^4.0.0"
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

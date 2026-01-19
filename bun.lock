@@ -109,7 +109,7 @@
         "tinycolor2": "^1.6.0",
         "unsplash-js": "^7.0.18",
         "use-debounce": "^9.0.4",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
         "zod-validation-error": "^5.0.0",
         "zustand": "^5.0.8",
       },
@@ -169,7 +169,7 @@
         "react": "^19.2.3",
         "react-dom": "^19.2.3",
         "vite": "7.0.0",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@content-collections/core": "0.9.1",
@@ -248,7 +248,7 @@
         "react": "^19.2.3",
         "react-dom": "^19.2.3",
         "stripe": "^17.1.0",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@playwright/test": "^1.57.0",
@@ -304,7 +304,7 @@
         "@typebot.io/variables": "workspace:*",
         "ai": "^4.3.19",
         "ky": "^1.2.4",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -342,7 +342,7 @@
         "@typebot.io/workspaces": "workspace:*",
         "micro": "^10.0.1",
         "stripe": "^17.1.0",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -353,7 +353,7 @@
       "name": "@typebot.io/blocks-base",
       "version": "0.0.1",
       "dependencies": {
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -366,7 +366,7 @@
         "@typebot.io/blocks-base": "workspace:*",
         "@typebot.io/rich-text": "workspace:*",
         "@typebot.io/variables": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -385,7 +385,7 @@
         "@typebot.io/forge-repository": "workspace:*",
         "@typebot.io/lib": "workspace:*",
         "@typebot.io/prisma": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -406,7 +406,7 @@
         "@typebot.io/lib": "workspace:*",
         "@typebot.io/prisma": "workspace:*",
         "@typebot.io/typebot": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -419,7 +419,7 @@
         "@typebot.io/blocks-base": "workspace:*",
         "@typebot.io/conditions": "workspace:*",
         "@typebot.io/variables": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -432,7 +432,7 @@
         "@typebot.io/blocks-base": "workspace:*",
         "@typebot.io/conditions": "workspace:*",
         "@typebot.io/variables": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -444,7 +444,7 @@
       "dependencies": {
         "@typebot.io/blocks-base": "workspace:*",
         "@typebot.io/conditions": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -466,7 +466,7 @@
         "@typebot.io/typebot": "workspace:*",
         "@typebot.io/whatsapp": "workspace:*",
         "partysocket": "^1.0.2",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -518,7 +518,7 @@
         "qs": "^6.11.2",
         "stripe": "^17.1.0",
         "undici": "^7.16.0",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/forge": "workspace:*",
@@ -543,7 +543,7 @@
         "@typebot.io/theme": "workspace:*",
         "@typebot.io/typebot": "workspace:*",
         "@typebot.io/variables": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -562,7 +562,7 @@
         "@typebot.io/theme": "workspace:*",
         "@typebot.io/typebot": "workspace:*",
         "@typebot.io/variables": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -575,7 +575,7 @@
         "@typebot.io/lib": "workspace:*",
         "@typebot.io/runtime-session-store": "workspace:*",
         "@typebot.io/variables": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -603,7 +603,7 @@
         "google-spreadsheet": "^4.1.4",
         "ky": "^1.2.4",
         "qs": "^6.11.2",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -720,7 +720,7 @@
       "version": "0.0.1",
       "dependencies": {
         "@t3-oss/env-nextjs": "^0.13.10",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -731,7 +731,7 @@
       "name": "@typebot.io/events",
       "version": "0.0.1",
       "dependencies": {
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -745,7 +745,7 @@
         "@typebot.io/ai": "workspace:*",
         "@typebot.io/forge": "workspace:*",
         "@typebot.io/lib": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1014,7 +1014,7 @@
       "dependencies": {
         "@typebot.io/runtime-session-store": "workspace:*",
         "@typebot.io/variables": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1044,7 +1044,7 @@
         "@typebot.io/segment-block": "workspace:*",
         "@typebot.io/together-ai-block": "workspace:*",
         "@typebot.io/zendesk-block": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1056,7 +1056,7 @@
       "dependencies": {
         "@typebot.io/blocks-core": "workspace:*",
         "@typebot.io/schemas": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1104,7 +1104,7 @@
       "name": "@typebot.io/logs",
       "version": "0.0.1",
       "dependencies": {
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/prisma": "workspace:*",
@@ -1188,7 +1188,7 @@
         "@typebot.io/variables": "workspace:*",
         "effect": "^3.19.14",
         "papaparse": "^5.4.1",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1233,7 +1233,7 @@
       "version": "0.0.1",
       "dependencies": {
         "@typebot.io/prisma": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1266,7 +1266,7 @@
         "posthog-node": "^5.8.2",
         "prompts": "^2.4.2",
         "stripe": "^17.1.0",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/blocks-integrations": "workspace:*",
@@ -1284,7 +1284,7 @@
       "version": "0.0.1",
       "dependencies": {
         "@typebot.io/conditions": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1300,7 +1300,7 @@
         "cookie": "^1.0.2",
         "ky": "^1.2.4",
         "posthog-node": "^5.8.2",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1313,7 +1313,7 @@
         "@typebot.io/lib": "workspace:*",
         "@typebot.io/prisma": "workspace:*",
         "@typebot.io/ui": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1339,7 +1339,7 @@
         "@typebot.io/variables": "workspace:*",
         "@typebot.io/workspaces": "workspace:*",
         "effect": "^3.19.14",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1357,7 +1357,7 @@
         "tailwind-merge": "^3.3.1",
         "tailwindcss": "^4.1.16",
         "tw-animate-css": "^1.4.0",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1368,7 +1368,7 @@
       "version": "0.0.1",
       "dependencies": {
         "@typebot.io/prisma": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1383,7 +1383,7 @@
         "@typebot.io/prisma": "workspace:*",
         "@typebot.io/runtime-session-store": "workspace:*",
         "isolated-vm": "^5.0.1",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1413,7 +1413,7 @@
         "@typebot.io/typebot": "workspace:*",
         "@typebot.io/variables": "workspace:*",
         "ky": "^1.2.4",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
@@ -1427,7 +1427,7 @@
       "dependencies": {
         "@typebot.io/env": "workspace:*",
         "@typebot.io/prisma": "workspace:*",
-        "zod": "^4.0.0",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@typebot.io/tsconfig": "workspace:*",
