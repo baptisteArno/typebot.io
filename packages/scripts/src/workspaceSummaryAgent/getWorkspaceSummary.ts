@@ -1,13 +1,13 @@
 import * as p from "@clack/prompts";
 import fs, { existsSync } from "fs";
 import path from "path";
-import type { workspaceSummaryType } from "./WorkspaceSummaryBuilders";
+import type { workspaceSummaryType } from "./workspaceSummaryBuilders";
 import {
   buildWorkspaceSummaryObject,
   getWorkspaceAISummary,
   saveToFile,
   toReadableFormat,
-} from "./WorkspaceSummaryBuilders";
+} from "./workspaceSummaryBuilders";
 
 const generateWorkspaceSummary = async () => {
   const workspaceId = await p.text({

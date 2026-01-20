@@ -1,5 +1,5 @@
 import { env } from "@typebot.io/env";
-import type { workspaceSummaryType } from "../workspaceSummaryAgent/WorkspaceSummaryBuilders";
+import type { workspaceSummaryType } from "../workspaceSummaryAgent/workspaceSummaryBuilders";
 
 type Options = {
   excludeTimeline?: boolean;

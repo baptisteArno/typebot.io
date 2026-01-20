@@ -95,6 +95,7 @@ export const getYesterdayChurnSummary = async ({
       JSON.stringify(workspaceSummaryObject, null, 2),
     );
     summaries.push(workspaceSummaryObject);
+    await onSummaryGenerated(workspaceSummaryObject);
 
     // Generate readable summary and print and save to file
     const readable_summary = toReadableFormat(workspaceSummaryObject);
