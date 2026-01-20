@@ -1,5 +1,5 @@
 import { env } from "@typebot.io/env";
-import type { workspaceSummaryType } from "../workspaceSummaryAgent/workspaceSummaryBuilders";
+import type { WorkspaceSummaryType } from "../workspaceSummaryAgent/workspaceSummaryBuilders";
 
 type Options = {
   excludeTimeline?: boolean;
@@ -7,34 +7,38 @@ type Options = {
 };
 
 export const formatChurnAgentDiscordMessages = (
-  { workspace, subscription, members, ai_analysis }: workspaceSummaryType,
+  { workspace, subscription, members, aiAnalysis }: WorkspaceSummaryType,
   { excludeTimeline, excludeEmailSuggestion }: Options = {},
 ) => {
+  const stripeCustomerUrl = subscription.stripeId
+    ? `https://dashboard.stripe.com/customers/${subscription.stripeId}`
+    : null;
+
   const messages = [
     `# 👋 Workspace scheduled for cancellation
-  - Name: ${workspace.name}${subscription.country_emoji ? ` ${subscription.country_emoji}` : ""}
-  - Spent ${subscription.total_paid}, [see subscription details](<https://dashboard.stripe.com/customers/${subscription.stripe_id}>)
-  - Created ${workspace.created_at}`,
+  - Name: ${workspace.name}${subscription.countryEmoji ? ` ${subscription.countryEmoji}` : ""}
+  - Spent ${subscription.totalPaid}${stripeCustomerUrl ? `, [see subscription details](<${stripeCustomerUrl}>)` : ""}
+  - Created ${workspace.createdAt}`,
   ];
 
-  if (ai_analysis) {
+  if (aiAnalysis) {
     if (!excludeTimeline) {
       messages.push(
-        `## Timeline:\n\n${ai_analysis.workspaceTimeline}\n[Full activity here](<${env.POSTHOG_API_HOST}/project/${env.POSTHOG_PROJECT_ID}/groups/1/${workspace.id}/events>)`,
+        `## Timeline:\n\n${aiAnalysis.workspaceTimeline}\n[Full activity here](<${env.POSTHOG_API_HOST}/project/${env.POSTHOG_PROJECT_ID}/groups/1/${workspace.id}/events>)`,
       );
     }
 
     messages.push(
-      `## Business activity:\n\n${ai_analysis.businessActivity}`,
-      `## Purpose:\n\n${ai_analysis.purpose}`,
-      `## Workspace level:\n\n${ai_analysis.workspaceLevel}`,
-      `## Reason:\n\n${ai_analysis.churnReason}`,
+      `## Business activity:\n\n${aiAnalysis.businessActivity}`,
+      `## Purpose:\n\n${aiAnalysis.purpose}`,
+      `## Workspace level:\n\n${aiAnalysis.workspaceLevel}`,
+      `## Reason:\n\n${aiAnalysis.churnReason}`,
     );
 
     if (!excludeEmailSuggestion) {
       messages.push(
-        ai_analysis.outreachEmail
-          ? `## Email suggestion:\n\n${ai_analysis.outreachEmail}\nRecipient: ${members.list.find((m) => m.role === "ADMIN")?.email || "Unknown"}`
+        aiAnalysis.outreachEmail
+          ? `## Email suggestion:\n\n${aiAnalysis.outreachEmail}\nRecipient: ${members.list.find((m) => m.role === "ADMIN")?.email || "Unknown"}`
           : "No email suggestion",
       );
     }

@@ -1,7 +1,7 @@
 import * as p from "@clack/prompts";
 import fs, { existsSync } from "fs";
 import path from "path";
-import type { workspaceSummaryType } from "./workspaceSummaryBuilders";
+import type { WorkspaceSummaryType } from "./workspaceSummaryBuilders";
 import {
   buildWorkspaceSummaryObject,
   getWorkspaceAISummary,
@@ -9,7 +9,7 @@ import {
   toReadableFormat,
 } from "./workspaceSummaryBuilders";
 
-const generateWorkspaceSummary = async () => {
+const getWorkspaceSummary = async () => {
   const workspaceId = await p.text({
     message: "Enter workspace ID",
   });
@@ -30,7 +30,7 @@ const generateWorkspaceSummary = async () => {
     __dirname,
     `../../logs/workspaces/${workspaceId}/workspaceSummary.json`,
   );
-  let summary: workspaceSummaryType | null = null;
+  let summary: WorkspaceSummaryType | null = null;
 
   if (existsSync(summaryFilePath) && useExisting) {
     console.log(" ✓ Workspace summary already exists, fetching from file...");
@@ -38,8 +38,8 @@ const generateWorkspaceSummary = async () => {
     summary = JSON.parse(summaryData);
     console.log(" ✓ Workspace summary fetched from file.");
     // remove ai analysis if it exists
-    if (summary?.ai_analysis) {
-      delete summary?.ai_analysis;
+    if (summary?.aiAnalysis) {
+      delete summary.aiAnalysis;
       console.log(" ✓ AI analysis removed from the summary.");
     }
   } else {
@@ -63,10 +63,10 @@ const generateWorkspaceSummary = async () => {
 
   console.log(" ✓ Generating AI analysis of the workspace summary...");
   const workspaceSummary = JSON.stringify(summary, null, 2);
-  const ai_analysis = await getWorkspaceAISummary(workspaceSummary);
+  const aiAnalysis = await getWorkspaceAISummary(workspaceSummary);
 
-  if (summary && ai_analysis) {
-    Object.assign(summary, { ai_analysis: ai_analysis });
+  if (summary) {
+    Object.assign(summary, { aiAnalysis });
     console.log(" ✓ AI analysis added to the workspace summary.");
     // save to file
     saveToFile(
@@ -79,11 +79,11 @@ const generateWorkspaceSummary = async () => {
     );
 
     // save to readable markdown file
-    const readable_summary = toReadableFormat(summary);
-    console.log(readable_summary);
-    saveToFile(`${workspaceId}/summary.md`, readable_summary);
+    const readableSummary = toReadableFormat(summary);
+    console.log(readableSummary);
+    saveToFile(`${workspaceId}/summary.md`, readableSummary);
     console.log(" ✓ Summary saved to:", `${workspaceId}/summary.md`);
   }
 };
 
-generateWorkspaceSummary();
+getWorkspaceSummary();

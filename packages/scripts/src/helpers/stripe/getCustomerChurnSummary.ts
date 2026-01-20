@@ -1,27 +1,40 @@
-import { getCustomerSubscriptionsList } from "./getCustomerSubscriptionsList";
+import {
+  type CustomerSubscriptionSummary,
+  getCustomerSubscriptionsList,
+} from "./getCustomerSubscriptionsList";
 
-export async function getCustomerChurnSummary(stripeId: string) {
-  const subscriptions_list = await getCustomerSubscriptionsList(stripeId);
-  // order subscriptions by cancelet_at date descending
-  subscriptions_list.sort((a, b) => {
-    const dateA = a.cancel_at_period_end
-      ? new Date(a.current_period_end).getTime()
+export type CustomerChurnSummary = {
+  stripeId: string;
+  totalPaid: string;
+  totalSubscriptions: number;
+  countryEmoji: string;
+  list: CustomerSubscriptionSummary[];
+};
+
+export async function getCustomerChurnSummary(
+  stripeId: string,
+): Promise<CustomerChurnSummary> {
+  const subscriptionsList = await getCustomerSubscriptionsList(stripeId);
+  // order subscriptions by cancelAt date descending
+  subscriptionsList.sort((a, b) => {
+    const dateA = a.cancelAtPeriodEnd
+      ? new Date(a.currentPeriodEnd).getTime()
       : 0;
-    const dateB = b.cancel_at_period_end
-      ? new Date(b.current_period_end).getTime()
+    const dateB = b.cancelAtPeriodEnd
+      ? new Date(b.currentPeriodEnd).getTime()
       : 0;
     return dateB - dateA;
   });
-  const total_paid = subscriptions_list.reduce(
-    (acc, sub) => acc + parseFloat(sub.total_paid.replace("$", "")),
+  const totalPaidNumber = subscriptionsList.reduce(
+    (acc, sub) => acc + parseFloat(sub.totalPaid.replace("$", "")),
     0,
   );
 
   return {
-    stripe_id: stripeId,
-    total_paid: `$${total_paid.toFixed(2)}`,
-    total_subscriptions: subscriptions_list.length,
-    country_emoji: subscriptions_list[0]?.country_emoji || "",
-    list: subscriptions_list,
+    stripeId,
+    totalPaid: `$${totalPaidNumber.toFixed(2)}`,
+    totalSubscriptions: subscriptionsList.length,
+    countryEmoji: subscriptionsList[0]?.countryEmoji || "",
+    list: subscriptionsList,
   };
 }

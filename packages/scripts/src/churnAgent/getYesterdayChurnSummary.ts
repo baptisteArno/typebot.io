@@ -5,14 +5,14 @@ import {
   buildWorkspaceSummaryObject,
   getWorkspaceAISummary,
   toReadableFormat,
-  type workspaceSummaryType,
+  type WorkspaceSummaryType,
 } from "../workspaceSummaryAgent/workspaceSummaryBuilders";
 
 export const getYesterdayChurnSummary = async ({
   onSummaryGenerated,
 }: {
-  onSummaryGenerated: (summary: workspaceSummaryType) => Promise<void>;
-}): Promise<workspaceSummaryType[]> => {
+  onSummaryGenerated: (summary: WorkspaceSummaryType) => Promise<void>;
+}): Promise<WorkspaceSummaryType[]> => {
   // set yesterday's date
   const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000)
     .toISOString()
@@ -43,9 +43,9 @@ export const getYesterdayChurnSummary = async ({
   }
 
   // Iterate over workspaces and generate summaries
-  const summaries: workspaceSummaryType[] = [];
+  const summaries: WorkspaceSummaryType[] = [];
   for (const [index, row] of churnedWorkspacesResponse.results.entries()) {
-    const workspaceId = row[0] as string;
+    const workspaceId = typeof row[0] === "string" ? row[0] : String(row[0]);
     console.log(
       `\n🏢 Processing workspace ${index + 1}/${totalChurnedWorkspaces}: ${workspaceId}`,
     );
@@ -61,12 +61,12 @@ export const getYesterdayChurnSummary = async ({
 
     console.log(`   📝 Workspace: ${workspaceSummaryObject.workspace.name}`);
     console.log(
-      `   🤖 Typebots: ${workspaceSummaryObject.typebots.total_typebots}`,
+      `   🤖 Typebots: ${workspaceSummaryObject.typebots.totalTypebots}`,
     );
 
     if (
-      workspaceSummaryObject.subscription.stripe_id &&
-      !workspaceSummaryObject.subscription.list?.[0]?.cancellation_reason
+      workspaceSummaryObject.subscription.stripeId &&
+      !workspaceSummaryObject.subscription.list?.[0]?.cancellationReason
     ) {
       console.log(`   ❌ Cancellation was most likely unscheduled`);
       continue;
@@ -79,8 +79,8 @@ export const getYesterdayChurnSummary = async ({
       null,
       2,
     );
-    const ai_analysis = await getWorkspaceAISummary(workspaceSummaryString);
-    Object.assign(workspaceSummaryObject, { ai_analysis: ai_analysis });
+    const aiAnalysis = await getWorkspaceAISummary(workspaceSummaryString);
+    Object.assign(workspaceSummaryObject, { aiAnalysis });
 
     console.log(`   ✅ Success`);
 
@@ -98,13 +98,13 @@ export const getYesterdayChurnSummary = async ({
     await onSummaryGenerated(workspaceSummaryObject);
 
     // Generate readable summary and print and save to file
-    const readable_summary = toReadableFormat(workspaceSummaryObject);
-    console.log(readable_summary);
+    const readableSummary = toReadableFormat(workspaceSummaryObject);
+    console.log(readableSummary);
     const workspaceReadableSummaryPath = path.join(
       __dirname,
       `../../logs/workspaces/${workspaceId}/summary.md`,
     );
-    writeFileSync(workspaceReadableSummaryPath, readable_summary);
+    writeFileSync(workspaceReadableSummaryPath, readableSummary);
   }
 
   console.log(
