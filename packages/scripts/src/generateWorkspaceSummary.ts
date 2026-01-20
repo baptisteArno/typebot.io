@@ -1,6 +1,7 @@
 import { openai } from "@ai-sdk/openai";
 import * as p from "@clack/prompts";
 import type { $Enums } from "@prisma/client";
+import { zodToSchema } from "@typebot.io/ai/zodToSchema";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import {
   isInputBlock,
@@ -98,9 +99,11 @@ const getWorkspaceJourneyAISummary = async (
         reasoningEffort: "low",
       },
     },
-    schema: z.object({
-      summary: z.string(),
-    }),
+    schema: zodToSchema(
+      z.object({
+        summary: z.string(),
+      }),
+    ),
     system: userJourneySummary,
     messages: [
       {
@@ -125,14 +128,16 @@ const getTypebotAISummary = async (
         reasoningEffort: "low",
       },
     },
-    schema: z.object({
-      summary: z.string(),
-      isScam: z.boolean(),
-      isUndesired: z.boolean(),
-      reason: z.string().nullable(),
-      category: z.string().nullable(),
-      otherCategory: z.string().nullable(),
-    }),
+    schema: zodToSchema(
+      z.object({
+        summary: z.string(),
+        isScam: z.boolean(),
+        isUndesired: z.boolean(),
+        reason: z.string().nullable(),
+        category: z.string().nullable(),
+        otherCategory: z.string().nullable(),
+      }),
+    ),
     system: typebotSummarySystemPrompt,
     messages: [
       {
@@ -416,14 +421,16 @@ const getWorkspaceAISummary = async (workspaceSummary: string) => {
         reasoningEffort: "low",
       },
     },
-    schema: z.object({
-      businessActivity: z.string(),
-      purpose: z.string(),
-      workspaceLevel: z.string(),
-      engagementLevel: z.string(),
-      churnRisk: z.string(),
-      recommendations: z.string(),
-    }),
+    schema: zodToSchema(
+      z.object({
+        businessActivity: z.string(),
+        purpose: z.string(),
+        workspaceLevel: z.string(),
+        engagementLevel: z.string(),
+        churnRisk: z.string(),
+        recommendations: z.string(),
+      }),
+    ),
     system: workspaceSummaryPrompt,
     messages: [
       {

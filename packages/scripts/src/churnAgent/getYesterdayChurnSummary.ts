@@ -1,4 +1,5 @@
 import { openai } from "@ai-sdk/openai";
+import { zodToSchema } from "@typebot.io/ai/zodToSchema";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import {
   isInputBlock,
@@ -215,7 +216,7 @@ export const getYesterdayChurnSummary = async ({
     console.log(`   🧠 Generating churn report...`);
     const { object: churnSummary } = await generateObject({
       model: openai("gpt-5"),
-      schema: churnSummarySchema,
+      schema: zodToSchema(churnSummarySchema),
       system: mainAgentSystemPrompt,
       messages: [
         {
@@ -488,9 +489,11 @@ const getTypebotSummary = async (
         reasoningEffort: "low",
       },
     },
-    schema: z.object({
-      summary: z.string(),
-    }),
+    schema: zodToSchema(
+      z.object({
+        summary: z.string(),
+      }),
+    ),
     system: typebotSummarizerSystemPrompt,
     messages: [
       {
