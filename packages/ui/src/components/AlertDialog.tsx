@@ -52,7 +52,7 @@ const Popup = ({
   ...props
 }: AlertDialogPrimitive.Popup.Props) => (
   <AlertDialogPrimitive.Portal>
-    <AlertDialogPrimitive.Backdrop className="fixed inset-0 w-full bg-gray-12/50 data-open:animate-in data-open:fade-in data-closed:animate-out data-closed:fade-out" />
+    <AlertDialogPrimitive.Backdrop className="fixed inset-0 w-full bg-gray-12/50 dark:bg-gray-1/70 data-open:animate-in data-open:fade-in data-closed:animate-out data-closed:fade-out" />
     <div
       className={cn(
         "flex justify-center items-start fixed top-0 w-full py-12 h-full overflow-y-auto",
