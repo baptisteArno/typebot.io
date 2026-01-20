@@ -125,9 +125,11 @@ export const startSession = async ({
                 }
               const key =
                 (block.options?.variableId
-                  ? startVariables.find(
-                      (variable) => variable.id === block.options?.variableId
-                    )?.name
+                  ? startVariables
+                      .filter((variable) => variable)
+                      .find(
+                        (variable) => variable.id === block.options?.variableId
+                      )?.name
                   : typebot.groups.find((group) =>
                       group.blocks.find(
                         (blockInGroup) => blockInGroup.id === block.id
@@ -508,6 +510,7 @@ const convertStartTypebotToTypebotInSession = (
         edges: typebot.edges,
         variables: startVariables,
         events: typebot.events,
+        typebotId: typebot.id,
       }
     : {
         version: typebot.version,
@@ -516,6 +519,7 @@ const convertStartTypebotToTypebotInSession = (
         edges: typebot.edges,
         variables: startVariables,
         events: typebot.events,
+        typebotId: typebot.id,
       }
 
 const extractVariableIdsUsedForTranscript = (

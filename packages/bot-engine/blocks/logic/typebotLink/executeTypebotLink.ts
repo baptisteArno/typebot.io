@@ -82,12 +82,12 @@ const addSameTypebotToState = async ({
 
   const currentTypebotWithResumeEdge = resumeEdge
     ? {
-        ...currentTypebotInQueue,
-        typebot: {
-          ...currentTypebotInQueue.typebot,
-          edges: [...currentTypebotInQueue.typebot.edges, resumeEdge],
-        },
-      }
+      ...currentTypebotInQueue,
+      typebot: {
+        ...currentTypebotInQueue.typebot,
+        edges: [...currentTypebotInQueue.typebot.edges, resumeEdge],
+      },
+    }
     : currentTypebotInQueue
 
   return {
@@ -119,12 +119,12 @@ const addLinkedTypebotToState = async (
 
   const currentTypebotWithResumeEdge = resumeEdge
     ? {
-        ...currentTypebotInQueue,
-        typebot: {
-          ...currentTypebotInQueue.typebot,
-          edges: [...currentTypebotInQueue.typebot.edges, resumeEdge],
-        },
-      }
+      ...currentTypebotInQueue,
+      typebot: {
+        ...currentTypebotInQueue.typebot,
+        edges: [...currentTypebotInQueue.typebot.edges, resumeEdge],
+      },
+    }
     : currentTypebotInQueue
 
   const shouldMergeResults =
@@ -159,8 +159,8 @@ const addLinkedTypebotToState = async (
         resultId: isPreview
           ? undefined
           : shouldMergeResults
-          ? currentTypebotInQueue.resultId
-          : createId(),
+            ? currentTypebotInQueue.resultId
+            : createId(),
         edgeIdToTriggerWhenDone: block.outgoingEdgeId ?? resumeEdge?.id,
         answers: shouldMergeResults ? currentTypebotInQueue.answers : [],
         isMergingWithParent: shouldMergeResults,
@@ -236,7 +236,10 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
       },
     })
     if (!typebot) return null
-    return typebotInSessionStateSchema.parse(typebot)
+    return typebotInSessionStateSchema.parse({
+      ...typebot,
+      typebotId: typebot.id,
+    })
   }
   const typebot = await prisma.publicTypebot.findUnique({
     where: { typebotId },
@@ -253,6 +256,7 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
   return typebotInSessionStateSchema.parse({
     ...typebot,
     id: typebotId,
+    typebotId,
   })
 }
 

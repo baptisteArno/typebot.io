@@ -45,16 +45,18 @@ import { downloadMedia } from './whatsapp/downloadMedia'
 import { uploadFileToBucket } from '@typebot.io/lib/s3/uploadFileToBucket'
 import { isURL } from '@typebot.io/lib/validators/isURL'
 import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
+import logger from '@typebot.io/lib/logger'
 
 type Params = {
   version: 1 | 2
   state: SessionState
   startTime?: number
   textBubbleContentFormat: 'richText' | 'markdown'
+  sessionId?: string
 }
 export const continueBotFlow = async (
   reply: Reply,
-  { state, version, startTime, textBubbleContentFormat }: Params
+  { state, version, startTime, textBubbleContentFormat, sessionId }: Params
 ): Promise<
   ContinueChatResponse & {
     newSessionState: SessionState
@@ -62,13 +64,20 @@ export const continueBotFlow = async (
     setVariableHistory: SetVariableHistoryItem[]
   }
 > => {
+  logger.info('continueBotFlow executing', {
+    sessionId,
+    currentBlockId: state.currentBlockId,
+    reply: typeof reply === 'string' ? reply.slice(0, 50) : 'object',
+    version,
+  })
+
   let firstBubbleWasStreamed = false
   let newSessionState = { ...state }
   const visitedEdges: VisitedEdge[] = []
   const setVariableHistory: SetVariableHistoryItem[] = []
 
   if (!newSessionState.currentBlockId)
-    return startBotFlow({ state, version, textBubbleContentFormat })
+    return startBotFlow({ state, version, textBubbleContentFormat, sessionId })
 
   const { block, group, blockIndex } = getBlockById(
     newSessionState.currentBlockId,
@@ -204,6 +213,7 @@ export const continueBotFlow = async (
         firstBubbleWasStreamed,
         startTime,
         textBubbleContentFormat,
+        sessionId,
       }
     )
     return {
@@ -251,6 +261,12 @@ export const continueBotFlow = async (
     setVariableHistory,
     startTime,
     textBubbleContentFormat,
+    sessionId,
+  })
+
+  logger.info('continueBotFlow finishing', {
+    nextBlockId: newSessionState.currentBlockId,
+    messagesCount: chatReply.messages.length,
   })
 
   return {
@@ -261,11 +277,11 @@ export const continueBotFlow = async (
 
 const processAndSaveAnswer =
   (state: SessionState, block: InputBlock) =>
-  async (reply: string | undefined): Promise<SessionState> => {
-    if (!reply) return state
-    let newState = await saveAnswerInDb(state, block)(reply)
-    return newState
-  }
+    async (reply: string | undefined): Promise<SessionState> => {
+      if (!reply) return state
+      let newState = await saveAnswerInDb(state, block)(reply)
+      return newState
+    }
 
 const saveVariableValueIfAny =
   (state: SessionState, block: InputBlock) =>
@@ -300,11 +316,11 @@ const parseRetryMessage =
   ): Promise<Pick<ContinueChatResponse, 'messages' | 'input'>> => {
     const retryMessage =
       block.options &&
-      'retryMessageContent' in block.options &&
-      block.options.retryMessageContent
+        'retryMessageContent' in block.options &&
+        block.options.retryMessageContent
         ? parseVariables(state.typebotsQueue[0].typebot.variables)(
-            block.options.retryMessageContent
-          )
+          block.options.retryMessageContent
+        )
         : parseDefaultRetryMessage(block)
     return {
       messages: [
@@ -314,13 +330,13 @@ const parseRetryMessage =
           content:
             textBubbleContentFormat === 'richText'
               ? {
-                  type: 'richText',
-                  richText: [{ type: 'p', children: [{ text: retryMessage }] }],
-                }
+                type: 'richText',
+                richText: [{ type: 'p', children: [{ text: retryMessage }] }],
+              }
               : {
-                  type: 'markdown',
-                  markdown: retryMessage,
-                },
+                type: 'markdown',
+                markdown: retryMessage,
+              },
         },
       ],
       input: await parseInput(state)(block),
@@ -340,41 +356,41 @@ const parseDefaultRetryMessage = (block: InputBlock): string => {
 
 const saveAnswerInDb =
   (state: SessionState, block: InputBlock) =>
-  async (reply: string): Promise<SessionState> => {
-    let newSessionState = state
-    await saveAnswer({
-      answer: {
-        blockId: block.id,
-        content: reply,
-      },
-      reply,
-      state,
-    })
+    async (reply: string): Promise<SessionState> => {
+      let newSessionState = state
+      await saveAnswer({
+        answer: {
+          blockId: block.id,
+          content: reply,
+        },
+        reply,
+        state,
+      })
 
-    newSessionState = {
-      ...saveVariableValueIfAny(newSessionState, block)(reply),
-      previewMetadata: state.typebotsQueue[0].resultId
-        ? newSessionState.previewMetadata
-        : {
+      newSessionState = {
+        ...saveVariableValueIfAny(newSessionState, block)(reply),
+        previewMetadata: state.typebotsQueue[0].resultId
+          ? newSessionState.previewMetadata
+          : {
             ...newSessionState.previewMetadata,
             answers: (newSessionState.previewMetadata?.answers ?? []).concat({
               blockId: block.id,
               content: reply,
             }),
           },
-    }
+      }
 
-    const key = block.options?.variableId
-      ? newSessionState.typebotsQueue[0].typebot.variables.find(
+      const key = block.options?.variableId
+        ? newSessionState.typebotsQueue[0].typebot.variables.find(
           (variable) => variable.id === block.options?.variableId
         )?.name
-      : parseGroupKey(block.id, { state: newSessionState })
+        : parseGroupKey(block.id, { state: newSessionState })
 
-    return setNewAnswerInState(newSessionState)({
-      key: key ?? block.id,
-      value: reply,
-    })
-  }
+      return setNewAnswerInState(newSessionState)({
+        key: key ?? block.id,
+        value: reply,
+      })
+    }
 
 const parseGroupKey = (blockId: string, { state }: { state: SessionState }) => {
   const group = state.typebotsQueue[0].typebot.groups.find((group) =>
@@ -406,9 +422,9 @@ const setNewAnswerInState =
       typebotsQueue: state.typebotsQueue.map((typebot, index) =>
         index === 0
           ? {
-              ...typebot,
-              answers: newAnswers,
-            }
+            ...typebot,
+            answers: newAnswers,
+          }
           : typebot
       ),
     } satisfies SessionState
