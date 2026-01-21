@@ -63,8 +63,7 @@ export const GET = async (
   });
 
   const user =
-    session?.user ??
-    (await authenticateByToken(extractBearerToken(req)));
+    session?.user ?? (await authenticateByToken(extractBearerToken(req)));
 
   if (!user) return new Response("Unauthorized", { status: 401 });
 

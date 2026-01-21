@@ -1,8 +1,8 @@
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { SignInPage } from "@/features/auth/components/SignInPage";
 import {
-  getAvailableProviders,
   type AvailableProviders,
+  getAvailableProviders,
 } from "@/lib/auth/getAvailableProviders";
 
 export const getServerSideProps: GetServerSideProps<{

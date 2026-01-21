@@ -27,7 +27,9 @@ export const SocialLoginButtons = ({ availableProviders }: Props) => {
     query.callbackUrl?.toString() ??
     `/typebots?${stringify(omit(query, "error", "callbackUrl"))}`;
 
-  const handleSignIn = async (provider: "github" | "google" | "facebook" | "gitlab" | "microsoft") => {
+  const handleSignIn = async (
+    provider: "github" | "google" | "facebook" | "gitlab" | "microsoft",
+  ) => {
     setAuthLoading(provider);
     await authClient.signIn.social({
       provider,

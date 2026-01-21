@@ -3031,12 +3031,10 @@
                             "type": "object",
                             "properties": {
                               "name": {
-                                "type": "string",
-                                "nullable": true
+                                "type": "string"
                               },
                               "email": {
-                                "type": "string",
-                                "nullable": true
+                                "type": "string"
                               },
                               "image": {
                                 "type": "string",
@@ -13507,8 +13505,7 @@
                         }
                       },
                       "name": {
-                        "type": "string",
-                        "nullable": true
+                        "type": "string"
                       },
                       "image": {
                         "type": "string",
@@ -13561,8 +13558,7 @@
                       "type": "string"
                     },
                     "name": {
-                      "type": "string",
-                      "nullable": true
+                      "type": "string"
                     },
                     "email": {
                       "type": "string"

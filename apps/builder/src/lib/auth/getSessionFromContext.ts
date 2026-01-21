@@ -5,7 +5,9 @@ import { auth } from "./config";
  * Get session from GetServerSidePropsContext for pages router
  * This converts the request to headers that Better Auth can use
  */
-export async function getSessionFromContext(context: GetServerSidePropsContext) {
+export async function getSessionFromContext(
+  context: GetServerSidePropsContext,
+) {
   const { req } = context;
 
   // Build headers from the request

@@ -43,7 +43,9 @@ export const updateUserEmail = authenticatedProcedure
         message: "Invalid verification identifier format",
       });
     }
-    const newEmail = Buffer.from(identifierParts[1], "base64").toString("utf-8");
+    const newEmail = Buffer.from(identifierParts[1], "base64").toString(
+      "utf-8",
+    );
 
     if (verification.expiresAt < new Date()) {
       await deleteVerification(verification.id);

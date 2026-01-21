@@ -1,5 +1,5 @@
-import type { ClientUser } from "@typebot.io/user/schemas";
 import prisma from "@typebot.io/prisma";
+import type { ClientUser } from "@typebot.io/user/schemas";
 import { clientUserSchema } from "@typebot.io/user/schemas";
 import { authenticatedProcedure } from "@/helpers/server/trpc";
 
@@ -34,7 +34,9 @@ export const getMe = authenticatedProcedure
     // Transform Prisma Json types to proper TypeScript types
     return {
       ...fullUser,
-      displayedInAppNotifications: fullUser.displayedInAppNotifications as ClientUser["displayedInAppNotifications"],
-      groupTitlesAutoGeneration: fullUser.groupTitlesAutoGeneration as ClientUser["groupTitlesAutoGeneration"],
+      displayedInAppNotifications:
+        fullUser.displayedInAppNotifications as ClientUser["displayedInAppNotifications"],
+      groupTitlesAutoGeneration:
+        fullUser.groupTitlesAutoGeneration as ClientUser["groupTitlesAutoGeneration"],
     };
   });

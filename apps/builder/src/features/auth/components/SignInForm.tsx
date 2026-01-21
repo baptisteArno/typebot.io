@@ -13,9 +13,9 @@ import { useQueryState } from "nuqs";
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 import { TextLink } from "@/components/TextLink";
-import { toast } from "@/lib/toast";
 import { authClient, useSession } from "@/lib/auth/client";
 import type { AvailableProviders } from "@/lib/auth/getAvailableProviders";
+import { toast } from "@/lib/toast";
 import { createEmailMagicLink } from "../helpers/createEmailMagicLink";
 import { DividerWithText } from "./DividerWithText";
 import { SignInError } from "./SignInError";
@@ -27,21 +27,25 @@ type Props = {
   availableProviders: AvailableProviders;
 };
 
-export const SignInForm = ({ defaultEmail, className, availableProviders }: Props) => {
+export const SignInForm = ({
+  defaultEmail,
+  className,
+  availableProviders,
+}: Props) => {
   const { t } = useTranslate();
   const router = useRouter();
   const [authError, setAuthError] = useQueryState("error");
   const [redirectPath] = useQueryState("redirectPath");
   const { data: session, isPending } = useSession();
   const [authLoading, setAuthLoading] = useState(false);
-  const [isLoadingProviders, setIsLoadingProviders] = useState(false);
+  const [_isLoadingProviders, _setIsLoadingProviders] = useState(false);
 
   const [emailValue, setEmailValue] = useState(defaultEmail ?? "");
   const [isMagicCodeSent, setIsMagicCodeSent] = useState(false);
 
   // Check if any provider is configured
   const hasNoAuthProvider = !Object.entries(availableProviders).some(
-    ([key, value]) => key !== "customOAuthName" && value
+    ([key, value]) => key !== "customOAuthName" && value,
   );
 
   useEffect(() => {
@@ -88,7 +92,9 @@ export const SignInForm = ({ defaultEmail, className, availableProviders }: Prop
         else
           toast({
             description: t("errorMessage"),
-            details: error.message || "Check server logs to see relevent error message.",
+            details:
+              error.message ||
+              "Check server logs to see relevent error message.",
           });
       } else {
         setIsMagicCodeSent(true);

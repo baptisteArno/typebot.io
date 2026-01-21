@@ -1,10 +1,12 @@
 "use client";
 
+import {
+  adminClient,
+  emailOTPClient,
+  genericOAuthClient,
+  magicLinkClient,
+} from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
-import { magicLinkClient } from "better-auth/client/plugins";
-import { emailOTPClient } from "better-auth/client/plugins";
-import { adminClient } from "better-auth/client/plugins";
-import { genericOAuthClient } from "better-auth/client/plugins";
 
 export const authClient = createAuthClient({
   baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "",
@@ -16,10 +18,4 @@ export const authClient = createAuthClient({
   ],
 });
 
-export const {
-  signIn,
-  signOut,
-  signUp,
-  useSession,
-  getSession,
-} = authClient;
+export const { signIn, signOut, signUp, useSession, getSession } = authClient;

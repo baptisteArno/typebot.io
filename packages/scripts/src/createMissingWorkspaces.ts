@@ -37,8 +37,12 @@ const createMissingWorkspaces = async () => {
   const defaultPlan = (process.env.DEFAULT_WORKSPACE_PLAN as Plan) || Plan.FREE;
 
   for (const user of usersWithoutWorkspaces) {
-    const plan = adminEmails.includes(user.email) ? Plan.UNLIMITED : defaultPlan;
-    const workspaceName = user.name ? `${user.name}'s workspace` : "My workspace";
+    const plan = adminEmails.includes(user.email)
+      ? Plan.UNLIMITED
+      : defaultPlan;
+    const workspaceName = user.name
+      ? `${user.name}'s workspace`
+      : "My workspace";
 
     console.log(`Creating workspace for ${user.email} with plan ${plan}...`);
 

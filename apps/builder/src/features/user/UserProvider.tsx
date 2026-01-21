@@ -30,7 +30,11 @@ export const userContext = createContext<{
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { data: session, isPending } = useSession();
-  const status = isPending ? "loading" : session?.user ? "authenticated" : "unauthenticated";
+  const status = isPending
+    ? "loading"
+    : session?.user
+      ? "authenticated"
+      : "unauthenticated";
   const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string>();
   const { theme, setTheme } = useTheme();
   const [localUser, setLocalUser] = useState<ClientUser>();
@@ -87,7 +91,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     ) {
       router.replace("/onboarding");
     }
-  }, [router.isReady, router.pathname, status, fullUserData?.termsAcceptedAt, fullUserData?.createdAt]);
+  }, [
+    router.isReady,
+    router.pathname,
+    status,
+    fullUserData?.termsAcceptedAt,
+    fullUserData?.createdAt,
+  ]);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -107,7 +117,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         { locale: preferredLanguage },
       );
     }
-  }, [router.isReady, router.locale, status, isUserLoading, fullUserData?.preferredLanguage]);
+  }, [
+    router.isReady,
+    router.locale,
+    status,
+    isUserLoading,
+    fullUserData?.preferredLanguage,
+  ]);
 
   const updateUser = async (updates: Partial<User>) => {
     if (!localUser) return;

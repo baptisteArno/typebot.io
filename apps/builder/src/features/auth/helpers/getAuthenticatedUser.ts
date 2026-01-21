@@ -6,7 +6,7 @@ import { auth } from "@/lib/auth/config";
 
 export const getAuthenticatedUser = async (
   req: NextApiRequest,
-  res: NextApiResponse,
+  _res: NextApiResponse,
 ): Promise<ClientUser | undefined> => {
   const bearerToken = extractBearerToken(req);
   if (bearerToken) return authenticateByToken(bearerToken);
