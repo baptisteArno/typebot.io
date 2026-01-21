@@ -9,7 +9,7 @@ import {
   RedisClient,
   RedisSubscribeError,
 } from "@typebot.io/lib/redis/RedisClient";
-import { Effect, Fiber, Layer, Redacted, Schema, Stream } from "effect";
+import { Effect, Fiber, Layer, Option, Redacted, Schema, Stream } from "effect";
 import {
   EXPORT_PROGRESS_CHANNEL_PREFIX,
   ExportResultsWorkflow,
@@ -103,7 +103,10 @@ export const ResultsWorkflowsRpcLayer = ResultsWorkflowsRpc.toLayer(
 const ProtocolLive = Effect.gen(function* () {
   const { workflowsServer } = yield* WorkflowsAppConfig;
   return RpcClient.layerProtocolHttp({
-    url: workflowsServer.rpcUrl.toString(),
+    url: Option.getOrElse(
+      workflowsServer.rpcUrl,
+      () => new URL("http://localhost:3007/rpc"),
+    ).toString(),
     transformClient: (client) =>
       HttpClient.mapRequest(client, (request) =>
         request.pipe(

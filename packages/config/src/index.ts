@@ -11,7 +11,7 @@ import {
 
 const WorkflowsAppConfigSchema = Config.all({
   workflowsServer: Config.all({
-    rpcUrl: Config.url("WORKFLOWS_RPC_URL"),
+    rpcUrl: Config.url("WORKFLOWS_RPC_URL").pipe(Config.option),
     port: Config.number("WORKFLOWS_SERVER_PORT").pipe(Config.withDefault(3000)),
     rpcSecret: Config.redacted(Config.string("WORKFLOWS_RPC_SECRET")),
   }),
