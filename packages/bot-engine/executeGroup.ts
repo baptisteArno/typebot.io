@@ -442,9 +442,14 @@ const getBlockLabel = (
     }
   }
   if (isInputBlock(block)) {
-    // @ts-ignore
+    // Check if the block has labels property (not all input blocks have this)
+    const labels =
+      block.options && 'labels' in block.options
+        ? block.options.labels
+        : undefined
     const label =
-      block.options?.labels?.placeholder ?? block.options?.labels?.button
+      (labels && 'placeholder' in labels ? labels.placeholder : undefined) ??
+      (labels && 'button' in labels ? labels.button : undefined)
     if (label) return label
 
     if (block.options?.variableId) {

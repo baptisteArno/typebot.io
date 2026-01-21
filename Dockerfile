@@ -63,7 +63,7 @@ RUN ./node_modules/.bin/prisma generate --schema=packages/prisma/postgresql/sche
 
 COPY scripts/${SCOPE}-entrypoint.sh ./
 RUN chmod +x ./${SCOPE}-entrypoint.sh
-ENTRYPOINT ./${SCOPE}-entrypoint.sh
+ENTRYPOINT ["./${SCOPE}-entrypoint.sh"]
 
 EXPOSE 3000
-ENV PORT 3000
+ENV PORT=3000
