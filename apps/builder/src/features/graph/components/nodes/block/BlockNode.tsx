@@ -15,6 +15,7 @@ import {
   TextBubbleBlock,
   BlockV6,
 } from '@typebot.io/schemas'
+import { NoteBubbleBlock } from '@typebot.io/schemas/features/blocks/bubbles/note/schema'
 import { isDefined } from '@typebot.io/lib'
 import {
   isInputBlock,
@@ -29,6 +30,7 @@ import { useRouter } from 'next/router'
 import { MediaBubblePopoverContent } from './MediaBubblePopoverContent'
 import { ContextMenu } from '@/components/ContextMenu'
 import { TextBubbleEditor } from '@/features/blocks/bubbles/textBubble/components/TextBubbleEditor'
+import { NoteEditor } from '@/features/blocks/bubbles/note/components/NoteEditor'
 import { BlockIcon } from '@/features/editor/components/BlockIcon'
 import { useTypebot } from '@/features/editor/providers/TypebotProvider'
 import {
@@ -37,6 +39,7 @@ import {
   useDragDistance,
 } from '@/features/graph/providers/GraphDndProvider'
 import { useGraph } from '@/features/graph/providers/GraphProvider'
+import { useFlowSearch } from '@/features/graph/providers/FlowSearchProvider'
 import { ParentModalProvider } from '@/features/graph/providers/ParentModalProvider'
 import { hasDefaultConnector } from '@/features/typebot/helpers/hasDefaultConnector'
 import { setMultipleRefs } from '@/helpers/setMultipleRefs'
@@ -44,10 +47,15 @@ import { TargetEndpoint } from '../../endpoints/TargetEndpoint'
 import { SettingsModal } from './SettingsModal'
 import { TElement } from '@udecode/plate-common'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
+import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { useGroupsStore } from '@/features/graph/hooks/useGroupsStore'
 import { TurnableIntoParam } from '@typebot.io/forge'
 import { ZodError, ZodObject } from 'zod'
 import { toast } from 'sonner'
+
+const isNoteBlock = (block: BlockV6): block is NoteBubbleBlock => {
+  return block.type === BubbleBlockType.NOTE
+}
 import { fromZodError } from 'zod-validation-error'
 
 export const BlockNode = ({
@@ -62,8 +70,14 @@ export const BlockNode = ({
   onMouseDown?: (blockNodePosition: NodePosition, block: BlockV6) => void
 }) => {
   const bg = useColorModeValue('gray.50', 'gray.850')
+  const noteBg = useColorModeValue('gray.50', 'gray.850')
   const previewingBorderColor = useColorModeValue('blue.400', 'blue.300')
   const borderColor = useColorModeValue('gray.200', 'gray.800')
+  const noteBorderColor = useColorModeValue('gray.200', 'gray.800')
+  const searchHighlightBorderColor = useColorModeValue(
+    'orange.400',
+    'orange.300'
+  )
   const { pathname, query } = useRouter()
   const {
     setConnectingIds,
@@ -77,6 +91,7 @@ export const BlockNode = ({
     previewingBlock,
   } = useGraph()
   const { mouseOverBlock, setMouseOverBlock } = useBlockDnd()
+  const { highlightedBlockId } = useFlowSearch()
   const { typebot, updateBlock } = useTypebot()
   const [isConnecting, setIsConnecting] = useState(false)
   const blockRef = useRef<HTMLDivElement | null>(null)
@@ -85,6 +100,8 @@ export const BlockNode = ({
     isConnecting ||
     previewingEdge?.to.blockId === block.id ||
     previewingBlock?.id === block.id
+
+  const isSearchHighlighted = highlightedBlockId === block.id
 
   const groupId = typebot?.groups.at(indices.groupIndex)?.id
 
@@ -150,6 +167,11 @@ export const BlockNode = ({
 
   const handleTextEditorChange = (content: TElement[]) => {
     const updatedBlock = { ...block, content: { richText: content } }
+    updateBlock(indices, updatedBlock)
+  }
+
+  const handleNoteEditorChange = (richText: TElement[]) => {
+    const updatedBlock = { ...block, content: { richText } }
     updateBlock(indices, updatedBlock)
   }
 
@@ -229,6 +251,13 @@ export const BlockNode = ({
       onChange={handleTextEditorChange}
       onClose={handleCloseEditor}
     />
+  ) : openedBlockId === block.id && isNoteBlock(block) ? (
+    <NoteEditor
+      id={block.id}
+      initialValue={block.content?.richText ?? []}
+      onChange={handleNoteEditorChange}
+      onClose={handleCloseEditor}
+    />
   ) : (
     <ContextMenu<HTMLDivElement>
       renderMenu={({ onClose }) => (
@@ -266,17 +295,27 @@ export const BlockNode = ({
                 userSelect="none"
                 p="3"
                 borderWidth={
-                  isContextMenuOpened || isPreviewing ? '2px' : '1px'
+                  isContextMenuOpened || isPreviewing || isSearchHighlighted
+                    ? '2px'
+                    : '1px'
                 }
                 borderColor={
-                  isContextMenuOpened || isPreviewing
+                  isSearchHighlighted
+                    ? searchHighlightBorderColor
+                    : isContextMenuOpened || isPreviewing
                     ? previewingBorderColor
+                    : isNoteBlock(block)
+                    ? noteBorderColor
                     : borderColor
                 }
-                margin={isContextMenuOpened || isPreviewing ? '-1px' : 0}
+                margin={
+                  isContextMenuOpened || isPreviewing || isSearchHighlighted
+                    ? '-1px'
+                    : 0
+                }
                 rounded="lg"
                 cursor={'pointer'}
-                bg={bg}
+                bg={isNoteBlock(block) ? noteBg : bg}
                 align="flex-start"
                 w="full"
                 transition="border-color 0.2s"
@@ -291,17 +330,19 @@ export const BlockNode = ({
                     }
                   />
                 )}
-                {(hasIcomingEdge || isDefined(connectingIds)) && (
-                  <TargetEndpoint
-                    pos="absolute"
-                    left="-34px"
-                    top="16px"
-                    blockId={block.id}
-                    groupId={groupId}
-                  />
-                )}
-                {(isConnectable ||
-                  (pathname.endsWith('analytics') && isInputBlock(block))) &&
+                {!isNoteBlock(block) &&
+                  (hasIcomingEdge || isDefined(connectingIds)) && (
+                    <TargetEndpoint
+                      pos="absolute"
+                      left="-34px"
+                      top="16px"
+                      blockId={block.id}
+                      groupId={groupId}
+                    />
+                  )}
+                {!isNoteBlock(block) &&
+                  (isConnectable ||
+                    (pathname.endsWith('analytics') && isInputBlock(block))) &&
                   hasDefaultConnector(block) &&
                   groupId &&
                   block.type !== LogicBlockType.JUMP && (

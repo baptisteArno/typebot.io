@@ -7,6 +7,8 @@ import { setVariableBlockSchema } from './setVariable'
 import { typebotLinkBlockSchema } from './typebotLink'
 import { waitBlockSchema } from './wait'
 import { abTestBlockSchemas } from './abTest'
+import { validateCpfBlockSchema } from './validateCpf'
+import { validateCnpjBlockSchema } from './validateCnpj'
 
 export const logicBlockSchemas = {
   v5: [
@@ -18,6 +20,8 @@ export const logicBlockSchemas = {
     waitBlockSchema,
     jumpBlockSchema,
     abTestBlockSchemas.v5,
+    validateCpfBlockSchema,
+    validateCnpjBlockSchema,
   ],
   v6: [
     scriptBlockSchema,
@@ -28,6 +32,8 @@ export const logicBlockSchemas = {
     waitBlockSchema,
     jumpBlockSchema,
     abTestBlockSchemas.v6,
+    validateCpfBlockSchema,
+    validateCnpjBlockSchema,
   ],
 } as const
 

@@ -10,6 +10,7 @@ import { ratingInputBlockSchema } from './rating'
 import { textInputSchema } from './text'
 import { urlInputSchema } from './url'
 import { fileInputBlockSchemas } from './file'
+import { nativeVariablesBlockSchema } from './nativeVariables'
 
 export const inputBlockSchemas = {
   v5: [
@@ -24,6 +25,7 @@ export const inputBlockSchemas = {
     ratingInputBlockSchema,
     fileInputBlockSchemas.v5,
     pictureChoiceBlockSchemas.v5,
+    nativeVariablesBlockSchema,
   ],
   v6: [
     textInputSchema,
@@ -37,6 +39,7 @@ export const inputBlockSchemas = {
     ratingInputBlockSchema,
     fileInputBlockSchemas.v6,
     pictureChoiceBlockSchemas.v6,
+    nativeVariablesBlockSchema,
   ],
 } as const
 

@@ -49,6 +49,12 @@ export const ChevronDownIcon = (props: IconProps) => (
   </Icon>
 )
 
+export const ChevronUpIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
+    <polyline points="18 15 12 9 6 15"></polyline>
+  </Icon>
+)
+
 export const PlusIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...featherIconsBaseProps} {...props}>
     <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -690,5 +696,67 @@ export const HistoryIcon = (props: IconProps) => (
     <polyline points="1 4 1 10 7 10"></polyline>
     <path d="M3.51 15a9 9 0 1 0 1.49-9"></path>
     <path d="M12 8v4l3 3"></path>
+  </Icon>
+)
+
+export const CnpjIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...props}>
+    <path
+      fill="currentColor"
+      d="M3 3H21C21.6 3 22 3.4 22 4V20C22 20.6 21.6 21 21 21H3C2.4 21 2 20.6 2 20V4C2 3.4 2.4 3 3 3M4 5V19H20V5H4M6 7H18V9H6V7M6 11H18V13H6V11M6 15H14V17H6V15Z"
+    />
+  </Icon>
+)
+
+export const CpfIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...props}>
+    <path
+      fill="currentColor"
+      d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2M21 9V7L12 2L3 7V9H21M20 10H4V12H5V19H19V12H20V10M11 13V17H13V13H11Z"
+    />
+  </Icon>
+)
+
+export const NoteIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...props}>
+    <path
+      fill="#3182ce"
+      d="M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M7,7H17V9H7V7M7,11H17V13H7V11M7,15H14V17H7V15Z"
+    />
+  </Icon>
+)
+
+export const ValidateCpfIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...props}>
+    <path
+      fill="currentColor"
+      d="M2 3H22C22.6 3 23 3.4 23 4V20C23 20.6 22.6 21 22 21H2C1.4 21 1 20.6 1 20V4C1 3.4 1.4 3 2 3M3 5V19H21V5H3M9 7C10.1 7 11 7.9 11 9S10.1 11 9 11 7 10.1 7 9 7.9 7 9 7M9 13C10.1 13 11 13.4 11 14V15H7V14C7 13.4 7.9 13 9 13M13 8H19V10H13V8M13 12H19V14H13V12Z"
+    />
+  </Icon>
+)
+
+export const ValidateCnpjIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...props}>
+    <path
+      fill="currentColor"
+      d="M12 7V3H2V21H22V7H12M6 19H4V17H6V19M6 15H4V13H6V15M6 11H4V9H6V11M6 7H4V5H6V7M10 19H8V17H10V19M10 15H8V13H10V15M10 11H8V9H10V11M10 7H8V5H10V7M20 19H18V17H20V19M20 15H18V13H20V15M20 11H18V9H20V11M16 19H14V17H16V19M16 15H14V13H16V15M16 11H14V9H16V11M16 7H14V9H16V7Z"
+    />
+  </Icon>
+)
+
+export const NativeVariablesIcon = (props: IconProps) => (
+  <Icon viewBox="0 0 24 24" {...props}>
+    <path
+      fill="currentColor"
+      d="M8 4C6.9 4 6 4.9 6 6V8C6 8.55 5.55 9 5 9H4C3.45 9 3 9.45 3 10V14C3 14.55 3.45 15 4 15H5C5.55 15 6 15.45 6 16V18C6 19.1 6.9 20 8 20H9V18H8V15.5C8 14.12 7.16 12.94 6 12.5C7.16 11.06 8 9.88 8 8.5V6H9V4H8Z"
+    />
+    <path
+      fill="currentColor"
+      d="M16 4V6H17V8.5C17 9.88 17.84 11.06 19 11.5C17.84 12.94 17 14.12 17 15.5V18H16V20H17C18.1 20 19 19.1 19 18V16C19 15.45 19.45 15 20 15H21C21.55 15 22 14.55 22 14V10C22 9.45 21.55 9 21 9H20C19.45 9 19 8.55 19 8V6C19 4.9 18.1 4 17 4H16Z"
+    />
+    <path
+      fill="currentColor"
+      d="M10.5 10L9 11.5L10.5 13L12 11.5L13.5 13L15 11.5L13.5 10L15 8.5L13.5 7L12 8.5L10.5 7L9 8.5L10.5 10Z"
+    />
   </Icon>
 )

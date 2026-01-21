@@ -4,6 +4,7 @@ import { embedBubbleBlockSchema } from './embed'
 import { imageBubbleBlockSchema } from './image'
 import { textBubbleBlockSchema } from './text'
 import { videoBubbleBlockSchema } from './video'
+import { noteBubbleBlockSchema } from './note/schema'
 
 export const bubbleBlockSchemas = [
   textBubbleBlockSchema,
@@ -11,6 +12,7 @@ export const bubbleBlockSchemas = [
   videoBubbleBlockSchema,
   embedBubbleBlockSchema,
   audioBubbleBlockSchema,
+  noteBubbleBlockSchema,
 ] as const
 
 export const bubbleBlockSchema = z.discriminatedUnion('type', [

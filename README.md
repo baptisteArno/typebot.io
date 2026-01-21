@@ -99,8 +99,8 @@ pnpm db:migrate
 # Alternatively, call the workspace package directly
 pnpm --filter @typebot.io/prisma run migrate:deploy
 ```
-
 - Stop Supabase:
+
 
 ```bash
 supabase stop

@@ -12,6 +12,7 @@ import {
   ratingInputBlockSchema,
   textInputSchema,
   urlInputSchema,
+  nativeVariablesBlockSchema,
 } from '../blocks'
 import { logSchema } from '../result'
 import { settingsSchema, themeSchema } from '../typebot'
@@ -321,6 +322,7 @@ const chatResponseBaseSchema = z.object({
         ratingInputBlockSchema,
         fileInputBlockSchemas.v6,
         pictureChoiceBlockSchemas.v6,
+        nativeVariablesBlockSchema,
       ]),
       z.discriminatedUnion('type', [
         buttonsInputSchemas.v5,

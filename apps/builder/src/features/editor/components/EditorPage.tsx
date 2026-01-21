@@ -1,6 +1,8 @@
 import { Seo } from '@/components/Seo'
 import { Graph } from '@/features/graph/components/Graph'
+import { FlowSearchPanel } from '@/features/graph/components/FlowSearchPanel'
 import { EventsCoordinatesProvider } from '@/features/graph/providers/EventsCoordinateProvider'
+import { FlowSearchProvider } from '@/features/graph/providers/FlowSearchProvider'
 import { GraphDndProvider } from '@/features/graph/providers/GraphDndProvider'
 import { GraphProvider } from '@/features/graph/providers/GraphProvider'
 import { PreviewDrawer } from '@/features/preview/components/PreviewDrawer'
@@ -103,15 +105,18 @@ const GraphProviderWithEditor = ({
       <GraphProvider
         isReadOnly={selectedUserMode === 'read' || selectedUserMode === 'guest'}
       >
-        <EventsCoordinatesProvider events={typebot.events}>
-          <Graph flex="1" typebot={typebot} key={typebot.id} />
-          <BoardMenuButton
-            pos="absolute"
-            right="40px"
-            top={`calc(20px + ${isSuspicious ? '70px' : '0px'})`}
-          />
-          <RightPanel />
-        </EventsCoordinatesProvider>
+        <FlowSearchProvider>
+          <EventsCoordinatesProvider events={typebot.events}>
+            <Graph flex="1" typebot={typebot} key={typebot.id} />
+            <FlowSearchPanel />
+            <BoardMenuButton
+              pos="absolute"
+              right="40px"
+              top={`calc(20px + ${isSuspicious ? '70px' : '0px'})`}
+            />
+            <RightPanel />
+          </EventsCoordinatesProvider>
+        </FlowSearchProvider>
       </GraphProvider>
     </GraphDndProvider>
   )

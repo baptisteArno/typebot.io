@@ -47,6 +47,25 @@ import { isURL } from '@typebot.io/lib/validators/isURL'
 import { isForgedBlockType } from '@typebot.io/schemas/features/blocks/forged/helpers'
 import logger from '@typebot.io/lib/logger'
 
+interface NativeVariableItem {
+  content?: { isSet?: boolean }
+  outgoingEdgeId?: string
+}
+
+// Tipo helper para blocos NATIVE_VARIABLES com tipagem adequada
+type NativeVariableBlock = Block & {
+  type: InputBlockType.NATIVE_VARIABLES
+  items: NativeVariableItem[]
+  options?: {
+    variableId?: string
+  }
+}
+
+// Type guard para verificar se é um bloco NATIVE_VARIABLES
+const isNativeVariableBlock = (block: Block): block is NativeVariableBlock => {
+  return block.type === InputBlockType.NATIVE_VARIABLES && 'items' in block
+}
+
 type Params = {
   version: 1 | 2
   state: SessionState
@@ -437,6 +456,7 @@ const getOutgoingEdgeId =
     reply: string | undefined
   ): { edgeId: string | undefined; isOffDefaultPath: boolean } => {
     const variables = state.typebotsQueue[0].typebot.variables
+
     if (
       block.type === InputBlockType.CHOICE &&
       !(
@@ -453,6 +473,7 @@ const getOutgoingEdgeId =
       if (matchedItem?.outgoingEdgeId)
         return { edgeId: matchedItem.outgoingEdgeId, isOffDefaultPath: true }
     }
+
     if (
       block.type === InputBlockType.PICTURE_CHOICE &&
       !(
@@ -469,6 +490,30 @@ const getOutgoingEdgeId =
       if (matchedItem?.outgoingEdgeId)
         return { edgeId: matchedItem.outgoingEdgeId, isOffDefaultPath: true }
     }
+
+    // NativeVariables conditional routing
+    if (
+      block.type === InputBlockType.NATIVE_VARIABLES &&
+      block.options?.variableId &&
+      isNativeVariableBlock(block)
+    ) {
+      const items = block.items
+      const targetVariable = variables.find(
+        (v) => v.id === block.options?.variableId
+      )
+      const hasValue =
+        targetVariable?.value != null &&
+        targetVariable?.value !== '' &&
+        targetVariable?.value !== undefined
+
+      // Encontrar o item correto baseado na condição
+      const targetItem = items.find((item) => item.content?.isSet === hasValue)
+
+      if (targetItem?.outgoingEdgeId) {
+        return { edgeId: targetItem.outgoingEdgeId, isOffDefaultPath: true }
+      }
+    }
+
     return { edgeId: block.outgoingEdgeId, isOffDefaultPath: false }
   }
 
@@ -570,7 +615,13 @@ const parseReply =
         if (!reply) return { status: 'fail' }
         return { status: 'success', reply: reply }
       }
+      case InputBlockType.NATIVE_VARIABLES: {
+        // NATIVE_VARIABLES é processado automaticamente, não precisa de input do usuário
+        return { status: 'skip' }
+      }
     }
+    // Return statement padrão para casos não cobertos
+    return { status: 'fail' }
   }
 
 export const safeJsonParse = (value: string): unknown => {

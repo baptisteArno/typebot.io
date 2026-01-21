@@ -15,7 +15,14 @@ export const variablesAction = (setTypebot: SetTypebot): VariablesActions => ({
   createVariable: (newVariable: Variable) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        typebot.variables.unshift(newVariable)
+        // Check if variable with same name already exists
+        const existingVariable = typebot.variables.find(
+          (v) => v.name === newVariable.name
+        )
+
+        if (!existingVariable) {
+          typebot.variables.unshift(newVariable)
+        }
       })
     ),
   updateVariable: (
