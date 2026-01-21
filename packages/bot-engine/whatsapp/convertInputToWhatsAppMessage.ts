@@ -133,6 +133,8 @@ export const convertInputToWhatsAppMessages = (
         },
       }))
     }
+    default:
+      return []
   }
 }
 

@@ -26,7 +26,6 @@ import { parseDateInput } from './blocks/inputs/date/parseDateInput'
 import { parseNativeVariablesInput } from './blocks/inputs/nativeVariables/parseNativeVariablesInput'
 import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
-import { BubbleBlockType } from '@typebot.io/schemas/features/blocks/bubbles/constants'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 
@@ -119,13 +118,16 @@ export const executeGroup = async (
 
     // Skip NOTE blocks during execution
     if (block.type === BubbleBlockType.NOTE) continue
-    
+
     logger.info('Block execution starting', {
       blockId: block.id,
       type: block.type,
       groupId: group.id,
       groupTitle: group.title,
-      message: getBlockLabel(block, newSessionState.typebotsQueue[0].typebot.variables),
+      message: getBlockLabel(
+        block,
+        newSessionState.typebotsQueue[0].typebot.variables
+      ),
       sessionId,
     })
 
@@ -134,7 +136,7 @@ export const executeGroup = async (
         logger.info('Block execution finished', {
           blockId: block.id,
           duration: Date.now() - blockStartTime,
-          skipped: true
+          skipped: true,
         })
         continue
       }
@@ -179,8 +181,8 @@ export const executeGroup = async (
       isLogicBlock(block)
         ? await executeLogic(newSessionState)(block)
         : isIntegrationBlock(block)
-          ? await executeIntegration(newSessionState, sessionId)(block)
-          : null
+        ? await executeIntegration(newSessionState, sessionId)(block)
+        : null
     ) as ExecuteLogicResponse | ExecuteIntegrationResponse | null
 
     if (!executionResponse) {
@@ -338,13 +340,13 @@ export const executeGroup = async (
 
 const computeRuntimeOptions =
   (state: SessionState) =>
-    (block: InputBlock): Promise<RuntimeOptions> | undefined => {
-      switch (block.type) {
-        case InputBlockType.PAYMENT: {
-          return computePaymentInputRuntimeOptions(state)(block.options)
-        }
+  (block: InputBlock): Promise<RuntimeOptions> | undefined => {
+    switch (block.type) {
+      case InputBlockType.PAYMENT: {
+        return computePaymentInputRuntimeOptions(state)(block.options)
       }
     }
+  }
 
 export const parseInput =
   (state: SessionState) =>
@@ -424,7 +426,10 @@ export const parseInput =
     }
   }
 
-const getBlockLabel = (block: Group['blocks'][number], variables: Variable[]): string | undefined => {
+const getBlockLabel = (
+  block: Group['blocks'][number],
+  variables: Variable[]
+): string | undefined => {
   if (isBubbleBlock(block)) {
     if (block.type === BubbleBlockType.TEXT) {
       if (!block.content?.richText) return
@@ -438,11 +443,12 @@ const getBlockLabel = (block: Group['blocks'][number], variables: Variable[]): s
   }
   if (isInputBlock(block)) {
     // @ts-ignore
-    const label = block.options?.labels?.placeholder ?? block.options?.labels?.button
+    const label =
+      block.options?.labels?.placeholder ?? block.options?.labels?.button
     if (label) return label
 
     if (block.options?.variableId) {
-      const variable = variables.find(v => v.id === block.options?.variableId)
+      const variable = variables.find((v) => v.id === block.options?.variableId)
       if (variable) return `Collect ${variable.name}`
     }
   }
@@ -462,7 +468,7 @@ const getBlockLabel = (block: Group['blocks'][number], variables: Variable[]): s
     if (block.type === LogicBlockType.SET_VARIABLE) {
       // @ts-ignore
       const variableId = block.options?.variableId
-      const variable = variables.find(v => v.id === variableId)
+      const variable = variables.find((v) => v.id === variableId)
       if (variable) return `Set ${variable.name}`
     }
   }

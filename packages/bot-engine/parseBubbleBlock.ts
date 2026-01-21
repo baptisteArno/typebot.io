@@ -98,6 +98,10 @@ export const parseBubbleBlock = (
         },
       }
     }
+    case BubbleBlockType.NOTE: {
+      // NOTE bubbles are editor-only and skipped during execution
+      throw new Error('NOTE bubble cannot be parsed into a chat message')
+    }
     default:
       return deepParseVariables(variables, { removeEmptyStrings: true })(block)
   }
