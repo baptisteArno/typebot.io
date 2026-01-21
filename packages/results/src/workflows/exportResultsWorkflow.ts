@@ -343,7 +343,7 @@ export const ProgressReporterRedisLayer = Layer.unwrapEffect(
             Effect.mapError(
               (error) =>
                 new ProgressReporterError({
-                  message: `[${error.cause}] ${error.message}`,
+                  message: error.message,
                 }),
             ),
           ),

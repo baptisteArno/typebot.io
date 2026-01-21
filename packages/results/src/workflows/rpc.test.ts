@@ -15,11 +15,28 @@ describe("ExecuteExportResultsWorkflow", () => {
     const progressQueue = await Effect.runPromise(Queue.unbounded<string>());
 
     const mockRedisClientLayer = Layer.succeed(RedisClient, {
-      get: () => Effect.fail(new RedisGetError({ cause: "Not implemented" })),
-      set: () => Effect.fail(new RedisSetError({ cause: "Not implemented" })),
+      get: () =>
+        Effect.fail(
+          new RedisGetError({
+            message: "Not implemented",
+            cause: "Not implemented",
+          }),
+        ),
+      set: () =>
+        Effect.fail(
+          new RedisSetError({
+            message: "Not implemented",
+            cause: "Not implemented",
+          }),
+        ),
       subscribe: () => Stream.fromQueue(progressQueue, { shutdown: true }),
       publish: () =>
-        Effect.fail(new RedisPublishError({ cause: "Not implemented" })),
+        Effect.fail(
+          new RedisPublishError({
+            message: "Not implemented",
+            cause: "Not implemented",
+          }),
+        ),
     });
 
     const mockWorkflowLayer = ExportResultsWorkflow.toLayer(

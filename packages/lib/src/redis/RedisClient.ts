@@ -1,31 +1,43 @@
 import { Context, Effect, Layer, Redacted, Schema, Stream } from "effect";
 import Redis from "ioredis";
 
+export class RedisConnectError extends Schema.TaggedError<RedisConnectError>()(
+  "@typebot/RedisConnectError",
+  {
+    message: Schema.String,
+    cause: Schema.optional(Schema.Defect),
+  },
+) {}
+
 export class RedisPublishError extends Schema.TaggedError<RedisPublishError>()(
   "@typebot/RedisPublishError",
   {
-    cause: Schema.optional(Schema.Unknown),
+    message: Schema.String,
+    cause: Schema.optional(Schema.Defect),
   },
 ) {}
 
 export class RedisSubscribeError extends Schema.TaggedError<RedisSubscribeError>()(
   "@typebot/RedisSubscribeError",
   {
-    cause: Schema.optional(Schema.Unknown),
+    message: Schema.String,
+    cause: Schema.optional(Schema.Defect),
   },
 ) {}
 
 export class RedisGetError extends Schema.TaggedError<RedisGetError>()(
   "@typebot/RedisGetError",
   {
-    cause: Schema.optional(Schema.Unknown),
+    message: Schema.String,
+    cause: Schema.optional(Schema.Defect),
   },
 ) {}
 
 export class RedisSetError extends Schema.TaggedError<RedisSetError>()(
   "@typebot/RedisSetError",
   {
-    cause: Schema.optional(Schema.Unknown),
+    message: Schema.String,
+    cause: Schema.optional(Schema.Defect),
   },
 ) {}
 
@@ -49,23 +61,49 @@ export const RedisClientLayer = Layer.unwrapScoped(
       Schema.Redacted(Schema.URL),
     );
     const createClient = Effect.sync(
-      () => new Redis(Redacted.value(redisUrl).toString()),
+      () =>
+        new Redis(Redacted.value(redisUrl).toString(), {
+          lazyConnect: true,
+        }),
     );
+    const connectClient = (redis: Redis) =>
+      Effect.tryPromise({
+        try: () => {
+          redis.on("error", noop);
+          return redis.connect();
+        },
+        catch: (error) =>
+          new RedisConnectError({
+            message: formatUnknownError(error),
+            cause: error,
+          }),
+      }).pipe(Effect.as(redis));
     const releaseClient = (redis: Redis) => Effect.promise(() => redis.quit());
 
-    const client = yield* Effect.acquireRelease(createClient, releaseClient);
+    const client = yield* Effect.acquireRelease(
+      createClient.pipe(Effect.flatMap(connectClient)),
+      releaseClient,
+    );
 
     const get = Effect.fn("RedisClient.get")((key: string) =>
       Effect.tryPromise({
         try: () => client.get(key),
-        catch: (error) => new RedisGetError({ cause: error }),
+        catch: (error) =>
+          new RedisGetError({
+            message: formatUnknownError(error),
+            cause: error,
+          }),
       }),
     );
 
     const set = Effect.fn("RedisClient.set")((key: string, value: string) =>
       Effect.tryPromise({
         try: () => client.set(key, value),
-        catch: (error) => new RedisSetError({ cause: error }),
+        catch: (error) =>
+          new RedisSetError({
+            message: formatUnknownError(error),
+            cause: error,
+          }),
       }).pipe(Effect.asVoid),
     );
 
@@ -76,7 +114,11 @@ export const RedisClientLayer = Layer.unwrapScoped(
       ): Effect.Effect<void, RedisPublishError> =>
         Effect.tryPromise({
           try: () => client.publish(channel, message),
-          catch: (error) => new RedisPublishError({ cause: error }),
+          catch: (error) =>
+            new RedisPublishError({
+              message: formatUnknownError(error),
+              cause: error,
+            }),
         }).pipe(Effect.asVoid),
     );
 
@@ -86,7 +128,19 @@ export const RedisClientLayer = Layer.unwrapScoped(
       Stream.asyncPush<string, RedisSubscribeError>((emit) =>
         Effect.acquireRelease(
           Effect.gen(function* () {
-            const subscriber = yield* createClient;
+            const subscriber = yield* createClient.pipe(
+              Effect.flatMap((redis) =>
+                connectClient(redis).pipe(
+                  Effect.mapError(
+                    (error) =>
+                      new RedisSubscribeError({
+                        message: error.message,
+                        cause: error.cause,
+                      }),
+                  ),
+                ),
+              ),
+            );
 
             subscriber.on("message", (ch, message) => {
               if (ch === channel) {
@@ -97,6 +151,7 @@ export const RedisClientLayer = Layer.unwrapScoped(
             subscriber.on("error", (error) => {
               emit.fail(
                 new RedisSubscribeError({
+                  message: formatUnknownError(error),
                   cause: error,
                 }),
               );
@@ -106,6 +161,7 @@ export const RedisClientLayer = Layer.unwrapScoped(
               try: () => subscriber.subscribe(channel),
               catch: (error) =>
                 new RedisSubscribeError({
+                  message: formatUnknownError(error),
                   cause: error,
                 }),
             });
@@ -125,3 +181,15 @@ export const RedisClientLayer = Layer.unwrapScoped(
     });
   }),
 );
+
+const noop = (_: unknown) => {};
+
+const formatUnknownError = (error: unknown): string => {
+  if (error instanceof Error) return error.message;
+  if (typeof error === "string") return error;
+  try {
+    return JSON.stringify(error);
+  } catch {
+    return String(error);
+  }
+};
