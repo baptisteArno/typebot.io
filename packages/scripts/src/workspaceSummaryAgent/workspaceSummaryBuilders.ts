@@ -991,15 +991,25 @@ export async function buildWorkspaceSummaryObject(
     userJourneys,
     aiUsage: {
       ...totalUsage,
-      callCount: userJourneyResults.length + typebotsList.filter((t) => t.summary).length,
+      callCount:
+        userJourneyResults.length +
+        typebotsList.filter((t) => t.summary).length,
       byFunction: {
-        userJourney: { ...userJourneysUsage, callCount: userJourneyResults.length },
-        typebot: { ...typebotsUsage, callCount: typebotsList.filter((t) => t.summary).length },
+        userJourney: {
+          ...userJourneysUsage,
+          callCount: userJourneyResults.length,
+        },
+        typebot: {
+          ...typebotsUsage,
+          callCount: typebotsList.filter((t) => t.summary).length,
+        },
       },
     },
   };
 
-  console.log(` ✓ AI Usage: ${totalUsage.totalTokens} tokens ($${totalUsage.cost.toFixed(4)})`);
+  console.log(
+    ` ✓ AI Usage: ${totalUsage.totalTokens} tokens ($${totalUsage.cost.toFixed(4)})`,
+  );
 
   return wsSummary;
 }
