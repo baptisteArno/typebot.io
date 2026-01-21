@@ -33,8 +33,6 @@ export const getCustomerSubscriptionsList = async (stripeId: string) => {
     canceledSubscriptions.data,
   );
 
-  console.log(subscriptions);
-
   const countryEmoji =
     countryToFlagEmoji(await getCurrentBillingCountry(stripeId)) ?? "";
   const subscriptionsList: CustomerSubscriptionSummary[] = [];

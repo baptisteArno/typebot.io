@@ -26,7 +26,8 @@ export async function getCustomerChurnSummary(
     return dateB - dateA;
   });
   const totalPaidNumber = subscriptionsList.reduce(
-    (acc, sub) => acc + parseFloat(sub.totalPaid.replace("$", "")),
+    (acc, sub) =>
+      acc + parseFloat(sub.totalPaid.replace("$", "").replace("€", "")),
     0,
   );
 

@@ -22,10 +22,37 @@ import {
   userJourneySummarySystemPrompt,
   workspaceSummarySystemPrompt,
 } from "./agentPrompts";
+import { calculateCost } from "./aiModelPricing";
 
 const MAX_GROUPS_PER_BOT = 20;
 const MAX_BLOCKS_PER_GROUP = 10;
 const MAX_BOTS_PER_WORKSPACE = 6;
+
+type AiUsage = {
+  inputTokens: number;
+  outputTokens: number;
+  totalTokens: number;
+  cost: number;
+};
+
+type AggregatedAiUsage = AiUsage & {
+  callCount: number;
+  byFunction: Record<string, AiUsage & { callCount: number }>;
+};
+
+const createEmptyUsage = (): AiUsage => ({
+  inputTokens: 0,
+  outputTokens: 0,
+  totalTokens: 0,
+  cost: 0,
+});
+
+const addUsage = (a: AiUsage, b: AiUsage): AiUsage => ({
+  inputTokens: a.inputTokens + b.inputTokens,
+  outputTokens: a.outputTokens + b.outputTokens,
+  totalTokens: a.totalTokens + b.totalTokens,
+  cost: a.cost + b.cost,
+});
 
 type SimplifiedTypebotBlock =
   | { type: "bubble"; content: string }
@@ -134,6 +161,7 @@ export type WorkspaceSummaryType = {
   lastEvents: Record<string, string>;
   userJourneys: WorkspaceUserJourneySummary[];
   aiAnalysis?: WorkspaceAiAnalysis;
+  aiUsage?: AggregatedAiUsage;
 };
 
 const createFolderIfNotExists = (filePath: string) => {
@@ -145,9 +173,10 @@ const createFolderIfNotExists = (filePath: string) => {
 
 const getUserJourneyAISummary = async (
   eventsJournal: string,
-): Promise<string> => {
+): Promise<{ summary: string; usage: AiUsage }> => {
   const {
     object: { summary },
+    usage,
   } = await generateObject({
     model: openai("gpt-5"),
     providerOptions: {
@@ -169,7 +198,21 @@ const getUserJourneyAISummary = async (
     ],
   });
 
-  return summary;
+  const usageWithDetails = usage as typeof usage & {
+    inputTokenDetails?: { cacheReadTokens?: number };
+  };
+
+  return {
+    summary,
+    usage: {
+      inputTokens: usage.promptTokens,
+      outputTokens: usage.completionTokens,
+      totalTokens: usage.totalTokens,
+      cost: calculateCost("gpt-5", usage.promptTokens, usage.completionTokens, {
+        cachedTokens: usageWithDetails.inputTokenDetails?.cacheReadTokens,
+      }),
+    },
+  };
 };
 
 const getSimplifiedTypebotObject = (
@@ -238,9 +281,10 @@ const getSimplifiedTypebotObject = (
 
 const getTypebotAISummary = async (
   typebotData: string,
-): Promise<TypebotAiSummary> => {
+): Promise<TypebotAiSummary & { usage: AiUsage }> => {
   const {
     object: { summary, isScam, isUndesired, reason, category, otherCategory },
+    usage,
   } = await generateObject({
     model: openai("gpt-5"),
     providerOptions: {
@@ -267,6 +311,10 @@ const getTypebotAISummary = async (
     ],
   });
 
+  const usageWithDetails = usage as typeof usage & {
+    inputTokenDetails?: { cacheReadTokens?: number };
+  };
+
   return {
     summary,
     category,
@@ -274,6 +322,14 @@ const getTypebotAISummary = async (
     isScam,
     isUndesired,
     reason,
+    usage: {
+      inputTokens: usage.promptTokens,
+      outputTokens: usage.completionTokens,
+      totalTokens: usage.totalTokens,
+      cost: calculateCost("gpt-5", usage.promptTokens, usage.completionTokens, {
+        cachedTokens: usageWithDetails.inputTokenDetails?.cacheReadTokens,
+      }),
+    },
   };
 };
 
@@ -523,7 +579,10 @@ const getLastEventOccurences = async (workspaceId: string) => {
   return lastEventsSorted;
 };
 
-const getUserJourney = async (userId: string, workspaceId: string) => {
+const getUserJourney = async (
+  userId: string,
+  workspaceId: string,
+): Promise<{ summary: string; usage: AiUsage }> => {
   const eventsQuery = `SELECT event, timestamp, properties FROM events WHERE distinct_id = '${userId}' ORDER BY timestamp LIMIT 5000`;
   const eventsResponse = await executePostHogQuery(eventsQuery);
   const eventsResults = eventsResponse.results;
@@ -536,11 +595,11 @@ const getUserJourney = async (userId: string, workspaceId: string) => {
   );
   console.log("   Journal length:", eventsJournal.length);
 
-  const journeySummary = await getUserJourneyAISummary(
+  const { summary, usage } = await getUserJourneyAISummary(
     eventsJournal.join("\n"),
   );
 
-  return journeySummary;
+  return { summary, usage };
 };
 
 const getTypebotResultsCount = async (typebotId: string) => {
@@ -562,7 +621,7 @@ const getTypebotsSummaries = async (
     "id" | "name" | "createdAt" | "updatedAt" | "version" | "groups"
   >[],
   workspaceId?: string,
-): Promise<WorkspaceTypebotSummary[]> => {
+): Promise<{ list: WorkspaceTypebotSummary[]; usage: AiUsage }> => {
   // sort typebots by creation date descending
   const sortedTypebots = typebotsObjects.sort(
     (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
@@ -583,6 +642,8 @@ const getTypebotsSummaries = async (
     .map((tb) => tb.id)
     .slice(0, MAX_BOTS_PER_WORKSPACE);
 
+  let totalUsage = createEmptyUsage();
+
   // enhance top typebots with AI summary
   for (const typebot of sortedTypebots) {
     if (!topTypebotsIds.includes(typebot.id)) continue;
@@ -591,9 +652,11 @@ const getTypebotsSummaries = async (
     const typebotSimplified = getSimplifiedTypebotObject(typebot);
 
     // get ai summary
-    const typebotAiSummary = await getTypebotAISummary(
+    const { usage, ...typebotAiSummary } = await getTypebotAISummary(
       JSON.stringify(typebotSimplified, null, 2),
     );
+    totalUsage = addUsage(totalUsage, usage);
+
     const typebotFullSummary = Object.assign(
       typebotSimplified,
       typebotAiSummary,
@@ -608,7 +671,7 @@ const getTypebotsSummaries = async (
       typebotFullSummary;
     Object.assign(typebotsList[typebotIndex], typebotSummaryWithoutGroups);
   }
-  return typebotsList;
+  return { list: typebotsList, usage: totalUsage };
 };
 
 const getTypebotsCategoryCounts = (typebotsList: WorkspaceTypebotSummary[]) => {
@@ -651,6 +714,7 @@ export async function getWorkspaceAISummary(workspaceSummary: string): Promise<{
   recommendations?: string;
   churnReason?: string;
   outreachEmail?: string;
+  usage: AiUsage;
 }> {
   const {
     object: {
@@ -664,6 +728,7 @@ export async function getWorkspaceAISummary(workspaceSummary: string): Promise<{
       churnReason,
       outreachEmail,
     },
+    usage,
   } = await generateObject({
     model: openai("gpt-5"),
     providerOptions: {
@@ -693,6 +758,10 @@ export async function getWorkspaceAISummary(workspaceSummary: string): Promise<{
     ],
   });
 
+  const usageWithDetails = usage as typeof usage & {
+    inputTokenDetails?: { cacheReadTokens?: number };
+  };
+
   const result: {
     businessActivity: string;
     purpose: string;
@@ -703,12 +772,21 @@ export async function getWorkspaceAISummary(workspaceSummary: string): Promise<{
     recommendations?: string;
     churnReason?: string;
     outreachEmail?: string;
+    usage: AiUsage;
   } = {
     businessActivity,
     purpose,
     workspaceLevel,
     engagementLevel,
     workspaceTimeline,
+    usage: {
+      inputTokens: usage.promptTokens,
+      outputTokens: usage.completionTokens,
+      totalTokens: usage.totalTokens,
+      cost: calculateCost("gpt-5", usage.promptTokens, usage.completionTokens, {
+        cachedTokens: usageWithDetails.inputTokenDetails?.cacheReadTokens,
+      }),
+    },
   };
 
   if (churnRisk !== null) result.churnRisk = churnRisk;
@@ -860,23 +938,28 @@ export async function buildWorkspaceSummaryObject(
 
   // User journeys for ADMIN members
   console.log(" ✓ Analyzing user journeys for admin members...");
-  const userJourneys: WorkspaceUserJourneySummary[] = await Promise.all(
+  const userJourneyResults = await Promise.all(
     membersList
       .filter((m) => m.role === "ADMIN")
-      .map(async (m) => ({
-        email: m.email,
-        summary: await getUserJourney(m.userId, workspaceId),
-      })),
+      .map(async (m) => {
+        const { summary, usage } = await getUserJourney(m.userId, workspaceId);
+        return { email: m.email, summary, usage };
+      }),
+  );
+  const userJourneys: WorkspaceUserJourneySummary[] = userJourneyResults.map(
+    ({ email, summary }) => ({ email, summary }),
+  );
+  const userJourneysUsage = userJourneyResults.reduce(
+    (acc, { usage }) => addUsage(acc, usage),
+    createEmptyUsage(),
   );
 
   // Typebots
   console.log(
     ` ✓ Analyzing Typebots (${workspace.typebots.length} typebots)...`,
   );
-  const typebotsList = await getTypebotsSummaries(
-    workspace.typebots,
-    workspaceId,
-  );
+  const { list: typebotsList, usage: typebotsUsage } =
+    await getTypebotsSummaries(workspace.typebots, workspaceId);
 
   // Count typebot categories
   const categoryCount = getTypebotsCategoryCounts(typebotsList);
@@ -884,6 +967,8 @@ export async function buildWorkspaceSummaryObject(
   // Last events
   console.log(" ✓ Fetching last event occurrences...");
   const lastEventsSorted = await getLastEventOccurences(workspaceId);
+
+  const totalUsage = addUsage(userJourneysUsage, typebotsUsage);
 
   const wsSummary: WorkspaceSummaryType = {
     workspace: {
@@ -904,7 +989,17 @@ export async function buildWorkspaceSummaryObject(
     },
     lastEvents: lastEventsSorted,
     userJourneys,
+    aiUsage: {
+      ...totalUsage,
+      callCount: userJourneyResults.length + typebotsList.filter((t) => t.summary).length,
+      byFunction: {
+        userJourney: { ...userJourneysUsage, callCount: userJourneyResults.length },
+        typebot: { ...typebotsUsage, callCount: typebotsList.filter((t) => t.summary).length },
+      },
+    },
   };
+
+  console.log(` ✓ AI Usage: ${totalUsage.totalTokens} tokens ($${totalUsage.cost.toFixed(4)})`);
 
   return wsSummary;
 }
