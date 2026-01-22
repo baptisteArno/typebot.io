@@ -35,29 +35,13 @@ const findUp = async (start: string, relativePath: string) => {
 const findPrismaClientTypesPath = async () => {
   const roots = [__dirname, process.cwd()];
 
-  console.log("[patchEffectClient] Searching Prisma client types", {
-    roots,
-    relativePaths: prismaClientTypesRelativePaths,
-  });
-
   for (const root of roots) {
     for (const relativePath of prismaClientTypesRelativePaths) {
       const found = await findUp(root, relativePath);
-      if (found) {
-        console.log("[patchEffectClient] Found Prisma client types", {
-          root,
-          relativePath,
-          found,
-        });
-        return found;
-      }
+      if (found) return found;
     }
   }
 
-  console.log("[patchEffectClient] Prisma client types not found", {
-    roots,
-    relativePaths: prismaClientTypesRelativePaths,
-  });
   return null;
 };
 
@@ -88,22 +72,10 @@ const removeOperationBlock = (contents: string, operation: Operation) => {
 
 export const patchEffectClient = async () => {
   const hasEffectClient = await canRead(effectClientPath);
-  console.log("[patchEffectClient] Effect client path", {
-    effectClientPath,
-    hasEffectClient,
-  });
-  if (!hasEffectClient) {
-    console.warn("Patching effect client skipped: Effect client not found.");
-    return;
-  }
+  if (!hasEffectClient) return;
 
   const prismaClientTypesPath = await findPrismaClientTypesPath();
-  if (!prismaClientTypesPath) {
-    console.warn(
-      "Patching effect client skipped: Prisma client types not found.",
-    );
-    return;
-  }
+  if (!prismaClientTypesPath) return;
 
   const prismaTypes = await readFile(prismaClientTypesPath, "utf8");
   const supportsCreateManyAndReturn = prismaTypes.includes(
@@ -113,34 +85,14 @@ export const patchEffectClient = async () => {
     "UpdateManyAndReturnArgs",
   );
 
-  console.log("[patchEffectClient] Prisma client support flags", {
-    prismaClientTypesPath,
-    supportsCreateManyAndReturn,
-    supportsUpdateManyAndReturn,
-  });
-
-  if (supportsCreateManyAndReturn && supportsUpdateManyAndReturn) {
-    console.log(
-      "[patchEffectClient] Skipping patch: Prisma client supports all operations.",
-    );
-    return;
-  }
+  if (supportsCreateManyAndReturn && supportsUpdateManyAndReturn) return;
 
   let effectClient = await readFile(effectClientPath, "utf8");
 
-  if (!supportsCreateManyAndReturn) {
-    console.log(
-      "[patchEffectClient] Removing createManyAndReturn operation block.",
-    );
+  if (!supportsCreateManyAndReturn)
     effectClient = removeOperationBlock(effectClient, "createManyAndReturn");
-  }
-  if (!supportsUpdateManyAndReturn) {
-    console.log(
-      "[patchEffectClient] Removing updateManyAndReturn operation block.",
-    );
+  if (!supportsUpdateManyAndReturn)
     effectClient = removeOperationBlock(effectClient, "updateManyAndReturn");
-  }
 
   await writeFile(effectClientPath, effectClient);
-  console.log("✅ Effect client patched successfully.");
 };
