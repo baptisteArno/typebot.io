@@ -23,7 +23,7 @@ Follow this workflow unless explicitly instructed otherwise.
 
    - Never check node_modules. You have access to any package, CLI and Github repo source code and documentation using `opensrc` skill. Always prefer using `opensrc` instead of web search if possible.
    - If we are working with some Effect code, make sure to run `bunx effect-solutions list` and read the relevant best practices guide.
-   - Use web searches when additional context is helpful.
+   - Use web searches when you want to look for blog posts or Github issues for example.
    - Never rely on assumptions or prior knowledge. Verify behavior directly in the source.
 
 3. **Clarify uncertainties** (IMPORTANT: Before editting anything, never skip this step)

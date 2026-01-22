@@ -633,6 +633,7 @@
         "@typebot.io/lib": "workspace:*",
         "nodemailer": "^7.0.6",
         "react": "^19.2.3",
+        "react-dom": "^19.2.3",
         "react-email": "^4.2.8",
       },
       "devDependencies": {
