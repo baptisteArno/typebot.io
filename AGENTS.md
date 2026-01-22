@@ -19,15 +19,16 @@ Follow this workflow unless explicitly instructed otherwise.
    - Inspect the existing implementation.
    - Identify relevant files, patterns, and constraints.
 
-2. **Study dependencies and best practices**
+2. **Research** (Never skip this step)
 
-   - Never check node_modules. You have access to dependencies source code and documentation using `opensrc` skill.
+   - Never check node_modules. You have access to any package, CLI and Github repo source code and documentation using `opensrc` skill. Always prefer using `opensrc` instead of web search if possible.
    - If we are working with some Effect code, make sure to run `bunx effect-solutions list` and read the relevant best practices guide.
    - Use web searches when additional context is helpful.
-   - Do not rely on assumptions or prior knowledge. Verify behavior directly in the source.
+   - Never rely on assumptions or prior knowledge. Verify behavior directly in the source.
 
 3. **Clarify uncertainties** (IMPORTANT: Before editting anything, never skip this step)
 
+   - Explain what you found from opensrc or web searches
    - Ask questions about unclear requirements, edge cases, or technical decisions.
    - Report what you are planning on doing
 

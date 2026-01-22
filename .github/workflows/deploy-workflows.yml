@@ -1,0 +1,41 @@
+name: Deploy Workflows (Fly.io)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: "package.json"
+      - name: Run Turbo ignore
+        id: check_changes
+        run: |
+          echo "Running turbo-ignore..."
+
+          set +e
+          bunx turbo-ignore workflows --task=typecheck
+          exit_code=$?
+          set -e
+
+          echo "Exit code: $exit_code"
+
+          if [ $exit_code -eq 0 ]; then
+            echo "shouldDeploy=0" >> $GITHUB_OUTPUT
+          else
+            echo "shouldDeploy=1" >> $GITHUB_OUTPUT
+          fi
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+        if: steps.check_changes.outputs.shouldDeploy == '1'
+      - name: Deploy to Fly
+        if: steps.check_changes.outputs.shouldDeploy == '1'
+        run: flyctl deploy --config apps/workflows/fly.toml --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
