@@ -26,11 +26,10 @@ Follow this workflow unless explicitly instructed otherwise.
    - Use web searches when additional context is helpful.
    - Do not rely on assumptions or prior knowledge. Verify behavior directly in the source.
 
-3. **Clarify uncertainties**
+3. **Clarify uncertainties** (IMPORTANT: never skip this step)
 
    - Ask questions about unclear requirements, edge cases, or technical decisions.
-   - Refine specifications before writing code.
-   - When ambiguity exists, this step is mandatory.
+   - Report what you are planning on doing
 
 4. **Implement**
 

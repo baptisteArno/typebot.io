@@ -1,3 +1,12 @@
 import { executePrismaCommand } from "./executeCommand";
+import { patchEffectClient } from "./patchEffectClient";
 
-executePrismaCommand("prisma generate", { force: true });
+const run = async () => {
+  await executePrismaCommand("prisma generate", { force: true });
+  await patchEffectClient();
+};
+
+run().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
