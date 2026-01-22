@@ -52,11 +52,8 @@ const executeCommand = (command: string) => {
         reject(error);
         return;
       }
-      if (stderr) {
-        console.log(stderr);
-        return;
-      }
-      console.log(stdout);
+      if (stderr) console.log(stderr);
+      if (stdout) console.log(stdout);
       resolve();
     });
   });
