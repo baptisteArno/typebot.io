@@ -3,6 +3,7 @@ import { patchEffectClient } from "./patchEffectClient";
 
 const run = async () => {
   await executePrismaCommand("prisma generate", { force: true });
+  console.log("Patching effect client...");
   await patchEffectClient();
 };
 
