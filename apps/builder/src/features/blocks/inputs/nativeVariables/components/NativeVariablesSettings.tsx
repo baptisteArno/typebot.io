@@ -74,7 +74,7 @@ export const NativeVariablesSettings = ({
           {t('blocks.inputs.nativeVariables.settings.typeLabel')}
         </Text>
         <Select
-          value={options?.nativeType || 'helpdeskId'}
+          value={options?.nativeType || ''}
           onChange={handleNativeTypeChange}
           placeholder={t(
             'blocks.inputs.nativeVariables.settings.selectTypePlaceholder'

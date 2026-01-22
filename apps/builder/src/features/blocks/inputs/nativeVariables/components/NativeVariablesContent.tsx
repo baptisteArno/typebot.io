@@ -25,7 +25,7 @@ export const NativeVariablesContent = ({ block }: Props) => {
 
   return (
     <Text color={'gray.500'} fontSize="sm">
-      {nativeType.value}
+      {nativeType.label}
     </Text>
   )
 }

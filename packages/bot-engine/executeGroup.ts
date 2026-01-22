@@ -25,6 +25,7 @@ import { getPrefilledInputValue } from './getPrefilledValue'
 import { parseDateInput } from './blocks/inputs/date/parseDateInput'
 import { parseNativeVariablesInput } from './blocks/inputs/nativeVariables/parseNativeVariablesInput'
 import { deepParseVariables } from '@typebot.io/variables/deepParseVariables'
+import { updateVariablesInSession } from '@typebot.io/variables/updateVariablesInSession'
 import { InputBlockType } from '@typebot.io/schemas/features/blocks/inputs/constants'
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
@@ -157,6 +158,37 @@ export const executeGroup = async (
     }
 
     if (isInputBlock(block)) {
+      // NATIVE_VARIABLES não deve travar o fluxo - executa automaticamente
+      if (block.type === InputBlockType.NATIVE_VARIABLES) {
+        const parsedInput = await parseInput(newSessionState)(block)
+        // Se há prefilledValue, atualiza a variável e continua
+        if (parsedInput.prefilledValue && block.options?.variableId) {
+          const variable =
+            newSessionState.typebotsQueue[0].typebot.variables.find(
+              (v) => v.id === block.options?.variableId
+            )
+          if (variable) {
+            const { updatedState } = updateVariablesInSession({
+              state: newSessionState,
+              currentBlockId: block.id,
+              newVariables: [
+                {
+                  ...variable,
+                  value: parsedInput.prefilledValue,
+                },
+              ],
+            })
+            newSessionState = updatedState
+          }
+        }
+        logger.info('Block execution finished', {
+          blockId: block.id,
+          duration: Date.now() - blockStartTime,
+          nativeVariablesProcessed: true,
+        })
+        continue
+      }
+
       const inputResult = {
         messages,
         input: await parseInput(newSessionState)(block),
