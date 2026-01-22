@@ -16,7 +16,12 @@ import { OTLPLogExporter } from "@opentelemetry/exporter-logs-otlp-http";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 import { BatchLogRecordProcessor } from "@opentelemetry/sdk-logs";
 import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
-import { S3ConfigLayer, WorkflowsAppConfig } from "@typebot.io/config";
+import {
+  NextAuthConfig,
+  S3ConfigLayer,
+  WorkflowsDatabaseConfig,
+  WorkflowsServerConfig,
+} from "@typebot.io/config";
 import { NodemailerClientLayer } from "@typebot.io/lib/nodemailer/NodemailerClient";
 import { RedisClientLayer } from "@typebot.io/lib/redis/RedisClient";
 import prisma from "@typebot.io/prisma";
@@ -37,7 +42,7 @@ import { Effect, Equivalence, Layer, Redacted } from "effect";
 const WorkflowEngineLayer = ClusterWorkflowEngine.layer.pipe(
   Layer.provideMerge(BunClusterSocket.layer()),
   Layer.provideMerge(
-    WorkflowsAppConfig.pipe(
+    WorkflowsDatabaseConfig.pipe(
       Effect.map((config) =>
         PgClient.layer({
           url: config.databaseUrl,
@@ -60,7 +65,7 @@ const PrismaLayer = Layer.provide(
 
 const AuthMiddleware = HttpLayerRouter.middleware(
   Effect.gen(function* () {
-    const { workflowsServer } = yield* WorkflowsAppConfig;
+    const { rpcSecret: expectedRpcSecret } = yield* WorkflowsServerConfig;
 
     return (httpEffect) =>
       Effect.gen(function* () {
@@ -71,7 +76,7 @@ const AuthMiddleware = HttpLayerRouter.middleware(
           !rpcSecret ||
           !Redacted.getEquivalence(Equivalence.string)(
             rpcSecret,
-            workflowsServer.rpcSecret,
+            expectedRpcSecret,
           )
         ) {
           return yield* HttpServerResponse.json(
@@ -124,14 +129,19 @@ const Main = HttpLayerRouter.serve(Routes).pipe(
   Layer.provide(NodemailerClientLayer),
   Layer.provide(RedisClientLayer),
   Layer.provide(
-    WorkflowsAppConfig.pipe(
+    WorkflowsServerConfig.pipe(
       Effect.map((config) =>
-        BunHttpServer.layer({ port: config.workflowsServer.port }),
+        BunHttpServer.layer({
+          port: config.port,
+          hostname: "0.0.0.0",
+        }),
       ),
       Layer.unwrapEffect,
     ),
   ),
-  Layer.provide(WorkflowsAppConfig.layer),
+  Layer.provide(WorkflowsDatabaseConfig.layer),
+  Layer.provide(WorkflowsServerConfig.layer),
+  Layer.provide(NextAuthConfig.layer),
   Layer.provide(OtelNodeSdkLive),
 );
 

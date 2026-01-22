@@ -89,7 +89,7 @@ export const SharePage = () => {
           <div className="flex flex-col gap-4 items-start">
             <h1 className="text-2xl">{t("sharePage.links.heading")}</h1>
             <div className="flex flex-col gap-4 p-4 rounded-lg items-start border bg-gray-1">
-              {typebot && (
+              {typebot && env.NEXT_PUBLIC_VIEWER_URL?.[0] && (
                 <EditableUrl
                   hostname={env.NEXT_PUBLIC_VIEWER_URL[0]}
                   pathname={publicId}

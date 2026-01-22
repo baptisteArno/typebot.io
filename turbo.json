@@ -68,7 +68,8 @@
       "cache": false
     },
     "test": {
-      "dependsOn": ["^test"]
+      "dependsOn": ["^test"],
+      "cache": false
     },
     "lint-repo": {
       "cache": false

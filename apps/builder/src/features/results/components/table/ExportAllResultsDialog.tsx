@@ -1,5 +1,4 @@
-import { useInngestSubscription } from "@inngest/realtime/hooks";
-import { ORPCError } from "@orpc/server";
+import { ORPCError } from "@orpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId, isDefined } from "@typebot.io/lib/utils";
@@ -8,25 +7,23 @@ import { getExportFileName } from "@typebot.io/results/getExportFileName";
 import { parseBlockIdVariableIdMap } from "@typebot.io/results/parseBlockIdVariableIdMap";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
 import { parseResultHeader } from "@typebot.io/results/parseResultHeader";
+import type { ExportResultsWorkflowStatusChunk } from "@typebot.io/results/workflows/rpc";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
-import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Progress } from "@typebot.io/ui/components/Progress";
 import { Switch } from "@typebot.io/ui/components/Switch";
-import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
 import { unparse } from "papaparse";
-import { useState } from "react";
-import { EmailInputIcon } from "@/features/blocks/inputs/emailInput/components/EmailInputIcon";
+import { useRef, useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { orpc, orpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { useResults } from "../../ResultsProvider";
 import { ExportJobProgress } from "./ExportJobProgress";
 
-const TOTAL_RESULTS_THRESHOLD_FOR_BACKGROUND_EXPORT = 10000;
+const TOTAL_RESULTS_THRESHOLD_FOR_BACKGROUND_EXPORT = 500;
 
 type Props = {
   isOpen: boolean;
@@ -34,20 +31,27 @@ type Props = {
 };
 
 export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
-  const [
-    backgroundExportSubscriptionToken,
-    setBackgroundExportSubscriptionToken,
-  ] = useState<any>();
   const { typebot, publishedTypebot } = useTypebot();
   const workspaceId = typebot?.workspaceId;
   const typebotId = typebot?.id;
-  const { resultHeader: existingResultHeader, totalResults } = useResults();
+  const { resultHeader: existingResultHeader } = useResults();
   const [isExportLoading, setIsExportLoading] = useState(false);
   const [exportProgressValue, setExportProgressValue] = useState(0);
   const [isSchedulingEmail, setIsSchedulingEmail] = useState(false);
+  const [exportWorkflowId, setExportWorkflowId] = useState<string>();
+  const [lastExportWorkflowChunk, setLastExportWorkflowChunk] =
+    useState<ExportResultsWorkflowStatusChunk>();
+  const [exportWorkflowError, setExportWorkflowError] = useState<string>();
 
   const [areDeletedBlocksIncluded, setAreDeletedBlocksIncluded] =
     useState(false);
+  const exportIteratorRef =
+    useRef<AsyncIterator<ExportResultsWorkflowStatusChunk> | null>(null);
+  const typebotIdRef = useRef<string | undefined>(typebotId);
+  const exportWorkflowIdRef = useRef<string | undefined>(undefined);
+
+  typebotIdRef.current = typebotId;
+  exportWorkflowIdRef.current = exportWorkflowId;
 
   const { data: linkedTypebotsData } = useQuery(
     orpc.getLinkedTypebots.queryOptions({
@@ -98,13 +102,8 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
     });
 
     if (totalStarts > TOTAL_RESULTS_THRESHOLD_FOR_BACKGROUND_EXPORT) {
-      const response = await orpcClient.results.triggerExportJob({
-        typebotId,
-      });
-      if (response.status === "success") {
-        setBackgroundExportSubscriptionToken(response.token);
-        return;
-      }
+      consumeExportIterator(typebotId, areDeletedBlocksIncluded);
+      return;
     }
 
     const results = await getAllResults(totalStarts);
@@ -165,83 +164,83 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
     setIsExportLoading(false);
   };
 
-  const sendExportedResultsToEmail = async () => {
-    if (!latestData?.data) return;
-    setIsSchedulingEmail(true);
-    await orpcClient.results.triggerSendExportResultsToEmail();
-    onClose();
+  const consumeExportIterator = async (
+    typebotId: string,
+    includeDeletedBlocks: boolean,
+  ) => {
+    try {
+      const iterator = await orpcClient.results.streamExportJob({
+        typebotId,
+        includeDeletedBlocks,
+      });
+      exportIteratorRef.current = iterator;
+      for await (const chunk of iterator) {
+        if (chunk.status === "starting") setExportWorkflowId(chunk.workflowId);
+        setLastExportWorkflowChunk(chunk);
+      }
+    } catch (error) {
+      console.error(error);
+      if (error instanceof ORPCError) setExportWorkflowError(error.message);
+      else if (error instanceof Error) setExportWorkflowError(error.message);
+    }
   };
 
-  const { latestData, error } = useInngestSubscription({
-    token: backgroundExportSubscriptionToken!,
-    enabled: isDefined(backgroundExportSubscriptionToken),
-  });
+  const sendExportedResultsToEmail = async () => {
+    if (!lastExportWorkflowChunk || !exportWorkflowId || !typebotId) return;
+    setIsSchedulingEmail(true);
+    await orpcClient.results.triggerSendExportResultsToEmail({
+      workflowId: exportWorkflowId,
+      typebotId,
+    });
+    onClose();
+  };
 
   return (
     <Dialog.Root
       isOpen={isOpen}
       onClose={onClose}
-      onCloseComplete={async () => {
-        setBackgroundExportSubscriptionToken(undefined);
-        setIsExportLoading(false);
-        if (
-          latestData &&
-          latestData.data?.status !== "complete" &&
-          !isSchedulingEmail
-        )
-          await orpcClient.results.triggerCancelExport();
-        setIsSchedulingEmail(false);
+      onCloseComplete={() => {
+        const shouldSendEmail =
+          exportWorkflowId &&
+          (lastExportWorkflowChunk?.status === "starting" ||
+            lastExportWorkflowChunk?.status === "in_progress") &&
+          !isSchedulingEmail &&
+          !exportWorkflowError;
+        if (shouldSendEmail) sendExportedResultsToEmail();
       }}
     >
       <Dialog.Popup className="max-w-md">
         <Dialog.Title>Export all results</Dialog.Title>
         <Dialog.CloseButton />
-        {latestData && backgroundExportSubscriptionToken ? (
-          <ExportJobProgress data={latestData?.data} error={error} />
+        {lastExportWorkflowChunk ? (
+          <ExportJobProgress
+            chunk={lastExportWorkflowChunk}
+            error={exportWorkflowError}
+          />
         ) : isExportLoading ? (
           <div className="flex flex-col gap-2">
             <p>Fetching all results...</p>
             <Progress.Root value={exportProgressValue} />
           </div>
         ) : (
-          <div className="flex flex-col gap-4">
-            <Field.Root className="flex-row items-center">
-              <Switch
-                checked={areDeletedBlocksIncluded}
-                onCheckedChange={setAreDeletedBlocksIncluded}
-              />
-              <Field.Label>
-                Include deleted blocks{" "}
-                <MoreInfoTooltip>
-                  Blocks from previous bot version that have been deleted
-                </MoreInfoTooltip>
-              </Field.Label>
-            </Field.Root>
-            <Alert.Root>
-              <InformationSquareIcon />
-              <Alert.Description>
-                {totalResults > 2000
-                  ? "The export may take a while."
-                  : "The export may take up to 1 minute."}
-              </Alert.Description>
-            </Alert.Root>
-          </div>
+          <Field.Root className="flex-row items-center">
+            <Switch
+              checked={areDeletedBlocksIncluded}
+              onCheckedChange={setAreDeletedBlocksIncluded}
+            />
+            <Field.Label>
+              Include deleted blocks{" "}
+              <MoreInfoTooltip>
+                Blocks from previous bot version that have been deleted
+              </MoreInfoTooltip>
+            </Field.Label>
+          </Field.Root>
         )}
-        <Dialog.Footer>
-          <Button onClick={onClose} variant="ghost" size="sm">
-            Cancel
-          </Button>
-          {latestData?.data && backgroundExportSubscriptionToken ? (
-            <Button
-              size="sm"
-              disabled={
-                latestData?.data.status !== "processing" || isSchedulingEmail
-              }
-              onClick={sendExportedResultsToEmail}
-            >
-              <EmailInputIcon /> Send by email once done
+        {!lastExportWorkflowChunk && (
+          <Dialog.Footer>
+            <Button onClick={onClose} variant="ghost" size="sm">
+              Cancel
             </Button>
-          ) : (
             <Button
               onClick={exportAllResultsToCSV}
               size="sm"
@@ -249,8 +248,8 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
             >
               Export
             </Button>
-          )}
-        </Dialog.Footer>
+          </Dialog.Footer>
+        )}
       </Dialog.Popup>
     </Dialog.Root>
   );

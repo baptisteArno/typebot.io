@@ -24,12 +24,14 @@ import {
   getResultTranscriptInputSchema,
   handleGetResultTranscript,
 } from "./handleGetResultTranscript";
-import { handleTriggerCancelExport } from "./handleTriggerCancelExport";
 import {
-  handleTriggerExportJob,
-  triggerExportJobInputSchema,
-} from "./handleTriggerExportJob";
-import { handleTriggerSendExportResultsToEmail } from "./handleTriggerSendExportResultsToEmail";
+  handleStreamExportJob,
+  streamExportJobInputSchema,
+} from "./handleStreamExportJob";
+import {
+  handleTriggerSendExportResultsToEmail,
+  triggerSendExportResultsToEmailInputSchema,
+} from "./handleTriggerSendExportResultsToEmail";
 
 export const resultsRouter = {
   getResults: authenticatedProcedure
@@ -143,31 +145,16 @@ export const resultsRouter = {
     )
     .handler(handleGetResultBlockFile),
 
-  triggerExportJob: authenticatedProcedure
-    .input(triggerExportJobInputSchema)
-    .output(
-      z.discriminatedUnion("status", [
-        z.object({
-          status: z.literal("success"),
-          eventId: z.string(),
-          token: z.any(),
-        }),
-        z.object({
-          status: z.literal("disabled"),
-        }),
-      ]),
-    )
-    .handler(handleTriggerExportJob),
+  streamExportJob: authenticatedProcedure
+    .input(streamExportJobInputSchema)
+    .handler(handleStreamExportJob),
 
   triggerSendExportResultsToEmail: authenticatedProcedure
     .output(
       z.object({
-        eventId: z.string(),
+        message: z.string(),
       }),
     )
+    .input(triggerSendExportResultsToEmailInputSchema)
     .handler(handleTriggerSendExportResultsToEmail),
-
-  triggerCancelExport: authenticatedProcedure.handler(
-    handleTriggerCancelExport,
-  ),
 };

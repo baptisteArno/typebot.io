@@ -73,7 +73,9 @@ RUN groupadd bun \
     && which bun \
     && which bunx \
     && bun --version
-RUN apt-get -qy update && apt-get -qy --no-install-recommends install openssl git python3 g++ build-essential
+RUN apt-get -qy update \
+    && apt-get -qy --no-install-recommends install openssl ca-certificates git python3 g++ build-essential \
+    && update-ca-certificates
 WORKDIR /app
 
 # ================= TURBO PRUNE ===================
@@ -88,11 +90,13 @@ RUN bunx turbo prune "${SCOPE}" --docker
 FROM base AS builder
 ARG BUN_PKG_MANAGER
 ARG SCOPE
+ARG DATABASE_URL=postgresql://
 COPY --from=pruned /app/out/full/ .
 COPY bun.lock .
 COPY bunfig.toml .
 RUN SENTRYCLI_SKIP_DOWNLOAD=1 bun install
 RUN SKIP_ENV_CHECK=true NEXT_PUBLIC_VIEWER_URL=http://localhost bunx turbo build --filter="${SCOPE}"
+RUN DATABASE_URL=$DATABASE_URL bunx tsx packages/prisma/scripts/db-generate.ts
 
 # ================== RELEASE ======================
 
@@ -104,8 +108,6 @@ COPY --from=builder /app/packages/prisma/postgresql ./packages/prisma/postgresql
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/standalone ./
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/static ./apps/${SCOPE}/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/apps/${SCOPE}/public ./apps/${SCOPE}/public
-
-RUN ./node_modules/.bin/prisma generate --schema=packages/prisma/postgresql/schema.prisma;
 
 
 COPY scripts/${SCOPE}-entrypoint.sh ./

@@ -9,22 +9,23 @@ kill_timeout = 120
 [build]
 dockerfile = "Dockerfile"
 
+  [build.args]
+    DATABASE_URL = "mysql://"
+
 [http_service]
   internal_port = 3007
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
   processes = ['app']
 
-[checks.health]
-  grace_period = "30s"
-  interval = "15s"
-  timeout = "10s"
-  port = 3007
-  type = "http"
-  method = "GET"
-  path = "/healthz"
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    timeout = "10s"
+    method = "GET"
+    path = "/healthz"
 
 [[vm]]
   memory = '1gb'
