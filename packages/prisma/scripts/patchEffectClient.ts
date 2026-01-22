@@ -1,14 +1,14 @@
 import { constants } from "fs";
 import { access, readFile, writeFile } from "fs/promises";
-import { join } from "path";
+import { dirname, join } from "path";
 
 type Operation = "createManyAndReturn" | "updateManyAndReturn";
 
 const effectClientPath = join(__dirname, "../.effect/index.ts");
-const prismaClientTypesPath = join(
-  __dirname,
-  "../../../node_modules/.prisma/client/index.d.ts",
-);
+const prismaClientTypesRelativePaths = [
+  "node_modules/.prisma/client/index.d.ts",
+  "node_modules/@prisma/client/index.d.ts",
+];
 
 const canRead = async (path: string) => {
   try {
@@ -17,6 +17,32 @@ const canRead = async (path: string) => {
   } catch {
     return false;
   }
+};
+
+const findUp = async (start: string, relativePath: string) => {
+  let current = start;
+
+  while (true) {
+    const candidate = join(current, relativePath);
+    if (await canRead(candidate)) return candidate;
+
+    const parent = dirname(current);
+    if (parent === current) return null;
+    current = parent;
+  }
+};
+
+const findPrismaClientTypesPath = async () => {
+  const roots = [__dirname, process.cwd()];
+
+  for (const root of roots) {
+    for (const relativePath of prismaClientTypesRelativePaths) {
+      const found = await findUp(root, relativePath);
+      if (found) return found;
+    }
+  }
+
+  return null;
 };
 
 const removeOperationBlock = (contents: string, operation: Operation) => {
@@ -45,12 +71,19 @@ const removeOperationBlock = (contents: string, operation: Operation) => {
 };
 
 export const patchEffectClient = async () => {
-  const [hasEffectClient, hasPrismaTypes] = await Promise.all([
-    canRead(effectClientPath),
-    canRead(prismaClientTypesPath),
-  ]);
+  const hasEffectClient = await canRead(effectClientPath);
+  if (!hasEffectClient) {
+    console.warn("Patching effect client skipped: Effect client not found.");
+    return;
+  }
 
-  if (!hasEffectClient || !hasPrismaTypes) return;
+  const prismaClientTypesPath = await findPrismaClientTypesPath();
+  if (!prismaClientTypesPath) {
+    console.warn(
+      "Patching effect client skipped: Prisma client types not found.",
+    );
+    return;
+  }
 
   const prismaTypes = await readFile(prismaClientTypesPath, "utf8");
   const supportsCreateManyAndReturn = prismaTypes.includes(
@@ -70,4 +103,5 @@ export const patchEffectClient = async () => {
     effectClient = removeOperationBlock(effectClient, "updateManyAndReturn");
 
   await writeFile(effectClientPath, effectClient);
+  console.log("✅ Effect client patched successfully.");
 };

@@ -26,7 +26,7 @@ Follow this workflow unless explicitly instructed otherwise.
    - Use web searches when additional context is helpful.
    - Do not rely on assumptions or prior knowledge. Verify behavior directly in the source.
 
-3. **Clarify uncertainties** (IMPORTANT: never skip this step)
+3. **Clarify uncertainties** (IMPORTANT: Before editting anything, never skip this step)
 
    - Ask questions about unclear requirements, edge cases, or technical decisions.
    - Report what you are planning on doing
