@@ -71,7 +71,7 @@
       "dependsOn": ["^test"],
       "cache": false
     },
-    "lint-repo": {
+    "//#lint-repo": {
       "cache": false
     },
     "//#format-and-lint": {

@@ -47,9 +47,7 @@ Follow this workflow unless explicitly instructed otherwise.
 
 5. **Verify** (IMPORTANT: never skip this step)
 
-   - Run `bun run typecheck`
-   - Run `bun run test`
-   - Run `bun run format-and-lint:fix`
+   - Run `bun run check`. It runs typechecking, lint and unit tests.
 
 6. **Review**
 
