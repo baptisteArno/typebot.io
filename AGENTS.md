@@ -21,7 +21,7 @@ Follow this workflow unless explicitly instructed otherwise.
 
 2. **Study dependencies and best practices**
 
-   - Inspect dependency source code and documentation using `opensrc` skill.
+   - Never check node_modules. You have access to dependencies source code and documentation using `opensrc` skill.
    - If we are working with some Effect code, make sure to run `bunx effect-solutions list` and read the relevant best practices guide.
    - Use web searches when additional context is helpful.
    - Do not rely on assumptions or prior knowledge. Verify behavior directly in the source.

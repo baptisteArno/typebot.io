@@ -1,4 +1,3 @@
-import { FileSystem, Path } from "@effect/platform";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId } from "@typebot.io/lib/utils";
@@ -39,15 +38,10 @@ export const streamResultsToCsvV2 = (
     TypebotV6,
     "id" | "groups" | "variables" | "resultsTablePreferences"
   >,
-  {
-    outputPath,
-    includeDeletedBlocks,
-  }: { outputPath: string; includeDeletedBlocks?: boolean },
+  { includeDeletedBlocks }: { includeDeletedBlocks?: boolean },
 ) =>
   Effect.gen(function* () {
     const progressReporter = yield* ProgressReporter;
-    const fs = yield* FileSystem.FileSystem;
-    const path = yield* Path.Path;
     const resultsService = yield* ResultsService;
 
     const baseResultHeader = parseResultHeader({
@@ -224,21 +218,7 @@ export const streamResultsToCsvV2 = (
       ),
     );
 
-    yield* fs.makeDirectory(path.dirname(outputPath), { recursive: true }).pipe(
-      Effect.catchAll((error) => {
-        return Effect.logWarning(error.message);
-      }),
-    );
-
-    yield* Stream.run(csvStream, fs.sink(outputPath));
-
-    const totalRowsExported = yield* Ref.get(totalRowsExportedRef);
-
-    yield* Effect.logInfo("CSV generation finished").pipe(
-      Effect.annotateLogs({ totalRowsExported }),
-    );
-
-    return { totalRowsExported };
+    return { csvStream, totalRowsExportedRef };
   }).pipe(
     Effect.withSpan("streamResultsToCsv", {
       attributes: { typebotId: typebot.id },

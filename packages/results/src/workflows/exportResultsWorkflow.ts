@@ -1,4 +1,3 @@
-import { FileSystem } from "@effect/platform";
 import { PlatformError } from "@effect/platform/Error";
 import { Activity, Workflow } from "@effect/workflow";
 import { MultipartUpload } from "@effect-aws/s3";
@@ -11,7 +10,7 @@ import {
 } from "@typebot.io/lib/nodemailer/NodemailerClient";
 import { RedisClient } from "@typebot.io/lib/redis/RedisClient";
 import { TypebotService } from "@typebot.io/typebot/services/TypebotService";
-import { Context, Effect, Layer, Option, Schema } from "effect";
+import { Context, Effect, Layer, Option, Ref, Schema } from "effect";
 import { getExportFileName } from "../getExportFileName";
 import {
   ProgressReporter,
@@ -167,36 +166,65 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
       publicId: typebot.publicId,
     });
 
-    const tmpPath = `.effect/tmp/workspaces/${typebot.workspaceId}/typebots/${payload.typebotId}/results-exports/${fileName}`;
     const s3Key = `private/tmp/workspaces/${typebot.workspaceId}/typebots/${payload.typebotId}/results-exports/${fileName}`;
 
     yield* Effect.logDebug("File name: %s", fileName);
 
     const { totalRowsExported } = yield* Activity.make({
-      name: "StreamResultsToLocalFile",
+      name: "ExportResultsToS3",
       error: Schema.Union(
         PrismaConnectionError,
         PlatformError,
         TooManyAttemptsError,
         RedisConfigError,
         ProgressReporterError,
+        S3UploadError,
       ),
       success: Schema.Struct({
         totalRowsExported: Schema.Number,
       }),
       execute: Effect.gen(function* () {
-        yield* Effect.logDebug("Streaming results to local file...");
+        yield* Effect.logDebug("Streaming results to S3...");
         const totalAttempts = yield* Activity.CurrentAttempt;
         if (totalAttempts > 2) {
           return yield* new TooManyAttemptsError({
-            message: `StreamResultsToLocalFile failed after ${totalAttempts} attempts`,
+            message: `ExportResultsToS3 failed after ${totalAttempts} attempts`,
           });
         }
 
-        return yield* streamResultsToCsvV2(typebot, {
-          outputPath: tmpPath,
-          includeDeletedBlocks: payload.includeDeletedBlocks,
-        });
+        const { csvStream, totalRowsExportedRef } = yield* streamResultsToCsvV2(
+          typebot,
+          {
+            includeDeletedBlocks: payload.includeDeletedBlocks,
+          },
+        );
+
+        const s3Config = yield* S3ReadableConfig;
+
+        yield* Effect.logInfo("Uploading CSV to S3...");
+
+        yield* MultipartUpload.uploadObject({
+          Bucket: s3Config.bucket,
+          Key: s3Key,
+          Body: csvStream,
+        }).pipe(
+          Effect.tapError((error) => Effect.logError(error)),
+          Effect.mapError(
+            (error) =>
+              new S3UploadError({
+                message:
+                  error instanceof Error ? error.message : "Unknown error",
+              }),
+          ),
+        );
+
+        const totalRowsExported = yield* Ref.get(totalRowsExportedRef);
+
+        yield* Effect.logInfo("CSV uploaded to S3").pipe(
+          Effect.annotateLogs({ totalRowsExported }),
+        );
+
+        return { totalRowsExported };
       }).pipe(
         Effect.provide(
           ProgressReporterRedisLayer.pipe(
@@ -209,35 +237,6 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
         }),
       ),
     });
-
-    const fs = yield* FileSystem.FileSystem;
-
-    yield* Activity.make({
-      name: "UploadFileToBucket",
-      error: Schema.Union(S3UploadError, PlatformError),
-      execute: Effect.gen(function* () {
-        yield* Effect.logDebug("Uploading file to bucket...");
-        const s3Config = yield* S3ReadableConfig;
-        const fs = yield* FileSystem.FileSystem;
-
-        yield* MultipartUpload.uploadObject({
-          Bucket: s3Config.bucket,
-          Key: s3Key,
-          Body: yield* fs.readFile(tmpPath),
-        }).pipe(
-          Effect.tapError((error) => Effect.logError(error)),
-          Effect.mapError(
-            (error) =>
-              new S3UploadError({
-                message:
-                  error instanceof Error ? error.message : "Unknown error",
-              }),
-          ),
-        );
-      }),
-    });
-
-    yield* fs.remove(tmpPath, { recursive: true });
 
     const fileUrl = new URL(`/api/s3/${s3Key}`, nextAuthUrl);
 
