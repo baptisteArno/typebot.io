@@ -162,7 +162,7 @@ export const executeGroup = async (
       if (block.type === InputBlockType.NATIVE_VARIABLES) {
         const parsedInput = await parseInput(newSessionState)(block)
         // Se há prefilledValue, atualiza a variável e continua
-        if (parsedInput.prefilledValue && block.options?.variableId) {
+        if (parsedInput?.prefilledValue && block.options?.variableId) {
           const variable =
             newSessionState.typebotsQueue[0].typebot.variables.find(
               (v) => v.id === block.options?.variableId
@@ -174,7 +174,7 @@ export const executeGroup = async (
               newVariables: [
                 {
                   ...variable,
-                  value: parsedInput.prefilledValue,
+                  value: parsedInput?.prefilledValue,
                 },
               ],
             })
