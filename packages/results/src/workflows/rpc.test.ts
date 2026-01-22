@@ -6,8 +6,11 @@ import {
   RedisPublishError,
   RedisSetError,
 } from "@typebot.io/lib/redis/RedisClient";
-import { Chunk, Effect, Fiber, Layer, Queue, Stream } from "effect";
-import { ExportResultsWorkflow } from "./exportResultsWorkflow";
+import { Chunk, Effect, Exit, Fiber, Layer, Queue, Stream } from "effect";
+import {
+  ExportResultsWorkflow,
+  TypebotNotFoundError,
+} from "./exportResultsWorkflow";
 import { executeExportResultsWorkflowHandler } from "./rpc";
 
 describe("ExecuteExportResultsWorkflow", () => {
@@ -98,4 +101,75 @@ describe("ExecuteExportResultsWorkflow", () => {
       fileUrl: "http://example.com/file.csv",
     });
   });
+
+  it("should fail when workflow fails (and not hang)", async () => {
+    const progressQueue = await Effect.runPromise(Queue.unbounded<string>());
+
+    const mockRedisClientLayer = Layer.succeed(RedisClient, {
+      get: () =>
+        Effect.fail(
+          new RedisGetError({
+            message: "Not implemented",
+            cause: "Not implemented",
+          }),
+        ),
+      set: () =>
+        Effect.fail(
+          new RedisSetError({
+            message: "Not implemented",
+            cause: "Not implemented",
+          }),
+        ),
+      subscribe: () => Stream.fromQueue(progressQueue, { shutdown: true }),
+      publish: () =>
+        Effect.fail(
+          new RedisPublishError({
+            message: "Not implemented",
+            cause: "Not implemented",
+          }),
+        ),
+    });
+
+    const mockWorkflowLayer = ExportResultsWorkflow.toLayer(
+      Effect.fn(function* () {
+        yield* Effect.sleep("40 millis");
+        return yield* new TypebotNotFoundError();
+      }),
+    );
+
+    const testPayload = {
+      id: "test-workflow-id",
+      typebotId: "test-typebot-id",
+    };
+
+    const result = await Effect.gen(function* () {
+      const streamFiber = yield* executeExportResultsWorkflowHandler(
+        testPayload,
+      ).pipe(Stream.runCollect, Effect.fork);
+
+      yield* Effect.sleep("5 millis");
+      yield* progressQueue.offer("0");
+      yield* Effect.sleep("5 millis");
+      yield* progressQueue.offer("25");
+      yield* Effect.sleep("5 millis");
+      yield* progressQueue.offer("50");
+
+      return yield* Fiber.join(streamFiber).pipe(Effect.exit);
+    }).pipe(
+      Effect.timeoutFail({
+        duration: "1 second",
+        onTimeout: () => new Error("Timed out"),
+      }),
+      Effect.provide(
+        mockWorkflowLayer.pipe(
+          Layer.provideMerge(
+            Layer.merge(mockRedisClientLayer, WorkflowEngine.layerMemory),
+          ),
+        ),
+      ),
+      Effect.runPromise,
+    );
+
+    expect(Exit.isFailure(result)).toBe(true);
+  }, 2_000);
 });

@@ -2,7 +2,7 @@ import { FileSystem } from "@effect/platform";
 import { PlatformError } from "@effect/platform/Error";
 import { Activity, Workflow } from "@effect/workflow";
 import { MultipartUpload } from "@effect-aws/s3";
-import { S3ReadableConfig, WorkflowsAppConfig } from "@typebot.io/config";
+import { NextAuthConfig, S3ReadableConfig } from "@typebot.io/config";
 import { renderResultsExportLinkEmail } from "@typebot.io/emails/transactional/ResultsExportLinkEmail";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import {
@@ -99,7 +99,7 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
 
     yield* Effect.logInfo("Export workflow started");
 
-    const { nextAuthUrl } = yield* WorkflowsAppConfig;
+    const { nextAuthUrl } = yield* NextAuthConfig;
 
     const typebot = yield* Activity.make({
       name: "GetTypebot",
@@ -120,7 +120,7 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
       }),
       execute: Effect.gen(function* () {
         const totalAttempts = yield* Activity.CurrentAttempt;
-        if (totalAttempts > 3) {
+        if (totalAttempts >= 3) {
           return yield* new TooManyAttemptsError({
             message: `Typebot lookup failed after ${totalAttempts} attempts`,
           });

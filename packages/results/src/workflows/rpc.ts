@@ -4,12 +4,21 @@ import {
   HttpClientRequest,
 } from "@effect/platform";
 import { Rpc, RpcClient, RpcGroup, RpcSerialization } from "@effect/rpc";
-import { WorkflowsAppConfig } from "@typebot.io/config";
+import { WorkflowsRpcClientConfig } from "@typebot.io/config";
 import {
   RedisClient,
   RedisSubscribeError,
 } from "@typebot.io/lib/redis/RedisClient";
-import { Effect, Fiber, Layer, Option, Redacted, Schema, Stream } from "effect";
+import {
+  Cause,
+  Effect,
+  Fiber,
+  Layer,
+  Option,
+  Redacted,
+  Schema,
+  Stream,
+} from "effect";
 import {
   EXPORT_PROGRESS_CHANNEL_PREFIX,
   ExportResultsWorkflow,
@@ -30,6 +39,10 @@ const ExportResultsWorkflowStatusChunk = Schema.Union(
   Schema.Struct({
     status: Schema.Literal("completed"),
     fileUrl: Schema.String,
+  }),
+  Schema.Struct({
+    status: Schema.Literal("error"),
+    message: Schema.String,
   }),
 );
 
@@ -66,6 +79,8 @@ export const executeExportResultsWorkflowHandler = (payload: {
       Effect.fork,
     );
 
+    const interruptProgress = Fiber.await(workflowFiber).pipe(Effect.as(true));
+
     return Stream.concat(
       Stream.succeed({
         status: "starting" as const,
@@ -75,7 +90,10 @@ export const executeExportResultsWorkflowHandler = (payload: {
         Stream.map(progressStream, (message) => ({
           status: "in_progress" as const,
           progress: Number.parseFloat(message),
-        })).pipe(Stream.takeWhile((message) => message.progress !== 100)),
+        })).pipe(
+          Stream.takeWhile((message) => message.progress !== 100),
+          Stream.interruptWhen(interruptProgress),
+        ),
         Stream.fromEffect(
           Fiber.join(workflowFiber).pipe(
             Effect.map((result) => ({
@@ -83,6 +101,16 @@ export const executeExportResultsWorkflowHandler = (payload: {
               fileUrl: result.fileUrl.toString(),
             })),
           ),
+        ),
+      ),
+    ).pipe(
+      Stream.tapErrorCause((cause) =>
+        Effect.logError("Export workflow failed").pipe(
+          Effect.annotateLogs({
+            workflowId: payload.id,
+            typebotId: payload.typebotId,
+            cause: Cause.pretty(cause, { renderErrorCause: true }),
+          }),
         ),
       ),
     );
@@ -101,10 +129,10 @@ export const ResultsWorkflowsRpcLayer = ResultsWorkflowsRpc.toLayer(
 // Client
 
 const ProtocolLive = Effect.gen(function* () {
-  const { workflowsServer } = yield* WorkflowsAppConfig;
+  const { rpcSecret, rpcUrl } = yield* WorkflowsRpcClientConfig;
   return RpcClient.layerProtocolHttp({
     url: Option.getOrElse(
-      workflowsServer.rpcUrl,
+      rpcUrl,
       () => new URL("http://localhost:3007/rpc"),
     ).toString(),
     transformClient: (client) =>
@@ -112,7 +140,7 @@ const ProtocolLive = Effect.gen(function* () {
         request.pipe(
           HttpClientRequest.setHeader(
             RPC_SECRET_HEADER_KEY,
-            Redacted.value(workflowsServer.rpcSecret),
+            Redacted.value(rpcSecret),
           ),
         ),
       ),

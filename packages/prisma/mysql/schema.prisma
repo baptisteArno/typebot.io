@@ -8,6 +8,12 @@ datasource db {
   relationMode = "prisma"
 }
 
+generator effect {
+  provider         = "effect-prisma-generator"
+  output           = "../.effect/index.ts"
+  clientImportPath = "@prisma/client"
+}
+
 model Account {
   id                       String  @id @default(cuid())
   userId                   String

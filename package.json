@@ -25,7 +25,8 @@
     "start-docker-compose-prod": "docker compose -f docker-compose.yml up",
     "typecheck": "turbo run typecheck",
     "build": "turbo run build --filter=builder... --filter=viewer... --filter=landing-page... --filter=docs...",
-    "dev": "turbo dev --filter=builder... --filter=viewer... --filter=@typebot.io/partykit... --filter=workflows... --concurrency=11",
+    "dev": "turbo dev --filter=builder... --filter=viewer... --filter=@typebot.io/partykit... --concurrency=11",
+    "test": "turbo run test",
     "sync-locales": "dotenv -e .env -- tolgee sync --continue-on-warning --remove-unused --no-strict-namespace --patterns './apps/builder/src/**/*.ts?(x)' --backup './.tolgee/backup'",
     "pull-locales": "dotenv -e .env -- tolgee pull && bun format-and-lint:fix",
     "push-locales": "dotenv -e .env -- tolgee push",
@@ -33,7 +34,8 @@
     "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts",
     "restore": "echo 'Cleaning...' && bunx rimraf --glob '**/{node_modules,dist,.next,.turbo}'",
     "deploy-workflows": "fly deploy --config apps/workflows/fly.toml",
-    "new-worktree": "bun scripts/new-worktree.ts"
+    "new-worktree": "bun scripts/new-worktree.ts",
+    "check": "turbo run typecheck test format-and-lint:fix lint-repo check-broken-links"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.7",

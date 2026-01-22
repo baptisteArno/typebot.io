@@ -1,37 +1,73 @@
 import { MultipartUpload } from "@effect-aws/s3";
 import {
   Config,
-  ConfigProvider,
   Context,
   Effect,
   Layer,
+  Option,
   Redacted,
   Schema,
 } from "effect";
 
-const WorkflowsAppConfigSchema = Config.all({
-  workflowsServer: Config.all({
-    rpcUrl: Config.url("WORKFLOWS_RPC_URL").pipe(Config.option),
-    port: Config.number("WORKFLOWS_SERVER_PORT").pipe(Config.withDefault(3000)),
-    rpcSecret: Config.redacted(Config.string("WORKFLOWS_RPC_SECRET")),
-  }),
-  nextAuthUrl: Config.url("NEXTAUTH_URL"),
-  appDatabaseUrl: Config.redacted(Config.string("DATABASE_URL")),
+const WorkflowsRpcClientConfigSchema = Config.all({
+  rpcUrl: Config.url("WORKFLOWS_RPC_URL").pipe(Config.option),
+  rpcSecret: Config.redacted(Config.string("WORKFLOWS_RPC_SECRET")),
+});
+
+export class WorkflowsRpcClientConfig extends Context.Tag(
+  "@typebot/WorkflowsRpcClientConfig",
+)<
+  WorkflowsRpcClientConfig,
+  Config.Config.Success<typeof WorkflowsRpcClientConfigSchema>
+>() {
+  static readonly layer = Layer.effect(
+    WorkflowsRpcClientConfig,
+    WorkflowsRpcClientConfigSchema,
+  );
+}
+
+const WorkflowsServerConfigSchema = Config.all({
+  port: Config.number("WORKFLOWS_SERVER_PORT").pipe(Config.withDefault(3000)),
+  rpcSecret: Config.redacted(Config.string("WORKFLOWS_RPC_SECRET")),
+});
+
+export class WorkflowsServerConfig extends Context.Tag(
+  "@typebot/WorkflowsServerConfig",
+)<
+  WorkflowsServerConfig,
+  Config.Config.Success<typeof WorkflowsServerConfigSchema>
+>() {
+  static readonly layer = Layer.effect(
+    WorkflowsServerConfig,
+    WorkflowsServerConfigSchema,
+  );
+}
+
+const WorkflowsDatabaseConfigSchema = Config.all({
   databaseUrl: Config.redacted(Config.string("WORKFLOWS_DATABASE_URL")),
 });
 
-export class WorkflowsAppConfig extends Context.Tag(
-  "@typebot/WorkflowsAppConfig",
+export class WorkflowsDatabaseConfig extends Context.Tag(
+  "@typebot/WorkflowsDatabaseConfig",
 )<
-  WorkflowsAppConfig,
-  Config.Config.Success<typeof WorkflowsAppConfigSchema>
+  WorkflowsDatabaseConfig,
+  Config.Config.Success<typeof WorkflowsDatabaseConfigSchema>
 >() {
   static readonly layer = Layer.effect(
-    WorkflowsAppConfig,
-    WorkflowsAppConfigSchema.pipe(
-      Effect.withConfigProvider(ConfigProvider.fromEnv()),
-    ),
+    WorkflowsDatabaseConfig,
+    WorkflowsDatabaseConfigSchema,
   );
+}
+
+const NextAuthConfigSchema = Config.all({
+  nextAuthUrl: Config.url("NEXTAUTH_URL"),
+});
+
+export class NextAuthConfig extends Context.Tag("@typebot/NextAuthConfig")<
+  NextAuthConfig,
+  Config.Config.Success<typeof NextAuthConfigSchema>
+>() {
+  static readonly layer = Layer.effect(NextAuthConfig, NextAuthConfigSchema);
 }
 
 export class S3ReadableConfig extends Context.Tag("@typebot/S3ReadableConfig")<
@@ -52,8 +88,10 @@ export const S3ConfigLayer = Layer.unwrapEffect(
       Schema.Redacted(Schema.String),
     );
     const endpoint = yield* Schema.Config("S3_ENDPOINT", Schema.String);
-    const port = yield* Schema.Config("S3_PORT", Schema.NumberFromString).pipe(
-      Config.option,
+    const port = Option.getOrNull(
+      yield* Schema.Config("S3_PORT", Schema.NumberFromString).pipe(
+        Config.option,
+      ),
     );
     const region = yield* Schema.Config("S3_REGION", Schema.String).pipe(
       Config.withDefault("us-east-1"),
@@ -66,7 +104,7 @@ export const S3ConfigLayer = Layer.unwrapEffect(
     return Layer.mergeAll(
       Layer.succeed(S3ReadableConfig, { bucket }),
       MultipartUpload.layer({
-        endpoint: `http${ssl ? "s" : ""}://${endpoint}:${port}`,
+        endpoint: `http${ssl ? "s" : ""}://${endpoint}${port ? `:${port}` : ""}`,
         region,
         credentials: {
           accessKeyId: Redacted.value(accessKey),

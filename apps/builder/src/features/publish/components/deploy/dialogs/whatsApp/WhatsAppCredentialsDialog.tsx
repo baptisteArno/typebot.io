@@ -662,7 +662,7 @@ const Dialog360PhoneNumber = ({
 const Dialog360Webhook = ({ credentialsId }: { credentialsId: string }) => {
   const { workspace } = useWorkspace();
   const webhookUrl = `${
-    env.NEXT_PUBLIC_VIEWER_URL.at(1) ?? env.NEXT_PUBLIC_VIEWER_URL[0]
+    env.NEXT_PUBLIC_VIEWER_URL?.at(1) ?? env.NEXT_PUBLIC_VIEWER_URL?.[0]
   }/api/v1/workspaces/${workspace?.id}/whatsapp/${credentialsId}/webhook`;
 
   return (

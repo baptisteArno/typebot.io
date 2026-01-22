@@ -73,7 +73,7 @@ export const parseApiHost = (
   customDomain: Typebot["customDomain"] | undefined,
 ) => {
   if (customDomain) return new URL(`https://${customDomain}`).origin;
-  return env.NEXT_PUBLIC_VIEWER_URL.at(1) ?? env.NEXT_PUBLIC_VIEWER_URL[0];
+  return env.NEXT_PUBLIC_VIEWER_URL?.at(1) ?? env.NEXT_PUBLIC_VIEWER_URL?.[0];
 };
 
 const parseApiHostValue = (

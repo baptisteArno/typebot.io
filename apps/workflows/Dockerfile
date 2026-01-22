@@ -19,7 +19,9 @@ RUN groupadd bun \
     && which bun \
     && which bunx \
     && bun --version
-RUN apt-get -qy update && apt-get -qy --no-install-recommends install openssl git python3 g++ build-essential
+RUN apt-get -qy update \
+    && apt-get -qy --no-install-recommends install openssl ca-certificates git python3 g++ build-essential \
+    && update-ca-certificates
 WORKDIR /app
 
 # =============== PRUNE =================
@@ -34,7 +36,9 @@ FROM base AS install
 COPY --from=pruned /app/out/full/ .
 COPY bun.lock .
 COPY bunfig.toml .
+ARG DATABASE_URL=postgresql://
 RUN bun install
+RUN DATABASE_URL=$DATABASE_URL bunx tsx packages/prisma/scripts/db-generate.ts
 
 # =============== RELEASE =================
 
