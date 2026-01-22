@@ -39,6 +39,8 @@ const landingPagePaths = [
   "/business-continuity",
   "/blog",
   "/blog/:slug*",
+  "/templates",
+  "/templates/:slug*",
 ];
 
 const currentHost = "typebot.io";
