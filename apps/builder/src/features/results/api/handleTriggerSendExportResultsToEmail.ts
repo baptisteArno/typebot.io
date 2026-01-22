@@ -1,4 +1,4 @@
-import { ORPCError } from "@orpc/client";
+import { ORPCError } from "@orpc/server";
 import { WorkflowsRpcClientConfig } from "@typebot.io/config";
 import prisma from "@typebot.io/prisma";
 import { ResultsWorkflowsRpcClient } from "@typebot.io/results/workflows/rpc";
