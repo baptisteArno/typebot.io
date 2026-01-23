@@ -181,6 +181,12 @@ const smtpEnv = {
   },
 };
 
+const resendEnv = {
+  server: {
+    RESEND_WEBHOOK_SECRET: z.string().min(1).optional(),
+  },
+};
+
 const gitlabEnv = {
   server: {
     GITLAB_CLIENT_ID: z.string().min(1).optional(),
@@ -473,6 +479,7 @@ export const env = createEnv({
     ...githubEnv.server,
     ...facebookEnv.server,
     ...smtpEnv.server,
+    ...resendEnv.server,
     ...googleAuthEnv.server,
     ...googleSheetsEnv.server,
     ...stripeEnv.server,

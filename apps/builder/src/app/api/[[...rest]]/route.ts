@@ -41,8 +41,10 @@ const handler = new OpenAPIHandler(appRouter, {
   ],
   rootInterceptors: [
     (options) => {
-      if (!options.request.url.pathname.includes("/stripe/webhook"))
-        return options.next();
+      const needsRawBody =
+        options.request.url.pathname.includes("/stripe/webhook") ||
+        options.request.url.pathname.includes("/resend/webhook");
+      if (!needsRawBody) return options.next();
 
       const rawContext = (options.context as Record<symbol, unknown>)[
         RAW_REQUEST_CONTEXT
