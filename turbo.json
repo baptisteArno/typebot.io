@@ -9,6 +9,12 @@
       "cache": false,
       "dependsOn": ["@typebot.io/react#build"]
     },
+    "landing-page#typecheck": {
+      "dependsOn": ["landing-page#content-collections:build"]
+    },
+    "content-collections:build": {
+      "outputs": [".content-collections/generated/**"]
+    },
     "@typebot.io/react#build": {
       "dependsOn": ["^build"]
     },
