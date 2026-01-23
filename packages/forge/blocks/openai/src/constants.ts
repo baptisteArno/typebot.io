@@ -1,4 +1,10 @@
 export const ttsModels = ["gpt-4o-mini-tts", "tts-1", "tts-1-hd"];
+export const transcriptionModels = [
+  "gpt-4o-transcribe",
+  "gpt-4o-mini-transcribe",
+  "gpt-4o-transcribe-diarize",
+  "whisper-1",
+];
 
 export const openAIVoices = [
   "alloy",

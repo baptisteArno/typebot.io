@@ -4,6 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "content-collections:build": "bunx @content-collections/cli build --config content-collections.ts",
     "typecheck": "tsc --noEmit",
     "dev": "dotenv -e ./.env -e ../../.env -- vite dev --port 3003",
     "build": "bun check-broken-links && dotenv -e ./.env -e ../../.env -- vite build",

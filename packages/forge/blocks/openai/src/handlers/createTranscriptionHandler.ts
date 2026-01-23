@@ -29,7 +29,8 @@ export const createTranscriptionHandler = createActionHandler(
 
       const result = await openai.audio.transcriptions.create({
         file: await fetch(options.url),
-        model: "whisper-1",
+        model: isNotEmpty(options.model) ? options.model : "whisper-1",
+        ...(isNotEmpty(options.prompt) ? { prompt: options.prompt } : {}),
       });
 
       variables.set([

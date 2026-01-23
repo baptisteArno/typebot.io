@@ -76,7 +76,7 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https:",
+              `script-src 'self' 'unsafe-inline' 'unsafe-eval' https:${isDev ? " http://localhost:* blob:" : ""}`,
               "style-src 'self' 'unsafe-inline' https:",
               `connect-src 'self' https: wss:${
                 isDev ? " http://localhost:* ws://localhost:*" : ""
@@ -84,7 +84,7 @@ const nextConfig = {
               "frame-src 'self' https:",
               `img-src 'self' data: blob: https:${isDev ? " http://localhost:*" : ""}`,
               "font-src 'self' https: data:",
-              "media-src 'self' https:",
+              `media-src 'self' https:${isDev ? " http://localhost:* blob:" : ""}`,
               "worker-src 'self' blob:",
               "object-src 'none'",
             ].join("; "),
