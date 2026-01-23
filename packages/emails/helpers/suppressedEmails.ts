@@ -1,6 +1,7 @@
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { PrismaClientService, PrismaService } from "@typebot.io/prisma/effect";
+import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
 import { Effect, Layer } from "effect";
 import type { SendMailOptions } from "nodemailer";
 
@@ -45,8 +46,77 @@ const extractEmailsFromRecipients = (value: unknown): string[] => {
 const normalizeEmailList = (emails: string[]) =>
   Array.from(new Set(emails.map(normalizeEmail).filter(isNotEmpty)));
 
+type RecipientAddress = {
+  name: string;
+  address: string;
+};
+
+const isRecipientAddress = (value: unknown): value is RecipientAddress =>
+  typeof value === "object" &&
+  value !== null &&
+  "address" in value &&
+  typeof value.address === "string" &&
+  "name" in value &&
+  typeof value.name === "string";
+
 export const normalizeRecipientEmails = (to: SendMailOptions["to"]) =>
   Array.from(new Set(extractEmailsFromRecipients(to)));
+
+const filterRecipientsString = (value: string, suppressed: Set<string>) => {
+  const entries = value
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(isNotEmpty);
+  const remaining = entries.filter(
+    (entry) => !suppressed.has(normalizeEmail(entry)),
+  );
+  if (remaining.length === 0) return "";
+  return remaining.join(", ");
+};
+
+export const filterSuppressedRecipients = (
+  recipients: SendMailOptions["to"],
+  suppressedEmails: string[],
+) => {
+  if (!recipients) return undefined;
+  if (suppressedEmails.length === 0) return recipients;
+  const suppressed = new Set(suppressedEmails.map(normalizeEmail));
+
+  if (typeof recipients === "string") {
+    const filtered = filterRecipientsString(recipients, suppressed);
+    if (!filtered) return undefined;
+    return filtered;
+  }
+
+  if (Array.isArray(recipients)) {
+    const recipientsList = recipients.filter(
+      (entry): entry is string | RecipientAddress =>
+        typeof entry === "string" || isRecipientAddress(entry),
+    );
+    const filtered: Array<string | RecipientAddress> = [];
+    for (const entry of recipientsList) {
+      if (typeof entry === "string") {
+        const filteredEntry = filterRecipientsString(entry, suppressed);
+        if (!filteredEntry) continue;
+        filtered.push(filteredEntry);
+        continue;
+      }
+      const filteredAddress = filterRecipientsString(entry.address, suppressed);
+      if (!filteredAddress) continue;
+      filtered.push({ ...entry, address: filteredAddress });
+    }
+    if (filtered.length === 0) return undefined;
+    return filtered;
+  }
+
+  if (!isRecipientAddress(recipients)) return recipients;
+  const filteredAddress = filterRecipientsString(
+    recipients.address,
+    suppressed,
+  );
+  if (!filteredAddress) return undefined;
+  return { ...recipients, address: filteredAddress };
+};
 
 export const listSuppressedEmails = (emails: string[]) =>
   Effect.gen(function* () {
@@ -81,51 +151,61 @@ export const recordTransientGeneralBounces = (
     const normalized = normalizeEmailList(emails);
     if (!normalized.length) return;
     const prisma = yield* PrismaService;
-    const existingEntries = yield* prisma.suppressedEmail.findMany({
-      where: { email: { in: normalized } },
-      select: {
-        email: true,
-        transientGeneralBounceCount: true,
-        suppressedAt: true,
-        lastWebhookId: true,
-      },
-    });
-    const existingByEmail = new Map(
-      existingEntries.map((entry) => [entry.email, entry]),
-    );
     const now = new Date();
 
     yield* Effect.forEach(
       normalized,
       (email) =>
         Effect.gen(function* () {
-          const existing = existingByEmail.get(email);
-          if (webhookId && existing?.lastWebhookId === webhookId) return;
-          const nextCount = (existing?.transientGeneralBounceCount ?? 0) + 1;
-          const shouldSuppress = nextCount >= SUPPRESSION_THRESHOLD;
-          const suppressedAt = shouldSuppress
-            ? (existing?.suppressedAt ?? now)
-            : (existing?.suppressedAt ?? null);
+          const updateWhere = webhookId
+            ? { email, NOT: { lastWebhookId: webhookId } }
+            : { email };
+          const updateData = webhookId
+            ? {
+                transientGeneralBounceCount: { increment: 1 },
+                lastWebhookId: webhookId,
+              }
+            : { transientGeneralBounceCount: { increment: 1 } };
+          const createData = {
+            email,
+            transientGeneralBounceCount: 1,
+            suppressedAt: null,
+            lastWebhookId: webhookId ?? null,
+          };
 
-          if (existing) {
-            yield* prisma.suppressedEmail.update({
-              where: { email },
-              data: {
-                transientGeneralBounceCount: nextCount,
-                suppressedAt,
-                lastWebhookId: webhookId ?? existing.lastWebhookId,
-              },
-            });
-            return;
+          const updated = yield* prisma.suppressedEmail.updateMany({
+            where: updateWhere,
+            data: updateData,
+          });
+
+          if (updated.count === 0) {
+            const created = yield* prisma.suppressedEmail
+              .create({ data: createData })
+              .pipe(
+                Effect.as(true),
+                Effect.catchAll((error) => {
+                  if (
+                    error instanceof PrismaClientKnownRequestError &&
+                    error.code === "P2002"
+                  )
+                    return Effect.succeed(false);
+                  return Effect.fail(error);
+                }),
+              );
+            if (!created)
+              yield* prisma.suppressedEmail.updateMany({
+                where: updateWhere,
+                data: updateData,
+              });
           }
 
-          yield* prisma.suppressedEmail.create({
-            data: {
+          yield* prisma.suppressedEmail.updateMany({
+            where: {
               email,
-              transientGeneralBounceCount: nextCount,
-              suppressedAt,
-              lastWebhookId: webhookId ?? null,
+              suppressedAt: null,
+              transientGeneralBounceCount: { gte: SUPPRESSION_THRESHOLD },
             },
+            data: { suppressedAt: now },
           });
         }),
       { concurrency: 1 },

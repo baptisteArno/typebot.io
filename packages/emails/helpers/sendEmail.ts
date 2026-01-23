@@ -1,6 +1,9 @@
 import { env } from "@typebot.io/env";
 import { createTransport, type SendMailOptions } from "nodemailer";
-import { runListSuppressedEmailsForRecipients } from "./suppressedEmails";
+import {
+  filterSuppressedRecipients,
+  runListSuppressedEmailsForRecipients,
+} from "./suppressedEmails";
 
 export const sendEmail = async (
   props: Pick<SendMailOptions, "to" | "html" | "subject" | "replyTo" | "text">,
@@ -12,12 +15,23 @@ export const sendEmail = async (
     console.error("Failed to check suppressed emails", error);
   }
 
-  if (suppressedEmails.length > 0) {
-    console.warn("Email blocked because a recipient is suppressed", {
-      suppressedEmails,
+  const suppressedCount = suppressedEmails.length;
+  const filteredTo =
+    suppressedCount > 0
+      ? filterSuppressedRecipients(props.to, suppressedEmails)
+      : props.to;
+
+  if (suppressedCount > 0 && !filteredTo) {
+    console.warn("Email blocked because all recipients are suppressed", {
+      suppressedCount,
     });
     return;
   }
+
+  if (suppressedCount > 0)
+    console.warn("Suppressed recipients removed from email send", {
+      suppressedCount,
+    });
 
   const transporter = createTransport({
     host: env.SMTP_HOST,
@@ -31,5 +45,6 @@ export const sendEmail = async (
   return transporter.sendMail({
     from: env.NEXT_PUBLIC_SMTP_FROM,
     ...props,
+    to: filteredTo,
   });
 };
