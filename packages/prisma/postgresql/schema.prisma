@@ -427,6 +427,16 @@ model BannedIp {
   userId               String
 }
 
+model SuppressedEmail {
+  id                          String    @id @default(cuid())
+  createdAt                   DateTime  @default(now())
+  updatedAt                   DateTime  @default(now()) @updatedAt
+  email                       String    @unique
+  transientGeneralBounceCount Int       @default(0)
+  suppressedAt                DateTime?
+  lastWebhookId               String?
+}
+
 enum WorkspaceRole {
   ADMIN
   MEMBER

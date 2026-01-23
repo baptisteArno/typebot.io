@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "@react-email/components": "^0.5.1",
+    "@typebot.io/prisma": "workspace:*",
     "@typebot.io/env": "workspace:*",
+    "effect": "^3.19.14",
     "nodemailer": "^7.0.6",
     "react-email": "^4.2.8",
     "@react-email/render": "^1.2.1",

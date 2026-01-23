@@ -100,6 +100,7 @@
     "react-dom": "^19.2.3",
     "react-markdown": "^9.0.1",
     "shared-zustand": "^2.1.0",
+    "svix": "^1.74.1",
     "stripe": "^17.1.0",
     "svg-round-corners": "^0.4.1",
     "tinycolor2": "^1.6.0",

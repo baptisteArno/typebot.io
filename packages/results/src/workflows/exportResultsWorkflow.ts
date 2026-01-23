@@ -2,6 +2,7 @@ import { PlatformError } from "@effect/platform/Error";
 import { Activity, Workflow } from "@effect/workflow";
 import { MultipartUpload } from "@effect-aws/s3";
 import { NextAuthConfig, S3ReadableConfig } from "@typebot.io/config";
+import { listSuppressedEmails } from "@typebot.io/emails/helpers/suppressedEmails";
 import { renderResultsExportLinkEmail } from "@typebot.io/emails/transactional/ResultsExportLinkEmail";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import {
@@ -284,6 +285,23 @@ export const SendExportToEmailWorkflowLayer = SendExportToEmailWorkflow.toLayer(
 
     if (Option.isNone(exportResult)) {
       yield* Effect.logWarning("Export timed out, skipping email");
+      return;
+    }
+
+    const emptySuppressedEmails: string[] = [];
+    const suppressedEmails = yield* listSuppressedEmails([payload.email]).pipe(
+      Effect.catchAll((error) =>
+        Effect.logError("Suppressed email check failed").pipe(
+          Effect.annotateLogs({ error: String(error), email: payload.email }),
+          Effect.as(emptySuppressedEmails),
+        ),
+      ),
+    );
+
+    if (suppressedEmails.length > 0) {
+      yield* Effect.logWarning("Email suppressed, skipping export email").pipe(
+        Effect.annotateLogs({ email: payload.email, suppressedEmails }),
+      );
       return;
     }
 
