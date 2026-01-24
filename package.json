@@ -35,7 +35,8 @@
     "restore": "echo 'Cleaning...' && bunx rimraf --glob '**/{node_modules,dist,.next,.turbo}'",
     "deploy-workflows": "fly deploy --config apps/workflows/fly.toml",
     "new-worktree": "bun scripts/new-worktree.ts",
-    "check": "turbo run typecheck test format-and-lint:fix lint-repo check-broken-links"
+    "check": "turbo run typecheck test format-and-lint:fix lint-repo check-broken-links",
+    "sync-agents-config": "bunx @iannuttall/dotagents"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.7",
