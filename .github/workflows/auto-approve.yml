@@ -1,0 +1,14 @@
+name: Auto approve PRs by owner
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  auto-approve:
+    if: github.event.pull_request.user.login == 'baptisteArno' && !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: hmarr/auto-approve-action@v4
