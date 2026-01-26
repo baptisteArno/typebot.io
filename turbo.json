@@ -10,7 +10,10 @@
       "dependsOn": ["@typebot.io/react#build"]
     },
     "landing-page#typecheck": {
-      "dependsOn": ["landing-page#content-collections:build"]
+      "dependsOn": [
+        "@typebot.io/react#build",
+        "landing-page#content-collections:build"
+      ]
     },
     "content-collections:build": {
       "outputs": [".content-collections/generated/**"]
