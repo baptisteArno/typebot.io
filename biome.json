@@ -14,7 +14,10 @@
       "!**/emojiList.json",
       "!**/iconNames.ts",
       "!**/.last-run.json",
-      "!**/test/assets/**/*.json"
+      "!**/test/assets/**/*.json",
+      "!.opencode",
+      "!.codex",
+      "!.cursor"
     ]
   },
   "css": {

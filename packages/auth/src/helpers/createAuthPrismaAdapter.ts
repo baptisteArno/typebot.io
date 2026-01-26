@@ -5,6 +5,7 @@ import type {
   AdapterUser,
 } from "@auth/core/adapters";
 import { createId } from "@paralleldrive/cuid2";
+import { WorkflowsRpcClientConfig } from "@typebot.io/config";
 import { env } from "@typebot.io/env";
 import { ky } from "@typebot.io/lib/ky";
 import { omit } from "@typebot.io/lib/utils";
@@ -16,7 +17,9 @@ import type { Prisma } from "@typebot.io/prisma/types";
 import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { userSchema } from "@typebot.io/user/schemas";
+import { UsersWorkflowsRpcClient } from "@typebot.io/user/workflows/rpc";
 import { parseWorkspaceDefaultPlan } from "@typebot.io/workspaces/parseWorkspaceDefaultPlan";
+import { Effect } from "effect";
 import { convertInvitationsToCollaborations } from "./convertInvitationsToCollaborations";
 import { getNewUserInvitations } from "./getNewUserInvitations";
 import { joinWorkspaces } from "./joinWorkspaces";
@@ -88,6 +91,8 @@ export const createAuthPrismaAdapter = (p: Prisma.PrismaClient): Adapter => ({
       }
     }
     await trackEvents(events);
+    if (createdUser.email)
+      triggerStartUserOnboardingWorkflow(createdUser.id, createdUser.email);
     if (invitations.length > 0)
       await convertInvitationsToCollaborations(p, user, invitations);
     if (workspaceInvitations.length > 0)
@@ -195,6 +200,27 @@ export const createAuthPrismaAdapter = (p: Prisma.PrismaClient): Adapter => ({
     }) as Promise<AdapterAccount | null>;
   },
 });
+
+const triggerStartUserOnboardingWorkflow = (userId: string, email: string) => {
+  const program = Effect.gen(function* () {
+    const client = yield* UsersWorkflowsRpcClient;
+    yield* client.SendUserOnboardingEmail({ userId, email });
+  }).pipe(
+    Effect.withSpan("triggerStartUserOnboardingWorkflow", {
+      attributes: { userId, email },
+      root: true,
+    }),
+    Effect.provide(UsersWorkflowsRpcClient.Default),
+    Effect.provide(WorkflowsRpcClientConfig.layer),
+    Effect.catchAll((error) =>
+      Effect.sync(() => {
+        console.error("Failed to trigger onboarding email workflow", error);
+      }),
+    ),
+  );
+
+  Effect.runFork(program);
+};
 
 /** @see https://www.prisma.io/docs/orm/prisma-client/special-fields-and-types/null-and-undefined */
 function stripUndefined<T>(obj: T) {
