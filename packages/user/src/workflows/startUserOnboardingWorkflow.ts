@@ -23,10 +23,6 @@ export const StartUserOnboardingWorkflow = Workflow.make({
 export const StartUserOnboardingWorkflowLayer =
   StartUserOnboardingWorkflow.toLayer(
     Effect.fn(function* (payload) {
-      yield* Effect.annotateCurrentSpan({
-        userId: payload.userId,
-        email: payload.email,
-      });
       yield* Effect.annotateLogsScoped({
         userId: payload.userId,
         email: payload.email,

@@ -215,11 +215,7 @@ export const streamResultsToCsvV2 = (
     );
 
     return { csvStream, totalRowsExportedRef };
-  }).pipe(
-    Effect.withSpan("streamResultsToCsv", {
-      attributes: { typebotId: typebot.id },
-    }),
-  );
+  });
 
 const getDeletedBlockHeaders = ({
   typebotId,

@@ -72,7 +72,7 @@ export const handleTriggerSendExportResultsToEmail = async ({
       ),
     ),
     Effect.withSpan("handleTriggerSendExportResultsToEmail", {
-      attributes: { typebotId, workflowId },
+      attributes: { typebotId },
       root: true,
     }),
   );
