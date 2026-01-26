@@ -2,11 +2,11 @@ import { ORPCError } from "@orpc/server";
 import { WorkflowsRpcClientConfig } from "@typebot.io/config";
 import prisma from "@typebot.io/prisma";
 import { ResultsWorkflowsRpcClient } from "@typebot.io/results/workflows/rpc";
+import { TelemetryLayer } from "@typebot.io/telemetry/telemetryLayer";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { User } from "@typebot.io/user/schemas";
 import { Effect, Layer } from "effect";
 import { z } from "zod";
-import { TelemetryLayer } from "@/lib/telemetry";
 
 const MainLayer = Layer.provideMerge(
   Layer.provide(

@@ -15,14 +15,23 @@ import {
 } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
+import { TelemetryLayer } from "@typebot.io/telemetry/telemetryLayer";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { userSchema } from "@typebot.io/user/schemas";
 import { UsersWorkflowsRpcClient } from "@typebot.io/user/workflows/rpc";
 import { parseWorkspaceDefaultPlan } from "@typebot.io/workspaces/parseWorkspaceDefaultPlan";
-import { Effect } from "effect";
+import { Effect, Layer } from "effect";
 import { convertInvitationsToCollaborations } from "./convertInvitationsToCollaborations";
 import { getNewUserInvitations } from "./getNewUserInvitations";
 import { joinWorkspaces } from "./joinWorkspaces";
+
+const MainLayer = Layer.provideMerge(
+  Layer.provide(
+    UsersWorkflowsRpcClient.Default,
+    WorkflowsRpcClientConfig.layer,
+  ),
+  TelemetryLayer,
+);
 
 export const createAuthPrismaAdapter = (p: Prisma.PrismaClient): Adapter => ({
   createUser: async (data) => {
@@ -210,8 +219,7 @@ const triggerStartUserOnboardingWorkflow = (userId: string, email: string) => {
       attributes: { userId, email },
       root: true,
     }),
-    Effect.provide(UsersWorkflowsRpcClient.Default),
-    Effect.provide(WorkflowsRpcClientConfig.layer),
+    Effect.provide(MainLayer),
     Effect.catchAll((error) =>
       Effect.sync(() => {
         console.error("Failed to trigger onboarding email workflow", error);

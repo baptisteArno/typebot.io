@@ -1,14 +1,15 @@
 import { NodeSdk } from "@effect/opentelemetry";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
+import { env } from "@typebot.io/env";
 import { Effect, Layer } from "effect";
 
 export const TelemetryLayer = Layer.unwrapEffect(
   Effect.sync(() => {
-    const endpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT;
+    const endpoint = env.OTEL_EXPORTER_OTLP_ENDPOINT;
     if (!endpoint) return Layer.empty;
 
-    const headers = parseOtlpHeaders(process.env.OTEL_EXPORTER_OTLP_HEADERS);
+    const headers = parseOtlpHeaders(env.OTEL_EXPORTER_OTLP_HEADERS);
 
     return NodeSdk.layer(() => ({
       resource: { serviceName: "builder" },
