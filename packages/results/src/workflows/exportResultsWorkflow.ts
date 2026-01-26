@@ -85,12 +85,6 @@ export const ExportResultsWorkflow = Workflow.make({
 
 export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
   Effect.fn(function* (payload, executionId) {
-    yield* Effect.annotateCurrentSpan({
-      workflowId: payload.id,
-      typebotId: payload.typebotId,
-      executionId,
-    });
-
     yield* Effect.annotateLogsScoped({
       workflowId: payload.id,
       typebotId: payload.typebotId,
@@ -250,11 +244,6 @@ export const SendExportToEmailWorkflow = Workflow.make({
 
 export const SendExportToEmailWorkflowLayer = SendExportToEmailWorkflow.toLayer(
   Effect.fn(function* (payload) {
-    yield* Effect.annotateCurrentSpan({
-      exportResultsWorkflowId: payload.exportResultsWorkflowId,
-      email: payload.email,
-      typebotId: payload.typebotId,
-    });
     yield* Effect.annotateLogsScoped({
       exportResultsWorkflowId: payload.exportResultsWorkflowId,
       email: payload.email,
