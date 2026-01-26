@@ -14,7 +14,7 @@ export const SignInPage = ({ type }: Props) => {
   const { query } = useRouter();
 
   return (
-    <div className="flex flex-col gap-4 h-screen justify-center items-center">
+    <div className="flex flex-col gap-4 h-dvh justify-center items-center">
       <Seo
         title={
           type === "signin"

@@ -22,6 +22,7 @@ import {
   WorkflowsDatabaseConfig,
   WorkflowsServerConfig,
 } from "@typebot.io/config";
+import { RPC_SECRET_HEADER_KEY } from "@typebot.io/config/constants";
 import { NodemailerClientLayer } from "@typebot.io/lib/nodemailer/NodemailerClient";
 import { RedisClientLayer } from "@typebot.io/lib/redis/RedisClient";
 import prisma from "@typebot.io/prisma";
@@ -34,9 +35,13 @@ import {
 import {
   ResultsWorkflowsRpc,
   ResultsWorkflowsRpcLayer,
-  RPC_SECRET_HEADER_KEY,
 } from "@typebot.io/results/workflows/rpc";
 import { TypebotServiceLayer } from "@typebot.io/typebot/services/TypebotService";
+import {
+  UsersWorkflowsRpc,
+  UsersWorkflowsRpcLayer,
+} from "@typebot.io/user/workflows/rpc";
+import { StartUserOnboardingWorkflowLayer } from "@typebot.io/user/workflows/startUserOnboardingWorkflow";
 import { Effect, Equivalence, Layer, Redacted } from "effect";
 
 const WorkflowEngineLayer = ClusterWorkflowEngine.layer.pipe(
@@ -56,6 +61,7 @@ const WorkflowEngineLayer = ClusterWorkflowEngine.layer.pipe(
 const WorkflowLayer = Layer.mergeAll(
   ExportResultsWorkflowLayer,
   SendExportToEmailWorkflowLayer,
+  StartUserOnboardingWorkflowLayer,
 ).pipe(Layer.provideMerge(WorkflowEngineLayer));
 
 const PrismaLayer = Layer.provide(
@@ -93,12 +99,15 @@ const AuthMiddleware = HttpLayerRouter.middleware(
   }),
 ).layer;
 
-const ResultsRpcRouterLayer = RpcServer.layerHttpRouter({
-  group: ResultsWorkflowsRpc,
+const WorkflowsRpcGroup = ResultsWorkflowsRpc.merge(UsersWorkflowsRpc);
+
+const WorkflowsRpcRouterLayer = RpcServer.layerHttpRouter({
+  group: WorkflowsRpcGroup,
   path: "/rpc",
   protocol: "http",
 }).pipe(
   Layer.provide(ResultsWorkflowsRpcLayer),
+  Layer.provide(UsersWorkflowsRpcLayer),
   Layer.provide(AuthMiddleware),
   Layer.provide(RpcSerialization.layerNdjson),
 );
@@ -118,7 +127,7 @@ const OtelNodeSdkLive = NodeSdk.layer(() => ({
   logRecordProcessor: new BatchLogRecordProcessor(new OTLPLogExporter()),
 }));
 
-const Routes = Layer.mergeAll(HealthRoute, ResultsRpcRouterLayer);
+const Routes = Layer.mergeAll(HealthRoute, WorkflowsRpcRouterLayer);
 
 const Main = HttpLayerRouter.serve(Routes).pipe(
   Layer.provide(WorkflowLayer),

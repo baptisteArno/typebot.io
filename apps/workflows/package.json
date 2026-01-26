@@ -29,6 +29,7 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/results": "workspace:*",
+    "@typebot.io/user": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "effect": "^3.19.14"
   },

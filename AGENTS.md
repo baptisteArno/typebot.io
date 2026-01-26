@@ -31,6 +31,7 @@ Follow this workflow unless explicitly instructed otherwise.
    - Explain what you found from opensrc or web searches
    - Ask questions about unclear requirements, edge cases, or technical decisions.
    - Report what you are planning on doing
+   - If I mention "IMPLEMENT" or "GO", it means you can move to step 4.
 
 4. **Implement**
 
@@ -87,6 +88,8 @@ Source code for dependencies is then available in `opensrc/`.
 - Whenever possible, never use `as`. Instead, use `satisfies` as a last resort to make sure we keep strong type-safety.
 - Only add a comment if a piece of logic is hard to grasp.
 - Prefer inferring types instead of declaring it.
+- Function name should always start with a verb.
+- Functions used only locally should stay in the same file at the bottom of it. Only export helpers if used elsewhere then the helper file should have the same name as the function.
 - No brackets on `if` blocks if it's just 1 line.
 - Outside of Effect code, prefer using `env` from `@typebot.io/env` instead of `process.env` directly. This package provides type-safe, validated environment variables.
 

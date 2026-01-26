@@ -15,6 +15,7 @@ import { collaboratorsRouter } from "@/features/collaboration/api/router";
 import { credentialsRouter } from "@/features/credentials/api/router";
 import { customDomainsRouter } from "@/features/customDomains/api/router";
 import { generateGroupTitle } from "@/features/editor/api/generateGroupTitle";
+import { emailsRouter } from "@/features/emails/api/router";
 import { getFeatureFlags } from "@/features/featureFlags/api/getFeatureFlags";
 import { folderRouter } from "@/features/folders/api/router";
 import { forgeRouter } from "@/features/forge/api/router";
@@ -38,6 +39,7 @@ export const appRouter = {
   customDomains: customDomainsRouter,
   whatsApp: builderWhatsAppRouter,
   folders: folderRouter,
+  emails: emailsRouter,
   user: userRouter,
   healthz: publicProcedure.handler(async () => ({
     status: "ok",

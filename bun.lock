@@ -292,6 +292,7 @@
         "@typebot.io/prisma": "workspace:*",
         "@typebot.io/results": "workspace:*",
         "@typebot.io/typebot": "workspace:*",
+        "@typebot.io/user": "workspace:*",
         "effect": "^3.19.14",
       },
       "devDependencies": {
@@ -591,6 +592,8 @@
       "version": "0.0.1",
       "dependencies": {
         "@effect-aws/s3": "^0.2.5",
+        "@effect/platform": "^0.94.1",
+        "@effect/rpc": "^0.73.0",
         "effect": "^3.19.14",
       },
       "devDependencies": {
@@ -1367,7 +1370,15 @@
       "name": "@typebot.io/user",
       "version": "0.0.1",
       "dependencies": {
+        "@effect/platform": "^0.94.1",
+        "@effect/rpc": "^0.73.0",
+        "@effect/workflow": "^0.16.0",
+        "@typebot.io/config": "workspace:*",
+        "@typebot.io/emails": "workspace:*",
+        "@typebot.io/env": "workspace:*",
+        "@typebot.io/lib": "workspace:*",
         "@typebot.io/prisma": "workspace:*",
+        "effect": "^3.19.14",
         "zod": "^4.3.5",
       },
       "devDependencies": {

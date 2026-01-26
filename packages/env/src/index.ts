@@ -67,6 +67,7 @@ const baseEnv = {
       .url()
       .refine((url) => url.startsWith("postgres") || url.startsWith("mysql")),
     ENCRYPTION_SECRET: z.string().length(32),
+    EMAIL_UNSUBSCRIBE_SECRET: z.string().min(1).optional(),
     NEXTAUTH_URL: z.preprocess(
       guessNextAuthUrlForVercelPreview,
       z.string().url(),
@@ -473,6 +474,22 @@ const otelEnv = {
   },
 };
 
+const formatEnvIssues = (issues: readonly StandardSchemaV1.Issue[]) =>
+  issues.reduce<Record<string, string[]>>((acc, issue) => {
+    const path = issue.path?.map((segment) =>
+      isPathSegment(segment) ? String(segment.key) : String(segment),
+    );
+    const key = path?.length ? path.join(".") : "root";
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(issue.message);
+    return acc;
+  }, {});
+
+const isPathSegment = (
+  value: StandardSchemaV1.PathSegment | PropertyKey,
+): value is StandardSchemaV1.PathSegment =>
+  typeof value === "object" && value !== null && "key" in value;
+
 export const env = createEnv({
   server: {
     ...baseEnv.server,
@@ -542,19 +559,3 @@ export const env = createEnv({
     );
   },
 });
-
-const formatEnvIssues = (issues: readonly StandardSchemaV1.Issue[]) =>
-  issues.reduce<Record<string, string[]>>((acc, issue) => {
-    const path = issue.path?.map((segment) =>
-      isPathSegment(segment) ? String(segment.key) : String(segment),
-    );
-    const key = path?.length ? path.join(".") : "root";
-    if (!acc[key]) acc[key] = [];
-    acc[key].push(issue.message);
-    return acc;
-  }, {});
-
-const isPathSegment = (
-  value: StandardSchemaV1.PathSegment | PropertyKey,
-): value is StandardSchemaV1.PathSegment =>
-  typeof value === "object" && value !== null && "key" in value;

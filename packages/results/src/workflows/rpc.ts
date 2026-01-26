@@ -1,31 +1,15 @@
-import {
-  FetchHttpClient,
-  HttpClient,
-  HttpClientRequest,
-} from "@effect/platform";
-import { Rpc, RpcClient, RpcGroup, RpcSerialization } from "@effect/rpc";
-import { WorkflowsRpcClientConfig } from "@typebot.io/config";
+import { Rpc, RpcClient, RpcGroup } from "@effect/rpc";
+import { WorkflowsRpcClientProtocolLayer } from "@typebot.io/config/workflowsRpcProtocol";
 import {
   RedisClient,
   RedisSubscribeError,
 } from "@typebot.io/lib/redis/RedisClient";
-import {
-  Cause,
-  Effect,
-  Fiber,
-  Layer,
-  Option,
-  Redacted,
-  Schema,
-  Stream,
-} from "effect";
+import { Cause, Effect, Fiber, Schema, Stream } from "effect";
 import {
   EXPORT_PROGRESS_CHANNEL_PREFIX,
   ExportResultsWorkflow,
   SendExportToEmailWorkflow,
 } from "./exportResultsWorkflow";
-
-export const RPC_SECRET_HEADER_KEY = "x-rpc-secret";
 
 const ExportResultsWorkflowStatusChunk = Schema.Union(
   Schema.Struct({
@@ -126,35 +110,10 @@ export const ResultsWorkflowsRpcLayer = ResultsWorkflowsRpc.toLayer(
   }),
 );
 
-// Client
-
-const ProtocolLive = Effect.gen(function* () {
-  const { rpcSecret, rpcUrl } = yield* WorkflowsRpcClientConfig;
-  return RpcClient.layerProtocolHttp({
-    url: Option.getOrElse(
-      rpcUrl,
-      () => new URL("http://localhost:3007/rpc"),
-    ).toString(),
-    transformClient: (client) =>
-      HttpClient.mapRequest(client, (request) =>
-        request.pipe(
-          HttpClientRequest.setHeader(
-            RPC_SECRET_HEADER_KEY,
-            Redacted.value(rpcSecret),
-          ),
-        ),
-      ),
-  });
-}).pipe(
-  Layer.unwrapEffect,
-  Layer.provide(FetchHttpClient.layer),
-  Layer.provide(RpcSerialization.layerNdjson),
-);
-
 export class ResultsWorkflowsRpcClient extends Effect.Service<ResultsWorkflowsRpcClient>()(
   "@typebot/ResultsWorkflowsRpcClient",
   {
     scoped: RpcClient.make(ResultsWorkflowsRpc),
-    dependencies: [ProtocolLive],
+    dependencies: [WorkflowsRpcClientProtocolLayer],
   },
 ) {}
