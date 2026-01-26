@@ -12,6 +12,3 @@ jobs:
       pull-requests: write
     steps:
       - uses: hmarr/auto-approve-action@v4
-        with:
-          github-token: ${{ secrets.AUTO_APPROVE_TOKEN }}
-        if: ${{ secrets.AUTO_APPROVE_TOKEN != '' }}
