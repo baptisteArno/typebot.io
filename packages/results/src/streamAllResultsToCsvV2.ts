@@ -99,10 +99,6 @@ export const streamResultsToCsvV2 = (
       },
     });
 
-    yield* Effect.logInfo("Starting CSV generation stream").pipe(
-      Effect.annotateLogs({ totalResultsToExport }),
-    );
-
     const totalRowsExportedRef = yield* Ref.make(0);
 
     // Create a stream of CSV chunks

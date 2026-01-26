@@ -7,12 +7,16 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
+    "@effect/opentelemetry": "^0.60.0",
     "@typebot.io/env": "workspace:*",
-    "@typebot.io/prisma": "workspace:*",
-    "posthog-node": "^5.8.2",
-    "ky": "^1.2.4",
-    "cookie": "^1.0.2",
     "@typebot.io/lib": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.209.0",
+    "@opentelemetry/sdk-trace-base": "^2.3.0",
+    "cookie": "^1.0.2",
+    "effect": "^3.19.14",
+    "ky": "^1.2.4",
+    "posthog-node": "^5.8.2",
     "zod": "^4.3.5"
   },
   "devDependencies": {

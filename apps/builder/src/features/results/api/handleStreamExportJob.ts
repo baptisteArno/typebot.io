@@ -4,11 +4,11 @@ import { createId } from "@typebot.io/lib/createId";
 import prisma from "@typebot.io/prisma";
 import type { ExportResultsWorkflowStatusChunk } from "@typebot.io/results/workflows/rpc";
 import { ResultsWorkflowsRpcClient } from "@typebot.io/results/workflows/rpc";
+import { TelemetryLayer } from "@typebot.io/telemetry/telemetryLayer";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { User } from "@typebot.io/user/schemas";
 import { Cause, Effect, Layer, Queue, Stream } from "effect";
 import { z } from "zod";
-import { TelemetryLayer } from "@/lib/telemetry";
 
 const MainLayer = Layer.provideMerge(
   Layer.provide(

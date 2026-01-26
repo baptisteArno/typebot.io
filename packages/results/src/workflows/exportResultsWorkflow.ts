@@ -97,8 +97,6 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
       executionId,
     });
 
-    yield* Effect.logInfo("Export workflow started");
-
     const { nextAuthUrl } = yield* NextAuthConfig;
 
     const typebot = yield* Activity.make({
@@ -169,9 +167,7 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
 
     const s3Key = `private/tmp/workspaces/${typebot.workspaceId}/typebots/${payload.typebotId}/results-exports/${fileName}`;
 
-    yield* Effect.logDebug("File name: %s", fileName);
-
-    const { totalRowsExported } = yield* Activity.make({
+    yield* Activity.make({
       name: "ExportResultsToS3",
       error: Schema.Union(
         PrismaConnectionError,
@@ -185,7 +181,6 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
         totalRowsExported: Schema.Number,
       }),
       execute: Effect.gen(function* () {
-        yield* Effect.logDebug("Streaming results to S3...");
         const totalAttempts = yield* Activity.CurrentAttempt;
         if (totalAttempts > 2) {
           return yield* new TooManyAttemptsError({
@@ -201,8 +196,6 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
         );
 
         const s3Config = yield* S3ReadableConfig;
-
-        yield* Effect.logInfo("Uploading CSV to S3...");
 
         yield* MultipartUpload.uploadObject({
           Bucket: s3Config.bucket,
@@ -221,10 +214,6 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
 
         const totalRowsExported = yield* Ref.get(totalRowsExportedRef);
 
-        yield* Effect.logInfo("CSV uploaded to S3").pipe(
-          Effect.annotateLogs({ totalRowsExported }),
-        );
-
         return { totalRowsExported };
       }).pipe(
         Effect.provide(
@@ -240,12 +229,6 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
     });
 
     const fileUrl = new URL(`/api/s3/${s3Key}`, nextAuthUrl);
-
-    yield* Effect.logInfo("Export workflow completed").pipe(
-      Effect.annotateLogs({
-        totalRowsExported,
-      }),
-    );
 
     return {
       fileUrl,
@@ -304,8 +287,6 @@ export const SendExportToEmailWorkflowLayer = SendExportToEmailWorkflow.toLayer(
       );
       return;
     }
-
-    yield* Effect.logInfo("Sending email...");
 
     yield* Activity.make({
       name: "SendEmail",
