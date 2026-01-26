@@ -21,8 +21,10 @@ export const EventFocusToolbar = ({
   onPlayClick,
   onSettingsClick,
 }: Props) => {
+  const isStartEvent = type === EventType.START;
+
   const dispatchCopyEvent = () => {
-    if (type === EventType.START) return;
+    if (isStartEvent) return;
     dispatchEvent(
       new KeyboardEvent("keydown", {
         key: "c",
@@ -32,7 +34,7 @@ export const EventFocusToolbar = ({
   };
 
   const dispatchDeleteEvent = () => {
-    if (type === EventType.START) return;
+    if (isStartEvent) return;
     dispatchEvent(new KeyboardEvent("keydown", { key: "Backspace" }));
   };
 
@@ -44,7 +46,7 @@ export const EventFocusToolbar = ({
       )}
     >
       <Button
-        className="border-r rounded-r-none"
+        className={cn(!isStartEvent && "border-r rounded-r-none")}
         aria-label={"Preview bot from this group"}
         variant="ghost"
         onClick={onPlayClick}
@@ -52,15 +54,17 @@ export const EventFocusToolbar = ({
       >
         <PlayIcon />
       </Button>
-      <Button
-        aria-label={"Show event settings"}
-        variant="ghost"
-        size="icon"
-        onClick={onSettingsClick}
-      >
-        <Settings01Icon />
-      </Button>
-      {type !== EventType.START && (
+      {!isStartEvent && (
+        <Button
+          aria-label={"Show event settings"}
+          variant="ghost"
+          size="icon"
+          onClick={onSettingsClick}
+        >
+          <Settings01Icon />
+        </Button>
+      )}
+      {!isStartEvent && (
         <Button
           className="border-r rounded-r-none rounded-l-none"
           aria-label={"Copy group"}
@@ -74,7 +78,7 @@ export const EventFocusToolbar = ({
           <Copy01Icon />
         </Button>
       )}
-      {type !== EventType.START && (
+      {!isStartEvent && (
         <Button
           aria-label="Delete"
           className="border-l rounded-l-none"

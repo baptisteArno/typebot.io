@@ -17,7 +17,9 @@
       "!**/test/assets/**/*.json",
       "!.opencode",
       "!.codex",
-      "!.cursor"
+      "!.cursor",
+      "!.factory",
+      "!.gemini"
     ]
   },
   "css": {
