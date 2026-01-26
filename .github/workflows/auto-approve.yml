@@ -6,7 +6,7 @@ on:
 
 jobs:
   auto-approve:
-    if: github.event.pull_request.user.login == 'baptisteArno' && !github.event.pull_request.draft && secrets.AUTO_APPROVE_TOKEN != ''
+    if: github.event.pull_request.user.login == 'baptisteArno' && !github.event.pull_request.draft
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -14,3 +14,4 @@ jobs:
       - uses: hmarr/auto-approve-action@v4
         with:
           github-token: ${{ secrets.AUTO_APPROVE_TOKEN }}
+        if: ${{ secrets.AUTO_APPROVE_TOKEN != '' }}
