@@ -5,7 +5,7 @@ import { UnsubscribePageClient } from "./UnsubscribePageClient";
 type SearchParams = Record<string, string | string[] | undefined>;
 
 type PageProps = {
-  searchParams?: SearchParams | Promise<SearchParams>;
+  searchParams?: Promise<SearchParams>;
 };
 
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 const showUnsubscribePage = async ({ searchParams }: PageProps) => {
-  const resolvedSearchParams = await Promise.resolve(searchParams);
+  const resolvedSearchParams = await searchParams;
   const email = getSearchParam(resolvedSearchParams, "email");
   const token = getSearchParam(resolvedSearchParams, "token");
   const isValid = Boolean(
