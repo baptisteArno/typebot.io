@@ -24,14 +24,6 @@ const resendBounceSchema = z.object({
   }),
 });
 
-const isTransientGeneralBounce = (type: string, subType?: string) => {
-  const normalizedType = type.toLowerCase();
-  if (normalizedType !== "transient" && normalizedType !== "temporary")
-    return false;
-  if (!subType) return false;
-  return subType.toLowerCase() === "general";
-};
-
 export const handleResendWebhook = async ({
   input: { body, headers },
 }: {
@@ -58,10 +50,15 @@ export const handleResendWebhook = async ({
   if (!parsed.success) return { message: "Ignored event" };
 
   const { to, bounce } = parsed.data.data;
-  if (!isTransientGeneralBounce(bounce.type, bounce.subType))
+  if (!isTransientGeneralBounce(bounce.type))
     return { message: "Ignored bounce type" };
 
   await runRecordTransientGeneralBounces(to, headers["svix-id"]);
 
   return { message: "Suppression updated" };
+};
+
+const isTransientGeneralBounce = (type: string) => {
+  const normalizedType = type.toLowerCase();
+  return normalizedType === "transient" || normalizedType === "temporary";
 };
