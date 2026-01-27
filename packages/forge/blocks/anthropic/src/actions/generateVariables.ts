@@ -33,6 +33,7 @@ export const generateVariables = createAction({
       })(model),
   },
   getSetVariableIds: (options) =>
-    options.variablesToExtract?.map((v) => v.variableId).filter(isDefined) ??
-    [],
+    options.variablesToExtract
+      ?.map((variable) => (variable.type ? variable.variableId : undefined))
+      .filter(isDefined) ?? [],
 });
