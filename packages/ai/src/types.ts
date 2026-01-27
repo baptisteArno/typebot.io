@@ -10,3 +10,5 @@ export type StandardMessage = {
 };
 
 export type Message = DialogueMessage | StandardMessage;
+
+export type MessageInput = Message | { role?: undefined };

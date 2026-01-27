@@ -53,11 +53,12 @@ export const TableList = <T extends object>({
     onItemsChange([...items, newItem]);
   };
 
-  const insertItem = (itemIndex: number) => () => {
+  const insertItemAt = (insertIndex: number) => () => {
     const id = createId();
     const newItem = { id } as T;
     const newItems = [...items];
-    newItems.splice(itemIndex + 1, 0, newItem);
+    const clampedIndex = Math.min(Math.max(insertIndex, 0), newItems.length);
+    newItems.splice(clampedIndex, 0, newItem);
     setItems(newItems);
     onItemsChange(newItems);
   };
@@ -112,12 +113,12 @@ export const TableList = <T extends object>({
                 <TrashIcon />
               </Button>
             )}
-            {true && itemIndex === 0 && showDeleteIndex === itemIndex && (
+            {isOrdered && showDeleteIndex === itemIndex && (
               <>
                 <Button
                   size="icon"
                   aria-label={addLabel}
-                  onClick={insertItem(itemIndex - 1)}
+                  onClick={insertItemAt(itemIndex)}
                   variant="secondary"
                   className="shadow-md size-6 animate-in fade-in-0 slide-in-from-bottom-1 absolute top-[-10px]"
                 >
@@ -126,7 +127,7 @@ export const TableList = <T extends object>({
                 <Button
                   size="icon"
                   aria-label={addLabel}
-                  onClick={insertItem(itemIndex)}
+                  onClick={insertItemAt(itemIndex + 1)}
                   variant="secondary"
                   className="shadow-md size-6 animate-in fade-in-0 slide-in-from-top-1 absolute bottom-2"
                 >

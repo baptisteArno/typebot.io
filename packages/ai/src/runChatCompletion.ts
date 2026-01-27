@@ -6,12 +6,12 @@ import { maxSteps } from "./constants";
 import { parseChatCompletionMessages } from "./parseChatCompletionMessages";
 import { parseTools } from "./parseTools";
 import type { Tools } from "./schemas";
-import type { Message } from "./types";
+import type { MessageInput } from "./types";
 
 type Props = {
   model: LanguageModel;
   variables: VariableStore;
-  messages: Message[];
+  messages: MessageInput[];
   tools: Tools | undefined;
   isVisionEnabled: boolean;
   temperature: number | undefined;

@@ -2,10 +2,10 @@ import type { VariableStore } from "@typebot.io/forge/types";
 import { isDefined, isEmpty } from "@typebot.io/lib/utils";
 import type { CoreAssistantMessage, CoreMessage, CoreUserMessage } from "ai";
 import { splitUserTextMessageIntoBlocks } from "./splitUserTextMessageIntoBlocks";
-import type { DialogueMessage, Message, StandardMessage } from "./types";
+import type { DialogueMessage, MessageInput, StandardMessage } from "./types";
 
 type Props = {
-  messages: Message[] | undefined;
+  messages: MessageInput[] | undefined;
   isVisionEnabled: boolean;
   shouldDownloadImages: boolean;
   variables: VariableStore;

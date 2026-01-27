@@ -36,7 +36,8 @@ export const runGenerateVariables = async ({
   }
 
   const hasOptionalVariables = variablesToExtract?.some(
-    (variableToExtract) => variableToExtract.isRequired === false,
+    (variableToExtract) =>
+      variableToExtract.type && variableToExtract.isRequired === false,
   );
 
   try {
@@ -71,7 +72,7 @@ const convertVariablesToExtractToSchema = ({
 
   const shape: Record<string, z.ZodTypeAny> = {};
   variablesToExtract.forEach((variableToExtract) => {
-    if (!variableToExtract) return;
+    if (!variableToExtract?.type) return;
     const matchingVariable = variables.find(
       (v) => v.id === variableToExtract.variableId,
     );
