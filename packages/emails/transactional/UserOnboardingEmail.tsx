@@ -2,6 +2,7 @@ import {
   Body,
   Container,
   Head,
+  Hr,
   Html,
   Link,
   Preview,
@@ -67,6 +68,7 @@ export const UserOnboardingEmail = ({ unsubscribeUrl }: Props) => (
           <br />
           Baptiste.
         </Text>
+        <Hr />
         {unsubscribeUrl ? (
           <Text style={{ ...footerText, marginTop: "24px" }}>
             <Link href={unsubscribeUrl}>Click here to unsubscribe</Link>
