@@ -188,8 +188,9 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
             }}
             preview={{
               className: cx(
-                isEmpty(groupTitle) &&
-                  "absolute block left-4 top-2.5 w-[calc(100%-2rem)]  h-2",
+                isEmpty(groupTitle)
+                  ? "absolute block left-4 top-2.5 w-[calc(100%-2rem)] h-2"
+                  : "w-fit max-w-[calc(100%-2rem)]",
               ),
             }}
             onValueCommit={handleTitleSubmit}
