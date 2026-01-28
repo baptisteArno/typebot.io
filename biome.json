@@ -81,7 +81,6 @@
         "noBannedTypes": "off"
       },
       "suspicious": {
-        "noAssignInExpressions": "off",
         "noImplicitAnyLet": "off",
         "noExplicitAny": "off",
         "noExportsInTest": "off",
