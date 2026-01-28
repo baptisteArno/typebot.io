@@ -206,7 +206,7 @@ const convertWhatsAppMessageToTypebotMessage = async ({
         break;
       }
       case "interactive": {
-        switch (message.interactive.type) {
+        switch (message.interactive?.type) {
           case "button_reply": {
             replyId = message.interactive.button_reply.id;
             append(message.interactive.button_reply.title);

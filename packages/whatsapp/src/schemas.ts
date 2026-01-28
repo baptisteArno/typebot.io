@@ -141,12 +141,12 @@ export const incomingMessageSchema = z.discriminatedUnion("type", [
     type: z.literal("button"),
     button: z.object({
       text: z.string(),
-      payload: z.string(),
+      payload: z.string().optional(),
     }),
   }),
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("interactive"),
-    interactive: incomingInteractiveReplySchema,
+    interactive: incomingInteractiveReplySchema.optional(),
   }),
   sharedIncomingMessageFieldsSchema.extend({
     type: z.literal("image"),
@@ -264,9 +264,11 @@ export const whatsAppWebhookRequestBodySchema = z.object({
             contacts: z
               .array(
                 z.object({
-                  profile: z.object({
-                    name: z.string(),
-                  }),
+                  profile: z
+                    .object({
+                      name: z.string(),
+                    })
+                    .optional(),
                 }),
               )
               .optional(),
