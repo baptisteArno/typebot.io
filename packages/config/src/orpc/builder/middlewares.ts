@@ -6,20 +6,34 @@ import type { Context } from "./context";
 
 export const os = baseOs.$context<Context>();
 
-const sentryMiddleware = os.middleware(async ({ next }) => {
+const webhookUrlPaths = [
+  "builderWhatsAppRouter/previewWebhookProcedure",
+  "builderWhatsAppRouter/subscribePreviewWebhook",
+  "emailRouter/resendWebhook",
+];
+
+const sentryMiddleware = os.middleware(async ({ next, path }) => {
   try {
     return await next();
   } catch (error) {
     if (env.NODE_ENV !== "production") console.error(error);
-    if (isUnknownError(error)) Sentry.captureException(error);
+    if (isUnknownError(error, path.join("/"))) {
+      if (error instanceof ORPCError && error.code?.includes("BAD_REQUEST")) {
+        Sentry.addBreadcrumb({
+          data: error.data,
+        });
+      }
+      Sentry.captureException(error);
+    }
     throw error;
   }
 });
 
-const isUnknownError = (error: unknown) => {
+const isUnknownError = (error: unknown, path: string) => {
   if (
     error instanceof ORPCError &&
-    !error.code?.includes("INTERNAL_SERVER_ERROR")
+    !error.code?.includes("INTERNAL_SERVER_ERROR") &&
+    !webhookUrlPaths.includes(path)
   ) {
     return false;
   }
