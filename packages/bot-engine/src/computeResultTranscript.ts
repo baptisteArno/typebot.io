@@ -104,6 +104,7 @@ export const computeResultTranscript = ({
     setVariableHistory: iterator(setVariableHistory),
     visitedEdges: iterator(visitedEdges),
   } as const;
+  const userMessageIndex = { value: 0 };
 
   return executeGroup({
     typebotsQueue: [{ typebot }],
@@ -112,6 +113,7 @@ export const computeResultTranscript = ({
     queues,
     currentBlockId,
     sessionStore,
+    userMessageIndex,
   });
 };
 
@@ -150,6 +152,7 @@ const executeGroup = ({
   queues,
   currentBlockId,
   sessionStore,
+  userMessageIndex,
 }: {
   currentTranscript: TranscriptMessage[];
   nextGroup: { group: Group; blockIndex?: number } | undefined;
@@ -162,6 +165,7 @@ const executeGroup = ({
   isFirstGroup?: boolean;
   currentBlockId?: string;
   sessionStore: SessionStore;
+  userMessageIndex: { value: number };
 }): TranscriptMessage[] => {
   if (!nextGroup) return currentTranscript;
 
@@ -256,8 +260,11 @@ const executeGroup = ({
         }
       }
 
+      const messageId = `${block.id}-${userMessageIndex.value}`;
+      userMessageIndex.value += 1;
+
       currentTranscript.push({
-        id: block.id,
+        id: messageId,
         role: "user",
         type: "text",
         text:
@@ -376,6 +383,7 @@ const executeGroup = ({
         nextGroup: { group: linkedGroup },
         currentBlockId,
         sessionStore,
+        userMessageIndex,
       });
     }
 
@@ -390,6 +398,7 @@ const executeGroup = ({
           nextGroup: next,
           currentBlockId,
           sessionStore,
+          userMessageIndex,
         });
       }
     }
@@ -412,6 +421,7 @@ const executeGroup = ({
       ),
       currentBlockId,
       sessionStore,
+      userMessageIndex,
     });
   }
 
