@@ -39,11 +39,11 @@
     "sync-agents-config": "bunx @iannuttall/dotagents"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.7",
+    "@biomejs/biome": "^2.3.13",
     "@tolgee/cli": "^2.14.0",
     "husky": "^9.1.7",
-    "sherif": "^1.9.0",
-    "turbo": "^2.6.1",
+    "sherif": "^1.10.0",
+    "turbo": "^2.7.6",
     "typescript": "^5.9.3",
     "rimraf": "^6.1.2",
     "@effect/language-service": "^0.65.0",

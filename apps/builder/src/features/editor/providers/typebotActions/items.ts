@@ -58,12 +58,14 @@ export const itemsAction = (setTypebot: SetTypebot): ItemsActions => ({
 
         if (item.outgoingEdgeId) {
           const edgeIndex = typebot.edges.findIndex(byId(item.outgoingEdgeId));
-          edgeIndex !== -1
-            ? (typebot.edges[edgeIndex].from = {
-                blockId: block.id,
-                itemId: newItem.id,
-              })
-            : (newItem.outgoingEdgeId = undefined);
+          if (edgeIndex !== -1) {
+            typebot.edges[edgeIndex].from = {
+              blockId: block.id,
+              itemId: newItem.id,
+            };
+          } else {
+            newItem.outgoingEdgeId = undefined;
+          }
         }
 
         newItemId = newItem.id;

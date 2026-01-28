@@ -190,7 +190,9 @@ const convertWhatsAppMessageToTypebotMessage = async ({
   block?: Block;
 }): Promise<Message | undefined> => {
   let text = "";
-  const append = (s: string) => (text = text !== "" ? `${text}\n\n${s}` : s);
+  const append = (s: string) => {
+    text = text !== "" ? `${text}\n\n${s}` : s;
+  };
   let replyId: string | undefined;
   const attachedFileUrls: string[] = [];
   for (const message of messages) {

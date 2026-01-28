@@ -123,7 +123,9 @@ const addEdgeIdToEvent = (
   typebot: Draft<TypebotV6>,
   edgeId: string,
   { eventIndex }: { eventIndex: number },
-) => (typebot.events[eventIndex].outgoingEdgeId = edgeId);
+) => {
+  typebot.events[eventIndex].outgoingEdgeId = edgeId;
+};
 
 const addEdgeIdToBlock = (
   typebot: Draft<Typebot>,
@@ -137,21 +139,23 @@ const addEdgeIdToItem = (
   typebot: Draft<Typebot>,
   edgeId: string,
   { groupIndex, blockIndex, itemIndex }: ItemIndices,
-) =>
-  ((typebot.groups[groupIndex].blocks[blockIndex] as BlockWithItems).items[
+) => {
+  (typebot.groups[groupIndex].blocks[blockIndex] as BlockWithItems).items[
     itemIndex
-  ].outgoingEdgeId = edgeId);
+  ].outgoingEdgeId = edgeId;
+};
 
 const addEdgeIdToPath = (
   typebot: Draft<Typebot>,
   edgeId: string,
   { groupIndex, blockIndex, itemIndex, pathIndex }: PathIndices,
-) =>
-  ((
+) => {
+  (
     (typebot.groups[groupIndex].blocks[blockIndex] as BlockWithItems).items[
       itemIndex
     ] as ItemWithPaths
-  ).paths[pathIndex].outgoingEdgeId = edgeId);
+  ).paths[pathIndex].outgoingEdgeId = edgeId;
+};
 
 export const deleteEdgeDraft = ({
   typebot,
