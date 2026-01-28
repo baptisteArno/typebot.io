@@ -9,6 +9,10 @@ type Props = {
 
 export const OpenAINodeBody = ({ options }: Props) => {
   const { typebot } = useTypebot();
+  const responseMappings =
+    options && "responseMapping" in options
+      ? (options.responseMapping ?? [])
+      : [];
 
   return (
     <div className="flex flex-col gap-2">
@@ -23,17 +27,15 @@ export const OpenAINodeBody = ({ options }: Props) => {
       {typebot &&
         options &&
         "responseMapping" in options &&
-        options.responseMapping
-          ?.map((mapping) => mapping.variableId)
-          .map((variableId, idx) =>
-            variableId ? (
-              <SetVariableLabel
-                key={variableId + idx}
-                variables={typebot.variables}
-                variableId={variableId}
-              />
-            ) : null,
-          )}
+        responseMappings
+          .filter((mapping) => mapping.variableId)
+          .map((mapping) => (
+            <SetVariableLabel
+              key={mapping.id}
+              variables={typebot.variables}
+              variableId={mapping.variableId!}
+            />
+          ))}
       {typebot &&
         options &&
         "saveUrlInVariableId" in options &&

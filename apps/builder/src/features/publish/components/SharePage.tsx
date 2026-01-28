@@ -18,7 +18,7 @@ import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { orpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import { integrationsList } from "./deploy/DeployButton";
+import { IntegrationButtons } from "./deploy/DeployButton";
 import { EditableUrl } from "./EditableUrl";
 
 export const SharePage = () => {
@@ -146,13 +146,10 @@ export const SharePage = () => {
           <div className="flex flex-col gap-4">
             <h1 className="text-2xl">{t("sharePage.embed.heading")}</h1>
             <div className="flex flex-wrap gap-4">
-              {integrationsList.map((IntegrationButton, idx) => (
-                <IntegrationButton
-                  key={idx}
-                  publicId={publicId}
-                  isPublished={isPublished}
-                />
-              ))}
+              <IntegrationButtons
+                publicId={publicId}
+                isPublished={isPublished}
+              />
             </div>
           </div>
         </div>

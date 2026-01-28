@@ -93,7 +93,7 @@ const Transcript = ({
 
   return (
     <div className="border rounded-md p-4 bg-gray-1">
-      {transcriptData?.transcript.map((message: any, index: number) => {
+      {transcriptData?.transcript.map((message: any) => {
         const isBot = message.role === "bot";
         const content =
           message.text || message.image || message.video || message.audio || "";
@@ -104,7 +104,7 @@ const Transcript = ({
               "flex items-center gap-2 w-full mb-2",
               isBot ? "justify-start" : "justify-end",
             )}
-            key={index}
+            key={message.id}
           >
             <div
               className={cx(

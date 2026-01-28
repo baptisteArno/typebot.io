@@ -29,15 +29,19 @@ const PlateTextContent = ({ text }: { text: string }) => {
 
   return (
     <>
-      {text.split(/\{\{=(.*?=\}\})/g).map((str, idx) => {
+      {text.split(/\{\{=(.*?=\}\})/g).map((str, index) => {
         if (str.endsWith("=}}")) {
           return (
-            <span className="slate-inline-code" key={idx}>
+            <span
+              className="slate-inline-code"
+              // biome-ignore lint/suspicious/noArrayIndexKey: split output order is stable
+              key={index}
+            >
               {str.trim().slice(0, -3)}
             </span>
           );
         }
-        return str.split(/\{\{(.*?\}\})/g).map((str, idx) => {
+        return str.split(/\{\{(.*?\}\})/g).map((str, innerIndex) => {
           if (str.endsWith("}}")) {
             const variableName = str.trim().slice(0, -2);
             const matchingVariable = typebot?.variables.find(
@@ -47,7 +51,8 @@ const PlateTextContent = ({ text }: { text: string }) => {
             return (
               <span
                 className="bg-purple-9 text-white rounded-sm py-0.5 px-1.5"
-                key={idx}
+                // biome-ignore lint/suspicious/noArrayIndexKey: split output order is stable
+                key={innerIndex}
               >
                 {str.trim().slice(0, -2)}
               </span>

@@ -49,6 +49,7 @@ type SetVarSnapshot = Readonly<
 >;
 
 type TranscriptMessage = {
+  id: string;
   role: "bot" | "user";
 } & (
   | { type: "text"; text: string }
@@ -103,6 +104,7 @@ export const computeResultTranscript = ({
     setVariableHistory: iterator(setVariableHistory),
     visitedEdges: iterator(visitedEdges),
   } as const;
+  const userMessageIndex = { value: 0 };
 
   return executeGroup({
     typebotsQueue: [{ typebot }],
@@ -111,6 +113,7 @@ export const computeResultTranscript = ({
     queues,
     currentBlockId,
     sessionStore,
+    userMessageIndex,
   });
 };
 
@@ -149,6 +152,7 @@ const executeGroup = ({
   queues,
   currentBlockId,
   sessionStore,
+  userMessageIndex,
 }: {
   currentTranscript: TranscriptMessage[];
   nextGroup: { group: Group; blockIndex?: number } | undefined;
@@ -161,6 +165,7 @@ const executeGroup = ({
   isFirstGroup?: boolean;
   currentBlockId?: string;
   sessionStore: SessionStore;
+  userMessageIndex: { value: number };
 }): TranscriptMessage[] => {
   if (!nextGroup) return currentTranscript;
 
@@ -255,7 +260,11 @@ const executeGroup = ({
         }
       }
 
+      const messageId = `${block.id}-${userMessageIndex.value}`;
+      userMessageIndex.value += 1;
+
       currentTranscript.push({
+        id: messageId,
         role: "user",
         type: "text",
         text:
@@ -374,6 +383,7 @@ const executeGroup = ({
         nextGroup: { group: linkedGroup },
         currentBlockId,
         sessionStore,
+        userMessageIndex,
       });
     }
 
@@ -388,6 +398,7 @@ const executeGroup = ({
           nextGroup: next,
           currentBlockId,
           sessionStore,
+          userMessageIndex,
         });
       }
     }
@@ -410,6 +421,7 @@ const executeGroup = ({
       ),
       currentBlockId,
       sessionStore,
+      userMessageIndex,
     });
   }
 
@@ -439,6 +451,7 @@ const convertChatMessageToTranscriptMessage = (
     case BubbleBlockType.TEXT: {
       if (chatMessage.content.type === "richText") return null;
       return {
+        id: chatMessage.id,
         role: "bot",
         type: "text",
         text: chatMessage.content.markdown,
@@ -447,6 +460,7 @@ const convertChatMessageToTranscriptMessage = (
     case BubbleBlockType.IMAGE: {
       if (!chatMessage.content.url) return null;
       return {
+        id: chatMessage.id,
         role: "bot",
         type: "image",
         image: chatMessage.content.url,
@@ -455,6 +469,7 @@ const convertChatMessageToTranscriptMessage = (
     case BubbleBlockType.VIDEO: {
       if (!chatMessage.content.url) return null;
       return {
+        id: chatMessage.id,
         role: "bot",
         type: "video",
         video: chatMessage.content.url,
@@ -463,6 +478,7 @@ const convertChatMessageToTranscriptMessage = (
     case BubbleBlockType.AUDIO: {
       if (!chatMessage.content.url) return null;
       return {
+        id: chatMessage.id,
         role: "bot",
         type: "audio",
         audio: chatMessage.content.url,

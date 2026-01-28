@@ -67,9 +67,9 @@ export const ForgedBlockNodeContent = ({ block, indices }: Props) => {
       </p>
       {typebot &&
         isConfigured &&
-        setVariableIds.map((variableId, idx) => (
+        setVariableIds.map((variableId) => (
           <SetVariableLabel
-            key={variableId + idx}
+            key={variableId}
             variables={typebot.variables}
             variableId={variableId}
           />

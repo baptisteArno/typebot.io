@@ -17,6 +17,10 @@ export const ApiTokensList = () => {
   const { data, error, refetch } = useQuery(
     orpc.user.listApiTokens.queryOptions(),
   );
+  const loadingRowKeys = Array.from(
+    { length: 3 },
+    (_, index) => `loading-row-${index}`,
+  );
   const {
     isOpen: isCreateOpen,
     onOpen: onCreateOpen,
@@ -81,8 +85,8 @@ export const ApiTokensList = () => {
           ))}
           {!error &&
             !data &&
-            Array.from({ length: 3 }).map((_, idx) => (
-              <Table.Row key={idx}>
+            loadingRowKeys.map((key) => (
+              <Table.Row key={key}>
                 <Table.Cell>
                   <Checkbox disabled />
                 </Table.Cell>

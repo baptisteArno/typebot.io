@@ -21,6 +21,10 @@ export const InvoicesList = ({ workspaceId }: Props) => {
       enabled: !isSelfHostedInstance(),
     }),
   );
+  const loadingRowKeys = Array.from(
+    { length: 3 },
+    (_, index) => `loading-row-${index}`,
+  );
 
   return (
     <div className="flex flex-col gap-6">
@@ -69,8 +73,8 @@ export const InvoicesList = ({ workspaceId }: Props) => {
               </Table.Row>
             ))}
             {status === "pending" &&
-              Array.from({ length: 3 }).map((_, idx) => (
-                <Table.Row key={idx}>
+              loadingRowKeys.map((key) => (
+                <Table.Row key={key}>
                   <Table.Cell>
                     <Checkbox disabled />
                   </Table.Cell>

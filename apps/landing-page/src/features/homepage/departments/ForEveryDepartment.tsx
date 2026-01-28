@@ -250,8 +250,11 @@ const OpenedDepartmentCard = ({
           </motion.p>
         </div>
         <ul className="flex flex-col gap-4 pl-4 list-inside list-disc">
-          {department.bulletPoints.map((bulletPoint, index) => (
-            <li className="text-md" key={index}>
+          {department.bulletPoints.map((bulletPoint, _index) => (
+            <li
+              className="text-md"
+              key={`${bulletPoint.main}-${bulletPoint.sub}`}
+            >
               <span className="font-medium">{bulletPoint.main}:</span>{" "}
               {bulletPoint.sub}
             </li>

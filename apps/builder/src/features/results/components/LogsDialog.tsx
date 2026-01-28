@@ -29,8 +29,8 @@ export const LogsDialog = ({ typebotId, resultId, onClose }: Props) => {
       <Dialog.Popup className="max-w-xl">
         <Dialog.Title>Logs</Dialog.Title>
         <Dialog.CloseButton />
-        {data?.logs?.map((log, idx) => (
-          <LogCard key={idx} log={log} />
+        {data?.logs?.map((log) => (
+          <LogCard key={log.id} log={log} />
         ))}
         {!error && !data && <LoaderCircleIcon className="animate-spin" />}
         {data && (data.logs ?? []).length === 0 && <p>No logs found.</p>}

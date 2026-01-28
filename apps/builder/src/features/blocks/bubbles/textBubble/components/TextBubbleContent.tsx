@@ -15,8 +15,12 @@ export const TextBubbleContent = ({ block }: Props) => {
         isEmpty ? "opacity-50 text-gray-9" : "opacity-100",
       )}
     >
-      {block.content?.richText?.map((element, idx) => (
-        <PlateBlock key={idx} element={element} />
+      {block.content?.richText?.map((element, index) => (
+        <PlateBlock
+          // biome-ignore lint/suspicious/noArrayIndexKey: order is stable for rich text
+          key={index}
+          element={element}
+        />
       ))}
     </div>
   );
