@@ -153,10 +153,12 @@ export const getAtPath = <T>(obj: T, path: string): unknown => {
 export const isSvgSrc = (src: string | undefined) =>
   src?.startsWith('data:image/svg') || src?.endsWith('.svg')
 
+export const CLOUDHUMANS_EMAIL_DOMAIN = '@cloudhumans.com'
+
 export const emailIsCloudhumans = (email?: string | null) => {
   return (
     typeof email === 'string' &&
-    (email.endsWith('@cloudhumans.com') ||
+    (email.endsWith(CLOUDHUMANS_EMAIL_DOMAIN) ||
       process.env.NODE_ENV !== 'production' ||
       process.env.ADMIN_EMAIL === email)
   )

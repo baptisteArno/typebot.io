@@ -759,22 +759,15 @@ export const postTypebotValidation = publicProcedure
   .meta({
     openapi: {
       method: 'POST',
-      path: '/v1/typebots/{typebotId}/validate',
+      path: '/v1/typebots/validate',
       protect: true,
       summary: 'Validate a typebot',
-      description:
-        'Validate a typebot by ID. Optionally provide the typebot object directly to override database lookup.',
+      description: 'Validate a typebot object.',
       tags: ['Typebot'],
     },
   })
   .input(
     z.object({
-      typebotId: z
-        .string()
-        .describe(
-          'Typebot id to be validated (used only if typebot object not provided)'
-        )
-        .optional(),
       typebot: z
         .object({
           variables: z.array(variableSchema),

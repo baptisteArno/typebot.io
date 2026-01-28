@@ -18,6 +18,7 @@ import { unpublishTypebot } from './unpublishTypebot'
 import { deleteTypebot } from './deleteTypebot'
 import { importTypebot } from './importTypebot'
 import { listTypebotsClaudia } from './listTypebotsClaudia'
+import { inviteCloudersClaudia } from './inviteCloudersClaudia'
 import {
   getTypebotValidation,
   postTypebotValidation,
@@ -25,6 +26,7 @@ import {
 
 export const typebotRouter = router({
   listTypebotsClaudia,
+  inviteCloudersClaudia,
   createTypebot,
   updateTypebot,
   getTypebot,
