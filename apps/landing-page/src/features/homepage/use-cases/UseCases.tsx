@@ -228,8 +228,8 @@ export const Cta = () => (
 
 const PreloadUseCaseImages = () => (
   <>
-    {useCases.map((useCase, index) => (
-      <div key={index} className="sr-only" aria-hidden="true">
+    {useCases.map((useCase) => (
+      <div key={useCase.label} className="sr-only" aria-hidden="true">
         <img src={useCase.images.builder.src} alt="" />
         <img src={useCase.images.bot.src} alt="" />
       </div>

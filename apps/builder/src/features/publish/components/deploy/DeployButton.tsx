@@ -94,11 +94,15 @@ export const DeployButton = ({
   );
 };
 
-export const integrationsList = [
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => {
-    const { workspace } = useWorkspace();
+type IntegrationButtonsProps = Pick<DialogProps, "publicId" | "isPublished">;
 
-    return (
+export const IntegrationButtons = ({
+  publicId,
+  isPublished,
+}: IntegrationButtonsProps) => {
+  const { workspace } = useWorkspace();
+  return (
+    <>
       <DeployButton
         logo={
           <WhatsAppLogo
@@ -109,154 +113,212 @@ export const integrationsList = [
         label="WhatsApp"
         lockTagPlan={hasProPerks(workspace) ? undefined : "PRO"}
         dialog={({ onClose, isOpen }) => (
-          <WhatsAppDeployDialog isOpen={isOpen} onClose={onClose} {...props} />
+          <WhatsAppDeployDialog
+            isOpen={isOpen}
+            onClose={onClose}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
         )}
-        {...props}
+        publicId={publicId}
+        isPublished={isPublished}
       />
-    );
-  },
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<WordpressLogo className="w-[70px] h-[100px]" />}
-      label="Wordpress"
-      dialog={({ onClose, isOpen }) => (
-        <WordpressDeployDialog isOpen={isOpen} onClose={onClose} {...props} />
-      )}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<ShopifyLogo className="w-[65px] h-[100px]" />}
-      label="Shopify"
-      dialog={(dialogProps) => (
-        <ShopifyDeployDialog {...dialogProps} {...props} />
-      )}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<WixLogo className="w-[90px] h-[100px]" />}
-      label="Wix"
-      dialog={(dialogProps) => <WixDeployDialog {...dialogProps} {...props} />}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<GtmLogo className="w-[70px] h-[100px]" />}
-      label="Google Tag Manager"
-      dialog={(dialogProps) => <GtmDeployDialog {...dialogProps} {...props} />}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<JavascriptLogo className="w-[70px] h-[100px]" />}
-      label="HTML & Javascript"
-      dialog={(dialogProps) => (
-        <JavascriptDeployDialog {...dialogProps} {...props} />
-      )}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<ReactLogo className="w-[70px] h-[100px]" />}
-      label="React"
-      dialog={(dialogProps) => (
-        <ReactDeployDialog {...dialogProps} {...props} />
-      )}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<NextjsLogo className="w-[70px] h-[100px]" />}
-      label="Nextjs"
-      dialog={(dialogProps) => (
-        <NextjsDeployDialog {...dialogProps} {...props} />
-      )}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<SourceCodeIcon className="w-[60px] h-[100px]" />}
-      label="API"
-      dialog={(dialogProps) => <ApiDeployDialog {...dialogProps} {...props} />}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<NotionLogo className="w-[60px] h-[100px]" />}
-      label="Notion"
-      dialog={(dialogProps) => (
-        <NotionDeployDialog {...dialogProps} {...props} />
-      )}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<WebflowLogo className="w-[70px] h-[100px]" />}
-      label="Webflow"
-      dialog={(dialogProps) => (
-        <WebflowDeployDialog {...dialogProps} {...props} />
-      )}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<FlutterFlowLogo className="w-[60px] h-[100px]" />}
-      label="FlutterFlow"
-      dialog={(dialogProps) => (
-        <FlutterFlowDeployDialog {...dialogProps} {...props} />
-      )}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<BlinkLogo className="w-[100px] h-[100px]" />}
-      label="Blink"
-      dialog={(dialogProps) => (
-        <BlinkDeployDialog {...dialogProps} {...props} />
-      )}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<FramerLogo className="w-[60px] h-[100px]" />}
-      label="Framer"
-      dialog={(dialogProps) => (
-        <FramerDeployDialog {...dialogProps} {...props} />
-      )}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<SourceCodeIcon className="w-[70px] h-[100px] text-gray-11" />}
-      label="Script"
-      dialog={(dialogProps) => (
-        <ScriptDeployDialog {...dialogProps} {...props} />
-      )}
-      {...props}
-    />
-  ),
-  (props: Pick<DialogProps, "publicId" | "isPublished">) => (
-    <DeployButton
-      logo={<IframeLogo className="w-[70px] h-[100px]" />}
-      label="Iframe"
-      dialog={(dialogProps) => (
-        <IframeDeployDialog {...dialogProps} {...props} />
-      )}
-      {...props}
-    />
-  ),
-];
+      <DeployButton
+        logo={<WordpressLogo className="w-[70px] h-[100px]" />}
+        label="Wordpress"
+        dialog={({ onClose, isOpen }) => (
+          <WordpressDeployDialog
+            isOpen={isOpen}
+            onClose={onClose}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<ShopifyLogo className="w-[65px] h-[100px]" />}
+        label="Shopify"
+        dialog={(dialogProps) => (
+          <ShopifyDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<WixLogo className="w-[90px] h-[100px]" />}
+        label="Wix"
+        dialog={(dialogProps) => (
+          <WixDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<GtmLogo className="w-[70px] h-[100px]" />}
+        label="Google Tag Manager"
+        dialog={(dialogProps) => (
+          <GtmDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<JavascriptLogo className="w-[70px] h-[100px]" />}
+        label="HTML & Javascript"
+        dialog={(dialogProps) => (
+          <JavascriptDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<ReactLogo className="w-[70px] h-[100px]" />}
+        label="React"
+        dialog={(dialogProps) => (
+          <ReactDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<NextjsLogo className="w-[70px] h-[100px]" />}
+        label="Nextjs"
+        dialog={(dialogProps) => (
+          <NextjsDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<SourceCodeIcon className="w-[60px] h-[100px]" />}
+        label="API"
+        dialog={(dialogProps) => (
+          <ApiDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<NotionLogo className="w-[60px] h-[100px]" />}
+        label="Notion"
+        dialog={(dialogProps) => (
+          <NotionDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<WebflowLogo className="w-[70px] h-[100px]" />}
+        label="Webflow"
+        dialog={(dialogProps) => (
+          <WebflowDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<FlutterFlowLogo className="w-[60px] h-[100px]" />}
+        label="FlutterFlow"
+        dialog={(dialogProps) => (
+          <FlutterFlowDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<BlinkLogo className="w-[100px] h-[100px]" />}
+        label="Blink"
+        dialog={(dialogProps) => (
+          <BlinkDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<FramerLogo className="w-[60px] h-[100px]" />}
+        label="Framer"
+        dialog={(dialogProps) => (
+          <FramerDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<SourceCodeIcon className="w-[70px] h-[100px] text-gray-11" />}
+        label="Script"
+        dialog={(dialogProps) => (
+          <ScriptDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+      <DeployButton
+        logo={<IframeLogo className="w-[70px] h-[100px]" />}
+        label="Iframe"
+        dialog={(dialogProps) => (
+          <IframeDeployDialog
+            {...dialogProps}
+            publicId={publicId}
+            isPublished={isPublished}
+          />
+        )}
+        publicId={publicId}
+        isPublished={isPublished}
+      />
+    </>
+  );
+};

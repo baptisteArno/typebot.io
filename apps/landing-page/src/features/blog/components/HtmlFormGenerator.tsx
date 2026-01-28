@@ -218,9 +218,9 @@ const ComponentsPalette = ({
 }) => {
   return (
     <div className="flex flex-col gap-3 max-h-72 overflow-y-auto md:max-h-full">
-      {items.map((item, index) => (
+      {items.map((item) => (
         <Card
-          key={index}
+          key={item.type}
           className="p-3 cursor-pointer hover:bg-gray-2 transition-colors"
           onClick={() => onAddElement(item)}
         >
@@ -282,6 +282,8 @@ const FormElement = ({
   onClick: () => void;
   onRemove: () => void;
 }) => {
+  const optionItems = element.options ?? [];
+
   return (
     <Card
       className={cx(
@@ -321,8 +323,11 @@ const FormElement = ({
       </span>
       {element.type === "radio" ? (
         <div className="mt-2 space-y-2">
-          {element.options?.map((option, index) => (
-            <div key={index} className="flex items-center gap-2">
+          {optionItems.map((option) => (
+            <div
+              key={`${element.id}-${option}`}
+              className="flex items-center gap-2"
+            >
               <Input
                 type="radio"
                 name={`preview-${element.id}`}
@@ -334,8 +339,11 @@ const FormElement = ({
         </div>
       ) : element.type === "multicheck" ? (
         <div className="mt-2 space-y-2">
-          {element.options?.map((option, index) => (
-            <div key={index} className="flex items-center gap-2">
+          {optionItems.map((option) => (
+            <div
+              key={`${element.id}-${option}`}
+              className="flex items-center gap-2"
+            >
               <Input type="checkbox" className="h-4 w-4 pointer-events-none" />
               <span className="text-sm text-foreground/90">{option}</span>
             </div>
@@ -369,6 +377,7 @@ const PropertiesPanel = ({
       </div>
     );
   }
+  const optionItems = selectedElement.options ?? [];
 
   // Function to handle options changes for select elements
   const handleOptionsChange = (optionIndex: number, newValue: string) => {
@@ -478,8 +487,11 @@ const PropertiesPanel = ({
               Options
             </span>
             <div className="space-y-2">
-              {selectedElement.options?.map((option, index) => (
-                <div key={index} className="flex gap-2">
+              {optionItems.map((option, index) => (
+                <div
+                  key={`${selectedElement.id}-${option}`}
+                  className="flex gap-2"
+                >
                   <Input
                     type="text"
                     value={option}
@@ -529,92 +541,105 @@ const LivePreviewModal = ({
         <Dialog.CloseButton />
 
         <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-          {elements.map((element) => (
-            <div
-              key={element.id}
-              className="mb-4"
-              style={{ width: `${element.width || 100}%` }}
-            >
-              <label
-                htmlFor={element.id}
-                className="block text-sm font-medium mb-1 text-foreground/90"
+          {elements.map((element) => {
+            const optionItems = element.options ?? [];
+            return (
+              <div
+                key={element.id}
+                className="mb-4"
+                style={{ width: `${element.width || 100}%` }}
               >
-                {element.label}
-              </label>
-              {element.type === "textarea" ? (
-                <textarea
-                  id={element.id}
-                  className="w-full p-2 border border-input rounded-md"
-                  required={element.required}
-                  placeholder={element.placeholder}
-                />
-              ) : element.type === "select" ? (
-                <Select.Root
-                  items={element.options?.map((option) => ({
-                    label: option,
-                    value: option,
-                  }))}
+                <label
+                  htmlFor={element.id}
+                  className="block text-sm font-medium mb-1 text-foreground/90"
                 >
-                  <Select.Trigger />
-                  <Select.Popup>
-                    {element.options?.map((option) => (
-                      <Select.Item key={option} value={option}>
-                        {option}
-                      </Select.Item>
+                  {element.label}
+                </label>
+                {element.type === "textarea" ? (
+                  <textarea
+                    id={element.id}
+                    className="w-full p-2 border border-input rounded-md"
+                    required={element.required}
+                    placeholder={element.placeholder}
+                  />
+                ) : element.type === "select" ? (
+                  <Select.Root
+                    items={element.options?.map((option) => ({
+                      label: option,
+                      value: option,
+                    }))}
+                  >
+                    <Select.Trigger />
+                    <Select.Popup>
+                      {element.options?.map((option) => (
+                        <Select.Item key={option} value={option}>
+                          {option}
+                        </Select.Item>
+                      ))}
+                    </Select.Popup>
+                  </Select.Root>
+                ) : element.type === "radio" ? (
+                  <div className="space-y-2">
+                    {optionItems.map((option, index) => (
+                      <div
+                        key={`${element.id}-${option}`}
+                        className="flex items-center gap-2"
+                      >
+                        <input
+                          type="radio"
+                          id={`${element.id}-${index}`}
+                          name={element.id}
+                          required={element.required}
+                        />
+                        <label htmlFor={`${element.id}-${index}`}>
+                          {option}
+                        </label>
+                      </div>
                     ))}
-                  </Select.Popup>
-                </Select.Root>
-              ) : element.type === "radio" ? (
-                <div className="space-y-2">
-                  {element.options?.map((option, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <input
-                        type="radio"
-                        id={`${element.id}-${index}`}
-                        name={element.id}
-                        required={element.required}
-                      />
-                      <label htmlFor={`${element.id}-${index}`}>{option}</label>
-                    </div>
-                  ))}
-                </div>
-              ) : element.type === "multicheck" ? (
-                <div className="space-y-2">
-                  {element.options?.map((option, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id={`${element.id}-${index}`}
-                        name={`${element.id}[]`}
-                      />
-                      <label htmlFor={`${element.id}-${index}`}>{option}</label>
-                    </div>
-                  ))}
-                </div>
-              ) : element.type === "checkbox" ? (
-                <input
-                  id={element.id}
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600"
-                  required={element.required}
-                />
-              ) : element.type === "phone" ? (
-                <Input
-                  id={element.id}
-                  type="tel"
-                  required={element.required}
-                  placeholder={element.placeholder}
-                />
-              ) : (
-                <Input
-                  id={element.id}
-                  type={element.type}
-                  required={element.required}
-                  placeholder={element.placeholder}
-                />
-              )}
-            </div>
-          ))}
+                  </div>
+                ) : element.type === "multicheck" ? (
+                  <div className="space-y-2">
+                    {optionItems.map((option, index) => (
+                      <div
+                        key={`${element.id}-${option}`}
+                        className="flex items-center gap-2"
+                      >
+                        <input
+                          type="checkbox"
+                          id={`${element.id}-${index}`}
+                          name={`${element.id}[]`}
+                        />
+                        <label htmlFor={`${element.id}-${index}`}>
+                          {option}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                ) : element.type === "checkbox" ? (
+                  <input
+                    id={element.id}
+                    type="checkbox"
+                    className="h-4 w-4 text-blue-600"
+                    required={element.required}
+                  />
+                ) : element.type === "phone" ? (
+                  <Input
+                    id={element.id}
+                    type="tel"
+                    required={element.required}
+                    placeholder={element.placeholder}
+                  />
+                ) : (
+                  <Input
+                    id={element.id}
+                    type={element.type}
+                    required={element.required}
+                    placeholder={element.placeholder}
+                  />
+                )}
+              </div>
+            );
+          })}
           <Button className="w-full" onClick={(e) => e.preventDefault()}>
             Submit
           </Button>

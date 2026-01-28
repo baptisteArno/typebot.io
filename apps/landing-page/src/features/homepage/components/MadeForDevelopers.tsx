@@ -40,7 +40,7 @@ export const MadeForDevelopers = () => {
       </div>
       <div className="flex flex-col md:flex-row gap-6">
         {data.map(({ Icon, text }, index) => (
-          <div key={index} className="flex items-start gap-3">
+          <div key={text} className="flex items-start gap-3">
             <Icon className="size-4 mt-1" />
             <p
               className={cn(

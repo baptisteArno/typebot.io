@@ -15,9 +15,9 @@ export const WebhookNodeContent = ({ options }: Props) => {
       {typebot &&
         options?.responseVariableMapping
           ?.filter((mapping) => isDefined(mapping.variableId))
-          .map((mapping, idx) => (
+          .map((mapping) => (
             <SetVariableLabel
-              key={mapping.variableId! + idx}
+              key={mapping.id}
               variables={typebot.variables}
               variableId={mapping.variableId!}
             />

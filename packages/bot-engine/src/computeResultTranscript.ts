@@ -49,6 +49,7 @@ type SetVarSnapshot = Readonly<
 >;
 
 type TranscriptMessage = {
+  id: string;
   role: "bot" | "user";
 } & (
   | { type: "text"; text: string }
@@ -256,6 +257,7 @@ const executeGroup = ({
       }
 
       currentTranscript.push({
+        id: block.id,
         role: "user",
         type: "text",
         text:
@@ -439,6 +441,7 @@ const convertChatMessageToTranscriptMessage = (
     case BubbleBlockType.TEXT: {
       if (chatMessage.content.type === "richText") return null;
       return {
+        id: chatMessage.id,
         role: "bot",
         type: "text",
         text: chatMessage.content.markdown,
@@ -447,6 +450,7 @@ const convertChatMessageToTranscriptMessage = (
     case BubbleBlockType.IMAGE: {
       if (!chatMessage.content.url) return null;
       return {
+        id: chatMessage.id,
         role: "bot",
         type: "image",
         image: chatMessage.content.url,
@@ -455,6 +459,7 @@ const convertChatMessageToTranscriptMessage = (
     case BubbleBlockType.VIDEO: {
       if (!chatMessage.content.url) return null;
       return {
+        id: chatMessage.id,
         role: "bot",
         type: "video",
         video: chatMessage.content.url,
@@ -463,6 +468,7 @@ const convertChatMessageToTranscriptMessage = (
     case BubbleBlockType.AUDIO: {
       if (!chatMessage.content.url) return null;
       return {
+        id: chatMessage.id,
         role: "bot",
         type: "audio",
         audio: chatMessage.content.url,

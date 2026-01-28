@@ -10,6 +10,10 @@ type Props = {
 
 export const GoogleSheetsNodeContent = ({ options }: Props) => {
   const { typebot } = useTypebot();
+  const cellsToExtract =
+    options?.action === GoogleSheetsAction.GET
+      ? (options?.cellsToExtract ?? [])
+      : [];
   return (
     <div className="flex flex-col gap-2">
       <p
@@ -22,17 +26,15 @@ export const GoogleSheetsNodeContent = ({ options }: Props) => {
       </p>
       {typebot &&
         options?.action === GoogleSheetsAction.GET &&
-        options?.cellsToExtract
-          ?.map((mapping) => mapping.variableId)
-          .map((variableId, idx) =>
-            variableId ? (
-              <SetVariableLabel
-                key={variableId + idx}
-                variables={typebot.variables}
-                variableId={variableId}
-              />
-            ) : null,
-          )}
+        cellsToExtract
+          .filter((cell) => cell.variableId)
+          .map((cell) => (
+            <SetVariableLabel
+              key={cell.id}
+              variables={typebot.variables}
+              variableId={cell.variableId!}
+            />
+          ))}
     </div>
   );
 };

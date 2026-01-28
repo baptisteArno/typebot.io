@@ -12,8 +12,12 @@ export const PlateBlock = ({ element }: { element: TElement | TText }) => {
           className="slate-a"
           rel="noreferrer"
         >
-          {(element.children as Descendant[])?.map((child, idx) => (
-            <PlateBlock key={idx} element={child} />
+          {(element.children as Descendant[])?.map((child, index) => (
+            <PlateBlock
+              // biome-ignore lint/suspicious/noArrayIndexKey: slate children order is stable
+              key={index}
+              element={child}
+            />
           ))}
         </a>
       );
@@ -21,8 +25,12 @@ export const PlateBlock = ({ element }: { element: TElement | TText }) => {
     default: {
       return (
         <div>
-          {(element.children as Descendant[])?.map((child, idx) => (
-            <PlateBlock key={idx} element={child} />
+          {(element.children as Descendant[])?.map((child, index) => (
+            <PlateBlock
+              // biome-ignore lint/suspicious/noArrayIndexKey: slate children order is stable
+              key={index}
+              element={child}
+            />
           ))}
         </div>
       );

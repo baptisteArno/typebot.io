@@ -49,7 +49,7 @@ export const ProductPrinciples = () => {
         <div className="flex flex-col gap-2 md:gap-0 md:pl-4 w-full">
           {data.map(({ title, content }, index) => (
             <Principle
-              key={index}
+              key={title}
               title={title}
               content={content}
               isOpened={index === openedIndex}

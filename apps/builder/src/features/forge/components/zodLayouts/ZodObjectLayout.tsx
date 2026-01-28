@@ -34,7 +34,7 @@ export const ZodObjectLayout = ({
     nodes: ReactNode[];
     accordionsCreated: string[];
   }>(
-    (nodes, key, index) => {
+    (nodes, key) => {
       if (ignoreKeys?.includes(key)) return nodes;
       const rawSchema = shape[key];
       if (!isZodType(rawSchema)) return nodes;
@@ -55,12 +55,12 @@ export const ZodObjectLayout = ({
               <Accordion.Item>
                 <Accordion.Trigger>{layout.accordion}</Accordion.Trigger>
                 <Accordion.Panel>
-                  {accordionKeys.map((accordionKey, idx) => {
+                  {accordionKeys.map((accordionKey, _idx) => {
                     const accordionSchema = shape[accordionKey];
                     if (!isZodType(accordionSchema)) return null;
                     return (
                       <ZodFieldLayout
-                        key={accordionKey + idx}
+                        key={accordionKey}
                         schema={accordionSchema}
                         data={data?.[accordionKey]}
                         onDataChange={(val) =>
@@ -88,7 +88,7 @@ export const ZodObjectLayout = ({
           ...nodes.nodes,
           <ZodFieldLayout
             schema={keySchema}
-            key={index}
+            key={key}
             data={data?.[key]}
             blockDef={blockDef}
             blockOptions={blockOptions}

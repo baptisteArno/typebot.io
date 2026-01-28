@@ -4,7 +4,7 @@ import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
 import { Plan } from "@typebot.io/prisma/enum";
 import { Button } from "@typebot.io/ui/components/Button";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
-import { FeaturesList } from "./FeaturesList";
+import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 
 type Props = {
   currentPlan: Plan;
@@ -51,10 +51,14 @@ export const StarterPlanPricingCard = ({
           </h2>
         </div>
 
-        <FeaturesList
-          features={[
-            t("billing.pricingCard.starter.includedSeats"),
-            <div className="flex flex-col gap-0" key="starter-chats">
+        <ul className="list-none gap-2 flex flex-col">
+          <li className="flex">
+            <TickIcon className="size-6" />
+            {t("billing.pricingCard.starter.includedSeats")}
+          </li>
+          <li className="flex">
+            <TickIcon className="size-6" />
+            <div className="flex flex-col gap-0">
               <div className="flex items-center gap-0">
                 <p>2,000 {t("billing.pricingCard.chatsPerMonth")}</p>
                 <MoreInfoTooltip>
@@ -62,13 +66,25 @@ export const StarterPlanPricingCard = ({
                 </MoreInfoTooltip>
               </div>
               <p className="text-sm text-gray-8">Extra chats: $10 per 500</p>
-            </div>,
-            t("billing.pricingCard.starter.brandingRemoved"),
-            t("billing.pricingCard.starter.fileUploadBlock"),
-            t("billing.pricingCard.starter.createFolders"),
-            "Direct priority support",
-          ]}
-        />
+            </div>
+          </li>
+          <li className="flex">
+            <TickIcon className="size-6" />
+            {t("billing.pricingCard.starter.brandingRemoved")}
+          </li>
+          <li className="flex">
+            <TickIcon className="size-6" />
+            {t("billing.pricingCard.starter.fileUploadBlock")}
+          </li>
+          <li className="flex">
+            <TickIcon className="size-6" />
+            {t("billing.pricingCard.starter.createFolders")}
+          </li>
+          <li className="flex">
+            <TickIcon className="size-6" />
+            Direct priority support
+          </li>
+        </ul>
       </div>
       <Button
         variant="secondary"

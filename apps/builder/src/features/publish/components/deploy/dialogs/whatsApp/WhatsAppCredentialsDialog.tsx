@@ -14,7 +14,7 @@ import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
 import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { formatPhoneNumberDisplayName } from "@typebot.io/whatsapp/formatPhoneNumberDisplayName";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { CopyInput } from "@/components/inputs/CopyInput";
 import { Dialog360Logo } from "@/components/logos/Dialog360Logo";
@@ -291,8 +291,8 @@ export const WhatsAppCreateDialogBody = ({
         <>
           <div className="flex items-center gap-2 w-full">
             {steps.map((step, index) => (
-              <>
-                <div key={index} className="flex gap-2">
+              <Fragment key={step.title}>
+                <div className="flex gap-2">
                   <div className="flex items-center gap-2">
                     <div
                       className={cx(
@@ -312,7 +312,7 @@ export const WhatsAppCreateDialogBody = ({
                   </div>
                 </div>
                 {index !== steps.length - 1 && <hr className="flex-1 w-full" />}
-              </>
+              </Fragment>
             ))}
           </div>
           {provider === "meta" && (

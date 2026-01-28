@@ -6,8 +6,8 @@ import { Button } from "@typebot.io/ui/components/Button";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
+import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 import { ChatsProTiersDialog } from "./ChatsProTiersDialog";
-import { FeaturesList } from "./FeaturesList";
 
 type Props = {
   currentPlan: Plan;
@@ -24,7 +24,6 @@ export const ProPlanPricingCard = ({
 }: Props) => {
   const { isOpen, onOpen, onClose } = useOpenControls();
   const { t } = useTranslate();
-
   const getButtonLabel = () => {
     if (currentPlan === Plan.PRO)
       return t("billing.pricingCard.upgradeButton.current");
@@ -66,24 +65,34 @@ export const ProPlanPricingCard = ({
                     {t("billing.pricingCard.pro.everythingFromStarter")}
                   </Tooltip.Trigger>
                   <Tooltip.Popup>
-                    <FeaturesList
-                      features={[
-                        t("billing.pricingCard.starter.brandingRemoved"),
-                        t("billing.pricingCard.starter.fileUploadBlock"),
-                        t("billing.pricingCard.starter.createFolders"),
-                      ]}
-                      className="gap-0"
-                    />
+                    <ul className="list-none gap-0 flex flex-col">
+                      <li className="flex">
+                        <TickIcon className="size-6" />
+                        {t("billing.pricingCard.starter.brandingRemoved")}
+                      </li>
+                      <li className="flex">
+                        <TickIcon className="size-6" />
+                        {t("billing.pricingCard.starter.fileUploadBlock")}
+                      </li>
+                      <li className="flex">
+                        <TickIcon className="size-6" />
+                        {t("billing.pricingCard.starter.createFolders")}
+                      </li>
+                    </ul>
                   </Tooltip.Popup>
                 </Tooltip.Root>
 
                 {t("billing.pricingCard.plus")}
               </p>
-              <FeaturesList
-                features={[
-                  t("billing.pricingCard.pro.includedSeats"),
-                  <div className="flex flex-col gap-1" key="starter-chats">
-                    <div className="flex items-center gap-0" key="test">
+              <ul className="list-none gap-2 flex flex-col">
+                <li className="flex">
+                  <TickIcon className="size-6" />
+                  {t("billing.pricingCard.pro.includedSeats")}
+                </li>
+                <li className="flex">
+                  <TickIcon className="size-6" />
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-0">
                       <p>10,000 {t("billing.pricingCard.chatsPerMonth")}</p>
                       <MoreInfoTooltip>
                         {t("billing.pricingCard.chatsTooltip")}
@@ -95,12 +104,21 @@ export const ProPlanPricingCard = ({
                         See tiers
                       </Button>
                     </p>
-                  </div>,
-                  t("billing.pricingCard.pro.whatsAppIntegration"),
-                  t("billing.pricingCard.pro.customDomains"),
-                  t("billing.pricingCard.pro.analytics"),
-                ]}
-              />
+                  </div>
+                </li>
+                <li className="flex">
+                  <TickIcon className="size-6" />
+                  {t("billing.pricingCard.pro.whatsAppIntegration")}
+                </li>
+                <li className="flex">
+                  <TickIcon className="size-6" />
+                  {t("billing.pricingCard.pro.customDomains")}
+                </li>
+                <li className="flex">
+                  <TickIcon className="size-6" />
+                  {t("billing.pricingCard.pro.analytics")}
+                </li>
+              </ul>
             </div>
 
             <Button
