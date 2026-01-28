@@ -20,7 +20,9 @@ const sentryMiddleware = os.middleware(async ({ next, path }) => {
     if (isUnknownError(error, path.join("/"))) {
       if (error instanceof ORPCError && error.code?.includes("BAD_REQUEST")) {
         Sentry.addBreadcrumb({
-          data: error.data,
+          data: {
+            orpcErrorData: JSON.stringify(error.data),
+          },
         });
       }
       Sentry.captureException(error);
