@@ -323,11 +323,9 @@ const FormElement = ({
       </span>
       {element.type === "radio" ? (
         <div className="mt-2 space-y-2">
-          {optionItems.map((option) => (
-            <div
-              key={`${element.id}-${option}`}
-              className="flex items-center gap-2"
-            >
+          {optionItems.map((option, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: options order is stable in preview
+            <div key={index} className="flex items-center gap-2">
               <Input
                 type="radio"
                 name={`preview-${element.id}`}
@@ -339,11 +337,9 @@ const FormElement = ({
         </div>
       ) : element.type === "multicheck" ? (
         <div className="mt-2 space-y-2">
-          {optionItems.map((option) => (
-            <div
-              key={`${element.id}-${option}`}
-              className="flex items-center gap-2"
-            >
+          {optionItems.map((option, index) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: options order is stable in preview
+            <div key={index} className="flex items-center gap-2">
               <Input type="checkbox" className="h-4 w-4 pointer-events-none" />
               <span className="text-sm text-foreground/90">{option}</span>
             </div>
@@ -488,10 +484,8 @@ const PropertiesPanel = ({
             </span>
             <div className="space-y-2">
               {optionItems.map((option, index) => (
-                <div
-                  key={`${selectedElement.id}-${option}`}
-                  className="flex gap-2"
-                >
+                // biome-ignore lint/suspicious/noArrayIndexKey: options order is stable in editor
+                <div key={index} className="flex gap-2">
                   <Input
                     type="text"
                     value={option}
@@ -581,10 +575,8 @@ const LivePreviewModal = ({
                 ) : element.type === "radio" ? (
                   <div className="space-y-2">
                     {optionItems.map((option, index) => (
-                      <div
-                        key={`${element.id}-${option}`}
-                        className="flex items-center gap-2"
-                      >
+                      // biome-ignore lint/suspicious/noArrayIndexKey: options order is stable in preview
+                      <div key={index} className="flex items-center gap-2">
                         <input
                           type="radio"
                           id={`${element.id}-${index}`}
@@ -600,10 +592,8 @@ const LivePreviewModal = ({
                 ) : element.type === "multicheck" ? (
                   <div className="space-y-2">
                     {optionItems.map((option, index) => (
-                      <div
-                        key={`${element.id}-${option}`}
-                        className="flex items-center gap-2"
-                      >
+                      // biome-ignore lint/suspicious/noArrayIndexKey: options order is stable in preview
+                      <div key={index} className="flex items-center gap-2">
                         <input
                           type="checkbox"
                           id={`${element.id}-${index}`}
