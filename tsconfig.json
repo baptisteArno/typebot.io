@@ -1,4 +1,5 @@
 {
   "extends": "./packages/tsconfig/base.json",
-  "exclude": ["opensrc"]
+  "exclude": ["opensrc"],
+  "include": ["commands/**/*.ts"]
 }

@@ -1,4 +1,0 @@
-{
-  "install": "curl -fsSL https://bun.sh/install | bash && source /root/.bashrc && bun install && bun turbo run @typebot.io/react#build",
-  "terminals": []
-}
