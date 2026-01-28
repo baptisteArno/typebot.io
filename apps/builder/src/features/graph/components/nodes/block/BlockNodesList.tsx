@@ -69,7 +69,7 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
 
   const handlePushElementRef =
     (idx: number) => (elem: HTMLDivElement | null) => {
-      elem && (placeholderRefs.current[idx] = elem);
+      if (elem) placeholderRefs.current[idx] = elem;
     };
 
   const onGroupMouseMove = useCallback(

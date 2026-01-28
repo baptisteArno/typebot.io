@@ -2,24 +2,26 @@
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": [".env"],
   "globalEnv": ["DATABASE_URL", "SKIP_ENV_CHECK", "DATABASE_URL_REPLICA"],
-  "globalPassThroughEnv": ["ENCRYPTION_SECRET"],
   "envMode": "loose",
   "tasks": {
     "typecheck": {
-      "cache": false,
-      "dependsOn": ["@typebot.io/react#build"]
+      "dependsOn": ["@typebot.io/react#build", "^typecheck"],
+      "outputLogs": "new-only"
     },
     "landing-page#typecheck": {
       "dependsOn": [
         "@typebot.io/react#build",
         "landing-page#content-collections:build"
-      ]
+      ],
+      "outputLogs": "new-only"
     },
     "content-collections:build": {
-      "outputs": [".content-collections/generated/**"]
+      "outputs": [".content-collections/generated/**"],
+      "outputLogs": "new-only"
     },
     "@typebot.io/react#build": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "outputLogs": "new-only"
     },
     "dev": {
       "cache": false,
@@ -78,7 +80,7 @@
     },
     "test": {
       "dependsOn": ["^test"],
-      "cache": false
+      "outputLogs": "new-only"
     },
     "//#lint-repo": {
       "cache": false

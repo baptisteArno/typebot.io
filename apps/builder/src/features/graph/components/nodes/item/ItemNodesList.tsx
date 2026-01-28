@@ -125,7 +125,7 @@ export const ItemNodesList = ({
 
   const handlePushElementRef =
     (idx: number) => (elem: HTMLDivElement | null) => {
-      elem && (placeholderRefs.current[idx] = elem);
+      if (elem) placeholderRefs.current[idx] = elem;
     };
 
   const groupId = typebot?.groups.at(groupIndex)?.id;

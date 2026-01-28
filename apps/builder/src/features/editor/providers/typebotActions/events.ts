@@ -77,9 +77,9 @@ const eventsActions = (setTypebot: SetTypebot): EventsActions => ({
   updateEventsCoordinates: (newCoord) =>
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
-        typebot.events.forEach(
-          (event) => (event.graphCoordinates = newCoord[event.id]),
-        );
+        typebot.events.forEach((event) => {
+          event.graphCoordinates = newCoord[event.id];
+        });
       }),
     ),
   pasteEvents: (clipboard, { oldToNewIdsMapping, updateCoordinates }) => {

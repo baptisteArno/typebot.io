@@ -259,13 +259,10 @@ export type BlockDefinition<
   actions: ActionDefinition<Auth, BaseOptions, z.ZodObject<z.ZodRawShape>>[];
 };
 
-export type FetchItemsParams<T> = T extends ActionDefinition<
-  infer A,
-  infer BaseOptions,
-  infer Options
->
-  ? {
-      credentials: CredentialsFromAuthDef<A>;
-      options: BaseOptions & Options;
-    }
-  : never;
+export type FetchItemsParams<T> =
+  T extends ActionDefinition<infer A, infer BaseOptions, infer Options>
+    ? {
+        credentials: CredentialsFromAuthDef<A>;
+        options: BaseOptions & Options;
+      }
+    : never;
