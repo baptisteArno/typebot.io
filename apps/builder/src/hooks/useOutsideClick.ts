@@ -8,6 +8,7 @@ type Props<T> = {
   handler: Handler;
   capture?: boolean;
   isEnabled?: boolean;
+  ignoreSelectors?: string[];
 };
 
 export const useOutsideClick = <T extends HTMLElement = HTMLElement>({
@@ -15,12 +16,18 @@ export const useOutsideClick = <T extends HTMLElement = HTMLElement>({
   handler,
   capture,
   isEnabled,
+  ignoreSelectors,
 }: Props<T>): void => {
   useEffect(() => {
     if (isEnabled === false) return;
     const triggerHandlerIfOutside = (event: MouseEvent) => {
+      const clickedElement = event.target as HTMLElement;
       const el = ref?.current;
-      if (!el || el.contains(event.target as Node)) {
+      if (
+        !el ||
+        el.contains(clickedElement) ||
+        ignoreSelectors?.some((selector) => clickedElement.closest(selector))
+      ) {
         return;
       }
       handler(event);

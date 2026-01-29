@@ -199,12 +199,21 @@ export const BlockNode = ({
   });
 
   return openedNodeId === block.id && isTextBubbleBlock(block) ? (
-    <TextBubbleEditor
-      id={block.id}
-      initialValue={block.content?.richText ?? []}
-      onChange={handleTextEditorChange}
-      onClose={handleCloseEditor}
-    />
+    <ContextMenu.Root onOpenChange={setIsContextMenuOpened}>
+      <ContextMenu.Trigger>
+        <TextBubbleEditor
+          id={block.id}
+          initialValue={block.content?.richText ?? []}
+          onChange={handleTextEditorChange}
+          onClose={handleCloseEditor}
+        />
+      </ContextMenu.Trigger>
+      <BlockNodeContextMenuPopup
+        indices={indices}
+        block={block}
+        onTurnIntoClick={convertBlock}
+      />
+    </ContextMenu.Root>
   ) : (
     <Popover.Root
       isOpen={openedNodeId === block.id}
