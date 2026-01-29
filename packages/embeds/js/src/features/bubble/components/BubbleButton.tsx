@@ -25,11 +25,7 @@ export const BubbleButton = (props: Props) => (
     )}
     style={{
       "background-color": props.backgroundColor ?? colors.gray.dark["2"],
-      color: props.backgroundColor
-        ? isLight(props.backgroundColor)
-          ? colors.gray.light["12"]
-          : colors.gray.dark["12"]
-        : colors.gray.dark["12"],
+      color: resolveButtonIconColor(props),
     }}
     aria-label={props.isBotOpen ? "Close chatbot" : "Open chatbot"}
     aria-pressed={props.isBotOpen}
@@ -94,7 +90,7 @@ const CloseIcon = (props: Props) => (
         part="button-icon"
         viewBox="0 0 24 24"
         style={{
-          fill: defaultLightIconColor,
+          fill: props.iconColor ?? defaultLightIconColor,
         }}
         class={cx(
           "absolute duration-200 transition w-[60%]",
@@ -148,3 +144,11 @@ const CloseIcon = (props: Props) => (
     </Match>
   </Switch>
 );
+
+const resolveButtonIconColor = (props: Props) =>
+  props.iconColor ??
+  (props.backgroundColor
+    ? isLight(props.backgroundColor)
+      ? colors.gray.light["12"]
+      : colors.gray.dark["12"]
+    : colors.gray.dark["12"]);
