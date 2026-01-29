@@ -220,7 +220,7 @@ const fillVariablesWithExistingValues = (
   typebotsQueue: SessionState["typebotsQueue"],
 ): Variable[] =>
   emptyVariables.map((emptyVariable) => {
-    let matchedVariable;
+    let matchedVariable: Variable | undefined;
     for (const typebotInQueue of typebotsQueue) {
       matchedVariable = typebotInQueue.typebot.variables.find(
         (v) => v.name === emptyVariable.name,

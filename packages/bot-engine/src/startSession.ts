@@ -520,7 +520,7 @@ const removeLiteBadgeCss = (code: string) => {
   code = code.replace(/\/\*[\s\S]*?\*\//gm, "");
 
   // Match any rule containing lite-badge, handling nested blocks
-  let prevCode;
+  let prevCode: string;
   do {
     prevCode = code;
     code = code.replace(

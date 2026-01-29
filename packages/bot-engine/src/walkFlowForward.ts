@@ -184,7 +184,7 @@ const executeGroup = async (
   const messages: ContinueChatResponse["messages"] = [];
   let clientSideActions: ContinueChatResponse["clientSideActions"] = [];
   let logs: ContinueChatResponse["logs"] = [];
-  let nextEdge;
+  let nextEdge: { id: string; isOffDefaultPath: boolean } | undefined;
   let lastBubbleBlockId: string | undefined = currentLastBubbleId;
   let updatedTimeoutStartTime = timeoutStartTime;
   const newSetVariableHistoryItems: SetVariableHistoryItem[] = [];

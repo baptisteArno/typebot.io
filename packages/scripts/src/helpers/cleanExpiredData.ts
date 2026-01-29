@@ -12,7 +12,7 @@ const deleteOldChatSessions = async () => {
   twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
   twoDaysAgo.setHours(0, 0, 0, 0);
   let totalDeletedChatSessions = 0;
-  let deletingChatSessions;
+  let deletingChatSessions: number;
   do {
     const chatSessions = await prisma.chatSession.findMany({
       where: {
@@ -63,7 +63,7 @@ const deleteExpiredVerificationTokens = async () => {
   const threeDaysAgo = new Date();
   threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
   threeDaysAgo.setHours(0, 0, 0, 0);
-  let totalVerificationTokens;
+  let totalVerificationTokens: number;
   do {
     const verificationTokens = await prisma.verificationToken.findMany({
       where: {

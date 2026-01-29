@@ -34,7 +34,10 @@ export const fetchSelectItems = authenticatedProcedure
     ]),
   )
   .handler(async ({ input, context: { user } }) => {
-    let credentials;
+    let credentials:
+      | { id: string; data: string; iv: string }
+      | null
+      | undefined;
     if (input.scope === "user") {
       credentials = await prisma.userCredentials.findFirst({
         where: {

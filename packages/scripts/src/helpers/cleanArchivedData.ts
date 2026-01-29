@@ -46,7 +46,7 @@ const deleteArchivedResults = async () => {
   lastDayTwoMonthsAgo.setMonth(lastDayTwoMonthsAgo.getMonth() - 1);
   lastDayTwoMonthsAgo.setDate(0);
   lastDayTwoMonthsAgo.setHours(0, 0, 0, 0);
-  let totalResults;
+  let totalResults: number;
   do {
     console.log(`Fetching ${resultsBatch} archived results...`);
     const results = (await prisma.$queryRaw`

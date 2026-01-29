@@ -40,7 +40,7 @@ export type WebhookCallBacks = {
 
 export const blocksAction = (setTypebot: SetTypebot): BlocksActions => ({
   createBlock: (block: BlockV6 | BlockV6["type"], indices: BlockIndices) => {
-    let blockId;
+    let blockId: string | undefined;
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         blockId = createBlockDraft(typebot, block, indices);
@@ -162,6 +162,7 @@ const moveBlockToGroup = (
     }
   });
   typebot.groups[groupIndex].blocks.splice(blockIndex ?? 0, 0, newBlock);
+  return newBlock.id;
 };
 
 export const duplicateBlockDraft = (

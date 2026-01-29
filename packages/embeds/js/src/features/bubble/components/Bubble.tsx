@@ -236,7 +236,7 @@ export const Bubble = (props: BubbleProps) => {
     botProps.onScriptExecutionSuccess?.(message);
   };
 
-  let progressBarContainerRef;
+  let progressBarContainerRef: HTMLDivElement | undefined;
 
   return (
     <Show when={bubbleLifecycle() !== "unmounted"}>

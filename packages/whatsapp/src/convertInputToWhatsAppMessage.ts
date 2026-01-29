@@ -96,7 +96,9 @@ export const convertInputToWhatsAppMessages = async ({
           bodyText += item.description;
         }
 
-        let header;
+        let header:
+          | { type: "image"; image: { id: string } | { link: string } }
+          | undefined;
         if (item.pictureSrc) {
           if (mediaCache) {
             const mediaId = await getOrUploadMedia({
@@ -201,7 +203,9 @@ export const convertInputToWhatsAppMessages = async ({
           bodyText += item.description;
         }
 
-        let header;
+        let header:
+          | { type: "image"; image: { id: string } | { link: string } }
+          | undefined;
         if (item.imageUrl) {
           if (mediaCache) {
             const mediaId = await getOrUploadMedia({

@@ -62,7 +62,7 @@ const groupsActions = (setTypebot: SetTypebot): GroupsActions => ({
     block: BlockV6 | BlockV6["type"];
     indices: BlockIndices;
   }) => {
-    let newBlockId;
+    let newBlockId: string | undefined;
     setTypebot((typebot) =>
       produce(typebot, (typebot) => {
         const newGroup: GroupV6 = {

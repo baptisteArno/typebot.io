@@ -7,7 +7,7 @@ export const sendRequest = async <ResponseData>(
       }
     | string,
 ): Promise<{ data?: ResponseData; error?: Error; response?: Response }> => {
-  let response;
+  let response: Response | undefined;
   try {
     const url = typeof params === "string" ? params : params.url;
     response = await fetch(url, {

@@ -53,7 +53,7 @@ export const parseCardsReply = (
       (variable) => variable.id === mapping.variableId,
     );
     if (!existingVariable) return acc;
-    let value;
+    let value: string | null | undefined;
     if (mapping.field === "Image URL") {
       value = matchedItem.imageUrl;
     }

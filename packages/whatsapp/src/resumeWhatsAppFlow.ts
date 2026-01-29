@@ -259,7 +259,7 @@ const convertWhatsAppMessageToTypebotMessage = async ({
               : block?.type === InputBlockType.TEXT
                 ? block.options?.attachments?.visibility
                 : undefined;
-        let fileUrl;
+        let fileUrl: string;
         if (fileVisibility !== "Public") {
           const extension = mimeType
             ? extensionFromMimeType[mimeType]
