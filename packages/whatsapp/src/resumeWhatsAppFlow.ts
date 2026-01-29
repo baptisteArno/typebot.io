@@ -31,6 +31,7 @@ import { startWhatsAppSession } from "./startWhatsAppSession";
 import { WhatsAppError } from "./WhatsAppError";
 
 const MESSAGE_TOO_OLD_ELAPSED_MS = 3 * 60 * 1000; // 3 minutes
+const RESET_EMPTY_SESSION_AFTER_MS = 10 * 60 * 1000; // 10 minutes
 const INCOMING_MEDIA_MESSAGE_DEBOUNCE = 3_000;
 
 type Props = {
@@ -88,9 +89,21 @@ export const resumeWhatsAppFlow = async ({
       receivedPhoneNumberId: phoneNumberId,
     });
 
-  const session = await getSession(sessionId);
-  if (session && !session.state)
-    throw new WhatsAppError("Session is empty. Most likely in reply state.");
+  let session = await getSession(sessionId);
+
+  if (session && !session.state) {
+    if (
+      session.updatedAt.getTime() + RESET_EMPTY_SESSION_AFTER_MS <
+      Date.now()
+    ) {
+      console.warn("Old empty session, resetting...");
+      session = null;
+    } else {
+      throw new WhatsAppError(
+        "Session is empty. Most likely a new session with initial reply state.",
+      );
+    }
+  }
 
   const aggregationResponse =
     await aggregateParallelMediaMessagesIfRedisEnabled({
