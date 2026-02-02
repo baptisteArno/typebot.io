@@ -32,27 +32,34 @@ export const ColumnSettings = ({
     });
   };
 
-  const draggableColumnIds = columnOrder.filter(
-    (id) => id !== "select" && id !== "logs",
-  );
+  const draggableColumnIds = columnOrder
+    .filter((id) => id !== "select" && id !== "logs")
+    .map((id) => ({ id, headerId: resultHeader.find((h) => h.id === id) }));
 
   return (
     <div className="flex flex-col gap-2">
       <p className="font-medium text-sm">Shown in table:</p>
       <DragDropProvider
         onDragEnd={(event) => {
-          onColumnOrderChange([...move(draggableColumnIds, event)]);
+          onColumnOrderChange([
+            ...move(
+              draggableColumnIds.map((c) => c.id),
+              event,
+            ),
+          ]);
         }}
       >
-        {draggableColumnIds.map((id, index) => (
-          <SortableColumns
-            key={id}
-            header={resultHeader.find((h) => h.id === id)!}
-            toggleColumnVisibility={toggleColumnVisibility}
-            columnVisibility={columnVisibility}
-            index={index}
-          />
-        ))}
+        {draggableColumnIds
+          .filter((c) => c.headerId)
+          .map(({ id, headerId }, index) => (
+            <SortableColumns
+              key={id}
+              header={headerId!}
+              toggleColumnVisibility={toggleColumnVisibility}
+              columnVisibility={columnVisibility}
+              index={index}
+            />
+          ))}
       </DragDropProvider>
     </div>
   );
