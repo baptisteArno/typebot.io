@@ -42,6 +42,6 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
   try {
     await client.shutdown();
   } catch (err) {
-    console.error("ERROR while shutting down PostHog client", err);
+    console.error("❌ Failed to shut down PostHog client", err);
   }
 };

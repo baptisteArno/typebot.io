@@ -9,13 +9,14 @@ export const trackAndReportYesterdaysResults = async () => {
   yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
   yesterdayMidnight.setUTCHours(0, 0, 0, 0);
 
-  console.log(`Fetching recently active workspaces...`);
+  console.log(`🔍 Fetching recently active workspaces...`);
 
   const recentWorkspaces = await prisma.workspace.findMany({
     where: {
       lastActivityAt: {
         gte: yesterdayMidnight,
       },
+      isSuspended: { not: true },
     },
     select: {
       id: true,
@@ -37,53 +38,53 @@ export const trackAndReportYesterdaysResults = async () => {
     },
   });
 
-  console.log("🔍 Found", recentWorkspaces.length, "workspaces");
+  console.log("✅ Found", recentWorkspaces.length, "workspaces");
 
   let resultsSum = 0;
   const newResultsCollectedEvents: TelemetryEvent[] = [];
-  let index = 1;
+  console.log("🔨 Processing workspaces...");
   for (const workspace of recentWorkspaces) {
-    console.log(
-      "Processing workspace",
-      index + 1,
-      "/",
-      recentWorkspaces.length,
-    );
-    index += 1;
-    const results = await prisma.result.groupBy({
-      by: ["typebotId"],
-      _count: {
-        _all: true,
-      },
-      where: {
-        typebotId: { in: workspace.typebots.map((typebot) => typebot.id) },
-        hasStarted: true,
-        createdAt: {
-          gte: yesterdayMidnight,
-          lt: todayMidnight,
+    try {
+      const results = await prisma.result.groupBy({
+        by: ["typebotId"],
+        _count: {
+          _all: true,
         },
-      },
-    });
-    const olderAdmin = workspace.members
-      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
-      .at(0);
-    if (!olderAdmin) continue;
-    for (const result of results) {
-      if (result._count._all === 0) continue;
-      newResultsCollectedEvents.push({
-        name: "New results collected",
-        typebotId: result.typebotId,
-        workspaceId: workspace.id,
-        userId: olderAdmin.user.id,
-        data: {
-          total: result._count._all,
+        where: {
+          typebotId: { in: workspace.typebots.map((typebot) => typebot.id) },
+          hasStarted: true,
+          createdAt: {
+            gte: yesterdayMidnight,
+            lt: todayMidnight,
+          },
         },
       });
-      resultsSum += result._count._all;
+      const olderAdmin = workspace.members
+        .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+        .at(0);
+      if (!olderAdmin) continue;
+      for (const result of results) {
+        if (result._count._all === 0) continue;
+        newResultsCollectedEvents.push({
+          name: "New results collected",
+          typebotId: result.typebotId,
+          workspaceId: workspace.id,
+          userId: olderAdmin.user.id,
+          data: {
+            total: result._count._all,
+          },
+        });
+        resultsSum += result._count._all;
+      }
+    } catch (error) {
+      console.error("❌ Error processing workspace", workspace.id);
+      throw error;
     }
   }
 
+  console.log("💾 Saving events to PostHog...");
   await trackEvents(newResultsCollectedEvents);
+  console.log("✅ Done!");
 
   return {
     totalWorkspaces: recentWorkspaces.length,
