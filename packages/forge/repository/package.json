@@ -19,6 +19,7 @@
     "@typebot.io/together-ai-block": "workspace:*",
     "@typebot.io/open-router-block": "workspace:*",
     "@typebot.io/nocodb-block": "workspace:*",
-    "@typebot.io/claudia-block": "workspace:*"
+    "@typebot.io/claudia-block": "workspace:*",
+    "@typebot.io/workflow-block": "workspace:*"
   }
 }

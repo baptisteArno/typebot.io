@@ -4,6 +4,7 @@ import { whatsAppSettingsSchema } from '../../whatsapp'
 
 const generalSettings = z.object({
   isBrandingEnabled: z.boolean().optional(),
+  type: z.enum(['default', 'TOOL']).optional(),
   isTypingEmulationEnabled: z.boolean().optional(),
   isInputPrefillEnabled: z.boolean().optional(),
   isHideQueryParamsEnabled: z.boolean().optional(),

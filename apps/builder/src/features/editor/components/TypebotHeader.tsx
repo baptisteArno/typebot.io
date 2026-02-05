@@ -37,11 +37,27 @@ import { GuestTypebotHeader } from './UnauthenticatedTypebotHeader'
 import { OnlineUsersIndicator } from './OnlineUsersIndicator'
 import { useEditQueue } from '../hooks/useEditQueue'
 import { useUser } from '@/features/account/hooks/useUser'
+import { EditToolDescriptionModal } from './EditToolDescriptionModal'
 
 export const TypebotHeader = () => {
-  const { typebot, publishedTypebot, currentUserMode } = useTypebot()
+  const {
+    typebot,
+    publishedTypebot,
+    currentUserMode,
+    isSavingLoading,
+    updateTypebot,
+  } = useTypebot()
   const { isOpen } = useDisclosure()
+  const {
+    isOpen: isEditToolDescriptionOpen,
+    onOpen: onOpenEditToolDescription,
+    onClose: onCloseEditToolDescription,
+  } = useDisclosure()
   const headerBgColor = useColorModeValue('white', 'gray.900')
+
+  const updateToolDescription = (toolDescription: string) => {
+    updateTypebot({ updates: { toolDescription } })
+  }
 
   if (currentUserMode === 'guest') return <GuestTypebotHeader />
   return (
@@ -57,7 +73,20 @@ export const TypebotHeader = () => {
       flexShrink={0}
     >
       {isOpen && <SupportBubble autoShowDelay={0} />}
-      <LeftElements pos="absolute" left="1rem" />
+      {typebot && (
+        <EditToolDescriptionModal
+          isOpen={isEditToolDescriptionOpen}
+          onClose={onCloseEditToolDescription}
+          onSave={updateToolDescription}
+          initialToolDescription={typebot.toolDescription ?? ''}
+          isLoading={isSavingLoading}
+        />
+      )}
+      <LeftElements
+        pos="absolute"
+        left="1rem"
+        onOpenEditToolDescription={onOpenEditToolDescription}
+      />
 
       <TypebotNav
         display={{ base: 'none', xl: 'flex' }}
@@ -75,7 +104,10 @@ export const TypebotHeader = () => {
   )
 }
 
-const LeftElements = ({ ...props }: StackProps) => {
+const LeftElements = ({
+  onOpenEditToolDescription,
+  ...props
+}: StackProps & { onOpenEditToolDescription: () => void }) => {
   const { t } = useTranslate()
   const router = useRouter()
   const {
@@ -217,6 +249,15 @@ const LeftElements = ({ ...props }: StackProps) => {
               />
             </Tooltip>
           </HStack>
+        )}
+        {typebot?.settings?.general?.type === 'TOOL' && (
+          <Button
+            size="sm"
+            onClick={onOpenEditToolDescription}
+            leftIcon={<span style={{ fontSize: '16px' }}>✏️</span>}
+          >
+            Edit tool description
+          </Button>
         )}
         {/* <Button
           leftIcon={<BuoyIcon />}

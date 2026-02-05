@@ -162,10 +162,22 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
     (e) => e.groupId === group.id
   )
 
+  const handleDeleteClick = () =>
+    dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace' }))
+
+  const handleDuplicateClick = () => {
+    dispatchEvent(new KeyboardEvent('keydown', { key: 'c', metaKey: true }))
+  }
+
   return (
     <ContextMenu<HTMLDivElement>
       onOpen={() => focusGroup(group.id)}
-      renderMenu={() => <GroupNodeContextMenu />}
+      renderMenu={() => (
+        <GroupNodeContextMenu
+          onDeleteClick={handleDeleteClick}
+          onDuplicateClick={handleDuplicateClick}
+        />
+      )}
       isDisabled={isReadOnly}
     >
       {(ref, isContextMenuOpened) => (

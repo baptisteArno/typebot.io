@@ -74,7 +74,15 @@ export const SettingsSideMenu = () => {
             {typebot && (
               <GeneralSettingsForm
                 generalSettings={typebot.settings.general}
+                tenant={typebot.tenant}
+                toolDescription={typebot.toolDescription}
                 onGeneralSettingsChange={handleGeneralSettingsChange}
+                onTenantChange={(tenant) =>
+                  updateTypebot({ updates: { tenant } })
+                }
+                onToolDescriptionChange={(toolDescription) =>
+                  updateTypebot({ updates: { toolDescription } })
+                }
               />
             )}
           </AccordionPanel>

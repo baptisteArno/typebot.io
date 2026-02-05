@@ -195,6 +195,8 @@ model Typebot {
   whatsAppCredentialsId   String?
   riskLevel               Int?
   bannedIps               BannedIp[]
+  tenant                  String?
+  toolDescription         String?
   TypebotEditQueue        TypebotEditQueue[]
   TypebotHistory          TypebotHistory[]
 
@@ -245,6 +247,8 @@ model TypebotHistory {
   isSecondaryFlow         Boolean
   riskLevel               Int?
   whatsAppCredentialsId   String?
+  tenant                  String?
+  toolDescription         String?
 
   snapshotChecksum String @db.VarChar(64)
 

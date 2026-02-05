@@ -258,6 +258,31 @@ export const executeGroup = async (
       logs = [...(logs ?? []), ...executionResponse.logs]
     if (executionResponse.newSessionState)
       newSessionState = executionResponse.newSessionState
+    
+    // Handle logic blocks that want to collect input (e.g., Declare Variables)
+    if ('input' in executionResponse && executionResponse.input) {
+      if (executionResponse.messages) {
+        messages.push(...executionResponse.messages)
+      }
+      logger.info('Block execution finished', {
+        blockId: block.id,
+        duration: Date.now() - blockStartTime,
+        inputExpected: true,
+      })
+      return {
+        messages,
+        input: executionResponse.input,
+        newSessionState: {
+          ...newSessionState,
+          currentBlockId: block.id,
+        },
+        clientSideActions,
+        logs,
+        visitedEdges,
+        setVariableHistory,
+      }
+    }
+    
     if (
       'clientSideActions' in executionResponse &&
       executionResponse.clientSideActions

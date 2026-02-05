@@ -87,6 +87,12 @@ export const BlockLabel = ({ type }: Props): JSX.Element => {
       return (
         <Text fontSize="sm">{t('editor.sidebarBlock.validateCnpj.label')}</Text>
       )
+    case LogicBlockType.DECLARE_VARIABLES:
+      return (
+        <Text fontSize="sm">
+          {t('editor.sidebarBlock.declareVariables.label')}
+        </Text>
+      )
     case IntegrationBlockType.GOOGLE_SHEETS:
       return <Text fontSize="sm">{t('editor.sidebarBlock.sheets.label')}</Text>
     case IntegrationBlockType.GOOGLE_ANALYTICS:

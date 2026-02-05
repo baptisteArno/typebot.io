@@ -2,7 +2,6 @@ import { z } from '../../zod'
 import { settingsSchema } from './settings'
 import { themeSchema } from './theme'
 import { variableSchema } from './variable'
-import { Typebot as TypebotPrisma } from '@typebot.io/prisma'
 import {
   preprocessColumnsWidthResults,
   preprocessTypebot,
@@ -59,7 +58,9 @@ export const typebotV5Schema = z.preprocess(
     isSecondaryFlow: z.boolean().optional().default(false),
     whatsAppCredentialsId: z.string().nullable(),
     riskLevel: z.number().nullable(),
-  }) satisfies z.ZodType<TypebotPrisma, z.ZodTypeDef, unknown>
+    tenant: z.string().nullish(),
+    toolDescription: z.string().nullish(),
+  })
 )
 
 export type TypebotV5 = z.infer<typeof typebotV5Schema>

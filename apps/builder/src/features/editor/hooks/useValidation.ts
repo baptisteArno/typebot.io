@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from 'react'
 import { trpc } from '@/lib/trpc'
 import { ValidationError } from '../../typebot/constants/errorTypes'
-import { Edge, Group, Variable } from '@typebot.io/schemas'
+import { Edge, Group, Settings, Variable } from '@typebot.io/schemas'
 
 export type { ValidationError }
 
@@ -19,6 +19,7 @@ export const useValidation = () => {
       variables: Variable[]
       groups: Group[]
       edges: Edge[]
+      settings: Settings | undefined
     }): Promise<ValidationError | null> => {
       setIsValidating(true)
       try {

@@ -127,5 +127,11 @@ export const continueChat = async ({
           currentInputBlockId: input?.id,
         })
       : undefined,
+    toolOutput: (() => {
+      const toolOutputLog = logs?.find(
+        (log) => log.details && (log.details as any).action === 'END_WORKFLOW'
+      )
+      return toolOutputLog ? (toolOutputLog.details as any).response : undefined
+    })(),
   }
 }

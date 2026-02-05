@@ -6,7 +6,11 @@ export const validateCpfOptionsSchema = z.object({
   inputVariableId: z.string().optional(),
   outputVariableId: z.string().optional(),
   isValidVariableId: z.string().optional(),
-  removeFormatting: z.boolean().optional().default(true).openapi({ effectType: 'input' }),
+  removeFormatting: z
+    .boolean()
+    .optional()
+    .default(true)
+    .openapi({ effectType: 'input' }),
 })
 
 export const validateCpfBlockSchema = blockBaseSchema.merge(

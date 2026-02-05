@@ -136,6 +136,7 @@ export const executeForgedBlock = async (
     options: parsedOptions,
     variables,
     logs: logsStore,
+    lastEndpointResponse: state.lastEndpointResponse,
   })
 
   const clientSideActions: ExecuteIntegrationResponse['clientSideActions'] = []

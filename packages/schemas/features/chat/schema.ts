@@ -373,9 +373,13 @@ export const startChatResponseSchema = z
   .merge(chatResponseBaseSchema)
 export type StartChatResponse = z.infer<typeof startChatResponseSchema>
 
+// Agent-specific startChat schemas
+
 export const startPreviewChatResponseSchema = startChatResponseSchema.omit({
   resultId: true,
 })
 
-export const continueChatResponseSchema = chatResponseBaseSchema
+export const continueChatResponseSchema = chatResponseBaseSchema.extend({
+  toolOutput: z.unknown().optional().describe('Final output of the workflow if ended'),
+})
 export type ContinueChatResponse = z.infer<typeof continueChatResponseSchema>

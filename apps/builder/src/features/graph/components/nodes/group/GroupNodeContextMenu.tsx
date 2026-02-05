@@ -2,22 +2,23 @@ import { MenuList, MenuItem } from '@chakra-ui/react'
 import { CopyIcon, TrashIcon } from '@/components/icons'
 import { useTranslate } from '@tolgee/react'
 
-export const GroupNodeContextMenu = () => {
+type Props = {
+  onDuplicateClick: () => void
+  onDeleteClick: () => void
+}
+
+export const GroupNodeContextMenu = ({
+  onDuplicateClick,
+  onDeleteClick,
+}: Props) => {
   const { t } = useTranslate()
-
-  const handleDeleteClick = () =>
-    dispatchEvent(new KeyboardEvent('keydown', { key: 'Backspace' }))
-
-  const handleDuplicateClick = () => {
-    dispatchEvent(new KeyboardEvent('keydown', { key: 'c', metaKey: true }))
-  }
 
   return (
     <MenuList>
-      <MenuItem icon={<CopyIcon />} onClick={handleDuplicateClick}>
+      <MenuItem icon={<CopyIcon />} onClick={onDuplicateClick}>
         {t('copy')}
       </MenuItem>
-      <MenuItem icon={<TrashIcon />} onClick={handleDeleteClick}>
+      <MenuItem icon={<TrashIcon />} onClick={onDeleteClick}>
         {t('delete')}
       </MenuItem>
     </MenuList>

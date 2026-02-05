@@ -46,6 +46,7 @@ import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/consta
 import { Block } from '@typebot.io/schemas'
 import { OpenAILogo } from '@/features/blocks/integrations/openai/components/OpenAILogo'
 import { ForgedBlockIcon } from '@/features/forge/ForgedBlockIcon'
+import { DeclareVariablesIcon } from '@/features/blocks/logic/declareVariables/components/DeclareVariablesIcon'
 
 type BlockIconProps = { type: Block['type']; mt?: string }
 
@@ -113,6 +114,8 @@ export const BlockIcon = ({ type, mt }: BlockIconProps): JSX.Element => {
       return <ValidateCpfIcon color={purple} mt={mt} />
     case LogicBlockType.VALIDATE_CNPJ:
       return <ValidateCnpjIcon color={purple} mt={mt} />
+    case LogicBlockType.DECLARE_VARIABLES:
+      return <DeclareVariablesIcon color={purple} mt={mt} />
     case IntegrationBlockType.GOOGLE_SHEETS:
       return <GoogleSheetsLogo mt={mt} />
     case IntegrationBlockType.GOOGLE_ANALYTICS:

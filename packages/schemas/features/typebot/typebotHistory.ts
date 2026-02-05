@@ -34,6 +34,8 @@ export const typebotHistoryContentSchema = z.object({
   isSecondaryFlow: z.boolean().optional().default(false),
   riskLevel: z.number().nullable(),
   whatsAppCredentialsId: z.string().nullable(),
+  tenant: z.string().nullable(),
+  toolDescription: z.string().nullable(),
 })
 
 export type TypebotHistoryContent = z.infer<typeof typebotHistoryContentSchema>
@@ -105,6 +107,8 @@ export const parsePrismaTypebotHistory = (
     isSecondaryFlow: prismaHistory.isSecondaryFlow,
     riskLevel: prismaHistory.riskLevel,
     whatsAppCredentialsId: prismaHistory.whatsAppCredentialsId,
+    tenant: prismaHistory.tenant,
+    toolDescription: prismaHistory.toolDescription,
   }
 
   return {
@@ -160,6 +164,8 @@ export const parseTypebotHistory = (
     isSecondaryFlow: history.isSecondaryFlow || false,
     riskLevel: null,
     whatsAppCredentialsId: history.whatsAppCredentialsId || null,
+    tenant: history.tenant || null,
+    toolDescription: history.toolDescription || null,
   }
 }
 
@@ -186,6 +192,8 @@ export const createTypebotHistoryContent = (
     isSecondaryFlow: typebot.isSecondaryFlow || false,
     riskLevel: typebot.riskLevel,
     whatsAppCredentialsId: typebot.whatsAppCredentialsId,
+    tenant: typebot.tenant ?? null,
+    toolDescription: typebot.toolDescription ?? null,
   }
 }
 
@@ -216,6 +224,8 @@ export const convertTypebotHistoryToTypebot = (
     isSecondaryFlow: historySnapshot.isSecondaryFlow || false,
     riskLevel: historySnapshot.riskLevel,
     whatsAppCredentialsId: historySnapshot.whatsAppCredentialsId,
+    tenant: historySnapshot.tenant,
+    toolDescription: historySnapshot.toolDescription,
   }
 }
 

@@ -5,7 +5,9 @@ export const listVariableValue = z.array(z.string().nullable())
 const baseVariableSchema = z.object({
   id: z.string(),
   name: z.string(),
+  description: z.string().optional(),
   isSessionVariable: z.boolean().optional(),
+  isInputVariable: z.boolean().optional(), // Marks variables declared via Declare Variables block
 })
 
 export const variableSchema = baseVariableSchema.extend({

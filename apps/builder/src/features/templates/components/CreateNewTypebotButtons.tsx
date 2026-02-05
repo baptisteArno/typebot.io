@@ -8,8 +8,9 @@ import {
 } from '@chakra-ui/react'
 import { ToolIcon, TemplateIcon, DownloadIcon } from '@/components/icons'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ImportTypebotFromFileButton } from './ImportTypebotFromFileButton'
+import { CreateToolModal } from './CreateToolModal'
 import { useWorkspace } from '@/features/workspace/WorkspaceProvider'
 import { useUser } from '@/features/account/hooks/useUser'
 import { useToast } from '@/hooks/useToast'
@@ -24,6 +25,11 @@ export const CreateNewTypebotButtons = () => {
   const { user } = useUser()
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: isCreateToolOpen,
+    onOpen: onCreateToolOpen,
+    onClose: onCreateToolClose,
+  } = useDisclosure()
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -81,10 +87,21 @@ export const CreateNewTypebotButtons = () => {
     },
   })
 
-  const handleCreateSubmit = async (typebot?: Typebot) => {
+  /* New logic to auto-open modal based on query params */
+  useEffect(() => {
+    const { type } = router.query
+    if (type === 'ai_workflow' || type === 'tooling') {
+      onCreateToolOpen()
+    }
+  }, [router.query, onCreateToolOpen])
+
+  const handleCreateSubmit = async (
+    typebot?: Typebot,
+    isImport: boolean = true
+  ) => {
     if (!user || !workspace) return
     const folderId = router.query.folderId?.toString() ?? null
-    if (typebot)
+    if (typebot && isImport)
       importTypebot({
         workspaceId: workspace.id,
         typebot: {
@@ -98,6 +115,8 @@ export const CreateNewTypebotButtons = () => {
         typebot: {
           name: t('typebots.defaultName'),
           folderId,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ...(typebot as any),
         },
       })
   }
@@ -140,6 +159,24 @@ export const CreateNewTypebotButtons = () => {
         >
           {t('templates.buttons.fromTemplateButton.label')}
         </Button>
+        <Button
+          variant="outline"
+          w="full"
+          py="8"
+          fontSize="lg"
+          leftIcon={
+            <ToolIcon
+              color={useColorModeValue('purple.500', 'purple.300')}
+              boxSize="25px"
+              mr="2"
+            />
+          }
+          onClick={onCreateToolOpen}
+          isLoading={isLoading}
+          display="none"
+        >
+          Create new Tool
+        </Button>
         <ImportTypebotFromFileButton
           variant="outline"
           w="full"
@@ -163,6 +200,17 @@ export const CreateNewTypebotButtons = () => {
         onClose={onClose}
         onTypebotChoose={handleCreateSubmit}
         isLoading={isLoading}
+      />
+      <CreateToolModal
+        isOpen={isCreateToolOpen}
+        onClose={onCreateToolClose}
+        onSubmit={(typebot) => handleCreateSubmit(typebot, false)}
+        isLoading={isLoading}
+        initialTenant={
+          typeof router.query.tenant_name === 'string'
+            ? router.query.tenant_name
+            : undefined
+        }
       />
     </VStack>
   )

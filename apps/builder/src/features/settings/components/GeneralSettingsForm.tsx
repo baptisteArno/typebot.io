@@ -6,7 +6,12 @@ import {
   Tag,
   Text,
   useColorModeValue,
+  Alert,
+  AlertIcon,
+  FormHelperText,
 } from '@chakra-ui/react'
+import { TextInput } from '@/components/inputs/TextInput'
+import { Textarea } from '@/components/inputs/Textarea'
 import { Settings } from '@typebot.io/schemas'
 import React from 'react'
 import { isDefined } from '@typebot.io/lib'
@@ -21,12 +26,20 @@ import {
 
 type Props = {
   generalSettings: Settings['general'] | undefined
+  tenant?: string | null
+  toolDescription?: string | null
   onGeneralSettingsChange: (generalSettings: Settings['general']) => void
+  onTenantChange: (tenant: string) => void
+  onToolDescriptionChange: (toolDescription: string) => void
 }
 
 export const GeneralSettingsForm = ({
   generalSettings,
+  tenant,
+  toolDescription,
   onGeneralSettingsChange,
+  onTenantChange,
+  onToolDescriptionChange,
 }: Props) => {
   const keyBg = useColorModeValue(undefined, 'gray.600')
   const toggleRememberUser = (isEnabled: boolean) =>
@@ -65,6 +78,31 @@ export const GeneralSettingsForm = ({
 
   return (
     <Stack spacing={6}>
+      {generalSettings?.type === 'TOOL' && (
+        <>
+          <TextInput
+            label="Tenant"
+            defaultValue={tenant ?? ''}
+            onChange={onTenantChange}
+            helperText="Identificador do tenant dentro do workspace."
+          />
+          <FormControl>
+            <FormLabel>Tool description</FormLabel>
+            <Alert status="info" mb={2} borderRadius="md">
+              <AlertIcon />
+              Extremamente importante: essa descrição será usada pelo nosso
+              agente para decidir qual tool utilizar durante o reasoning loop.
+            </Alert>
+            <Textarea
+              defaultValue={toolDescription ?? ''}
+              onChange={onToolDescriptionChange}
+              placeholder="Ex: 'Busca pedidos por CPF via API X e retorna status e detalhes do pedido'"
+              minH="100px"
+            />
+            <FormHelperText>Descrição do objetivo da tool.</FormHelperText>
+          </FormControl>
+        </>
+      )}
       <SwitchWithLabel
         label="Prefill input"
         initialValue={

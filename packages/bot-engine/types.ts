@@ -11,6 +11,8 @@ export type ExecuteLogicResponse = {
   outgoingEdgeId: EdgeId | undefined
   newSessionState?: SessionState
   newSetVariableHistory?: SetVariableHistoryItem[]
+  input?: ContinueChatResponse['input']
+  messages?: ContinueChatResponse['messages']
 } & Pick<ContinueChatResponse, 'clientSideActions' | 'logs'>
 
 export type ExecuteIntegrationResponse = {

@@ -43,6 +43,7 @@ import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/consta
 import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integrations/constants'
 import { ForgedBlockNodeContent } from '@/features/forge/components/ForgedBlockNodeContent'
 import { OpenAINodeBody } from '@/features/blocks/integrations/openai/components/OpenAINodeBody'
+import { DeclareVariablesContent } from '@/features/blocks/logic/declareVariables/components/DeclareVariablesContent'
 
 type Props = {
   block: BlockV6
@@ -135,6 +136,9 @@ export const BlockNodeContent = ({
     }
     case LogicBlockType.TYPEBOT_LINK:
       return <TypebotLinkNode block={block} />
+    case LogicBlockType.DECLARE_VARIABLES: {
+      return <DeclareVariablesContent block={block} />
+    }
     case LogicBlockType.CONDITION:
       return <ItemNodesList block={block} indices={indices} />
     case IntegrationBlockType.GOOGLE_SHEETS: {

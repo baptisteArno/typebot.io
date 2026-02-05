@@ -10,7 +10,6 @@
     },
     "dev": {
       "dependsOn": [
-        "^dev",
         "@typebot.io/prisma#db:generate",
         "@typebot.io/prisma#db:push"
       ],

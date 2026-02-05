@@ -52,6 +52,8 @@ type UpdateTypebotPayload = Partial<
     | 'isSecondaryFlow'
     | 'whatsAppCredentialsId'
     | 'riskLevel'
+    | 'toolDescription'
+    | 'tenant'
   >
 >
 

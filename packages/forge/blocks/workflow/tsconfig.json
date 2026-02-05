@@ -1,0 +1,11 @@
+{
+  "extends": "@typebot.io/tsconfig/base.json",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "lib": ["ESNext", "DOM"],
+    "noEmit": true,
+    "jsx": "preserve",
+    "jsxImportSource": "react"
+  }
+}

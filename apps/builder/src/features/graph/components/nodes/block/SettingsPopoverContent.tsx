@@ -48,6 +48,7 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { ForgedBlockSettings } from '../../../../forge/components/ForgedBlockSettings'
 import { OpenAISettings } from '@/features/blocks/integrations/openai/components/OpenAISettings'
+import { DeclareVariablesSettings } from '@/features/blocks/logic/declareVariables/components/DeclareVariablesSettings'
 
 type Props = {
   block: BlockWithOptions
@@ -281,6 +282,14 @@ export const BlockSettings = ({
     case LogicBlockType.AB_TEST: {
       return (
         <AbTestSettings
+          options={block.options}
+          onOptionsChange={updateOptions}
+        />
+      )
+    }
+    case LogicBlockType.DECLARE_VARIABLES: {
+      return (
+        <DeclareVariablesSettings
           options={block.options}
           onOptionsChange={updateOptions}
         />

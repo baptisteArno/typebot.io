@@ -65,6 +65,11 @@ const ERROR_CONFIGS: Record<
     titleKey: 'validationErrors.missingClaudiaInFlowBranches.title',
     descriptionKey: 'validationErrors.missingClaudiaInFlowBranches.description',
   },
+  missingWorkflowEndInFlowBranches: {
+    titleKey: 'validationErrors.missingWorkflowEndInFlowBranches.title',
+    descriptionKey:
+      'validationErrors.missingWorkflowEndInFlowBranches.description',
+  },
 }
 
 type Props = {
@@ -317,7 +322,8 @@ export const ValidationErrorsDrawer = ({ onClose }: Props) => {
                 if (
                   isSecondaryFlow &&
                   (errorType === 'missingTextBeforeClaudia' ||
-                    errorType === 'missingClaudiaInFlowBranches')
+                    errorType === 'missingClaudiaInFlowBranches' ||
+                    errorType === 'missingWorkflowEndInFlowBranches')
                 ) {
                   return null
                 }

@@ -193,6 +193,33 @@ export const continueBotFlow = async (
 
   let formattedReply: string | undefined
 
+  // Handle Declare Variables block - find the first empty variable and save the reply
+  if (block.type === LogicBlockType.DECLARE_VARIABLES && reply && typeof reply === 'string') {
+    const variables = (block as any).options?.variables ?? []
+    for (const declaredVar of variables) {
+      const variable = state.typebotsQueue[0].typebot.variables.find(
+        (v) => v.id === declaredVar.variableId
+      )
+      if (!variable || (variable.value !== undefined && variable.value !== null && variable.value !== '')) {
+        continue
+      }
+      // Found the variable we're collecting - save it
+      const { updatedState } = updateVariablesInSession({
+        state: newSessionState,
+        currentBlockId: block.id,
+        newVariables: [
+          {
+            ...variable,
+            value: reply,
+          },
+        ],
+      })
+      newSessionState = updatedState
+      formattedReply = reply
+      break
+    }
+  }
+
   if (isInputBlock(block)) {
     const parsedReplyResult = await parseReply(newSessionState)(reply, block)
 
@@ -213,6 +240,31 @@ export const continueBotFlow = async (
   }
 
   const groupHasMoreBlocks = blockIndex < group.blocks.length - 1
+
+  // Special handling for Declare Variables block - re-execute it to check for more inputs
+  if (block.type === LogicBlockType.DECLARE_VARIABLES && formattedReply) {
+    const chatReply = await executeGroup(
+      {
+        ...group,
+        blocks: group.blocks.slice(blockIndex), // Start from current block (re-execute)
+      } as Group,
+      {
+        version,
+        state: newSessionState,
+        visitedEdges,
+        setVariableHistory,
+        firstBubbleWasStreamed,
+        startTime,
+        textBubbleContentFormat,
+        sessionId,
+      }
+    )
+    return {
+      ...chatReply,
+      lastMessageNewFormat:
+        formattedReply !== reply ? formattedReply : undefined,
+    }
+  }
 
   const { edgeId: nextEdgeId, isOffDefaultPath } = getOutgoingEdgeId(
     newSessionState

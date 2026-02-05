@@ -19,3 +19,6 @@ export const isClaudiaAnswerTicketBlock = (block: Block): boolean => {
 }
 
 export type ClaudiaBlock = z.infer<typeof claudiaBlockSchema>
+
+export const isWorkflowBlock = (block: Block): boolean =>
+  block.type === 'workflow'

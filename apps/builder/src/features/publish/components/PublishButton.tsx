@@ -124,6 +124,16 @@ export const PublishButton = ({
   const handlePublishClick = async () => {
     if (!typebot?.id) return
     if (isFreePlan(workspace) && hasInputFile) return onOpen()
+    if (
+      typebot.settings.general?.type === 'TOOL' &&
+      (!typebot.tenant || !typebot.toolDescription)
+    ) {
+      return showToast({
+        title: 'Missing mandatory fields',
+        description:
+          'Please fill in Tenant and Description in the Settings > General tab before publishing.',
+      })
+    }
     if (!typebot.publicId) {
       await updateTypebot({
         updates: {

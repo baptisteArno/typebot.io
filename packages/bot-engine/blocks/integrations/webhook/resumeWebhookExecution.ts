@@ -83,7 +83,10 @@ export const resumeWebhookExecution = ({
       })
       return {
         outgoingEdgeId: block.outgoingEdgeId,
-        newSessionState: updatedState,
+        newSessionState: {
+          ...updatedState,
+          lastEndpointResponse: response.data,
+        },
         newSetVariableHistory,
         logs,
       }
@@ -92,6 +95,10 @@ export const resumeWebhookExecution = ({
     return {
       outgoingEdgeId: block.outgoingEdgeId,
       logs,
+      newSessionState: {
+        ...state,
+        lastEndpointResponse: response.data,
+      },
     }
   } finally {
     if (run) {

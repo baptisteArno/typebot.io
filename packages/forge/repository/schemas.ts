@@ -25,6 +25,8 @@ import { nocodbBlock } from '@typebot.io/nocodb-block'
 import { nocodbBlockSchema } from '@typebot.io/nocodb-block/schemas'
 import { claudiaBlock } from '@typebot.io/claudia-block'
 import { claudiaBlockSchema } from '@typebot.io/claudia-block/schemas'
+import { workflowBlock } from '@typebot.io/workflow-block'
+import { workflowBlockSchema } from '@typebot.io/workflow-block/schemas'
 
 export const forgedBlockSchemas = {
   [openAIBlock.id]: openAIBlockSchema,
@@ -40,4 +42,5 @@ export const forgedBlockSchemas = {
   [openRouterBlock.id]: openRouterBlockSchema,
   [nocodbBlock.id]: nocodbBlockSchema,
   [claudiaBlock.id]: claudiaBlockSchema,
+  [workflowBlock.id]: workflowBlockSchema,
 }
