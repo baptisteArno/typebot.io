@@ -39,5 +39,4 @@ snapshots
 
 .env
 .typebot-build
-
-.pnpm-store/
+.pnpm-store
