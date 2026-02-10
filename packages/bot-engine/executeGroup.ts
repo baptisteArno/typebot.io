@@ -86,14 +86,6 @@ export const executeGroup = async (
 
   let newSessionState = state
 
-  logger.info('executeGroup starting', {
-    groupId: group.id,
-    groupTitle: group.title,
-    blocksCount: group.blocks.length,
-    sessionId,
-    typebotId: state.typebotsQueue[0].typebot.typebotId,
-  })
-
   let isNextEdgeOffDefaultPath = false
   let index = -1
   for (const block of group.blocks) {
@@ -103,11 +95,6 @@ export const executeGroup = async (
       env.CHAT_API_TIMEOUT &&
       Date.now() - newStartTime > env.CHAT_API_TIMEOUT
     ) {
-      logger.warn('executeGroup timeout', {
-        groupId: group.id,
-        blockId: block.id,
-        duration: Date.now() - newStartTime,
-      })
       throw new TRPCError({
         code: 'TIMEOUT',
         message: `${env.CHAT_API_TIMEOUT / 1000} seconds timeout reached`,
@@ -120,25 +107,8 @@ export const executeGroup = async (
     // Skip NOTE blocks during execution
     if (block.type === BubbleBlockType.NOTE) continue
 
-    logger.info('Block execution starting', {
-      blockId: block.id,
-      type: block.type,
-      groupId: group.id,
-      groupTitle: group.title,
-      message: getBlockLabel(
-        block,
-        newSessionState.typebotsQueue[0].typebot.variables
-      ),
-      sessionId,
-    })
-
     if (isBubbleBlock(block)) {
       if (!block.content || (firstBubbleWasStreamed && index === 0)) {
-        logger.info('Block execution finished', {
-          blockId: block.id,
-          duration: Date.now() - blockStartTime,
-          skipped: true,
-        })
         continue
       }
       messages.push(
@@ -150,10 +120,6 @@ export const executeGroup = async (
         })
       )
       lastBubbleBlockId = block.id
-      logger.info('Block execution finished', {
-        blockId: block.id,
-        duration: Date.now() - blockStartTime,
-      })
       continue
     }
 
@@ -181,11 +147,6 @@ export const executeGroup = async (
             newSessionState = updatedState
           }
         }
-        logger.info('Block execution finished', {
-          blockId: block.id,
-          duration: Date.now() - blockStartTime,
-          nativeVariablesProcessed: true,
-        })
         continue
       }
 
@@ -201,11 +162,6 @@ export const executeGroup = async (
         visitedEdges,
         setVariableHistory,
       }
-      logger.info('Block execution finished', {
-        blockId: block.id,
-        duration: Date.now() - blockStartTime,
-        inputExpected: true,
-      })
       return inputResult
     }
 
@@ -218,11 +174,6 @@ export const executeGroup = async (
     ) as ExecuteLogicResponse | ExecuteIntegrationResponse | null
 
     if (!executionResponse) {
-      logger.info('Block execution finished', {
-        blockId: block.id,
-        duration: Date.now() - blockStartTime,
-        noResponse: true,
-      })
       continue
     }
 
@@ -258,17 +209,12 @@ export const executeGroup = async (
       logs = [...(logs ?? []), ...executionResponse.logs]
     if (executionResponse.newSessionState)
       newSessionState = executionResponse.newSessionState
-    
+
     // Handle logic blocks that want to collect input (e.g., Declare Variables)
     if ('input' in executionResponse && executionResponse.input) {
       if (executionResponse.messages) {
         messages.push(...executionResponse.messages)
       }
-      logger.info('Block execution finished', {
-        blockId: block.id,
-        duration: Date.now() - blockStartTime,
-        inputExpected: true,
-      })
       return {
         messages,
         input: executionResponse.input,
@@ -282,7 +228,7 @@ export const executeGroup = async (
         setVariableHistory,
       }
     }
-    
+
     if (
       'clientSideActions' in executionResponse &&
       executionResponse.clientSideActions
@@ -310,11 +256,6 @@ export const executeGroup = async (
         ('customEmbedBubble' in executionResponse &&
           executionResponse.customEmbedBubble)
       ) {
-        logger.info('Block execution finished', {
-          blockId: block.id,
-          duration: Date.now() - blockStartTime,
-          clientSideAction: true,
-        })
         return {
           messages,
           newSessionState: {
@@ -333,18 +274,8 @@ export const executeGroup = async (
       isNextEdgeOffDefaultPath =
         block.outgoingEdgeId !== executionResponse.outgoingEdgeId
       nextEdgeId = executionResponse.outgoingEdgeId
-      logger.info('Block execution finished', {
-        blockId: block.id,
-        duration: Date.now() - blockStartTime,
-        outgoingEdgeId: nextEdgeId,
-      })
       break
     }
-
-    logger.info('Block execution finished', {
-      blockId: block.id,
-      duration: Date.now() - blockStartTime,
-    })
   }
 
   if (!nextEdgeId && newSessionState.typebotsQueue.length === 1)

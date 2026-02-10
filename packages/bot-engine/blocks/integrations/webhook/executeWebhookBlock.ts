@@ -59,8 +59,8 @@ export const executeWebhookBlock = async (
     block.options?.webhook ??
     ('webhookId' in block
       ? ((await prisma.webhook.findUnique({
-        where: { id: block.webhookId },
-      })) as HttpRequest | null)
+          where: { id: block.webhookId },
+        })) as HttpRequest | null)
       : null)
   if (!webhook) return { outgoingEdgeId: block.outgoingEdgeId }
   const parsedWebhook = await parseWebhookAttributes({
@@ -155,10 +155,10 @@ export const parseWebhookAttributes = async ({
   const { data: body, isJson } =
     bodyContent && method !== HttpMethod.GET
       ? safeJsonParse(
-        parseVariables(typebot.variables, {
-          isInsideJson: !checkIfBodyIsAVariable(bodyContent),
-        })(bodyContent)
-      )
+          parseVariables(typebot.variables, {
+            isInsideJson: !checkIfBodyIsAVariable(bodyContent),
+          })(bodyContent)
+        )
       : { data: undefined, isJson: false }
 
   return {
@@ -189,14 +189,34 @@ export const executeWebhook = async (
   const isLongRequest = params.disableRequestTimeout
     ? true
     : longReqTimeoutWhitelist.some((whiteListedUrl) =>
-      url?.includes(whiteListedUrl)
-    )
+        url?.includes(whiteListedUrl)
+      )
 
   const isFormData = contentType?.includes('x-www-form-urlencoded')
 
   let body = webhook.body
 
   if (isFormData && isJson) body = parseFormDataBody(body as object)
+
+  const calculateTimeout = (): number | false => {
+    // No global timeout configured
+    if (isNotDefined(env.CHAT_API_TIMEOUT)) {
+      return false
+    }
+
+    // Custom timeout provided in parameters
+    if (params.timeout && params.timeout !== defaultTimeout) {
+      return Math.min(params.timeout, maxTimeout) * 1000
+    }
+
+    // Long-running request (whitelisted URLs or explicitly disabled)
+    if (isLongRequest) {
+      return maxTimeout * 1000
+    }
+
+    // Default timeout
+    return defaultTimeout * 1000
+  }
 
   const request = {
     url,
@@ -205,23 +225,10 @@ export const executeWebhook = async (
     ...(basicAuth ?? {}),
     json: !isFormData && body && isJson ? body : undefined,
     body: (isFormData && body ? body : undefined) as any,
-    timeout: isNotDefined(env.CHAT_API_TIMEOUT)
-      ? false
-      : params.timeout && params.timeout !== defaultTimeout
-        ? Math.min(params.timeout, maxTimeout) * 1000
-        : isLongRequest
-          ? maxTimeout * 1000
-          : defaultTimeout * 1000,
+    timeout: calculateTimeout(),
   } satisfies Options & { url: string; body: any }
 
   const requestStartTime = Date.now()
-
-  logger.info('HTTP Request starting', {
-    method: request.method,
-    url: request.url?.split('?')[0], // Redact query params just in case
-    timeout: request.timeout,
-    isLongRequest,
-  })
 
   try {
     const response = await ky(request.url, omit(request, 'url'))
@@ -236,10 +243,6 @@ export const executeWebhook = async (
         response: typeof body === 'string' ? safeJsonParse(body).data : body,
         request,
       },
-    })
-    logger.info('HTTP Request success', {
-      statusCode: response.status,
-      duration: Date.now() - requestStartTime,
     })
     return {
       response: {
@@ -282,14 +285,16 @@ export const executeWebhook = async (
       const response = {
         statusCode: 408,
         data: {
-          message: `Request timed out. (${(request.timeout ? request.timeout : 0) / 1000
-            }s)`,
+          message: `Request timed out. (${
+            (request.timeout ? request.timeout : 0) / 1000
+          }s)`,
         },
       }
       logs.push({
         status: 'error',
-        description: `Webhook request timed out. (${(request.timeout ? request.timeout : 0) / 1000
-          }s)`,
+        description: `Webhook request timed out. (${
+          (request.timeout ? request.timeout : 0) / 1000
+        }s)`,
         details: {
           response,
           request,
@@ -331,11 +336,11 @@ const getBodyContent = async ({
 }): Promise<string | undefined> => {
   return body === '{{state}}' || isEmpty(body) || isCustomBody !== true
     ? JSON.stringify(
-      parseAnswers({
-        answers,
-        variables,
-      })
-    )
+        parseAnswers({
+          answers,
+          variables,
+        })
+      )
     : body ?? undefined
 }
 

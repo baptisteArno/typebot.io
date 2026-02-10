@@ -22,18 +22,19 @@ export default async function handler(
   // Handle CORS
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-tenant, tenant, mcp-session-id, Authorization, X-MCP-Access-Token')
-  
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Content-Type, x-tenant, tenant, mcp-session-id, Authorization, X-MCP-Access-Token'
+  )
+
   if (req.method === 'OPTIONS') {
     return res.status(200).end()
   }
 
   // Extract tenant from headers or query
-  const tenant = (
-    req.headers['x-tenant'] ||
+  const tenant = (req.headers['x-tenant'] ||
     req.headers['tenant'] ||
-    req.query.tenant
-  ) as string | undefined
+    req.query.tenant) as string | undefined
 
   if (req.method === 'GET') {
     // SSE endpoint for server-to-client messages
@@ -41,30 +42,30 @@ export default async function handler(
     res.setHeader('Cache-Control', 'no-cache, no-transform')
     res.setHeader('Connection', 'keep-alive')
     res.setHeader('X-Accel-Buffering', 'no')
-    
+
     // Establishing the stream
     res.write('retry: 1000\n\n')
-    
+
     // Keep connection alive
     const keepAlive = setInterval(() => {
       res.write(':keepalive\n\n')
     }, 30000)
-    
+
     req.on('close', () => {
       clearInterval(keepAlive)
       res.end()
     })
-    
+
     return
   }
 
   if (req.method === 'POST') {
     try {
       const body = req.body
-      
+
       // Handle JSON-RPC request
       const { method, params, id } = body
-      
+
       if (method === 'initialize') {
         return res.status(200).json({
           jsonrpc: '2.0',
@@ -81,7 +82,7 @@ export default async function handler(
           id,
         })
       }
-      
+
       if (method === 'tools/list') {
         if (!tenant) {
           return res.status(200).json({
@@ -90,13 +91,16 @@ export default async function handler(
             id,
           })
         }
-        
+
         const { tools } = await getWorkflowTools({ tenant })
-        
+
         const mcpTools = tools.map((tool) => {
-          const properties: Record<string, { type: string; description: string }> = {}
+          const properties: Record<
+            string,
+            { type: string; description: string }
+          > = {}
           const required: string[] = []
-          
+
           for (const v of tool.variables || []) {
             if (v.name) {
               properties[v.name] = {
@@ -106,7 +110,7 @@ export default async function handler(
               required.push(v.name)
             }
           }
-          
+
           return {
             name: sanitizeToolName(tool.name),
             description: tool.description || `Execute ${tool.name}`,
@@ -117,14 +121,14 @@ export default async function handler(
             },
           }
         })
-        
+
         return res.status(200).json({
           jsonrpc: '2.0',
           result: { tools: mcpTools },
           id,
         })
       }
-      
+
       if (method === 'tools/call') {
         if (!tenant) {
           return res.status(200).json({
@@ -136,11 +140,11 @@ export default async function handler(
             id,
           })
         }
-        
+
         const { name, arguments: args } = params || {}
         const { tools } = await getWorkflowTools({ tenant })
         const tool = tools.find((t) => sanitizeToolName(t.name) === name)
-        
+
         if (!tool) {
           return res.status(200).json({
             jsonrpc: '2.0',
@@ -151,12 +155,12 @@ export default async function handler(
             id,
           })
         }
-        
+
         const result = await executeWorkflow({
           publicId: tool.publicName,
           prefilledVariables: args as Record<string, unknown>,
         })
-        
+
         return res.status(200).json({
           jsonrpc: '2.0',
           result: {
@@ -165,7 +169,7 @@ export default async function handler(
           id,
         })
       }
-      
+
       if (method === 'notifications/initialized') {
         // Acknowledgment, no response needed for notifications
         return res.status(200).json({
@@ -174,7 +178,7 @@ export default async function handler(
           id,
         })
       }
-      
+
       // Unknown method
       return res.status(200).json({
         jsonrpc: '2.0',
