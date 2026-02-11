@@ -1,6 +1,5 @@
 import { TypebotLogo } from "@/components/TypebotLogo";
 import abhayPictureSrc from "./assets/abhay.jpeg";
-import annaFilouPictureSrc from "./assets/annaFilou.jpeg";
 import invictuzPictureSrc from "./assets/invictuz.png";
 import joshuaPictureSrc from "./assets/joshua.jpg";
 import julienPictureSrc from "./assets/julien.jpeg";
@@ -173,14 +172,6 @@ const testimonials = [
     role: "Founder at Webisharp",
     content:
       "Using this tool for the last 2 hours & built a full lead capture bot. Pretty good experience till now. @baptiste_arnaud All the best for future :)",
-  },
-  {
-    name: "Anna Filou",
-    provider: "productHunt",
-    avatarSrc: annaFilouPictureSrc,
-    role: "Geek, Designer, Illustrator, Web Dev",
-    content:
-      "Seems like the product I've been waiting for Typeform to make! 😝",
   },
 ];
 

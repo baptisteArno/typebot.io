@@ -2,7 +2,6 @@ import { cx } from "@typebot.io/ui/lib/cva";
 import { CtaButtonLink } from "@/components/link";
 import { discordUrl } from "../../../constants";
 import abhaySrc from "../testimonials/assets/abhay.jpeg";
-import annaFilouSrc from "../testimonials/assets/annaFilou.jpeg";
 import barrettaSrc from "../testimonials/assets/barretta.jpeg";
 import joshuaSrc from "../testimonials/assets/joshua.jpg";
 import kurniaSrc from "../testimonials/assets/kurnia.jpeg";
@@ -60,11 +59,6 @@ const avatars = [
     src: barrettaSrc,
     alt: "Community member 7 avatar",
     position: "bottom-12 right-32 delay-300",
-  },
-  {
-    src: annaFilouSrc,
-    alt: "Community member 8 avatar",
-    position: "bottom-7 -right-7",
   },
 ];
 
