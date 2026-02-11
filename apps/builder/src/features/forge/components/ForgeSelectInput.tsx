@@ -61,6 +61,8 @@ export const ForgeSelectInput = ({
       enabled: !!workspace?.id && !!fetcher,
     }),
   );
+  const shouldIncludeVariables =
+    withVariableButton && (data?.items?.length ?? 0) > 0;
 
   return (
     <BasicSelect
@@ -72,7 +74,7 @@ export const ForgeSelectInput = ({
       }
       value={defaultValue}
       onChange={onChange}
-      includeVariables={withVariableButton}
+      includeVariables={shouldIncludeVariables}
       placeholder={placeholder}
       className="flex-1"
     />
