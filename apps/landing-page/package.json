@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "content-collections:build": "bunx @content-collections/cli build --config content-collections.ts",
-    "typecheck": "tsc --noEmit",
+    "check-types": "tsc --noEmit",
     "dev": "dotenv -e ./.env -e ../../.env -- vite dev --port 3003",
     "build": "bun check-broken-links && dotenv -e ./.env -e ../../.env -- vite build",
     "check-broken-links": "mdx-local-link-checker content public '*/(index.mdx|blog|about|pricing?isTiersModalOpened=true)'"

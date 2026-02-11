@@ -23,7 +23,7 @@
     "start-docker-compose-dev": "docker compose -f docker-compose.dev.yml up",
     "build-docker-compose-prod": "docker compose -f docker-compose.build.yml build",
     "start-docker-compose-prod": "docker compose -f docker-compose.yml up",
-    "typecheck": "turbo run typecheck",
+    "check-types": "turbo run check-types",
     "build": "turbo run build --filter=builder... --filter=viewer... --filter=landing-page... --filter=docs...",
     "dev": "turbo dev --filter=builder... --filter=viewer... --filter=@typebot.io/partykit... --filter=workflows... --concurrency=11",
     "test": "turbo run test",
@@ -34,7 +34,7 @@
     "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts",
     "restore": "echo 'Cleaning...' && bunx rimraf --glob '**/{node_modules,dist,.next,.turbo}'",
     "deploy-workflows": "fly deploy --config apps/workflows/fly.toml",
-    "check": "turbo run typecheck test format-and-lint:fix lint-repo check-broken-links"
+    "check": "turbo run check-types test format-and-lint:fix lint-repo check-broken-links"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.13",

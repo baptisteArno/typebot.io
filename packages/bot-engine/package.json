@@ -7,7 +7,8 @@
     "./*": "./src/*.ts"
   },
   "scripts": {
-    "test": "dotenv -e ./.env -e ../../.env -- bun test .test.ts"
+    "test": "dotenv -e ./.env -e ../../.env -- bun test .test.ts",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@orpc/server": "^1.13.4",

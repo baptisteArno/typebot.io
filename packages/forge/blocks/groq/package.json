@@ -18,5 +18,8 @@
   },
   "dependencies": {
     "ky": "^1.2.4"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
   }
 }

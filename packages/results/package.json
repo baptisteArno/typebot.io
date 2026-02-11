@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "test": "dotenv -e ./.env -e ../../.env -- bun test"
+    "test": "dotenv -e ./.env -e ../../.env -- bun test",
+    "check-types": "tsc --noEmit"
   },
   "exports": {
     "./*": "./src/*.ts"

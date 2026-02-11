@@ -16,5 +16,8 @@
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
   }
 }

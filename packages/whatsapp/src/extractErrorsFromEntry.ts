@@ -1,6 +1,6 @@
 import type { WhatsAppWebhookRequestBody } from "./schemas";
 
-type ExtractedError = { code: number; message: string; details: string };
+type ExtractedError = { code: number; message: string; details?: string };
 
 export const extractErrorsFromEntry = (
   entry: WhatsAppWebhookRequestBody["entry"],
@@ -13,7 +13,7 @@ export const extractErrorsFromEntry = (
         errors.push({
           code: error.code,
           message: error.message ?? error.title,
-          details: error.error_data.details,
+          details: error.error_data?.details ?? error.details,
         });
       }
     }

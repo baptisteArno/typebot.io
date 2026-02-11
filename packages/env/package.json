@@ -10,7 +10,8 @@
   },
   "scripts": {
     "dev": "tsup src/index.ts --format esm --watch",
-    "build": "tsup src/index.ts --format esm"
+    "build": "tsup src/index.ts --format esm",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.13.10",

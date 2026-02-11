@@ -3,7 +3,8 @@
   "type": "module",
   "scripts": {
     "dev": "ladle serve -p 3006",
-    "build": "ladle build"
+    "build": "ladle build",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@ladle/react": "^5.0.1",

@@ -18,7 +18,8 @@
   },
   "scripts": {
     "dev": "tsup --watch",
-    "build": "tsup"
+    "build": "tsup",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "react": "^19.2.3",

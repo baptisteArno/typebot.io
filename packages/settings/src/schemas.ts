@@ -57,11 +57,11 @@ const metadataSchema = z.object({
 });
 
 const startConditionSchema = z.object({
-  logicalOperator: z.nativeEnum(LogicalOperator).optional(),
+  logicalOperator: z.enum(LogicalOperator).optional(),
   comparisons: z.array(
     z.object({
       id: z.string(),
-      comparisonOperator: z.nativeEnum(ComparisonOperators).optional(),
+      comparisonOperator: z.enum(ComparisonOperators).optional(),
       value: z.string().optional(),
     }),
   ),
@@ -76,6 +76,7 @@ export const whatsAppSettingsSchema = z.object({
     .min(0.01)
     .optional()
     .describe("Expiration delay in hours after latest interaction"),
+  errorAndMarketingStatusWebhookForwardUrl: z.string().url().optional(),
 });
 
 export const settingsSchema = z.object({

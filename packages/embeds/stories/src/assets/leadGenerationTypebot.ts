@@ -271,6 +271,7 @@ export const leadGenerationTypebot: StartTypebot = {
         {
           id: "clckrlksq00103b6s3exi90al",
           type: LogicBlockType.CONDITION,
+          options: undefined,
           items: [
             {
               id: "clckrlksq00113b6sz8naxdwx",
@@ -300,6 +301,7 @@ export const leadGenerationTypebot: StartTypebot = {
         {
           id: "clckrm1zr00193b6szpz37plc",
           type: LogicBlockType.CONDITION,
+          options: undefined,
           items: [
             {
               id: "clckrm1zr001a3b6s1hlfm2jh",

@@ -2,7 +2,8 @@
   "name": "@typebot.io/partykit",
   "scripts": {
     "dev": "partykit dev --live",
-    "deploy": "partykit deploy"
+    "deploy": "partykit deploy",
+    "check-types": "tsc --noEmit"
   },
   "devDependencies": {
     "partykit": "^0.0.110",

@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "mintlify dev --port 3004",
     "build": "bun check-broken-links",
-    "check-broken-links": "mintlify broken-links"
+    "check-broken-links": "mintlify broken-links",
+    "check-types": "tsc --noEmit"
   },
   "devDependencies": {
     "mintlify": "4.0.228",

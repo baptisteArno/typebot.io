@@ -23,5 +23,8 @@
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
     "@types/node": "^22.19.0"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
   }
 }

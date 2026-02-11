@@ -14,5 +14,8 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@ai-sdk/togetherai": "^0.2.16",
     "@types/react": "^19.2.7"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
   }
 }

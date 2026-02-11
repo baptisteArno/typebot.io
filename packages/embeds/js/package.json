@@ -11,7 +11,7 @@
     "./web": "./dist/web.js"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "check-types": "tsc --noEmit",
     "dev": "tsup --watch",
     "build": "tsup"
   },

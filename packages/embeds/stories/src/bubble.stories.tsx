@@ -20,16 +20,18 @@ export const Default = () => {
   return (
     <div>
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <button onClick={toggle}>Toggle chat window</button>
-        <button onClick={open}>Open chat window</button>
-        <button onClick={close}>Close chat window</button>
-        <button onClick={reload}>Reload chat</button>
-        <button onClick={() => showPreviewMessage()}>
+        <button onClick={() => toggle()}>Toggle chat window</button>
+        <button onClick={() => open()}>Open chat window</button>
+        <button onClick={() => close()}>Close chat window</button>
+        <button onClick={() => reload()}>Reload chat</button>
+        <button onClick={() => showPreviewMessage(undefined)}>
           Show Preview Message
         </button>
         <button onClick={() => setInputValue("YOOOO!")}>Set input value</button>
         <button onClick={() => submitInput()}>Submit input</button>
-        <button onClick={hidePreviewMessage}>Close Preview Message</button>
+        <button onClick={() => hidePreviewMessage()}>
+          Close Preview Message
+        </button>
         <button onClick={() => reset()}>Reset chat</button>
         <button onClick={() => sendCommand("wizz")}>Send command</button>
         <div>

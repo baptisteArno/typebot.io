@@ -4,11 +4,11 @@
   "globalEnv": ["DATABASE_URL", "SKIP_ENV_CHECK", "DATABASE_URL_REPLICA"],
   "envMode": "loose",
   "tasks": {
-    "typecheck": {
-      "dependsOn": ["@typebot.io/react#build", "^typecheck"],
+    "check-types": {
+      "dependsOn": ["@typebot.io/react#build", "^check-types"],
       "outputLogs": "new-only"
     },
-    "landing-page#typecheck": {
+    "landing-page#check-types": {
       "dependsOn": [
         "@typebot.io/react#build",
         "landing-page#content-collections:build"

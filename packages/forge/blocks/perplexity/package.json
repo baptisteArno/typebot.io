@@ -17,5 +17,8 @@
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
     "@types/react": "^19.2.7"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
   }
 }

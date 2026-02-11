@@ -12,5 +12,8 @@
   },
   "dependencies": {
     "zod": "^4.3.5"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
   }
 }

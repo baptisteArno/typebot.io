@@ -8,7 +8,8 @@
     "./plate": "./src/plate/index.ts"
   },
   "scripts": {
-    "test": "dotenv -e ./.env -e ../../.env -- bun test .test.ts --external isolated-vm"
+    "test": "dotenv -e ./.env -e ../../.env -- bun test .test.ts --external isolated-vm",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@platejs/basic-nodes": "49.0.0",

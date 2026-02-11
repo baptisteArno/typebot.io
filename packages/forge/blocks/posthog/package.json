@@ -16,5 +16,8 @@
   "dependencies": {
     "posthog-node": "^5.8.2",
     "@typebot.io/lib": "workspace:*"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
   }
 }

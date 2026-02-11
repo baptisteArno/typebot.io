@@ -7,7 +7,8 @@
     "./*": "./src/*.ts"
   },
   "scripts": {
-    "start": "bun ./src/index.ts"
+    "start": "bun ./src/index.ts",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@clack/prompts": "^0.11.0"

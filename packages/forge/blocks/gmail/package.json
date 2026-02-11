@@ -19,5 +19,8 @@
     "@typebot.io/tsconfig": "workspace:*",
     "@types/nodemailer": "^7.0.1",
     "@types/react": "^19.2.7"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit"
   }
 }
