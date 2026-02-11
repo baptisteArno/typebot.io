@@ -11,6 +11,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
   Textarea,
   VStack,
   Alert,
@@ -19,12 +20,19 @@ import {
 import { Typebot } from '@typebot.io/schemas'
 import React, { useEffect, useState } from 'react'
 
+type WorkspaceOption = {
+  id: string
+  name: string
+}
+
 type Props = {
   isOpen: boolean
   onClose: () => void
-  onSubmit: (typebot: Typebot) => void
+  onSubmit: (typebot: Typebot, workspaceId: string) => void
   isLoading: boolean
   initialTenant?: string
+  workspaces: WorkspaceOption[]
+  currentWorkspaceId?: string
 }
 
 export const CreateToolModal = ({
@@ -33,10 +41,15 @@ export const CreateToolModal = ({
   onSubmit,
   isLoading,
   initialTenant,
+  workspaces,
+  currentWorkspaceId,
 }: Props) => {
   const [name, setName] = useState('')
   const [tenant, setTenant] = useState('')
   const [toolDescription, setToolDescription] = useState('')
+  const [workspaceId, setWorkspaceId] = useState(currentWorkspaceId ?? '')
+
+  const hasAutoSelectedRef = React.useRef(false)
 
   useEffect(() => {
     if (initialTenant) {
@@ -44,17 +57,61 @@ export const CreateToolModal = ({
     }
   }, [initialTenant])
 
+  useEffect(() => {
+    if (currentWorkspaceId && !workspaceId) {
+      setWorkspaceId(currentWorkspaceId)
+    }
+  }, [currentWorkspaceId, workspaceId])
+
+  useEffect(() => {
+    if (
+      !isOpen ||
+      !initialTenant ||
+      workspaces.length === 0 ||
+      hasAutoSelectedRef.current
+    )
+      return
+
+    const bestMatch = workspaces.reduce(
+      (best, current) => {
+        const distance = levenshteinDistance(
+          initialTenant.toLowerCase(),
+          current.name.toLowerCase()
+        )
+        return distance < best.distance ? { ws: current, distance } : best
+      },
+      { ws: workspaces[0], distance: Infinity }
+    )
+
+    if (bestMatch.ws && bestMatch.ws.id !== workspaceId) {
+      setWorkspaceId(bestMatch.ws.id)
+    }
+    hasAutoSelectedRef.current = true
+  }, [isOpen, initialTenant, workspaces, workspaceId])
+
+  useEffect(() => {
+    if (!isOpen) {
+      hasAutoSelectedRef.current = false
+    }
+  }, [isOpen])
+
   const handleCreateClick = () => {
-    onSubmit({
-      name,
-      settings: { general: { type: 'TOOL' } },
-      tenant,
-      toolDescription,
-    } as Typebot)
+    onSubmit(
+      {
+        name,
+        settings: { general: { type: 'TOOL' } },
+        tenant,
+        toolDescription,
+      } as Typebot,
+      workspaceId
+    )
   }
 
   const isValid =
-    name.trim() !== '' && tenant.trim() !== '' && toolDescription.trim() !== ''
+    name.trim() !== '' &&
+    tenant.trim() !== '' &&
+    toolDescription.trim() !== '' &&
+    workspaceId !== ''
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
@@ -64,6 +121,19 @@ export const CreateToolModal = ({
         <ModalCloseButton />
         <ModalBody>
           <VStack spacing={4}>
+            <FormControl isRequired>
+              <FormLabel>Workspace</FormLabel>
+              <Select
+                value={workspaceId}
+                onChange={(e) => setWorkspaceId(e.target.value)}
+              >
+                {workspaces.map((ws) => (
+                  <option key={ws.id} value={ws.id}>
+                    {ws.name}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
             <FormControl isRequired>
               <FormLabel>Name</FormLabel>
               <Input
@@ -118,4 +188,34 @@ export const CreateToolModal = ({
       </ModalContent>
     </Modal>
   )
+}
+
+const levenshteinDistance = (a: string, b: string) => {
+  if (a.length === 0) return b.length
+  if (b.length === 0) return a.length
+
+  const matrix: number[][] = []
+
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i]
+  }
+
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j
+  }
+
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1]
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1,
+          Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
+        )
+      }
+    }
+  }
+
+  return matrix[b.length][a.length]
 }

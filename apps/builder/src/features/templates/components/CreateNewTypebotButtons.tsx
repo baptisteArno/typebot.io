@@ -21,7 +21,7 @@ import { TemplatesModal } from './TemplatesModal'
 
 export const CreateNewTypebotButtons = () => {
   const { t } = useTranslate()
-  const { workspace } = useWorkspace()
+  const { workspace, workspaces } = useWorkspace()
   const { user } = useUser()
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -97,13 +97,18 @@ export const CreateNewTypebotButtons = () => {
 
   const handleCreateSubmit = async (
     typebot?: Typebot,
-    isImport: boolean = true
+    isImport: boolean = true,
+    overrideWorkspaceId?: string
   ) => {
     if (!user || !workspace) return
-    const folderId = router.query.folderId?.toString() ?? null
+    const targetWorkspaceId = overrideWorkspaceId ?? workspace.id
+    const folderId = overrideWorkspaceId
+      ? null // If we are creating in a different workspace, ignore the current folderId
+      : router.query.folderId?.toString() ?? null
+
     if (typebot && isImport)
       importTypebot({
-        workspaceId: workspace.id,
+        workspaceId: targetWorkspaceId,
         typebot: {
           ...typebot,
           folderId,
@@ -111,7 +116,7 @@ export const CreateNewTypebotButtons = () => {
       })
     else
       createTypebot({
-        workspaceId: workspace.id,
+        workspaceId: targetWorkspaceId,
         typebot: {
           name: t('typebots.defaultName'),
           folderId,
@@ -204,13 +209,21 @@ export const CreateNewTypebotButtons = () => {
       <CreateToolModal
         isOpen={isCreateToolOpen}
         onClose={onCreateToolClose}
-        onSubmit={(typebot) => handleCreateSubmit(typebot, false)}
+        onSubmit={(typebot, workspaceId) =>
+          handleCreateSubmit(typebot, false, workspaceId)
+        }
         isLoading={isLoading}
         initialTenant={
           typeof router.query.tenant_name === 'string'
             ? router.query.tenant_name
             : undefined
         }
+        workspaces={
+          workspace
+            ? [workspace, ...workspaces.filter((w) => w.id !== workspace.id)]
+            : []
+        }
+        currentWorkspaceId={workspace?.id}
       />
     </VStack>
   )
