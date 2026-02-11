@@ -34,11 +34,7 @@
     "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts",
     "restore": "echo 'Cleaning...' && bunx rimraf --glob '**/{node_modules,dist,.next,.turbo}'",
     "deploy-workflows": "fly deploy --config apps/workflows/fly.toml",
-    "check": "turbo run typecheck test format-and-lint:fix lint-repo check-broken-links",
-    "create-worktree": "bun commands/create-worktree.ts",
-    "delete-worktree": "bun commands/delete-worktree.ts",
-    "pick-worktree-changes": "bun commands/pick-worktree-changes.ts",
-    "reset-current-changes": "git reset --hard HEAD && git clean -fd"
+    "check": "turbo run typecheck test format-and-lint:fix lint-repo check-broken-links"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.13",
