@@ -126,6 +126,7 @@ export const VideoBubble = (props: Props) => {
                 }}
               >
                 <iframe
+                  title="Video content"
                   src={`${
                     embedBaseUrls[
                       props.content?.type as EmbeddableVideoBubbleContentType

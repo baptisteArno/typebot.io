@@ -20,7 +20,7 @@ export const IframeSnippet = ({
   const { typebot } = useTypebot();
   const src = `${env.NEXT_PUBLIC_VIEWER_URL[0]}/${getPublicId(typebot)}`;
   const code = prettier.format(
-    `<iframe src="${src}" style="border: none; width: ${widthLabel}; height: ${heightLabel}"></iframe>`,
+    `<iframe title="Typebot" src="${src}" style="border: none; width: ${widthLabel}; height: ${heightLabel}"></iframe>`,
     { parser: "html", plugins: [parserHtml] },
   );
 

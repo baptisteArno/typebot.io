@@ -31,12 +31,9 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "security": {
-        "noGlobalEval": "off"
-      },
+      "security": {},
       "a11y": {
         "noSvgWithoutTitle": "off",
-        "useIframeTitle": "off",
         "useKeyWithClickEvents": "off",
         "useButtonType": "off",
         "noRedundantAlt": "off",

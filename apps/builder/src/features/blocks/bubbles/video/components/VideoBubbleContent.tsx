@@ -57,6 +57,7 @@ export const VideoBubbleContent = ({ block }: Props) => {
       return (
         <div className="w-full h-[120px] relative">
           <iframe
+            title="Video preview"
             src={`${baseUrl}/${block.content.id}`}
             style={{
               width: "100%",
@@ -75,6 +76,7 @@ export const VideoBubbleContent = ({ block }: Props) => {
       return (
         <div className="w-full h-[300px] relative">
           <iframe
+            title="TikTok video preview"
             src={`https://www.tiktok.com/embed/v2/${block.content.id}`}
             style={{
               width: "100%",
