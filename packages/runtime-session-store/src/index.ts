@@ -74,6 +74,18 @@ export const deleteSessionStore = (sessionId: string | undefined): void => {
   }
 };
 
+export const withSessionStore = async <T>(
+  sessionId: string,
+  run: (sessionStore: SessionStore) => Promise<T> | T,
+): Promise<T> => {
+  const sessionStore = getSessionStore(sessionId);
+  try {
+    return await run(sessionStore);
+  } finally {
+    deleteSessionStore(sessionId);
+  }
+};
+
 // In theory we always remove the session stores once it was used but in case we forget somewhere, we run this cleanup every 30 minutes at most
 const cleanupOldSessionStores = (maxAgeDays = 3) => {
   const now = new Date();

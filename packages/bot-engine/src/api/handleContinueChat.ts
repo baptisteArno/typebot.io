@@ -3,10 +3,7 @@ import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
 import { messageSchema } from "@typebot.io/chat-api/schemas";
 import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
-import {
-  deleteSessionStore,
-  getSessionStore,
-} from "@typebot.io/runtime-session-store";
+import { withSessionStore } from "@typebot.io/runtime-session-store";
 import { z } from "zod";
 import { computeCurrentProgress } from "../computeCurrentProgress";
 import { continueBotFlow } from "../continueBotFlow";
@@ -60,74 +57,76 @@ export const handleContinueChat = async ({
       message: "Session expired. You need to start a new session.",
     });
 
-  const sessionStore = getSessionStore(sessionId);
-  const {
-    messages,
-    input,
-    clientSideActions,
-    newSessionState,
-    logs,
-    lastMessageNewFormat,
-    visitedEdges,
-    setVariableHistory,
-  } = await continueBotFlow(message ? message : undefined, {
-    version: 2,
-    state: session.state,
-    textBubbleContentFormat,
-    sessionStore,
-  });
+  const sessionState = session.state;
 
-  const dynamicTheme = parseDynamicTheme({
-    state: newSessionState,
-    sessionStore,
-  });
-  deleteSessionStore(sessionId);
-
-  if (newSessionState)
-    await saveStateToDatabase({
-      sessionId: {
-        type: "existing",
-        id: session.id,
-      },
-      session: {
-        state: newSessionState,
-      },
+  return withSessionStore(sessionId, async (sessionStore) => {
+    const {
+      messages,
       input,
-      logs,
       clientSideActions,
+      newSessionState,
+      logs,
+      lastMessageNewFormat,
       visitedEdges,
       setVariableHistory,
-      isWaitingForExternalEvent: messages.some(
-        (message) =>
-          message.type === "custom-embed" ||
-          (message.type === BubbleBlockType.EMBED &&
-            message.content.waitForEvent?.isEnabled),
-      ),
+    } = await continueBotFlow(message ? message : undefined, {
+      version: 2,
+      state: sessionState,
+      textBubbleContentFormat,
+      sessionStore,
     });
 
-  const isPreview = isNotDefined(session.state.typebotsQueue[0].resultId);
+    const dynamicTheme = parseDynamicTheme({
+      state: newSessionState,
+      sessionStore,
+    });
 
-  const isEnded =
-    newSessionState.progressMetadata &&
-    !input?.id &&
-    (clientSideActions?.filter((c) => c.expectsDedicatedReply).length ?? 0) ===
-      0;
+    if (newSessionState)
+      await saveStateToDatabase({
+        sessionId: {
+          type: "existing",
+          id: session.id,
+        },
+        session: {
+          state: newSessionState,
+        },
+        input,
+        logs,
+        clientSideActions,
+        visitedEdges,
+        setVariableHistory,
+        isWaitingForExternalEvent: messages.some(
+          (message) =>
+            message.type === "custom-embed" ||
+            (message.type === BubbleBlockType.EMBED &&
+              message.content.waitForEvent?.isEnabled),
+        ),
+      });
 
-  return {
-    messages,
-    input,
-    clientSideActions,
-    dynamicTheme,
-    logs: isPreview ? logs : logs?.filter(filterPotentiallySensitiveLogs),
-    lastMessageNewFormat,
-    progress: newSessionState.progressMetadata
-      ? isEnded
-        ? 100
-        : computeCurrentProgress({
-            typebotsQueue: newSessionState.typebotsQueue,
-            progressMetadata: newSessionState.progressMetadata,
-            currentInputBlockId: input?.id,
-          })
-      : undefined,
-  };
+    const isPreview = isNotDefined(sessionState.typebotsQueue[0].resultId);
+
+    const isEnded =
+      newSessionState.progressMetadata &&
+      !input?.id &&
+      (clientSideActions?.filter((c) => c.expectsDedicatedReply).length ??
+        0) === 0;
+
+    return {
+      messages,
+      input,
+      clientSideActions,
+      dynamicTheme,
+      logs: isPreview ? logs : logs?.filter(filterPotentiallySensitiveLogs),
+      lastMessageNewFormat,
+      progress: newSessionState.progressMetadata
+        ? isEnded
+          ? 100
+          : computeCurrentProgress({
+              typebotsQueue: newSessionState.typebotsQueue,
+              progressMetadata: newSessionState.progressMetadata,
+              currentInputBlockId: input?.id,
+            })
+        : undefined,
+    };
+  });
 };

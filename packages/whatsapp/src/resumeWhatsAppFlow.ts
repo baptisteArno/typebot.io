@@ -16,9 +16,8 @@ import redis from "@typebot.io/lib/redis";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isDefined } from "@typebot.io/lib/utils";
 import {
-  deleteSessionStore,
-  getSessionStore,
   type SessionStore,
+  withSessionStore,
 } from "@typebot.io/runtime-session-store";
 import { downloadMedia } from "./downloadMedia";
 import type {
@@ -141,49 +140,49 @@ export const resumeWhatsAppFlow = async ({
     block,
   });
 
-  const sessionStore = getSessionStore(sessionId);
-  const {
-    input,
-    logs,
-    visitedEdges,
-    setVariableHistory,
-    newSessionState,
-    isWaitingForWebhook,
-  } = await resumeFlowAndSendWhatsAppMessages({
-    to: receivedMessages[0].from,
-    messageId: receivedMessages[0].id,
-    credentials,
-    isSessionExpired,
-    reply,
-    state: session?.state,
-    sessionStore,
-    contact,
-    workspaceId,
-    credentialsId,
-    referral,
-  });
-  deleteSessionStore(sessionId);
+  await withSessionStore(sessionId, async (sessionStore) => {
+    const {
+      input,
+      logs,
+      visitedEdges,
+      setVariableHistory,
+      newSessionState,
+      isWaitingForWebhook,
+    } = await resumeFlowAndSendWhatsAppMessages({
+      to: receivedMessages[0].from,
+      messageId: receivedMessages[0].id,
+      credentials,
+      isSessionExpired,
+      reply,
+      state: session?.state,
+      sessionStore,
+      contact,
+      workspaceId,
+      credentialsId,
+      referral,
+    });
 
-  await saveStateToDatabase({
-    clientSideActions: [],
-    input,
-    logs,
-    sessionId: {
-      type: "existing",
-      id: sessionId,
-    },
-    session: {
-      state: {
-        ...newSessionState,
-        currentBlockId:
-          !input && !isWaitingForWebhook
-            ? undefined
-            : newSessionState.currentBlockId,
+    await saveStateToDatabase({
+      clientSideActions: [],
+      input,
+      logs,
+      sessionId: {
+        type: "existing",
+        id: sessionId,
       },
-    },
-    isWaitingForExternalEvent: isWaitingForWebhook,
-    visitedEdges,
-    setVariableHistory,
+      session: {
+        state: {
+          ...newSessionState,
+          currentBlockId:
+            !input && !isWaitingForWebhook
+              ? undefined
+              : newSessionState.currentBlockId,
+        },
+      },
+      isWaitingForExternalEvent: isWaitingForWebhook,
+      visitedEdges,
+      setVariableHistory,
+    });
   });
 };
 

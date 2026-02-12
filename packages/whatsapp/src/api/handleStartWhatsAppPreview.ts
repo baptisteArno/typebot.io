@@ -7,10 +7,7 @@ import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { env } from "@typebot.io/env";
 import { createToastORPCError } from "@typebot.io/lib/createToastORPCError";
 import prisma from "@typebot.io/prisma";
-import {
-  deleteSessionStore,
-  getSessionStore,
-} from "@typebot.io/runtime-session-store";
+import { withSessionStore } from "@typebot.io/runtime-session-store";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { User } from "@typebot.io/user/schemas";
 import { sendChatReplyToWhatsApp } from "@typebot.io/whatsapp/sendChatReplyToWhatsApp";
@@ -91,94 +88,95 @@ export const handleStartWhatsAppPreview = async ({
     (existingSession?.updatedAt.getTime() ?? 0) >
     Date.now() - 24 * 60 * 60 * 1000;
 
-  const sessionStore = getSessionStore(sessionId);
-  const {
-    newSessionState,
-    messages,
-    input,
-    clientSideActions,
-    logs,
-    visitedEdges,
-    setVariableHistory,
-  } = await startSession({
-    version: 2,
-    sessionStore,
-    startParams: {
-      isOnlyRegistering: !canSendDirectMessagesToUser,
-      type: "preview",
-      typebotId,
-      startFrom,
-      userId: user.id,
-      isStreamEnabled: false,
-      textBubbleContentFormat: "richText",
-    },
-    initialSessionState: {
-      whatsApp: (existingSession?.state as SessionState | undefined)?.whatsApp,
-    },
-  });
-  deleteSessionStore(sessionId);
+  return withSessionStore(sessionId, async (sessionStore) => {
+    const {
+      newSessionState,
+      messages,
+      input,
+      clientSideActions,
+      logs,
+      visitedEdges,
+      setVariableHistory,
+    } = await startSession({
+      version: 2,
+      sessionStore,
+      startParams: {
+        isOnlyRegistering: !canSendDirectMessagesToUser,
+        type: "preview",
+        typebotId,
+        startFrom,
+        userId: user.id,
+        isStreamEnabled: false,
+        textBubbleContentFormat: "richText",
+      },
+      initialSessionState: {
+        whatsApp: (existingSession?.state as SessionState | undefined)
+          ?.whatsApp,
+      },
+    });
 
-  try {
-    if (canSendDirectMessagesToUser) {
-      await sendChatReplyToWhatsApp({
-        to,
-        messages,
-        input,
-        clientSideActions,
-        isFirstChatChunk: true,
-        credentials: {
-          provider: "meta",
-          phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
-          systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
-        },
-        state: newSessionState,
-      });
-      await saveStateToDatabase({
-        clientSideActions: [],
-        input,
-        logs,
-        sessionId: {
-          type: "existing",
-          id: sessionId,
-        },
-        session: {
-          state: newSessionState,
-        },
-        visitedEdges,
-        setVariableHistory,
-      });
-
-      return {
-        message: "Sent direct WA message",
-      };
-    } else {
-      await restartSession({
-        state: newSessionState,
-        id: sessionId,
-      });
-
-      await sendWhatsAppMessage({
-        to,
-        message: {
-          type: "template",
-          template: {
-            language: {
-              code: env.WHATSAPP_PREVIEW_TEMPLATE_LANG,
-            },
-            name: env.WHATSAPP_PREVIEW_TEMPLATE_NAME,
+    try {
+      if (canSendDirectMessagesToUser) {
+        await sendChatReplyToWhatsApp({
+          to,
+          messages,
+          input,
+          clientSideActions,
+          isFirstChatChunk: true,
+          credentials: {
+            provider: "meta",
+            phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID!,
+            systemUserAccessToken: env.META_SYSTEM_USER_TOKEN!,
           },
-        },
-        credentials: {
-          provider: "meta",
-          phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID,
-          systemUserAccessToken: env.META_SYSTEM_USER_TOKEN,
-        },
-      });
-      return {
-        message: "Sent WA template",
-      };
+          state: newSessionState,
+        });
+        await saveStateToDatabase({
+          clientSideActions: [],
+          input,
+          logs,
+          sessionId: {
+            type: "existing",
+            id: sessionId,
+          },
+          session: {
+            state: newSessionState,
+          },
+          visitedEdges,
+          setVariableHistory,
+        });
+
+        return {
+          message: "Sent direct WA message",
+        };
+      } else {
+        await restartSession({
+          state: newSessionState,
+          id: sessionId,
+        });
+
+        await sendWhatsAppMessage({
+          to,
+          message: {
+            type: "template",
+            template: {
+              language: {
+                code: env.WHATSAPP_PREVIEW_TEMPLATE_LANG,
+              },
+              name: env.WHATSAPP_PREVIEW_TEMPLATE_NAME!,
+            },
+          },
+          credentials: {
+            provider: "meta",
+            phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID!,
+            systemUserAccessToken: env.META_SYSTEM_USER_TOKEN!,
+          },
+        });
+        return {
+          message: "Sent WA template",
+        };
+      }
+    } catch (error) {
+      throw await createToastORPCError(error);
     }
-  } catch (error) {
-    throw await createToastORPCError(error);
-  }
+  });
 };
