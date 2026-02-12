@@ -32,8 +32,7 @@
     "rules": {
       "recommended": true,
       "security": {
-        "noDangerouslySetInnerHtml": "off",
-        "noGlobalEval": "off"
+        "noDangerouslySetInnerHtml": "off"
       },
       "a11y": {
         "noSvgWithoutTitle": "off",
