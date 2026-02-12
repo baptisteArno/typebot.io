@@ -43,9 +43,9 @@ export const forwardStatusWebhooks = async ({
       }
     }
 
-    console.log(`Extracted ${statusesToForward.length} statuses to forward`);
-
     if (statusesToForward.length === 0) return;
+
+    console.log(`Extracted ${statusesToForward.length} statuses to forward`);
 
     const forwardingUrls = await getForwardingUrls({
       workspaceId,
