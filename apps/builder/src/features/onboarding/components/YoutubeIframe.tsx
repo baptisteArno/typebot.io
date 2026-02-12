@@ -40,6 +40,7 @@ export const YoutubeIframe = ({ id }: Props) => {
 
   return (
     <iframe
+      title="Onboarding tutorial video"
       id={id}
       src={`https://www.youtube.com/embed/${id}?autoplay=1&enablejsapi=1`}
       allowFullScreen
