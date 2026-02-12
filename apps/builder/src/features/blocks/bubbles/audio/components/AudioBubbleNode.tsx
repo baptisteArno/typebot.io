@@ -19,6 +19,7 @@ export const AudioBubbleNode = ({ url }: Props) => {
         Play <VariableTag variableName={variable.name} />
       </p>
     ) : (
+      // biome-ignore lint/a11y/useMediaCaption: Captions are not available for configurable audio sources in the builder preview.
       <audio
         src={url}
         controls

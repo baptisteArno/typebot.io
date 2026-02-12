@@ -36,7 +36,6 @@
       },
       "a11y": {
         "noSvgWithoutTitle": "off",
-        "useMediaCaption": "off",
         "useIframeTitle": "off",
         "useKeyWithClickEvents": "off",
         "useButtonType": "off",
