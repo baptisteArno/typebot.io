@@ -43,18 +43,24 @@ export const forwardStatusWebhooks = async ({
       }
     }
 
+    console.log(`Extracted ${statusesToForward.length} statuses to forward`);
+
     if (statusesToForward.length === 0) return;
 
     const forwardingUrls = await getForwardingUrls({
       workspaceId,
       credentialsId,
     });
+
+    console.log(`Extracted ${forwardingUrls.length} forwarding URLs`);
     if (forwardingUrls.length === 0) return;
 
     const payload = buildFilteredStatusPayload({
       entry,
       matchedStatuses: statusesToForward,
     });
+
+    console.log(`Built payload with ${payload.entry.length} entries`);
     if (payload.entry.length === 0) return;
 
     for (const url of forwardingUrls) {
@@ -62,6 +68,7 @@ export const forwardStatusWebhooks = async ({
         await ky.post(url, {
           json: payload,
         });
+        console.log(`Forwarded status to ${url}`);
       } catch (error) {
         console.warn("Failed to forward WhatsApp statuses", { url, error });
         Sentry.captureException(error, {
