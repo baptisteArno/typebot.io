@@ -4,7 +4,7 @@ import { templates } from "@typebot.io/templates";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { ButtonLink, CtaButtonLink } from "@/components/link";
-import { currentBaseUrl, dashboardUrl } from "@/constants";
+import { dashboardUrl } from "@/constants";
 import { TemplateCard } from "@/features/templates/TemplateCard";
 import { createMetaTags } from "@/lib/createMetaTags";
 
@@ -41,22 +41,9 @@ function RouteComponent() {
   const { template, relatedTemplates } = Route.useLoaderData();
   const slug = template.slug;
   const templateTitle = getTemplateTitle(template);
-  const structuredData = createTemplateStructuredData(template, slug);
 
   return (
     <ContentPageWrapper className="md:pt-12">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData.template),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData.breadcrumbs),
-        }}
-      />
       <div className="flex flex-col gap-12 max-w-5xl mx-auto w-full">
         <ButtonLink
           to="/templates"
@@ -159,59 +146,6 @@ function RouteComponent() {
     </ContentPageWrapper>
   );
 }
-
-const createTemplateStructuredData = (template: Template, slug: string) => {
-  const url = `${currentBaseUrl}/templates/${slug}`;
-  const keywords = ["chatbot template", template.useCase, ...template.features]
-    .filter((keyword) => keyword.length > 0)
-    .join(", ");
-
-  const templateJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "CreativeWork",
-    name: getTemplateTitle(template),
-    description: template.summary,
-    url,
-    inLanguage: "en",
-    publisher: {
-      "@type": "Organization",
-      name: "Typebot",
-      url: currentBaseUrl,
-    },
-    about: template.useCase,
-    keywords,
-  } satisfies Record<string, unknown>;
-
-  const breadcrumbsJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: currentBaseUrl,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Templates",
-        item: `${currentBaseUrl}/templates`,
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: getTemplateTitle(template),
-        item: url,
-      },
-    ],
-  } satisfies Record<string, unknown>;
-
-  return {
-    template: templateJsonLd,
-    breadcrumbs: breadcrumbsJsonLd,
-  };
-};
 
 const getTemplateTitle = (template: Template) =>
   `${template.name} Chatbot Template`;
