@@ -4,7 +4,6 @@ description: Maximize your chatbot's potential with Typebot and OpenAI's ChatGPT
 postedAt: 2024-05-16
 author: younes
 ---
-
 Imagine having a chatbot that understands your unique needs and can answer all your Typebot-related queries flawlessly. Sounds like magic, right? With the power of Typebot and OpenAI's ChatGPT, you can create a custom assistant trained on your own data. This guide will walk you through the exact steps to make this happen, so you can focus on what really matters—engaging with your users. Ready to transform your chatbot experience?
 
 ## Getting started
@@ -71,13 +70,13 @@ Your dashboard is the control center where all the magic happens.
 ### Creating Your First Bot in Typebot
 
 1. **Navigate to the Dashboard:**
-   - Click on the "Create New Bot" button.
+  - Click on the "Create New Bot" button.
 2. **Choose a Template or Start from Scratch:**
-   - For ease, select a pre-made template or choose to start from scratch for full customization.
+  - For ease, select a pre-made template or choose to start from scratch for full customization.
 3. **Name Your Bot:**
-   - Give your bot a unique name that resonates with your purpose, such as "Typebot Helper."
+  - Give your bot a unique name that resonates with your purpose, such as "Typebot Helper."
 4. **Configure Basic Settings:**
-   - Set parameters like language and initial message to greet users.
+  - Set parameters like language and initial message to greet users.
 
 By following these initial steps, you have successfully set up your Typebot account and created a new bot. Next, we’ll move on to integrating the bot with OpenAI to leverage its advanced AI capabilities.
 
@@ -92,51 +91,29 @@ OpenAI offers powerful AI models that can generate human-like text, making them 
 1. **Visit OpenAI:** head over to the [OpenAI Platform](https://platform.openai.com/).
 2. **Sign Up:** click on the "Sign Up" button. Provide your email, create a password, and follow the verification steps.
 3. **Create API Keys:**
-   - Navigate to the API section in your OpenAI dashboard.
-     <Image
-       alt="Openai Apikey Menu"
-       src="/blog-assets/train-chatbot-on-own-data/openai-apikey-menu.jpg"
-       width={370}
-       height={455}
-     />
-   - Generate a new API key. Keep this key handy as you'll need it for integrating with Typebot.
-     <Image
-       alt="Openai Create Apikey"
-       src="/blog-assets/train-chatbot-on-own-data/openai-create-apikey.jpg"
-       width={844}
-       height={755}
-     />
+  - Navigate to the API section in your OpenAI dashboard.
+   <Image src="https://writer-app-images.s3.eu-west-3.amazonaws.com/typebot/train-chatbot-on-own-data/openai-apikey-menu.jpg" alt="Openai Apikey Menu" width={800} height={600}  />
+
+  - Generate a new API key. Keep this key handy as you'll need it for integrating with Typebot.
+  <Image src="https://writer-app-images.s3.eu-west-3.amazonaws.com/typebot/train-chatbot-on-own-data/openai-create-apikey.jpg" alt="Openai Create Apikey" width={800} height={600}  />
+
 
 ### Creating a GPT Assistant
 
 If you don’t have an assistant ready, you’ll need to create one in the OpenAI Developer Platform.
 
 1. **Access OpenAI Dashboard:**
-   - Navigate to the OpenAI dashboard and open the Assistant page.
-     <Image
-       alt="Openai Assistant Tab"
-       src="/blog-assets/train-chatbot-on-own-data/openai-assistant-tab.jpg"
-       width={566}
-       height={956}
-     />
+  - Navigate to the OpenAI dashboard and open the Assistant page.
+   <Image src="https://writer-app-images.s3.eu-west-3.amazonaws.com/typebot/train-chatbot-on-own-data/openai-assistant-tab.jpg" alt="Openai Assistant Tab" width={800} height={600}  />
+
 2. **Select Model and Files:**
+  <Image src="https://writer-app-images.s3.eu-west-3.amazonaws.com/typebot/train-chatbot-on-own-data/openai-setup-assistant.jpg" alt="Openai Setup Assistant" width={800} height={600}  />
 
-   <Image
-     alt="Openai Setup Assistant"
-     src="/blog-assets/train-chatbot-on-own-data/openai-setup-assistant.jpg"
-     width={800}
-     height={506}
-   />
+  - Provide a friendly name.
+  - Choose a relevant model, such as GPT-4.
+  - Upload any necessary files that the assistant can refer to. In our example, we will use Typebot’s documentation.
+  <Image src="https://writer-app-images.s3.eu-west-3.amazonaws.com/typebot/train-chatbot-on-own-data/openai-upload-documents.jpg" alt="Openai Upload Documents" width={800} height={600}  />
 
-   - Provide a friendly name.
-   - Choose a relevant model, such as GPT-4.
-   - Upload any necessary files that the assistant can refer to. In our example, we will use Typebot’s documentation.
-     <Image
-       alt="Openai Upload Documents"
-       src="/blog-assets/train-chatbot-on-own-data/openai-upload-documents.jpg"
-       width={1084}
-       height={1110}
-     />
 
 ## Step 3: Design your chatbot
 
@@ -147,73 +124,44 @@ Start by adding a text input element to your Typebot. This is essential as it wi
 1. Go to your bot’s editor in Typebot.
 2. Click on “Add Element” and choose “Texts” from the Input options.
 3. Save the user’s answer in a variable.
+  <Image src="https://writer-app-images.s3.eu-west-3.amazonaws.com/typebot/train-chatbot-on-own-data/typebot-input-variable.jpg" alt="Typebot Input Variable" width={800} height={600}  />
 
-   <Image
-     alt="Typebot Input Variable"
-     src="/blog-assets/train-chatbot-on-own-data/typebot-input-variable.jpg"
-     width={684}
-     height={452}
-   />
 
 ### Inserting an OpenAI Block
 
 To bring your bot to life with AI responses, you’ll integrate an OpenAI block.
 
 1. **Add OpenAI Block:**
-   - Drag the "OpenAI" block from the left panel and drop it into your "AI Loop" group.
-     <Image
-       alt="Typebot Openai Block"
-       src="/blog-assets/train-chatbot-on-own-data/typebot-openai-block.jpg"
-       width={340}
-       height={550}
-     />
-     <Image
-       alt="Typebot Drag Openai Block"
-       src="/blog-assets/train-chatbot-on-own-data/typebot-drag-openai-block.gif"
-       width={592}
-       height={800}
-     />
+  - Drag the "OpenAI" block from the left panel and drop it into your "AI Loop" group.
+   <Image src="https://writer-app-images.s3.eu-west-3.amazonaws.com/typebot/train-chatbot-on-own-data/typebot-openai-block.jpg" alt="Typebot Openai Block" width={800} height={600}  />
+
+   <Image src="https://writer-app-images.s3.eu-west-3.amazonaws.com/typebot/train-chatbot-on-own-data/typebot-drag-openai-block.gif" alt="Typebot Drag Openai Block" width={800} height={600}  />
+
 2. **Choose Your OpenAI Account:**
-   - Click on the OpenAI block to open its settings.
-   - Select your OpenAI account from the dropdown menu. Create one if necessary.
-     <Image
-       alt="Typebot Add Openai Key"
-       src="/blog-assets/train-chatbot-on-own-data/typebot-add-openai-key.jpg"
-       width={700}
-       height={235}
-     />
+  - Click on the OpenAI block to open its settings.
+  - Select your OpenAI account from the dropdown menu. Create one if necessary.
+  <Image src="https://writer-app-images.s3.eu-west-3.amazonaws.com/typebot/train-chatbot-on-own-data/typebot-add-openai-key.jpg" alt="Typebot Add Openai Key" width={800} height={600}  />
+
 3. **Select 'Ask Assistant':**
-   - Choose the "Ask Assistant" option to configure the assistant that will respond to user inputs.
-     <Image
-       alt="Typebot Ask Assistant"
-       src="/blog-assets/train-chatbot-on-own-data/typebot-ask-assistant.jpg"
-       width={655}
-       height={350}
-     />
-   - Select your newly created assistant from the Assistant ID dropdown.
+  - Choose the "Ask Assistant" option to configure the assistant that will respond to user inputs.
+   <Image src="https://writer-app-images.s3.eu-west-3.amazonaws.com/typebot/train-chatbot-on-own-data/typebot-ask-assistant.jpg" alt="Typebot Ask Assistant" width={800} height={600}  />
+
+  - Select your newly created assistant from the Assistant ID dropdown.
 4. **Establish the Thread:**
-   - Create a variable named `threadID` to manage conversation continuity.
+  - Create a variable named `threadID` to manage conversation continuity.
 5. **Save Assistant's Response:**
-   - Collect the assistant’s reply and store it in a new variable, such as `assistant last message`. The Assistant should look like this:
-     <Image
-       alt="Typebot Assistant Parameters"
-       src="/blog-assets/train-chatbot-on-own-data/typebot-assistant-parameters.jpg"
-       width={800}
-       height={917}
-     />
+  - Collect the assistant’s reply and store it in a new variable, such as `assistant last message`. The Assistant should look like this:
+   <Image src="https://writer-app-images.s3.eu-west-3.amazonaws.com/typebot/train-chatbot-on-own-data/typebot-assistant-parameters.jpg" alt="Typebot Assistant Parameters" width={800} height={600}  />
+
 6. **Show Response to User:**
-   - Use a text bubble to display the `assistant last message` on your Typebot interface.
+  - Use a text bubble to display the `assistant last message` on your Typebot interface.
 7. **Link the Blocks:**
-   - Connect the "Text Input" block to the "OpenAI" block to ensure user messages are sent to the AI for processing. And then, connect the last message to the first input. As soon as the assistant has answered, the user will be allowed to send a message back.
+  - Connect the "Text Input" block to the "OpenAI" block to ensure user messages are sent to the AI for processing. And then, connect the last message to the first input. As soon as the assistant has answered, the user will be allowed to send a message back.
 
 The final result should look like this:
 
-<Image
-  alt="Typebot Assistant Configured"
-  src="/blog-assets/train-chatbot-on-own-data/typebot-assistant-configured.jpg"
-  width={1060}
-  height={914}
-/>
+<Image src="https://writer-app-images.s3.eu-west-3.amazonaws.com/typebot/train-chatbot-on-own-data/typebot-assistant-configured.jpg" alt="Typebot Assistant Configured" width={800} height={600}  />
+
 
 These steps integrate OpenAI’s capabilities into your Typebot, ensuring that your chatbot can intelligently respond to user queries based on the configured assistant.
 
@@ -221,49 +169,45 @@ These steps integrate OpenAI’s capabilities into your Typebot, ensuring that y
 
 ### Testing the AI Loop
 
-Before deploying your chatbot, thorough testing is essential to ensure it functions as desired.
+Before deploying your chatbot, thorough testing is essential to ensure it functions as desired. Some teams extend this with AI-driven testing tools like [testRigor](https://testrigor.com/) to validate real user conversations without writing test scripts.
 
-<Image
-  alt="Assistant Example"
-  src="/blog-assets/train-chatbot-on-own-data/assistant-example.jpg"
-  width={400}
-  height={701}
-/>
+<Image src="https://writer-app-images.s3.eu-west-3.amazonaws.com/typebot/train-chatbot-on-own-data/assistant-example.jpg" alt="Assistant Example" width={800} height={600}  />
+
 
 1. **Run Initial Tests:**
-   - Enter your Typebot dashboard and initiate your bot.
-   - Send a simple message, like "Hi there," to see how the chatbot responds.
+  - Enter your Typebot dashboard and initiate your bot.
+  - Send a simple message, like "Hi there," to see how the chatbot responds.
 2. **Observe Responses:**
-   - Ensure the assistant's response is correctly displayed.
-   - Check if the conversation loops back to prompt for another user message.
+  - Ensure the assistant's response is correctly displayed.
+  - Check if the conversation loops back to prompt for another user message.
 
 ### Troubleshooting Common Issues
 
 Even with a smooth setup, you might encounter hiccups. Here’s how to tackle them:
 
 1. **Response Delay:**
-   - If responses are slow, check your OpenAI integration settings.
-   - Ensure your API key and connection are properly configured.
+  - If responses are slow, check your OpenAI integration settings.
+  - Ensure your API key and connection are properly configured.
 2. **Incorrect Outputs:**
-   - Verify the assistant's training data.
-   - Make sure the correct documents and instructions are uploaded in the OpenAI Playground.
+  - Verify the assistant's training data.
+  - Make sure the correct documents and instructions are uploaded in the OpenAI Playground.
 3. **Message Handling Issues:**
-   - Check if the `userLastMessage` and `assistantLastMessage` variables are correctly capturing and displaying messages.
-   - Ensure the `threadID` variable is correctly managing the thread context.
+  - Check if the `userLastMessage` and `assistantLastMessage` variables are correctly capturing and displaying messages.
+  - Ensure the `threadID` variable is correctly managing the thread context.
 
 ### Iterating for Improved Interactions
 
 Continuous improvement is vital for maintaining a top-notch chatbot.
 
 1. **User Feedback:**
-   - [Collect feedback](./feedback-chatbot.mdx) from users interacting with your bot.
-   - Identify areas where the assistant might be falling short or causing confusion.
+  - [Collect feedback](./feedback-chatbot.mdx) from users interacting with your bot.
+  - Identify areas where the assistant might be falling short or causing confusion.
 2. **Refining Instructions:**
-   - Update the assistant's instructions in the OpenAI Playground to make responses more accurate.
-   - Add more context-specific documentation if needed.
+  - Update the assistant's instructions in the OpenAI Playground to make responses more accurate.
+  - Add more context-specific documentation if needed.
 3. **Regular Testing:**
-   - Routinely run tests after making adjustments.
-   - Ensure improvements lead to better interactions and user satisfaction.
+  - Routinely run tests after making adjustments.
+  - Ensure improvements lead to better interactions and user satisfaction.
 
 By systematically testing, troubleshooting, and iterating your chatbot, you’ll ensure it delivers exceptional user experiences continuously, keeping your Typebot AI-driven and user-focused.
 
@@ -274,24 +218,24 @@ By systematically testing, troubleshooting, and iterating your chatbot, you’ll
 If building from scratch seems daunting, templates can provide a quick and efficient alternative.
 
 1. **Access Templates:**
-   - Navigate to the Typebot dashboard and click on "Create New Bot."
-   - Choose "Start from a Template."
+  - Navigate to the Typebot dashboard and click on "Create New Bot."
+  - Choose "Start from a Template."
 2. **Choose Relevant Template:**
-   - Select the "OpenAI Assistant Chat" template from the available options.
-   - This template is pre-configured to work with OpenAI’s ChatGPT, saving you setup time.
+  - Select the "OpenAI Assistant Chat" template from the available options.
+  - This template is pre-configured to work with OpenAI’s ChatGPT, saving you setup time.
 
 ### Saving and Publishing Your Chatbot
 
 Finalize your bot and make it available to users.
 
 1. **Save Configurations:**
-   - Double-check all settings and integrations.
-   - Save your changes to ensure everything is captured.
+  - Double-check all settings and integrations.
+  - Save your changes to ensure everything is captured.
 2. **Test the Template:**
-   - Run a few test interactions to make sure the chatbot responds accurately and loops correctly.
-   - Address any issues that arise during testing.
+  - Run a few test interactions to make sure the chatbot responds accurately and loops correctly.
+  - Address any issues that arise during testing.
 3. **Deploy and Share:**
-   - Once satisfied, click on the "Publish" button.
-   - Share the chatbot link with your audience or integrate it into your platform.
+  - Once satisfied, click on the "Publish" button.
+  - Share the chatbot link with your audience or integrate it into your platform.
 
 Using templates provides a fast track to set up a sophisticated chatbot, allowing you to leverage pre-built configurations and focus on customization and fine-tuning to meet your specific needs.

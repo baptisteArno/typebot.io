@@ -133,7 +133,7 @@ const components = {
       />
     </Suspense>
   ),
-  Youtube: ({ id }: { id: string }) => (
+  YouTube: ({ id }: { id: string }) => (
     <div className="w-full">
       <div className="relative isolate pb-[64.63195691202873%] h-0 w-full">
         <iframe

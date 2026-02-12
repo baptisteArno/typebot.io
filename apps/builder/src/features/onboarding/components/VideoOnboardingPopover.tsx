@@ -61,7 +61,7 @@ export const VideoOnboardingPopover = ({
         side={side}
         align={align}
         offset={offset}
-        className="w-[640px] shadow-md aspect-[1.5]"
+        className="w-160 shadow-md aspect-[1.5]"
       >
         <YoutubeIframe id={youtubeId} />
         <Button
