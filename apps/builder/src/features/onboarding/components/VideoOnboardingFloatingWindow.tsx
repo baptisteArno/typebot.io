@@ -22,7 +22,7 @@ export const VideoOnboardingFloatingWindow = ({ type }: Props) => {
   if (!onboardingVideos[type] || !isOpen) return null;
 
   return (
-    <div className="flex p-5 border shadow-xl rounded-md w-[600px] bg-gray-1 aspect-[1.5] animate-in fade-in-0 slide-in-from-bottom-4 fixed bottom-4 right-4 z-10">
+    <div className="flex p-5 border shadow-xl rounded-md w-150 bg-gray-1 aspect-[1.5] animate-in fade-in-0 slide-in-from-bottom-4 fixed bottom-4 right-4 z-10">
       <YoutubeIframe id={onboardingVideos[type]!.youtubeId} />
 
       <Button
