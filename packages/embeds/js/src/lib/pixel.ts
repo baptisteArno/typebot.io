@@ -33,7 +33,8 @@ export const trackPixelEvent = (options: PixelBlock["options"]) => {
   const params = options.params?.length
     ? options.params.reduce<Record<string, string>>((obj, param) => {
         if (!param.key || !param.value) return obj;
-        return { ...obj, [param.key]: param.value };
+        obj[param.key] = param.value;
+        return obj;
       }, {})
     : undefined;
   if (options.eventType === "Custom") {

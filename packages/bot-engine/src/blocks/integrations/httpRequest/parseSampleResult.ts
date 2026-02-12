@@ -101,10 +101,7 @@ const parseResultSample = (
             (variable) =>
               cell.variableIds?.includes(variable.id) && variable.value,
           )?.value;
-          return {
-            ...resultSample,
-            [cell.label]: variableValue ?? "content",
-          };
+          resultSample[cell.label] = variableValue ?? "content";
         }
 
         return resultSample;
@@ -113,10 +110,8 @@ const parseResultSample = (
         (variable) => cell.variableIds?.includes(variable.id) && variable.value,
       )?.value;
       const value = variableValue ?? getSampleValue(inputBlock, userEmail);
-      return {
-        ...resultSample,
-        [cell.label]: value,
-      };
+      resultSample[cell.label] = value;
+      return resultSample;
     },
     {},
   );

@@ -60,10 +60,8 @@ export const convertResultsToTableData = ({
               headerCell.blocks?.some((block) => block.id === answer.blockId),
             );
         if (!header || !header.blocks || !header.blockType) return tableData;
-        return {
-          ...tableData,
-          [header.id]: cellParser(answer.content, header.blockType),
-        };
+        tableData[header.id] = cellParser(answer.content, header.blockType);
+        return tableData;
       }
       const variable = answerOrVariable satisfies VariableWithValue;
       if (variable.value === null) return tableData;
@@ -72,10 +70,8 @@ export const convertResultsToTableData = ({
       )?.id;
       if (!headerId) return tableData;
       if (isDefined(tableData[headerId])) return tableData;
-      return {
-        ...tableData,
-        [headerId]: cellParser(variable.value),
-      };
+      tableData[headerId] = cellParser(variable.value);
+      return tableData;
     }, {}),
   }));
 

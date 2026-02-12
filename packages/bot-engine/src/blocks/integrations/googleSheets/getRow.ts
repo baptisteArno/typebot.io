@@ -83,10 +83,10 @@ export const getRow = async (
       .filter(isNotEmpty);
     const selectedRows = filteredRows
       .map((row) =>
-        extractingColumns?.reduce<{ [key: string]: string }>(
-          (obj, column) => ({ ...obj, [column]: row.get(column) }),
-          {},
-        ),
+        extractingColumns?.reduce<{ [key: string]: string }>((obj, column) => {
+          obj[column] = row.get(column);
+          return obj;
+        }, {}),
       )
       .filter(isDefined);
     if (!selectedRows) return { outgoingEdgeId };
@@ -96,13 +96,11 @@ export const getRow = async (
         const existingVariable = variables.find(byId(cell.variableId));
         const value = selectedRows.map((row) => row[cell.column ?? ""]);
         if (!existingVariable) return newVariables;
-        return [
-          ...newVariables,
-          {
-            ...existingVariable,
-            value: value.length === 1 ? value[0] : value,
-          },
-        ];
+        newVariables.push({
+          ...existingVariable,
+          value: value.length === 1 ? value[0] : value,
+        });
+        return newVariables;
       },
       [],
     );

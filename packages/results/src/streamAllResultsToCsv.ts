@@ -95,7 +95,8 @@ export const streamAllResultsToCsv = async (
       (headerCell) => headerCell.id === columnId,
     )?.id;
     if (!columnLabel) return currentHeaderIds;
-    return [...currentHeaderIds, columnLabel];
+    currentHeaderIds.push(columnLabel);
+    return currentHeaderIds;
   }, []);
 
   const csvHeaders = headerIds.map((headerId) => {

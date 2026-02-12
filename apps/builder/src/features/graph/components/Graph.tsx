@@ -245,7 +245,7 @@ export const Graph = ({
         const selectedElements = currentElementRects!.reduce<string[]>(
           (acc, element) => {
             if (isSelectBoxIntersectingWithElement(dimensions, element.rect)) {
-              return [...acc, element.elementId];
+              acc.push(element.elementId);
             }
             return acc;
           },

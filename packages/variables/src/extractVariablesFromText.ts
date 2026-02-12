@@ -14,6 +14,7 @@ export const extractVariablesFromText =
         acc.find((accVariable) => accVariable.id === variable.id)
       )
         return acc;
-      return [...acc, variable];
+      acc.push(variable);
+      return acc;
     }, []);
   };

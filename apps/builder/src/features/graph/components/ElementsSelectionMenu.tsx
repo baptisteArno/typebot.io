@@ -214,13 +214,11 @@ export const extractVariablesFromCopiedElements = (
     if (acc.find((v) => v.id === id)) return acc;
     const variable = existingVariables.find((v) => v.id === id);
     if (!variable) return acc;
-    return [
-      ...acc,
-      {
-        id: variable.id,
-        name: variable.name,
-        isSessionVariable: variable.isSessionVariable,
-      },
-    ];
+    acc.push({
+      id: variable.id,
+      name: variable.name,
+      isSessionVariable: variable.isSessionVariable,
+    });
+    return acc;
   }, []);
 };

@@ -83,7 +83,8 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
 
       if (!columnLabel) return currentHeaderIds;
 
-      return [...currentHeaderIds, columnLabel];
+      currentHeaderIds.push(columnLabel);
+      return currentHeaderIds;
     }, []);
 
     const csvHeaders = headerIds.map((headerId) => {

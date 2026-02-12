@@ -65,23 +65,20 @@ export const useSelectionStore = createWithEqualityFn<SelectionStore>()(
           elementsCoordinates: groupsCoordinates,
         }) => ({
           elementsCoordinates: groupsCoordinates
-            ? {
-                ...groupsCoordinates,
-                ...focusedGroups.reduce(
-                  (coords, groupId) => ({
-                    ...coords,
-                    [groupId]: {
-                      x: Number(
-                        (groupsCoordinates[groupId].x + delta.x).toFixed(2),
-                      ),
-                      y: Number(
-                        (groupsCoordinates[groupId].y + delta.y).toFixed(2),
-                      ),
-                    },
-                  }),
-                  groupsCoordinates,
-                ),
-              }
+            ? focusedGroups.reduce<CoordinatesMap>(
+                (coords, groupId) => {
+                  coords[groupId] = {
+                    x: Number(
+                      (groupsCoordinates[groupId].x + delta.x).toFixed(2),
+                    ),
+                    y: Number(
+                      (groupsCoordinates[groupId].y + delta.y).toFixed(2),
+                    ),
+                  };
+                  return coords;
+                },
+                { ...groupsCoordinates },
+              )
             : undefined,
         }),
       ),
@@ -90,26 +87,20 @@ export const useSelectionStore = createWithEqualityFn<SelectionStore>()(
       set({
         elementsCoordinates: props
           ? {
-              ...props.groups.reduce(
-                (coords, group) => ({
-                  ...coords,
-                  [group.id]: {
-                    x: group.graphCoordinates.x,
-                    y: group.graphCoordinates.y,
-                  },
-                }),
-                {},
-              ),
-              ...props.events.reduce(
-                (coords, event) => ({
-                  ...coords,
-                  [event.id]: {
-                    x: event.graphCoordinates.x,
-                    y: event.graphCoordinates.y,
-                  },
-                }),
-                {},
-              ),
+              ...props.groups.reduce<CoordinatesMap>((coords, group) => {
+                coords[group.id] = {
+                  x: group.graphCoordinates.x,
+                  y: group.graphCoordinates.y,
+                };
+                return coords;
+              }, {}),
+              ...props.events.reduce<CoordinatesMap>((coords, event) => {
+                coords[event.id] = {
+                  x: event.graphCoordinates.x,
+                  y: event.graphCoordinates.y,
+                };
+                return coords;
+              }, {}),
             }
           : undefined,
       }),

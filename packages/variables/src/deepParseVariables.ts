@@ -32,41 +32,44 @@ export const deepParseVariables = <T>(
           ...parseVariablesOptions,
         });
         if (removeEmptyStrings && parsedVariable === "") return newObj;
-        return {
-          ...newObj,
-          [key]: guessCorrectTypes
-            ? parseGuessedTypeFromString(parsedVariable)
-            : parsedVariable,
-        };
+        (newObj as Record<string, unknown>)[key] = guessCorrectTypes
+          ? parseGuessedTypeFromString(parsedVariable)
+          : parsedVariable;
+        return newObj;
       }
 
-      if (currentValue instanceof Object && currentValue.constructor === Object)
-        return {
-          ...newObj,
-          [key]: deepParseVariables(currentValue as Record<string, unknown>, {
+      if (
+        currentValue instanceof Object &&
+        currentValue.constructor === Object
+      ) {
+        (newObj as Record<string, unknown>)[key] = deepParseVariables(
+          currentValue as Record<string, unknown>,
+          {
+            variables,
+            guessCorrectTypes,
+            removeEmptyStrings,
+            sessionStore,
+            ...parseVariablesOptions,
+          },
+        );
+        return newObj;
+      }
+
+      if (currentValue instanceof Array) {
+        (newObj as Record<string, unknown>)[key] = currentValue.map((value) =>
+          deepParseVariables(value, {
             variables,
             guessCorrectTypes,
             removeEmptyStrings,
             sessionStore,
             ...parseVariablesOptions,
           }),
-        };
+        );
+        return newObj;
+      }
 
-      if (currentValue instanceof Array)
-        return {
-          ...newObj,
-          [key]: currentValue.map((value) =>
-            deepParseVariables(value, {
-              variables,
-              guessCorrectTypes,
-              removeEmptyStrings,
-              sessionStore,
-              ...parseVariablesOptions,
-            }),
-          ),
-        };
-
-      return { ...newObj, [key]: currentValue };
+      (newObj as Record<string, unknown>)[key] = currentValue;
+      return newObj;
     },
     {} as WithoutVariables<T>,
   );

@@ -111,9 +111,9 @@ const getObjectKeysWithSameAccordionAttr = (accordion: string, shape: any) =>
     if (!isZodType(rawSchema)) return keys;
     const innerSchema = getZodInnerSchema(rawSchema);
     const l = getZodLayoutMetadata(innerSchema);
-    return !l?.accordion || l.accordion !== accordion
-      ? keys
-      : [...keys, currentKey];
+    if (!l?.accordion || l.accordion !== accordion) return keys;
+    keys.push(currentKey);
+    return keys;
   }, []);
 
 const isZodObject = (

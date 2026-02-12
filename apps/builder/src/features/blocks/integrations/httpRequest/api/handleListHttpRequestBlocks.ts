@@ -48,8 +48,7 @@ export const handleListHttpRequestBlocks = async ({
     }[]
   >((httpRequestBlock, group) => {
     const blocks = (group.blocks as Block[]).filter(isHttpRequestBlock);
-    return [
-      ...httpRequestBlock,
+    httpRequestBlock.push(
       ...blocks.map((block) => ({
         id: block.id,
         type: block.type,
@@ -59,7 +58,8 @@ export const handleListHttpRequestBlocks = async ({
             ? (typebot?.webhooks.find(byId(block.webhookId))?.url ?? undefined)
             : block.options?.webhook?.url,
       })),
-    ];
+    );
+    return httpRequestBlock;
   }, []);
 
   return { webhookBlocks: httpRequestBlocks };

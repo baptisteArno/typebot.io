@@ -9,28 +9,30 @@ export const transformVariablesToList =
       (variables, variable) => {
         if (!variableIds.includes(variable.id) || isNotDefined(variable.value))
           return variables;
+        if (Array.isArray(variable.value)) {
+          variables.push({
+            ...variable,
+            value: variable.value,
+          });
+          return variables;
+        }
         try {
-          if (typeof variable.value === "string") {
-            const potentialArray = JSONParse(variable.value);
-            if (Array.isArray(potentialArray))
-              return [
-                ...variables,
-                {
-                  ...variable,
-                  value: potentialArray,
-                },
-              ];
+          const potentialArray = JSONParse(variable.value);
+          if (Array.isArray(potentialArray)) {
+            variables.push({
+              ...variable,
+              value: potentialArray,
+            });
+            return variables;
           }
         } catch (_error) {
           // Not an stringified array, skipping...
         }
-        return [
-          ...variables,
-          {
-            ...variable,
-            value: [variable.value],
-          },
-        ];
+        variables.push({
+          ...variable,
+          value: [variable.value],
+        });
+        return variables;
       },
       [],
     );

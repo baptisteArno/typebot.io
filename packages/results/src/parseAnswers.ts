@@ -26,14 +26,13 @@ export const parseAnswers = ({
       if ("id" in answerOrVariable) {
         const variable = answerOrVariable;
         if (variable.value === null) return o;
-        return { ...o, [variable.name]: variable.value.toString() };
+        o[variable.name] = variable.value.toString();
+        return o;
       }
       const answer = answerOrVariable as AnswerInSessionState;
       if (isEmpty(answer.key)) return o;
-      return {
-        ...o,
-        [answer.key]: answer.value,
-      };
+      o[answer.key] = answer.value;
+      return o;
     }, {}),
   };
 };

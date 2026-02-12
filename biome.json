@@ -48,7 +48,6 @@
         "noStaticElementInteractions": "off"
       },
       "performance": {
-        "noAccumulatingSpread": "off",
         "noImgElement": "off"
       },
       "style": {

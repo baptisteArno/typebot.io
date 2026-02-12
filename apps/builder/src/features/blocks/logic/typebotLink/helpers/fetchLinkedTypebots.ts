@@ -16,9 +16,8 @@ export const fetchLinkedTypebots = async (
       if (block.type !== LogicBlockType.TYPEBOT_LINK) return typebotIds;
       const typebotId = block.options?.typebotId;
       if (!typebotId) return typebotIds;
-      return typebotIds.includes(typebotId)
-        ? typebotIds
-        : [...typebotIds, typebotId];
+      if (!typebotIds.includes(typebotId)) typebotIds.push(typebotId);
+      return typebotIds;
     }, []);
   if (linkedTypebotIds.length === 0) return [];
   const typebots = (await ("typebotId" in typebot

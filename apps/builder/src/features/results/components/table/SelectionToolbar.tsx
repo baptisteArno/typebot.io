@@ -81,7 +81,8 @@ export const SelectionToolbar = ({
           (headerCell) => headerCell.id === columnId,
         )?.id;
         if (!columnLabel) return currentHeaderIds;
-        return [...currentHeaderIds, columnLabel];
+        currentHeaderIds.push(columnLabel);
+        return currentHeaderIds;
       }, [])
       .concat(
         typebot?.resultsTablePreferences?.columnsOrder

@@ -10,14 +10,11 @@ export const parseNewRowObject = (
     variables,
   }: { variables: Variable[]; sessionStore: SessionStore },
 ): { [key: string]: string } =>
-  cells.reduce((row, cell) => {
-    return !cell.column || !cell.value
-      ? row
-      : {
-          ...row,
-          [cell.column]: parseVariables(cell.value, {
-            variables,
-            sessionStore,
-          }),
-        };
+  cells.reduce<{ [key: string]: string }>((row, cell) => {
+    if (!cell.column || !cell.value) return row;
+    row[cell.column] = parseVariables(cell.value, {
+      variables,
+      sessionStore,
+    });
+    return row;
   }, {});
