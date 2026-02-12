@@ -79,14 +79,8 @@ function RouteComponent() {
     return matchesSearch && matchesUseCase && matchesFeatures;
   });
 
-  const jsonLd = createTemplatesItemListJsonLd();
-
   return (
     <ContentPageWrapper>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
       <div className="flex flex-col w-full gap-8">
         <TemplatesHero />
         <div className="flex gap-8 w-full">
@@ -116,23 +110,6 @@ function RouteComponent() {
     </ContentPageWrapper>
   );
 }
-
-const createTemplatesItemListJsonLd = () => {
-  const itemListElement = templates.map((template, index) => ({
-    "@type": "ListItem",
-    position: index + 1,
-    name: getTemplateTitle(template),
-    url: `${currentBaseUrl}/templates/${template.slug}`,
-    description: template.summary,
-  }));
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    name: "Typebot Chatbot Templates",
-    itemListElement,
-  } satisfies Record<string, unknown>;
-};
 
 const getTemplateTitle = (template: (typeof templates)[number]) =>
   `${template.name} Chatbot Template`;

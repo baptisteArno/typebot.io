@@ -31,9 +31,7 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "security": {
-        "noDangerouslySetInnerHtml": "off"
-      },
+      "security": {},
       "a11y": {
         "noSvgWithoutTitle": "off",
         "useMediaCaption": "off",
