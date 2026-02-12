@@ -2,13 +2,18 @@ import { constants } from "fs";
 import { access, readFile, writeFile } from "fs/promises";
 import { dirname, join } from "path";
 
-type Operation = "createManyAndReturn" | "updateManyAndReturn";
+type Operation =
+  | "createManyAndReturn"
+  | "updateManyAndReturn"
+  | "$queryRawTyped";
 
 const effectClientPath = join(__dirname, "../.effect/index.ts");
 const prismaClientTypesRelativePaths = [
   "node_modules/.prisma/client/index.d.ts",
   "node_modules/@prisma/client/index.d.ts",
 ];
+const effectDiagnosticsDirective =
+  "/** @effect-diagnostics effectFnOpportunity:skip-file */";
 
 const canRead = async (path: string) => {
   try {
@@ -70,6 +75,11 @@ const removeOperationBlock = (contents: string, operation: Operation) => {
   return output.join("\n");
 };
 
+const disableEffectFnOpportunity = (contents: string) =>
+  contents.startsWith(effectDiagnosticsDirective)
+    ? contents
+    : `${effectDiagnosticsDirective}\n${contents}`;
+
 export const patchEffectClient = async () => {
   const hasEffectClient = await canRead(effectClientPath);
   if (!hasEffectClient) return;
@@ -84,15 +94,20 @@ export const patchEffectClient = async () => {
   const supportsUpdateManyAndReturn = prismaTypes.includes(
     "UpdateManyAndReturnArgs",
   );
+  const supportsQueryRawTyped = prismaTypes.includes("$queryRawTyped");
 
-  if (supportsCreateManyAndReturn && supportsUpdateManyAndReturn) return;
-
-  let effectClient = await readFile(effectClientPath, "utf8");
+  const originalEffectClient = await readFile(effectClientPath, "utf8");
+  let effectClient = originalEffectClient;
+  effectClient = disableEffectFnOpportunity(effectClient);
 
   if (!supportsCreateManyAndReturn)
     effectClient = removeOperationBlock(effectClient, "createManyAndReturn");
   if (!supportsUpdateManyAndReturn)
     effectClient = removeOperationBlock(effectClient, "updateManyAndReturn");
+  if (!supportsQueryRawTyped)
+    effectClient = removeOperationBlock(effectClient, "$queryRawTyped");
+
+  if (effectClient === originalEffectClient) return;
 
   await writeFile(effectClientPath, effectClient);
 };

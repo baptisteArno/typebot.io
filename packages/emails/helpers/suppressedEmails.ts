@@ -118,8 +118,8 @@ export const filterSuppressedRecipients = (
   return { ...recipients, address: filteredAddress };
 };
 
-export const listSuppressedEmails = (emails: string[]) =>
-  Effect.gen(function* () {
+export const listSuppressedEmails = Effect.fn("listSuppressedEmails")(
+  function* (emails: string[]) {
     const normalized = normalizeEmailList(emails);
     if (!normalized.length) return [];
     const prisma = yield* PrismaService;
@@ -131,7 +131,8 @@ export const listSuppressedEmails = (emails: string[]) =>
       select: { email: true },
     });
     return suppressed.map((entry) => entry.email);
-  });
+  },
+);
 
 export const listSuppressedEmailsForRecipients = (
   recipients: SendMailOptions["to"],
@@ -143,74 +144,71 @@ export const runListSuppressedEmailsForRecipients = (
 
 const SUPPRESSION_THRESHOLD = 2;
 
-export const recordTransientGeneralBounces = (
-  emails: string[],
-  webhookId?: string,
-) =>
-  Effect.gen(function* () {
-    const normalized = normalizeEmailList(emails);
-    if (!normalized.length) return;
-    const prisma = yield* PrismaService;
-    const now = new Date();
+export const recordTransientGeneralBounces = Effect.fn(
+  "recordTransientGeneralBounces",
+)(function* (emails: string[], webhookId?: string) {
+  const normalized = normalizeEmailList(emails);
+  if (!normalized.length) return;
+  const prisma = yield* PrismaService;
+  const now = new Date();
 
-    yield* Effect.forEach(
-      normalized,
-      (email) =>
-        Effect.gen(function* () {
-          const updateWhere = webhookId
-            ? { email, NOT: { lastWebhookId: webhookId } }
-            : { email };
-          const updateData = webhookId
-            ? {
-                transientGeneralBounceCount: { increment: 1 },
-                lastWebhookId: webhookId,
-              }
-            : { transientGeneralBounceCount: { increment: 1 } };
-          const createData = {
-            email,
-            transientGeneralBounceCount: 1,
-            suppressedAt: null,
-            lastWebhookId: webhookId ?? null,
-          };
+  yield* Effect.forEach(
+    normalized,
+    Effect.fn(function* (email) {
+      const updateWhere = webhookId
+        ? { email, NOT: { lastWebhookId: webhookId } }
+        : { email };
+      const updateData = webhookId
+        ? {
+            transientGeneralBounceCount: { increment: 1 },
+            lastWebhookId: webhookId,
+          }
+        : { transientGeneralBounceCount: { increment: 1 } };
+      const createData = {
+        email,
+        transientGeneralBounceCount: 1,
+        suppressedAt: null,
+        lastWebhookId: webhookId ?? null,
+      };
 
-          const updated = yield* prisma.suppressedEmail.updateMany({
+      const updated = yield* prisma.suppressedEmail.updateMany({
+        where: updateWhere,
+        data: updateData,
+      });
+
+      if (updated.count === 0) {
+        const created = yield* prisma.suppressedEmail
+          .create({ data: createData })
+          .pipe(
+            Effect.as(true),
+            Effect.catchAll((error) => {
+              if (
+                error instanceof PrismaClientKnownRequestError &&
+                error.code === "P2002"
+              )
+                return Effect.succeed(false);
+              return Effect.fail(error);
+            }),
+          );
+        if (!created)
+          yield* prisma.suppressedEmail.updateMany({
             where: updateWhere,
             data: updateData,
           });
+      }
 
-          if (updated.count === 0) {
-            const created = yield* prisma.suppressedEmail
-              .create({ data: createData })
-              .pipe(
-                Effect.as(true),
-                Effect.catchAll((error) => {
-                  if (
-                    error instanceof PrismaClientKnownRequestError &&
-                    error.code === "P2002"
-                  )
-                    return Effect.succeed(false);
-                  return Effect.fail(error);
-                }),
-              );
-            if (!created)
-              yield* prisma.suppressedEmail.updateMany({
-                where: updateWhere,
-                data: updateData,
-              });
-          }
-
-          yield* prisma.suppressedEmail.updateMany({
-            where: {
-              email,
-              suppressedAt: null,
-              transientGeneralBounceCount: { gte: SUPPRESSION_THRESHOLD },
-            },
-            data: { suppressedAt: now },
-          });
-        }),
-      { concurrency: 1 },
-    );
-  });
+      yield* prisma.suppressedEmail.updateMany({
+        where: {
+          email,
+          suppressedAt: null,
+          transientGeneralBounceCount: { gte: SUPPRESSION_THRESHOLD },
+        },
+        data: { suppressedAt: now },
+      });
+    }),
+    { concurrency: 1 },
+  );
+});
 
 export const runRecordTransientGeneralBounces = (
   emails: string[],

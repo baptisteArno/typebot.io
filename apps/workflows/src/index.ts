@@ -73,29 +73,28 @@ const AuthMiddleware = HttpLayerRouter.middleware(
   Effect.gen(function* () {
     const { rpcSecret: expectedRpcSecret } = yield* WorkflowsServerConfig;
 
-    return (httpEffect) =>
-      Effect.gen(function* () {
-        const request = yield* HttpServerRequest.HttpServerRequest;
-        const rpcSecret = Redacted.make(request.headers[RPC_SECRET_HEADER_KEY]);
+    return Effect.fn(function* (httpEffect) {
+      const request = yield* HttpServerRequest.HttpServerRequest;
+      const rpcSecret = Redacted.make(request.headers[RPC_SECRET_HEADER_KEY]);
 
-        if (
-          !rpcSecret ||
-          !Redacted.getEquivalence(Equivalence.string)(
-            rpcSecret,
-            expectedRpcSecret,
-          )
-        ) {
-          return yield* HttpServerResponse.json(
-            {
-              error: "Unauthorized",
-              message: "Missing or invalid authorization header",
-            },
-            { status: 401 },
-          );
-        }
+      if (
+        !rpcSecret ||
+        !Redacted.getEquivalence(Equivalence.string)(
+          rpcSecret,
+          expectedRpcSecret,
+        )
+      ) {
+        return yield* HttpServerResponse.json(
+          {
+            error: "Unauthorized",
+            message: "Missing or invalid authorization header",
+          },
+          { status: 401 },
+        );
+      }
 
-        return yield* httpEffect;
-      });
+      return yield* httpEffect;
+    });
   }),
 ).layer;
 
