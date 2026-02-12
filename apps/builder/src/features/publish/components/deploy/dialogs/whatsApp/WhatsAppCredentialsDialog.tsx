@@ -46,12 +46,9 @@ export const WhatsAppCredentialsDialog = ({
   onClose,
   onNewCredentials,
 }: Props) => {
-  const { data: featureFlags } = useQuery(orpc.getFeatureFlags.queryOptions());
-
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
       <WhatsAppCreateDialogBody
-        is360DialogEnabled={featureFlags?.flags?.["360dialog"] ?? false}
         onNewCredentials={onNewCredentials}
         onClose={onClose}
       />
@@ -69,18 +66,14 @@ const useSteps = () => {
 };
 
 export const WhatsAppCreateDialogBody = ({
-  is360DialogEnabled,
   onNewCredentials,
   onClose,
 }: {
-  is360DialogEnabled: boolean;
   onNewCredentials: (id: string) => void;
   onClose: () => void;
 }) => {
   const { workspace } = useWorkspace();
-  const [provider, setProvider] = useState<"meta" | "360dialog" | null>(
-    is360DialogEnabled ? null : "meta",
-  );
+  const [provider, setProvider] = useState<"meta" | "360dialog" | null>(null);
   const steps = provider === "meta" ? metaSteps : dialog360Steps;
   const { activeStep, goToNext, goToPrevious, setActiveStep } = useSteps();
   const [systemUserAccessToken, setSystemUserAccessToken] = useState("");
@@ -266,7 +259,7 @@ export const WhatsAppCreateDialogBody = ({
 
   return (
     <Dialog.Popup className="max-w-3xl">
-      <div className="flex items-center gap-2 h-[40px]">
+      <div className="flex items-center gap-2 h-10">
         {(activeStep > 0 || provider) && (
           <Button
             size="icon"

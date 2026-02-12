@@ -11,7 +11,7 @@ export const getFeatureFlags = authenticatedProcedure
   .output(flagsSchema)
   .handler(async ({ context: { user } }) => {
     if (!env.NEXT_PUBLIC_POSTHOG_KEY)
-      return { flags: { "360dialog": true, cards: false } };
+      return { flags: { "360dialog": false, cards: false } };
     const client = new PostHog(env.NEXT_PUBLIC_POSTHOG_KEY, {
       host: env.POSTHOG_API_HOST,
     });

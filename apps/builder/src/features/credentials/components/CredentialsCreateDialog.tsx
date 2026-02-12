@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import type { Credentials } from "@typebot.io/credentials/schemas";
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
@@ -8,7 +7,6 @@ import { SmtpCredentialsCreateDialogBody } from "@/features/blocks/integrations/
 import { ForgedCredentialsCreateDialogBody } from "@/features/forge/components/credentials/ForgedCredentialsCreateDialog";
 import { ForgedOAuthCredentialsCreateDialogBody } from "@/features/forge/components/credentials/ForgedOAuthCredentialsCreateDialog";
 import { WhatsAppCreateDialogBody } from "@/features/publish/components/deploy/dialogs/whatsApp/WhatsAppCredentialsDialog";
-import { orpc } from "@/lib/queryClient";
 
 export const CredentialsCreateDialog = ({
   isOpen,
@@ -48,7 +46,6 @@ const CredentialsCreateDialogPopup = ({
   onClose: () => void;
   onSubmit: () => void;
 }) => {
-  const { data: featureFlags } = useQuery(orpc.getFeatureFlags.queryOptions());
   if (type === "google sheets") return <GoogleSheetConnectDialogBody />;
   if (type === "smtp")
     return <SmtpCredentialsCreateDialogBody onNewCredentials={onSubmit} />;
@@ -61,11 +58,7 @@ const CredentialsCreateDialogPopup = ({
     );
   if (type === "whatsApp")
     return (
-      <WhatsAppCreateDialogBody
-        is360DialogEnabled={featureFlags?.flags?.["360dialog"] ?? false}
-        onNewCredentials={onSubmit}
-        onClose={onClose}
-      />
+      <WhatsAppCreateDialogBody onNewCredentials={onSubmit} onClose={onClose} />
     );
   if (type === "http proxy") return null;
 
