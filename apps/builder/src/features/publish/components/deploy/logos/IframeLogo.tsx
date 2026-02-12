@@ -9,6 +9,7 @@ export const IframeLogo = (props: React.SVGProps<SVGSVGElement>) => {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
+      <title>Iframe Logo</title>
       <g>
         <g>
           <path

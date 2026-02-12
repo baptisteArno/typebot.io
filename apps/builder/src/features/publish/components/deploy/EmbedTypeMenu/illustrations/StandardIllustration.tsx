@@ -10,6 +10,7 @@ export const StandardIllustration = () => {
       xmlns="http://www.w3.org/2000/svg"
       className="light"
     >
+      <title>Standard Illustration</title>
       <rect width="500" height="500" rx="20" className="fill-gray-6" />
       <rect
         x="49"

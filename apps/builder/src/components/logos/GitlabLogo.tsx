@@ -1,5 +1,6 @@
 export const GitlabLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 256 236" {...props}>
+    <title>Gitlab Logo</title>
     <path
       d="M128.075 236.075l47.104-144.97H80.97l47.104 144.97z"
       fill="#E24329"

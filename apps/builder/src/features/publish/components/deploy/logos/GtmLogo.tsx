@@ -7,6 +7,7 @@ export const GtmLogo = (props: React.SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
+    <title>Gtm Logo</title>
     <path
       d="M184.34 302.11L129.819 247.525L246.935 129.214L302.461 184.727L184.34 302.11Z"
       fill="#8AB4F8"

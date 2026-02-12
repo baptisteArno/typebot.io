@@ -10,6 +10,7 @@ export const ArrowRightIcon = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => (
     stroke-linejoin="round"
     {...props}
   >
+    <title>Arrow Right Icon</title>
     <path d="M5 12h14" />
     <path d="m12 5 7 7-7 7" />
   </svg>

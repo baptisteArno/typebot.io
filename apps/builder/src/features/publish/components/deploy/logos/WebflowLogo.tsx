@@ -7,6 +7,7 @@ export const WebflowLogo = (props: React.SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
+    <title>Webflow Logo</title>
     <path
       d="M112 224C173.856 224 224 173.856 224 112C224 50.1441 173.856 0 112 0C50.1441 0 0 50.1441 0 112C0 173.856 50.1441 224 112 224Z"
       fill="#4353FF"

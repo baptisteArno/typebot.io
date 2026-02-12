@@ -1,6 +1,7 @@
 export const StripeLogo = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg viewBox="0 0 400 400" {...props}>
+      <title>Stripe Logo</title>
       <path
         style={{ fillRule: "evenodd", clipRule: "evenodd", fill: "#635bff" }}
         d="M0 0h400v400H0z"

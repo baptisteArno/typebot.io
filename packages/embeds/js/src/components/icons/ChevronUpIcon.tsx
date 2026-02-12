@@ -11,6 +11,7 @@ export const ChevronUpIcon = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => (
     stroke-linejoin="round"
     {...props}
   >
+    <title>Chevron Up Icon</title>
     <path d="M18 15l-6-6-6 6" />
   </svg>
 );

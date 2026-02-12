@@ -58,6 +58,7 @@ export const TemplatesFilterSidebar = ({
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
+                  <title>Templates Filter Sidebar</title>
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

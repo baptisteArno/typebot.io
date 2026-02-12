@@ -2,6 +2,7 @@ export const whatsAppBrandColor = "#25D366";
 
 export const WhatsAppLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 510 513" {...props}>
+    <title>Whats App Logo</title>
     <path
       fillRule="evenodd"
       clipRule="evenodd"

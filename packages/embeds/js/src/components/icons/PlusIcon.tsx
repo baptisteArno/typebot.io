@@ -11,6 +11,7 @@ export const PlusIcon = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => (
     stroke-linejoin="round"
     {...props}
   >
+    <title>Plus Icon</title>
     <path d="M5 12h14" />
     <path d="M12 5v14" />
   </svg>

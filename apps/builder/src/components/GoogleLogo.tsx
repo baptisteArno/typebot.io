@@ -1,5 +1,6 @@
 export const GoogleLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" {...props}>
+    <title>Google Logo</title>
     <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
       <path
         fill="#4285F4"

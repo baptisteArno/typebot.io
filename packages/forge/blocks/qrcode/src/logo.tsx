@@ -11,6 +11,7 @@ export const QrCodeLogo = (props: React.SVGProps<SVGSVGElement>) => (
     strokeLinejoin="round"
     {...props}
   >
+    <title>QR Code Logo</title>
     <rect width="5" height="5" x="3" y="3" rx="1" />
     <rect width="5" height="5" x="16" y="3" rx="1" />
     <rect width="5" height="5" x="3" y="16" rx="1" />

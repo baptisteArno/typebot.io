@@ -32,6 +32,7 @@ export const Edges = ({
   const { connectingIds } = useGraph();
   return (
     <svg className="absolute left-0 top-0 overflow-visible shape-geometric-precision size-full">
+      <title>Edges</title>
       {connectingIds && <DrawingEdge connectingIds={connectingIds} />}
       {edges.map((edge) => (
         <Edge

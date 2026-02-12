@@ -11,6 +11,7 @@ export const PictureIcon = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => (
     stroke-linejoin="round"
     {...props}
   >
+    <title>Picture Icon</title>
     <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
     <path d="M14 2v4a2 2 0 0 0 2 2h4" />
     <circle cx="10" cy="12" r="2" />

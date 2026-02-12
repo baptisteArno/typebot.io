@@ -2,6 +2,7 @@
 
 export const GroqLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="none" {...props}>
+    <title>Groq Logo</title>
     <path
       fill="#F55036"
       d="M24 12c0 6.627-5.373 12-12 12S0 18.627 0 12 5.373 0 12 0s12 5.373 12 12Z"

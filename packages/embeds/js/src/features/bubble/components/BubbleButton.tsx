@@ -46,6 +46,7 @@ const OpenIcon = (props: Props) => (
           props.isBotOpen ? "scale-0 opacity-0" : "scale-100 opacity-100",
         )}
       >
+        <title>Bubble Button</title>
         <path
           d="M8 15C12.418 15 16 11.866 16 8C16 4.134 12.418 1 8 1C3.582 1 0 4.134 0 8C0 9.76 0.743 11.37 1.97 12.6C1.873 13.616 1.553 14.73 1.199 15.566C1.12 15.752 1.273 15.96 1.472 15.928C3.728 15.558 5.069 14.99 5.652 14.694C6.41791 14.8983 7.20732 15.0012 8 15Z"
           fill="currentColor"
@@ -99,6 +100,7 @@ const CloseIcon = (props: Props) => (
             : "scale-0 -rotate-180 opacity-0",
         )}
       >
+        <title>Bubble Button</title>
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"

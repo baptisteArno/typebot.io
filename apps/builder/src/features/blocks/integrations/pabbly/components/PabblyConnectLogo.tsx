@@ -11,6 +11,7 @@ export const PabblyConnectLogo = ({
     {...props}
     className={cn("size-4", className)}
   >
+    <title>Pabbly Connect Logo</title>
     <switch>
       <g>
         <path
