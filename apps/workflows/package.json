@@ -10,31 +10,31 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@effect/cluster": "^0.56.1",
+    "@effect/cluster": "^0.56.3",
     "@effect/experimental": "^0.58.0",
-    "@effect/opentelemetry": "^0.60.0",
-    "@effect/platform": "^0.94.1",
-    "@effect/platform-bun": "^0.87.0",
+    "@effect/opentelemetry": "^0.61.0",
+    "@effect/platform": "^0.94.4",
+    "@effect/platform-bun": "^0.87.1",
     "@effect/rpc": "^0.73.0",
-    "@effect/sql-pg": "^0.50.1",
+    "@effect/sql-pg": "^0.50.3",
     "@effect/workflow": "^0.16.0",
-    "@opentelemetry/exporter-logs-otlp-http": "^0.209.0",
-    "@opentelemetry/exporter-trace-otlp-http": "^0.209.0",
-    "@opentelemetry/resources": "^2.3.0",
-    "@opentelemetry/sdk-logs": "^0.209.0",
-    "@opentelemetry/sdk-trace-base": "^2.3.0",
-    "@opentelemetry/sdk-trace-node": "^2.3.0",
-    "@opentelemetry/sdk-trace-web": "^2.3.0",
+    "@opentelemetry/exporter-logs-otlp-http": "^0.211.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.211.0",
+    "@opentelemetry/resources": "^2.5.0",
+    "@opentelemetry/sdk-logs": "^0.211.0",
+    "@opentelemetry/sdk-trace-base": "^2.5.0",
+    "@opentelemetry/sdk-trace-node": "^2.5.0",
+    "@opentelemetry/sdk-trace-web": "^2.5.0",
     "@typebot.io/config": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/results": "workspace:*",
     "@typebot.io/user": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
-    "effect": "^3.19.14"
+    "effect": "^3.19.16"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
-    "@types/bun": "^1.3.6"
+    "@types/bun": "^1.3.9"
   }
 }

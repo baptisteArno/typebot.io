@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@effect-aws/s3": "^0.2.5",
-    "effect": "^3.19.14",
+    "effect": "^3.19.16",
     "papaparse": "^5.4.1",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/emails": "workspace:*",

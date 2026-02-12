@@ -23,7 +23,7 @@ There are global scripts defined on root `package.json`:
 - `bun format-and-lint` runs code format and lint
 - `bun lint-repo` runs repo packages lint
 - Both have `*:fix` alternative that runs the commands with autofix.
-- `bun check` is a convenient helper to run type checking, format, lint (+ auto fix)
+- `bun check` is a convenient helper to run type checking, format, lint (+ auto fix). **IMPORTANT** Always use it to review your implementation.
 
 IMPORTANT: Never run `dev` script, assume dev server are already running locally.
 

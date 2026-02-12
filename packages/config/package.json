@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "@effect-aws/s3": "^0.2.5",
-    "@effect/platform": "^0.94.1",
+    "@effect/platform": "^0.94.4",
     "@effect/rpc": "^0.73.0",
-    "effect": "^3.19.14"
+    "effect": "^3.19.16"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

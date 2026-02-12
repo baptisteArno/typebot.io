@@ -11,13 +11,20 @@ const mysqlSchemaPath = relative(
   join(__dirname, `../mysql/schema.prisma`),
 );
 
+const prismaConfigPath = relative(
+  process.cwd(),
+  join(__dirname, `../prisma.config.ts`),
+);
+
 type Options = {
   force?: boolean;
+  includeSchema?: boolean;
 };
 
 export const executePrismaCommand = (command: string, options?: Options) => {
   const databaseUrl =
     process.env.DATABASE_URL ?? (options?.force ? "postgresql://" : undefined);
+  const includeSchema = options?.includeSchema ?? true;
 
   if (!databaseUrl) {
     console.error("Could not find DATABASE_URL in environment");
@@ -27,7 +34,11 @@ export const executePrismaCommand = (command: string, options?: Options) => {
 
   if (databaseUrl?.startsWith("mysql://")) {
     console.log("Executing for MySQL schema");
-    return executeCommand(`${command} --schema ${mysqlSchemaPath}`);
+    return executeCommand(
+      `${command} --config ${prismaConfigPath}${
+        includeSchema ? ` --schema ${mysqlSchemaPath}` : ""
+      }`,
+    );
   }
 
   if (
@@ -35,11 +46,15 @@ export const executePrismaCommand = (command: string, options?: Options) => {
     databaseUrl?.startsWith("postgresql://")
   ) {
     console.log("Executing for PostgreSQL schema");
-    return executeCommand(`${command} --schema ${postgesqlSchemaPath}`);
+    return executeCommand(
+      `${command} --config ${prismaConfigPath}${
+        includeSchema ? ` --schema ${postgesqlSchemaPath}` : ""
+      }`,
+    );
   }
 
   console.error(
-    "Invalid `DATABASE_URL` format, it should start with `postgresql://` or `postgres://`",
+    "Invalid `DATABASE_URL` format, it should start with `postgresql://`, `postgres://` or `mysql://`",
   );
   process.exit(1);
 };

@@ -11,21 +11,23 @@
     "db:generate:mysql": "DATABASE_URL=mysql:// dotenv -e ./.env -e ../../.env -- tsx scripts/db-generate.ts",
     "db:push": "dotenv -e ./.env -e ../../.env -- tsx scripts/db-push.ts",
     "migrate:deploy": "dotenv -e ./.env -e ../../.env -- tsx scripts/migrate-deploy.ts",
-    "create-migration-file": "dotenv -e ./.env -e ../../.env -- prisma migrate dev --create-only --schema postgresql/schema.prisma",
+    "create-migration-file": "dotenv -e ./.env -e ../../.env -- prisma migrate dev --config prisma.config.ts --create-only --schema postgresql/schema.prisma",
     "db:migrate": "bun migrate:deploy",
-    "reset": "dotenv -e ./.env -e ../../.env -- prisma migrate reset --schema postgresql/schema.prisma",
+    "reset": "dotenv -e ./.env -e ../../.env -- prisma migrate reset --config prisma.config.ts --schema postgresql/schema.prisma",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@prisma/client": "^6.19.0",
-    "@prisma/extension-read-replicas": "^0.4.1",
-    "effect": "^3.19.14",
-    "prisma": "^6.19.0"
+    "@prisma/adapter-pg": "^7.4.0",
+    "@prisma/adapter-planetscale": "^7.4.0",
+    "@prisma/client": "^7.4.0",
+    "@prisma/extension-read-replicas": "^0.5.0",
+    "effect": "^3.19.16",
+    "prisma": "^7.4.0"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*",
     "dotenv-cli": "^8.0.0",
-    "effect-prisma-generator": "^0.7.1",
+    "effect-prisma-generator": "^0.8.0",
     "tsx": "^4.19.1"
   }
 }
