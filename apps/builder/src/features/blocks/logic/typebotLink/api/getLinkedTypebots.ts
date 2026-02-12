@@ -85,11 +85,13 @@ export const getLinkedTypebots = authenticatedProcedure
         .reduce<string[]>((typebotIds, block) => {
           if (block.type !== LogicBlockType.TYPEBOT_LINK) return typebotIds;
           const typebotId = block.options?.typebotId;
-          return isDefined(typebotId) &&
+          if (
+            isDefined(typebotId) &&
             !typebotIds.includes(typebotId) &&
             block.options?.mergeResults !== false
-            ? [...typebotIds, typebotId]
-            : typebotIds;
+          )
+            typebotIds.push(typebotId);
+          return typebotIds;
         }, []) ?? [];
 
     if (!linkedTypebotIds.length) return { typebots: [] };

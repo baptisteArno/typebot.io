@@ -31,14 +31,14 @@ export const ForgedBlockSettings = ({ block, onOptionsChange }: Props) => {
   const resetOptionsAction = (updates: any) => {
     if (!actionDef) return;
     const actionOptionsKeys = Object.keys(actionDef.options?.shape ?? []);
-    const actionOptions = actionOptionsKeys.reduce(
-      (acc, key) => ({
-        ...acc,
-        [key]:
+    const actionOptions = actionOptionsKeys.reduce<Record<string, unknown>>(
+      (acc, key) => {
+        acc[key] =
           block.options[key] && typeof block.options[key] !== "object"
             ? block.options[key]
-            : undefined,
-      }),
+            : undefined;
+        return acc;
+      },
       {},
     );
     onOptionsChange({

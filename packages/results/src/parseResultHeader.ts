@@ -138,7 +138,8 @@ const parseInputsResultHeader = ({
           ? [inputBlock.options.variableId]
           : undefined,
       };
-      return [...existingHeaders, newHeaderCell];
+      existingHeaders.push(newHeaderCell);
+      return existingHeaders;
     }
 
     const newHeaderCell: ResultHeaderCellWithBlock = {
@@ -156,7 +157,8 @@ const parseInputsResultHeader = ({
         : undefined,
     };
 
-    return [...existingHeaders, newHeaderCell];
+    existingHeaders.push(newHeaderCell);
+    return existingHeaders;
   }, []);
 
 const parseVariablesHeaders = ({
@@ -196,7 +198,8 @@ const parseVariablesHeaders = ({
       variableIds: [variable.id],
     };
 
-    return [...existingHeaders, newHeaderCell];
+    existingHeaders.push(newHeaderCell);
+    return existingHeaders;
   }, []);
 
 const parseResultsFromPreviousBotVersions = ({
@@ -227,18 +230,16 @@ const parseResultsFromPreviousBotVersions = ({
         groups.find((group) =>
           group.blocks.some((block) => block.id === answer.blockId),
         )?.id ?? "";
-      return [
-        ...existingHeaders,
-        {
-          id: answer.blockId,
-          label: `${answer.blockId} (deleted block)`,
-          blocks: [
-            {
-              id: answer.blockId,
-              groupId,
-            },
-          ],
-          blockType: InputBlockType.TEXT,
-        },
-      ];
+      existingHeaders.push({
+        id: answer.blockId,
+        label: `${answer.blockId} (deleted block)`,
+        blocks: [
+          {
+            id: answer.blockId,
+            groupId,
+          },
+        ],
+        blockType: InputBlockType.TEXT,
+      });
+      return existingHeaders;
     }, []);

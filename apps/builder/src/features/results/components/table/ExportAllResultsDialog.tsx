@@ -139,7 +139,8 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
         (headerCell) => headerCell.id === columnId,
       )?.id;
       if (!columnLabel) return currentHeaderIds;
-      return [...currentHeaderIds, columnLabel];
+      currentHeaderIds.push(columnLabel);
+      return currentHeaderIds;
     }, []);
 
     const data = dataToUnparse.map<{ [key: string]: string }>((data) => {

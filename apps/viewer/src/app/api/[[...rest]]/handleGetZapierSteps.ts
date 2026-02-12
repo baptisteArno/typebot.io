@@ -34,14 +34,14 @@ export const handleGetZapierSteps = async ({
     { id: string; blockId: string; name: string }[]
   >((emptyWebhookBlocks, group) => {
     const blocks = group.blocks.filter((block) => isHttpRequestBlock(block));
-    return [
-      ...emptyWebhookBlocks,
+    emptyWebhookBlocks.push(
       ...blocks.map((b) => ({
         blockId: group.id,
         id: b.id,
         name: `${group.title} > ${b.id}`,
       })),
-    ];
+    );
+    return emptyWebhookBlocks;
   }, []);
 
   return { steps: emptyHttpRequestBlocks };

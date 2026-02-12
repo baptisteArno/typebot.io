@@ -20,12 +20,16 @@ export const convertInvitationsToCollaborations = async (
     })),
   });
   const workspaceInvitations = invitations.reduce<InvitationWithWorkspaceId[]>(
-    (acc, invitation) =>
-      acc.some(
-        (inv) => inv.typebot.workspaceId === invitation.typebot.workspaceId,
+    (acc, invitation) => {
+      if (
+        acc.some(
+          (inv) => inv.typebot.workspaceId === invitation.typebot.workspaceId,
+        )
       )
-        ? acc
-        : [...acc, invitation],
+        return acc;
+      acc.push(invitation);
+      return acc;
+    },
     [],
   );
   for (const invitation of workspaceInvitations) {

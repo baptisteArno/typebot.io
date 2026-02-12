@@ -12,20 +12,20 @@ export const parseNewCellValuesObject = (
   }: {
     variables: Variable[];
     sessionStore: SessionStore;
-    headerValues?: string[];
+    headerValues: string[];
   },
 ): { [key: string]: { value: string; columnIndex: number } } =>
-  cells.reduce((row, cell) => {
-    return !cell.column || !cell.value
-      ? row
-      : {
-          ...row,
-          [cell.column]: {
-            value: parseVariables(cell.value, {
-              variables,
-              sessionStore,
-            }),
-            columnIndex: headerValues?.indexOf(cell.column),
-          },
-        };
-  }, {});
+  cells.reduce<{ [key: string]: { value: string; columnIndex: number } }>(
+    (row, cell) => {
+      if (!cell.column || !cell.value) return row;
+      row[cell.column] = {
+        value: parseVariables(cell.value, {
+          variables,
+          sessionStore,
+        }),
+        columnIndex: headerValues.indexOf(cell.column),
+      };
+      return row;
+    },
+    {},
+  );

@@ -89,7 +89,8 @@ export const saveDataInResponseVariableMapping = ({
           sessionStore,
         }),
       );
-      return [...newVariables, { ...existingVariable, value }];
+      newVariables.push({ ...existingVariable, value });
+      return newVariables;
     } catch (_err) {
       return newVariables;
     }

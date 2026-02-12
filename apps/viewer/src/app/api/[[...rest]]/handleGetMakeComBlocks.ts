@@ -34,15 +34,15 @@ export const handleGetMakeComBlocks = async ({
     { id: string; blockId: string; name: string }[]
   >((emptyWebhookBlocks, group) => {
     const blocks = group.blocks.filter((block) => isHttpRequestBlock(block));
-    return [
-      ...emptyWebhookBlocks,
+    emptyWebhookBlocks.push(
       ...blocks.map((b) => ({
         // Duplicate id to keep compatibility with old API
         id: b.id,
         blockId: b.id,
         name: `${group.title} > ${b.id}`,
       })),
-    ];
+    );
+    return emptyWebhookBlocks;
   }, []);
 
   return { blocks: emptyHttpRequestBlocks };
