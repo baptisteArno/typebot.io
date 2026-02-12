@@ -29,17 +29,12 @@ IMPORTANT: Never run `dev` script, assume dev server are already running locally
 
 ## Coding style
 
-- Write Effect code whenever possible. Check effect-best-practices before implementing Effect code.
+- Write Effect code whenever possible. **IMPORTANT** Always consult effect-solutions before writing Effect code. Never guess at Effect patterns - check the guide first.
 - Rely heavily on type inference, we tend not to declare types.
 - Prefer files exporting a single primary function and the file name should match the exported function name. On that file, the main exported function is at the top while local helpers are at the bottom.
 - Use very explicit variable names.
 - Extract a helper function only if the logic is used at least twice in the main function.
 - Declare a variable only if it is used at least twice.
-
-## Workflow
-
-- Be eager on web searches and `opensrc` use.
-- We recommend you always run `bun check` to verify your work.
 
 ## opensrc
 
@@ -55,3 +50,11 @@ bunx opensrc <owner>/<repo>      # GitHub repo (e.g., bunx opensrc vercel/ai)
 ```
 
 Source code for dependencies is then available in `opensrc/`.
+
+## effect-solutions
+
+1. Run `effect-solutions list` to see available guides
+2. Run `effect-solutions show <topic>...` for relevant patterns (supports multiple topics)
+3. Search `opensrc/repos/github.com/Effect-TS/effect` for source code and real implementations
+
+Topics: quick-start, project-setup, tsconfig, basics, services-and-layers, data-modeling, error-handling, config, testing, cli.

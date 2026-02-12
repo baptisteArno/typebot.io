@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "postinstall": "turbo run db:generate",
-    "prepare": "husky",
+    "prepare": "husky && effect-language-service patch",
     "pre-commit": "turbo run format-and-lint lint-repo check-broken-links test",
     "format-and-lint": "biome check .",
     "format-and-lint:fix": "biome check . --write --unsafe",
@@ -37,11 +37,11 @@
     "check": "turbo run check-types test format-and-lint:fix lint-repo check-broken-links"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.13",
-    "@tolgee/cli": "^2.14.0",
+    "@biomejs/biome": "^2.3.14",
+    "@tolgee/cli": "^2.15.1",
     "husky": "^9.1.7",
     "sherif": "^1.10.0",
-    "turbo": "^2.7.6",
+    "turbo": "^2.8.7",
     "typescript": "^5.9.3",
     "rimraf": "^6.1.2",
     "@effect/language-service": "^0.65.0",
