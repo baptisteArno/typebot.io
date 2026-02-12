@@ -26,5 +26,8 @@ export function transformToMCPTool(tool: WorkflowTool) {
       properties,
       required,
     },
+    annotations: {
+      workflowId: tool.id,
+    }
   }
 }

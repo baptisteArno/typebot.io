@@ -4,6 +4,7 @@ import {
   executeWorkflow,
   sanitizeToolName,
   extractToolOutput,
+  transformToMCPTool,
 } from '@/features/mcp'
 
 /**
@@ -94,33 +95,7 @@ export default async function handler(
 
         const { tools } = await getWorkflowTools({ tenant })
 
-        const mcpTools = tools.map((tool) => {
-          const properties: Record<
-            string,
-            { type: string; description: string }
-          > = {}
-          const required: string[] = []
-
-          for (const v of tool.variables || []) {
-            if (v.name) {
-              properties[v.name] = {
-                type: 'string',
-                description: v.description || `Input for ${v.name}`,
-              }
-              required.push(v.name)
-            }
-          }
-
-          return {
-            name: sanitizeToolName(tool.name),
-            description: tool.description || `Execute ${tool.name}`,
-            inputSchema: {
-              type: 'object',
-              properties,
-              required,
-            },
-          }
-        })
+        const mcpTools = tools.map(transformToMCPTool)
 
         return res.status(200).json({
           jsonrpc: '2.0',
