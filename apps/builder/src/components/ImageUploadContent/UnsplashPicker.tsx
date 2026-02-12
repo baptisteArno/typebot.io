@@ -189,12 +189,17 @@ const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
       onMouseEnter={() => setIsImageHovered(true)}
       onMouseLeave={() => setIsImageHovered(false)}
     >
-      <img
-        src={urls.thumb}
-        alt={alt_description ?? "Unsplash image"}
-        className="object-cover h-full cursor-pointer rounded-md"
+      <button
+        type="button"
+        className="size-full rounded-md cursor-pointer p-0 border-none bg-transparent"
         onClick={onClick}
-      />
+      >
+        <img
+          src={urls.thumb}
+          alt={alt_description ?? "Unsplash image"}
+          className="object-cover h-full rounded-md"
+        />
+      </button>
       <div
         className={cx(
           "absolute px-2 rounded-md bottom-0 left-0 bg-black/50 opacity-0 transition-opacity duration-200",

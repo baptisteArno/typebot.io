@@ -27,13 +27,7 @@ export const EmailRedirectPage = () => {
       <Seo title={"Email auth confirmation"} />
       <div className="flex flex-col p-10 rounded-8 border gap-6 bg-gray-1">
         <div className="flex flex-col gap-4">
-          <h2
-            onClick={() => {
-              throw new Error("Sentry is working");
-            }}
-          >
-            Email authentication
-          </h2>
+          <h2>Email authentication</h2>
           <p>
             You are about to login with <Badge>{email}</Badge>
           </p>

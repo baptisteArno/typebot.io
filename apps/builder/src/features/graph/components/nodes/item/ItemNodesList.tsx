@@ -121,7 +121,7 @@ export const ItemNodesList = ({
       });
     };
 
-  const stopPropagating = (e: React.MouseEvent) => e.stopPropagation();
+  const stopPropagating = (e: React.SyntheticEvent) => e.stopPropagation();
 
   const handlePushElementRef =
     (idx: number) => (elem: HTMLDivElement | null) => {
@@ -142,6 +142,7 @@ export const ItemNodesList = ({
     <div
       className="flex flex-col gap-0 max-w-full flex-1"
       onClick={stopPropagating}
+      onKeyDown={stopPropagating}
     >
       <PlaceholderNode
         isVisible={showPlaceholders}

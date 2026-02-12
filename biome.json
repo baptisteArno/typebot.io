@@ -36,7 +36,6 @@
         "noSvgWithoutTitle": "off",
         "useMediaCaption": "off",
         "useIframeTitle": "off",
-        "useKeyWithClickEvents": "off",
         "useButtonType": "off",
         "noRedundantAlt": "off",
         "noAutofocus": "off",
