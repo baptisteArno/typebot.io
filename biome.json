@@ -32,7 +32,6 @@
     "rules": {
       "recommended": true,
       "security": {
-        "noDangerouslySetInnerHtml": "off",
         "noGlobalEval": "off"
       },
       "a11y": {
