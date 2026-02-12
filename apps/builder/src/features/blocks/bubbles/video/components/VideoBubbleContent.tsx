@@ -32,6 +32,7 @@ export const VideoBubbleContent = ({ block }: Props) => {
               Display <VariableTag variableName={variable.name} />
             </p>
           ) : (
+            // biome-ignore lint/a11y/useMediaCaption: Captions are not available for configurable video sources in the builder preview.
             <video
               key={block.content.url}
               controls={block.content?.areControlsDisplayed}

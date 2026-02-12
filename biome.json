@@ -34,7 +34,6 @@
       "security": {},
       "a11y": {
         "noSvgWithoutTitle": "off",
-        "useMediaCaption": "off",
         "useKeyWithClickEvents": "off",
         "useButtonType": "off",
         "noRedundantAlt": "off",
