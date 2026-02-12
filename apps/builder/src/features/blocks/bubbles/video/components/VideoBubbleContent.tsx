@@ -32,6 +32,7 @@ export const VideoBubbleContent = ({ block }: Props) => {
               Display <VariableTag variableName={variable.name} />
             </p>
           ) : (
+            // biome-ignore lint/a11y/useMediaCaption: Captions are not available for configurable video sources in the builder preview.
             <video
               key={block.content.url}
               controls={block.content?.areControlsDisplayed}
@@ -56,6 +57,7 @@ export const VideoBubbleContent = ({ block }: Props) => {
       return (
         <div className="w-full h-[120px] relative">
           <iframe
+            title="Video preview"
             src={`${baseUrl}/${block.content.id}`}
             style={{
               width: "100%",
@@ -74,6 +76,7 @@ export const VideoBubbleContent = ({ block }: Props) => {
       return (
         <div className="w-full h-[300px] relative">
           <iframe
+            title="TikTok video preview"
             src={`https://www.tiktok.com/embed/v2/${block.content.id}`}
             style={{
               width: "100%",

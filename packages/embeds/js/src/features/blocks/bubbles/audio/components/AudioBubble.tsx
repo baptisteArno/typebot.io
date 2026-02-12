@@ -54,6 +54,7 @@ export const AudioBubble = (props: Props) => {
           >
             {isTyping() && <TypingBubble />}
           </div>
+          {/* biome-ignore lint/a11y/useMediaCaption: Captions are not available for dynamically configured audio bubble sources. */}
           <audio
             ref={audioElement}
             src={props.content?.url}

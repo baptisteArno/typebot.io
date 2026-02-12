@@ -141,6 +141,7 @@ const AudioGuestBubble = (props: { answer: RecordingInputSubmitContent }) => {
         class="p-2 w-full whitespace-pre-wrap typebot-guest-bubble flex flex-col"
         data-testid="guest-bubble"
       >
+        {/* biome-ignore lint/a11y/useMediaCaption: Captions are not available for user-submitted recordings. */}
         <audio controls src={props.answer.blobUrl ?? props.answer.url} />
       </div>
     </div>

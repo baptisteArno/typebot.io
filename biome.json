@@ -34,8 +34,6 @@
       "security": {},
       "a11y": {
         "noSvgWithoutTitle": "off",
-        "useMediaCaption": "off",
-        "useIframeTitle": "off",
         "useButtonType": "off",
         "noRedundantAlt": "off",
         "noAutofocus": "off",
