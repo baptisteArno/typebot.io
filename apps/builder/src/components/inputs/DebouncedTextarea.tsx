@@ -45,7 +45,7 @@ export const DebouncedTextareaWithVariablesButton = ({
   }, debounceTimeout);
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <Textarea
         {...props}
         value={value}
