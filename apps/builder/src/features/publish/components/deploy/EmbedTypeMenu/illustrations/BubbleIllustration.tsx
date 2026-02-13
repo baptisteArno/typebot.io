@@ -10,6 +10,7 @@ export const BubbleIllustration = () => {
       xmlns="http://www.w3.org/2000/svg"
       className="light"
     >
+      <title>Bubble Illustration</title>
       <rect width="500" height="500" rx="20" className="fill-gray-6" />
       <rect x="164" y="59" width="287" height="305" rx="10" fill="#0042DA" />
       <motion.rect

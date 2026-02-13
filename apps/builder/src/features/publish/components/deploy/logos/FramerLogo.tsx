@@ -5,6 +5,7 @@ export const FramerLogo = (props: React.SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
+    <title>Framer Logo</title>
     <path d="M4 0h16v8h-8zM4 8h8l8 8H4zM4 16h8v8z" />
   </svg>
 );

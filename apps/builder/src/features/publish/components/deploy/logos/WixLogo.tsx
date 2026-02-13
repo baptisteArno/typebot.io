@@ -11,6 +11,7 @@ export const WixLogo = (props: React.SVGProps<SVGSVGElement>) => {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
+      <title>Wix Logo</title>
       <path
         d="M178 2.29971C172 5.29971 169.4 10.8997 169.4 26.0997C169.4 26.0997 172.4 23.0997 177.2 21.2997C180.7 19.9997 183.2 18.2997 185 16.9997C190.2 13.0997 191 8.39971 191 0.199713C190.9 0.199713 182.7 -0.300287 178 2.29971Z"
         fill="#FBBD71"

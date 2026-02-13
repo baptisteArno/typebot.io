@@ -2,6 +2,7 @@ import { useThemeValue } from "@/hooks/useThemeValue";
 
 export const GiphyLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 163.79999999999998 35" {...props}>
+    <title>Giphy Logo</title>
     <g fill="none" fillRule="evenodd">
       <path d="M4 4h20v27H4z" fill="#000" />
       <g fillRule="nonzero">

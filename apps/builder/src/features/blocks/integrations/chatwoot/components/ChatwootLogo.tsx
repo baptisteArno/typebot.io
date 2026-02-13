@@ -11,6 +11,7 @@ export const ChatwootLogo = ({
     className={cn("size-4", className)}
     {...props}
   >
+    <title>Chatwoot Logo</title>
     <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g fillRule="nonzero">
         <circle fill="#47A7F6" cx="256" cy="256" r="256"></circle>

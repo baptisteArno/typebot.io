@@ -114,7 +114,7 @@ export const IconPicker = ({ onIconSelected }: Props) => {
         />
       </div>
       <div
-        className="flex flex-col overflow-y-auto max-h-[350px] gap-4"
+        className="flex flex-col overflow-y-auto max-h-87.5 gap-4"
         ref={scrollContainer}
       >
         {recentIconNames.length > 0 && (

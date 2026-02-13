@@ -7,6 +7,7 @@ export const NocodbLogo = (props: React.SVGProps<SVGSVGElement>) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
+    <title>Nocodb Logo</title>
     <rect
       width="32"
       height="32"

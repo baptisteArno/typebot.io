@@ -2,6 +2,7 @@
 
 export const TogetherAiLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 32 32" {...props}>
+    <title>TogetherAi Logo</title>
     <g clipPath="url(#clip0_542_18748)">
       <rect width="32" height="32" rx="5.64706" fill="#F1EFED" />
       <circle cx="22.8233" cy="9.64706" r="5.64706" fill="#D3D1D1" />

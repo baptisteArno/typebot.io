@@ -29,6 +29,7 @@ function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
+                <title>Checkbox</title>
                 <path d="M5.252 12h13.496" />
               </svg>
             ) : (
@@ -44,6 +45,7 @@ function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
+                <title>Checkbox</title>
                 <path d="M5.252 12.7 10.2 18.63 18.748 5.37" />
               </svg>
             )}

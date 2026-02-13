@@ -2,6 +2,7 @@ import { useThemeValue } from "@/hooks/useThemeValue";
 
 export const PexelsLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 130.318 50" {...props}>
+    <title>Pexels Logo</title>
     <g transform="translate(-3894 2762)">
       <rect
         width="50"

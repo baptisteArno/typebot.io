@@ -9,6 +9,7 @@ export const Spinner = (props: JSX.SvgSVGAttributes<SVGSVGElement>) => (
     viewBox="0 0 24 24"
     data-testid="loading-spinner"
   >
+    <title>Spinner</title>
     <circle
       class="opacity-25"
       cx="12"

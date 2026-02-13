@@ -1,5 +1,6 @@
 export const Dialog360Logo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" {...props}>
+    <title>Dialog360 Logo</title>
     <g>
       <path d="M64,0h192v192c0,35.32-28.68,64-64,64H0V64C0,28.68,28.68,0,64,0Z" />
       <path

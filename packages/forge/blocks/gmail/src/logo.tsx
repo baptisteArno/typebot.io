@@ -2,6 +2,7 @@
 
 export const GmailLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 100 100" fill="none" {...props}>
+    <title>Gmail Logo</title>
     <path
       d="M6.75 87H22.5V48.8788L0 32.0606V80.2727C0 83.9952 3.02625 87 6.75 87Z"
       fill="#4285F4"

@@ -2,6 +2,7 @@ import type { SVGProps } from "react";
 
 export const MessageSquareGradientIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} viewBox="0 0 24 24">
+    <title>Message Square Gradient Icon</title>
     <path
       d="M5 2C3.355 2 2 3.355 2 5v16c0 .89 1.077 1.337 1.707.707L7.414 18H19c1.645 0 3-1.355 3-3V5c0-1.645-1.355-3-3-3Z"
       fill="url(#gradient)"

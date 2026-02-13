@@ -5,6 +5,7 @@ export const AzureAdLogo = (props: React.SVGProps<SVGSVGElement>) => {
       viewBox="0 0 374.5 377.3"
       {...props}
     >
+      <title>Azure Ad Logo</title>
       <g transform="translate(-39.022 -78.115)">
         <g transform="translate(-63.947 -88.179)">
           <path

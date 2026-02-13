@@ -2,6 +2,7 @@
 
 export const SegmentLogo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 32 32" {...props}>
+    <title>Segment Logo</title>
     <path
       d="M30.096 10.093H13.1186C12.7596 10.093 12.4686 10.384 12.4686 10.743V12.6145C12.4686 12.9735 12.7596 13.2645 13.1186 13.2645H30.096C30.455 13.2645 30.746 12.9735 30.746 12.6145V10.743C30.746 10.384 30.455 10.093 30.096 10.093Z"
       fill="#52BD95"
