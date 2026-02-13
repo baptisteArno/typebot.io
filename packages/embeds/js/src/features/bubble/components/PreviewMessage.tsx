@@ -48,6 +48,7 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
   };
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: This container includes a nested close button.
     <div
       part="preview-message"
       onClick={() => props.onClick()}

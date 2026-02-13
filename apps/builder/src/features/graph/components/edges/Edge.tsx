@@ -110,7 +110,6 @@ export const Edge = ({ edge, fromElementId }: Props) => {
           <>
             <path
               {...props}
-              role="button"
               data-testid="clickable-edge"
               d={path}
               strokeWidth="18px"

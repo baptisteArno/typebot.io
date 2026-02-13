@@ -1,6 +1,5 @@
 import { OTPInput, OTPInputContext } from "input-otp";
 import * as React from "react";
-import { MinusSignIcon } from "../icons/MinusSignIcon";
 import { cn } from "../lib/cn";
 
 function Root({
@@ -63,12 +62,13 @@ function Slot({
   );
 }
 
-function Separator({ ...props }: React.ComponentProps<"div">) {
+function Separator({ className, ...props }: React.ComponentProps<"hr">) {
   return (
-    // biome-ignore lint/a11y/useAriaPropsForRole: we don't need aria attributes for this component
-    <div data-slot="input-otp-separator" role="separator" {...props}>
-      <MinusSignIcon />
-    </div>
+    <hr
+      data-slot="input-otp-separator"
+      className={cn("h-px w-3 border-0 bg-current opacity-70", className)}
+      {...props}
+    />
   );
 }
 

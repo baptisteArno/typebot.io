@@ -33,7 +33,6 @@
       "recommended": true,
       "security": {},
       "a11y": {
-        "useSemanticElements": "off",
         "useFocusableInteractive": "off",
         "noStaticElementInteractions": "off"
       },

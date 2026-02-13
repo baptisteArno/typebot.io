@@ -81,8 +81,6 @@ export const SingleLineEditable = forwardRef<
               preview?.onClick?.(e);
               setIsEditing(true);
             }}
-            role="button"
-            tabIndex={0}
             onKeyDown={(event) => {
               preview?.onKeyDown?.(event);
               if (event.defaultPrevented) return;

@@ -70,10 +70,8 @@ const FolderButton = ({
   const handleMouseLeave = () => setMouseOverFolderId(undefined);
   return (
     <>
+      {/* biome-ignore lint/a11y/useSemanticElements: This card contains nested interactive controls. */}
       <div
-        // This card contains nested interactive controls, so it cannot be a native <button>.
-        role="button"
-        tabIndex={0}
         className={cn(
           buttonVariants({
             variant: "outline-secondary",
@@ -83,6 +81,8 @@ const FolderButton = ({
           "w-[225px] h-[270px] relative px-6 whitespace-normal transition-all duration-100 justify-center bg-gray-1",
           isTypebotOver && "border-2 border-orange-8",
         )}
+        role="button"
+        tabIndex={0}
         onClick={handleClick}
         onKeyDown={(event) => {
           if (event.target !== event.currentTarget) return;

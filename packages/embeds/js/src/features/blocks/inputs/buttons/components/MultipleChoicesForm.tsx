@@ -119,14 +119,9 @@ export const MultipleChoicesForm = (props: Props) => {
         <For each={filteredItems()}>
           {(item) => (
             <span class="relative w-full @xs:w-auto">
-              <div
-                role="checkbox"
-                aria-checked={selectedItemIds().some(
-                  (selectedItemId) => selectedItemId === item.id,
-                )}
-                on:click={() => handleClick(item.id)}
+              <label
                 class={
-                  "w-full py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none typebot-selectable" +
+                  "block w-full py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none typebot-selectable" +
                   (selectedItemIds().some(
                     (selectedItemId) => selectedItemId === item.id,
                   )
@@ -135,6 +130,14 @@ export const MultipleChoicesForm = (props: Props) => {
                 }
                 data-itemid={item.id}
               >
+                <input
+                  type="checkbox"
+                  class="sr-only"
+                  checked={selectedItemIds().some(
+                    (selectedItemId) => selectedItemId === item.id,
+                  )}
+                  on:change={() => handleClick(item.id)}
+                />
                 <div class="flex items-center gap-2">
                   <Checkbox
                     isChecked={selectedItemIds().some(
@@ -144,7 +147,7 @@ export const MultipleChoicesForm = (props: Props) => {
                   />
                   <span>{item.content}</span>
                 </div>
-              </div>
+              </label>
             </span>
           )}
         </For>
@@ -155,15 +158,18 @@ export const MultipleChoicesForm = (props: Props) => {
         >
           {(selectedItemId) => (
             <span class="relative w-full @xs:w-auto">
-              <div
-                role="checkbox"
-                aria-checked
-                on:click={() => handleClick(selectedItemId)}
+              <label
                 class={
-                  "w-full py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none typebot-selectable selected"
+                  "block w-full py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none typebot-selectable selected"
                 }
                 data-itemid={selectedItemId}
               >
+                <input
+                  type="checkbox"
+                  class="sr-only"
+                  checked
+                  on:change={() => handleClick(selectedItemId)}
+                />
                 <div class="flex items-center gap-2">
                   <Checkbox isChecked />
                   <span>
@@ -174,7 +180,7 @@ export const MultipleChoicesForm = (props: Props) => {
                     }
                   </span>
                 </div>
-              </div>
+              </label>
             </span>
           )}
         </For>

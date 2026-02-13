@@ -1,8 +1,7 @@
 import { defaultRatingInputOptions } from "@typebot.io/blocks-inputs/rating/constants";
 import type { RatingInputBlock } from "@typebot.io/blocks-inputs/rating/schema";
 import { isDefined, isEmpty, isNotDefined } from "@typebot.io/lib/utils";
-import { createSignal, For, Match, Show, Switch } from "solid-js";
-import { Button } from "@/components/Button";
+import { createSignal, createUniqueId, For, Match, Switch } from "solid-js";
 import { SendButton } from "@/components/SendButton";
 import type { InputSubmitContent } from "@/types";
 
@@ -16,6 +15,7 @@ export const RatingForm = (props: Props) => {
   const [rating, setRating] = createSignal<number | undefined>(
     props.defaultValue ? Number(props.defaultValue) : undefined,
   );
+  const ratingInputName = `rating-${createUniqueId()}`;
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
@@ -58,6 +58,7 @@ export const RatingForm = (props: Props) => {
             <RatingButton
               {...props.block.options}
               rating={rating()}
+              groupName={ratingInputName}
               idx={
                 idx() +
                 ((props.block.options?.buttonType ??
@@ -91,13 +92,13 @@ export const RatingForm = (props: Props) => {
 
 type RatingButtonProps = {
   rating?: number;
+  groupName: string;
   idx: number;
   onClick: (rating: number) => void;
 } & RatingInputBlock["options"];
 
 const RatingButton = (props: RatingButtonProps) => {
-  const handleClick = (e: MouseEvent) => {
-    e.preventDefault();
+  const handleChange = () => {
     props.onClick(props.idx);
   };
   return (
@@ -108,24 +109,24 @@ const RatingButton = (props: RatingButtonProps) => {
           "Numbers"
         }
       >
-        <Show when={props.isOneClickSubmitEnabled}>
-          <Button on:click={handleClick}>{props.idx}</Button>
-        </Show>
-        <Show when={!props.isOneClickSubmitEnabled}>
-          <div
-            role="checkbox"
-            aria-checked={isDefined(props.rating) && props.idx <= props.rating}
-            on:click={handleClick}
-            class={
-              "py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none typebot-selectable" +
-              (isDefined(props.rating) && props.idx <= props.rating
-                ? " selected"
-                : "")
-            }
-          >
-            {props.idx}
-          </div>
-        </Show>
+        <label
+          class={
+            "py-2 px-4 font-semibold focus:outline-none cursor-pointer select-none typebot-selectable" +
+            (isDefined(props.rating) && props.idx <= props.rating
+              ? " selected"
+              : "")
+          }
+        >
+          <input
+            type="radio"
+            class="sr-only"
+            name={props.groupName}
+            value={props.idx}
+            checked={props.rating === props.idx}
+            on:change={handleChange}
+          />
+          {props.idx}
+        </label>
       </Match>
       <Match
         when={
@@ -133,20 +134,31 @@ const RatingButton = (props: RatingButtonProps) => {
           "Numbers"
         }
       >
-        <div
+        <label
           class={
-            "flex justify-center items-center rating-icon-container cursor-pointer " +
+            "cursor-pointer " +
             (isDefined(props.rating) && props.idx <= props.rating
               ? "selected"
               : "")
           }
-          innerHTML={
-            props.customIcon?.isEnabled && !isEmpty(props.customIcon.svg)
-              ? props.customIcon.svg
-              : defaultIcon
-          }
-          on:click={() => props.onClick(props.idx)}
-        />
+        >
+          <input
+            type="radio"
+            class="sr-only"
+            name={props.groupName}
+            value={props.idx}
+            checked={props.rating === props.idx}
+            on:change={handleChange}
+          />
+          <div
+            class="flex justify-center items-center rating-icon-container"
+            innerHTML={
+              props.customIcon?.isEnabled && !isEmpty(props.customIcon.svg)
+                ? props.customIcon.svg
+                : defaultIcon
+            }
+          />
+        </label>
       </Match>
     </Switch>
   );

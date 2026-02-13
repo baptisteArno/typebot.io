@@ -121,12 +121,7 @@ export const MultiplePictureChoice = (props: Props) => {
       >
         <For each={filteredItems()}>
           {(item, index) => (
-            <div
-              role="checkbox"
-              aria-checked={selectedItemIds().some(
-                (selectedItemId) => selectedItemId === item.id,
-              )}
-              on:click={() => handleClick(item.id)}
+            <label
               class={
                 "flex flex-col focus:outline-none cursor-pointer select-none typebot-selectable-picture" +
                 (selectedItemIds().some(
@@ -138,6 +133,14 @@ export const MultiplePictureChoice = (props: Props) => {
               }
               data-itemid={item.id}
             >
+              <input
+                type="checkbox"
+                class="sr-only"
+                checked={selectedItemIds().some(
+                  (selectedItemId) => selectedItemId === item.id,
+                )}
+                on:change={() => handleClick(item.id)}
+              />
               <img
                 src={item.pictureSrc}
                 alt={item.title ?? `Picture ${index() + 1}`}
@@ -176,7 +179,7 @@ export const MultiplePictureChoice = (props: Props) => {
                   </div>
                 </Show>
               </div>
-            </div>
+            </label>
           )}
         </For>
         <For
@@ -190,15 +193,18 @@ export const MultiplePictureChoice = (props: Props) => {
             .filter(isDefined)}
         >
           {(selectedItem, index) => (
-            <div
-              role="checkbox"
-              aria-checked
-              on:click={() => handleClick(selectedItem.id)}
+            <label
               class={
                 "flex flex-col focus:outline-none cursor-pointer select-none typebot-selectable-picture selected"
               }
               data-itemid={selectedItem.id}
             >
+              <input
+                type="checkbox"
+                class="sr-only"
+                checked
+                on:change={() => handleClick(selectedItem.id)}
+              />
               <img
                 src={
                   props.defaultItems.find((item) => item.id === selectedItem.id)
@@ -241,7 +247,7 @@ export const MultiplePictureChoice = (props: Props) => {
                   </div>
                 </Show>
               </div>
-            </div>
+            </label>
           )}
         </For>
       </div>

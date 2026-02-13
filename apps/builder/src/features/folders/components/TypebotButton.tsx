@@ -123,16 +123,8 @@ const TypebotButton = ({
 
   return (
     <>
+      {/* biome-ignore lint/a11y/useSemanticElements: This card contains nested interactive controls. */}
       <div
-        role="button"
-        tabIndex={0}
-        onClick={handleTypebotClick}
-        onKeyDown={(event) => {
-          if (event.target !== event.currentTarget) return;
-          if (event.key !== "Enter" && event.key !== " ") return;
-          event.preventDefault();
-          handleTypebotClick();
-        }}
         className={cn(
           buttonVariants({
             variant: "outline-secondary",
@@ -142,6 +134,15 @@ const TypebotButton = ({
           "flex-col w-[225px] h-[270px] rounded-lg whitespace-normal bg-gray-1 relative",
           draggedTypebot && "opacity-30",
         )}
+        role="button"
+        tabIndex={0}
+        onClick={handleTypebotClick}
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget) return;
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          handleTypebotClick();
+        }}
       >
         {typebot.publishedTypebotId && (
           <Badge colorScheme="orange" className="absolute top-[27px]">

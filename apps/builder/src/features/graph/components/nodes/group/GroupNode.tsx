@@ -205,7 +205,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           )}
           {focusedGroups.length === 1 && isFocused && (
             <GroupFocusToolbar
-              className="absolute top-[-50px] right-0"
+              className="absolute -top-12.5 right-0"
               groupId={group.id}
               isReadOnly={isReadOnly}
               onPlayClick={startPreviewAtThisGroup}

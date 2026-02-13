@@ -84,6 +84,7 @@ export const ThemeTemplateCard = ({
     defaultButtonsBackgroundColor[typebotVersion];
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: This card contains nested interactive controls.
     <div
       style={
         {
@@ -102,9 +103,9 @@ export const ThemeTemplateCard = ({
         "flex flex-col gap-0 rounded-md border cursor-pointer shadow-md transition-shadow",
         isDeleting ? "opacity-50 pointer-events-none" : "opacity-100",
       )}
-      onClick={onClick}
       role="button"
       tabIndex={0}
+      onClick={onClick}
       onKeyDown={(event) => {
         if (event.target !== event.currentTarget) return;
         if (event.key !== "Enter" && event.key !== " ") return;
