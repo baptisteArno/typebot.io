@@ -147,6 +147,7 @@ const components = {
   ),
   Video: ({ src }: { src: string }) => (
     <div className="w-full">
+      {/* biome-ignore lint/a11y/useMediaCaption: Blog videos currently do not ship with caption files. */}
       <video src={src} className="w-full rounded-xl" controls />
     </div>
   ),

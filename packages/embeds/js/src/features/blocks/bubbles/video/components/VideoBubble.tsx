@@ -76,6 +76,7 @@ export const VideoBubble = (props: Props) => {
                 props.content.type === VideoBubbleContentType.URL
               }
             >
+              {/* biome-ignore lint/a11y/useMediaCaption: Captions are not available for dynamically configured video bubble sources. */}
               <video
                 autoplay={
                   props.onTransitionEnd
@@ -125,6 +126,7 @@ export const VideoBubble = (props: Props) => {
                 }}
               >
                 <iframe
+                  title="Video content"
                   src={`${
                     embedBaseUrls[
                       props.content?.type as EmbeddableVideoBubbleContentType

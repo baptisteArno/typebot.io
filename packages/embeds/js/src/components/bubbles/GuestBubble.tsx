@@ -73,19 +73,24 @@ const TextGuestBubble = (props: { answer: TextInputSubmitContent }) => {
             )}
           >
             {(attachment, idx) => (
-              <img
-                src={attachment.blobUrl ?? attachment.url}
-                alt={`Attached image ${idx() + 1}`}
-                class={cx(
-                  "typebot-guest-bubble-image-attachment cursor-pointer",
-                  props.answer.attachments!.filter((attachment) =>
-                    attachment.type.startsWith("image"),
-                  ).length > 1 && "max-w-[90%]",
-                )}
+              <button
+                type="button"
+                class="border-none bg-transparent p-0"
                 onClick={() =>
                   setClickedImageSrc(attachment.blobUrl ?? attachment.url)
                 }
-              />
+              >
+                <img
+                  src={attachment.blobUrl ?? attachment.url}
+                  alt={`Attached image ${idx() + 1}`}
+                  class={cx(
+                    "typebot-guest-bubble-image-attachment cursor-pointer",
+                    props.answer.attachments!.filter((attachment) =>
+                      attachment.type.startsWith("image"),
+                    ).length > 1 && "max-w-[90%]",
+                  )}
+                />
+              </button>
             )}
           </For>
         </div>
@@ -136,6 +141,7 @@ const AudioGuestBubble = (props: { answer: RecordingInputSubmitContent }) => {
         class="p-2 w-full whitespace-pre-wrap typebot-guest-bubble flex flex-col"
         data-testid="guest-bubble"
       >
+        {/* biome-ignore lint/a11y/useMediaCaption: Captions are not available for user-submitted recordings. */}
         <audio controls src={props.answer.blobUrl ?? props.answer.url} />
       </div>
     </div>

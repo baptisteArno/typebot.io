@@ -71,7 +71,9 @@ const FolderButton = ({
   return (
     <>
       <div
+        // This card contains nested interactive controls, so it cannot be a native <button>.
         role="button"
+        tabIndex={0}
         className={cn(
           buttonVariants({
             variant: "outline-secondary",
@@ -82,6 +84,12 @@ const FolderButton = ({
           isTypebotOver && "border-2 border-orange-8",
         )}
         onClick={handleClick}
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget) return;
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          handleClick();
+        }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >

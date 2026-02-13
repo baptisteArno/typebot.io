@@ -31,13 +31,8 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "security": {
-        "noGlobalEval": "off"
-      },
+      "security": {},
       "a11y": {
-        "useMediaCaption": "off",
-        "useIframeTitle": "off",
-        "useKeyWithClickEvents": "off",
         "useButtonType": "off",
         "noRedundantAlt": "off",
         "noAutofocus": "off",

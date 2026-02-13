@@ -117,7 +117,9 @@ export const ForEveryDepartment = () => {
       </div>
       {openedDepartment && (
         <div className="fixed size-full inset-0 flex justify-center items-center">
-          <div
+          <button
+            type="button"
+            aria-label="Close department details"
             className="bg-background/80 absolute inset-0 animate-in fade-in duration-350"
             onClick={() => {
               setLastOpenedDepartmentIndex(openedDepartmentIndex);
@@ -162,6 +164,15 @@ const DepartmentCard = ({
         "z-10",
     )}
     onClick={() => {
+      if (isDefined(openedDepartmentIndex)) return;
+      onClick();
+    }}
+    role="button"
+    tabIndex={0}
+    onKeyDown={(event) => {
+      if (event.target !== event.currentTarget) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
       if (isDefined(openedDepartmentIndex)) return;
       onClick();
     }}

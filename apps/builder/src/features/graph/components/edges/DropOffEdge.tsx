@@ -161,7 +161,19 @@ export const DropOffEdge = ({
                   isWorkspaceProPlan ? "cursor-auto" : "cursor-pointer",
                 )}
                 data-testid={`dropoff-edge-${blockId}`}
+                role={isWorkspaceProPlan ? undefined : "button"}
+                tabIndex={isWorkspaceProPlan ? undefined : 0}
                 onClick={isWorkspaceProPlan ? undefined : onUnlockProPlanClick}
+                onKeyDown={(event) => {
+                  if (
+                    isWorkspaceProPlan ||
+                    !onUnlockProPlanClick ||
+                    (event.key !== "Enter" && event.key !== " ")
+                  )
+                    return;
+                  event.preventDefault();
+                  onUnlockProPlanClick();
+                }}
               >
                 <p
                   className={cx(

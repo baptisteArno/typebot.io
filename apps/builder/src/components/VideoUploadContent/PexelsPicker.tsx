@@ -229,17 +229,20 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
       onMouseEnter={() => setIsImageHovered(true)}
       onMouseLeave={() => setIsImageHovered(false)}
     >
-      {
+      <button
+        type="button"
+        className="size-full rounded-md cursor-pointer p-0 border-none bg-transparent"
+        onClick={onClick}
+      >
         <img
           className={cx(
-            "object-cover size-full cursor-pointer rounded-md aspect-4/3",
+            "object-cover size-full rounded-md aspect-4/3",
             video.height < video.width ? "size-full" : undefined,
           )}
           src={thumbnailImage}
           alt={`Pexels Video ${video.id}`}
-          onClick={onClick}
         />
-      }
+      </button>
       <div
         className={cx(
           "absolute px-2 rounded-md bottom-0 left-0 bg-black/50 opacity-0 transition-opacity",
