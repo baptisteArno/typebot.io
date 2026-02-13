@@ -69,7 +69,7 @@ export const DeployButton = ({
   return (
     <>
       <Button
-        className="w-[225px] h-[270px] text-center whitespace-normal rounded-lg bg-gray-1"
+        className="h-[270px] text-center whitespace-normal rounded-lg bg-gray-1"
         variant="outline-secondary"
         onClick={onOpen}
         iconStyle="none"
