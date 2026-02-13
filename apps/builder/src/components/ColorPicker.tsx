@@ -84,6 +84,7 @@ export const ColorPicker = ({
           <div className="grid gap-2 grid-cols-[repeat(5,1fr)]">
             {colorsSelection.map((color) => (
               <button
+                type="button"
                 key={color}
                 aria-label={color}
                 style={

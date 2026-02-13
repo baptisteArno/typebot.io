@@ -18,6 +18,7 @@ const isImageSrc = (src: string) =>
 
 export const BubbleButton = (props: Props) => (
   <button
+    type="button"
     part="button"
     onClick={() => props.toggleBot()}
     class={cx(

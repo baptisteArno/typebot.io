@@ -4,10 +4,18 @@ export const Default = () => {
   return (
     <div>
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <button onClick={() => open({ id: "bubble" })}>Open bubble</button>
-        <button onClick={() => close({ id: "bubble" })}>Close bubble</button>
-        <button onClick={() => open({ id: "popup" })}>Open popup</button>
-        <button onClick={() => close({ id: "popup" })}>Close popup</button>
+        <button type="button" onClick={() => open({ id: "bubble" })}>
+          Open bubble
+        </button>
+        <button type="button" onClick={() => close({ id: "bubble" })}>
+          Close bubble
+        </button>
+        <button type="button" onClick={() => open({ id: "popup" })}>
+          Open popup
+        </button>
+        <button type="button" onClick={() => close({ id: "popup" })}>
+          Close popup
+        </button>
       </div>
 
       <Popup

@@ -167,6 +167,7 @@ export const VoiceRecorder = (props: Props) => {
       )}
     >
       <button
+        type="button"
         class="p-0.5 rounded-full"
         on:click={stopRecording}
         aria-label="Stop recording"

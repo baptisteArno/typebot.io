@@ -103,6 +103,7 @@ const CloseButton = (props: {
   onClick: () => void;
 }) => (
   <button
+    type="button"
     part="preview-message-close-button"
     aria-label="Close"
     class={

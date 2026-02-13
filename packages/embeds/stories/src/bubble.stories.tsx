@@ -20,24 +20,43 @@ export const Default = () => {
   return (
     <div>
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <button onClick={() => toggle()}>Toggle chat window</button>
-        <button onClick={() => open()}>Open chat window</button>
-        <button onClick={() => close()}>Close chat window</button>
-        <button onClick={() => reload()}>Reload chat</button>
-        <button onClick={() => showPreviewMessage(undefined)}>
+        <button type="button" onClick={() => toggle()}>
+          Toggle chat window
+        </button>
+        <button type="button" onClick={() => open()}>
+          Open chat window
+        </button>
+        <button type="button" onClick={() => close()}>
+          Close chat window
+        </button>
+        <button type="button" onClick={() => reload()}>
+          Reload chat
+        </button>
+        <button type="button" onClick={() => showPreviewMessage(undefined)}>
           Show Preview Message
         </button>
-        <button onClick={() => setInputValue("YOOOO!")}>Set input value</button>
-        <button onClick={() => submitInput()}>Submit input</button>
-        <button onClick={() => hidePreviewMessage()}>
+        <button type="button" onClick={() => setInputValue("YOOOO!")}>
+          Set input value
+        </button>
+        <button type="button" onClick={() => submitInput()}>
+          Submit input
+        </button>
+        <button type="button" onClick={() => hidePreviewMessage()}>
           Close Preview Message
         </button>
-        <button onClick={() => reset()}>Reset chat</button>
-        <button onClick={() => sendCommand("wizz")}>Send command</button>
+        <button type="button" onClick={() => reset()}>
+          Reset chat
+        </button>
+        <button type="button" onClick={() => sendCommand("wizz")}>
+          Send command
+        </button>
         <div>
           <p>Predefined name:</p>
           <input value={name} onChange={(e) => setName(e.target.value)} />
-          <button onClick={() => setPrefilledVariables({ Name: name })}>
+          <button
+            type="button"
+            onClick={() => setPrefilledVariables({ Name: name })}
+          >
             Set predefined name
           </button>
         </div>

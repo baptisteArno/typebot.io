@@ -9,6 +9,7 @@ export const NotFound = ({ children }: { children?: ReactNode }) => {
       </div>
       <p className="flex items-center gap-2 flex-wrap">
         <button
+          type="button"
           onClick={() => window.history.back()}
           className="bg-emerald-500 text-white px-2 py-1 rounded-sm uppercase font-black text-sm"
         >

@@ -33,7 +33,7 @@ export const SearchInput = (props: Props) => {
         {...others}
       />
       <Show when={value().length > 0}>
-        <button class="w-5 h-5" on:click={clearValue}>
+        <button type="button" class="w-5 h-5" on:click={clearValue}>
           <CloseIcon />
         </button>
       </Show>

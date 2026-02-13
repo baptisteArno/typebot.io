@@ -188,6 +188,7 @@ const UsecaseTitle = ({
   onClick?: () => void;
 }) => (
   <button
+    type="button"
     className="flex flex-col items-center gap-2 shrink-0 cursor-pointer hover:[&_h3]:opacity-100"
     onClick={onClick}
   >

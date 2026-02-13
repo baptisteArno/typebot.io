@@ -81,6 +81,7 @@ export const SinglePictureChoice = (props: Props) => {
         <For each={filteredItems()}>
           {(item, index) => (
             <button
+              type="button"
               on:click={() => handleClick(index())}
               data-itemid={item.id}
               class={
