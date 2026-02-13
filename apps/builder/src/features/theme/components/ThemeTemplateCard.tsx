@@ -103,6 +103,14 @@ export const ThemeTemplateCard = ({
         isDeleting ? "opacity-50 pointer-events-none" : "opacity-100",
       )}
       onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(event) => {
+        if (event.target !== event.currentTarget) return;
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        onClick();
+      }}
     >
       <div
         style={{ ...parseBackground(themeTemplate.theme.general?.background) }}

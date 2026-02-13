@@ -51,6 +51,14 @@ export const PreviewMessage = (props: PreviewMessageProps) => {
     <div
       part="preview-message"
       onClick={() => props.onClick()}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(event) => {
+        if (event.target !== event.currentTarget) return;
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        props.onClick();
+      }}
       class={cx(
         "absolute bottom-[calc(100%+12px)] w-64 rounded-md duration-200 flex items-center gap-4 shadow-md animate-fade-in cursor-pointer hover:shadow-lg p-4",
         props.placement === "left" ? "left-0" : "right-0",

@@ -57,12 +57,22 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
           "flex font-semibold justify-center items-center relative py-(--py) text-sm",
           className,
         )}
-        role="button"
         ref={ref}
         onMouseEnter={onHover}
         onMouseLeave={onLeave}
         onMouseUpCapture={onAbort}
-        onClick={onClick}
+        {...(onClick
+          ? {
+              role: "button",
+              tabIndex: 0,
+              onClick,
+              onKeyDown: (event: React.KeyboardEvent) => {
+                if (event.key !== "Enter" && event.key !== " ") return;
+                event.preventDefault();
+                onClick();
+              },
+            }
+          : {})}
       >
         {onClick && <span className="absolute left-0 z-1 w-full" />}
         <div

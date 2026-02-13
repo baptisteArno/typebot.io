@@ -125,7 +125,14 @@ const TypebotButton = ({
     <>
       <div
         role="button"
+        tabIndex={0}
         onClick={handleTypebotClick}
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget) return;
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          handleTypebotClick();
+        }}
         className={cn(
           buttonVariants({
             variant: "outline-secondary",

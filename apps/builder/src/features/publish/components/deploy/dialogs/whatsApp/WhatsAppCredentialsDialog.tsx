@@ -583,7 +583,8 @@ const ProviderSelection = ({
   onProviderSelect: (provider: "meta" | "360dialog") => void;
 }) => (
   <div className="flex items-center gap-4 w-full">
-    <div
+    <button
+      type="button"
       className="cursor-pointer border p-8 rounded-md flex flex-col items-center text-center gap-3 hover:bg-gray-2 flex-1"
       onClick={() => onProviderSelect("meta")}
     >
@@ -598,8 +599,9 @@ const ProviderSelection = ({
         Requires Meta Developer account, system user token, and phone number
         setup
       </p>
-    </div>
-    <div
+    </button>
+    <button
+      type="button"
       className="cursor-pointer border p-8 rounded-md flex flex-col items-center text-center gap-3 hover:bg-gray-2 flex-1"
       onClick={() => onProviderSelect("360dialog")}
     >
@@ -615,7 +617,7 @@ const ProviderSelection = ({
       <p className="text-xs" color="gray.500">
         Simple setup with API key only
       </p>
-    </div>
+    </button>
   </div>
 );
 
