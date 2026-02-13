@@ -11,7 +11,7 @@ import { env } from '@typebot.io/env'
 import { useColorMode } from '@chakra-ui/react'
 
 export const userContext = createContext<{
-  user?: User
+  user?: User & { cloudChatAuthorization?: boolean }
   isLoading: boolean
   currentWorkspaceId?: string
   logOut: () => void

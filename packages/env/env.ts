@@ -104,6 +104,8 @@ const baseEnv = {
       z.string().url().optional()
     ),
     AWS_COGNITO_REGION: z.string().min(1).optional(),
+    COGNITO_ISSUER_URL: z.string().min(1),
+    CLOUDCHAT_COGNITO_APP_CLIENT_ID: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_E2E_TEST: boolean.optional(),

@@ -222,6 +222,9 @@ importers:
       isolated-vm:
         specifier: 4.7.2
         version: 4.7.2
+      jose:
+        specifier: ^6.1.3
+        version: 6.1.3
       jsonwebtoken:
         specifier: 9.0.1
         version: 9.0.1

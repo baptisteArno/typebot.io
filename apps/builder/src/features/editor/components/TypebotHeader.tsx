@@ -388,6 +388,7 @@ const TypebotNav = ({
 } & StackProps) => {
   const { t } = useTranslate()
   const router = useRouter()
+  const { user } = useUser()
 
   return (
     <HStack {...stackProps}>
@@ -420,7 +421,7 @@ const TypebotNav = ({
       >
         {t('editor.header.settingsButton.label')}
       </Button> */}
-      {router.query.embedded !== 'true' && (
+      {!user?.cloudChatAuthorization && (
         <Button
           as={Link}
           href={`/typebots/${typebotId}/share`}

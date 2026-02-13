@@ -90,7 +90,7 @@ export const BoardMenuButton = (props: StackProps) => {
           <MenuItem icon={<BookIcon />} onClick={redirectToDocumentation}>
             {t('editor.graph.menu.documentationItem.label')}
           </MenuItem>
-          {!isEmbedded && (
+          {!isEmbedded && !user?.cloudChatAuthorization && (
             <MenuItem icon={<SettingsIcon />} onClick={onOpen}>
               {t('editor.graph.menu.editorSettingsItem.label')}
             </MenuItem>

@@ -1,33 +1,40 @@
 import { User } from '@typebot.io/prisma'
 
-// Cognito custom claims structure
-export interface CognitoClaims {
-  'custom:hub_role'?: 'ADMIN' | 'CLIENT' | 'MANAGER'
-  'custom:tenant_id'?: string
-  'custom:claudia_projects'?: string
+export type CognitoJWTPayload = {
+  email_verified: boolean
+  'custom:cloudchat_instance': string
+  'custom:hub_role': 'ADMIN' | 'CLIENT' | 'MANAGER'
+  'cognito:username': string
+  'custom:tenant_id': string
+  origin_jti: string
+  'custom:tenant_version': string
+  'custom:connector_projects': string
+  event_id: string
+  token_use: string
+  auth_time: number
+  'custom:claudia_projects': string
+  'custom:projects': string
+  name: string
+  email: string
 }
 
-// Base interface for anything that can have Cognito claims
-export interface WithCognitoClaims {
-  cognitoClaims?: CognitoClaims
+type WithCognitoClaims = {
+  cognitoClaims?: Pick<
+    CognitoJWTPayload,
+    'custom:claudia_projects' | 'custom:hub_role' | 'custom:tenant_id'
+  >
 }
 
 // Database user extended with Cognito claims
-export interface DatabaseUserWithCognito extends User, WithCognitoClaims {}
+export type DatabaseUserWithCognito = User &
+  WithCognitoClaims & { cloudChatAuthorization?: boolean }
 
 // NextAuth JWT token that contains Cognito claims
-export interface NextAuthJWTWithCognito
-  extends Record<string, unknown>,
-    WithCognitoClaims {
-  userId?: string
-  email?: string
-  name?: string
-  image?: string
-  provider?: string
-}
-
-// NextAuth session with Cognito-enabled user
-export interface NextAuthSessionWithCognito {
-  user: DatabaseUserWithCognito
-  expires: string
-}
+export type NextAuthJWTWithCognito = Record<string, unknown> &
+  WithCognitoClaims & {
+    userId?: string
+    email?: string
+    name?: string
+    image?: string
+    provider?: string
+  }

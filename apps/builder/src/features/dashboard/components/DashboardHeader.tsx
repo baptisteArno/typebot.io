@@ -29,13 +29,15 @@ export const DashboardHeader = () => {
         maxW="1000px"
         flex="1"
       >
-        <Link href="/typebots" data-testid="typebot-logo">
-          <EmojiOrImageIcon
-            boxSize="30px"
-            icon={workspace?.icon}
-            defaultIcon={HardDriveIcon}
-          />
-        </Link>
+        {!user?.cloudChatAuthorization && (
+          <Link href="/typebots" data-testid="typebot-logo">
+            <EmojiOrImageIcon
+              boxSize="30px"
+              icon={workspace?.icon}
+              defaultIcon={HardDriveIcon}
+            />
+          </Link>
+        )}
         <HStack>
           {user && workspace && !workspace.isPastDue && (
             <WorkspaceSettingsModal
@@ -45,7 +47,7 @@ export const DashboardHeader = () => {
               workspace={workspace}
             />
           )}
-          {!workspace?.isPastDue && (
+          {!workspace?.isPastDue && !user?.cloudChatAuthorization && (
             <Button
               leftIcon={<SettingsIcon />}
               onClick={onOpen}

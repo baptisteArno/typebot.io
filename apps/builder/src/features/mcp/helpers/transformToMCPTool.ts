@@ -28,6 +28,6 @@ export function transformToMCPTool(tool: WorkflowTool) {
     },
     annotations: {
       workflowId: tool.id,
-    }
+    },
   }
 }

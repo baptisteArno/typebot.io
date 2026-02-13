@@ -26,6 +26,7 @@ import {
 } from '@chakra-ui/react'
 import { WorkspaceInApp } from '../WorkspaceProvider'
 import { useRef, useState } from 'react'
+import { useUser } from '@/features/account/hooks/useUser'
 
 type Props = {
   currentWorkspace?: WorkspaceInApp
@@ -43,6 +44,7 @@ export const WorkspaceDropdown = ({
   const [search, setSearch] = useState('')
   const { t } = useTranslate()
   const { data } = trpc.workspace.listWorkspaces.useQuery()
+  const { user } = useUser()
 
   const menu = useDisclosure()
 
@@ -128,13 +130,15 @@ export const WorkspaceDropdown = ({
         <MenuItem onClick={onCreateNewWorkspaceClick} icon={<PlusIcon />}>
           {t('workspace.dropdown.newButton.label')}
         </MenuItem>
-        <MenuItem
-          onClick={onLogoutClick}
-          icon={<LogOutIcon />}
-          color="orange.500"
-        >
-          {t('workspace.dropdown.logoutButton.label')}
-        </MenuItem>
+        {!user?.cloudChatAuthorization && (
+          <MenuItem
+            onClick={onLogoutClick}
+            icon={<LogOutIcon />}
+            color="orange.500"
+          >
+            {t('workspace.dropdown.logoutButton.label')}
+          </MenuItem>
+        )}
       </MenuList>
     </Menu>
   )
