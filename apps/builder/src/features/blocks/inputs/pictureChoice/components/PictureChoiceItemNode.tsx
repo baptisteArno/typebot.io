@@ -57,7 +57,7 @@ export const PictureChoiceItemNode = ({ item, indices }: Props) => {
                     : "max-h-[128px] object-cover",
                 )}
                 src={item.pictureSrc}
-                alt="Picture choice image"
+                alt={item.title ?? `Choice ${indices.itemIndex + 1}`}
               />
             ) : (
               <div className="flex w-full h-[100px] rounded-md justify-center items-center bg-gray-3">

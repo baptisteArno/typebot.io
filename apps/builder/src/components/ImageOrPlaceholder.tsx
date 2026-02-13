@@ -8,7 +8,7 @@ import { VariableTag } from "@/features/graph/components/nodes/block/VariableTag
 export const ImageOrPlaceholder = forwardRef<
   HTMLDivElement | HTMLImageElement,
   { src?: string; className?: string; alt?: string }
->(({ src, className, ...props }, ref) => {
+>(({ src, className, alt, ...props }, ref) => {
   const { typebot } = useTypebot();
   const variable = typebot ? findUniqueVariable(typebot?.variables)(src) : null;
 
@@ -35,7 +35,7 @@ export const ImageOrPlaceholder = forwardRef<
         )}
         ref={ref as any}
         src={src}
-        alt="Image"
+        alt={alt ?? ""}
       />
     );
 

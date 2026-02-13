@@ -60,13 +60,13 @@ export const AvatarForm = ({
                 ) : isSvgSrc(avatarProps?.url) ? (
                   <img
                     src={avatarProps.url}
-                    alt="Website image"
+                    alt={`${title} avatar`}
                     className="cursor-pointer transition-filter duration-200 rounded-md hover:brightness-90 size-10"
                   />
                 ) : avatarProps?.url?.startsWith("http") ? (
                   <img
                     src={avatarProps.url}
-                    alt="Website image"
+                    alt={`${title} avatar`}
                     className="cursor-pointer transition-filter duration-200 rounded-md hover:brightness-90 size-10 object-cover"
                   />
                 ) : (

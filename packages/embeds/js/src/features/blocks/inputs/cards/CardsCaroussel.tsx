@@ -87,7 +87,7 @@ export const CardsCaroussel = (props: Props) => {
                     {(imageUrl) => (
                       <img
                         src={imageUrl()}
-                        alt="Card image"
+                        alt={item().title ?? `Card ${index + 1}`}
                         class="aspect-16/11 object-cover"
                       />
                     )}

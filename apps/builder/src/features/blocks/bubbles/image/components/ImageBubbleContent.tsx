@@ -31,7 +31,7 @@ export const ImageBubbleContent = ({ block }: Props) => {
             : undefined,
         )}
         src={block.content?.url}
-        alt="Group image"
+        alt={block.content?.clickLink?.alt ?? "Group visual"}
       />
     </div>
   );

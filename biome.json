@@ -33,7 +33,6 @@
       "recommended": true,
       "security": {},
       "a11y": {
-        "noRedundantAlt": "off",
         "noAutofocus": "off",
         "useSemanticElements": "off",
         "useFocusableInteractive": "off",

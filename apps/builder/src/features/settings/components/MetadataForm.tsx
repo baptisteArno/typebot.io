@@ -92,7 +92,7 @@ export const MetadataForm = ({
             <img
               className="cursor-pointer transition-filter duration-200 rounded-md hover:brightness-90"
               src={imageUrl}
-              alt="Website image"
+              alt="Website preview"
             />
           </Popover.Trigger>
           <Popover.Popup className="w-[500px]" side="right">
