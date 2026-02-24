@@ -9,7 +9,7 @@
     "db:setCustomPlan": "tsx src/setCustomPlan.ts",
     "db:bulkUpdate": "tsx src/bulkUpdate.ts",
     "db:fixTypebots": "tsx src/fixTypebots.ts",
-    "inspectUser": "tsx src/inspectUser.ts",
+    "inspectUser": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/inspectUser.ts",
     "checkSubscriptionsStatus": "tsx src/checkSubscriptionsStatus.ts",
     "createChatsPrices": "tsx src/createChatsPrices.ts",
     "migrateSubscriptionsToUsageBased": "tsx src/migrateSubscriptionsToUsageBased.ts",
