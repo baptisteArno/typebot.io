@@ -1,5 +1,226 @@
 {
-  "extends": "./packages/tsconfig/base.json",
-  "exclude": ["opensrc"],
-  "include": ["commands/**/*.ts"]
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/forge/blocks/elevenlabs"
+    },
+    {
+      "path": "./packages/forge/blocks/openRouter"
+    },
+    {
+      "path": "./packages/forge/blocks/perplexity"
+    },
+    {
+      "path": "./packages/forge/blocks/togetherAi"
+    },
+    {
+      "path": "./packages/forge/blocks/anthropic"
+    },
+    {
+      "path": "./packages/forge/blocks/chatNode"
+    },
+    {
+      "path": "./packages/forge/blocks/deepseek"
+    },
+    {
+      "path": "./packages/runtime-session-store"
+    },
+    {
+      "path": "./packages/forge/blocks/mistral"
+    },
+    {
+      "path": "./packages/forge/blocks/posthog"
+    },
+    {
+      "path": "./packages/forge/blocks/segment"
+    },
+    {
+      "path": "./packages/forge/blocks/zendesk"
+    },
+    {
+      "path": "./packages/blocks/integrations"
+    },
+    {
+      "path": "./packages/forge/blocks/calCom"
+    },
+    {
+      "path": "./packages/forge/blocks/difyAi"
+    },
+    {
+      "path": "./packages/forge/blocks/nocodb"
+    },
+    {
+      "path": "./packages/forge/blocks/openai"
+    },
+    {
+      "path": "./packages/forge/blocks/qrcode"
+    },
+    {
+      "path": "./packages/forge/blocks/blink"
+    },
+    {
+      "path": "./packages/forge/blocks/gmail"
+    },
+    {
+      "path": "./packages/forge/blocks/groq"
+    },
+    {
+      "path": "./packages/deprecated/legacy"
+    },
+    {
+      "path": "./packages/blocks/fileInput"
+    },
+    {
+      "path": "./packages/forge/repository"
+    },
+    {
+      "path": "./packages/embeds/wordpress"
+    },
+    {
+      "path": "./packages/blocks/bubbles"
+    },
+    {
+      "path": "./packages/blocks/webhook"
+    },
+    {
+      "path": "./packages/embeds/stories"
+    },
+    {
+      "path": "./packages/blocks/inputs"
+    },
+    {
+      "path": "./packages/blocks/logic"
+    },
+    {
+      "path": "./packages/chat-session"
+    },
+    {
+      "path": "./packages/embeds/react"
+    },
+    {
+      "path": "./packages/blocks/base"
+    },
+    {
+      "path": "./packages/blocks/core"
+    },
+    {
+      "path": "./packages/credentials"
+    },
+    {
+      "path": "./packages/bot-engine"
+    },
+    {
+      "path": "./packages/conditions"
+    },
+    {
+      "path": "./packages/forge/core"
+    },
+    {
+      "path": "./packages/playwright"
+    },
+    {
+      "path": "./packages/workspaces"
+    },
+    {
+      "path": "./packages/embeds/js"
+    },
+    {
+      "path": "./packages/rich-text"
+    },
+    {
+      "path": "./packages/telemetry"
+    },
+    {
+      "path": "./packages/templates"
+    },
+    {
+      "path": "./packages/variables"
+    },
+    {
+      "path": "./packages/forge/cli"
+    },
+    {
+      "path": "./packages/chat-api"
+    },
+    {
+      "path": "./packages/partykit"
+    },
+    {
+      "path": "./packages/settings"
+    },
+    {
+      "path": "./packages/whatsapp"
+    },
+    {
+      "path": "./apps/landing-page"
+    },
+    {
+      "path": "./packages/billing"
+    },
+    {
+      "path": "./packages/results"
+    },
+    {
+      "path": "./packages/schemas"
+    },
+    {
+      "path": "./packages/scripts"
+    },
+    {
+      "path": "./packages/typebot"
+    },
+    {
+      "path": "./packages/config"
+    },
+    {
+      "path": "./packages/emails"
+    },
+    {
+      "path": "./packages/events"
+    },
+    {
+      "path": "./packages/groups"
+    },
+    {
+      "path": "./packages/prisma"
+    },
+    {
+      "path": "./packages/radar"
+    },
+    {
+      "path": "./packages/theme"
+    },
+    {
+      "path": "./packages/auth"
+    },
+    {
+      "path": "./packages/logs"
+    },
+    {
+      "path": "./packages/user"
+    },
+    {
+      "path": "./packages/env"
+    },
+    {
+      "path": "./packages/lib"
+    },
+    {
+      "path": "./apps/builder"
+    },
+    {
+      "path": "./packages/ai"
+    },
+    {
+      "path": "./packages/ui"
+    },
+    {
+      "path": "./apps/viewer"
+    },
+    {
+      "path": "./apps/workflows"
+    }
+  ]
 }

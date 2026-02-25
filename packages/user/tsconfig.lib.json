@@ -1,0 +1,29 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../prisma/tsconfig.lib.json"
+    },
+    {
+      "path": "../lib/tsconfig.lib.json"
+    },
+    {
+      "path": "../env/tsconfig.lib.json"
+    },
+    {
+      "path": "../emails/tsconfig.lib.json"
+    },
+    {
+      "path": "../config/tsconfig.lib.json"
+    }
+  ]
+}

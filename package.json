@@ -1,5 +1,5 @@
 {
-  "name": "root",
+  "name": "@typebot.io/source",
   "version": "3.15.2",
   "private": true,
   "workspaces": [
@@ -12,7 +12,7 @@
     "apps/*"
   ],
   "scripts": {
-    "postinstall": "turbo run db:generate",
+    "postinstall": "cd packages/env && bun run compile && nx prisma:generate prisma",
     "prepare": "husky && effect-language-service patch",
     "pre-commit": "turbo run format-and-lint lint-repo check-broken-links test",
     "format-and-lint": "biome check .",
@@ -23,7 +23,6 @@
     "start-docker-compose-dev": "docker compose -f docker-compose.dev.yml up",
     "build-docker-compose-prod": "docker compose -f docker-compose.build.yml build",
     "start-docker-compose-prod": "docker compose -f docker-compose.yml up",
-    "check-types": "turbo run check-types",
     "build": "turbo run build --filter=builder... --filter=viewer... --filter=landing-page... --filter=docs...",
     "dev": "turbo dev --filter=builder... --filter=viewer... --filter=@typebot.io/partykit... --filter=workflows... --concurrency=11",
     "test": "turbo run test",
@@ -37,21 +36,32 @@
     "check": "turbo run check-types test format-and-lint:fix lint-repo check-broken-links"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.14",
-    "@tolgee/cli": "^2.15.1",
+    "@biomejs/biome": "^2.4.4",
+    "@effect/language-service": "^0.76.0",
+    "@nx/esbuild": "22.5.2",
+    "@nx/js": "22.5.2",
+    "@nx/next": "22.5.2",
+    "@nx/vite": "22.5.2",
+    "@nx/web": "22.5.2",
+    "@swc-node/register": "~1.11.1",
+    "@swc/core": "~1.15.13",
+    "@swc/helpers": "~0.5.19",
+    "@tolgee/cli": "^2.16.1",
+    "effect-solutions": "^0.4.13",
+    "esbuild": "^0.27.3",
     "husky": "^9.1.7",
+    "jiti": "2.6.1",
+    "nx": "22.5.2",
+    "rimraf": "^6.1.3",
     "sherif": "^1.10.0",
-    "turbo": "^2.8.7",
-    "typescript": "^5.9.3",
-    "rimraf": "^6.1.2",
-    "@effect/language-service": "^0.65.0",
-    "effect-solutions": "^0.4.13"
+    "typescript": "^5.9.3"
   },
   "packageManager": "bun@1.3.9",
   "engines": {
-    "node": "22.x"
+    "node": "24.x"
   },
   "trustedDependencies": [
+    "nx",
     "@biomejs/biome",
     "@prisma/client",
     "@prisma/engines",

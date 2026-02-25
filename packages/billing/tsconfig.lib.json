@@ -1,0 +1,41 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../config/tsconfig.lib.json"
+    },
+    {
+      "path": "../user/tsconfig.lib.json"
+    },
+    {
+      "path": "../settings/tsconfig.lib.json"
+    },
+    {
+      "path": "../workspaces/tsconfig.lib.json"
+    },
+    {
+      "path": "../telemetry/tsconfig.lib.json"
+    },
+    {
+      "path": "../env/tsconfig.lib.json"
+    },
+    {
+      "path": "../lib/tsconfig.lib.json"
+    },
+    {
+      "path": "../schemas/tsconfig.lib.json"
+    },
+    {
+      "path": "../prisma/tsconfig.lib.json"
+    }
+  ]
+}

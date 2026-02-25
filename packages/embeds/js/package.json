@@ -5,15 +5,20 @@
   "license": "FSL-1.1-ALv2",
   "type": "module",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "types": "./dist/packages/embeds/js/src/index.d.ts",
   "exports": {
-    ".": "./dist/index.js",
-    "./web": "./dist/web.js"
-  },
-  "scripts": {
-    "check-types": "tsc --noEmit",
-    "dev": "tsup --watch",
-    "build": "tsup"
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/packages/embeds/js/src/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./web": {
+      "types": "./dist/packages/embeds/js/src/web.d.ts",
+      "import": "./dist/web.js",
+      "default": "./dist/web.js"
+    }
   },
   "devDependencies": {
     "@ai-sdk/ui-utils": "^1.2.11",
@@ -32,7 +37,6 @@
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/settings": "workspace:*",
     "@typebot.io/theme": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/ui": "workspace:*",
     "@typebot.io/zendesk-block": "workspace:*",
     "@types/dompurify": "^3.2.0",
@@ -45,10 +49,46 @@
     "solid-element": "^1.9.1",
     "solid-js": "^1.9.9",
     "@tailwindcss/postcss": "^4.1.16",
-    "tailwindcss": "^4.1.16",
-    "tsup": "^8.5.0"
+    "tailwindcss": "^4.1.16"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "executor": "@nx/esbuild:esbuild",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "defaultConfiguration": "production",
+        "options": {
+          "outputPath": "{workspaceRoot}/packages/embeds/js/dist",
+          "main": "{workspaceRoot}/packages/embeds/js/src/index.ts",
+          "additionalEntryPoints": [
+            "{workspaceRoot}/packages/embeds/js/src/web.ts"
+          ],
+          "tsConfig": "{workspaceRoot}/packages/embeds/js/tsconfig.lib.json",
+
+          "platform": "browser",
+          "format": [
+            "esm"
+          ],
+
+          "bundle": true,
+          "declaration": true,
+
+          "esbuildConfig": "{workspaceRoot}/packages/embeds/js/esbuild.config.cjs"
+        },
+        "configurations": {
+          "development": {
+            "minify": false
+          },
+          "production": {
+            "minify": true
+          }
+        }
+      }
+    }
   }
 }

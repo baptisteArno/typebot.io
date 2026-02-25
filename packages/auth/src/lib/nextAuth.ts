@@ -25,8 +25,6 @@ export const SET_TYPEBOT_COOKIE_HEADER = "Set-Typebot-Cookie" as const;
 export const {
   auth,
   handlers: authHandlers,
-  signIn,
-  signOut,
 } = NextAuth((req) => ({
   adapter: createAuthPrismaAdapter(prisma),
   secret: env.ENCRYPTION_SECRET,

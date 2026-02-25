@@ -4,7 +4,12 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "@typebot.io/env": "workspace:*",
@@ -15,10 +20,5 @@
     "@typebot.io/runtime-session-store": "workspace:*",
     "@typebot.io/settings": "workspace:*"
   },
-  "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
-  },
-  "scripts": {
-    "check-types": "tsc --noEmit"
-  }
+  "scripts": {}
 }

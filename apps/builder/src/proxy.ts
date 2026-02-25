@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname, locale, defaultLocale, searchParams } = req.nextUrl;
 
   const isMostLikelySignedIn = Boolean(

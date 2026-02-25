@@ -10,7 +10,7 @@ import {
   Show,
   splitProps,
 } from "solid-js";
-import { Bot, type BotProps } from "@/components/Bot";
+import { Bot, type BotProps } from "../../../components/Bot";
 import { getPaymentInProgressInStorage } from "@/features/blocks/inputs/payment/helpers/paymentInProgressStorage";
 import { chatwootWebWidgetOpenedMessage } from "@/features/blocks/integrations/chatwoot/constants";
 import {

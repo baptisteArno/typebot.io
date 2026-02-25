@@ -3,8 +3,7 @@
   "type": "module",
   "scripts": {
     "dev": "ladle serve -p 3006",
-    "build": "ladle build",
-    "check-types": "tsc --noEmit"
+    "build": "ladle build"
   },
   "dependencies": {
     "@ladle/react": "^5.0.1",
@@ -15,11 +14,10 @@
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/chat-api": "workspace:*",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "^19.2.7"
+    "@types/react": "^19.2.14"
   }
 }

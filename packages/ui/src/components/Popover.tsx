@@ -44,7 +44,7 @@ const Root = ({
 const Trigger = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Trigger>,
   Omit<PopoverPrimitive.Trigger.Props, "nativeButton" | "render"> & {
-    render?: (props: any) => React.ReactElement | React.ReactElement;
+    render?: (props: any) => React.ReactElement;
   }
 >(({ className, render, children, ...props }, ref) => (
   <PopoverPrimitive.Trigger

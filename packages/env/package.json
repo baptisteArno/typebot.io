@@ -4,21 +4,56 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./*": "./src/*.ts",
-    "./compiled": "./dist/index.js"
-  },
-  "scripts": {
-    "dev": "tsup src/index.ts --format esm --watch",
-    "build": "tsup src/index.ts --format esm",
-    "check-types": "tsc --noEmit"
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./compiled": "./dist/index.js",
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.13.10",
     "zod": "^4.3.5"
   },
-  "devDependencies": {
-    "tsup": "^8.5.0",
-    "@typebot.io/tsconfig": "workspace:*"
-  }
+  "scripts": {
+    "compile": "esbuild src/index.ts --bundle --minify --outfile=dist/index.js"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "executor": "@nx/esbuild:esbuild",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "defaultConfiguration": "production",
+        "options": {
+          "main": "{workspaceRoot}/packages/env/src/index.ts",
+          "outputPath": "{workspaceRoot}/packages/env/dist",
+          "tsConfig": "{workspaceRoot}/packages/env/tsconfig.lib.json",
+          "platform": "node",
+          "format": [
+            "esm"
+          ],
+          "declarationRootDir": "{workspaceRoot}/packages/env/src"
+        },
+        "configurations": {
+          "development": {
+            "minify": false
+          },
+          "production": {
+            "minify": true
+          }
+        }
+      }
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "module": "./dist/main.js",
+  "main": "./dist/main.js"
 }

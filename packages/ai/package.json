@@ -2,9 +2,13 @@
   "name": "@typebot.io/ai",
   "version": "0.0.1",
   "private": true,
-  "type": "module",
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "@typebot.io/forge": "workspace:*",
@@ -15,10 +19,5 @@
     "@typebot.io/runtime-session-store": "workspace:*",
     "zod": "^4.3.5"
   },
-  "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
-  },
-  "scripts": {
-    "check-types": "tsc --noEmit"
-  }
+  "scripts": {}
 }

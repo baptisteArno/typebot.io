@@ -3,7 +3,7 @@ type Details = {
 };
 
 export class WhatsAppError extends Error {
-  message: string;
+  override message: string;
   details?: Details;
 
   constructor(message: string, details?: Details) {

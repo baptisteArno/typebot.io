@@ -5,10 +5,18 @@
   "private": true,
   "scripts": {
     "content-collections:build": "bunx @content-collections/cli build --config content-collections.ts",
-    "check-types": "tsc --noEmit",
-    "dev": "dotenv -e ./.env -e ../../.env -- vite dev --port 3003",
-    "build": "bun check-broken-links && dotenv -e ./.env -e ../../.env -- vite build",
     "check-broken-links": "mdx-local-link-checker content public '*/(index.mdx|blog|about|pricing?isTiersModalOpened=true)'"
+  },
+  "nx": {
+    "targets": {
+      "check-broken-links": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "apps/landing-page",
+          "command": "bun check-broken-links"
+        }
+      }
+    }
   },
   "dependencies": {
     "@tanstack/react-router": "1.123.2",
@@ -21,8 +29,8 @@
     "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/ui": "workspace:*",
     "motion": "^12.23.25",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "vite": "7.0.0",
     "zod": "^4.3.5"
   },
@@ -33,11 +41,10 @@
     "@shikijs/transformers": "2.4.2",
     "@tailwindcss/typography": "0.5.16",
     "@tanstack/react-router-devtools": "1.123.2",
-    "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "^19.2.7",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.0.4",
-    "@types/node": "^22.19.0",
+    "@types/node": "^24.10.13",
     "dotenv-cli": "^8.0.0",
     "mdx-local-link-checker": "^2.1.1",
     "rehype-autolink-headings": "^7.1.0",

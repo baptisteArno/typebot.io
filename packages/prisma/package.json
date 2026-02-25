@@ -1,20 +1,43 @@
 {
   "name": "@typebot.io/prisma",
   "exports": {
-    ".": "./src/index.ts",
-    "./*": "./src/*.ts",
-    "./effect": "./.effect/index.ts"
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./effect": {
+      "types": "./.effect/index.ts",
+      "import": "./.effect/index.ts",
+      "default": "./.effect/index.ts"
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
-    "dev": "dotenv -e ./.env -e ../../.env -- tsx scripts/studio.ts",
-    "db:generate": "dotenv -e ./.env -e ../../.env -- tsx scripts/db-generate.ts",
-    "db:generate:mysql": "DATABASE_URL=mysql:// dotenv -e ./.env -e ../../.env -- tsx scripts/db-generate.ts",
-    "db:push": "dotenv -e ./.env -e ../../.env -- tsx scripts/db-push.ts",
-    "migrate:deploy": "dotenv -e ./.env -e ../../.env -- tsx scripts/migrate-deploy.ts",
-    "create-migration-file": "dotenv -e ./.env -e ../../.env -- prisma migrate dev --config prisma.config.ts --create-only --schema postgresql/schema.prisma",
+    "dev": "tsx scripts/studio.ts",
+    "db:generate": "tsx scripts/db-generate.ts",
+    "db:generate:mysql": "DATABASE_URL=mysql:// tsx scripts/db-generate.ts",
+    "db:push": "tsx scripts/db-push.ts",
+    "migrate:deploy": "tsx scripts/migrate-deploy.ts",
+    "create-migration-file": "prisma migrate dev --config prisma.config.ts --create-only --schema postgresql/schema.prisma",
     "db:migrate": "bun migrate:deploy",
-    "reset": "dotenv -e ./.env -e ../../.env -- prisma migrate reset --config prisma.config.ts --schema postgresql/schema.prisma",
-    "check-types": "tsc --noEmit"
+    "reset": "prisma migrate reset --config prisma.config.ts --schema postgresql/schema.prisma"
+  },
+  "nx": {
+    "targets": {
+      "prisma:generate": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "packages/prisma",
+          "command": "tsx scripts/db-generate.ts"
+        }
+      }
+    }
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.0",
@@ -26,7 +49,6 @@
   },
   "devDependencies": {
     "@prisma/generator-helper": "^7.4.0",
-    "@typebot.io/tsconfig": "workspace:*",
     "dotenv-cli": "^8.0.0",
     "tsx": "^4.19.1"
   }

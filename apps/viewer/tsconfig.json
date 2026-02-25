@@ -1,12 +1,146 @@
 {
-  "extends": "@typebot.io/tsconfig/nextjs.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "jsx": "preserve",
+    "noEmit": true,
+    "emitDeclarationOnly": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
-    "strictNullChecks": true
+    "outDir": "dist",
+    "rootDir": "src",
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "../../apps/next-app/.next/types/**/*.ts",
+    "../../dist/apps/next-app/.next/types/**/*.ts",
+    "next-env.d.ts"
+  ],
+  "exclude": [
+    "out-tsc",
+    "dist",
+    "node_modules",
+    "jest.config.ts",
+    "jest.config.cts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    ".next"
+  ],
+  "references": [
+    {
+      "path": "../../packages/auth"
+    },
+    {
+      "path": "../../packages/config"
+    },
+    {
+      "path": "../../packages/runtime-session-store"
+    },
+    {
+      "path": "../../packages/blocks/webhook"
+    },
+    {
+      "path": "../../packages/blocks/fileInput"
+    },
+    {
+      "path": "../../packages/blocks/bubbles"
+    },
+    {
+      "path": "../../packages/blocks/logic"
+    },
+    {
+      "path": "../../packages/blocks/inputs"
+    },
+    {
+      "path": "../../packages/blocks/integrations"
+    },
+    {
+      "path": "../../packages/conditions"
+    },
+    {
+      "path": "../../packages/theme"
+    },
+    {
+      "path": "../../packages/typebot"
+    },
+    {
+      "path": "../../packages/variables"
+    },
+    {
+      "path": "../../packages/results"
+    },
+    {
+      "path": "../../packages/lib"
+    },
+    {
+      "path": "../../packages/forge/repository"
+    },
+    {
+      "path": "../../packages/forge/core"
+    },
+    {
+      "path": "../../packages/emails"
+    },
+    {
+      "path": "../../packages/user"
+    },
+    {
+      "path": "../../packages/logs"
+    },
+    {
+      "path": "../../packages/chat-api"
+    },
+    {
+      "path": "../../packages/chat-session"
+    },
+    {
+      "path": "../../packages/credentials"
+    },
+    {
+      "path": "../../packages/schemas"
+    },
+    {
+      "path": "../../packages/whatsapp"
+    },
+    {
+      "path": "../../packages/settings"
+    },
+    {
+      "path": "../../packages/blocks/core"
+    },
+    {
+      "path": "../../packages/groups"
+    },
+    {
+      "path": "../../packages/prisma"
+    },
+    {
+      "path": "../../packages/embeds/react"
+    },
+    {
+      "path": "../../packages/bot-engine"
+    },
+    {
+      "path": "../../packages/playwright"
+    },
+    {
+      "path": "../../packages/env"
+    }
+  ]
 }

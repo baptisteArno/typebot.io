@@ -3,7 +3,6 @@
   "scripts": {
     "start": "SKIP_ENV_CHECK=true dotenv -e ./.env.local -- tsx src/main.ts",
     "start:prod": "cd ../prisma && bun db:generate:mysql && cd ../scripts && SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/main.ts",
-    "check-types": "tsc --noEmit",
     "db:backup": "tsx src/backupDatabase.ts",
     "db:restore": "tsx src/restoreDatabase.ts",
     "db:setCustomPlan": "tsx src/setCustomPlan.ts",
@@ -42,7 +41,12 @@
     "generateWorkspaceSummary": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx src/generateWorkspaceSummary.ts"
   },
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.3.24",
@@ -72,7 +76,6 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*",
     "@types/bun": "^1.3.9",
     "@types/cli-progress": "^3.11.5",
     "@types/papaparse": "^5.3.7",

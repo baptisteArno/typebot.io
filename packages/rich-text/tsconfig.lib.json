@@ -1,0 +1,26 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../lib/tsconfig.lib.json"
+    },
+    {
+      "path": "../variables/tsconfig.lib.json"
+    },
+    {
+      "path": "../ui/tsconfig.lib.json"
+    },
+    {
+      "path": "../runtime-session-store/tsconfig.lib.json"
+    }
+  ]
+}

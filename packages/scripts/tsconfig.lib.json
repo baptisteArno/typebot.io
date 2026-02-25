@@ -1,0 +1,80 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../embeds/react/tsconfig.lib.json"
+    },
+    {
+      "path": "../embeds/js/tsconfig.lib.json"
+    },
+    {
+      "path": "../runtime-session-store/tsconfig.lib.json"
+    },
+    {
+      "path": "../logs/tsconfig.lib.json"
+    },
+    {
+      "path": "../chat-session/tsconfig.lib.json"
+    },
+    {
+      "path": "../bot-engine/tsconfig.lib.json"
+    },
+    {
+      "path": "../ai/tsconfig.lib.json"
+    },
+    {
+      "path": "../credentials/tsconfig.lib.json"
+    },
+    {
+      "path": "../rich-text/tsconfig.lib.json"
+    },
+    {
+      "path": "../groups/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/core/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/bubbles/tsconfig.lib.json"
+    },
+    {
+      "path": "../env/tsconfig.lib.json"
+    },
+    {
+      "path": "../emails/tsconfig.lib.json"
+    },
+    {
+      "path": "../typebot/tsconfig.lib.json"
+    },
+    {
+      "path": "../workspaces/tsconfig.lib.json"
+    },
+    {
+      "path": "../prisma/tsconfig.lib.json"
+    },
+    {
+      "path": "../lib/tsconfig.lib.json"
+    },
+    {
+      "path": "../telemetry/tsconfig.lib.json"
+    },
+    {
+      "path": "../results/tsconfig.lib.json"
+    },
+    {
+      "path": "../billing/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/integrations/tsconfig.lib.json"
+    }
+  ]
+}

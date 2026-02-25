@@ -4,7 +4,12 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "@playwright/test": "^1.57.0",
@@ -21,10 +26,7 @@
     "@typebot.io/user": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^22.19.0",
-    "@typebot.io/tsconfig": "workspace:*"
+    "@types/node": "^24.10.13"
   },
-  "scripts": {
-    "check-types": "tsc --noEmit"
-  }
+  "scripts": {}
 }
