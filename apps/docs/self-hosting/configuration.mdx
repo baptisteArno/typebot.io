@@ -44,6 +44,15 @@ Used for sending email notifications and authentication
 | SMTP_IGNORE_TLS       | undefined | If true and SMTP_SECURE is false then TLS is not used while connecting to server even if server supports STARTTLS extension.                                                                                                                               |
 | SMTP_AUTH_DISABLED    | false     | To disable the authentication by email but still use the provided config for notifications                                                                                                                                                                 |
 
+<Note>
+  If your `SMTP_PASSWORD` contains a `$` character, you must escape it as `\$` in the `.env` file.
+  The dotenv CLI passes values through shell interpolation, where `$` is treaded as a variable refrence and silently corrupts the password, causing `535 Incorrect authentication data` errors.
+
+  - `SMPT_PASSWORD=abc$defghij` - `$def` is expanded by shell and lost
+  - `SMPT_PASSWORD=abc\&\$defghij` - `&` must NOT be escaped
+  - `SMPT_PASSWORD=abc&\$defghij` - only `$` is escaped, password is correct
+</Note>
+
 ## Google Auth
 
 <Accordion title="Requirements">
