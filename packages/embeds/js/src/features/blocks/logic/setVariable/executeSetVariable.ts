@@ -2,7 +2,7 @@ import type { ScriptToExecute } from "@typebot.io/chat-api/clientSideAction";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { safeStringify } from "@typebot.io/lib/safeStringify";
 import type { LogInSession } from "@typebot.io/logs/schemas";
-import type { ClientSideActionContext } from "@/types";
+import type { ClientSideActionContext } from "../../../../types";
 import { runUserCodeInWorker } from "../script/scriptRunner";
 
 const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;

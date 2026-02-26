@@ -11,29 +11,40 @@
     "packages/blocks/*",
     "apps/*"
   ],
+  "nx": {
+    "targets": {
+      "format-and-lint": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "bunx biome check ."
+        }
+      },
+      "lint-repo": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "bunx sherif -r unordered-dependencies -r packages-without-package-json --ignore-package @typebot.io/legacy --ignore-package bot-engine"
+        }
+      }
+    }
+  },
   "scripts": {
     "postinstall": "cd packages/env && bun run compile && nx prisma:generate prisma",
     "prepare": "husky && effect-language-service patch",
-    "pre-commit": "turbo run format-and-lint lint-repo check-broken-links test",
-    "format-and-lint": "biome check .",
+    "pre-commit": "nx run-many -t format-and-lint,lint-repo,check-broken-links,test --parallel=4",
+    "dev": "nx run-many --configuration=development -t dev,watch-deps -p builder,viewer --parallel=4",
     "format-and-lint:fix": "biome check . --write --unsafe",
-    "lint-repo": "sherif -r unordered-dependencies -r packages-without-package-json --ignore-package @typebot.io/legacy --ignore-package bot-engine",
     "lint-repo:fix": "bun lint-repo --fix",
     "patch-embed-libs": "bun packages/scripts/src/patchEmbedLibs.ts && bun install",
     "start-docker-compose-dev": "docker compose -f docker-compose.dev.yml up",
     "build-docker-compose-prod": "docker compose -f docker-compose.build.yml build",
     "start-docker-compose-prod": "docker compose -f docker-compose.yml up",
-    "build": "turbo run build --filter=builder... --filter=viewer... --filter=landing-page... --filter=docs...",
-    "dev": "turbo dev --filter=builder... --filter=viewer... --filter=@typebot.io/partykit... --filter=workflows... --concurrency=11",
-    "test": "turbo run test",
     "sync-locales": "dotenv -e .env -- tolgee sync --continue-on-warning --remove-unused --no-strict-namespace --patterns './apps/builder/src/**/*.ts?(x)' --backup './.tolgee/backup'",
     "pull-locales": "dotenv -e .env -- tolgee pull && bun format-and-lint:fix",
     "push-locales": "dotenv -e .env -- tolgee push",
     "create-new-block": "cd packages/forge/cli && bun start",
     "check-unused-dependencies": "bun packages/scripts/src/checkDependencies.ts",
-    "restore": "echo 'Cleaning...' && bunx rimraf --glob '**/{node_modules,dist,.next,.turbo}'",
-    "deploy-workflows": "fly deploy --config apps/workflows/fly.toml",
-    "check": "turbo run check-types test format-and-lint:fix lint-repo check-broken-links"
+    "restore": "echo 'Cleaning...' && bunx rimraf --glob '**/{node_modules,dist,.next}'",
+    "deploy-workflows": "fly deploy --config apps/workflows/fly.toml"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.4",

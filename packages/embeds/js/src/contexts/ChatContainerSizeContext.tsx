@@ -6,8 +6,8 @@ import {
   onMount,
   useContext,
 } from "solid-js";
-import type { ChatContainerSize } from "@/constants";
-import { chatContainerBreakpoints } from "@/constants";
+import type { ChatContainerSize } from "../constants";
+import { chatContainerBreakpoints } from "../constants";
 
 const DEFAULT_CONTAINER_SIZE = "lg" as const;
 

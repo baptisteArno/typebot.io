@@ -8,7 +8,7 @@ import {
   Show,
   Switch,
 } from "solid-js";
-import { CloseIcon } from "@/components/icons/CloseIcon";
+import { CloseIcon } from "../../../../../components/icons/CloseIcon";
 import { FilePreview } from "./FilePreview";
 
 export const SelectedFile = (props: {

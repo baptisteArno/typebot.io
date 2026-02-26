@@ -6,10 +6,6 @@
     "outDir": "dist",
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
   },
-  "include": [
-    "src/**/*.ts",
-    "scripts/**/*.ts",
-    ".effect/**/*.ts"
-  ],
+  "include": ["src/**/*.ts", "scripts/**/*.ts", ".effect/**/*.ts"],
   "references": []
 }

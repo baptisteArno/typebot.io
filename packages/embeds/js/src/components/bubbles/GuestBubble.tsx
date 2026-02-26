@@ -7,12 +7,12 @@ import { isChatContainerLight } from "@typebot.io/theme/helpers/isChatContainerL
 import type { Theme } from "@typebot.io/theme/schemas";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, For, Match, Show, Switch } from "solid-js";
-import { FilePreview } from "@/features/blocks/inputs/fileUpload/components/FilePreview";
+import { FilePreview } from "../../features/blocks/inputs/fileUpload/components/FilePreview";
 import type {
   InputSubmitContent,
   RecordingInputSubmitContent,
   TextInputSubmitContent,
-} from "@/types";
+} from "../../types";
 import { Avatar } from "../avatars/Avatar";
 import { Modal } from "../Modal";
 

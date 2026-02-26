@@ -9,7 +9,6 @@ import { SupportBubble } from "@/components/SupportBubble";
 import { TypebotProvider } from "@/features/editor/providers/TypebotProvider";
 import { UserProvider } from "@/features/user/UserProvider";
 import { WorkspaceProvider } from "@/features/workspace/WorkspaceProvider";
-import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
 import { tolgee } from "@/lib/tolgee";
 import "@/assets/styles/routerProgressBar.css";
 import "@/assets/styles/plate.css";

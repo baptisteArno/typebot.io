@@ -1,9 +1,9 @@
 import type { TimeInputBlock } from "@typebot.io/blocks-inputs/time/schema";
 import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { createSignal, onCleanup, onMount } from "solid-js";
-import { SendButton } from "@/components/SendButton";
-import type { CommandData } from "@/features/commands/types";
-import type { InputSubmitContent } from "@/types";
+import { SendButton } from "../../../../../components/SendButton";
+import type { InputSubmitContent } from "../../../../../types";
+import type { CommandData } from "../../../../commands/types";
 
 type Props = {
   block: TimeInputBlock["options"];

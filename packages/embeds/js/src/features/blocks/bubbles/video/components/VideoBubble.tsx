@@ -11,7 +11,7 @@ import type {
 } from "@typebot.io/blocks-bubbles/video/schema";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, Match, onCleanup, onMount, Switch } from "solid-js";
-import { TypingBubble } from "@/components/TypingBubble";
+import { TypingBubble } from "../../../../../components/TypingBubble";
 
 type Props = {
   content: VideoBubbleBlock["content"];

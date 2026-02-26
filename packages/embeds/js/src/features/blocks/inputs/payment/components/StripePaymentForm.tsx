@@ -4,8 +4,8 @@ import { defaultPaymentInputOptions } from "@typebot.io/blocks-inputs/payment/co
 import type { PaymentInputBlock } from "@typebot.io/blocks-inputs/payment/schema";
 import type { RuntimeOptions } from "@typebot.io/chat-api/schemas";
 import { createSignal, createUniqueId, onMount, Show } from "solid-js";
-import { SendButton } from "@/components/SendButton";
-import type { BotContext } from "@/types";
+import { SendButton } from "../../../../../components/SendButton";
+import type { BotContext } from "../../../../../types";
 import {
   removePaymentInProgressFromStorage,
   setPaymentInProgressInStorage,

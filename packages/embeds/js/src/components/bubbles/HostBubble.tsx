@@ -10,13 +10,13 @@ import type {
 } from "@typebot.io/chat-api/schemas";
 import type { Settings } from "@typebot.io/settings/schemas";
 import { Match, Switch } from "solid-js";
-import { AudioBubble } from "@/features/blocks/bubbles/audio/components/AudioBubble";
-import { CustomEmbedBubble } from "@/features/blocks/bubbles/embed/components/CustomEmbedBubble";
-import { EmbedBubble } from "@/features/blocks/bubbles/embed/components/EmbedBubble";
-import { ImageBubble } from "@/features/blocks/bubbles/image/components/ImageBubble";
-import { TextBubble } from "@/features/blocks/bubbles/textBubble/components/TextBubble";
-import { VideoBubble } from "@/features/blocks/bubbles/video/components/VideoBubble";
-import type { InputSubmitContent } from "@/types";
+import { AudioBubble } from "../../features/blocks/bubbles/audio/components/AudioBubble";
+import { CustomEmbedBubble } from "../../features/blocks/bubbles/embed/components/CustomEmbedBubble";
+import { EmbedBubble } from "../../features/blocks/bubbles/embed/components/EmbedBubble";
+import { ImageBubble } from "../../features/blocks/bubbles/image/components/ImageBubble";
+import { TextBubble } from "../../features/blocks/bubbles/textBubble/components/TextBubble";
+import { VideoBubble } from "../../features/blocks/bubbles/video/components/VideoBubble";
+import type { InputSubmitContent } from "../../types";
 
 type Props = {
   message: ChatBubble;

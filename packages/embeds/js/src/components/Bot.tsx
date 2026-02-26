@@ -23,22 +23,22 @@ import { cx } from "@typebot.io/ui/lib/cva";
 import { HTTPError } from "ky";
 import { createEffect, createSignal, onCleanup, Show } from "solid-js";
 import { Portal } from "solid-js/web";
-import { BotContainerContext } from "@/contexts/BotContainerContext";
-import { startChatQuery } from "@/queries/startChatQuery";
-import type { BotContext } from "@/types";
-import { CorsError } from "@/utils/CorsError";
-import { mergeThemes } from "@/utils/dynamicTheme";
-import { injectFont } from "@/utils/injectFont";
-import { persist } from "@/utils/persist";
-import { setCssVariablesValue } from "@/utils/setCssVariablesValue";
+import { BotContainerContext } from "../contexts/BotContainerContext";
+import { startChatQuery } from "../queries/startChatQuery";
+import type { BotContext } from "../types";
+import { CorsError } from "../utils/CorsError";
+import { mergeThemes } from "../utils/dynamicTheme";
+import { injectFont } from "../utils/injectFont";
+import { persist } from "../utils/persist";
+import { setCssVariablesValue } from "../utils/setCssVariablesValue";
 import {
   getExistingResultIdFromStorage,
   getInitialChatReplyFromStorage,
   setInitialChatReplyInStorage,
   setResultInStorage,
   wipeExistingChatStateInStorage,
-} from "@/utils/storage";
-import { toaster } from "@/utils/toaster";
+} from "../utils/storage";
+import { toaster } from "../utils/toaster";
 import { buttonVariants } from "./Button";
 import { ChatContainer } from "./ConversationContainer/ChatContainer";
 import { ErrorMessage } from "./ErrorMessage";

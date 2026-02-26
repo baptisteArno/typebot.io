@@ -1,6 +1,6 @@
 import type { ScriptToExecute } from "@typebot.io/chat-api/clientSideAction";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
-import type { ClientSideActionContext } from "@/types";
+import type { ClientSideActionContext } from "../../../../types";
 import { runUserCodeInWorker } from "./scriptRunner";
 
 const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;

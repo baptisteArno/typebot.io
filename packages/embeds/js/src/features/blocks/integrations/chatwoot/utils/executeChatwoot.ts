@@ -1,6 +1,6 @@
 import type { ScriptToExecute } from "@typebot.io/chat-api/clientSideAction";
-import { executeScript } from "@/features/blocks/logic/script/executeScript";
-import type { ClientSideActionContext } from "@/types";
+import type { ClientSideActionContext } from "../../../../../types";
+import { executeScript } from "../../../logic/script/executeScript";
 import { chatwootWebWidgetOpenedMessage } from "../constants";
 
 export const executeChatwoot = (

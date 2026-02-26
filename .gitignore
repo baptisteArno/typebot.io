@@ -3,7 +3,6 @@ node_modules
 .env.local
 workspace.code-workspace
 .DS_Store
-.turbo
 .idea
 authenticatedState.json
 playwright-report

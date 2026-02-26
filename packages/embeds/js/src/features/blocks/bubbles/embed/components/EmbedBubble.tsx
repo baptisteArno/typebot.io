@@ -3,8 +3,8 @@ import type { EmbedBubbleBlock } from "@typebot.io/blocks-bubbles/embed/schema";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, onCleanup, onMount } from "solid-js";
-import { TypingBubble } from "@/components/TypingBubble";
-import type { InputSubmitContent } from "@/types";
+import { TypingBubble } from "../../../../../components/TypingBubble";
+import type { InputSubmitContent } from "../../../../../types";
 
 type Props = {
   content: EmbedBubbleBlock["content"];

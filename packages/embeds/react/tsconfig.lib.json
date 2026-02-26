@@ -10,10 +10,7 @@
     "jsx": "react-jsx",
     "lib": ["dom", "es2023"]
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
       "path": "../js/tsconfig.lib.json"

@@ -10,12 +10,12 @@ import {
   Show,
   Switch,
 } from "solid-js";
-import { Button } from "@/components/Button";
-import { SendButton } from "@/components/SendButton";
-import { Spinner } from "@/components/Spinner";
-import type { BotContext, InputSubmitContent } from "@/types";
-import { guessApiHost } from "@/utils/guessApiHost";
-import { toaster } from "@/utils/toaster";
+import { Button } from "../../../../../components/Button";
+import { SendButton } from "../../../../../components/SendButton";
+import { Spinner } from "../../../../../components/Spinner";
+import type { BotContext, InputSubmitContent } from "../../../../../types";
+import { guessApiHost } from "../../../../../utils/guessApiHost";
+import { toaster } from "../../../../../utils/toaster";
 import { injectAndroidCameraCaptureToMimeTypes } from "../helpers/injectAndroidCameraCaptureToMimeTypes";
 import { sanitizeNewFile } from "../helpers/sanitizeSelectedFiles";
 import { uploadFiles } from "../helpers/uploadFiles";

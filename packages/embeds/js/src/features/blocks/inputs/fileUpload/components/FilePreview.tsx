@@ -1,5 +1,5 @@
 import { cx } from "@typebot.io/ui/lib/cva";
-import { FileIcon } from "@/components/icons/FileIcon";
+import { FileIcon } from "../../../../../components/icons/FileIcon";
 
 type Props = {
   file: { name: string };
