@@ -22,7 +22,7 @@
       "lint-repo": {
         "executor": "nx:run-commands",
         "options": {
-          "command": "bunx sherif -r unordered-dependencies -r packages-without-package-json --ignore-package @typebot.io/legacy --ignore-package bot-engine"
+          "command": "bun run lint-repo"
         }
       }
     }
@@ -31,9 +31,10 @@
     "postinstall": "cd packages/env && bun run compile && nx prisma:generate prisma",
     "prepare": "husky && effect-language-service patch",
     "pre-commit": "nx run-many -t format-and-lint,lint-repo,check-broken-links,test --parallel=4",
-    "dev": "nx run-many --configuration=development -t dev,watch-deps -p builder,viewer --parallel=4",
+    "dev": "nx run-many --configuration=development -t dev,watch-deps -p builder,viewer,workflows",
     "format-and-lint:fix": "biome check . --write --unsafe",
-    "lint-repo:fix": "bun lint-repo --fix",
+    "lint-repo": "sherif -r unordered-dependencies -r packages-without-package-json --ignore-package @typebot.io/legacy --ignore-package bot-engine",
+    "lint-repo:fix": "bun run lint-repo --fix",
     "patch-embed-libs": "bun packages/scripts/src/patchEmbedLibs.ts && bun install",
     "start-docker-compose-dev": "docker compose -f docker-compose.dev.yml up",
     "build-docker-compose-prod": "docker compose -f docker-compose.build.yml build",

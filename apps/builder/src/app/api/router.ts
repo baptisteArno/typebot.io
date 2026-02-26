@@ -27,7 +27,33 @@ import { generateUploadUrl } from "@/features/upload/api/generateUploadUrl";
 import { userRouter } from "@/features/user/server/routers";
 import { workspaceRouter } from "@/features/workspace/api/router";
 
-export const appRouter = {
+const healthz = publicProcedure.handler(async () => ({
+  status: "ok",
+  timestamp: new Date().toISOString(),
+}));
+
+const httpRequestSpecMocks = {
+  fail: publicProcedure
+    .route({
+      method: "POST",
+      path: "/mock/fail",
+    })
+    .handler(() => {
+      throw new ORPCError("INTERNAL_SERVER_ERROR", {
+        message: "Fail",
+      });
+    }),
+  mirrorBody: publicProcedure
+    .route({
+      method: "POST",
+      path: "/mock/mirror-body",
+      inputStructure: "detailed",
+    })
+    .input(z.object({ body: z.unknown() }))
+    .handler(({ input }) => input.body),
+};
+
+export const appRouter: AppRouter = {
   getLinkedTypebots,
   analytics: analyticsRouter,
   workspace: workspaceRouter,
@@ -41,30 +67,8 @@ export const appRouter = {
   folders: folderRouter,
   emails: emailsRouter,
   user: userRouter,
-  healthz: publicProcedure.handler(async () => ({
-    status: "ok",
-    timestamp: new Date().toISOString(),
-  })),
-  httpRequestSpecMocks: {
-    fail: publicProcedure
-      .route({
-        method: "POST",
-        path: "/mock/fail",
-      })
-      .handler(() => {
-        throw new ORPCError("INTERNAL_SERVER_ERROR", {
-          message: "Fail",
-        });
-      }),
-    mirrorBody: publicProcedure
-      .route({
-        method: "POST",
-        path: "/mock/mirror-body",
-        inputStructure: "detailed",
-      })
-      .input(z.object({ body: z.unknown() }))
-      .handler(({ input }) => input.body),
-  },
+  healthz,
+  httpRequestSpecMocks,
   generateUploadUrl,
   fileInput: fileUploadBuilderRouter,
   openAI: openAIRouter,
@@ -79,4 +83,32 @@ export const appRouter = {
   billing: billingRouter,
 };
 
-export type AppRouter = typeof appRouter;
+export type AppRouter = {
+  getLinkedTypebots: typeof getLinkedTypebots;
+  analytics: typeof analyticsRouter;
+  workspace: typeof workspaceRouter;
+  typebot: typeof typebotRouter;
+  httpRequest: typeof httpRequestRouter;
+  results: typeof resultsRouter;
+  theme: typeof themeRouter;
+  collaborators: typeof collaboratorsRouter;
+  customDomains: typeof customDomainsRouter;
+  whatsApp: typeof builderWhatsAppRouter;
+  folders: typeof folderRouter;
+  emails: typeof emailsRouter;
+  user: typeof userRouter;
+  healthz: typeof healthz;
+  httpRequestSpecMocks: typeof httpRequestSpecMocks;
+  generateUploadUrl: typeof generateUploadUrl;
+  fileInput: typeof fileUploadBuilderRouter;
+  openAI: typeof openAIRouter;
+  forge: typeof forgeRouter;
+  sheets: typeof googleSheetsRouter;
+  email: typeof emailRouter;
+  telemetry: typeof telemetryRouter;
+  generateGroupTitle: typeof generateGroupTitle;
+  credentials: typeof credentialsRouter;
+  getFeatureFlags: typeof getFeatureFlags;
+  auth: typeof authRouter;
+  billing: typeof billingRouter;
+};

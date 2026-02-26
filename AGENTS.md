@@ -14,6 +14,7 @@ This is a Nx monorepo with Bun package manager.
 ## Coding style
 
 - Write Effect code whenever possible. We use Effect V4 Beta. **IMPORTANT** Always read through `opensrc/repos/github.com/Effect-TS/effect-smol/LLMS.md` and useful linked docs before writing Effect code. Never guess at Effect patterns - check the guide first and follow it religiously.
+- Never use `as`. You should always narrow / parse the value to get the right type.
 - Rely heavily on type inference, we tend not to declare types.
 - Prefer files exporting a single primary function and the file name should match the exported function name. On that file, the main exported function is at the top while local helpers are at the bottom.
 - Use very explicit variable names.

@@ -4,9 +4,22 @@
   "private": true,
   "type": "module",
   "main": "src/index.ts",
-  "scripts": {
-    "start": "bun src/index.ts",
-    "dev": "bun --watch --no-clear-screen src/index.ts"
+  "nx": {
+    "targets": {
+      "start": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "bun src/index.ts"
+        }
+      },
+      "dev": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "{workspaceRoot}/apps/workflows",
+          "command": "bun --watch --no-clear-screen src/index.ts"
+        }
+      }
+    }
   },
   "dependencies": {
     "@effect/platform-bun": "4.0.0-beta.30",
