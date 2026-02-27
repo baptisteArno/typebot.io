@@ -56,13 +56,7 @@
       "path": "../../packages/rich-text"
     },
     {
-      "path": "../../packages/spaces"
-    },
-    {
       "path": "../../packages/blocks/fileInput"
-    },
-    {
-      "path": "../../packages/audiences"
     },
     {
       "path": "../../packages/workspaces"

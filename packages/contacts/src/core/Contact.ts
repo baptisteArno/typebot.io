@@ -1,8 +1,8 @@
-import { AudienceId } from "@typebot.io/audiences/core/Audience";
+import { AudienceId } from "@typebot.io/audiences/core";
 import { Email, PhoneNumber } from "@typebot.io/domain-primitives/schemas";
 import { Schema } from "effect";
 
-export const ContactId = Schema.Number.pipe(Schema.brand("ContactId"));
+export const ContactId = Schema.String.pipe(Schema.brand("ContactId"));
 export type ContactId = typeof ContactId.Type;
 
 const CustomAttributeValue = Schema.Union(

@@ -1,26 +1,28 @@
-import { Icon, Name } from "@typebot.io/domain-primitives/schemas";
+import { AudienceId } from "@typebot.io/audiences/core";
+import {
+  Emoji,
+  ImageSrc,
+  Name,
+  SpaceId,
+} from "@typebot.io/domain-primitives/schemas";
 import { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Schema } from "effect";
 
-export const AudienceId = Schema.String.pipe(Schema.brand("AudienceId"));
-export type AudienceId = typeof AudienceId.Type;
-
-export const SpaceId = Schema.String.pipe(Schema.brand("SpaceId"));
-export type SpaceId = typeof SpaceId.Type;
+export const SpaceIcon = Schema.Union(Emoji, ImageSrc);
+export type SpaceIcon = typeof SpaceIcon.Type;
 
 export class Space extends Schema.Class<Space>("Space")({
   id: SpaceId,
   name: Name,
-  icon: Schema.NullOr(Icon),
+  icon: Schema.NullOr(SpaceIcon),
   workspaceId: WorkspaceId,
-
   createdAt: Schema.ValidDateFromSelf,
   updatedAt: Schema.ValidDateFromSelf,
 }) {}
 
 export const SpaceCreateInputSchema = Schema.Struct({
   name: Name.pipe(Schema.minLength(1)),
-  icon: Icon.pipe(Schema.optional),
+  icon: Schema.optional(SpaceIcon),
   audienceId: AudienceId.pipe(Schema.optional),
 });
 export type SpaceCreateInputSchema = typeof SpaceCreateInputSchema.Type;

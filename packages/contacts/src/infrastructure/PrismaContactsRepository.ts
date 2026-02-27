@@ -1,8 +1,12 @@
-import type { AudienceId } from "@typebot.io/audiences/core/Audience";
+import type { AudienceId } from "@typebot.io/audiences/core";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
 import { Effect, Layer, Schema } from "effect";
-import { Contact, type ContactCreateInput } from "../core/Contact";
+import {
+  Contact,
+  type ContactCreateInput,
+  type ContactId,
+} from "../core/Contact";
 import { AlreadyExistsError, NotFoundError } from "../core/ContactsErrors";
 import { ContactsRepository } from "../core/ContactsRepository";
 
@@ -52,7 +56,7 @@ export const PrismaContactsRepository = Layer.effect(
             lastName: input.lastName,
             email: input.email,
             phone: input.phone,
-            customAttributes: input.customAttributes,
+            properties: input.customAttributes,
           },
         })
         .pipe(
@@ -69,7 +73,7 @@ export const PrismaContactsRepository = Layer.effect(
 
     const getById = Effect.fn("PrismaContactsRepository.getById")(function* (
       audienceId: AudienceId,
-      contactId: number,
+      contactId: ContactId,
     ) {
       const contact = yield* prisma.contact
         .findFirst({

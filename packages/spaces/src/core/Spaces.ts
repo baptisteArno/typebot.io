@@ -1,8 +1,9 @@
-import type { Icon, Name } from "@typebot.io/domain-primitives/schemas";
+import type { AudienceId } from "@typebot.io/audiences/core";
+import type { Name } from "@typebot.io/domain-primitives/schemas";
 import type { UserId } from "@typebot.io/user/schemas";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Context, Effect, Layer } from "effect";
-import type { AudienceId, Space } from "./Space";
+import type { Space, SpaceIcon } from "./Space";
 import { SpacesAuthorization } from "./SpacesAuthorization";
 import { type AlreadyExistsError, ForbiddenError } from "./SpacesErrors";
 import { SpacesRepository } from "./SpacesRepository";
@@ -17,7 +18,7 @@ export class Spaces extends Context.Tag("@typebot.io/Spaces")<
       },
       input: {
         name: Name;
-        icon?: Icon;
+        icon?: SpaceIcon;
         audienceId?: AudienceId;
       },
     ) => Effect.Effect<Space, AlreadyExistsError | ForbiddenError>;
@@ -60,7 +61,7 @@ export class Spaces extends Context.Tag("@typebot.io/Spaces")<
         },
         input: {
           name: Name;
-          icon?: Icon;
+          icon?: SpaceIcon;
           audienceId?: AudienceId;
         },
       ) {

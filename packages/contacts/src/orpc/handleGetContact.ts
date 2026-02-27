@@ -1,5 +1,5 @@
 import { ORPCError } from "@orpc/server";
-import { AudienceId } from "@typebot.io/audiences/core/Audience";
+import { AudienceId } from "@typebot.io/audiences/core";
 import { type User, UserId } from "@typebot.io/user/schemas";
 import { Effect, Schema } from "effect";
 import { ContactId } from "../core/Contact";
@@ -25,7 +25,7 @@ export const handleGetContact = async ({
     Effect.gen(function* () {
       const contacts = yield* Contacts;
       return yield* contacts.get({
-        audienceId: AudienceId.make(audienceId),
+        audienceId,
         contactId,
         userId: UserId.make(user.id),
       });

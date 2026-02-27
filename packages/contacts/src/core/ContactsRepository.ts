@@ -1,6 +1,6 @@
-import type { AudienceId } from "@typebot.io/audiences/core/Audience";
+import type { AudienceId } from "@typebot.io/audiences/core";
 import { Context, type Effect } from "effect";
-import type { Contact, ContactCreateInput } from "./Contact";
+import type { Contact, ContactCreateInput, ContactId } from "./Contact";
 import type { AlreadyExistsError, NotFoundError } from "./ContactsErrors";
 
 export class ContactsRepository extends Context.Tag(
@@ -21,7 +21,7 @@ export class ContactsRepository extends Context.Tag(
     ) => Effect.Effect<Contact, AlreadyExistsError>;
     readonly getById: (
       audienceId: AudienceId,
-      contactId: number,
+      contactId: ContactId,
     ) => Effect.Effect<Contact, NotFoundError>;
   }
 >() {}

@@ -4,6 +4,11 @@
   "type": "module",
   "private": true,
   "exports": {
+    "./core": {
+      "types": "./src/core/Spaces.ts",
+      "import": "./src/core/Spaces.ts",
+      "default": "./src/core/Spaces.ts"
+    },
     "./orpc/router": {
       "types": "./src/orpc/router.ts",
       "import": "./src/orpc/router.ts",

@@ -1,9 +1,8 @@
 import { ORPCError } from "@orpc/server";
-import { Icon, Name } from "@typebot.io/domain-primitives/schemas";
 import { type User, UserId } from "@typebot.io/user/schemas";
 import { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Schema } from "effect";
-import { AudienceId, SpaceCreateInputSchema } from "../core/Space";
+import { SpaceCreateInputSchema } from "../core/Space";
 import { Spaces } from "../core/Spaces";
 import { runSpacesEffect } from "../infrastructure/SpacesLiveLayer";
 
@@ -32,10 +31,9 @@ export const handleCreateSpace = async ({
           userId: UserId.make(user.id),
         },
         {
-          name: Name.make(name),
-          icon: icon === undefined ? undefined : Icon.make(icon),
-          audienceId:
-            audienceId === undefined ? undefined : AudienceId.make(audienceId),
+          name,
+          icon,
+          audienceId,
         },
       );
       return response;

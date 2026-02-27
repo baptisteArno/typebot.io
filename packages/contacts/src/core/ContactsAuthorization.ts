@@ -1,4 +1,4 @@
-import type { AudienceId } from "@typebot.io/audiences/core/Audience";
+import type { AudienceId } from "@typebot.io/audiences/core";
 import type { UserId } from "@typebot.io/user/schemas";
 import { Context, type Effect } from "effect";
 

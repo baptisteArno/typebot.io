@@ -1,4 +1,4 @@
-import { Name } from "@typebot.io/domain-primitives/schemas";
+import { Name, SpaceId } from "@typebot.io/domain-primitives/schemas";
 import { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Schema } from "effect";
 
@@ -15,6 +15,7 @@ export class Audience extends Schema.Class<Audience>("Audience")({
 
 export const AudienceCreateInputSchema = Schema.Struct({
   name: Name.pipe(Schema.minLength(1)),
+  spaceId: Schema.optional(SpaceId),
 });
 export type AudienceCreateInputSchema = typeof AudienceCreateInputSchema.Type;
 export const AudienceCreateInputStandardSchema = AudienceCreateInputSchema.pipe(

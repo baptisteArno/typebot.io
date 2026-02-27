@@ -1,4 +1,4 @@
-import type { AudienceId } from "@typebot.io/audiences/core/Audience";
+import type { AudienceId } from "@typebot.io/audiences/core";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import type { UserId } from "@typebot.io/user/schemas";
 import { WorkspaceAuthorization } from "@typebot.io/workspaces/core/WorkspaceAuthorization";

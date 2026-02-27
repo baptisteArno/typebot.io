@@ -24,7 +24,7 @@ export const PeopleList = () => {
   const { membersCount, seatsLimit } = useSeatsLimit();
 
   return (
-    <Tabs.Root defaultValue="members">
+    <Tabs.Root defaultValue="members" className="flex-1 gap-6">
       <Tabs.List>
         <Tabs.Tab value="members">
           <UsersIcon />
@@ -193,7 +193,7 @@ const MembersList = () => {
   const { canInviteNewMember } = useSeatsLimit();
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {!canInviteNewMember && (
         <Alert.Root>
           <InformationSquareIcon />

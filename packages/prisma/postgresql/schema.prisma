@@ -441,57 +441,90 @@ model SuppressedEmail {
 }
 
 model Space {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
-  name        String
-  icon        String?
-  workspaceId String
-  audienceId  String?
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  name      String
+  icon      String?
 
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  audience  Audience? @relation(fields: [audienceId], references: [id], onDelete: Restrict)
-
-  typebots Typebot[]
-
-  @@unique([workspaceId, name])
-}
-
-model Audience {
-  id          String    @id @default(cuid())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now()) @updatedAt
-  name        String
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  typebots    Typebot[]
+  audience    Audience?
 
-  spaces   Space[]
-  contacts Contact[]
-  segments Segment[]
+  @@unique([id, workspaceId])
+}
 
-  @@unique([workspaceId, name])
+/**
+ * Tough to model only one audience per workspace. It would need a partial unique index SQL migration.
+ * So we need to enforce this constraint on the application layer.
+ */
+model Audience {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  workspaceId                String
+  workspace                  Workspace                   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  spaceId                    String?
+  space                      Space?                      @relation(fields: [workspaceId, spaceId], references: [workspaceId, id], onDelete: Cascade)
+  contacts                   Contact[]
+  segments                   Segment[]
+  contactPropertyDefinitions ContactPropertyDefinition[]
+
+  @@unique([workspaceId, spaceId])
 }
 
 model Contact {
-  id               Int                  @id @default(autoincrement())
-  createdAt        DateTime             @default(now())
-  updatedAt        DateTime             @default(now()) @updatedAt
-  firstName        String?              @db.VarChar(255)
-  lastName         String?              @db.VarChar(255)
-  email            String?              @db.VarChar(320)
-  phone            String?              @db.VarChar(255)
-  customAttributes Json?
-  segments         ContactsInSegments[]
-  audienceId       String
-  audience         Audience             @relation(fields: [audienceId], references: [id], onDelete: Cascade)
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  firstName String?
+  lastName  String?
+  email     String?
+  phone     String?
+
+  audienceId String
+  audience   Audience             @relation(fields: [audienceId], references: [id], onDelete: Cascade)
+  properties ContactProperty[]
+  segments   ContactsInSegments[]
 
   @@unique([audienceId, email])
   @@unique([audienceId, phone])
 }
 
+model ContactPropertyDefinition {
+  id   Int                 @id @default(autoincrement())
+  key  String
+  type ContactPropertyType
+
+  audienceId String
+  audience   Audience          @relation(fields: [audienceId], references: [id], onDelete: Cascade)
+  properties ContactProperty[]
+
+  @@unique([audienceId, key])
+}
+
+enum ContactPropertyType {
+  STRING
+  NUMBER
+}
+
+model ContactProperty {
+  valueString String?
+  valueNumber Float?
+
+  contactId    String
+  contact      Contact                   @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  definitionId Int
+  definition   ContactPropertyDefinition @relation(fields: [definitionId], references: [id], onDelete: Cascade)
+
+  @@id([contactId, definitionId])
+}
+
 model Segment {
-  id         Int                  @id @default(autoincrement())
-  name       String               @db.VarChar(255)
+  id         String               @id @default(cuid())
+  name       String
   audienceId String
   audience   Audience             @relation(fields: [audienceId], references: [id], onDelete: Cascade)
   contacts   ContactsInSegments[]
@@ -500,14 +533,15 @@ model Segment {
 }
 
 model ContactsInSegments {
-  contactId  Int
-  segmentId  Int
+  contactId  String
+  segmentId  String
   assignedAt DateTime @default(now())
 
   contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
   segment Segment @relation(fields: [segmentId], references: [id], onDelete: Cascade)
 
   @@id([segmentId, contactId])
+  @@index([contactId, segmentId])
 }
 
 enum WorkspaceRole {

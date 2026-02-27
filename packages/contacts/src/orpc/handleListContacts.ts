@@ -1,5 +1,5 @@
 import { ORPCError } from "@orpc/server";
-import { AudienceId } from "@typebot.io/audiences/core/Audience";
+import { AudienceId } from "@typebot.io/audiences/core";
 import { type User, UserId } from "@typebot.io/user/schemas";
 import { Effect, Schema } from "effect";
 import { Contacts } from "../core/Contacts";
@@ -32,7 +32,7 @@ export const handleListContacts = async ({
       const contacts = yield* Contacts;
       return yield* contacts.list(
         {
-          audienceId: AudienceId.make(audienceId),
+          audienceId,
           userId: UserId.make(user.id),
         },
         { limit: limit ?? 50, cursor },

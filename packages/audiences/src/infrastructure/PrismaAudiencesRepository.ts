@@ -1,4 +1,4 @@
-import type { Name } from "@typebot.io/domain-primitives/schemas";
+import type { Name, SpaceId } from "@typebot.io/domain-primitives/schemas";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
@@ -33,13 +33,13 @@ export const PrismaAudiencesRepository = Layer.effect(
 
     const create = Effect.fn("PrismaAudiencesRepository.create")(function* (
       workspaceId: WorkspaceId,
-      input: { name: Name },
+      input: { name: Name; spaceId?: SpaceId },
     ) {
       const audience = yield* prisma.audience
         .create({
           data: {
-            name: input.name,
             workspaceId,
+            spaceId: input.spaceId,
           },
         })
         .pipe(

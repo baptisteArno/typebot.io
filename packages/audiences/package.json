@@ -7,7 +7,7 @@
     "test": "vitest run"
   },
   "exports": {
-    "./core/Audience": {
+    "./core": {
       "types": "./src/core/Audience.ts",
       "import": "./src/core/Audience.ts",
       "default": "./src/core/Audience.ts"

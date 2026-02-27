@@ -1,9 +1,11 @@
-import type { Icon, Name } from "@typebot.io/domain-primitives/schemas";
+import type { AudienceId } from "@typebot.io/audiences/core";
+import type { Name } from "@typebot.io/domain-primitives/schemas";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Layer, Schema } from "effect";
-import { type AudienceId, Space } from "../core/Space";
+import type { SpaceIcon } from "../core/Space";
+import { Space } from "../core/Space";
 import { AlreadyExistsError } from "../core/SpacesErrors";
 import { SpacesRepository } from "../core/SpacesRepository";
 
@@ -35,7 +37,7 @@ export const PrismaSpacesRepository = Layer.effect(
       workspaceId: WorkspaceId,
       input: {
         name: Name;
-        icon?: Icon;
+        icon?: SpaceIcon;
         audienceId?: AudienceId;
       },
     ) {
@@ -44,7 +46,6 @@ export const PrismaSpacesRepository = Layer.effect(
           data: {
             name: input.name,
             icon: input.icon,
-            audienceId: input.audienceId,
             workspaceId,
           },
         })
@@ -57,14 +58,7 @@ export const PrismaSpacesRepository = Layer.effect(
           ),
         );
 
-      const normalizedSpace = {
-        ...space,
-        icon: space.icon ?? undefined,
-        audienceId: space.audienceId ?? undefined,
-      };
-      return yield* Schema.decodeUnknown(Space)(normalizedSpace).pipe(
-        Effect.orDie,
-      );
+      return yield* Schema.decodeUnknown(Space)(space).pipe(Effect.orDie);
     });
 
     return SpacesRepository.of({

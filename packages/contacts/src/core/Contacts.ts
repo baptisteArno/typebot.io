@@ -1,7 +1,7 @@
-import type { AudienceId } from "@typebot.io/audiences/core/Audience";
+import type { AudienceId } from "@typebot.io/audiences/core";
 import type { UserId } from "@typebot.io/user/schemas";
 import { Context, Effect, Layer } from "effect";
-import type { Contact, ContactCreateInput } from "./Contact";
+import type { Contact, ContactCreateInput, ContactId } from "./Contact";
 import { ContactsAuthorization } from "./ContactsAuthorization";
 import {
   type AlreadyExistsError,
@@ -26,7 +26,7 @@ export class Contacts extends Context.Tag("@typebot.io/Contacts")<
     ) => Effect.Effect<Contact, AlreadyExistsError | ForbiddenError>;
     readonly get: (resource: {
       audienceId: AudienceId;
-      contactId: number;
+      contactId: ContactId;
       userId: UserId;
     }) => Effect.Effect<Contact, ForbiddenError | NotFoundError>;
   }
@@ -74,7 +74,7 @@ export class Contacts extends Context.Tag("@typebot.io/Contacts")<
         userId,
       }: {
         audienceId: AudienceId;
-        contactId: number;
+        contactId: ContactId;
         userId: UserId;
       }) {
         const canGet = yield* contactsAuthorization.canGetContact(

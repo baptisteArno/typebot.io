@@ -1,11 +1,8 @@
 import { ORPCError } from "@orpc/server";
-import { AudienceId } from "@typebot.io/audiences/core/Audience";
+import { AudienceId } from "@typebot.io/audiences/core";
 import { type User, UserId } from "@typebot.io/user/schemas";
 import { Effect, Schema } from "effect";
-import {
-  type ContactCreateInput,
-  ContactCreateInputSchema,
-} from "../core/Contact";
+import { ContactCreateInputSchema } from "../core/Contact";
 import { Contacts } from "../core/Contacts";
 import { runContactsEffect } from "../infrastructure/ContactsLiveLayer";
 
@@ -18,7 +15,7 @@ export const handleCreateContact = async ({
   input: { audienceId, firstName, lastName, email, phone, customAttributes },
   context: { user },
 }: {
-  input: { audienceId: string } & ContactCreateInput;
+  input: typeof CreateContactInputStandardSchema.Type;
   context: { user: Pick<User, "id"> };
 }) => {
   const response = await runContactsEffect(
@@ -26,7 +23,7 @@ export const handleCreateContact = async ({
       const contacts = yield* Contacts;
       return yield* contacts.create(
         {
-          audienceId: AudienceId.make(audienceId),
+          audienceId,
           userId: UserId.make(user.id),
         },
         { firstName, lastName, email, phone, customAttributes },
