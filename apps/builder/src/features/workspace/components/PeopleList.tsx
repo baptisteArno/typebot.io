@@ -1,13 +1,17 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { getSeatsLimit } from "@typebot.io/billing/helpers/getSeatsLimit";
-import { isDefined } from "@typebot.io/lib/utils";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
+import { EmptySpacesListForm } from "@typebot.io/spaces/react/EmptySpacesListForm";
+import { SpacesIcon } from "@typebot.io/spaces/react/SpacesIcon";
+import { SpacesList } from "@typebot.io/spaces/react/SpacesList";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Skeleton } from "@typebot.io/ui/components/Skeleton";
+import { Tabs } from "@typebot.io/ui/components/Tabs";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
+import { UsersIcon } from "@typebot.io/ui/icons/UsersIcon";
 import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { useUser } from "@/features/user/hooks/useUser";
 import { orpc } from "@/lib/queryClient";
@@ -16,10 +20,79 @@ import { useWorkspace } from "../WorkspaceProvider";
 import { AddMemberForm } from "./AddMemberForm";
 import { MemberItem } from "./MemberItem";
 
-export const MembersList = () => {
-  const { t } = useTranslate();
+export const PeopleList = () => {
+  const { membersCount, seatsLimit } = useSeatsLimit();
+
+  return (
+    <Tabs.Root defaultValue="members">
+      <Tabs.List>
+        <Tabs.Tab value="members">
+          <UsersIcon />
+          Members {seatsLimit === -1 ? "" : `(${membersCount}/${seatsLimit})`}
+        </Tabs.Tab>
+        <Tabs.Tab value="spaces">
+          <SpacesIcon />
+          Spaces
+        </Tabs.Tab>
+      </Tabs.List>
+      <Tabs.Panel value="members">
+        <MembersList />
+      </Tabs.Panel>
+      <Tabs.Panel value="spaces">
+        <SpacesTabContent />
+      </Tabs.Panel>
+    </Tabs.Root>
+  );
+};
+
+const SpacesTabContent = () => {
+  const queryClient = useQueryClient();
+  const { workspace } = useWorkspace();
+  const { data } = useQuery(
+    orpc.spaces.list.queryOptions({
+      input: {
+        workspaceId: workspace?.id ?? "",
+      },
+      enabled: !!workspace?.id,
+    }),
+  );
+  const { mutateAsync: createSpace } = useMutation(
+    orpc.spaces.create.mutationOptions({
+      onSuccess: (_data, variables) => {
+        queryClient.invalidateQueries({
+          queryKey: orpc.spaces.list.key({
+            input: { workspaceId: variables.workspaceId },
+          }),
+        });
+      },
+    }),
+  );
+  if (!data) return null;
+  if (data.spaces.length === 0)
+    return (
+      <EmptySpacesListForm
+        onCreateSubmit={async (input) => {
+          if (!workspace?.id) return;
+          await createSpace({
+            workspaceId: workspace.id,
+            name: input.name,
+          });
+        }}
+      />
+    );
+  return <SpacesList spaces={data.spaces} />;
+};
+
+const MembersList = () => {
   const { user } = useUser();
   const { workspace, currentUserMode } = useWorkspace();
+  const { t } = useTranslate();
+
+  const {
+    isOpen: isChangePlanDialogOpen,
+    onOpen: onChangePlanDialogOpen,
+    onClose: onChangePlanDialogClose,
+  } = useOpenControls();
 
   const {
     data: membersData,
@@ -51,23 +124,6 @@ export const MembersList = () => {
     refetchMembers();
     refetchInvitations();
   };
-
-  const {
-    isOpen: isChangePlanDialogOpen,
-    onOpen: onChangePlanDialogOpen,
-    onClose: onChangePlanDialogClose,
-  } = useOpenControls();
-
-  const { mutate: deleteMember } = useMutation(
-    orpc.workspace.deleteWorkspaceMember.mutationOptions({
-      onSuccess: () => refetch(),
-      onError: (error) =>
-        toast({
-          title: error.name,
-          description: error.message,
-        }),
-    }),
-  );
 
   const { mutate: updateMember } = useMutation(
     orpc.workspace.updateWorkspaceMember.mutationOptions({
@@ -123,21 +179,21 @@ export const MembersList = () => {
       updateInvitation({ id, type });
     };
 
-  const currentMembersCount =
-    members.filter((member) => member.role !== WorkspaceRole.GUEST).length +
-    invitations.length;
+  const { mutate: deleteMember } = useMutation(
+    orpc.workspace.deleteWorkspaceMember.mutationOptions({
+      onSuccess: () => refetch(),
+      onError: (error) =>
+        toast({
+          title: error.name,
+          description: error.message,
+        }),
+    }),
+  );
 
-  const seatsLimit = workspace ? getSeatsLimit(workspace) : undefined;
-
-  const canInviteNewMember =
-    seatsLimit === "inf"
-      ? true
-      : seatsLimit
-        ? currentMembersCount < seatsLimit
-        : false;
+  const { canInviteNewMember } = useSeatsLimit();
 
   return (
-    <div className="flex flex-col w-full gap-3">
+    <div>
       {!canInviteNewMember && (
         <Alert.Root>
           <InformationSquareIcon />
@@ -159,12 +215,6 @@ export const MembersList = () => {
             />
           </Alert.Action>
         </Alert.Root>
-      )}
-      {isDefined(seatsLimit) && (
-        <h2>
-          {t("workspace.membersList.title")}{" "}
-          {seatsLimit === -1 ? "" : `(${currentMembersCount}/${seatsLimit})`}
-        </h2>
       )}
       {workspace?.id && currentUserMode === "write" && (
         <AddMemberForm
@@ -207,4 +257,42 @@ export const MembersList = () => {
       )}
     </div>
   );
+};
+
+const useSeatsLimit = () => {
+  const { workspace } = useWorkspace();
+
+  const { data: membersData } = useQuery(
+    orpc.workspace.listMembersInWorkspace.queryOptions({
+      input: { workspaceId: workspace?.id ?? "" },
+      enabled: !!workspace?.id,
+    }),
+  );
+
+  const { data: invitationsData } = useQuery(
+    orpc.workspace.listInvitationsInWorkspace.queryOptions({
+      input: { workspaceId: workspace?.id ?? "" },
+      enabled: !!workspace?.id,
+    }),
+  );
+
+  const members = membersData?.members ?? [];
+  const invitations = invitationsData?.invitations ?? [];
+
+  const membersCount =
+    members.filter((member) => member.role !== WorkspaceRole.GUEST).length +
+    invitations.length;
+
+  const seatsLimit = workspace ? getSeatsLimit(workspace) : undefined;
+
+  return {
+    membersCount,
+    seatsLimit,
+    canInviteNewMember:
+      seatsLimit === "inf"
+        ? true
+        : seatsLimit
+          ? membersCount < seatsLimit
+          : false,
+  };
 };

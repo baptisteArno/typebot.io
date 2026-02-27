@@ -118,6 +118,8 @@ model Workspace {
   lastActivityAt                DateTime?
   inactiveFirstEmailSentAt      DateTime?
   inactiveSecondEmailSentAt     DateTime?
+  spaces                        Space[]
+  audiences                     Audience[]
 }
 
 model MemberInWorkspace {
@@ -236,8 +238,11 @@ model Typebot {
   whatsAppCredentialsId   String?
   riskLevel               Int?
   bannedIps               BannedIp[]
+  space                   Space?                    @relation(fields: [spaceId], references: [id])
+  spaceId                 String?
 
   @@index([workspaceId])
+  @@index([spaceId])
   @@index([folderId])
   @@index([isArchived, createdAt(sort: Desc)])
 }
@@ -457,13 +462,89 @@ model BannedIp {
 }
 
 model SuppressedEmail {
-  id                          String   @id @default(cuid())
-  createdAt                   DateTime @default(now())
-  updatedAt                   DateTime @default(now()) @updatedAt
-  email                       String   @unique @db.VarChar(320)
-  transientGeneralBounceCount Int      @default(0)
+  id                          String    @id @default(cuid())
+  createdAt                   DateTime  @default(now())
+  updatedAt                   DateTime  @default(now()) @updatedAt
+  email                       String    @unique @db.VarChar(320)
+  transientGeneralBounceCount Int       @default(0)
   suppressedAt                DateTime?
-  lastWebhookId               String?  @db.VarChar(255)
+  lastWebhookId               String?   @db.VarChar(255)
+}
+
+model Space {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+  name        String
+  icon        String?
+  workspaceId String
+  audienceId  String?
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  audience  Audience? @relation(fields: [audienceId], references: [id], onDelete: Restrict)
+
+  typebots Typebot[]
+
+  @@unique([workspaceId, name])
+  @@index([workspaceId])
+  @@index([audienceId])
+}
+
+model Audience {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+  name        String
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  spaces   Space[]
+  contacts Contact[]
+  segments Segment[]
+
+  @@unique([workspaceId, name])
+  @@index([workspaceId])
+}
+
+model Contact {
+  id               Int                  @id @default(autoincrement())
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @default(now()) @updatedAt
+  firstName        String?              @db.VarChar(255)
+  lastName         String?              @db.VarChar(255)
+  email            String?              @db.VarChar(320)
+  phone            String?              @db.VarChar(255)
+  customAttributes Json?
+  segments         ContactsInSegments[]
+  audienceId       String
+  audience         Audience             @relation(fields: [audienceId], references: [id], onDelete: Cascade)
+
+  @@unique([audienceId, email])
+  @@unique([audienceId, phone])
+  @@index([audienceId])
+}
+
+model Segment {
+  id         Int                  @id @default(autoincrement())
+  name       String               @db.VarChar(255)
+  audienceId String
+  audience   Audience             @relation(fields: [audienceId], references: [id], onDelete: Cascade)
+  contacts   ContactsInSegments[]
+
+  @@unique([audienceId, name])
+  @@index([audienceId])
+}
+
+model ContactsInSegments {
+  contactId  Int
+  segmentId  Int
+  assignedAt DateTime @default(now())
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  segment Segment @relation(fields: [segmentId], references: [id], onDelete: Cascade)
+
+  @@id([segmentId, contactId])
+  @@index([contactId])
 }
 
 enum WorkspaceRole {

@@ -58,6 +58,7 @@ export const typebotV5Schema = z.object({
   isClosed: z.boolean(),
   whatsAppCredentialsId: z.string().nullable(),
   riskLevel: z.number().nullable(),
+  spaceId: z.string().nullable(),
 }) satisfies z.ZodType<Prisma.Typebot>;
 export type TypebotV5 = z.infer<typeof typebotV5Schema>;
 

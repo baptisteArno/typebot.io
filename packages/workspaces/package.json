@@ -14,7 +14,12 @@
   "dependencies": {
     "@typebot.io/env": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/user": "workspace:*",
+    "effect": "^3.19.18",
     "zod": "^4.3.5"
   },
-  "scripts": {}
+  "devDependencies": {
+    "@effect/vitest": "^0.27.0",
+    "vitest": "^4.0.18"
+  }
 }

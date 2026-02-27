@@ -56,7 +56,13 @@
       "path": "../../packages/rich-text"
     },
     {
+      "path": "../../packages/spaces"
+    },
+    {
       "path": "../../packages/blocks/fileInput"
+    },
+    {
+      "path": "../../packages/audiences"
     },
     {
       "path": "../../packages/workspaces"
@@ -98,9 +104,6 @@
       "path": "../../packages/events"
     },
     {
-      "path": "../../packages/auth"
-    },
-    {
       "path": "../../packages/emails"
     },
     {
@@ -111,6 +114,9 @@
     },
     {
       "path": "../../packages/conditions"
+    },
+    {
+      "path": "../../packages/contacts"
     },
     {
       "path": "../../packages/chat-session"
@@ -135,6 +141,9 @@
     },
     {
       "path": "../../packages/blocks/bubbles"
+    },
+    {
+      "path": "../../packages/auth"
     },
     {
       "path": "../../packages/variables"

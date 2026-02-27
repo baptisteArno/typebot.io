@@ -61,6 +61,7 @@
     "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/chat-api": "workspace:*",
     "@typebot.io/chat-session": "workspace:*",
+    "@typebot.io/contacts": "workspace:*",
     "@typebot.io/conditions": "workspace:*",
     "@typebot.io/config": "workspace:*",
     "@typebot.io/credentials": "workspace:*",

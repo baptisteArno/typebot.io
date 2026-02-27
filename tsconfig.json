@@ -221,6 +221,18 @@
     },
     {
       "path": "./apps/workflows"
+    },
+    {
+      "path": "./packages/domain-primitives"
+    },
+    {
+      "path": "./packages/audiences"
+    },
+    {
+      "path": "./packages/contacts"
+    },
+    {
+      "path": "./packages/spaces"
     }
   ]
 }

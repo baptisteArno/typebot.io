@@ -1,0 +1,75 @@
+import type { Icon, Name } from "@typebot.io/domain-primitives/schemas";
+import { PrismaService } from "@typebot.io/prisma/effect";
+import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
+import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
+import { Effect, Layer, Schema } from "effect";
+import { type AudienceId, Space } from "../core/Space";
+import { AlreadyExistsError } from "../core/SpacesErrors";
+import { SpacesRepository } from "../core/SpacesRepository";
+
+export const PrismaSpacesRepository = Layer.effect(
+  SpacesRepository,
+  Effect.gen(function* () {
+    const prisma = yield* PrismaService;
+
+    const listByWorkspaceId = Effect.fn(
+      "PrismaSpacesRepository.listByWorkspaceId",
+    )(function* (workspaceId: WorkspaceId) {
+      const spaces = yield* prisma.space
+        .findMany({
+          where: {
+            workspaceId,
+          },
+          orderBy: {
+            createdAt: "desc",
+          },
+        })
+        .pipe(Effect.orDie);
+
+      return yield* Schema.decodeUnknown(Schema.Array(Space))(spaces).pipe(
+        Effect.orDie,
+      );
+    });
+
+    const create = Effect.fn("PrismaSpacesRepository.create")(function* (
+      workspaceId: WorkspaceId,
+      input: {
+        name: Name;
+        icon?: Icon;
+        audienceId?: AudienceId;
+      },
+    ) {
+      const space = yield* prisma.space
+        .create({
+          data: {
+            name: input.name,
+            icon: input.icon,
+            audienceId: input.audienceId,
+            workspaceId,
+          },
+        })
+        .pipe(
+          Effect.catchAll((error) =>
+            error instanceof PrismaClientKnownRequestError &&
+            error.code === "P2002"
+              ? new AlreadyExistsError()
+              : Effect.die(error),
+          ),
+        );
+
+      const normalizedSpace = {
+        ...space,
+        icon: space.icon ?? undefined,
+        audienceId: space.audienceId ?? undefined,
+      };
+      return yield* Schema.decodeUnknown(Space)(normalizedSpace).pipe(
+        Effect.orDie,
+      );
+    });
+
+    return SpacesRepository.of({
+      listByWorkspaceId,
+      create,
+    });
+  }),
+);

@@ -1,0 +1,38 @@
+{
+  "name": "@typebot.io/audiences",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "vitest run"
+  },
+  "exports": {
+    "./core/Audience": {
+      "types": "./src/core/Audience.ts",
+      "import": "./src/core/Audience.ts",
+      "default": "./src/core/Audience.ts"
+    },
+    "./orpc/router": {
+      "types": "./src/orpc/router.ts",
+      "import": "./src/orpc/router.ts",
+      "default": "./src/orpc/router.ts"
+    },
+    "./react/*": {
+      "types": "./src/react/*.tsx",
+      "import": "./src/react/*.tsx",
+      "default": "./src/react/*.tsx"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "effect": "^3.19.18",
+    "@typebot.io/domain-primitives": "workspace:*",
+    "@typebot.io/workspaces": "workspace:*",
+    "@typebot.io/ui": "workspace:*",
+    "@tanstack/react-form": "^1.28.3"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.18",
+    "@effect/vitest": "^0.27.0"
+  }
+}

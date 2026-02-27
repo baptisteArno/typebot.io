@@ -1,0 +1,24 @@
+{
+  "name": "@typebot.io/contacts",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./orpc/router": {
+      "types": "./src/orpc/router.ts",
+      "import": "./src/orpc/router.ts",
+      "default": "./src/orpc/router.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@orpc/server": "^1.13.4",
+    "@typebot.io/audiences": "workspace:*",
+    "@typebot.io/config": "workspace:*",
+    "@typebot.io/domain-primitives": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/user": "workspace:*",
+    "@typebot.io/workspaces": "workspace:*",
+    "effect": "^3.19.18"
+  }
+}
