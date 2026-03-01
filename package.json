@@ -30,7 +30,7 @@
   "scripts": {
     "postinstall": "cd packages/env && bun run compile && nx prisma:generate prisma",
     "prepare": "husky && effect-language-service patch",
-    "pre-commit": "nx run-many -t format-and-lint,lint-repo,check-broken-links,test --parallel=4",
+    "pre-commit": "nx affected -t format-and-lint,lint-repo,check-broken-links,test --parallel=4",
     "dev": "nx run-many --configuration=development -t dev,watch-deps -p builder,viewer,workflows",
     "format-and-lint:fix": "biome check . --write --unsafe",
     "lint-repo": "sherif -r unordered-dependencies -r packages-without-package-json --ignore-package @typebot.io/legacy --ignore-package bot-engine",

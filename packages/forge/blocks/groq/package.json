@@ -29,7 +29,7 @@
     "@types/react": "^19.2.14"
   },
   "dependencies": {
-    "ky": "^1.2.4"
+    "ky": "1.2.4"
   },
   "scripts": {}
 }

@@ -62,7 +62,7 @@
     "openai": "^6.9.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "stripe": "^17.1.0",
+    "stripe": "17.1.0",
     "@paralleldrive/cuid2": "^2.2.1",
     "@typebot.io/emails": "workspace:*",
     "@typebot.io/env": "workspace:*",

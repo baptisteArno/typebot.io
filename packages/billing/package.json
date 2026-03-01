@@ -14,7 +14,7 @@
   "dependencies": {
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
-    "stripe": "^17.1.0",
+    "stripe": "17.1.0",
     "@typebot.io/lib": "workspace:*",
     "@orpc/server": "^1.13.4",
     "@typebot.io/env": "workspace:*",

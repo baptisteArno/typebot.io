@@ -3,8 +3,6 @@ import editorMockupSrc from "./assets/editor-mockup.png";
 import publishClickSrc from "./assets/publish-click.png";
 import signUpButtonSrc from "./assets/signup-button.png";
 
-const _imagesBasePath = "/images/sections/get-started";
-
 const instructions = [
   {
     image: {

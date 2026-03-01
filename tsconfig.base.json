@@ -5,7 +5,7 @@
     "emitDeclarationOnly": true,
     "importHelpers": true,
     "isolatedModules": true,
-    "lib": ["ESNext"],
+    "lib": ["dom", "ESNext"],
     "module": "esnext",
     "moduleResolution": "bundler",
     "noEmitOnError": true,

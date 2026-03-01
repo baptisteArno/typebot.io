@@ -1,4 +1,5 @@
 import {
+  type AnyConfiguration,
   defineCollection,
   defineConfig,
   suppressDeprecatedWarnings,
@@ -45,9 +46,11 @@ const posts = defineCollection({
     };
   },
 });
-export default defineConfig({
+const contentCollectionsConfig: AnyConfiguration = defineConfig({
   collections: [posts],
 });
+
+export default contentCollectionsConfig;
 
 const rehypePrettyCodeSettings = {
   theme: "material-theme-palenight",

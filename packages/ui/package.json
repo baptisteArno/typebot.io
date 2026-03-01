@@ -24,7 +24,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@base-ui-components/react": "^1.0.0-beta.4",
+    "@base-ui-components/react": "1.0.0-beta.4",
     "class-variance-authority": "^0.7.1",
     "input-otp": "^1.4.2",
     "next": "^16.1.6",

@@ -8,6 +8,7 @@ import {
 } from "@react-email/components";
 import { render } from "@react-email/render";
 import type { ComponentProps } from "react";
+// @ts-expect-error - Need it for tsx execution
 // biome-ignore lint/correctness/noUnusedImports: Need it for tsx execution
 import React from "react";
 import { bodyText, container, main, primaryButton } from "./styles";

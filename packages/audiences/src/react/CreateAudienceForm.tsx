@@ -49,7 +49,7 @@ export const CreateAudienceForm = ({
                 name={field.name}
                 value={field.state.value}
                 onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onValueChange={field.handleChange}
                 aria-invalid={isInvalid}
                 placeholder="My audience"
               />

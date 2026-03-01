@@ -1,9 +1,7 @@
-import type { ClientUser } from "@typebot.io/user/schemas";
-
 export function createContext({
   authenticate,
 }: {
-  authenticate: () => Promise<ClientUser | null>;
+  authenticate: () => Promise<{ id: string; email: string } | null>;
 }) {
   return {
     authenticate,

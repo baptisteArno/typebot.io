@@ -1,5 +1,6 @@
 import { Img } from "@react-email/components";
 import { env } from "@typebot.io/env";
+// @ts-expect-error - Need it for tsx execution
 // biome-ignore lint/correctness/noUnusedImports: Need it for tsx execution
 import React from "react";
 

@@ -49,14 +49,14 @@
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "google-spreadsheet": "^4.1.4",
-    "ky": "^1.2.4",
+    "ky": "1.2.4",
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "6.1.5",
     "nodemailer": "^7.0.6",
     "openai": "^6.9.1",
     "qs": "^6.11.2",
-    "stripe": "^17.1.0",
-    "undici": "^7.16.0",
+    "stripe": "17.1.0",
+    "undici": "7.16.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {
