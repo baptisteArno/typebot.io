@@ -47,7 +47,22 @@ export const longReqTimeoutWhitelist = [
 export const webhookSuccessDescription = `Webhook successfuly executed.`
 export const webhookErrorDescription = `Webhook returned an error.`
 
-type Params = { disableRequestTimeout?: boolean; timeout?: number }
+type Params = {
+  disableRequestTimeout?: boolean
+  timeout?: number
+  sessionId?: string
+}
+
+type LogContext = {
+  workspace: { id: string; name: string }
+  workflow: {
+    id: string
+    name: string
+    schema_version: string
+    execution_id: string
+    version_id: string
+  }
+}
 
 export const executeWebhookBlock = async (
   state: SessionState,
@@ -87,14 +102,34 @@ export const executeWebhookBlock = async (
         },
       ],
     }
+  const webhookTypebot = state.typebotsQueue[0].typebot
+  const webhookWorkspaceName = webhookTypebot.workspaceName ?? 'unknown'
+  const logContext: LogContext = {
+    workspace: {
+      id: webhookTypebot.workspaceId ?? 'unknown',
+      name: webhookWorkspaceName,
+    },
+    workflow: {
+      id: webhookTypebot.id,
+      name: webhookTypebot.name ?? 'unknown',
+      schema_version: String(webhookTypebot.version ?? 'unknown'),
+      execution_id: params.sessionId ?? 'preview',
+      version_id: webhookTypebot.typebotHistoryId ?? 'unknown',
+    },
+  }
+
   const {
     response: webhookResponse,
     logs: executeWebhookLogs,
     startTimeShouldBeUpdated,
-  } = await executeWebhook(parsedWebhook, {
-    ...params,
-    timeout: block.options?.timeout,
-  })
+  } = await executeWebhook(
+    parsedWebhook,
+    {
+      ...params,
+      timeout: block.options?.timeout,
+    },
+    logContext
+  )
 
   return {
     ...resumeWebhookExecution({
@@ -175,7 +210,8 @@ export const parseWebhookAttributes = async ({
 
 export const executeWebhook = async (
   webhook: ParsedWebhook,
-  params: Params = {}
+  params: Params = {},
+  logContext?: LogContext
 ): Promise<{
   response: HttpResponse
   logs?: ChatLog[]
@@ -244,6 +280,19 @@ export const executeWebhook = async (
         request,
       },
     })
+    const httpDuration = Date.now() - requestStartTime
+    logger.info(
+      `${logContext?.workspace.name ?? 'unknown'} - HTTP Request Executed`,
+      {
+        ...logContext,
+        http: {
+          url: request.url,
+          method: request.method,
+          status_code: response.status,
+          duration: httpDuration,
+        },
+      }
+    )
     return {
       response: {
         statusCode: response.status,
@@ -275,10 +324,18 @@ export const executeWebhook = async (
           response,
         },
       })
-      logger.info('HTTP Request error', {
-        statusCode: error.response.status,
-        duration: Date.now() - requestStartTime,
-      })
+      logger.warn(
+        `${logContext?.workspace.name ?? 'unknown'} - HTTP Request Error`,
+        {
+          ...logContext,
+          http: {
+            url: request.url,
+            method: request.method,
+            status_code: error.response.status,
+            duration: Date.now() - requestStartTime,
+          },
+        }
+      )
       return { response, logs, startTimeShouldBeUpdated: true }
     }
     if (error instanceof TimeoutError) {
@@ -300,17 +357,36 @@ export const executeWebhook = async (
           request,
         },
       })
-      logger.warn('HTTP Request timeout', {
-        timeout: request.timeout,
-        duration: Date.now() - requestStartTime,
-      })
+      logger.error(
+        `${logContext?.workspace.name ?? 'unknown'} - HTTP Request Timeout`,
+        {
+          ...logContext,
+          http: {
+            url: request.url,
+            method: request.method,
+            timeout_ms: request.timeout || 0,
+            duration: Date.now() - requestStartTime,
+          },
+        }
+      )
       return { response, logs, startTimeShouldBeUpdated: true }
     }
     const response = {
       statusCode: 500,
       data: { message: `Error from Typebot server: ${error}` },
     }
-    logger.error(error)
+    logger.error(
+      `${logContext?.workspace.name ?? 'unknown'} - HTTP Request Failed`,
+      {
+        ...logContext,
+        http: {
+          url: request.url,
+          method: request.method,
+          duration: Date.now() - requestStartTime,
+        },
+        error: error instanceof Error ? error.message : String(error),
+      }
+    )
     logs.push({
       status: 'error',
       description: `Webhook failed to execute.`,

@@ -120,6 +120,27 @@ export const executeGroup = async (
         })
       )
       lastBubbleBlockId = block.id
+
+      const bubbleTypebot = newSessionState.typebotsQueue[0].typebot
+      const bubbleWorkspaceName = bubbleTypebot.workspaceName ?? 'unknown'
+      logger.info(`${bubbleWorkspaceName} - Block Executed`, {
+        workspace: {
+          id: bubbleTypebot.workspaceId ?? 'unknown',
+          name: bubbleWorkspaceName,
+        },
+        workflow: {
+          id: bubbleTypebot.id,
+          name: bubbleTypebot.name ?? 'unknown',
+          schema_version: String(bubbleTypebot.version ?? 'unknown'),
+          execution_id: sessionId ?? 'preview',
+          version_id: bubbleTypebot.typebotHistoryId ?? 'unknown',
+        },
+        typebot_block: {
+          id: block.id,
+          type: block.type,
+        },
+      })
+
       continue
     }
 
@@ -176,6 +197,27 @@ export const executeGroup = async (
     if (!executionResponse) {
       continue
     }
+
+    const typebot = newSessionState.typebotsQueue[0].typebot
+    const workspaceName = typebot.workspaceName ?? 'unknown'
+
+    logger.info(`${workspaceName} - Block Executed`, {
+      workspace: {
+        id: typebot.workspaceId ?? 'unknown',
+        name: workspaceName,
+      },
+      workflow: {
+        id: typebot.id,
+        name: typebot.name ?? 'unknown',
+        schema_version: String(typebot.version ?? 'unknown'),
+        execution_id: sessionId ?? 'preview',
+        version_id: typebot.typebotHistoryId ?? 'unknown',
+      },
+      typebot_block: {
+        id: block.id,
+        type: block.type,
+      },
+    })
 
     if (
       executionResponse.newSetVariableHistory &&

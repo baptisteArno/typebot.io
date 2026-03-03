@@ -34,6 +34,7 @@ export const executeIntegration =
         return {
           ...(await executeWebhookBlock(state, block, {
             disableRequestTimeout: true,
+            sessionId,
           })),
           startTimeShouldBeUpdated: true,
         }
@@ -41,6 +42,7 @@ export const executeIntegration =
         return {
           ...(await executeWebhookBlock(state, block, {
             disableRequestTimeout: isNotDefined(env.CHAT_API_TIMEOUT),
+            sessionId,
           })),
         }
       case IntegrationBlockType.OPEN_AI:

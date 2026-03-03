@@ -11,6 +11,8 @@ export const findTypebot = ({ id, userId }: Props) =>
     select: {
       version: true,
       id: true,
+      name: true,
+      workspaceId: true,
       groups: true,
       events: true,
       edges: true,
@@ -18,5 +20,10 @@ export const findTypebot = ({ id, userId }: Props) =>
       theme: true,
       variables: true,
       isArchived: true,
+      workspace: {
+        select: {
+          name: true,
+        },
+      },
     },
   })

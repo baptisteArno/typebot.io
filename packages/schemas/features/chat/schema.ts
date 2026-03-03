@@ -156,17 +156,29 @@ const startTypebotPick = {
   settings: true,
   theme: true,
 } as const
+
+const startTypebotOptionalFields = z.object({
+  name: z.string().optional(),
+  workspaceId: z.string().optional(),
+})
+
 export const startTypebotSchema = z.preprocess(
   preprocessTypebot,
   z.discriminatedUnion('version', [
-    typebotV5Schema._def.schema.pick(startTypebotPick).openapi({
-      title: 'Typebot V5',
-      ref: 'typebotV5',
-    }),
-    typebotV6Schema.pick(startTypebotPick).openapi({
-      title: 'Typebot V6',
-      ref: 'typebotV6',
-    }),
+    typebotV5Schema._def.schema
+      .pick(startTypebotPick)
+      .merge(startTypebotOptionalFields)
+      .openapi({
+        title: 'Typebot V5',
+        ref: 'typebotV5',
+      }),
+    typebotV6Schema
+      .pick(startTypebotPick)
+      .merge(startTypebotOptionalFields)
+      .openapi({
+        title: 'Typebot V6',
+        ref: 'typebotV6',
+      }),
   ])
 )
 export type StartTypebot = z.infer<typeof startTypebotSchema>
@@ -380,6 +392,9 @@ export const startPreviewChatResponseSchema = startChatResponseSchema.omit({
 })
 
 export const continueChatResponseSchema = chatResponseBaseSchema.extend({
-  toolOutput: z.unknown().optional().describe('Final output of the workflow if ended'),
+  toolOutput: z
+    .unknown()
+    .optional()
+    .describe('Final output of the workflow if ended'),
 })
 export type ContinueChatResponse = z.infer<typeof continueChatResponseSchema>

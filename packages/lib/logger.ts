@@ -31,6 +31,12 @@ if (typeof window === 'undefined' && process.env.NODE_ENV === 'production') {
   logger = winston.createLogger({
     level,
     exitOnError: false,
+    // Static Datadog pipeline fields -- present on every log entry.
+    // Do NOT pass ddsource or service at individual call sites.
+    defaultMeta: {
+      ddsource: 'nodejs',
+      service: process.env.DD_SERVICE ?? 'typebot-runner',
+    },
     format: winston.format.combine(
       ...baseFormats,
       prettyEnabled ? prettyFormat : jsonFormat

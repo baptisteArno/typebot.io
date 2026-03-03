@@ -82,6 +82,13 @@ const baseEnv = {
       .default('FREE'),
     DEBUG: boolean.optional().default('false'),
     CHAT_API_TIMEOUT: z.coerce.number().optional(),
+    // Datadog logging configuration
+    DD_LOGS_ENABLED: boolean.optional().default('false'),
+    LOG_LEVEL: z
+      .enum(['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly'])
+      .optional()
+      .default('info'),
+    DD_SERVICE: z.string().min(1).optional(),
     RADAR_HIGH_RISK_KEYWORDS: z
       .string()
       .min(1)

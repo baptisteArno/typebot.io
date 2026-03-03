@@ -20,9 +20,12 @@ export const findPublicTypebot = ({ publicId }: Props) =>
         select: {
           isArchived: true,
           isClosed: true,
+          name: true,
+          workspaceId: true,
           workspace: {
             select: {
               id: true,
+              name: true,
               plan: true,
               customChatsLimit: true,
               isQuarantined: true,
