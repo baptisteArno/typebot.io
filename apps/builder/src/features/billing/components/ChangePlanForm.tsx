@@ -1,15 +1,14 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
+import { isDefined } from "@typebot.io/lib/utils";
 import { Plan } from "@typebot.io/prisma/enum";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { TextLink } from "@/components/TextLink";
-import { useUser } from "@/features/user/hooks/useUser";
 import type { WorkspaceInApp } from "@/features/workspace/WorkspaceProvider";
 import { isSelfHostedInstance } from "@/helpers/isSelfHostedInstance";
 import { orpc, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
-import type { PreCheckoutDialogProps } from "./PreCheckoutDialog";
-import { PreCheckoutDialog } from "./PreCheckoutDialog";
 import { ProPlanPricingCard } from "./ProPlanPricingCard";
 import { StarterPlanPricingCard } from "./StarterPlanPricingCard";
 import { UpgradeConfirmationDialog } from "./UpgradeConfirmationDialog";
@@ -26,16 +25,43 @@ export const ChangePlanForm = ({
   excludedPlans,
 }: Props) => {
   const { t } = useTranslate();
-
-  const { user } = useUser();
-  const [preCheckoutPlan, setPreCheckoutPlan] =
-    useState<PreCheckoutDialogProps["selectedSubscription"]>();
+  const router = useRouter();
   const [pendingUpgrade, setPendingUpgrade] = useState<"STARTER" | "PRO">();
+  const [pendingCheckoutRedirect, setPendingCheckoutRedirect] = useState<
+    "STARTER" | "PRO"
+  >();
 
   const { data, refetch } = useQuery(
     orpc.billing.getSubscription.queryOptions({
       input: { workspaceId: workspace.id },
       enabled: !isSelfHostedInstance(),
+    }),
+  );
+
+  const { data: pendingUpgradeData, isLoading: isLoadingPendingUpgrade } =
+    useQuery(
+      orpc.billing.getSubscriptionPreview.queryOptions({
+        input: {
+          workspaceId: workspace.id,
+          plan: pendingUpgrade!,
+        },
+        enabled: isDefined(pendingUpgrade),
+      }),
+    );
+
+  const { mutate: createCheckoutSession } = useMutation(
+    orpc.billing.createCheckoutSession.mutationOptions({
+      onSuccess: (data) => {
+        router.push(data.checkoutUrl);
+      },
+      onError: (error) => {
+        setPendingCheckoutRedirect(undefined);
+        toast({
+          type: "error",
+          title: t("errorMessage"),
+          description: error.message,
+        });
+      },
     }),
   );
 
@@ -70,8 +96,6 @@ export const ChangePlanForm = ({
     );
 
   const handlePayClick = async (plan: "STARTER" | "PRO") => {
-    if (!user) return;
-
     const newSubscription = {
       plan,
       workspaceId: workspace.id,
@@ -87,7 +111,12 @@ export const ChangePlanForm = ({
         });
       }
     } else {
-      setPreCheckoutPlan(newSubscription);
+      setPendingCheckoutRedirect(plan);
+      createCheckoutSession({
+        workspaceId: workspace.id,
+        returnUrl: window.location.href,
+        plan,
+      });
     }
   };
 
@@ -122,17 +151,10 @@ export const ChangePlanForm = ({
 
   return (
     <div className="flex flex-col gap-6">
-      {!workspace.stripeId && (
-        <PreCheckoutDialog
-          selectedSubscription={preCheckoutPlan}
-          existingEmail={user?.email ?? undefined}
-          existingCompany={user?.company ?? undefined}
-          onClose={() => setPreCheckoutPlan(undefined)}
-        />
-      )}
       <UpgradeConfirmationDialog
-        isOpen={!!pendingUpgrade}
-        workspaceId={workspace.id}
+        isOpen={isDefined(pendingUpgradeData)}
+        amountDue={pendingUpgradeData?.amountDue ?? 0}
+        currency={pendingUpgradeData?.currency ?? "eur"}
         targetPlan={pendingUpgrade}
         onConfirm={handleConfirmUpgrade}
         onClose={() => setPendingUpgrade(undefined)}
@@ -144,7 +166,11 @@ export const ChangePlanForm = ({
               <StarterPlanPricingCard
                 currentPlan={workspace.plan}
                 onPayClick={() => handlePayClick(Plan.STARTER)}
-                isLoading={updateSubscriptionStatus === "pending"}
+                isLoading={
+                  updateSubscriptionStatus === "pending" ||
+                  pendingCheckoutRedirect === "STARTER" ||
+                  (isLoadingPendingUpgrade && pendingUpgrade === Plan.STARTER)
+                }
                 currency={data.subscription?.currency}
               />
             )}
@@ -153,7 +179,11 @@ export const ChangePlanForm = ({
               <ProPlanPricingCard
                 currentPlan={workspace.plan}
                 onPayClick={() => handlePayClick(Plan.PRO)}
-                isLoading={updateSubscriptionStatus === "pending"}
+                isLoading={
+                  updateSubscriptionStatus === "pending" ||
+                  pendingCheckoutRedirect === "PRO" ||
+                  (isLoadingPendingUpgrade && pendingUpgrade === Plan.PRO)
+                }
                 currency={data.subscription?.currency}
               />
             )}

@@ -61,18 +61,12 @@ export const handleGetSubscriptionPreview = async ({
   });
   const subscription = data[0] as Stripe.Subscription | undefined;
 
-  if (!subscription) {
-    throw new ORPCError("NOT_FOUND", {
-      message: "No active subscription found",
-    });
-  }
-
-  const currentPlanItemId = subscription.items.data.find((item) =>
+  const currentPlanItemId = subscription?.items.data.find((item) =>
     [env.STRIPE_STARTER_PRICE_ID, env.STRIPE_PRO_PRICE_ID].includes(
       item.price.id,
     ),
   )?.id;
-  const currentUsageItemId = subscription.items.data.find(
+  const currentUsageItemId = subscription?.items.data.find(
     (item) =>
       item.price.id === env.STRIPE_STARTER_CHATS_PRICE_ID ||
       item.price.id === env.STRIPE_PRO_CHATS_PRICE_ID,
@@ -98,7 +92,7 @@ export const handleGetSubscriptionPreview = async ({
 
   const upcomingInvoice = await stripe.invoices.retrieveUpcoming({
     customer: workspace.stripeId,
-    subscription: subscription.id,
+    subscription: subscription?.id,
     subscription_items: items,
     subscription_proration_behavior: "always_invoice",
   });

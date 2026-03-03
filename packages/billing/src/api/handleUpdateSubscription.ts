@@ -8,7 +8,6 @@ import { isAdminWriteWorkspaceForbidden } from "@typebot.io/workspaces/isAdminWr
 import { workspaceSchema } from "@typebot.io/workspaces/schemas";
 import Stripe from "stripe";
 import { z } from "zod";
-import { createCheckoutSessionUrl } from "../helpers/createCheckoutSessionUrl";
 
 export const updateSubscriptionInputSchema = z.object({
   workspaceId: z.string(),
@@ -23,7 +22,7 @@ export const handleUpdateSubscription = async ({
   input: z.infer<typeof updateSubscriptionInputSchema>;
   context: { user: Pick<User, "email" | "id"> };
 }) => {
-  const { workspaceId, plan, returnUrl } = input;
+  const { workspaceId, plan } = input;
 
   if (!env.STRIPE_SECRET_KEY)
     throw new ORPCError("INTERNAL_SERVER_ERROR", {
@@ -93,26 +92,26 @@ export const handleUpdateSubscription = async ({
     },
   ];
 
-  if (subscription) {
-    if (plan === "STARTER") {
-      const totalChatsUsed = await prisma.result.count({
-        where: {
-          typebot: { workspaceId },
-          hasStarted: true,
-          createdAt: {
-            gte: new Date(subscription.current_period_start * 1000),
-          },
+  if (subscription && plan === "STARTER") {
+    const totalChatsUsed = await prisma.result.count({
+      where: {
+        typebot: { workspaceId },
+        hasStarted: true,
+        createdAt: {
+          gte: new Date(subscription.current_period_start * 1000),
         },
+      },
+    });
+    if (totalChatsUsed >= 4000) {
+      throw new ORPCError("BAD_REQUEST", {
+        message:
+          "You have collected more than 4000 chats during this billing cycle. You can't downgrade to the Starter.",
       });
-      if (totalChatsUsed >= 4000) {
-        throw new ORPCError("BAD_REQUEST", {
-          message:
-            "You have collected more than 4000 chats during this billing cycle. You can't downgrade to the Starter.",
-        });
-      }
     }
+  }
 
-    try {
+  try {
+    if (subscription)
       await stripe.subscriptions.update(subscription.id, {
         items,
         proration_behavior: "always_invoice",
@@ -121,29 +120,42 @@ export const handleUpdateSubscription = async ({
           reason: "explicit update",
         },
       });
-    } catch {
-      return {
-        type: "error" as const,
-        title: "Payment required",
-        description: "Check your payment method and try again.",
-      };
+    else {
+      const customer = await stripe.customers.retrieve(workspace.stripeId);
+      if (customer.deleted)
+        throw new ORPCError("INTERNAL_SERVER_ERROR", {
+          message: "Customer deleted",
+        });
+      if (!customer.invoice_settings.default_payment_method) {
+        const lastPaymentMethod = await stripe.paymentMethods.list({
+          customer: workspace.stripeId,
+          limit: 1,
+        });
+        const lastPaymentMethodId = lastPaymentMethod.data.at(0)?.id;
+        if (!lastPaymentMethodId)
+          throw new ORPCError("INTERNAL_SERVER_ERROR", {
+            message: "Last payment method not found",
+          });
+        await stripe.customers.update(workspace.stripeId, {
+          invoice_settings: {
+            default_payment_method: lastPaymentMethodId,
+          },
+        });
+      }
+      await stripe.subscriptions.create({
+        customer: workspace.stripeId,
+        items,
+        proration_behavior: "always_invoice",
+        payment_behavior: "error_if_incomplete",
+      });
     }
-  } else {
-    const checkoutUrl = await createCheckoutSessionUrl(stripe)({
-      customerId: workspace.stripeId,
-      userId: user.id,
-      workspaceId,
-      plan,
-      returnUrl,
-    });
-
-    if (!checkoutUrl)
-      return {
-        type: "error" as const,
-        title: "Failed to create checkout session",
-      };
-
-    return { type: "checkoutUrl" as const, checkoutUrl };
+  } catch (error) {
+    console.error(error);
+    return {
+      type: "error" as const,
+      title: "Payment required",
+      description: "Check your payment method and try again.",
+    };
   }
 
   const updatedWorkspace = await prisma.workspace.update({

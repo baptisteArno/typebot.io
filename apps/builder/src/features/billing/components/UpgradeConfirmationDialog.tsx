@@ -1,41 +1,29 @@
-import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { formatPrice } from "@typebot.io/billing/helpers/formatPrice";
-import { isDefined } from "@typebot.io/lib/utils";
 import { AlertDialog } from "@typebot.io/ui/components/AlertDialog";
 import { Button } from "@typebot.io/ui/components/Button";
-import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useRef, useState } from "react";
-import { orpc } from "@/lib/queryClient";
 
 type Props = {
   isOpen: boolean;
-  workspaceId: string;
   targetPlan: "STARTER" | "PRO" | undefined;
+  amountDue: number;
+  currency: "eur" | "usd";
   onConfirm: () => Promise<unknown> | unknown;
   onClose: () => void;
 };
 
 export const UpgradeConfirmationDialog = ({
   isOpen,
-  workspaceId,
   targetPlan,
+  amountDue,
+  currency,
   onConfirm,
   onClose,
 }: Props) => {
   const { t } = useTranslate();
   const [confirmLoading, setConfirmLoading] = useState(false);
   const cancelRef = useRef<HTMLButtonElement | null>(null);
-
-  const { data: preview, isLoading: isLoadingPreview } = useQuery(
-    orpc.billing.getSubscriptionPreview.queryOptions({
-      input: {
-        workspaceId,
-        plan: targetPlan!,
-      },
-      enabled: isOpen && isDefined(targetPlan),
-    }),
-  );
 
   const onConfirmClick = async () => {
     setConfirmLoading(true);
@@ -56,32 +44,25 @@ export const UpgradeConfirmationDialog = ({
           {t("billing.upgradeModal.title", { plan: targetPlan })}
         </AlertDialog.Title>
         <div className="flex flex-col gap-4">
-          {isLoadingPreview ? (
-            <div className="flex items-center gap-2">
-              <LoaderCircleIcon className="animate-spin" />
-              <p>{t("billing.upgradeModal.loading")}</p>
-            </div>
-          ) : preview ? (
-            <div className="flex flex-col gap-2">
-              <p>
-                {t("billing.upgradeModal.description", {
-                  plan: targetPlan,
+          <div className="flex flex-col gap-2">
+            <p>
+              {t("billing.upgradeModal.description", {
+                plan: targetPlan,
+              })}
+            </p>
+            <div className="flex items-center gap-2 text-lg font-semibold">
+              <span>{t("billing.upgradeModal.amountLabel")}:</span>
+              <span>
+                {formatPrice(amountDue / 100, {
+                  currency,
+                  maxFractionDigits: 2,
                 })}
-              </p>
-              <div className="flex items-center gap-2 text-lg font-semibold">
-                <span>{t("billing.upgradeModal.amountLabel")}:</span>
-                <span>
-                  {formatPrice(preview.amountDue / 100, {
-                    currency: preview.currency,
-                    maxFractionDigits: 2,
-                  })}
-                </span>
-              </div>
-              <p className="text-sm text-gray-500">
-                {t("billing.upgradeModal.prorationNote")}
-              </p>
+              </span>
             </div>
-          ) : null}
+            <p className="text-sm text-gray-500">
+              {t("billing.upgradeModal.prorationNote")}
+            </p>
+          </div>
         </div>
         <AlertDialog.Footer>
           <AlertDialog.CloseButton variant="secondary" ref={cancelRef}>
@@ -90,7 +71,7 @@ export const UpgradeConfirmationDialog = ({
           <Button
             variant="default"
             onClick={onConfirmClick}
-            disabled={confirmLoading || isLoadingPreview}
+            disabled={confirmLoading}
           >
             {t("billing.upgradeModal.confirmButton")}
           </Button>

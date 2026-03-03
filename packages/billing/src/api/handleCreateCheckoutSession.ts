@@ -9,17 +9,9 @@ import { z } from "zod";
 import { createCheckoutSessionUrl } from "../helpers/createCheckoutSessionUrl";
 
 export const createCheckoutSessionInputSchema = z.object({
-  email: z.string(),
-  company: z.string(),
   workspaceId: z.string(),
   plan: z.enum([Plan.STARTER, Plan.PRO]),
   returnUrl: z.string(),
-  vat: z
-    .object({
-      type: z.string(),
-      value: z.string(),
-    })
-    .optional(),
 });
 
 export const handleCreateCheckoutSession = async ({
@@ -29,7 +21,7 @@ export const handleCreateCheckoutSession = async ({
   input: z.infer<typeof createCheckoutSessionInputSchema>;
   context: { user: Pick<User, "email" | "id"> };
 }) => {
-  const { workspaceId, returnUrl, email, company, plan, vat } = input;
+  const { workspaceId, returnUrl, plan } = input;
 
   if (!env.STRIPE_SECRET_KEY)
     throw new ORPCError("INTERNAL_SERVER_ERROR", {
@@ -63,30 +55,8 @@ export const handleCreateCheckoutSession = async ({
     apiVersion: "2024-09-30.acacia",
   });
 
-  await prisma.user.updateMany({
-    where: {
-      id: user.id,
-    },
-    data: {
-      company,
-    },
-  });
-
-  const customer = await stripe.customers.create({
-    email,
-    name: company,
-    metadata: { workspaceId },
-    tax_exempt:
-      !vat || vat.value.startsWith("FR") || vat?.type !== "eu_vat"
-        ? undefined
-        : "exempt",
-    tax_id_data: vat
-      ? [vat as Stripe.CustomerCreateParams.TaxIdDatum]
-      : undefined,
-  });
-
   const checkoutUrl = await createCheckoutSessionUrl(stripe)({
-    customerId: customer.id,
+    email: user.email,
     userId: user.id,
     workspaceId,
     plan,

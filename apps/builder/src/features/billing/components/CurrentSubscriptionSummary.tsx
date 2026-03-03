@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
-import { Plan } from "@typebot.io/prisma/enum";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
@@ -23,9 +22,7 @@ export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
     }),
   );
 
-  const isSubscribed =
-    (workspace.plan === Plan.STARTER || workspace.plan === Plan.PRO) &&
-    workspace.stripeId;
+  const hasStripeCustomer = workspace.stripeId;
 
   return (
     <div className="flex flex-col gap-4">
@@ -51,7 +48,7 @@ export const CurrentSubscriptionSummary = ({ workspace }: Props) => {
           </Alert.Description>
         </Alert.Root>
       )}
-      {isSubscribed && (
+      {hasStripeCustomer && (
         <BillingPortalButton
           workspaceId={workspace.id}
           variant={

@@ -7,10 +7,6 @@ import { z } from "zod";
 import { invoiceSchema } from "../schemas/invoice";
 import { subscriptionSchema } from "../schemas/subscription";
 import {
-  cancelCheckoutSessionInputSchema,
-  handleCheckoutCancelRedirect,
-} from "./handleCheckoutCancelRedirect";
-import {
   createCheckoutSessionInputSchema,
   handleCreateCheckoutSession,
 } from "./handleCreateCheckoutSession";
@@ -43,8 +39,6 @@ import {
   handleUpdateSubscription,
   updateSubscriptionInputSchema,
 } from "./handleUpdateSubscription";
-
-export const cancelCheckoutPath = "/v1/billing/checkout/cancel" as const;
 
 export const billingRouter = {
   webhook: publicProcedure
@@ -150,13 +144,4 @@ export const billingRouter = {
       ]),
     )
     .handler(handleUpdateSubscription),
-  cancelCheckoutSession: authenticatedProcedure
-    .route({
-      successStatus: 307,
-      outputStructure: "detailed",
-      method: "GET",
-      path: cancelCheckoutPath,
-    })
-    .input(cancelCheckoutSessionInputSchema)
-    .handler(handleCheckoutCancelRedirect),
 };

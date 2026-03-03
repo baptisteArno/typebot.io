@@ -1,9 +1,8 @@
 import { env } from "@typebot.io/env";
 import type Stripe from "stripe";
-import { cancelCheckoutPath } from "../api/router";
 
 type Props = {
-  customerId: string;
+  email: string;
   workspaceId: string;
   plan: "STARTER" | "PRO";
   returnUrl: string;
@@ -11,23 +10,20 @@ type Props = {
 };
 
 export const createCheckoutSessionUrl =
-  (stripe: Stripe) =>
-  async ({ customerId, workspaceId, plan, returnUrl }: Props) => {
-    const returnUrlOrigin = new URL(returnUrl).origin;
-    const cancelUrl = `${returnUrlOrigin}/api${cancelCheckoutPath}?returnUrl=${returnUrl}&customerId=${customerId}`;
+  (stripe: Stripe) => async (input: Props) => {
+    const { workspaceId, plan, returnUrl, email } = input;
     const session = await stripe.checkout.sessions.create({
       success_url: `${returnUrl}?stripe=${plan}&success=true`,
-      cancel_url: cancelUrl,
+      cancel_url: `${returnUrl}?stripe=cancel`,
       allow_promotion_codes: true,
-      customer: customerId,
-      customer_update: {
-        address: "auto",
-        name: "never",
-      },
+      customer_email: email,
       mode: "subscription",
       metadata: {
         workspaceId,
         plan,
+      },
+      tax_id_collection: {
+        enabled: true,
       },
       billing_address_collection: "required",
       automatic_tax: { enabled: true },
