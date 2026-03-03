@@ -21,7 +21,7 @@ import {
 } from "@/components/TypebotPageV3";
 
 const log = (message: string) => {
-  if (!env.DEBUG) return;
+  if (!env.TYPEBOT_DEBUG) return;
   console.log(`[DEBUG] ${message}`);
 };
 

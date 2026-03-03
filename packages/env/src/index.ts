@@ -84,7 +84,7 @@ const baseEnv = {
         ["FREE", "STARTER", "PRO", "LIFETIME", "UNLIMITED"].includes(str),
       )
       .default("FREE"),
-    DEBUG: boolean.optional().default(false),
+    TYPEBOT_DEBUG: boolean.optional().default(false),
     CHAT_API_TIMEOUT: z.coerce.number().optional(),
     RADAR_HIGH_RISK_KEYWORDS: z
       .string()
