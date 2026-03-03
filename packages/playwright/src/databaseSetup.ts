@@ -161,9 +161,20 @@ const setupCredentials = async () => {
   });
 };
 
+const setupTypebots = async () => {
+  await createTypebots([
+    {
+      id: proTypebotId,
+      name: "Pro typebot",
+      workspaceId: proWorkspaceId,
+    },
+  ]);
+};
+
 export const setupDatabase = async () => {
   await setupWorkspaces();
   await setupUsers();
+  await setupTypebots();
   return setupCredentials();
 };
 

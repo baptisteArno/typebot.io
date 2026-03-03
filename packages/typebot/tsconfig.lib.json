@@ -9,25 +9,13 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
-      "path": "../events/tsconfig.lib.json"
-    },
-    {
       "path": "../workspaces/tsconfig.lib.json"
     },
     {
-      "path": "../env/tsconfig.lib.json"
-    },
-    {
-      "path": "../lib/tsconfig.lib.json"
-    },
-    {
-      "path": "../prisma/tsconfig.lib.json"
-    },
-    {
-      "path": "../schemas/tsconfig.lib.json"
-    },
-    {
       "path": "../variables/tsconfig.lib.json"
+    },
+    {
+      "path": "../user/tsconfig.lib.json"
     },
     {
       "path": "../theme/tsconfig.lib.json"
@@ -36,7 +24,25 @@
       "path": "../settings/tsconfig.lib.json"
     },
     {
+      "path": "../schemas/tsconfig.lib.json"
+    },
+    {
+      "path": "../prisma/tsconfig.lib.json"
+    },
+    {
+      "path": "../lib/tsconfig.lib.json"
+    },
+    {
       "path": "../groups/tsconfig.lib.json"
+    },
+    {
+      "path": "../events/tsconfig.lib.json"
+    },
+    {
+      "path": "../env/tsconfig.lib.json"
+    },
+    {
+      "path": "../domain-primitives/tsconfig.lib.json"
     },
     {
       "path": "../blocks/core/tsconfig.lib.json"

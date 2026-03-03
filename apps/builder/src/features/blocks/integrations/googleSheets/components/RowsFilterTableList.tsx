@@ -36,6 +36,7 @@ export const RowsFilterTableList = ({
       ComponentBetweenItems={() => (
         <div className="flex justify-center">
           <BasicSelect
+            className="w-full"
             value={filter?.logicalOperator}
             onChange={updateLogicalOperator}
             items={Object.values(LogicalOperator)}

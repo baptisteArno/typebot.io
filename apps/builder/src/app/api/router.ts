@@ -1,10 +1,11 @@
 import { ORPCError } from "@orpc/server";
-import { audiencesRouter } from "@typebot.io/audiences/orpc/router";
 import { authRouter } from "@typebot.io/auth/api/router";
 import { billingRouter } from "@typebot.io/billing/api/router";
+import { campaignsRouter } from "@typebot.io/campaigns/orpc/router";
 import { publicProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { contactsRouter } from "@typebot.io/contacts/orpc/router";
 import { fileUploadBuilderRouter } from "@typebot.io/file-input-block/api/router";
+import { segmentsRouter } from "@typebot.io/segments/orpc/router";
 import { spacesRouter } from "@typebot.io/spaces/orpc/router";
 import { builderWhatsAppRouter } from "@typebot.io/whatsapp/api/router";
 import { z } from "zod";
@@ -84,9 +85,10 @@ export const appRouter: AppRouter = {
   getFeatureFlags,
   auth: authRouter,
   billing: billingRouter,
-  audiences: audiencesRouter,
   spaces: spacesRouter,
+  segments: segmentsRouter,
   contacts: contactsRouter,
+  campaigns: campaignsRouter,
 };
 
 export type AppRouter = {
@@ -117,4 +119,8 @@ export type AppRouter = {
   getFeatureFlags: typeof getFeatureFlags;
   auth: typeof authRouter;
   billing: typeof billingRouter;
+  spaces: typeof spacesRouter;
+  segments: typeof segmentsRouter;
+  contacts: typeof contactsRouter;
+  campaigns: typeof campaignsRouter;
 };

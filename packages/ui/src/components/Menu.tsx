@@ -93,7 +93,16 @@ const SubmenuTrigger = React.forwardRef<
   React.ElementRef<typeof MenuPrimitive.SubmenuTrigger>,
   MenuPrimitive.SubmenuTrigger.Props
 >(({ children, className, ...props }, ref) => (
-  <MenuPrimitive.SubmenuTrigger {...props} className={className} ref={ref} />
+  <MenuPrimitive.SubmenuTrigger
+    {...props}
+    className={cn(
+      "outline-hidden min-w-(--anchor-width) data-highlighted:bg-gray-2 dark:data-highlighted:bg-gray-3 p-2 rounded-md cursor-default flex items-center gap-2",
+      className,
+    )}
+    ref={ref}
+  >
+    {children}
+  </MenuPrimitive.SubmenuTrigger>
 ));
 SubmenuTrigger.displayName = MenuPrimitive.SubmenuTrigger.displayName;
 

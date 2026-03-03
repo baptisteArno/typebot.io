@@ -1,5 +1,9 @@
-import { AudienceId } from "@typebot.io/audiences/core";
-import { Email, PhoneNumber } from "@typebot.io/domain-primitives/schemas";
+import {
+  Email,
+  PhoneNumber,
+  SpaceId,
+} from "@typebot.io/domain-primitives/schemas";
+import { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Schema } from "effect";
 
 export const ContactId = Schema.String.pipe(Schema.brand("ContactId"));
@@ -22,8 +26,8 @@ export class Contact extends Schema.Class<Contact>("Contact")({
   lastName: Schema.NullOr(Schema.String),
   email: Schema.NullOr(Email),
   phone: Schema.NullOr(PhoneNumber),
-  customAttributes: Schema.NullOr(CustomAttributesSchema),
-  audienceId: AudienceId,
+  workspaceId: WorkspaceId,
+  spaceId: Schema.NullOr(SpaceId),
   createdAt: Schema.ValidDateFromSelf,
   updatedAt: Schema.ValidDateFromSelf,
 }) {}

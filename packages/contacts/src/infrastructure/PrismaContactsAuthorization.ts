@@ -1,56 +1,50 @@
-import type { AudienceId } from "@typebot.io/audiences/core";
-import { PrismaService } from "@typebot.io/prisma/effect";
+import type { SpaceId } from "@typebot.io/domain-primitives/schemas";
 import type { UserId } from "@typebot.io/user/schemas";
 import { WorkspaceAuthorization } from "@typebot.io/workspaces/core/WorkspaceAuthorization";
-import { WorkspaceId } from "@typebot.io/workspaces/schemas";
-import { Effect, Layer, Schema } from "effect";
+import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
+import { Effect, Layer } from "effect";
 import { ContactsAuthorization } from "../core/ContactsAuthorization";
 
 export const PrismaContactsAuthorization = Layer.effect(
   ContactsAuthorization,
   Effect.gen(function* () {
-    const prisma = yield* PrismaService;
     const workspaceAuthorization = yield* WorkspaceAuthorization;
-
-    const resolveWorkspaceId = (audienceId: AudienceId) =>
-      prisma.audience
-        .findUnique({
-          where: { id: audienceId },
-          select: { workspaceId: true },
-        })
-        .pipe(Effect.orDie);
-
-    const toWorkspaceId = (s: string) => Schema.decodeSync(WorkspaceId)(s);
 
     const canListContacts = Effect.fn(
       "PrismaContactsAuthorization.canListContacts",
-    )(function* (audienceId: AudienceId, userId: UserId) {
-      const audience = yield* resolveWorkspaceId(audienceId);
-      if (!audience) return false;
+    )(function* (
+      workspaceId: WorkspaceId,
+      _spaceId: SpaceId | undefined,
+      userId: UserId,
+    ) {
       return yield* workspaceAuthorization.canReadWorkspace(
-        toWorkspaceId(audience.workspaceId),
+        workspaceId,
         userId,
       );
     });
 
     const canCreateContact = Effect.fn(
       "PrismaContactsAuthorization.canCreateContact",
-    )(function* (audienceId: AudienceId, userId: UserId) {
-      const audience = yield* resolveWorkspaceId(audienceId);
-      if (!audience) return false;
+    )(function* (
+      workspaceId: WorkspaceId,
+      _spaceId: SpaceId | undefined,
+      userId: UserId,
+    ) {
       return yield* workspaceAuthorization.canAdminWriteWorkspace(
-        toWorkspaceId(audience.workspaceId),
+        workspaceId,
         userId,
       );
     });
 
     const canGetContact = Effect.fn(
       "PrismaContactsAuthorization.canGetContact",
-    )(function* (audienceId: AudienceId, userId: UserId) {
-      const audience = yield* resolveWorkspaceId(audienceId);
-      if (!audience) return false;
+    )(function* (
+      workspaceId: WorkspaceId,
+      _spaceId: SpaceId | undefined,
+      userId: UserId,
+    ) {
       return yield* workspaceAuthorization.canReadWorkspace(
-        toWorkspaceId(audience.workspaceId),
+        workspaceId,
         userId,
       );
     });

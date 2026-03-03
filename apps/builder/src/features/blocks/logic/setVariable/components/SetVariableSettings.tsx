@@ -95,6 +95,7 @@ export const SetVariableSettings = ({ options, onOptionsChange }: Props) => {
         <div className="flex flex-col gap-2">
           <p className="mb-0 font-medium">Value:</p>
           <BasicSelect
+            className="w-full"
             value={options?.type ?? defaultSetVariableOptions.type}
             items={setVarTypes.map((type) => ({
               label: type,
@@ -267,7 +268,7 @@ const SetVariableValue = ({
               <CodeEditor
                 defaultValue={options?.expressionToEvaluate ?? ""}
                 onChange={updateExpression}
-                lang="javascript"
+                lang="js"
                 withLineNumbers={true}
               />
               <Field.Root className="flex-row items-center">
@@ -386,6 +387,7 @@ const SetVariableValue = ({
     case "Tomorrow": {
       return (
         <BasicSelect
+          className="w-full"
           items={timeZones}
           onChange={(timeZone) => onOptionsChange({ ...options, timeZone })}
           placeholder="Select time zone"

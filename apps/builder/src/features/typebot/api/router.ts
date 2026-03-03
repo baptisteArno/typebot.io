@@ -122,6 +122,7 @@ export const typebotRouter = {
               name: true,
               icon: true,
               id: true,
+              spaceId: true,
             })
             .merge(
               z.object({

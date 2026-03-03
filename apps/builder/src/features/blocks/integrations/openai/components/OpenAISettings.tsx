@@ -114,6 +114,7 @@ export const OpenAISettings = ({
           </Accordion.Root>
 
           <BasicSelect
+            className="w-full"
             value={options.task}
             items={openAITasks.slice(0, -1)}
             onChange={updateTask}

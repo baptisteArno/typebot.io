@@ -1,8 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
-import { AudiencesIcon } from "@typebot.io/audiences/react/AudiencesIcon";
-import { AudiencesList } from "@typebot.io/audiences/react/AudiencesList";
-import { EmptyAudiencesListForm } from "@typebot.io/audiences/react/EmptyAudiencesListForm";
 import { Avatar } from "@typebot.io/ui/components/Avatar";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
@@ -18,7 +14,6 @@ import { BillingSettingsLayout } from "@/features/billing/components/BillingSett
 import { CredentialsSettingsForm } from "@/features/credentials/components/CredentialsSettingsForm";
 import { MyAccountForm } from "@/features/user/components/MyAccountForm";
 import { UserPreferencesForm } from "@/features/user/components/UserPreferencesForm";
-import { orpc } from "@/lib/queryClient";
 import packageJson from "../../../../../../package.json";
 import { useWorkspace, type WorkspaceInApp } from "../WorkspaceProvider";
 import { PeopleList } from "./PeopleList";
@@ -38,8 +33,7 @@ type SettingsTab =
   | "workspace-settings"
   | "members"
   | "billing"
-  | "credentials"
-  | "audiences";
+  | "credentials";
 
 export const WorkspaceSettingsDialog = ({
   isOpen,
@@ -51,13 +45,6 @@ export const WorkspaceSettingsDialog = ({
   const { t } = useTranslate();
   const { currentUserMode } = useWorkspace();
   const [selectedTab, setSelectedTab] = useState<SettingsTab>(defaultTab);
-  const { data: featureFlags } = useQuery(
-    orpc.getFeatureFlags.queryOptions({
-      input: {
-        workspaceId: workspace.id,
-      },
-    }),
-  );
 
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
@@ -143,17 +130,6 @@ export const WorkspaceSettingsDialog = ({
                   {t("workspace.settings.modal.menu.billingAndUsage.label")}
                 </Button>
               )}
-              {currentUserMode === "write" && featureFlags?.flags.campaigns && (
-                <Button
-                  variant={selectedTab === "audiences" ? "outline" : "ghost"}
-                  onClick={() => setSelectedTab("audiences")}
-                  className="justify-start pl-4"
-                  size="sm"
-                >
-                  <AudiencesIcon />
-                  Audiences
-                </Button>
-              )}
             </div>
           </div>
 
@@ -171,49 +147,6 @@ export const WorkspaceSettingsDialog = ({
         </div>
       </Dialog.Popup>
     </Dialog.Root>
-  );
-};
-
-const AudiencesSettingsContent = () => {
-  const queryClient = useQueryClient();
-  const { workspace } = useWorkspace();
-  const { data } = useQuery(
-    orpc.audiences.list.queryOptions({
-      input: {
-        workspaceId: workspace?.id ?? "",
-      },
-      enabled: !!workspace?.id,
-    }),
-  );
-  const { mutateAsync: createAudience } = useMutation(
-    orpc.audiences.create.mutationOptions({
-      onSuccess: (_data, variables) => {
-        queryClient.invalidateQueries({
-          queryKey: orpc.audiences.list.key({
-            input: { workspaceId: variables.workspaceId },
-          }),
-        });
-      },
-    }),
-  );
-  if (!data) return null;
-  if (data.audiences.length === 0)
-    return (
-      <EmptyAudiencesListForm
-        onCreateSubmit={async (input) => {
-          if (!workspace?.id) return;
-          await createAudience({
-            workspaceId: workspace.id,
-            name: input.name,
-          });
-        }}
-      />
-    );
-  return (
-    <div className="flex flex-col gap-4">
-      <h2>Audiences</h2>
-      <AudiencesList audiences={data.audiences} />
-    </div>
   );
 };
 
@@ -237,8 +170,6 @@ const SettingsContent = ({
       return <BillingSettingsLayout />;
     case "credentials":
       return <CredentialsSettingsForm />;
-    case "audiences":
-      return <AudiencesSettingsContent />;
     default:
       return null;
   }

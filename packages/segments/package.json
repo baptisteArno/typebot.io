@@ -1,0 +1,39 @@
+{
+  "name": "@typebot.io/segments",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./core": {
+      "types": "./src/core/Segment.ts",
+      "import": "./src/core/Segment.ts",
+      "default": "./src/core/Segment.ts"
+    },
+    "./orpc/router": {
+      "types": "./src/orpc/router.ts",
+      "import": "./src/orpc/router.ts",
+      "default": "./src/orpc/router.ts"
+    },
+    "./react/*": {
+      "types": "./src/react/*.tsx",
+      "import": "./src/react/*.tsx",
+      "default": "./src/react/*.tsx"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@orpc/server": "^1.13.4",
+    "effect": "^3.19.18",
+    "@typebot.io/config": "workspace:*",
+    "@typebot.io/user": "workspace:*",
+    "@typebot.io/domain-primitives": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/ui": "workspace:*",
+    "@typebot.io/workspaces": "workspace:*",
+    "@tanstack/react-form": "^1.28.3"
+  },
+  "devDependencies": {
+    "vitest": "^4.0.18",
+    "@effect/vitest": "^0.27.0"
+  }
+}

@@ -3,10 +3,21 @@
   "editor.tabSize": 2,
   "typescript.updateImportsOnFileMove.enabled": "always",
   "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.preferences.includePackageJsonAutoImports": "off",
+  "typescript.workspaceSymbols.scope": "currentProject",
   "typescript.preferences.autoImportFileExcludePatterns": [
     "next/router.d.ts",
     "next/dist/client/router.d.ts"
   ],
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/.turbo/**": true,
+    "**/dist/**": true,
+    "**/opensrc/**": true,
+    "**/packages/embeds/wordpress/.svn/**": true,
+    "**/packages/embeds/wordpress/tags/**": true
+  },
   "biome.enabled": true,
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome"
@@ -40,6 +51,10 @@
   "i18n-ally.sortKeys": true,
   "i18n-ally.enabledFrameworks": ["custom"],
   "search.exclude": {
-    "**/deprecated/**": true
-  }
+    "**/deprecated/**": true,
+    "**/opensrc/**": true,
+    "**/packages/embeds/wordpress/.svn/**": true,
+    "**/packages/embeds/wordpress/tags/**": true
+  },
+  "typescript.disableAutomaticTypeAcquisition": true
 }

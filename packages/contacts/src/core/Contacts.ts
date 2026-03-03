@@ -1,5 +1,6 @@
-import type { AudienceId } from "@typebot.io/audiences/core";
+import type { SpaceId } from "@typebot.io/domain-primitives/schemas";
 import type { UserId } from "@typebot.io/user/schemas";
+import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Context, Effect, Layer } from "effect";
 import type { Contact, ContactCreateInput, ContactId } from "./Contact";
 import { ContactsAuthorization } from "./ContactsAuthorization";
@@ -14,18 +15,27 @@ export class Contacts extends Context.Tag("@typebot.io/Contacts")<
   Contacts,
   {
     readonly list: (
-      resource: { audienceId: AudienceId; userId: UserId },
+      resource: {
+        workspaceId: WorkspaceId;
+        spaceId?: SpaceId;
+        userId: UserId;
+      },
       pagination: { limit: number; cursor?: number },
     ) => Effect.Effect<
       { contacts: readonly Contact[]; nextCursor: number | undefined },
       ForbiddenError
     >;
     readonly create: (
-      resource: { audienceId: AudienceId; userId: UserId },
+      resource: {
+        workspaceId: WorkspaceId;
+        spaceId?: SpaceId;
+        userId: UserId;
+      },
       input: ContactCreateInput,
     ) => Effect.Effect<Contact, AlreadyExistsError | ForbiddenError>;
     readonly get: (resource: {
-      audienceId: AudienceId;
+      workspaceId: WorkspaceId;
+      spaceId?: SpaceId;
       contactId: ContactId;
       userId: UserId;
     }) => Effect.Effect<Contact, ForbiddenError | NotFoundError>;
@@ -38,53 +48,79 @@ export class Contacts extends Context.Tag("@typebot.io/Contacts")<
       const contactsAuthorization = yield* ContactsAuthorization;
 
       const list = Effect.fn("Contacts.list")(function* (
-        { audienceId, userId }: { audienceId: AudienceId; userId: UserId },
+        {
+          workspaceId,
+          spaceId,
+          userId,
+        }: {
+          workspaceId: WorkspaceId;
+          spaceId?: SpaceId;
+          userId: UserId;
+        },
         pagination: { limit: number; cursor?: number },
       ) {
         const canList = yield* contactsAuthorization.canListContacts(
-          audienceId,
+          workspaceId,
+          spaceId,
           userId,
         );
 
         if (!canList) return yield* new ForbiddenError();
 
-        return yield* contactsRepository.listByAudienceId(
-          audienceId,
+        return yield* contactsRepository.listByWorkspaceAndSpace(
+          workspaceId,
+          spaceId,
           pagination,
         );
       });
 
       const create = Effect.fn("Contacts.create")(function* (
-        { audienceId, userId }: { audienceId: AudienceId; userId: UserId },
+        {
+          workspaceId,
+          spaceId,
+          userId,
+        }: {
+          workspaceId: WorkspaceId;
+          spaceId?: SpaceId;
+          userId: UserId;
+        },
         input: ContactCreateInput,
       ) {
         const canCreate = yield* contactsAuthorization.canCreateContact(
-          audienceId,
+          workspaceId,
+          spaceId,
           userId,
         );
 
         if (!canCreate) return yield* new ForbiddenError();
 
-        return yield* contactsRepository.create(audienceId, input);
+        return yield* contactsRepository.create(workspaceId, spaceId, input);
       });
 
       const get = Effect.fn("Contacts.get")(function* ({
-        audienceId,
+        workspaceId,
+        spaceId,
         contactId,
         userId,
       }: {
-        audienceId: AudienceId;
+        workspaceId: WorkspaceId;
+        spaceId?: SpaceId;
         contactId: ContactId;
         userId: UserId;
       }) {
         const canGet = yield* contactsAuthorization.canGetContact(
-          audienceId,
+          workspaceId,
+          spaceId,
           userId,
         );
 
         if (!canGet) return yield* new ForbiddenError();
 
-        return yield* contactsRepository.getById(audienceId, contactId);
+        return yield* contactsRepository.getById(
+          workspaceId,
+          spaceId,
+          contactId,
+        );
       });
 
       return Contacts.of({

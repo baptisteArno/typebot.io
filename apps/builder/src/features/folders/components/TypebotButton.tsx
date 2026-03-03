@@ -1,10 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
+import type { Space } from "@typebot.io/spaces/core";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
+import { ArrowRight01Icon } from "@typebot.io/ui/icons/ArrowRight01Icon";
 import { DragDropHorizontalIcon } from "@typebot.io/ui/icons/DragDropHorizontalIcon";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { MoreVerticalIcon } from "@typebot.io/ui/icons/MoreVerticalIcon";
@@ -26,6 +28,7 @@ import { orpc } from "@/lib/queryClient";
 
 type Props = {
   typebot: TypebotInDashboard;
+  spaces: readonly Space[] | undefined;
   isReadOnly?: boolean;
   draggedTypebot: TypebotInDashboard | undefined;
   onTypebotUpdated: () => void;
@@ -34,6 +37,7 @@ type Props = {
 
 const TypebotButton = ({
   typebot,
+  spaces,
   isReadOnly = false,
   draggedTypebot,
   onTypebotUpdated,
@@ -53,6 +57,14 @@ const TypebotButton = ({
 
   const { mutateAsync: getTypebot } = useMutation(
     orpc.typebot.getTypebot.mutationOptions(),
+  );
+
+  const { mutate: updateTypebot } = useMutation(
+    orpc.typebot.updateTypebot.mutationOptions({
+      onSuccess: () => {
+        onTypebotUpdated();
+      },
+    }),
   );
 
   const { mutate: importTypebot } = useMutation(
@@ -121,6 +133,13 @@ const TypebotButton = ({
     unpublishTypebot({ typebotId: typebot.id });
   };
 
+  const handleMoveToSpaceClick = (spaceId: string) => {
+    updateTypebot({
+      typebotId: typebot.id,
+      typebot: { spaceId },
+    });
+  };
+
   return (
     <>
       {/* biome-ignore lint/a11y/useSemanticElements: This card contains nested interactive controls. */}
@@ -183,6 +202,24 @@ const TypebotButton = ({
                 <Menu.Item className="text-red-10" onClick={handleDeleteClick}>
                   {t("delete")}
                 </Menu.Item>
+                <Menu.SubmenuRoot>
+                  <Menu.SubmenuTrigger>
+                    Move to space <ArrowRight01Icon />
+                  </Menu.SubmenuTrigger>
+                  <Menu.Popup align="start" side="right" offset={4}>
+                    {spaces?.map((space) => (
+                      <Menu.Item
+                        key={space.id}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleMoveToSpaceClick(space.id);
+                        }}
+                      >
+                        {space.name}
+                      </Menu.Item>
+                    ))}
+                  </Menu.Popup>
+                </Menu.SubmenuRoot>
               </Menu.Popup>
             </Menu.Root>
           </>

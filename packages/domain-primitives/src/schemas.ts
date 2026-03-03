@@ -1,12 +1,21 @@
 import { Schema } from "effect";
 
-export const Email = Schema.String.pipe(Schema.brand("Email"));
+export const Email = Schema.String.pipe(
+  Schema.nonEmptyString(),
+  Schema.brand("Email"),
+);
 export type Email = typeof Email.Type;
 
-export const Name = Schema.String.pipe(Schema.brand("Name"));
+export const Name = Schema.String.pipe(
+  Schema.nonEmptyString(),
+  Schema.brand("Name"),
+);
 export type Name = typeof Name.Type;
 
-export const PhoneNumber = Schema.String.pipe(Schema.brand("PhoneNumber"));
+export const PhoneNumber = Schema.String.pipe(
+  Schema.nonEmptyString(),
+  Schema.brand("PhoneNumber"),
+);
 export type PhoneNumber = typeof PhoneNumber.Type;
 
 export const ImageSrc = Schema.String.pipe(
@@ -35,5 +44,32 @@ export const Emoji = Schema.String.pipe(
   Schema.brand("Emoji"),
 );
 
-export const SpaceId = Schema.String.pipe(Schema.brand("SpaceId"));
+export const SpaceId = Schema.String.pipe(
+  Schema.nonEmptyString(),
+  Schema.brand("SpaceId"),
+);
 export type SpaceId = typeof SpaceId.Type;
+
+export const CampaignId = Schema.String.pipe(
+  Schema.nonEmptyString(),
+  Schema.brand("CampaignId"),
+);
+export type CampaignId = typeof CampaignId.Type;
+
+export const TypebotId = Schema.String.pipe(
+  Schema.nonEmptyString(),
+  Schema.brand("TypebotId"),
+);
+export type TypebotId = typeof TypebotId.Type;
+
+export const SegmentId = Schema.String.pipe(
+  Schema.nonEmptyString(),
+  Schema.brand("SegmentId"),
+);
+export type SegmentId = typeof SegmentId.Type;
+
+export const CredentialsId = Schema.String.pipe(
+  Schema.nonEmptyString(),
+  Schema.brand("CredentialsId"),
+);
+export type CredentialsId = typeof CredentialsId.Type;

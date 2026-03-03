@@ -21,6 +21,9 @@
       "path": "../config/tsconfig.lib.json"
     },
     {
+      "path": "../campaigns/tsconfig.lib.json"
+    },
+    {
       "path": "../chat-api/tsconfig.lib.json"
     },
     {

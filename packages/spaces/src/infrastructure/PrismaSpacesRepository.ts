@@ -1,4 +1,3 @@
-import type { AudienceId } from "@typebot.io/audiences/core";
 import type { Name } from "@typebot.io/domain-primitives/schemas";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
@@ -38,7 +37,6 @@ export const PrismaSpacesRepository = Layer.effect(
       input: {
         name: Name;
         icon?: SpaceIcon;
-        audienceId?: AudienceId;
       },
     ) {
       const space = yield* prisma.space

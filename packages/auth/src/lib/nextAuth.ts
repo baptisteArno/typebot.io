@@ -187,7 +187,7 @@ const isValidNextRequest = (
   return Boolean(req && "headers" in req && "get" in req.headers);
 };
 
-export const handlers = nextAuth.handlers;
+export const authHandlers = nextAuth.handlers;
 export const auth: NextAuthResult["auth"] = nextAuth.auth;
 export const signIn = nextAuth.signIn;
 export const signOut = nextAuth.signOut;

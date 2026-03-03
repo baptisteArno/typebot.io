@@ -1,4 +1,5 @@
-import type { AudienceId } from "@typebot.io/audiences/core";
+import type { SpaceId } from "@typebot.io/domain-primitives/schemas";
+import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Context, type Effect } from "effect";
 import type { Contact, ContactCreateInput, ContactId } from "./Contact";
 import type { AlreadyExistsError, NotFoundError } from "./ContactsErrors";
@@ -8,19 +9,22 @@ export class ContactsRepository extends Context.Tag(
 )<
   ContactsRepository,
   {
-    readonly listByAudienceId: (
-      audienceId: AudienceId,
+    readonly listByWorkspaceAndSpace: (
+      workspaceId: WorkspaceId,
+      spaceId: SpaceId | undefined,
       pagination: { limit: number; cursor?: number },
     ) => Effect.Effect<{
       contacts: readonly Contact[];
       nextCursor: number | undefined;
     }>;
     readonly create: (
-      audienceId: AudienceId,
+      workspaceId: WorkspaceId,
+      spaceId: SpaceId | undefined,
       input: ContactCreateInput,
     ) => Effect.Effect<Contact, AlreadyExistsError>;
     readonly getById: (
-      audienceId: AudienceId,
+      workspaceId: WorkspaceId,
+      spaceId: SpaceId | undefined,
       contactId: ContactId,
     ) => Effect.Effect<Contact, NotFoundError>;
   }

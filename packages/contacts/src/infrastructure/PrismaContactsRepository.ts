@@ -1,6 +1,7 @@
-import type { AudienceId } from "@typebot.io/audiences/core";
+import type { SpaceId } from "@typebot.io/domain-primitives/schemas";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
+import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Layer, Schema } from "effect";
 import {
   Contact,
@@ -15,10 +16,11 @@ export const PrismaContactsRepository = Layer.effect(
   Effect.gen(function* () {
     const prisma = yield* PrismaService;
 
-    const listByAudienceId = Effect.fn(
-      "PrismaContactsRepository.listByAudienceId",
+    const listByWorkspaceAndSpace = Effect.fn(
+      "PrismaContactsRepository.listByWorkspaceAndSpace",
     )(function* (
-      audienceId: AudienceId,
+      workspaceId: WorkspaceId,
+      spaceId: SpaceId | undefined,
       pagination: { limit: number; cursor?: number },
     ) {
       const { limit, cursor } = pagination;
@@ -26,7 +28,10 @@ export const PrismaContactsRepository = Layer.effect(
 
       const contacts = yield* prisma.contact
         .findMany({
-          where: { audienceId },
+          where: {
+            workspaceId,
+            ...(spaceId !== undefined && { spaceId }),
+          },
           orderBy: { createdAt: "desc" },
           take: limit + 1,
           skip,
@@ -45,18 +50,19 @@ export const PrismaContactsRepository = Layer.effect(
     });
 
     const create = Effect.fn("PrismaContactsRepository.create")(function* (
-      audienceId: AudienceId,
+      workspaceId: WorkspaceId,
+      spaceId: SpaceId | undefined,
       input: ContactCreateInput,
     ) {
       const contact = yield* prisma.contact
         .create({
           data: {
-            audienceId,
+            workspaceId,
+            spaceId: spaceId ?? null,
             firstName: input.firstName,
             lastName: input.lastName,
             email: input.email,
             phone: input.phone,
-            properties: input.customAttributes,
           },
         })
         .pipe(
@@ -72,12 +78,17 @@ export const PrismaContactsRepository = Layer.effect(
     });
 
     const getById = Effect.fn("PrismaContactsRepository.getById")(function* (
-      audienceId: AudienceId,
+      workspaceId: WorkspaceId,
+      spaceId: SpaceId | undefined,
       contactId: ContactId,
     ) {
       const contact = yield* prisma.contact
         .findFirst({
-          where: { id: contactId, audienceId },
+          where: {
+            id: contactId,
+            workspaceId,
+            ...(spaceId !== undefined && { spaceId }),
+          },
         })
         .pipe(Effect.orDie);
 
@@ -87,7 +98,7 @@ export const PrismaContactsRepository = Layer.effect(
     });
 
     return ContactsRepository.of({
-      listByAudienceId,
+      listByWorkspaceAndSpace,
       create,
       getById,
     });

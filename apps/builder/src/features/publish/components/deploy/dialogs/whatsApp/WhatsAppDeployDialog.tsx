@@ -268,6 +268,7 @@ export const WhatsAppDeployDialog = ({
                             ComponentBetweenItems={() => (
                               <div className="flex justify-center">
                                 <BasicSelect
+                                  className="w-full"
                                   value={
                                     whatsAppSettings?.startCondition
                                       ?.logicalOperator

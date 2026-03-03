@@ -1,4 +1,3 @@
-import { AudienceId } from "@typebot.io/audiences/core";
 import {
   Emoji,
   ImageSrc,
@@ -23,7 +22,6 @@ export class Space extends Schema.Class<Space>("Space")({
 export const SpaceCreateInputSchema = Schema.Struct({
   name: Name.pipe(Schema.minLength(1)),
   icon: Schema.optional(SpaceIcon),
-  audienceId: AudienceId.pipe(Schema.optional),
 });
 export type SpaceCreateInputSchema = typeof SpaceCreateInputSchema.Type;
 export const SpaceCreateInputStandardSchema = SpaceCreateInputSchema.pipe(

@@ -55,6 +55,7 @@ export const handleListTypebots = async ({
       id: true,
       icon: true,
       collaborators: { select: { userId: true, type: true } },
+      spaceId: true,
     },
   });
 
@@ -71,6 +72,7 @@ export const handleListTypebots = async ({
         ...typebot,
         workspace: { members: workspace.members },
       }),
+      spaceId: typebot.spaceId,
     })),
   };
 };

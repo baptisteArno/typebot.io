@@ -32,7 +32,8 @@ export const CreateSpaceForm = ({
   return (
     <form
       className="flex flex-col gap-4"
-      onSubmit={() => {
+      onSubmit={(e) => {
+        e.preventDefault();
         form.handleSubmit();
       }}
     >

@@ -1,4 +1,3 @@
-import type { AudienceId } from "@typebot.io/audiences/core";
 import type { Name } from "@typebot.io/domain-primitives/schemas";
 import type { UserId } from "@typebot.io/user/schemas";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
@@ -12,17 +11,16 @@ export class Spaces extends Context.Tag("@typebot.io/Spaces")<
   Spaces,
   {
     readonly create: (
-      ressource: {
+      resource: {
         workspaceId: WorkspaceId;
         userId: UserId;
       },
       input: {
         name: Name;
         icon?: SpaceIcon;
-        audienceId?: AudienceId;
       },
     ) => Effect.Effect<Space, AlreadyExistsError | ForbiddenError>;
-    readonly list: (ressource: {
+    readonly list: (resource: {
       workspaceId: WorkspaceId;
       userId: UserId;
     }) => Effect.Effect<readonly Space[], ForbiddenError>;
@@ -62,7 +60,6 @@ export class Spaces extends Context.Tag("@typebot.io/Spaces")<
         input: {
           name: Name;
           icon?: SpaceIcon;
-          audienceId?: AudienceId;
         },
       ) {
         const canCreate = yield* spacesAuthorization.canCreateSpace(

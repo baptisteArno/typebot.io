@@ -37,6 +37,7 @@ export const JumpSettings = ({ options, onOptionsChange }: Props) => {
       {selectedGroup &&
         (selectedGroup.blocks.length > 1 || options?.blockId) && (
           <BasicSelect
+            className="w-full"
             value={options?.blockId}
             items={selectedGroup.blocks.map((block, index) => ({
               label: `Block #${(index + 1).toString()}`,

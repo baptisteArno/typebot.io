@@ -9,6 +9,18 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
+      "path": "../workspaces/tsconfig.lib.json"
+    },
+    {
+      "path": "../user/tsconfig.lib.json"
+    },
+    {
+      "path": "../domain-primitives/tsconfig.lib.json"
+    },
+    {
+      "path": "../prisma/tsconfig.lib.json"
+    },
+    {
       "path": "../env/tsconfig.lib.json"
     }
   ]

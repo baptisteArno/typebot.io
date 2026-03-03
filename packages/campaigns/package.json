@@ -1,0 +1,31 @@
+{
+  "name": "@typebot.io/campaigns",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./orpc/router": "./src/orpc/router.ts",
+    "./core": "./src/core/Campaign.ts",
+    "./react/*": "./src/react/*.tsx"
+  },
+  "dependencies": {
+    "@orpc/server": "^1.13.4",
+    "@typebot.io/config": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/typebot": "workspace:*",
+    "@typebot.io/user": "workspace:*",
+    "@typebot.io/ui": "workspace:*",
+    "@typebot.io/segments": "workspace:*",
+    "effect": "^3.19.18",
+    "@testcontainers/postgresql": "^11.12.0"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "check-types": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@effect/vitest": "^0.27.0",
+    "vitest": "^4.0.18"
+  }
+}

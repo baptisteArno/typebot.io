@@ -1,5 +1,6 @@
-import type { AudienceId } from "@typebot.io/audiences/core";
+import type { SpaceId } from "@typebot.io/domain-primitives/schemas";
 import type { UserId } from "@typebot.io/user/schemas";
+import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Context, type Effect } from "effect";
 
 export class ContactsAuthorization extends Context.Tag(
@@ -8,15 +9,18 @@ export class ContactsAuthorization extends Context.Tag(
   ContactsAuthorization,
   {
     readonly canListContacts: (
-      audienceId: AudienceId,
+      workspaceId: WorkspaceId,
+      spaceId: SpaceId | undefined,
       userId: UserId,
     ) => Effect.Effect<boolean>;
     readonly canCreateContact: (
-      audienceId: AudienceId,
+      workspaceId: WorkspaceId,
+      spaceId: SpaceId | undefined,
       userId: UserId,
     ) => Effect.Effect<boolean>;
     readonly canGetContact: (
-      audienceId: AudienceId,
+      workspaceId: WorkspaceId,
+      spaceId: SpaceId | undefined,
       userId: UserId,
     ) => Effect.Effect<boolean>;
   }

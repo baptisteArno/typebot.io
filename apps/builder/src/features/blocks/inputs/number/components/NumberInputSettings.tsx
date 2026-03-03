@@ -134,6 +134,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
           </Accordion.Trigger>
           <Accordion.Panel>
             <BasicSelect
+              className="w-full"
               items={Object.values(NumberInputStyle).map((style) => ({
                 label: t(numberStyleTranslationKeys[style]),
                 value: style,
@@ -148,6 +149,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
                   {t("blocks.inputs.number.settings.currency.label")}
                 </Field.Label>
                 <BasicSelect
+                  className="w-full"
                   items={currencies.map(({ code, description }) => ({
                     label: description,
                     value: code,
@@ -163,6 +165,7 @@ export const NumberInputSettings = ({ options, onOptionsChange }: Props) => {
                   {t("blocks.inputs.number.settings.unit.label")}
                 </Field.Label>
                 <BasicSelect
+                  className="w-full"
                   items={Object.values(NumberInputUnit).map((unit) => ({
                     label: t(unitTranslationKeys[unit]),
                     value: unit,

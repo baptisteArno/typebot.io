@@ -76,6 +76,15 @@ export const FolderContent = ({ folder }: Props) => {
     }),
   );
 
+  const { data: spacesData } = useQuery(
+    orpc.spaces.list.queryOptions({
+      input: {
+        workspaceId: workspace?.id as string,
+      },
+      enabled: !!workspace?.id && !folder,
+    }),
+  );
+
   const moveTypebotToFolder = async (typebotId: string, folderId: string) => {
     if (!typebotsData?.typebots) return;
     updateTypebot({
@@ -182,21 +191,50 @@ export const FolderContent = ({ folder }: Props) => {
               />
             ))}
             {isTypebotLoading && <ButtonSkeleton />}
-            {typebotsData?.typebots?.map((typebot) => (
-              <TypebotButton
-                key={typebot.id}
-                typebot={typebot}
-                draggedTypebot={draggedTypebot}
-                onTypebotUpdated={refetchTypebots}
-                onDrag={handleTypebotDrag(typebot)}
-                isReadOnly={
-                  typebot.accessRight !== "write" && currentUserMode !== "write"
-                }
-              />
-            ))}
+            {workspace &&
+              typebotsData?.typebots
+                ?.filter((typebot) => typebot.spaceId === null)
+                .map((typebot) => (
+                  <TypebotButton
+                    key={typebot.id}
+                    typebot={typebot}
+                    spaces={spacesData?.spaces}
+                    draggedTypebot={draggedTypebot}
+                    onTypebotUpdated={refetchTypebots}
+                    onDrag={handleTypebotDrag(typebot)}
+                    isReadOnly={
+                      typebot.accessRight !== "write" &&
+                      currentUserMode !== "write"
+                    }
+                  />
+                ))}
           </div>
         </div>
+        {spacesData?.spaces.map((space) => (
+          <div key={space.id} className="flex flex-col gap-4">
+            <h2>{space.name}</h2>
+            <div className="flex flex-wrap gap-4">
+              {typebotsData?.typebots
+                .filter((typebot) => typebot.spaceId === space.id)
+                .map((typebot) => (
+                  <TypebotButton
+                    key={typebot.id}
+                    typebot={typebot}
+                    spaces={spacesData?.spaces}
+                    draggedTypebot={draggedTypebot}
+                    onTypebotUpdated={refetchTypebots}
+                    onDrag={handleTypebotDrag(typebot)}
+                    isReadOnly={
+                      typebot.accessRight !== "write" &&
+                      currentUserMode !== "write"
+                    }
+                  />
+                ))}
+            </div>
+          </div>
+        ))}
       </div>
+
       {draggedTypebot && (
         <Portal>
           <TypebotButtonOverlay

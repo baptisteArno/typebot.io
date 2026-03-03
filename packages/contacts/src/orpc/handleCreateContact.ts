@@ -1,58 +1,68 @@
 import { ORPCError } from "@orpc/server";
-import { AudienceId } from "@typebot.io/audiences/core";
+import { SpaceId } from "@typebot.io/domain-primitives/schemas";
 import { type User, UserId } from "@typebot.io/user/schemas";
+import { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Schema } from "effect";
 import { ContactCreateInputSchema } from "../core/Contact";
 import { Contacts } from "../core/Contacts";
-import { runContactsEffect } from "../infrastructure/ContactsLiveLayer";
 
 export const CreateContactInputStandardSchema = ContactCreateInputSchema.pipe(
-  Schema.extend(Schema.Struct({ audienceId: AudienceId })),
+  Schema.extend(
+    Schema.Struct({
+      workspaceId: WorkspaceId,
+      spaceId: Schema.optional(SpaceId),
+    }),
+  ),
   Schema.standardSchemaV1,
 );
 
-export const handleCreateContact = async ({
-  input: { audienceId, firstName, lastName, email, phone, customAttributes },
-  context: { user },
-}: {
-  input: typeof CreateContactInputStandardSchema.Type;
-  context: { user: Pick<User, "id"> };
-}) => {
-  const response = await runContactsEffect(
-    Effect.gen(function* () {
-      const contacts = yield* Contacts;
-      return yield* contacts.create(
-        {
-          audienceId,
-          userId: UserId.make(user.id),
-        },
-        { firstName, lastName, email, phone, customAttributes },
-      );
-    }).pipe(
-      Effect.catchTags({
-        ContactsAlreadyExistsError: () =>
-          Effect.fail(
-            new ORPCError("CONFLICT", {
-              message: "A contact with this email or phone already exists",
-            }),
-          ),
-        ContactsForbiddenError: () =>
-          Effect.fail(
-            new ORPCError("NOT_FOUND", {
-              message: "Audience not found",
-            }),
-          ),
-      }),
-      Effect.catchAllDefect((defect) =>
-        Effect.fail(
-          new ORPCError("INTERNAL_SERVER_ERROR", {
-            message: "Failed to create contact",
-            cause: defect,
-          }),
-        ),
+export const handleCreateContact = Effect.fn("handleCreateContact")(
+  function* ({
+    input: {
+      workspaceId,
+      spaceId,
+      firstName,
+      lastName,
+      email,
+      phone,
+      customAttributes,
+    },
+    context: { user },
+  }: {
+    input: typeof CreateContactInputStandardSchema.Type;
+    context: { user: Pick<User, "id"> };
+  }) {
+    const contacts = yield* Contacts;
+    const contact = yield* contacts.create(
+      {
+        workspaceId,
+        spaceId,
+        userId: UserId.make(user.id),
+      },
+      { firstName, lastName, email, phone, customAttributes },
+    );
+    return { contact };
+  },
+  Effect.catchTags({
+    ContactsAlreadyExistsError: () =>
+      Effect.fail(
+        new ORPCError("CONFLICT", {
+          message: "A contact with this email or phone already exists",
+        }),
       ),
+    ContactsForbiddenError: () =>
+      Effect.fail(
+        new ORPCError("NOT_FOUND", {
+          message: "Workspace not found",
+        }),
+      ),
+  }),
+  Effect.catchAllDefect((defect) =>
+    Effect.fail(
+      new ORPCError("INTERNAL_SERVER_ERROR", {
+        message: "Failed to create contact",
+        cause: defect,
+      }),
     ),
-  );
-
-  return { contact: response };
-};
+  ),
+);

@@ -188,6 +188,7 @@ export const ZodFieldLayout = ({
             </Field.Label>
           )}
           <BasicSelect
+            className="w-full"
             value={data}
             defaultValue={enumDefaultValue}
             onChange={onDataChange}

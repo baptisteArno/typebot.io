@@ -113,7 +113,8 @@ model Workspace {
   inactiveFirstEmailSentAt      DateTime?
   inactiveSecondEmailSentAt     DateTime?
   spaces                        Space[]
-  audiences                     Audience[]
+  contacts                      Contact[]
+  segments                      Segment[]
 }
 
 model MemberInWorkspace {
@@ -222,6 +223,7 @@ model Typebot {
   bannedIps               BannedIp[]
   space                   Space?                    @relation(fields: [spaceId], references: [id])
   spaceId                 String?
+  campaigns               Campaign[]
 
   @@index([workspaceId])
   @@index([isArchived, createdAt(sort: Desc)])
@@ -450,29 +452,10 @@ model Space {
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   typebots    Typebot[]
-  audience    Audience?
+  contacts    Contact[]
+  segments    Segment[]
 
   @@unique([id, workspaceId])
-}
-
-/**
- * Tough to model only one audience per workspace. It would need a partial unique index SQL migration.
- * So we need to enforce this constraint on the application layer.
- */
-model Audience {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-
-  workspaceId                String
-  workspace                  Workspace                   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  spaceId                    String?
-  space                      Space?                      @relation(fields: [workspaceId, spaceId], references: [workspaceId, id], onDelete: Cascade)
-  contacts                   Contact[]
-  segments                   Segment[]
-  contactPropertyDefinitions ContactPropertyDefinition[]
-
-  @@unique([workspaceId, spaceId])
 }
 
 model Contact {
@@ -484,13 +467,16 @@ model Contact {
   email     String?
   phone     String?
 
-  audienceId String
-  audience   Audience             @relation(fields: [audienceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  spaceId     String?
+  space       Space?    @relation(fields: [spaceId], references: [id])
+
   properties ContactProperty[]
   segments   ContactsInSegments[]
 
-  @@unique([audienceId, email])
-  @@unique([audienceId, phone])
+  @@unique([email])
+  @@unique([phone])
 }
 
 model ContactPropertyDefinition {
@@ -498,11 +484,9 @@ model ContactPropertyDefinition {
   key  String
   type ContactPropertyType
 
-  audienceId String
-  audience   Audience          @relation(fields: [audienceId], references: [id], onDelete: Cascade)
   properties ContactProperty[]
 
-  @@unique([audienceId, key])
+  @@unique([key])
 }
 
 enum ContactPropertyType {
@@ -523,13 +507,18 @@ model ContactProperty {
 }
 
 model Segment {
-  id         String               @id @default(cuid())
-  name       String
-  audienceId String
-  audience   Audience             @relation(fields: [audienceId], references: [id], onDelete: Cascade)
-  contacts   ContactsInSegments[]
+  id   String @id @default(cuid())
+  name String
 
-  @@unique([audienceId, name])
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  spaceId     String?
+  space       Space?    @relation(fields: [spaceId], references: [id])
+
+  contacts  ContactsInSegments[]
+  campaigns Campaign[]
+
+  @@unique([workspaceId, name])
 }
 
 model ContactsInSegments {
@@ -542,6 +531,41 @@ model ContactsInSegments {
 
   @@id([segmentId, contactId])
   @@index([contactId, segmentId])
+}
+
+model Campaign {
+  id        String          @id @default(cuid())
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @default(now()) @updatedAt
+  name      String
+  status    CampaignStatus
+  channel   CampaignChannel
+
+  recipientSegmentId String?
+  recipientSegment   Segment? @relation(fields: [recipientSegmentId], references: [id])
+  typebotId          String
+  typebot            Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+
+  whatsAppConfig WhatsAppCampaignConfig?
+}
+
+model WhatsAppCampaignConfig {
+  campaignId String   @id
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  templateId String?
+}
+
+enum CampaignChannel {
+  WHATSAPP
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  RUNNING
+  COMPLETED
+  FAILED
 }
 
 enum WorkspaceRole {
