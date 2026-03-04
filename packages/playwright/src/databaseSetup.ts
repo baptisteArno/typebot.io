@@ -3,9 +3,11 @@ import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
 import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
+import { createTypebots } from "./databaseActions";
 
 export const apiToken = "jirowjgrwGREHE";
 
+const proTypebotId = "proTypebot";
 export const proWorkspaceId = "proWorkspace";
 export const freeWorkspaceId = "freeWorkspace";
 export const starterWorkspaceId = "starterWorkspace";

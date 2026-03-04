@@ -9,6 +9,8 @@ import { cn } from "../lib/cn";
 import { Accordion } from "./Accordion";
 import { Button, buttonVariants } from "./Button";
 
+export type ToastManager = ReturnType<typeof ToastPrimitive.createToastManager>;
+
 const List = ({
   className,
   CodeEditor,
@@ -21,7 +23,7 @@ const List = ({
   }: {
     isReadOnly: boolean;
     value: string;
-    lang: "shell" | "json";
+    lang: "sh" | "json";
   }) => JSX.Element;
 }) => {
   const { toasts } = ToastPrimitive.useToastManager();

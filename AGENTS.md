@@ -11,6 +11,19 @@ This is a Nx monorepo with Bun package manager.
 - `apps/docs/` - Documentation
 - `packages/` - All feature-driven modules, shared libs, schemas, UI package.
 
+## Commands
+
+All scripts must be ran with `bunx nx`:
+
+- Typescript project references can be automatically updated with `bunx nx sync`.
+- Most of the scripts are inferred with nx plugins. A few examples:
+  - typecheck a particular package: `bunx nx typecheck package_name`.
+  - test a package: `bunx nx test package_name`
+  - typecheck all afffected packages: `bunx nx affected -t typecheck`
+- Next.js app (builder, viewer) don't have a typecheck target. Run `bunx nx build <app>`.
+- To check format and lint, run: `bunx nx format-and-lint` (with `--fix` to run autofix)
+- Never run plain `bunx tsc`, use `bunx nx`
+
 ## Coding style
 
 - Write Effect code whenever possible. We use Effect V4 Beta. **IMPORTANT** Always read through `opensrc/repos/github.com/Effect-TS/effect-smol/LLMS.md` and useful linked docs before writing Effect code. Never guess at Effect patterns - check the guide first and follow it religiously.

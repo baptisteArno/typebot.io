@@ -11,13 +11,13 @@ export const SegmentsSelect = ({ segments, value, onChange }: Props) => {
   return (
     <Select.Root value={value} onValueChange={onChange}>
       <Select.Trigger />
-      <Select.Popup>
+      <Select.Content>
         {segments.map((segment) => (
           <Select.Item key={segment.id} value={segment.id}>
             {segment.name}
           </Select.Item>
         ))}
-      </Select.Popup>
+      </Select.Content>
     </Select.Root>
   );
 };

@@ -5,9 +5,9 @@
   "private": true,
   "exports": {
     "./core": {
-      "types": "./src/core/Spaces.ts",
-      "import": "./src/core/Spaces.ts",
-      "default": "./src/core/Spaces.ts"
+      "types": "./src/core/Space.ts",
+      "import": "./src/core/Space.ts",
+      "default": "./src/core/Space.ts"
     },
     "./orpc/router": {
       "types": "./src/orpc/router.ts",
@@ -30,5 +30,18 @@
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/ui": "workspace:*",
     "@tanstack/react-form": "^1.28.3"
+  },
+  "nx": {
+    "targets": {
+      "test": {
+        "executor": "@nx/vitest:test",
+        "outputs": [
+          "{options.reportsDirectory}"
+        ],
+        "options": {
+          "reportsDirectory": "../../coverage/packages/spaces"
+        }
+      }
+    }
   }
 }

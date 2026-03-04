@@ -55,11 +55,14 @@
     "@nx/js": "22.5.2",
     "@nx/next": "22.5.2",
     "@nx/vite": "22.5.2",
+    "@nx/vitest": "22.5.2",
     "@nx/web": "22.5.2",
     "@swc-node/register": "~1.11.1",
     "@swc/core": "~1.15.13",
     "@swc/helpers": "~0.5.19",
     "@tolgee/cli": "^2.16.1",
+    "@types/node": "^24.10.13",
+    "@vitest/coverage-v8": "^4.0.18",
     "effect-solutions": "^0.4.13",
     "esbuild": "^0.27.3",
     "husky": "^9.1.7",
@@ -67,7 +70,10 @@
     "nx": "22.5.2",
     "rimraf": "^6.1.3",
     "sherif": "^1.10.0",
-    "typescript": "^5.9.3"
+    "tslib": "^2.3.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.0.0",
+    "vitest": "^4.0.18"
   },
   "packageManager": "bun@1.3.9",
   "engines": {

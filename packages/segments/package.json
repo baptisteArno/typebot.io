@@ -35,5 +35,18 @@
   "devDependencies": {
     "vitest": "^4.0.18",
     "@effect/vitest": "^0.27.0"
+  },
+  "nx": {
+    "targets": {
+      "test": {
+        "executor": "@nx/vitest:test",
+        "outputs": [
+          "{options.reportsDirectory}"
+        ],
+        "options": {
+          "reportsDirectory": "../../coverage/packages/segments"
+        }
+      }
+    }
   }
 }

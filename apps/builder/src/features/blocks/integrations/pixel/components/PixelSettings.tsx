@@ -201,7 +201,7 @@ const ParamItem = ({ item, eventType, onItemChange }: ParamItemProps) => {
       )}
       {currentObject?.type === "code" ? (
         <CodeEditor
-          lang={"javascript"}
+          lang={"js"}
           defaultValue={item.value}
           onChange={updateValue}
         />

@@ -469,14 +469,18 @@ const PropertiesPanel = ({
             items={WIDTH_OPTIONS}
             onValueChange={(value) => onUpdate({ width: value })}
           >
-            <Select.Trigger />
-            <Select.Popup>
-              {WIDTH_OPTIONS.map((item) => (
-                <Select.Item key={item.value} value={item.value}>
-                  {item.label}
-                </Select.Item>
-              ))}
-            </Select.Popup>
+            <Select.Trigger>
+              <Select.Value />
+            </Select.Trigger>
+            <Select.Content>
+              <Select.Group>
+                {WIDTH_OPTIONS.map((item) => (
+                  <Select.Item key={item.value} value={item.value}>
+                    {item.label}
+                  </Select.Item>
+                ))}
+              </Select.Group>
+            </Select.Content>
           </Select.Root>
         </div>
 
@@ -569,14 +573,18 @@ const LivePreviewModal = ({
                       value: option,
                     }))}
                   >
-                    <Select.Trigger />
-                    <Select.Popup>
-                      {element.options?.map((option) => (
-                        <Select.Item key={option} value={option}>
-                          {option}
-                        </Select.Item>
-                      ))}
-                    </Select.Popup>
+                    <Select.Trigger>
+                      <Select.Value />
+                    </Select.Trigger>
+                    <Select.Content>
+                      <Select.Group>
+                        {element.options?.map((option) => (
+                          <Select.Item key={option} value={option}>
+                            {option}
+                          </Select.Item>
+                        ))}
+                      </Select.Group>
+                    </Select.Content>
                   </Select.Root>
                 ) : element.type === "radio" ? (
                   <div className="space-y-2">

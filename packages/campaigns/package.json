@@ -28,5 +28,18 @@
   "devDependencies": {
     "@effect/vitest": "^0.27.0",
     "vitest": "^4.0.18"
+  },
+  "nx": {
+    "targets": {
+      "test": {
+        "executor": "@nx/vitest:test",
+        "outputs": [
+          "{options.reportsDirectory}"
+        ],
+        "options": {
+          "reportsDirectory": "../../coverage/packages/campaigns"
+        }
+      }
+    }
   }
 }

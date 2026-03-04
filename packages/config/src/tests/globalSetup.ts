@@ -2,7 +2,6 @@ import { execFile } from "node:child_process";
 import { access } from "node:fs/promises";
 import { promisify } from "node:util";
 import { PostgreSqlContainer } from "@testcontainers/postgresql";
-import "vitest";
 import type { TestProject } from "vitest/node";
 
 declare module "vitest" {

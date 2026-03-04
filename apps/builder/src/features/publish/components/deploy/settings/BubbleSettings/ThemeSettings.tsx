@@ -49,7 +49,6 @@ export const ThemeSettings = ({
           <div className="flex items-center gap-2 justify-between">
             <p>Placement</p>
             <BasicSelect
-              size="sm"
               value={theme?.placement}
               defaultValue="right"
               items={[

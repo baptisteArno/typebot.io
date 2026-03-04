@@ -221,7 +221,6 @@ export const ResultsTable = ({
           userMode={currentUserMode}
         />
         <TimeFilterSelect
-          size="sm"
           timeFilter={timeFilter}
           onTimeFilterChange={onTimeFilterChange}
         />

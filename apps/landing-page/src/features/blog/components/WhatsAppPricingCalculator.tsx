@@ -65,14 +65,18 @@ export const WhatsAppPricingCalculator = () => {
           value={selectedCountry}
           onValueChange={setSelectedCountry}
         >
-          <Select.Trigger />
-          <Select.Popup>
-            {countries.map((country) => (
-              <Select.Item key={country.value} value={country.value}>
-                {country.label}
-              </Select.Item>
-            ))}
-          </Select.Popup>
+          <Select.Trigger>
+            <Select.Value />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Group>
+              {countries.map((country) => (
+                <Select.Item key={country.value} value={country.value}>
+                  {country.label}
+                </Select.Item>
+              ))}
+            </Select.Group>
+          </Select.Content>
         </Select.Root>
       </Field.Root>
       <Field.Root>
@@ -82,14 +86,18 @@ export const WhatsAppPricingCalculator = () => {
           onValueChange={setSelectedMessageType}
           value={selectedMessageType}
         >
-          <Select.Trigger />
-          <Select.Popup>
-            {messageTypes.map((type) => (
-              <Select.Item key={type.value} value={type.value}>
-                {type.label}
-              </Select.Item>
-            ))}
-          </Select.Popup>
+          <Select.Trigger>
+            <Select.Value />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Group>
+              {messageTypes.map((type) => (
+                <Select.Item key={type.value} value={type.value}>
+                  {type.label}
+                </Select.Item>
+              ))}
+            </Select.Group>
+          </Select.Content>
         </Select.Root>
       </Field.Root>
 

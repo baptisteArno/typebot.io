@@ -365,7 +365,7 @@ export const ZodFieldLayout = ({
             )}
             <CodeEditor
               defaultValue={data ?? layout?.defaultValue}
-              lang={layout.lang ?? "javascript"}
+              lang={layout.lang ?? "js"}
               placeholder={layout?.placeholder}
               withVariableButton={layout?.withVariableButton}
               onChange={onDataChange}

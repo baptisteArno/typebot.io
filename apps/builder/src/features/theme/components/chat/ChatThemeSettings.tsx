@@ -202,7 +202,6 @@ export const ChatThemeSettings = ({
           <Field.Label>Layout:</Field.Label>
           <div className="flex items-center gap-2">
             <BasicSelect
-              size="sm"
               value={chatTheme?.buttonsInput?.layout}
               defaultValue={defaultButtonsInputLayout}
               onChange={updateButtonsInputLayout}

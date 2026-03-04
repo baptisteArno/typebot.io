@@ -44,7 +44,6 @@ export const ButtonThemeSettings = ({ buttonTheme, onChange }: Props) => {
         <div className="flex items-center gap-2 justify-between">
           <p>Size</p>
           <BasicSelect
-            size="sm"
             items={[
               {
                 value: "medium",

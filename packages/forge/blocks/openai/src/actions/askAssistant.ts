@@ -54,7 +54,7 @@ export const askAssistant = createAction({
               layout: {
                 inputType: "code",
                 label: "Code",
-                lang: "javascript",
+                lang: "js",
                 moreInfoTooltip:
                   "A javascript code snippet that can use the defined parameters. It should return a value.",
                 withVariableButton: false,

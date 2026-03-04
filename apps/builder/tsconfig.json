@@ -33,7 +33,8 @@
     "src/**/*.tsx",
     ".next/types/**/*.ts",
     "../../packages/auth/src/next-auth.d.ts",
-    "src/components/ImageUploadContent/emoji/emojiList.json"
+    "src/components/ImageUploadContent/emoji/emojiList.json",
+    "src/i18n/*.json"
   ],
   "exclude": [
     "out-tsc",

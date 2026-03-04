@@ -6,8 +6,8 @@ import { PrismaService } from "@typebot.io/prisma/effect";
 import { Effect, Layer, Schema } from "effect";
 import {
   Campaign,
-  type CampaignCreateInput,
   type CampaignUpdateInput,
+  type WhatsAppCampaignInput,
 } from "../core/Campaign";
 import { NotFoundError } from "../core/CampaignsErrors";
 import { CampaignsRepository } from "../core/CampaignsRepository";
@@ -52,7 +52,7 @@ export const PrismaCampaignsRepository = Layer.effect(
 
     const create = Effect.fn("PrismaCampaignsRepository.create")(function* (
       typebotId: TypebotId,
-      input: CampaignCreateInput,
+      input: WhatsAppCampaignInput,
     ) {
       const campaign = yield* prisma.campaign
         .create({
@@ -90,21 +90,17 @@ export const PrismaCampaignsRepository = Layer.effect(
       campaignId: CampaignId,
       input: CampaignUpdateInput,
     ) {
-      const found = yield* prisma.campaign
+      const campaign = yield* prisma.campaign
         .findFirst({
           where: { id: campaignId, typebotId },
           include: { whatsAppConfig: true },
         })
-        .pipe(
-          Effect.orDie,
-          Effect.andThen((c) => [c, c?.whatsAppConfig[0]] as const),
-        );
-      const [campaign, existingConfig] = found;
+        .pipe(Effect.orDie);
 
       if (!campaign) return yield* new NotFoundError();
 
       if (input.templateId !== undefined) {
-        if (existingConfig) {
+        if (campaign.whatsAppConfig) {
           yield* prisma.whatsAppCampaignConfig
             .update({
               where: { campaignId },

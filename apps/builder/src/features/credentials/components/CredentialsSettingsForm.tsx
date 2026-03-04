@@ -84,7 +84,6 @@ export const CredentialsSettingsForm = () => {
         <div className="flex items-center gap-2">
           <h2>{t("credentials")}</h2>
           <BasicSelect
-            size="sm"
             items={[
               { label: "User", value: "user" },
               { label: "Workspace", value: "workspace" },

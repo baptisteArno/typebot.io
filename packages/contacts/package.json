@@ -19,5 +19,18 @@
     "@typebot.io/user": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
     "effect": "^3.19.18"
+  },
+  "nx": {
+    "targets": {
+      "test": {
+        "executor": "@nx/vitest:test",
+        "outputs": [
+          "{options.reportsDirectory}"
+        ],
+        "options": {
+          "reportsDirectory": "../../coverage/packages/contacts"
+        }
+      }
+    }
   }
 }

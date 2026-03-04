@@ -6,12 +6,15 @@ import {
 } from "@typebot.io/config/tests/seedDatabaseForTest";
 import { type CampaignId, Name } from "@typebot.io/domain-primitives/schemas";
 import { PrismaTypebotAuthorization } from "@typebot.io/typebot/infrastructure/PrismaTypebotAuthorization";
-import { Effect, Layer } from "effect";
+import { Effect, Layer, Schema } from "effect";
 import { describe } from "vitest";
 import { Campaigns } from "../core/Campaigns";
 import { PrismaCampaignsAuthorization } from "../infrastructure/PrismaCampaignsAuthorization";
 import { PrismaCampaignsRepository } from "../infrastructure/PrismaCampaignsRepository";
-import { handleCreateCampaign } from "./handleCreateCampaign";
+import {
+  CreateCampaignInputStandardSchema,
+  handleCreateCampaign,
+} from "./handleCreateCampaign";
 import { handleDeleteCampaign } from "./handleDeleteCampaign";
 import { handleGetCampaign } from "./handleGetCampaign";
 import { handleListCampaigns } from "./handleListCampaigns";
@@ -40,11 +43,13 @@ describe.skip("skipped suite", () => {
         "should create campaign with valid data",
         Effect.fn(function* () {
           const campaign = yield* handleCreateCampaign({
-            input: {
+            input: Schema.decodeSync(CreateCampaignInputStandardSchema)({
               typebotId: proTypebotId,
               channel: "WHATSAPP",
               name: Name.make("Test Campaign"),
-            },
+              templateId: "template-id",
+              credentialsId: "credentials-id",
+            }),
             context: {
               user: {
                 id: userId,

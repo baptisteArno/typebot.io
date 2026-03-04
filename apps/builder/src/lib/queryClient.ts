@@ -1,7 +1,10 @@
 import { createORPCClient, ORPCError } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
 import type { RouterClient } from "@orpc/server";
-import { createTanstackQueryUtils } from "@orpc/tanstack-query";
+import {
+  createTanstackQueryUtils,
+  type RouterUtils,
+} from "@orpc/tanstack-query";
 import {
   type Mutation,
   MutationCache,
@@ -72,4 +75,5 @@ const link = new RPCLink({
 
 export const orpcClient: RouterClient<AppRouter> = createORPCClient(link);
 
-export const orpc = createTanstackQueryUtils(orpcClient);
+export const orpc: RouterUtils<RouterClient<AppRouter>> =
+  createTanstackQueryUtils(orpcClient);

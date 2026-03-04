@@ -5,8 +5,8 @@ import type {
 import { Context, type Effect } from "effect";
 import type {
   Campaign,
-  CampaignCreateInput,
   CampaignUpdateInput,
+  WhatsAppCampaignInput,
 } from "./Campaign";
 import type { NotFoundError } from "./CampaignsErrors";
 
@@ -24,7 +24,7 @@ export class CampaignsRepository extends Context.Tag(
     }>;
     readonly create: (
       typebotId: TypebotId,
-      input: CampaignCreateInput,
+      input: WhatsAppCampaignInput,
     ) => Effect.Effect<Campaign>;
     readonly getById: (
       typebotId: TypebotId,
