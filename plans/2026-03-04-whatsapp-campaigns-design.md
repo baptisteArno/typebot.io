@@ -211,18 +211,8 @@ Workflow: `ExecuteWhatsAppCampaignRun`
 
 ## Testing Plan
 
-- Unit tests:
-  - recipient scope resolution (segment/all contacts with space-aware logic),
-  - template mapping resolution,
-  - status transitions and counter aggregation,
-  - cancellation checkpoint behavior.
-- Integration tests:
-  - run creation + workflow trigger,
-  - multi-batch processing,
-  - cancellation mid-run,
-  - idempotent retry behavior.
-- API tests:
-  - authorization and validation for run APIs.
+- API integration test (See api.test.ts existing files)
+- Manual e2e test with agent-browser
 
 ## Rollout
 
