@@ -14,6 +14,7 @@ import { isNotDefined, byId } from '@typebot.io/lib/utils'
 import { createResultIfNotExist } from '../../../queries/createResultIfNotExist'
 import prisma from '@typebot.io/lib/prisma'
 import { defaultTypebotLinkOptions } from '@typebot.io/schemas/features/blocks/logic/typebotLink/constants'
+import { findLatestTypebotHistory } from '../../../queries/findLatestTypebotHistory'
 
 export const executeTypebotLink = async (
   state: SessionState,
@@ -229,16 +230,22 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
       select: {
         version: true,
         id: true,
+        name: true,
+        workspaceId: true,
         edges: true,
         groups: true,
         variables: true,
         events: true,
+        workspace: {
+          select: { name: true },
+        },
       },
     })
     if (!typebot) return null
     return typebotInSessionStateSchema.parse({
       ...typebot,
       typebotId: typebot.id,
+      workspaceName: typebot.workspace.name,
     })
   }
   const typebot = await prisma.publicTypebot.findUnique({
@@ -250,13 +257,27 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
       groups: true,
       variables: true,
       events: true,
+      typebot: {
+        select: {
+          name: true,
+          workspaceId: true,
+          workspace: {
+            select: { name: true },
+          },
+        },
+      },
     },
   })
   if (!typebot) return null
+  const typebotHistoryId = await findLatestTypebotHistory({ typebotId })
   return typebotInSessionStateSchema.parse({
     ...typebot,
     id: typebotId,
     typebotId,
+    name: typebot.typebot.name,
+    workspaceId: typebot.typebot.workspaceId,
+    workspaceName: typebot.typebot.workspace.name,
+    typebotHistoryId,
   })
 }
 
