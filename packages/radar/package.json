@@ -19,6 +19,5 @@
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/runtime-session-store": "workspace:*",
     "@typebot.io/settings": "workspace:*"
-  },
-  "scripts": {}
+  }
 }

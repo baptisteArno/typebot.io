@@ -16,6 +16,5 @@
   },
   "dependencies": {
     "zod": "^4.3.5"
-  },
-  "scripts": {}
+  }
 }

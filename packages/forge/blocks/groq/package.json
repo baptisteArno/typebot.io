@@ -30,6 +30,5 @@
   },
   "dependencies": {
     "ky": "1.2.4"
-  },
-  "scripts": {}
+  }
 }

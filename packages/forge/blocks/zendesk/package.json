@@ -33,6 +33,5 @@
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.2",
     "@types/react": "^19.2.14"
-  },
-  "scripts": {}
+  }
 }

@@ -27,6 +27,5 @@
   },
   "devDependencies": {
     "@types/node": "^24.10.13"
-  },
-  "scripts": {}
+  }
 }

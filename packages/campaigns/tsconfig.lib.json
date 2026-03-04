@@ -24,7 +24,16 @@
       "path": "../typebot/tsconfig.lib.json"
     },
     {
+      "path": "../workspaces/tsconfig.lib.json"
+    },
+    {
       "path": "../prisma/tsconfig.lib.json"
+    },
+    {
+      "path": "../credentials/tsconfig.lib.json"
+    },
+    {
+      "path": "../whatsapp/tsconfig.lib.json"
     },
     {
       "path": "../config/tsconfig.lib.json"

@@ -32,6 +32,5 @@
     "@typebot.io/blink-block": "workspace:*",
     "@typebot.io/gmail-block": "workspace:*",
     "zod": "^4.3.5"
-  },
-  "scripts": {}
+  }
 }

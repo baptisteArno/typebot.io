@@ -1,8 +1,10 @@
-import { TypebotId } from "@typebot.io/domain-primitives/schemas";
+import {
+  TypebotId,
+  UserId,
+  WorkspaceId,
+} from "@typebot.io/domain-primitives/schemas";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import { DbNull, Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
-import { UserId } from "@typebot.io/user/schemas";
-import { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect } from "effect";
 
 export const userId = UserId.make("seedUserId");

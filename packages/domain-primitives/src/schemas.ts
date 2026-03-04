@@ -56,6 +56,12 @@ export const CampaignId = Schema.String.pipe(
 );
 export type CampaignId = typeof CampaignId.Type;
 
+export const CampaignRunId = Schema.String.pipe(
+  Schema.nonEmptyString(),
+  Schema.brand("CampaignRunId"),
+);
+export type CampaignRunId = typeof CampaignRunId.Type;
+
 export const TypebotId = Schema.String.pipe(
   Schema.nonEmptyString(),
   Schema.brand("TypebotId"),
@@ -73,3 +79,15 @@ export const CredentialsId = Schema.String.pipe(
   Schema.brand("CredentialsId"),
 );
 export type CredentialsId = typeof CredentialsId.Type;
+
+export const UserId = Schema.String.pipe(
+  Schema.nonEmptyString(),
+  Schema.brand("UserId"),
+);
+export type UserId = typeof UserId.Type;
+
+export const WorkspaceId = Schema.String.pipe(
+  Schema.nonEmptyString(),
+  Schema.brand("WorkspaceId"),
+);
+export type WorkspaceId = typeof WorkspaceId.Type;

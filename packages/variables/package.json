@@ -18,6 +18,5 @@
     "@typebot.io/env": "workspace:*",
     "@typebot.io/runtime-session-store": "workspace:*",
     "zod": "^4.3.5"
-  },
-  "scripts": {}
+  }
 }

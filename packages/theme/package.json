@@ -21,6 +21,5 @@
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/ui": "workspace:*",
     "zod": "^4.3.5"
-  },
-  "scripts": {}
+  }
 }

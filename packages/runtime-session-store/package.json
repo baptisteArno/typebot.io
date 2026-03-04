@@ -13,6 +13,5 @@
   },
   "dependencies": {
     "isolated-vm": "^6.0.2"
-  },
-  "scripts": {}
+  }
 }

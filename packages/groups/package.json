@@ -15,6 +15,5 @@
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "zod": "^4.3.5"
-  },
-  "scripts": {}
+  }
 }

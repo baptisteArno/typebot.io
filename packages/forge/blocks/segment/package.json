@@ -27,6 +27,5 @@
   },
   "dependencies": {
     "@segment/analytics-node": "^2.1.2"
-  },
-  "scripts": {}
+  }
 }

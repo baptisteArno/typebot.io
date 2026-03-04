@@ -31,6 +31,5 @@
   "devDependencies": {
     "@types/nodemailer": "^7.0.1",
     "@types/react": "^19.2.14"
-  },
-  "scripts": {}
+  }
 }

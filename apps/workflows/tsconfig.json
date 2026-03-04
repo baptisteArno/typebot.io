@@ -1,25 +1,10 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"],
+  "files": [],
+  "include": [],
   "references": [
     {
-      "path": "../../packages/typebot"
-    },
-    {
-      "path": "../../packages/user"
-    },
-    {
-      "path": "../../packages/results"
-    },
-    {
-      "path": "../../packages/prisma"
-    },
-    {
-      "path": "../../packages/lib"
-    },
-    {
-      "path": "../../packages/config"
+      "path": "./tsconfig.app.json"
     }
   ]
 }

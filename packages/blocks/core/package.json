@@ -22,6 +22,5 @@
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/blocks-integrations": "workspace:*",
     "zod": "^4.3.5"
-  },
-  "scripts": {}
+  }
 }

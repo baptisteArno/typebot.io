@@ -26,6 +26,5 @@
     "@typebot.io/ai": "workspace:*",
     "@ai-sdk/togetherai": "^0.2.16",
     "@types/react": "^19.2.14"
-  },
-  "scripts": {}
+  }
 }

@@ -28,6 +28,5 @@
   },
   "devDependencies": {
     "@types/react": "^19.2.14"
-  },
-  "scripts": {}
+  }
 }
