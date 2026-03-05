@@ -273,7 +273,8 @@ export const BlocksSideBar = () => {
             {allBlocks
               .filter((type) =>
                 typebot?.settings?.general?.type === 'TOOL'
-                  ? type === IntegrationBlockType.WEBHOOK
+                  ? type === IntegrationBlockType.WEBHOOK ||
+                    type === IntegrationBlockType.GOOGLE_SHEETS
                   : true
               )
               .map((type) => (
