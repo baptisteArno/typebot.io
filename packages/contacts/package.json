@@ -5,9 +5,9 @@
   "private": true,
   "exports": {
     "./orpc/router": {
-      "types": "./src/orpc/router.ts",
-      "import": "./src/orpc/router.ts",
-      "default": "./src/orpc/router.ts"
+      "types": "./src/drivers/orpc/router.ts",
+      "import": "./src/drivers/orpc/router.ts",
+      "default": "./src/drivers/orpc/router.ts"
     },
     "./package.json": "./package.json"
   },

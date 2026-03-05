@@ -4,9 +4,9 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./orpc/router": "./src/orpc/router.ts",
+    "./orpc/router": "./src/drivers/orpc/router.ts",
     "./core": "./src/core/Campaign.ts",
-    "./react/*": "./src/react/*.tsx",
+    "./react/*": "./src/drivers/react/*.tsx",
     "./workflows/*": "./src/workflows/*.ts"
   },
   "dependencies": {

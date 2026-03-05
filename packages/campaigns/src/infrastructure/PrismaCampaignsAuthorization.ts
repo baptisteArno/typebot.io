@@ -2,7 +2,7 @@ import type { TypebotId } from "@typebot.io/domain-primitives/schemas";
 import { TypebotAuthorization } from "@typebot.io/typebot/core/TypebotAuthorization";
 import type { UserId } from "@typebot.io/user/schemas";
 import { Effect, Layer } from "effect";
-import { CampaignsAuthorization } from "../core/CampaignsAuthorization";
+import { CampaignsAuthorization } from "../application/CampaignsAuthorization";
 
 export const PrismaCampaignsAuthorization = Layer.effect(
   CampaignsAuthorization,

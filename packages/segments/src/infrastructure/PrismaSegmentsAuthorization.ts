@@ -2,7 +2,7 @@ import type { UserId } from "@typebot.io/user/schemas";
 import { WorkspaceAuthorization } from "@typebot.io/workspaces/core/WorkspaceAuthorization";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Layer } from "effect";
-import { SegmentsAuthorization } from "../core/SegmentsAuthorization";
+import { SegmentsAuthorization } from "../application/SegmentsAuthorization";
 
 export const PrismaSegmentsAuthorization = Layer.effect(
   SegmentsAuthorization,

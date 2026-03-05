@@ -4,16 +4,16 @@ import type {
 } from "@typebot.io/domain-primitives/schemas";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import { Effect, Layer, Schema } from "effect";
+import { CampaignsRepo } from "../application/CampaignsRepo";
 import {
   Campaign,
   type CampaignUpdateInput,
   type WhatsAppCampaignInput,
 } from "../core/Campaign";
 import { NotFoundError } from "../core/CampaignsErrors";
-import { CampaignsRepository } from "../core/CampaignsRepository";
 
 export const PrismaCampaignsRepository = Layer.effect(
-  CampaignsRepository,
+  CampaignsRepo,
   Effect.gen(function* () {
     const prisma = yield* PrismaService;
 
@@ -156,7 +156,7 @@ export const PrismaCampaignsRepository = Layer.effect(
       return undefined;
     });
 
-    return CampaignsRepository.of({
+    return CampaignsRepo.of({
       listByTypebotId,
       create,
       getById,

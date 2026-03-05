@@ -3,16 +3,16 @@ import { PrismaService } from "@typebot.io/prisma/effect";
 import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Layer, Schema } from "effect";
+import { ContactsRepo } from "../application/ContactsRepo";
 import {
   Contact,
   type ContactCreateInput,
   type ContactId,
 } from "../core/Contact";
 import { AlreadyExistsError, NotFoundError } from "../core/ContactsErrors";
-import { ContactsRepository } from "../core/ContactsRepository";
 
 export const PrismaContactsRepository = Layer.effect(
-  ContactsRepository,
+  ContactsRepo,
   Effect.gen(function* () {
     const prisma = yield* PrismaService;
 
@@ -97,7 +97,7 @@ export const PrismaContactsRepository = Layer.effect(
       return yield* Schema.decodeUnknown(Contact)(contact).pipe(Effect.orDie);
     });
 
-    return ContactsRepository.of({
+    return ContactsRepo.of({
       listByWorkspaceAndSpace,
       create,
       getById,

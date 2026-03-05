@@ -10,14 +10,14 @@
       "default": "./src/core/Segment.ts"
     },
     "./orpc/router": {
-      "types": "./src/orpc/router.ts",
-      "import": "./src/orpc/router.ts",
-      "default": "./src/orpc/router.ts"
+      "types": "./src/drivers/orpc/router.ts",
+      "import": "./src/drivers/orpc/router.ts",
+      "default": "./src/drivers/orpc/router.ts"
     },
     "./react/*": {
-      "types": "./src/react/*.tsx",
-      "import": "./src/react/*.tsx",
-      "default": "./src/react/*.tsx"
+      "types": "./src/drivers/react/*.tsx",
+      "import": "./src/drivers/react/*.tsx",
+      "default": "./src/drivers/react/*.tsx"
     },
     "./package.json": "./package.json"
   },

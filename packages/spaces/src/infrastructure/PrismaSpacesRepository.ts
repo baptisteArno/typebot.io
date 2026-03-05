@@ -3,13 +3,13 @@ import { PrismaService } from "@typebot.io/prisma/effect";
 import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Layer, Schema } from "effect";
+import { SpacesRepo } from "../application/SpacesRepo";
 import type { SpaceIcon } from "../core/Space";
 import { Space } from "../core/Space";
 import { AlreadyExistsError } from "../core/SpacesErrors";
-import { SpacesRepository } from "../core/SpacesRepository";
 
 export const PrismaSpacesRepository = Layer.effect(
-  SpacesRepository,
+  SpacesRepo,
   Effect.gen(function* () {
     const prisma = yield* PrismaService;
 
@@ -59,7 +59,7 @@ export const PrismaSpacesRepository = Layer.effect(
       return yield* Schema.decodeUnknown(Space)(space).pipe(Effect.orDie);
     });
 
-    return SpacesRepository.of({
+    return SpacesRepo.of({
       listByWorkspaceId,
       create,
     });

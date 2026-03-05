@@ -3,12 +3,12 @@ import { PrismaService } from "@typebot.io/prisma/effect";
 import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Layer, Schema } from "effect";
+import { SegmentsRepo } from "../application/SegmentsRepo";
 import { Segment } from "../core/Segment";
 import { AlreadyExistsError } from "../core/SegmentsErrors";
-import { SegmentsRepository } from "../core/SegmentsRepository";
 
 export const PrismaSegmentsRepository = Layer.effect(
-  SegmentsRepository,
+  SegmentsRepo,
   Effect.gen(function* () {
     const prisma = yield* PrismaService;
 
@@ -54,7 +54,7 @@ export const PrismaSegmentsRepository = Layer.effect(
       return yield* Schema.decodeUnknown(Segment)(segment).pipe(Effect.orDie);
     });
 
-    return SegmentsRepository.of({
+    return SegmentsRepo.of({
       listByWorkspaceAndSpace,
       create,
     });

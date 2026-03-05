@@ -6,7 +6,7 @@
     "outDir": "dist",
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
   },
-  "include": ["src/**/*.ts", "src/react/**/*.tsx"],
+  "include": ["src/**/*.ts", "src/drivers/react/**/*.tsx"],
   "references": [
     {
       "path": "../user/tsconfig.lib.json"

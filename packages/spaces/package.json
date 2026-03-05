@@ -10,7 +10,7 @@
       "default": "./src/core/Space.ts"
     },
     "./orpc/router": {
-      "types": "./src/orpc/router.ts",
+      "types": "./src/drivers/orpc/router.ts",
       "import": "./src/orpc/router.ts",
       "default": "./src/orpc/router.ts"
     },
