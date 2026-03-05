@@ -1,4 +1,4 @@
-import type { SegmentId } from "@typebot.io/domain-primitives/schemas";
+import type { SegmentId } from "@typebot.io/domain/shared-primitives";
 import { Select } from "@typebot.io/ui/components/Select";
 import type { Segment } from "../../core/Segment";
 

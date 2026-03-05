@@ -1,7 +1,7 @@
 import type {
   CampaignId,
   TypebotId,
-} from "@typebot.io/domain-primitives/schemas";
+} from "@typebot.io/domain/shared-primitives";
 import { Context, type Effect } from "effect";
 import type {
   Campaign,

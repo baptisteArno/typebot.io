@@ -12,6 +12,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
+    "@typebot.io/domain": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/user": "workspace:*",

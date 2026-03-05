@@ -2,7 +2,7 @@ import { PrismaService } from "@typebot.io/prisma/effect";
 import type { UserId } from "@typebot.io/user/schemas";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Layer } from "effect";
-import { WorkspaceAuthorization } from "../core/WorkspaceAuthorization";
+import { WorkspaceAuthorization } from "../application/WorkspaceAuthorization";
 
 export const PrismaWorkspaceAuthorization = Layer.effect(
   WorkspaceAuthorization,

@@ -1,5 +1,5 @@
-import type { TypebotId } from "@typebot.io/domain-primitives/schemas";
-import { TypebotAuthorization } from "@typebot.io/typebot/core/TypebotAuthorization";
+import type { TypebotId } from "@typebot.io/domain/shared-primitives";
+import { TypebotAuthorization } from "@typebot.io/typebot/application/TypebotAuthorization";
 import type { UserId } from "@typebot.io/user/schemas";
 import { Effect, Layer } from "effect";
 import { CampaignsAuthorization } from "../application/CampaignsAuthorization";

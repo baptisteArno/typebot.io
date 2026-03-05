@@ -117,6 +117,9 @@
       "path": "../../packages/segments"
     },
     {
+      "path": "../../packages/domain"
+    },
+    {
       "path": "../../packages/contacts"
     },
     {

@@ -1,4 +1,4 @@
-import type { Name, SpaceId } from "@typebot.io/domain-primitives/schemas";
+import type { Name, SpaceId } from "@typebot.io/domain/shared-primitives";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Context, type Effect } from "effect";
 import type { Segment } from "../core/Segment";

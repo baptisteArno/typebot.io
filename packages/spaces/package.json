@@ -25,7 +25,7 @@
     "@orpc/server": "^1.13.4",
     "effect": "^3.19.18",
     "@typebot.io/config": "workspace:*",
-    "@typebot.io/domain-primitives": "workspace:*",
+    "@typebot.io/domain": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/ui": "workspace:*",

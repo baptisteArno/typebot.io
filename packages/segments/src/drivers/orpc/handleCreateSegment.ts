@@ -1,5 +1,5 @@
 import { ORPCError } from "@orpc/server";
-import { SpaceId } from "@typebot.io/domain-primitives/schemas";
+import { SpaceId } from "@typebot.io/domain/shared-primitives";
 import { type User, UserId } from "@typebot.io/user/schemas";
 import { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Schema } from "effect";

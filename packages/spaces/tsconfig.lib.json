@@ -21,7 +21,7 @@
       "path": "../prisma/tsconfig.lib.json"
     },
     {
-      "path": "../domain-primitives/tsconfig.lib.json"
+      "path": "../domain/tsconfig.lib.json"
     },
     {
       "path": "../config/tsconfig.lib.json"

@@ -4,7 +4,7 @@ import {
   proTypebotId,
   userId,
 } from "@typebot.io/config/tests/seedDatabaseForTest";
-import { type CampaignId, Name } from "@typebot.io/domain-primitives/schemas";
+import { type CampaignId, Name } from "@typebot.io/domain/shared-primitives";
 import { PrismaTypebotAuthorization } from "@typebot.io/typebot/infrastructure/PrismaTypebotAuthorization";
 import { Effect, Layer, Schema } from "effect";
 import { describe } from "vitest";

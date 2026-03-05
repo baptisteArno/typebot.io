@@ -9,7 +9,7 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
-      "path": "../domain-primitives/tsconfig.lib.json"
+      "path": "../domain/tsconfig.lib.json"
     },
     {
       "path": "../prisma/tsconfig.lib.json"

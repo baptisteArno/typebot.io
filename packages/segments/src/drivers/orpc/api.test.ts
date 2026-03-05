@@ -4,8 +4,8 @@ import {
   proWorkspaceId,
   userId,
 } from "@typebot.io/config/tests/seedDatabaseForTest";
-import type { SegmentId } from "@typebot.io/domain-primitives/schemas";
-import { Name } from "@typebot.io/domain-primitives/schemas";
+import type { SegmentId } from "@typebot.io/domain/shared-primitives";
+import { Name } from "@typebot.io/domain/shared-primitives";
 import { PrismaWorkspaceAuthorization } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceAuthorization";
 import { Effect, Layer } from "effect";
 import { SegmentsUsecases } from "../../application/SegmentsUsecases";

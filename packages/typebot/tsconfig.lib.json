@@ -42,7 +42,7 @@
       "path": "../env/tsconfig.lib.json"
     },
     {
-      "path": "../domain-primitives/tsconfig.lib.json"
+      "path": "../domain/tsconfig.lib.json"
     },
     {
       "path": "../blocks/core/tsconfig.lib.json"

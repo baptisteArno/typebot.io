@@ -1,8 +1,8 @@
-import type { TypebotId } from "@typebot.io/domain-primitives/schemas";
+import type { TypebotId } from "@typebot.io/domain/shared-primitives";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import type { UserId } from "@typebot.io/user/schemas";
 import { Effect, Layer } from "effect";
-import { TypebotAuthorization } from "../core/TypebotAuthorization";
+import { TypebotAuthorization } from "../application/TypebotAuthorization";
 
 export const PrismaTypebotAuthorization = Layer.effect(
   TypebotAuthorization,

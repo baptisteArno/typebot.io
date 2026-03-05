@@ -1,7 +1,7 @@
 import type {
   CampaignId,
   TypebotId,
-} from "@typebot.io/domain-primitives/schemas";
+} from "@typebot.io/domain/shared-primitives";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import { Effect, Layer, Schema } from "effect";
 import { CampaignsRepo } from "../application/CampaignsRepo";

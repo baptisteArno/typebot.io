@@ -223,7 +223,7 @@
       "path": "./apps/workflows"
     },
     {
-      "path": "./packages/domain-primitives"
+      "path": "./packages/domain"
     },
     {
       "path": "./packages/contacts"

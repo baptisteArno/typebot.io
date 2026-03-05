@@ -9,7 +9,7 @@
   "include": ["src/**/*.ts", "src/drivers/react/**/*.tsx"],
   "references": [
     {
-      "path": "../domain-primitives/tsconfig.lib.json"
+      "path": "../domain/tsconfig.lib.json"
     },
     {
       "path": "../segments/tsconfig.lib.json"

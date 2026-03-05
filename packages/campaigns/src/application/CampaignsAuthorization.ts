@@ -1,4 +1,4 @@
-import type { TypebotId } from "@typebot.io/domain-primitives/schemas";
+import type { TypebotId } from "@typebot.io/domain/shared-primitives";
 import type { UserId } from "@typebot.io/user/schemas";
 import { Context, type Effect } from "effect";
 

@@ -4,7 +4,7 @@ import {
   proWorkspaceId,
   userId,
 } from "@typebot.io/config/tests/seedDatabaseForTest";
-import { Name } from "@typebot.io/domain-primitives/schemas";
+import { Name } from "@typebot.io/domain/shared-primitives";
 import { PrismaWorkspaceAuthorization } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceAuthorization";
 import { Effect, Layer } from "effect";
 import { SpacesUsecases } from "../../application/SpacesUsecases";

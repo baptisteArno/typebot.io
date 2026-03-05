@@ -15,6 +15,7 @@
     "@orpc/server": "^1.13.4",
     "@typebot.io/config": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
+    "@typebot.io/domain": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/segments": "workspace:*",
     "@typebot.io/typebot": "workspace:*",

@@ -1,4 +1,4 @@
-import type { Name, SpaceId } from "@typebot.io/domain-primitives/schemas";
+import type { Name, SpaceId } from "@typebot.io/domain/shared-primitives";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";

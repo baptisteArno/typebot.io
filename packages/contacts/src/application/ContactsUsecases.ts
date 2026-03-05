@@ -1,4 +1,4 @@
-import type { SpaceId } from "@typebot.io/domain-primitives/schemas";
+import type { SpaceId } from "@typebot.io/domain/shared-primitives";
 import type { UserId } from "@typebot.io/user/schemas";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Context, Effect, Layer } from "effect";

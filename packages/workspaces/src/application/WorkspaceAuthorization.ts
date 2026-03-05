@@ -1,6 +1,6 @@
 import type { UserId } from "@typebot.io/user/schemas";
-import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Context, type Effect } from "effect";
+import type { WorkspaceId } from "../schemas";
 
 export class WorkspaceAuthorization extends Context.Tag(
   "@typebot.io/WorkspaceAuthorization",
