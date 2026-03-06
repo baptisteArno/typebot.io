@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import type { Space } from "@typebot.io/spaces/domain";
 import { Alert } from "@typebot.io/ui/components/Alert";
+import { AlertDialog } from "@typebot.io/ui/components/AlertDialog";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
@@ -13,9 +14,8 @@ import { MoreVerticalIcon } from "@typebot.io/ui/icons/MoreVerticalIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
-import React, { memo } from "react";
+import React, { memo, useRef } from "react";
 import { useDebounce } from "use-debounce";
-import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 import {
@@ -48,6 +48,7 @@ const TypebotButton = ({
   const [draggedTypebotDebounced] = useDebounce(draggedTypebot, 200);
   const deleteDialogControls = useOpenControls();
   const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const deleteCancelRef = useRef<HTMLButtonElement | null>(null);
 
   useDragDistance({
     ref: buttonRef,
@@ -236,27 +237,49 @@ const TypebotButton = ({
         </div>
       </div>
       {!isReadOnly && (
-        <ConfirmDialog
-          confirmButtonLabel={t("delete")}
-          onConfirm={handleDeleteTypebotClick}
+        <AlertDialog.Root
           isOpen={deleteDialogControls.isOpen}
           onClose={deleteDialogControls.onClose}
         >
-          <p>
-            <T
-              keyName="folders.typebotButton.deleteConfirmationMessage"
-              params={{
-                strong: <strong>{typebot.name}</strong>,
-              }}
-            />
-          </p>
-          <Alert.Root variant="warning">
-            <TriangleAlertIcon />
-            <Alert.Description>
-              {t("folders.typebotButton.deleteConfirmationMessageWarning")}
-            </Alert.Description>
-          </Alert.Root>
-        </ConfirmDialog>
+          <AlertDialog.Content initialFocus={deleteCancelRef}>
+            <AlertDialog.Header>
+              <AlertDialog.Title>
+                {t("confirmModal.defaultTitle")}
+              </AlertDialog.Title>
+              <AlertDialog.Description className="text-foreground">
+                <div className="flex flex-col gap-4">
+                  <p>
+                    <T
+                      keyName="folders.typebotButton.deleteConfirmationMessage"
+                      params={{
+                        strong: <strong>{typebot.name}</strong>,
+                      }}
+                    />
+                  </p>
+                  <Alert.Root variant="warning">
+                    <TriangleAlertIcon />
+                    <Alert.Description>
+                      {t(
+                        "folders.typebotButton.deleteConfirmationMessageWarning",
+                      )}
+                    </Alert.Description>
+                  </Alert.Root>
+                </div>
+              </AlertDialog.Description>
+            </AlertDialog.Header>
+            <AlertDialog.Footer>
+              <AlertDialog.Cancel ref={deleteCancelRef}>
+                {t("cancel")}
+              </AlertDialog.Cancel>
+              <AlertDialog.Action
+                variant="destructive"
+                onClick={handleDeleteTypebotClick}
+              >
+                {t("delete")}
+              </AlertDialog.Action>
+            </AlertDialog.Footer>
+          </AlertDialog.Content>
+        </AlertDialog.Root>
       )}
     </>
   );

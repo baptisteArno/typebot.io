@@ -16,11 +16,11 @@
     "@typebot.io/env": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/user": "workspace:*",
-    "effect": "^3.19.18",
+    "effect": "4.0.0-beta.30",
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@effect/vitest": "^0.27.0",
+    "@effect/vitest": "4.0.0-beta.30",
     "vitest": "^4.0.18"
   }
 }

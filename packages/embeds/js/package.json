@@ -42,7 +42,7 @@
     "@types/dompurify": "^3.2.0",
     "dompurify": "^3.2.4",
     "esbuild-plugin-solid": "^0.6.0",
-    "ky": "1.2.4",
+    "ky": "^1.2.4",
     "marked": "^9.0.3",
     "partysocket": "^1.0.2",
     "postcss": "^8.5.6",
@@ -79,7 +79,8 @@
         },
         "configurations": {
           "development": {
-            "minify": false
+            "minify": false,
+            "deleteOutputPath": false
           },
           "production": {
             "minify": true

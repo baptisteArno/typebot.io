@@ -11,10 +11,7 @@ export const WhatsAppCampaignInputSchema = Schema.Struct({
   templateId: TemplateId,
   credentialsId: CredentialsId,
   templateAttributesMapping: Schema.optional(
-    Schema.Record({
-      key: Schema.String,
-      value: Schema.String.pipe(Schema.nonEmptyString()),
-    }),
+    Schema.Record(Schema.String, Schema.NonEmptyString),
   ),
 });
 export type WhatsAppCampaignInput = typeof WhatsAppCampaignInputSchema.Type;

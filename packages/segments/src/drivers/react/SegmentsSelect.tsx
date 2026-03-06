@@ -9,7 +9,12 @@ type Props = {
 };
 export const SegmentsSelect = ({ segments, value, onChange }: Props) => {
   return (
-    <Select.Root value={value} onValueChange={onChange}>
+    <Select.Root
+      value={value}
+      onValueChange={(segmentId) => {
+        if (segmentId !== null) onChange(segmentId);
+      }}
+    >
       <Select.Trigger />
       <Select.Content>
         {segments.map((segment) => (

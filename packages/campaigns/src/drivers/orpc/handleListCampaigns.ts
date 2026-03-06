@@ -5,9 +5,8 @@ import { Effect, Schema } from "effect";
 import { CampaignsUsecases } from "../../application/CampaignsUsecases";
 
 const MAX_LIMIT = 500;
-const LimitSchema = Schema.Number.pipe(
-  Schema.int(),
-  Schema.between(1, MAX_LIMIT),
+const LimitSchema = Schema.Int.pipe(
+  Schema.check(Schema.isBetween({ minimum: 1, maximum: MAX_LIMIT })),
 );
 
 const ListCampaignsInputSchema = Schema.Struct({
@@ -16,7 +15,7 @@ const ListCampaignsInputSchema = Schema.Struct({
   cursor: Schema.optional(Schema.String),
 });
 export const listCampaignsInputSchema = ListCampaignsInputSchema.pipe(
-  Schema.standardSchemaV1,
+  Schema.toStandardSchemaV1,
 );
 
 export const handleListCampaigns = Effect.fn("handleListCampaigns")(
@@ -28,10 +27,11 @@ export const handleListCampaigns = Effect.fn("handleListCampaigns")(
     context: { user: Pick<User, "id"> };
   }) {
     const campaignsUsecases = yield* CampaignsUsecases;
+    const userId = Schema.decodeSync(UserId)(user.id);
     return yield* campaignsUsecases.list(
       {
         typebotId,
-        userId: UserId.make(user.id),
+        userId,
       },
       { limit: limit ?? 50, cursor },
     );
@@ -44,7 +44,7 @@ export const handleListCampaigns = Effect.fn("handleListCampaigns")(
         }),
       ),
   }),
-  Effect.catchAllDefect((defect) =>
+  Effect.catchDefect((defect) =>
     Effect.fail(
       new ORPCError("INTERNAL_SERVER_ERROR", {
         message: "Failed to list campaigns",

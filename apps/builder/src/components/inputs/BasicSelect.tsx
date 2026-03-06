@@ -1,4 +1,4 @@
-import type { Select as PrimitiveSelect } from "@base-ui-components/react/select";
+import type { Select as PrimitiveSelect } from "@base-ui/react/select";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Select } from "@typebot.io/ui/components/Select";
 import type { Variable } from "@typebot.io/variables/schemas";
@@ -44,7 +44,7 @@ export const BasicSelect = <ItemValue, Value extends ItemValue | undefined>({
     variables: includeVariables ? typebot?.variables : undefined,
   });
 
-  const handleValueChange = (value: ItemValue) => {
+  const handleValueChange = (value: ItemValue | null) => {
     onChange?.(
       value === null || value === props.defaultValue
         ? (undefined as ItemValue)

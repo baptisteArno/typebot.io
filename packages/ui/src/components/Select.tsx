@@ -1,4 +1,4 @@
-import { Select as SelectPrimitive } from "@base-ui-components/react/select";
+import { Select as SelectPrimitive } from "@base-ui/react/select";
 import type * as React from "react";
 import { ArrowDown01Icon } from "../icons/ArrowDown01Icon";
 import { ArrowUp01Icon } from "../icons/ArrowUp01Icon";

@@ -1,9 +1,10 @@
 import { useTranslate } from "@tolgee/react";
+import { AlertDialog } from "@typebot.io/ui/components/AlertDialog";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
-import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { useRef, useState } from "react";
 import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
 import { CopyInput } from "@/components/inputs/CopyInput";
 import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
@@ -80,23 +81,52 @@ const DeleteWorkspaceButton = ({
 }) => {
   const { t } = useTranslate();
   const { isOpen, onOpen, onClose } = useOpenControls();
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const cancelRef = useRef<HTMLButtonElement | null>(null);
+
+  const onConfirmClick = async () => {
+    setConfirmLoading(true);
+    try {
+      await onConfirm();
+      onClose();
+    } finally {
+      setConfirmLoading(false);
+    }
+  };
+
   return (
     <>
       <Button variant="destructive" onClick={onOpen}>
         {t("workspace.settings.deleteButton.label")}
       </Button>
-      <ConfirmDialog
-        isOpen={isOpen}
-        onConfirm={onConfirm}
-        onClose={onClose}
-        confirmButtonLabel="Delete"
-      >
-        <p>
-          {t("workspace.settings.deleteButton.confirmMessage", {
-            workspaceName,
-          })}
-        </p>
-      </ConfirmDialog>
+      <AlertDialog.Root isOpen={isOpen} onClose={onClose}>
+        <AlertDialog.Content initialFocus={cancelRef}>
+          <AlertDialog.Header>
+            <AlertDialog.Title>
+              {t("confirmModal.defaultTitle")}
+            </AlertDialog.Title>
+            <AlertDialog.Description>
+              <p>
+                {t("workspace.settings.deleteButton.confirmMessage", {
+                  workspaceName,
+                })}
+              </p>
+            </AlertDialog.Description>
+          </AlertDialog.Header>
+          <AlertDialog.Footer>
+            <AlertDialog.Cancel ref={cancelRef}>
+              {t("cancel")}
+            </AlertDialog.Cancel>
+            <AlertDialog.Action
+              variant="destructive"
+              disabled={confirmLoading}
+              onClick={onConfirmClick}
+            >
+              Delete
+            </AlertDialog.Action>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog.Root>
     </>
   );
 };

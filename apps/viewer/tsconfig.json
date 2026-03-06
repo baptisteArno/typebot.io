@@ -119,6 +119,9 @@
       "path": "../../packages/whatsapp"
     },
     {
+      "path": "../../packages/telemetry"
+    },
+    {
       "path": "../../packages/settings"
     },
     {

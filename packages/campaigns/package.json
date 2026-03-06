@@ -10,8 +10,6 @@
     "./workflows/*": "./src/workflows/*.ts"
   },
   "dependencies": {
-    "@effect/rpc": "^0.73.0",
-    "@effect/workflow": "^0.16.0",
     "@orpc/server": "^1.13.4",
     "@typebot.io/config": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
@@ -24,11 +22,11 @@
     "@typebot.io/user": "workspace:*",
     "@typebot.io/whatsapp": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
-    "effect": "^3.19.18",
+    "effect": "4.0.0-beta.30",
     "@testcontainers/postgresql": "^11.12.0"
   },
   "devDependencies": {
-    "@effect/vitest": "^0.27.0",
+    "@effect/vitest": "4.0.0-beta.30",
     "vitest": "^4.0.18"
   },
   "nx": {
@@ -39,6 +37,8 @@
           "{options.reportsDirectory}"
         ],
         "options": {
+          "configFile": "vitest.config.ts",
+          "project": "@typebot.io/campaigns",
           "reportsDirectory": "../../coverage/packages/campaigns"
         }
       }

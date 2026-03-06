@@ -1,40 +1,34 @@
-import { Menu as MenuPrimitive } from "@base-ui-components/react/menu";
-import * as React from "react";
+import { Menu as MenuPrimitive } from "@base-ui/react/menu";
+import type * as React from "react";
 import { cn } from "../lib/cn";
 import type { VariantProps } from "../lib/cva";
 import { buttonVariants } from "./Button";
 
 const Root = MenuPrimitive.Root;
 
-const Trigger = React.forwardRef<
-  React.ElementRef<typeof MenuPrimitive.Trigger>,
-  MenuPrimitive.Trigger.Props
->(({ children, className, ...props }, ref) => (
-  <MenuPrimitive.Trigger
-    {...props}
-    className={className}
-    ref={ref}
-    nativeButton={false}
-  >
-    {children}
-  </MenuPrimitive.Trigger>
-));
-Trigger.displayName = MenuPrimitive.Trigger.displayName;
+const Trigger = (props: MenuPrimitive.Trigger.Props) => {
+  const { children, className, ...rest } = props;
+  return (
+    <MenuPrimitive.Trigger className={className} nativeButton={false} {...rest}>
+      {children}
+    </MenuPrimitive.Trigger>
+  );
+};
 
-const TriggerButton = React.forwardRef<
-  React.ElementRef<typeof MenuPrimitive.Trigger>,
-  MenuPrimitive.Trigger.Props & VariantProps<typeof buttonVariants>
->(({ children, className, variant, size, ...props }, ref) => (
-  <MenuPrimitive.Trigger
-    {...props}
-    className={cn(buttonVariants({ variant, size }), className)}
-    ref={ref}
-    data-disabled={props.disabled}
-  >
-    {children}
-  </MenuPrimitive.Trigger>
-));
-TriggerButton.displayName = MenuPrimitive.Trigger.displayName;
+const TriggerButton = (
+  props: MenuPrimitive.Trigger.Props & VariantProps<typeof buttonVariants>,
+) => {
+  const { children, className, variant, size, disabled, ...rest } = props;
+  return (
+    <MenuPrimitive.Trigger
+      className={cn(buttonVariants({ variant, size }), className)}
+      data-disabled={disabled}
+      {...rest}
+    >
+      {children}
+    </MenuPrimitive.Trigger>
+  );
+};
 
 const Popup = ({
   children,
@@ -89,22 +83,20 @@ const Item = ({
 
 const SubmenuRoot = MenuPrimitive.SubmenuRoot;
 
-const SubmenuTrigger = React.forwardRef<
-  React.ElementRef<typeof MenuPrimitive.SubmenuTrigger>,
-  MenuPrimitive.SubmenuTrigger.Props
->(({ children, className, ...props }, ref) => (
-  <MenuPrimitive.SubmenuTrigger
-    {...props}
-    className={cn(
-      "outline-hidden min-w-(--anchor-width) data-highlighted:bg-gray-2 dark:data-highlighted:bg-gray-3 p-2 rounded-md cursor-default flex items-center gap-2",
-      className,
-    )}
-    ref={ref}
-  >
-    {children}
-  </MenuPrimitive.SubmenuTrigger>
-));
-SubmenuTrigger.displayName = MenuPrimitive.SubmenuTrigger.displayName;
+const SubmenuTrigger = (props: MenuPrimitive.SubmenuTrigger.Props) => {
+  const { children, className, ...rest } = props;
+  return (
+    <MenuPrimitive.SubmenuTrigger
+      className={cn(
+        "outline-hidden min-w-(--anchor-width) data-highlighted:bg-gray-2 dark:data-highlighted:bg-gray-3 p-2 rounded-md cursor-default flex items-center gap-2",
+        className,
+      )}
+      {...rest}
+    >
+      {children}
+    </MenuPrimitive.SubmenuTrigger>
+  );
+};
 
 export const Menu = {
   Root,

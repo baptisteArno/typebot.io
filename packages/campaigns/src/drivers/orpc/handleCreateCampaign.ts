@@ -5,11 +5,20 @@ import { Effect, Schema } from "effect";
 import { CampaignsUsecases } from "../../application/CampaignsUsecases";
 import { WhatsAppCampaignInputSchema } from "../../application/WhatsAppCampaignInput";
 
-export const CreateCampaignInputStandardSchema =
-  WhatsAppCampaignInputSchema.pipe(
-    Schema.extend(Schema.Struct({ typebotId: TypebotId })),
-    Schema.standardSchemaV1,
-  );
+const CreateCampaignInputSchema = Schema.Struct({
+  typebotId: TypebotId,
+  channel: WhatsAppCampaignInputSchema.fields.channel,
+  name: WhatsAppCampaignInputSchema.fields.name,
+  segmentId: WhatsAppCampaignInputSchema.fields.segmentId,
+  templateId: WhatsAppCampaignInputSchema.fields.templateId,
+  credentialsId: WhatsAppCampaignInputSchema.fields.credentialsId,
+  templateAttributesMapping:
+    WhatsAppCampaignInputSchema.fields.templateAttributesMapping,
+});
+
+export const CreateCampaignInputStandardSchema = Schema.toStandardSchemaV1(
+  CreateCampaignInputSchema,
+);
 
 export const handleCreateCampaign = Effect.fn("handleCreateCampaign")(
   function* ({
@@ -23,14 +32,15 @@ export const handleCreateCampaign = Effect.fn("handleCreateCampaign")(
     },
     context: { user },
   }: {
-    input: typeof CreateCampaignInputStandardSchema.Type;
+    input: typeof CreateCampaignInputSchema.Type;
     context: { user: Pick<User, "id"> };
   }) {
     const campaignsUsecases = yield* CampaignsUsecases;
+    const userId = Schema.decodeSync(UserId)(user.id);
     return yield* campaignsUsecases.createWhatsAppCampaign(
       {
         typebotId,
-        userId: UserId.make(user.id),
+        userId,
       },
       { channel, name, templateId, credentialsId, templateAttributesMapping },
     );
@@ -43,7 +53,7 @@ export const handleCreateCampaign = Effect.fn("handleCreateCampaign")(
         }),
       ),
   }),
-  Effect.catchAllDefect((defect) =>
+  Effect.catchDefect((defect) =>
     Effect.fail(
       new ORPCError("INTERNAL_SERVER_ERROR", {
         message: "Failed to create campaign",

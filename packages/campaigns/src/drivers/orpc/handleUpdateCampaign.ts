@@ -5,11 +5,16 @@ import { Effect, Schema } from "effect";
 import { CampaignsUsecases } from "../../application/CampaignsUsecases";
 import { CampaignUpdateInputSchema } from "../../application/CampaignUpdateInput";
 
-export const UpdateCampaignInputStandardSchema = CampaignUpdateInputSchema.pipe(
-  Schema.extend(
-    Schema.Struct({ typebotId: TypebotId, campaignId: CampaignId }),
-  ),
-  Schema.standardSchemaV1,
+const UpdateCampaignInputSchema = Schema.Struct({
+  typebotId: TypebotId,
+  campaignId: CampaignId,
+  status: CampaignUpdateInputSchema.fields.status,
+  recipientSegmentId: CampaignUpdateInputSchema.fields.recipientSegmentId,
+  templateId: CampaignUpdateInputSchema.fields.templateId,
+});
+
+export const UpdateCampaignInputStandardSchema = Schema.toStandardSchemaV1(
+  UpdateCampaignInputSchema,
 );
 
 export const handleUpdateCampaign = Effect.fn("handleUpdateCampaign")(
@@ -17,15 +22,16 @@ export const handleUpdateCampaign = Effect.fn("handleUpdateCampaign")(
     input: { typebotId, campaignId, ...rest },
     context: { user },
   }: {
-    input: typeof UpdateCampaignInputStandardSchema.Type;
+    input: typeof UpdateCampaignInputSchema.Type;
     context: { user: Pick<User, "id"> };
   }) {
     const campaignsUsecases = yield* CampaignsUsecases;
+    const userId = Schema.decodeSync(UserId)(user.id);
     return yield* campaignsUsecases.update(
       {
         typebotId,
         campaignId,
-        userId: UserId.make(user.id),
+        userId,
       },
       rest,
     );
@@ -44,7 +50,7 @@ export const handleUpdateCampaign = Effect.fn("handleUpdateCampaign")(
         }),
       ),
   }),
-  Effect.catchAllDefect((defect) =>
+  Effect.catchDefect((defect) =>
     Effect.fail(
       new ORPCError("INTERNAL_SERVER_ERROR", {
         message: "Failed to update campaign",

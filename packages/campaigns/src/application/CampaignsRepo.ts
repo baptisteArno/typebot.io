@@ -2,13 +2,13 @@ import type {
   CampaignId,
   TypebotId,
 } from "@typebot.io/shared-primitives/domain";
-import { Context, type Effect } from "effect";
+import { type Effect, ServiceMap } from "effect";
 import type { Campaign } from "../domain/Campaign";
 import type { CampaignsNotFoundError } from "../domain/errors";
 import type { CampaignUpdateInput } from "./CampaignUpdateInput";
 import type { WhatsAppCampaignInput } from "./WhatsAppCampaignInput";
 
-export class CampaignsRepo extends Context.Tag("@typebot.io/CampaignsRepo")<
+export class CampaignsRepo extends ServiceMap.Service<
   CampaignsRepo,
   {
     readonly listByTypebotId: (
@@ -36,4 +36,4 @@ export class CampaignsRepo extends Context.Tag("@typebot.io/CampaignsRepo")<
       campaignId: CampaignId,
     ) => Effect.Effect<void, CampaignsNotFoundError>;
   }
->() {}
+>()("@typebot.io/CampaignsRepo") {}

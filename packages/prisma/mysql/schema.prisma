@@ -511,24 +511,19 @@ model Contact {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-  firstName String?
-  lastName  String?
-  email     String?
-  phone     String?
+  name      String?
 
   audienceId String
   audience   Audience             @relation(fields: [audienceId], references: [id], onDelete: Cascade)
   properties ContactProperty[]
   segments   ContactsInSegments[]
-
-  @@unique([audienceId, email])
-  @@unique([audienceId, phone])
 }
 
 model ContactPropertyDefinition {
-  id   Int                 @id @default(autoincrement())
-  key  String
-  type ContactPropertyType
+  id       Int                 @id @default(autoincrement())
+  key      String
+  type     ContactPropertyType
+  isUnique Boolean             @default(false)
 
   audienceId String
   audience   Audience          @relation(fields: [audienceId], references: [id], onDelete: Cascade)
@@ -540,6 +535,10 @@ model ContactPropertyDefinition {
 enum ContactPropertyType {
   STRING
   NUMBER
+  EMAIL
+  PHONE
+  URL
+  IMAGE_URL
 }
 
 model ContactProperty {

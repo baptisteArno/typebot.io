@@ -1,12 +1,11 @@
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { PrismaLayer } from "@typebot.io/prisma/layer";
-import { PrismaWorkspaceAuthorization } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceAuthorization";
+import { PrismaWorkspaceRepository } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceRepository";
 import { Effect, Layer } from "effect";
 import { SegmentsUsecases } from "../../application/SegmentsUsecases";
-import { PrismaSegmentsAuthorization } from "../../infrastructure/PrismaSegmentsAuthorization";
 import { PrismaSegmentsRepository } from "../../infrastructure/PrismaSegmentsRepository";
 import {
-  CreateSegmentInputSchema,
+  CreateSegmentInputStandardSchema,
   handleCreateSegment,
 } from "./handleCreateSegment";
 import {
@@ -15,12 +14,9 @@ import {
 } from "./handleListSegments";
 
 const SegmentsInfrastructureLayer = Layer.mergeAll(
-  PrismaSegmentsAuthorization,
   PrismaSegmentsRepository,
-).pipe(
-  Layer.provideMerge(PrismaWorkspaceAuthorization),
-  Layer.provideMerge(PrismaLayer),
-);
+  PrismaWorkspaceRepository,
+).pipe(Layer.provideMerge(PrismaLayer));
 
 export const SegmentsLiveLayer = Layer.provide(
   SegmentsUsecases.layer,
@@ -36,6 +32,6 @@ export const segmentsRouter = {
     .input(listSegmentsInputSchema)
     .handler((props) => runSegmentsEffectHandler(handleListSegments(props))),
   create: authenticatedProcedure
-    .input(CreateSegmentInputSchema)
+    .input(CreateSegmentInputStandardSchema)
     .handler((props) => runSegmentsEffectHandler(handleCreateSegment(props))),
 };

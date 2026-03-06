@@ -1,14 +1,15 @@
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { PrismaLayer } from "@typebot.io/prisma/layer";
-import { PrismaWorkspaceAuthorization } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceAuthorization";
-import { Effect, Layer } from "effect";
-import { ContactsUsecases } from "../../application/ContactsUsecases";
-import { PrismaContactsAuthorization } from "../../infrastructure/PrismaContactsAuthorization";
-import { PrismaContactsRepository } from "../../infrastructure/PrismaContactsRepository";
+import { PrismaWorkspaceRepository } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceRepository";
+import { Effect, Layer, Schema } from "effect";
+import { ContactPropertyDefinitionsUsecases } from "../../application/ContactPropertyDefinitionsUsecases";
 import {
-  CreateContactInputStandardSchema,
-  handleCreateContact,
-} from "./handleCreateContact";
+  ContactCreateInputSchema,
+  ContactsUsecases,
+} from "../../application/ContactsUsecases";
+import { PrismaContactPropertyDefinitionsRepository } from "../../infrastructure/PrismaContactPropertyDefinitionsRepository";
+import { PrismaContactsRepository } from "../../infrastructure/PrismaContactsRepository";
+import { handleCreateContact } from "./handleCreateContact";
 import { getContactInputSchema, handleGetContact } from "./handleGetContact";
 import {
   handleListContacts,
@@ -16,16 +17,26 @@ import {
 } from "./handleListContacts";
 
 const ContactsInfrastructureLayer = Layer.mergeAll(
-  PrismaContactsAuthorization,
   PrismaContactsRepository,
-).pipe(
-  Layer.provideMerge(PrismaWorkspaceAuthorization),
-  Layer.provideMerge(PrismaLayer),
+  PrismaWorkspaceRepository,
+).pipe(Layer.provideMerge(PrismaLayer));
+
+const ContactPropertyDefinitionsInfrastructureLayer = Layer.mergeAll(
+  PrismaContactPropertyDefinitionsRepository,
+  PrismaWorkspaceRepository,
+).pipe(Layer.provideMerge(PrismaLayer));
+
+const AllContactsInfrastructureLayer = Layer.mergeAll(
+  ContactsInfrastructureLayer,
+  ContactPropertyDefinitionsInfrastructureLayer,
 );
 
-export const ContactsLiveLayer = Layer.provide(
-  ContactsUsecases.layer,
-  ContactsInfrastructureLayer,
+export const ContactsLiveLayer = Layer.mergeAll(
+  Layer.provide(ContactsUsecases.layer, AllContactsInfrastructureLayer),
+  Layer.provide(
+    ContactPropertyDefinitionsUsecases.layer,
+    ContactPropertyDefinitionsInfrastructureLayer,
+  ),
 );
 
 const runContactsEffectHandler = <A, E>(
@@ -37,7 +48,7 @@ export const contactsRouter = {
     .input(listContactsInputSchema)
     .handler((props) => runContactsEffectHandler(handleListContacts(props))),
   create: authenticatedProcedure
-    .input(CreateContactInputStandardSchema)
+    .input(Schema.toStandardSchemaV1(ContactCreateInputSchema))
     .handler((props) => runContactsEffectHandler(handleCreateContact(props))),
   get: authenticatedProcedure
     .input(getContactInputSchema)

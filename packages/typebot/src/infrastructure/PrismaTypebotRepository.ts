@@ -2,34 +2,34 @@ import { PrismaService } from "@typebot.io/prisma/effect";
 import type { TypebotId } from "@typebot.io/shared-primitives/domain";
 import type { UserId } from "@typebot.io/user/schemas";
 import { Effect, Layer } from "effect";
-import { TypebotAuthorization } from "../application/TypebotAuthorization";
+import { TypebotRepo } from "../application/TypebotRepo";
 
-export const PrismaTypebotAuthorization = Layer.effect(
-  TypebotAuthorization,
+export const PrismaTypebotRepository = Layer.effect(
+  TypebotRepo,
   Effect.gen(function* () {
     const prisma = yield* PrismaService;
 
-    const canReadTypebot = Effect.fn(
-      "PrismaTypebotAuthorization.canReadTypebot",
-    )(function* (typebotId: TypebotId, userId: UserId) {
-      const typebot = yield* prisma.typebot
-        .findFirst({
-          where: {
-            id: typebotId,
-            OR: [
-              { workspace: { members: { some: { userId } } } },
-              { collaborators: { some: { userId } } },
-            ],
-          },
-          select: { id: true },
-        })
-        .pipe(Effect.orDie);
+    const canReadTypebot = Effect.fn("PrismaTypebotRepository.canReadTypebot")(
+      function* (typebotId: TypebotId, userId: UserId) {
+        const typebot = yield* prisma.typebot
+          .findFirst({
+            where: {
+              id: typebotId,
+              OR: [
+                { workspace: { members: { some: { userId } } } },
+                { collaborators: { some: { userId } } },
+              ],
+            },
+            select: { id: true },
+          })
+          .pipe(Effect.orDie);
 
-      return typebot !== null;
-    });
+        return typebot !== null;
+      },
+    );
 
     const canWriteTypebot = Effect.fn(
-      "PrismaTypebotAuthorization.canWriteTypebot",
+      "PrismaTypebotRepository.canWriteTypebot",
     )(function* (typebotId: TypebotId, userId: UserId) {
       const typebot = yield* prisma.typebot
         .findFirst({
@@ -54,7 +54,7 @@ export const PrismaTypebotAuthorization = Layer.effect(
       return typebot !== null;
     });
 
-    return TypebotAuthorization.of({
+    return TypebotRepo.of({
       canReadTypebot,
       canWriteTypebot,
     });

@@ -1,14 +1,11 @@
-import { SpaceId, WorkspaceId } from "@typebot.io/shared-core/domain";
 import { Emoji, ImageSrc } from "@typebot.io/shared-core/schemas";
+import { SpaceId, WorkspaceId } from "@typebot.io/shared-primitives/domain";
 import { Schema } from "effect";
 
-export const SpaceIcon = Schema.Union(Emoji, ImageSrc);
+export const SpaceIcon = Schema.Union([Emoji, ImageSrc]);
 export type SpaceIcon = typeof SpaceIcon.Type;
 
-export const SpaceName = Schema.String.pipe(
-  Schema.minLength(1),
-  Schema.brand("SpaceName"),
-);
+export const SpaceName = Schema.NonEmptyString.pipe(Schema.brand("SpaceName"));
 export type SpaceName = typeof SpaceName.Type;
 
 export class Space extends Schema.Class<Space>("Space")({
@@ -16,6 +13,6 @@ export class Space extends Schema.Class<Space>("Space")({
   name: SpaceName,
   icon: Schema.NullOr(SpaceIcon),
   workspaceId: WorkspaceId,
-  createdAt: Schema.ValidDateFromSelf,
-  updatedAt: Schema.ValidDateFromSelf,
+  createdAt: Schema.DateValid,
+  updatedAt: Schema.DateValid,
 }) {}

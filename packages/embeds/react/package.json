@@ -37,7 +37,8 @@
         },
         "configurations": {
           "development": {
-            "minify": false
+            "minify": false,
+            "deleteOutputPath": false
           },
           "production": {
             "minify": true,

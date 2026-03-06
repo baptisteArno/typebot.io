@@ -1,43 +1,28 @@
 import { Schema } from "effect";
 
-export const SpaceId = Schema.String.pipe(
-  Schema.nonEmptyString(),
-  Schema.brand("SpaceId"),
-);
+export const SpaceId = Schema.NonEmptyString.pipe(Schema.brand("SpaceId"));
 export type SpaceId = typeof SpaceId.Type;
 
-export const CampaignId = Schema.String.pipe(
-  Schema.nonEmptyString(),
+export const CampaignId = Schema.NonEmptyString.pipe(
   Schema.brand("CampaignId"),
 );
 export type CampaignId = typeof CampaignId.Type;
 
-export const TypebotId = Schema.String.pipe(
-  Schema.nonEmptyString(),
-  Schema.brand("TypebotId"),
-);
+export const TypebotId = Schema.NonEmptyString.pipe(Schema.brand("TypebotId"));
 export type TypebotId = typeof TypebotId.Type;
 
-export const SegmentId = Schema.String.pipe(
-  Schema.nonEmptyString(),
-  Schema.brand("SegmentId"),
-);
+export const SegmentId = Schema.NonEmptyString.pipe(Schema.brand("SegmentId"));
 export type SegmentId = typeof SegmentId.Type;
 
-export const CredentialsId = Schema.String.pipe(
-  Schema.nonEmptyString(),
+export const CredentialsId = Schema.NonEmptyString.pipe(
   Schema.brand("CredentialsId"),
 );
 export type CredentialsId = typeof CredentialsId.Type;
 
-export const UserId = Schema.String.pipe(
-  Schema.nonEmptyString(),
-  Schema.brand("UserId"),
-);
+export const UserId = Schema.NonEmptyString.pipe(Schema.brand("UserId"));
 export type UserId = typeof UserId.Type;
 
-export const WorkspaceId = Schema.String.pipe(
-  Schema.nonEmptyString(),
+export const WorkspaceId = Schema.NonEmptyString.pipe(
   Schema.brand("WorkspaceId"),
 );
 export type WorkspaceId = typeof WorkspaceId.Type;

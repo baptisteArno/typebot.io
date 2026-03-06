@@ -49,7 +49,7 @@
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "google-spreadsheet": "^4.1.4",
-    "ky": "1.2.4",
+    "ky": "^1.2.4",
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "6.1.5",
     "nodemailer": "^7.0.6",

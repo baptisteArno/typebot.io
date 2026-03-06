@@ -35,7 +35,7 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/runtime-session-store": "workspace:*",
-    "ky": "1.2.4"
+    "ky": "^1.2.4"
   },
   "devDependencies": {
     "@types/react": "^19.2.14"

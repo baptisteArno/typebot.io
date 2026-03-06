@@ -2,35 +2,34 @@ import {
   CampaignId,
   SegmentId,
   TypebotId,
-} from "@typebot.io/shared-core/domain";
+} from "@typebot.io/shared-primitives/domain";
 import { Schema } from "effect";
 
-export const CampaignStatus = Schema.Literal(
+export const CampaignStatus = Schema.Literals([
   "DRAFT",
   "SCHEDULED",
   "RUNNING",
   "COMPLETED",
   "FAILED",
-);
+]);
 export type CampaignStatus = typeof CampaignStatus.Type;
 
 const WhatsAppCampaignConfigSchema = Schema.Struct({
   templateId: Schema.NullOr(Schema.String),
 });
 
-export const CampaignName = Schema.String.pipe(
-  Schema.nonEmptyString(),
+export const CampaignName = Schema.NonEmptyString.pipe(
   Schema.brand("CampaignName"),
 );
 
 export class Campaign extends Schema.Class<Campaign>("Campaign")({
   id: CampaignId,
-  createdAt: Schema.ValidDateFromSelf,
-  updatedAt: Schema.ValidDateFromSelf,
+  createdAt: Schema.DateValid,
+  updatedAt: Schema.DateValid,
   name: CampaignName,
   status: CampaignStatus,
   channel: Schema.Literal("WHATSAPP"),
   recipientSegmentId: Schema.NullOr(SegmentId),
   typebotId: TypebotId,
-  whatsAppConfig: Schema.Array(WhatsAppCampaignConfigSchema),
+  whatsAppConfig: Schema.NullOr(WhatsAppCampaignConfigSchema),
 }) {}

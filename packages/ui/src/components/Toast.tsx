@@ -1,4 +1,7 @@
-import { Toast as ToastPrimitive } from "@base-ui-components/react/toast";
+import {
+  type ToastManagerAddOptions,
+  Toast as ToastPrimitive,
+} from "@base-ui/react/toast";
 import type { JSX } from "react";
 import { z } from "zod";
 import { Cancel01Icon } from "../icons/Cancel01Icon";
@@ -166,8 +169,7 @@ const ToastIcon = ({
 
 export const ToastProvider = ToastPrimitive.Provider;
 
-export type AddToastOptions =
-  ToastPrimitive.useToastManager.AddOptions<ToastData>;
+export type AddToastOptions = ToastManagerAddOptions<ToastData>;
 
 export type ToastType = "error" | "success" | "info";
 

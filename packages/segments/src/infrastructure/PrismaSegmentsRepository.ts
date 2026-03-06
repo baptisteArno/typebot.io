@@ -25,9 +25,9 @@ export const PrismaSegmentsRepository = Layer.effect(
         })
         .pipe(Effect.orDie);
 
-      return yield* Schema.decodeUnknown(Schema.Array(Segment))(segments).pipe(
-        Effect.orDie,
-      );
+      return yield* Schema.decodeUnknownEffect(Schema.Array(Segment))(
+        segments,
+      ).pipe(Effect.orDie);
     });
 
     const create = Effect.fn("PrismaSegmentsRepository.create")(function* (
@@ -44,7 +44,7 @@ export const PrismaSegmentsRepository = Layer.effect(
           },
         })
         .pipe(
-          Effect.catchAll((error) =>
+          Effect.catch((error) =>
             error instanceof PrismaClientKnownRequestError &&
             error.code === "P2002"
               ? Effect.fail(new SegmentsAlreadyExistsError())
@@ -52,7 +52,9 @@ export const PrismaSegmentsRepository = Layer.effect(
           ),
         );
 
-      return yield* Schema.decodeUnknown(Segment)(segment).pipe(Effect.orDie);
+      return yield* Schema.decodeUnknownEffect(Segment)(segment).pipe(
+        Effect.orDie,
+      );
     });
 
     return SegmentsRepo.of({

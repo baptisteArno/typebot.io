@@ -1,10 +1,10 @@
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
-import { Context, type Effect } from "effect";
+import { type Effect, ServiceMap } from "effect";
 import type { SpacesAlreadyExistsError } from "../domain/errors";
 import type { Space } from "../domain/Space";
 import type { SpaceCreateInput } from "./SpaceCreateInput";
 
-export class SpacesRepo extends Context.Tag("@typebot.io/SpacesRepo")<
+export class SpacesRepo extends ServiceMap.Service<
   SpacesRepo,
   {
     readonly listByWorkspaceId: (
@@ -15,4 +15,4 @@ export class SpacesRepo extends Context.Tag("@typebot.io/SpacesRepo")<
       input: SpaceCreateInput,
     ) => Effect.Effect<Space, SpacesAlreadyExistsError>;
   }
->() {}
+>()("@typebot.io/SpacesRepo") {}

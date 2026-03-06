@@ -1,4 +1,4 @@
-import { Field as PrimitiveField } from "@base-ui-components/react/field";
+import { Field as PrimitiveField } from "@base-ui/react/field";
 import { useMemo } from "react";
 import { cn } from "../lib/cn";
 
@@ -73,7 +73,10 @@ const Error = ({
 
   return (
     <PrimitiveField.Error
-      className={cn("text-destructive text-sm font-normal", className)}
+      className={cn(
+        "text-destructive/90 text-sm font-normal border border-destructive/70 rounded-md p-2 bg-destructive/2.5",
+        className,
+      )}
       match={true}
       {...props}
     >

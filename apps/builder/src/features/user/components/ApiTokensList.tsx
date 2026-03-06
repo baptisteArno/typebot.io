@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import { byId, isDefined } from "@typebot.io/lib/utils";
+import { AlertDialog } from "@typebot.io/ui/components/AlertDialog";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Checkbox } from "@typebot.io/ui/components/Checkbox";
 import { Skeleton } from "@typebot.io/ui/components/Skeleton";
 import { Table } from "@typebot.io/ui/components/Table";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
-import { useState } from "react";
-import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { useRef, useState } from "react";
 import { TimeSince } from "@/components/TimeSince";
 import { orpc } from "@/lib/queryClient";
 import { CreateApiTokenDialog } from "./CreateApiTokenDialog";
@@ -27,6 +27,7 @@ export const ApiTokensList = () => {
     onClose: onCreateClose,
   } = useOpenControls();
   const [deletingId, setDeletingId] = useState<string>();
+  const deleteCancelRef = useRef<HTMLButtonElement | null>(null);
 
   const { mutate: deleteToken } = useMutation(
     orpc.user.deleteApiToken.mutationOptions({
@@ -100,24 +101,46 @@ export const ApiTokensList = () => {
             ))}
         </Table.Body>
       </Table.Root>
-      <ConfirmDialog
+      <AlertDialog.Root
         isOpen={isDefined(deletingId)}
-        onConfirm={() => deletingId && deleteToken({ tokenId: deletingId })}
         onClose={() => setDeletingId(undefined)}
-        actionType="destructive"
-        confirmButtonLabel={t("account.apiTokens.deleteButton.label")}
       >
-        <p>
-          <T
-            keyName="account.apiTokens.deleteConfirmationMessage"
-            params={{
-              strong: (
-                <strong>{data?.apiTokens?.find(byId(deletingId))?.name}</strong>
-              ),
-            }}
-          />
-        </p>
-      </ConfirmDialog>
+        <AlertDialog.Content initialFocus={deleteCancelRef}>
+          <AlertDialog.Header>
+            <AlertDialog.Title>
+              {t("confirmModal.defaultTitle")}
+            </AlertDialog.Title>
+            <AlertDialog.Description>
+              <T
+                keyName="account.apiTokens.deleteConfirmationMessage"
+                params={{
+                  strong: (
+                    <strong>
+                      {data?.apiTokens?.find(byId(deletingId))?.name}
+                    </strong>
+                  ),
+                }}
+              />
+            </AlertDialog.Description>
+          </AlertDialog.Header>
+          <AlertDialog.Footer>
+            <AlertDialog.CloseButton ref={deleteCancelRef}>
+              {t("cancel")}
+            </AlertDialog.CloseButton>
+            <AlertDialog.Action
+              variant="destructive"
+              onClick={() => {
+                if (deletingId) {
+                  deleteToken({ tokenId: deletingId });
+                  setDeletingId(undefined);
+                }
+              }}
+            >
+              {t("account.apiTokens.deleteButton.label")}
+            </AlertDialog.Action>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog.Root>
     </div>
   );
 };

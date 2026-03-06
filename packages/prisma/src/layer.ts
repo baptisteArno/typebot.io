@@ -3,6 +3,6 @@ import { PrismaClientService, PrismaService } from "../.effect";
 import prisma from ".";
 
 export const PrismaLayer = Layer.provide(
-  PrismaService.Default,
+  PrismaService.layer,
   Layer.succeed(PrismaClientService, prisma),
 );

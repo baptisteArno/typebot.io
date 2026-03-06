@@ -12,7 +12,7 @@ const GetContactInputSchema = Schema.Struct({
   contactId: ContactId,
 });
 export const getContactInputSchema = GetContactInputSchema.pipe(
-  Schema.standardSchemaV1,
+  Schema.toStandardSchemaV1,
 );
 
 export const handleGetContact = Effect.fn("handleGetContact")(
@@ -24,11 +24,12 @@ export const handleGetContact = Effect.fn("handleGetContact")(
     context: { user: Pick<User, "id"> };
   }) {
     const contactsUsecases = yield* ContactsUsecases;
+    const userId = Schema.decodeSync(UserId)(user.id);
     const contact = yield* contactsUsecases.get({
       workspaceId,
       spaceId,
       contactId,
-      userId: UserId.make(user.id),
+      userId,
     });
     return { contact };
   },
@@ -46,7 +47,7 @@ export const handleGetContact = Effect.fn("handleGetContact")(
         }),
       ),
   }),
-  Effect.catchAllDefect((defect) =>
+  Effect.catchDefect((defect) =>
     Effect.fail(
       new ORPCError("INTERNAL_SERVER_ERROR", {
         message: "Failed to get contact",

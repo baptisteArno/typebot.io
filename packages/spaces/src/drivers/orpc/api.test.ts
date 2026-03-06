@@ -4,22 +4,17 @@ import {
   proWorkspaceId,
   userId,
 } from "@typebot.io/config/tests/seedDatabaseForTest";
-import { PrismaWorkspaceAuthorization } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceAuthorization";
+import { PrismaWorkspaceRepository } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceRepository";
 import { Effect, Layer } from "effect";
 import { SpacesUsecases } from "../../application/SpacesUsecases";
-import { SpaceName } from "../../domain/Space";
-import { PrismaSpacesAuthorization } from "../../infrastructure/PrismaSpacesAuthorization";
 import { PrismaSpacesRepository } from "../../infrastructure/PrismaSpacesRepository";
 import { handleCreateSpace } from "./handleCreateSpace";
 import { handleListSpaces } from "./handleListSpaces";
 
 const SpacesInfrastructureLayer = Layer.mergeAll(
-  PrismaSpacesAuthorization,
   PrismaSpacesRepository,
-).pipe(
-  Layer.provideMerge(PrismaWorkspaceAuthorization),
-  Layer.provideMerge(PgContainerPrismaLayer),
-);
+  PrismaWorkspaceRepository,
+).pipe(Layer.provideMerge(PgContainerPrismaLayer));
 
 export const SpacesLiveLayer = Layer.provide(
   SpacesUsecases.layer,
@@ -29,13 +24,12 @@ export const SpacesLiveLayer = Layer.provide(
 let spaceId: string;
 
 it.layer(SpacesLiveLayer, { timeout: "30 seconds" })("SpacesLayer", (it) => {
-  it.effect(
-    "should create space with valid data",
-    Effect.fn(function* () {
+  it.effect("should create space with valid data", () =>
+    Effect.gen(function* () {
       const { space } = yield* handleCreateSpace({
         input: {
           workspaceId: proWorkspaceId,
-          name: SpaceName.make("Test Space"),
+          name: "Test Space",
         },
         context: {
           user: {
@@ -50,9 +44,8 @@ it.layer(SpacesLiveLayer, { timeout: "30 seconds" })("SpacesLayer", (it) => {
     }),
   );
 
-  it.effect(
-    "lists spaces",
-    Effect.fn(function* () {
+  it.effect("lists spaces", () =>
+    Effect.gen(function* () {
       const { spaces } = yield* handleListSpaces({
         input: {
           workspaceId: proWorkspaceId,
@@ -64,7 +57,7 @@ it.layer(SpacesLiveLayer, { timeout: "30 seconds" })("SpacesLayer", (it) => {
         },
       });
       expect(spaces.length).toBeGreaterThanOrEqual(1);
-      expect(spaces.some((s) => s.id === spaceId)).toBe(true);
+      expect(spaces.some((space) => space.id === spaceId)).toBe(true);
     }),
   );
 });

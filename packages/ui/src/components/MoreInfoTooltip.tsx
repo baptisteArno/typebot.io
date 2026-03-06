@@ -9,8 +9,11 @@ type Props = {
 
 export const MoreInfoTooltip = ({ children, icon, onClick }: Props) => {
   return (
-    <Popover.Root openOnHover delay={0} closeDelay={100}>
+    <Popover.Root>
       <Popover.Trigger
+        openOnHover
+        delay={0}
+        closeDelay={100}
         className="p-1 pb-0.5 align-bottom inline-flex [&>svg]:size-4 [&>svg]:text-gray-11"
         onClick={onClick}
       >

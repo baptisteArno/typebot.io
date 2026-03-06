@@ -1,14 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
+import { useTranslate } from "@tolgee/react";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId } from "@typebot.io/lib/utils";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
+import { AlertDialog } from "@typebot.io/ui/components/AlertDialog";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
 import { TrashIcon } from "@typebot.io/ui/icons/TrashIcon";
 import { unparse } from "papaparse";
-import { useState } from "react";
-import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { useRef, useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { orpc, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
@@ -25,9 +26,11 @@ export const SelectionToolbar = ({
   onClearSelection,
   userMode,
 }: Props) => {
+  const { t } = useTranslate();
   const { typebot } = useTypebot();
   const { resultHeader, tableData, onDeleteResults } = useResults();
   const { isOpen, onOpen, onClose } = useOpenControls();
+  const deleteCancelRef = useRef<HTMLButtonElement | null>(null);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [isExportLoading, setIsExportLoading] = useState(false);
   const deleteResultsMutation = useMutation(
@@ -157,22 +160,37 @@ export const SelectionToolbar = ({
           >
             <TrashIcon />
           </Button>
-          <ConfirmDialog
-            isOpen={isOpen}
-            onConfirm={deleteResults}
-            onClose={onClose}
-            actionType="destructive"
-            confirmButtonLabel="Delete"
-          >
-            <p>
-              You are about to delete{" "}
-              <strong>
-                {totalSelected} submission
-                {totalSelected > 1 ? "s" : ""}
-              </strong>
-              . Are you sure you wish to continue?
-            </p>
-          </ConfirmDialog>
+          <AlertDialog.Root isOpen={isOpen} onClose={onClose}>
+            <AlertDialog.Content initialFocus={deleteCancelRef}>
+              <AlertDialog.Header>
+                <AlertDialog.Title>
+                  {t("confirmModal.defaultTitle")}
+                </AlertDialog.Title>
+                <AlertDialog.Description>
+                  You are about to delete{" "}
+                  <strong>
+                    {totalSelected} submission
+                    {totalSelected > 1 ? "s" : ""}
+                  </strong>
+                  . Are you sure you wish to continue?
+                </AlertDialog.Description>
+              </AlertDialog.Header>
+              <AlertDialog.Footer>
+                <AlertDialog.CloseButton ref={deleteCancelRef}>
+                  {t("cancel")}
+                </AlertDialog.CloseButton>
+                <AlertDialog.Action
+                  variant="destructive"
+                  onClick={async () => {
+                    await deleteResults();
+                    onClose();
+                  }}
+                >
+                  Delete
+                </AlertDialog.Action>
+              </AlertDialog.Footer>
+            </AlertDialog.Content>
+          </AlertDialog.Root>
         </>
       )}
     </div>

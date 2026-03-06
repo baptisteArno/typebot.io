@@ -6,9 +6,8 @@ import { Effect, Schema } from "effect";
 import { ContactsUsecases } from "../../application/ContactsUsecases";
 
 const MAX_LIMIT = 500;
-const LimitSchema = Schema.Number.pipe(
-  Schema.int(),
-  Schema.between(1, MAX_LIMIT),
+const LimitSchema = Schema.Int.pipe(
+  Schema.check(Schema.isBetween({ minimum: 1, maximum: MAX_LIMIT })),
 );
 
 const ListContactsInputSchema = Schema.Struct({
@@ -18,7 +17,7 @@ const ListContactsInputSchema = Schema.Struct({
   cursor: Schema.optional(Schema.Number),
 });
 export const listContactsInputSchema = ListContactsInputSchema.pipe(
-  Schema.standardSchemaV1,
+  Schema.toStandardSchemaV1,
 );
 
 export const handleListContacts = Effect.fn("handleListContacts")(
@@ -30,11 +29,12 @@ export const handleListContacts = Effect.fn("handleListContacts")(
     context: { user: Pick<User, "id"> };
   }) {
     const contactsUsecases = yield* ContactsUsecases;
+    const userId = Schema.decodeSync(UserId)(user.id);
     return yield* contactsUsecases.list(
       {
         workspaceId,
         spaceId,
-        userId: UserId.make(user.id),
+        userId,
       },
       { limit: limit ?? 50, cursor },
     );
@@ -47,7 +47,7 @@ export const handleListContacts = Effect.fn("handleListContacts")(
         }),
       ),
   }),
-  Effect.catchAllDefect((defect) =>
+  Effect.catchDefect((defect) =>
     Effect.fail(
       new ORPCError("INTERNAL_SERVER_ERROR", {
         message: "Failed to list contacts",

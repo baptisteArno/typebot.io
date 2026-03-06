@@ -1,16 +1,16 @@
 import { PrismaService } from "@typebot.io/prisma/effect";
 import type { UserId } from "@typebot.io/user/schemas";
-import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Layer } from "effect";
-import { WorkspaceAuthorization } from "../application/WorkspaceAuthorization";
+import { WorkspaceRepo } from "../application/WorkspaceRepo";
+import type { WorkspaceId } from "../schemas";
 
-export const PrismaWorkspaceAuthorization = Layer.effect(
-  WorkspaceAuthorization,
+export const PrismaWorkspaceRepository = Layer.effect(
+  WorkspaceRepo,
   Effect.gen(function* () {
     const prisma = yield* PrismaService;
 
     const canReadWorkspace = Effect.fn(
-      "PrismaWorkspaceAuthorization.canReadWorkspace",
+      "PrismaWorkspaceRepository.canReadWorkspace",
     )(function* (workspaceId: WorkspaceId, userId: UserId) {
       const workspace = yield* prisma.workspace
         .findFirst({
@@ -26,7 +26,7 @@ export const PrismaWorkspaceAuthorization = Layer.effect(
     });
 
     const canAdminWriteWorkspace = Effect.fn(
-      "PrismaWorkspaceAuthorization.canAdminWriteWorkspace",
+      "PrismaWorkspaceRepository.canAdminWriteWorkspace",
     )(function* (workspaceId: WorkspaceId, userId: UserId) {
       const workspace = yield* prisma.workspace
         .findFirst({
@@ -41,7 +41,7 @@ export const PrismaWorkspaceAuthorization = Layer.effect(
       return workspace !== null;
     });
 
-    return WorkspaceAuthorization.of({
+    return WorkspaceRepo.of({
       canReadWorkspace,
       canAdminWriteWorkspace,
     });

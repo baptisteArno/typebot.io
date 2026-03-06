@@ -4,32 +4,26 @@ import {
   proTypebotId,
   userId,
 } from "@typebot.io/config/tests/seedDatabaseForTest";
-import type { CampaignId } from "@typebot.io/shared-core/domain";
-import { PrismaTypebotAuthorization } from "@typebot.io/typebot/infrastructure/PrismaTypebotAuthorization";
+import type { CampaignId } from "@typebot.io/shared-primitives/domain";
+import { PrismaTypebotRepository } from "@typebot.io/typebot/infrastructure/PrismaTypebotRepository";
 import { Effect, Layer, Schema } from "effect";
 import { describe } from "vitest";
 import { CampaignsUsecases } from "../../application/CampaignsUsecases";
+import { WhatsAppCampaignInputSchema } from "../../application/WhatsAppCampaignInput";
 import { CampaignName } from "../../domain/Campaign";
-import { PrismaCampaignsAuthorization } from "../../infrastructure/PrismaCampaignsAuthorization";
 import { PrismaCampaignsRepository } from "../../infrastructure/PrismaCampaignsRepository";
-import {
-  CreateCampaignInputStandardSchema,
-  handleCreateCampaign,
-} from "./handleCreateCampaign";
+import { handleCreateCampaign } from "./handleCreateCampaign";
 import { handleDeleteCampaign } from "./handleDeleteCampaign";
 import { handleGetCampaign } from "./handleGetCampaign";
 import { handleListCampaigns } from "./handleListCampaigns";
 import { handleUpdateCampaign } from "./handleUpdateCampaign";
 
 const CampaignsInfrastructureLayer = Layer.mergeAll(
-  PrismaCampaignsAuthorization,
   PrismaCampaignsRepository,
-).pipe(
-  Layer.provideMerge(PrismaTypebotAuthorization),
-  Layer.provideMerge(PgContainerPrismaLayer),
-);
+  PrismaTypebotRepository,
+).pipe(Layer.provideMerge(PgContainerPrismaLayer));
 
-export const CampaignsLiveLayer = Layer.provide(
+const CampaignsLiveLayer = Layer.provide(
   CampaignsUsecases.layer,
   CampaignsInfrastructureLayer,
 );
@@ -40,17 +34,20 @@ describe.skip("skipped suite", () => {
   it.layer(CampaignsLiveLayer, { timeout: "30 seconds" })(
     "CampaignsLayer",
     (it) => {
-      it.effect(
-        "should create campaign with valid data",
-        Effect.fn(function* () {
+      it.effect("should create campaign with valid data", () =>
+        Effect.gen(function* () {
           const campaign = yield* handleCreateCampaign({
-            input: Schema.decodeSync(CreateCampaignInputStandardSchema)({
+            input: {
               typebotId: proTypebotId,
               channel: "WHATSAPP",
-              name: CampaignName.make("Test Campaign"),
-              templateId: "template-id",
-              credentialsId: "credentials-id",
-            }),
+              name: Schema.decodeSync(CampaignName)("Test Campaign"),
+              templateId: Schema.decodeSync(
+                WhatsAppCampaignInputSchema.fields.templateId,
+              )("template-id"),
+              credentialsId: Schema.decodeSync(
+                WhatsAppCampaignInputSchema.fields.credentialsId,
+              )("credentials-id"),
+            },
             context: {
               user: {
                 id: userId,
@@ -65,9 +62,8 @@ describe.skip("skipped suite", () => {
         }),
       );
 
-      it.effect(
-        "gets campaign",
-        Effect.fn(function* () {
+      it.effect("gets campaign", () =>
+        Effect.gen(function* () {
           const campaign = yield* handleGetCampaign({
             input: {
               typebotId: proTypebotId,
@@ -85,9 +81,8 @@ describe.skip("skipped suite", () => {
         }),
       );
 
-      it.effect(
-        "lists campaigns",
-        Effect.fn(function* () {
+      it.effect("lists campaigns", () =>
+        Effect.gen(function* () {
           const { campaigns } = yield* handleListCampaigns({
             input: {
               typebotId: proTypebotId,
@@ -99,13 +94,14 @@ describe.skip("skipped suite", () => {
             },
           });
           expect(campaigns.length).toBeGreaterThanOrEqual(1);
-          expect(campaigns.some((c) => c.id === campaignId)).toBe(true);
+          expect(campaigns.some((campaign) => campaign.id === campaignId)).toBe(
+            true,
+          );
         }),
       );
 
-      it.effect(
-        "updates campaign",
-        Effect.fn(function* () {
+      it.effect("updates campaign", () =>
+        Effect.gen(function* () {
           const campaign = yield* handleUpdateCampaign({
             input: {
               typebotId: proTypebotId,
@@ -122,9 +118,8 @@ describe.skip("skipped suite", () => {
         }),
       );
 
-      it.effect(
-        "deletes campaign",
-        Effect.fn(function* () {
+      it.effect("deletes campaign", () =>
+        Effect.gen(function* () {
           yield* handleDeleteCampaign({
             input: {
               typebotId: proTypebotId,

@@ -9,7 +9,7 @@ const DeleteCampaignInputSchema = Schema.Struct({
   campaignId: CampaignId,
 });
 export const deleteCampaignInputSchema = DeleteCampaignInputSchema.pipe(
-  Schema.standardSchemaV1,
+  Schema.toStandardSchemaV1,
 );
 
 export const handleDeleteCampaign = Effect.fn("handleDeleteCampaign")(
@@ -21,10 +21,11 @@ export const handleDeleteCampaign = Effect.fn("handleDeleteCampaign")(
     context: { user: Pick<User, "id"> };
   }) {
     const campaignsUsecases = yield* CampaignsUsecases;
+    const userId = Schema.decodeSync(UserId)(user.id);
     return yield* campaignsUsecases.delete({
       typebotId,
       campaignId,
-      userId: UserId.make(user.id),
+      userId,
     });
   },
   Effect.catchTags({
@@ -41,7 +42,7 @@ export const handleDeleteCampaign = Effect.fn("handleDeleteCampaign")(
         }),
       ),
   }),
-  Effect.catchAllDefect((defect) =>
+  Effect.catchDefect((defect) =>
     Effect.fail(
       new ORPCError("INTERNAL_SERVER_ERROR", {
         message: "Failed to delete campaign",

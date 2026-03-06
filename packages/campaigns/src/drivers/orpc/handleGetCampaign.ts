@@ -9,7 +9,7 @@ const GetCampaignInputSchema = Schema.Struct({
   campaignId: CampaignId,
 });
 export const getCampaignInputSchema = GetCampaignInputSchema.pipe(
-  Schema.standardSchemaV1,
+  Schema.toStandardSchemaV1,
 );
 
 export const handleGetCampaign = Effect.fn("handleGetCampaign")(
@@ -21,10 +21,11 @@ export const handleGetCampaign = Effect.fn("handleGetCampaign")(
     context: { user: Pick<User, "id"> };
   }) {
     const campaignsUsecases = yield* CampaignsUsecases;
+    const userId = Schema.decodeSync(UserId)(user.id);
     return yield* campaignsUsecases.get({
       typebotId,
       campaignId,
-      userId: UserId.make(user.id),
+      userId,
     });
   },
   Effect.catchTags({
@@ -41,7 +42,7 @@ export const handleGetCampaign = Effect.fn("handleGetCampaign")(
         }),
       ),
   }),
-  Effect.catchAllDefect((defect) =>
+  Effect.catchDefect((defect) =>
     Effect.fail(
       new ORPCError("INTERNAL_SERVER_ERROR", {
         message: "Failed to get campaign",

@@ -6,10 +6,9 @@ import { Schema } from "effect";
 import type { RefObject } from "react";
 import type { SpaceCreateInput } from "../../application/SpaceCreateInput";
 import { SpaceCreateInputSchema } from "../../application/SpaceCreateInput";
-import { SpaceName } from "../../domain/Space";
 
 const SpaceCreateInputStandardSchema = SpaceCreateInputSchema.pipe(
-  Schema.standardSchemaV1,
+  Schema.toStandardSchemaV1,
 );
 
 export const CreateSpaceForm = ({
@@ -27,10 +26,7 @@ export const CreateSpaceForm = ({
       onSubmit: SpaceCreateInputStandardSchema,
     },
     onSubmit: async ({ value }) => {
-      await onValidSubmit({
-        ...value,
-        name: SpaceName.make(value.name),
-      });
+      await onValidSubmit(Schema.decodeSync(SpaceCreateInputSchema)(value));
     },
   });
 
@@ -55,7 +51,7 @@ export const CreateSpaceForm = ({
                 name={field.name}
                 value={field.state.value}
                 onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onChange={(event) => field.handleChange(event.target.value)}
                 aria-invalid={isInvalid}
                 placeholder="My space"
               />

@@ -1,11 +1,11 @@
 import type { SpaceId } from "@typebot.io/shared-primitives/domain";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
-import { Context, type Effect } from "effect";
+import { type Effect, ServiceMap } from "effect";
 import type { SegmentsAlreadyExistsError } from "../domain/errors";
 import type { Segment } from "../domain/Segment";
 import type { SegmentCreateInput } from "./SegmentCreateInput";
 
-export class SegmentsRepo extends Context.Tag("@typebot.io/SegmentsRepo")<
+export class SegmentsRepo extends ServiceMap.Service<
   SegmentsRepo,
   {
     readonly listByWorkspaceAndSpace: (
@@ -18,4 +18,4 @@ export class SegmentsRepo extends Context.Tag("@typebot.io/SegmentsRepo")<
       input: SegmentCreateInput,
     ) => Effect.Effect<Segment, SegmentsAlreadyExistsError>;
   }
->() {}
+>()("@typebot.io/SegmentsRepo") {}

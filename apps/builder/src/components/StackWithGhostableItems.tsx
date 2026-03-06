@@ -94,7 +94,7 @@ export const StacksWithGhostableItems = forwardRef<
     <div className={cn("flex flex-col gap-0", className)} ref={ref}>
       {childrenGroups.map((group, index) => (
         <StackWithGhostableItems
-          key={`${group.isNullGroup}-${index}`}
+          key={`${group.isNullGroup}-${index.toString()}`}
           gapPixel={gapPixel}
           groups={childrenGroups}
           index={index}

@@ -1,19 +1,17 @@
 import type { SpaceId } from "@typebot.io/shared-primitives/domain";
 import type { UserId } from "@typebot.io/user/schemas";
+import { WorkspaceRepo } from "@typebot.io/workspaces/application/WorkspaceRepo";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
-import { Context, Effect, Layer } from "effect";
+import { Effect, Layer, ServiceMap } from "effect";
 import {
   type SegmentsAlreadyExistsError,
   SegmentsForbiddenError,
 } from "../domain/errors";
 import type { Segment } from "../domain/Segment";
 import type { SegmentCreateInput } from "./SegmentCreateInput";
-import { SegmentsAuthorization } from "./SegmentsAuthorization";
 import { SegmentsRepo } from "./SegmentsRepo";
 
-export class SegmentsUsecases extends Context.Tag(
-  "@typebot.io/SegmentsUsecases",
-)<
+export class SegmentsUsecases extends ServiceMap.Service<
   SegmentsUsecases,
   {
     readonly list: (ressource: {
@@ -33,12 +31,12 @@ export class SegmentsUsecases extends Context.Tag(
       SegmentsAlreadyExistsError | SegmentsForbiddenError
     >;
   }
->() {
+>()("@typebot.io/SegmentsUsecases") {
   static readonly layer = Layer.effect(
     SegmentsUsecases,
     Effect.gen(function* () {
       const segmentsRepo = yield* SegmentsRepo;
-      const segmentsAuthorization = yield* SegmentsAuthorization;
+      const workspaceRepo = yield* WorkspaceRepo;
 
       const list = Effect.fn("SegmentsUsecases.list")(function* ({
         workspaceId,
@@ -48,8 +46,8 @@ export class SegmentsUsecases extends Context.Tag(
         workspaceId: WorkspaceId;
         spaceId?: SpaceId;
         userId: UserId;
-      }) {
-        const canList = yield* segmentsAuthorization.canReadSegments(
+      }): Effect.fn.Return<readonly Segment[], SegmentsForbiddenError> {
+        const canList = yield* workspaceRepo.canReadWorkspace(
           workspaceId,
           userId,
         );
@@ -73,8 +71,11 @@ export class SegmentsUsecases extends Context.Tag(
           userId: UserId;
         },
         input: SegmentCreateInput,
-      ) {
-        const canCreate = yield* segmentsAuthorization.canWriteSegments(
+      ): Effect.fn.Return<
+        Segment,
+        SegmentsAlreadyExistsError | SegmentsForbiddenError
+      > {
+        const canCreate = yield* workspaceRepo.canAdminWriteWorkspace(
           workspaceId,
           userId,
         );

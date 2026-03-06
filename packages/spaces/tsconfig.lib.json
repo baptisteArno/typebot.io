@@ -9,7 +9,7 @@
   "include": ["src/**/*.ts", "src/drivers/react/**/*.tsx"],
   "references": [
     {
-      "path": "../shared-core/tsconfig.lib.json"
+      "path": "../shared-primitives/tsconfig.lib.json"
     },
     {
       "path": "../user/tsconfig.lib.json"
@@ -22,6 +22,9 @@
     },
     {
       "path": "../prisma/tsconfig.lib.json"
+    },
+    {
+      "path": "../shared-core/tsconfig.lib.json"
     },
     {
       "path": "../config/tsconfig.lib.json"

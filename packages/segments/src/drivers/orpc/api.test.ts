@@ -5,22 +5,17 @@ import {
   userId,
 } from "@typebot.io/config/tests/seedDatabaseForTest";
 import type { SegmentId } from "@typebot.io/shared-primitives/domain";
-import { PrismaWorkspaceAuthorization } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceAuthorization";
+import { PrismaWorkspaceRepository } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceRepository";
 import { Effect, Layer } from "effect";
 import { SegmentsUsecases } from "../../application/SegmentsUsecases";
-import { SegmentName } from "../../domain/Segment";
-import { PrismaSegmentsAuthorization } from "../../infrastructure/PrismaSegmentsAuthorization";
 import { PrismaSegmentsRepository } from "../../infrastructure/PrismaSegmentsRepository";
 import { handleCreateSegment } from "./handleCreateSegment";
 import { handleListSegments } from "./handleListSegments";
 
 const SegmentsInfrastructureLayer = Layer.mergeAll(
-  PrismaSegmentsAuthorization,
   PrismaSegmentsRepository,
-).pipe(
-  Layer.provideMerge(PrismaWorkspaceAuthorization),
-  Layer.provideMerge(PgContainerPrismaLayer),
-);
+  PrismaWorkspaceRepository,
+).pipe(Layer.provideMerge(PgContainerPrismaLayer));
 
 const SegmentsLiveLayer = Layer.provide(
   SegmentsUsecases.layer,
@@ -32,13 +27,12 @@ let segmentId: SegmentId;
 it.layer(SegmentsLiveLayer, { timeout: "30 seconds" })(
   "SegmentsLayer",
   (it) => {
-    it.effect(
-      "should create segment with valid data",
-      Effect.fn(function* () {
+    it.effect("should create segment with valid data", () =>
+      Effect.gen(function* () {
         const { segment } = yield* handleCreateSegment({
           input: {
             workspaceId: proWorkspaceId,
-            name: SegmentName.make("VIP customers"),
+            name: "VIP customers",
           },
           context: {
             user: {
@@ -54,9 +48,8 @@ it.layer(SegmentsLiveLayer, { timeout: "30 seconds" })(
       }),
     );
 
-    it.effect(
-      "lists segments",
-      Effect.fn(function* () {
+    it.effect("lists segments", () =>
+      Effect.gen(function* () {
         const { segments } = yield* handleListSegments({
           input: {
             workspaceId: proWorkspaceId,
@@ -68,7 +61,7 @@ it.layer(SegmentsLiveLayer, { timeout: "30 seconds" })(
           },
         });
         expect(segments.length).toBeGreaterThanOrEqual(1);
-        expect(segments.some((s) => s.id === segmentId)).toBe(true);
+        expect(segments.some((segment) => segment.id === segmentId)).toBe(true);
       }),
     );
   },

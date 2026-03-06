@@ -8,7 +8,7 @@ const ListSpacesInputSchema = Schema.Struct({
   workspaceId: WorkspaceId,
 });
 export const listSpacesInputSchema = ListSpacesInputSchema.pipe(
-  Schema.standardSchemaV1,
+  Schema.toStandardSchemaV1,
 );
 
 export const handleListSpaces = Effect.fn("handleListSpaces")(
@@ -20,9 +20,10 @@ export const handleListSpaces = Effect.fn("handleListSpaces")(
     context: { user: Pick<User, "id"> };
   }) {
     const spacesUsecases = yield* SpacesUsecases;
+    const userId = Schema.decodeSync(UserId)(user.id);
     const spacesList = yield* spacesUsecases.list({
       workspaceId,
-      userId: UserId.make(user.id),
+      userId,
     });
     return { spaces: spacesList };
   },
@@ -34,7 +35,7 @@ export const handleListSpaces = Effect.fn("handleListSpaces")(
         }),
       ),
   }),
-  Effect.catchAllDefect((defect) =>
+  Effect.catchDefect((defect) =>
     Effect.fail(
       new ORPCError("INTERNAL_SERVER_ERROR", {
         message: "Failed to list spaces",

@@ -24,6 +24,14 @@
         "options": {
           "command": "bun run lint-repo"
         }
+      },
+      "test": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "bunx vitest run --config vitest.config.ts",
+          "cwd": ".",
+          "forwardAllArgs": true
+        }
       }
     }
   },

@@ -1,16 +1,12 @@
-import { fileURLToPath } from "url";
-import { defineConfig } from "vitest/config";
+import { defineProject } from "vitest/config";
 
-export default defineConfig(() => ({
+export default defineProject(() => ({
   root: __dirname,
   cacheDir: "../../node_modules/.vite/packages/contacts",
   test: {
     name: "@typebot.io/contacts",
     watch: false,
     globals: true,
-    globalSetup: fileURLToPath(
-      new URL("../config/src/tests/globalSetup.ts", import.meta.url),
-    ),
     environment: "node",
     include: ["{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
     reporters: ["default"],

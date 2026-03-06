@@ -5,13 +5,14 @@ import { Effect, Schema } from "effect";
 import { SpaceCreateInputSchema } from "../../application/SpaceCreateInput";
 import { SpacesUsecases } from "../../application/SpacesUsecases";
 
-export const CreateSpaceInputSchema = SpaceCreateInputSchema.pipe(
-  Schema.extend(
-    Schema.Struct({
-      workspaceId: WorkspaceId,
-    }),
-  ),
-  Schema.standardSchemaV1,
+const CreateSpaceInputSchema = Schema.Struct({
+  workspaceId: WorkspaceId,
+  name: SpaceCreateInputSchema.fields.name,
+  icon: SpaceCreateInputSchema.fields.icon,
+});
+
+export const CreateSpaceInputStandardSchema = Schema.toStandardSchemaV1(
+  CreateSpaceInputSchema,
 );
 
 export const handleCreateSpace = Effect.fn("handleCreateSpace")(
@@ -23,10 +24,11 @@ export const handleCreateSpace = Effect.fn("handleCreateSpace")(
     context: { user: Pick<User, "id"> };
   }) {
     const spacesUsecases = yield* SpacesUsecases;
+    const userId = Schema.decodeSync(UserId)(user.id);
     const space = yield* spacesUsecases.create(
       {
         workspaceId,
-        userId: UserId.make(user.id),
+        userId,
       },
       {
         name,
@@ -49,7 +51,7 @@ export const handleCreateSpace = Effect.fn("handleCreateSpace")(
         }),
       ),
   }),
-  Effect.catchAllDefect((defect) =>
+  Effect.catchDefect((defect) =>
     Effect.fail(
       new ORPCError("INTERNAL_SERVER_ERROR", {
         message: "Failed to create space",

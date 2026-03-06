@@ -10,7 +10,7 @@ const ListSegmentsInputSchema = Schema.Struct({
   spaceId: Schema.optional(SpaceId),
 });
 export const listSegmentsInputSchema = ListSegmentsInputSchema.pipe(
-  Schema.standardSchemaV1,
+  Schema.toStandardSchemaV1,
 );
 
 export const handleListSegments = Effect.fn("handleListSegments")(
@@ -22,10 +22,11 @@ export const handleListSegments = Effect.fn("handleListSegments")(
     context: { user: Pick<User, "id"> };
   }) {
     const segmentsUsecases = yield* SegmentsUsecases;
+    const userId = Schema.decodeSync(UserId)(user.id);
     const segmentsList = yield* segmentsUsecases.list({
       workspaceId,
       spaceId,
-      userId: UserId.make(user.id),
+      userId,
     });
     return { segments: segmentsList };
   },
@@ -37,7 +38,7 @@ export const handleListSegments = Effect.fn("handleListSegments")(
         }),
       ),
   }),
-  Effect.catchAllDefect((defect) =>
+  Effect.catchDefect((defect) =>
     Effect.fail(
       new ORPCError("INTERNAL_SERVER_ERROR", {
         message: "Failed to list segments",

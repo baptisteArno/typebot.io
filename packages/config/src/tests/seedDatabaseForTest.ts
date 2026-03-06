@@ -1,11 +1,11 @@
 import { PrismaService } from "@typebot.io/prisma/effect";
 import { DbNull, Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
 import { TypebotId, UserId, WorkspaceId } from "@typebot.io/shared-core/domain";
-import { Effect } from "effect";
+import { Effect, Schema } from "effect";
 
-export const userId = UserId.make("seedUserId");
-export const proWorkspaceId = WorkspaceId.make("proWorkspace");
-export const proTypebotId = TypebotId.make("proTypebot");
+export const userId = Schema.decodeSync(UserId)("seedUserId");
+export const proWorkspaceId = Schema.decodeSync(WorkspaceId)("proWorkspace");
+export const proTypebotId = Schema.decodeSync(TypebotId)("proTypebot");
 
 const latestTypebotVersion = "6.1";
 const startEventType = "start";
@@ -89,6 +89,35 @@ export const seedDatabaseForTest = Effect.gen(function* () {
       events: sharedTypebotJsonFields.events,
     },
   });
+
+  const emailPropertyDef = yield* prisma.contactPropertyDefinition.create({
+    data: {
+      key: "email",
+      type: "EMAIL",
+      isUnique: true,
+      workspaceId: proWorkspaceId,
+    },
+  });
+
+  const contactCount = 75;
+  yield* Effect.forEach(
+    Array.from({ length: contactCount }, (_, i) => i + 1),
+    (index) =>
+      prisma.contact.create({
+        data: {
+          workspaceId: proWorkspaceId,
+          name: `Contact ${index}`,
+          properties: {
+            create: {
+              definitionId: emailPropertyDef.id,
+              valueString: `contact-${index}@test.local`,
+              valueNumber: null,
+            },
+          },
+        },
+      }),
+    { concurrency: 1 },
+  );
 
   return {
     userId,

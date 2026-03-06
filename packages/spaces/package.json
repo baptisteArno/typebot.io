@@ -23,13 +23,16 @@
   },
   "dependencies": {
     "@orpc/server": "^1.13.4",
-    "effect": "^3.19.18",
+    "effect": "4.0.0-beta.30",
     "@typebot.io/config": "workspace:*",
     "@typebot.io/shared-core": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/ui": "workspace:*",
     "@tanstack/react-form": "^1.28.3"
+  },
+  "devDependencies": {
+    "@effect/vitest": "4.0.0-beta.30"
   },
   "nx": {
     "targets": {
@@ -39,6 +42,8 @@
           "{options.reportsDirectory}"
         ],
         "options": {
+          "configFile": "vitest.config.ts",
+          "project": "@typebot.io/spaces",
           "reportsDirectory": "../../coverage/packages/spaces"
         }
       }

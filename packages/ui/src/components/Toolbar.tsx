@@ -1,4 +1,4 @@
-import { Toolbar as ToolbarPrimitive } from "@base-ui-components/react/toolbar";
+import { Toolbar as ToolbarPrimitive } from "@base-ui/react/toolbar";
 import { forwardRef } from "react";
 import { cn } from "../lib/cn";
 import { separatorClassNames } from "./Separator";

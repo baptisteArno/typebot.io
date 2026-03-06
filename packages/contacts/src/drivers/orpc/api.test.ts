@@ -4,27 +4,38 @@ import {
   proWorkspaceId,
   userId,
 } from "@typebot.io/config/tests/seedDatabaseForTest";
-import { PrismaWorkspaceAuthorization } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceAuthorization";
+import { PrismaWorkspaceRepository } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceRepository";
 import { Effect, Layer } from "effect";
+import { ContactPropertyDefinitionsUsecases } from "../../application/ContactPropertyDefinitionsUsecases";
 import { ContactsUsecases } from "../../application/ContactsUsecases";
 import type { ContactId } from "../../domain/Contact";
-import { PrismaContactsAuthorization } from "../../infrastructure/PrismaContactsAuthorization";
+import { PrismaContactPropertyDefinitionsRepository } from "../../infrastructure/PrismaContactPropertyDefinitionsRepository";
 import { PrismaContactsRepository } from "../../infrastructure/PrismaContactsRepository";
 import { handleCreateContact } from "./handleCreateContact";
 import { handleGetContact } from "./handleGetContact";
 import { handleListContacts } from "./handleListContacts";
 
 const ContactsInfrastructureLayer = Layer.mergeAll(
-  PrismaContactsAuthorization,
   PrismaContactsRepository,
-).pipe(
-  Layer.provideMerge(PrismaWorkspaceAuthorization),
-  Layer.provideMerge(PgContainerPrismaLayer),
+  PrismaWorkspaceRepository,
+).pipe(Layer.provideMerge(PgContainerPrismaLayer));
+
+const ContactPropertyDefinitionsInfrastructureLayer = Layer.mergeAll(
+  PrismaContactPropertyDefinitionsRepository,
+  PrismaWorkspaceRepository,
+).pipe(Layer.provideMerge(PgContainerPrismaLayer));
+
+const AllContactsInfrastructureLayer = Layer.mergeAll(
+  ContactsInfrastructureLayer,
+  ContactPropertyDefinitionsInfrastructureLayer,
 );
 
-const ContactsLiveLayer = Layer.provide(
-  ContactsUsecases.layer,
-  ContactsInfrastructureLayer,
+const ContactsLiveLayer = Layer.mergeAll(
+  Layer.provide(ContactsUsecases.layer, AllContactsInfrastructureLayer),
+  Layer.provide(
+    ContactPropertyDefinitionsUsecases.layer,
+    ContactPropertyDefinitionsInfrastructureLayer,
+  ),
 );
 
 let contactId: ContactId;
@@ -32,15 +43,12 @@ let contactId: ContactId;
 it.layer(ContactsLiveLayer, { timeout: "30 seconds" })(
   "ContactsLayer",
   (it) => {
-    it.effect(
-      "should create contact with valid data",
-      Effect.fn(function* () {
+    it.effect("should create contact with valid data", () =>
+      Effect.gen(function* () {
         const { contact } = yield* handleCreateContact({
           input: {
             workspaceId: proWorkspaceId,
-            firstName: "John",
-            lastName: "Doe",
-            email: "john@example.com",
+            name: "John Doe",
           },
           context: {
             user: {
@@ -51,14 +59,12 @@ it.layer(ContactsLiveLayer, { timeout: "30 seconds" })(
         contactId = contact.id;
 
         expect(contact).toBeDefined();
-        expect(contact.firstName).toBe("John");
-        expect(contact.email).toBe("john@example.com");
+        expect(contact.name).toBe("John Doe");
       }),
     );
 
-    it.effect(
-      "gets contact",
-      Effect.fn(function* () {
+    it.effect("gets contact", () =>
+      Effect.gen(function* () {
         const { contact } = yield* handleGetContact({
           input: {
             workspaceId: proWorkspaceId,
@@ -72,13 +78,12 @@ it.layer(ContactsLiveLayer, { timeout: "30 seconds" })(
         });
         expect(contact).toBeDefined();
         expect(contact.id).toBe(contactId);
-        expect(contact.firstName).toBe("John");
+        expect(contact.name).toBe("John Doe");
       }),
     );
 
-    it.effect(
-      "lists contacts",
-      Effect.fn(function* () {
+    it.effect("lists contacts", () =>
+      Effect.gen(function* () {
         const { contacts } = yield* handleListContacts({
           input: {
             workspaceId: proWorkspaceId,
@@ -90,7 +95,7 @@ it.layer(ContactsLiveLayer, { timeout: "30 seconds" })(
           },
         });
         expect(contacts.length).toBeGreaterThanOrEqual(1);
-        expect(contacts.some((c) => c.id === contactId)).toBe(true);
+        expect(contacts.some((contact) => contact.id === contactId)).toBe(true);
       }),
     );
   },

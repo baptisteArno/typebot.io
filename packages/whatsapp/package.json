@@ -33,7 +33,7 @@
     "@typebot.io/chat-api": "workspace:*",
     "@sentry/nextjs": "^10.43.0",
     "@typebot.io/config": "workspace:*",
-    "ky": "1.2.4",
+    "ky": "^1.2.4",
     "@typebot.io/runtime-session-store": "workspace:*",
     "zod": "^4.3.5"
   },

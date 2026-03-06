@@ -1,16 +1,16 @@
 import type { UserId } from "@typebot.io/user/schemas";
+import { WorkspaceRepo } from "@typebot.io/workspaces/application/WorkspaceRepo";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
-import { Context, Effect, Layer } from "effect";
+import { Effect, Layer, ServiceMap } from "effect";
 import {
   type SpacesAlreadyExistsError,
   SpacesForbiddenError,
 } from "../domain/errors";
 import type { Space } from "../domain/Space";
 import type { SpaceCreateInput } from "./SpaceCreateInput";
-import { SpacesAuthorization } from "./SpacesAuthorization";
 import { SpacesRepo } from "./SpacesRepo";
 
-export class SpacesUsecases extends Context.Tag("@typebot.io/SpacesUsecases")<
+export class SpacesUsecases extends ServiceMap.Service<
   SpacesUsecases,
   {
     readonly create: (
@@ -25,12 +25,12 @@ export class SpacesUsecases extends Context.Tag("@typebot.io/SpacesUsecases")<
       userId: UserId;
     }) => Effect.Effect<readonly Space[], SpacesForbiddenError>;
   }
->() {
+>()("@typebot.io/SpacesUsecases") {
   static readonly layer = Layer.effect(
     SpacesUsecases,
     Effect.gen(function* () {
       const spacesRepo = yield* SpacesRepo;
-      const spacesAuthorization = yield* SpacesAuthorization;
+      const workspaceRepo = yield* WorkspaceRepo;
 
       const list = Effect.fn("SpacesUsecases.list")(function* ({
         workspaceId,
@@ -38,8 +38,8 @@ export class SpacesUsecases extends Context.Tag("@typebot.io/SpacesUsecases")<
       }: {
         workspaceId: WorkspaceId;
         userId: UserId;
-      }) {
-        const canList = yield* spacesAuthorization.canListSpaces(
+      }): Effect.fn.Return<readonly Space[], SpacesForbiddenError> {
+        const canList = yield* workspaceRepo.canReadWorkspace(
           workspaceId,
           userId,
         );
@@ -58,8 +58,11 @@ export class SpacesUsecases extends Context.Tag("@typebot.io/SpacesUsecases")<
           userId: UserId;
         },
         input: SpaceCreateInput,
-      ) {
-        const canCreate = yield* spacesAuthorization.canCreateSpace(
+      ): Effect.fn.Return<
+        Space,
+        SpacesAlreadyExistsError | SpacesForbiddenError
+      > {
+        const canCreate = yield* workspaceRepo.canAdminWriteWorkspace(
           workspaceId,
           userId,
         );

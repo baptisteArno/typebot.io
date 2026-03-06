@@ -2,11 +2,10 @@ import {
   SegmentId,
   SpaceId,
   WorkspaceId,
-} from "@typebot.io/shared-core/domain";
+} from "@typebot.io/shared-primitives/domain";
 import { Schema } from "effect";
 
-export const SegmentName = Schema.String.pipe(
-  Schema.nonEmptyString(),
+export const SegmentName = Schema.NonEmptyString.pipe(
   Schema.brand("SegmentName"),
 );
 

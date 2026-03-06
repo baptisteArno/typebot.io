@@ -27,10 +27,13 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
+      "path": "../../packages/user/tsconfig.lib.json"
+    },
+    {
       "path": "../../packages/typebot/tsconfig.lib.json"
     },
     {
-      "path": "../../packages/user/tsconfig.lib.json"
+      "path": "../../packages/telemetry/tsconfig.lib.json"
     },
     {
       "path": "../../packages/results/tsconfig.lib.json"

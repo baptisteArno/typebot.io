@@ -1,9 +1,8 @@
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { PrismaLayer } from "@typebot.io/prisma/layer";
-import { PrismaTypebotAuthorization } from "@typebot.io/typebot/infrastructure/PrismaTypebotAuthorization";
+import { PrismaTypebotRepository } from "@typebot.io/typebot/infrastructure/PrismaTypebotRepository";
 import { Effect, Layer } from "effect";
 import { CampaignsUsecases } from "../../application/CampaignsUsecases";
-import { PrismaCampaignsAuthorization } from "../../infrastructure/PrismaCampaignsAuthorization";
 import { PrismaCampaignsRepository } from "../../infrastructure/PrismaCampaignsRepository";
 import {
   CreateCampaignInputStandardSchema,
@@ -24,12 +23,9 @@ import {
 } from "./handleUpdateCampaign";
 
 const CampaignsInfrastructureLayer = Layer.mergeAll(
-  PrismaCampaignsAuthorization,
   PrismaCampaignsRepository,
-).pipe(
-  Layer.provideMerge(PrismaTypebotAuthorization),
-  Layer.provideMerge(PrismaLayer),
-);
+  PrismaTypebotRepository,
+).pipe(Layer.provideMerge(PrismaLayer));
 
 export const CampaignsLiveLayer = Layer.provide(
   CampaignsUsecases.layer,

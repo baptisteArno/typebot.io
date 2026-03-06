@@ -41,7 +41,7 @@ export const PrismaCampaignsRepository = Layer.effect(
 
       const decoded = yield* Effect.all(
         paginatedCampaigns.map((c) =>
-          Schema.decodeUnknown(Campaign)(c).pipe(Effect.orDie),
+          Schema.decodeUnknownEffect(Campaign)(c).pipe(Effect.orDie),
         ),
       );
 
@@ -64,7 +64,9 @@ export const PrismaCampaignsRepository = Layer.effect(
         })
         .pipe(Effect.orDie);
 
-      return yield* Schema.decodeUnknown(Campaign)(campaign).pipe(Effect.orDie);
+      return yield* Schema.decodeUnknownEffect(Campaign)(campaign).pipe(
+        Effect.orDie,
+      );
     });
 
     const getById = Effect.fn("PrismaCampaignsRepository.getById")(function* (
@@ -80,7 +82,9 @@ export const PrismaCampaignsRepository = Layer.effect(
 
       if (!campaign) return yield* new CampaignsNotFoundError();
 
-      return yield* Schema.decodeUnknown(Campaign)(campaign).pipe(Effect.orDie);
+      return yield* Schema.decodeUnknownEffect(Campaign)(campaign).pipe(
+        Effect.orDie,
+      );
     });
 
     const update = Effect.fn("PrismaCampaignsRepository.update")(function* (
@@ -130,7 +134,9 @@ export const PrismaCampaignsRepository = Layer.effect(
         })
         .pipe(Effect.orDie);
 
-      return yield* Schema.decodeUnknown(Campaign)(updated).pipe(Effect.orDie);
+      return yield* Schema.decodeUnknownEffect(Campaign)(updated).pipe(
+        Effect.orDie,
+      );
     });
 
     const delete_ = Effect.fn("PrismaCampaignsRepository.delete")(function* (

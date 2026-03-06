@@ -6,10 +6,9 @@ import { Schema } from "effect";
 import type { RefObject } from "react";
 import type { SegmentCreateInput } from "../../application/SegmentCreateInput";
 import { SegmentCreateInputSchema } from "../../application/SegmentCreateInput";
-import { SegmentName } from "../../domain/Segment";
 
 const SegmentCreateInputStandardSchema = SegmentCreateInputSchema.pipe(
-  Schema.standardSchemaV1,
+  Schema.toStandardSchemaV1,
 );
 
 export const CreateSegmentForm = ({
@@ -25,10 +24,7 @@ export const CreateSegmentForm = ({
       onSubmit: SegmentCreateInputStandardSchema,
     },
     onSubmit: async ({ value }) => {
-      await onValidSubmit({
-        ...value,
-        name: SegmentName.make(value.name),
-      });
+      await onValidSubmit(Schema.decodeSync(SegmentCreateInputSchema)(value));
     },
   });
 

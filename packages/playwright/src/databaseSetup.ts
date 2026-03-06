@@ -173,11 +173,134 @@ const setupTypebots = async () => {
   ]);
 };
 
+const FIRST_NAMES = [
+  "Alice",
+  "Bob",
+  "Carol",
+  "David",
+  "Emma",
+  "Frank",
+  "Grace",
+  "Henry",
+  "Iris",
+  "Jack",
+  "Kate",
+  "Leo",
+  "Mia",
+  "Noah",
+  "Olivia",
+  "Paul",
+  "Quinn",
+  "Rose",
+  "Sam",
+  "Tina",
+  "Uma",
+  "Victor",
+  "Wendy",
+  "Xavier",
+  "Yara",
+  "Zoe",
+  "Adam",
+  "Beth",
+  "Chris",
+  "Diana",
+  "Ethan",
+  "Fiona",
+];
+
+const LAST_NAMES = [
+  "Martin",
+  "Bernard",
+  "Dubois",
+  "Thomas",
+  "Robert",
+  "Richard",
+  "Petit",
+  "Durand",
+  "Leroy",
+  "Moreau",
+  "Simon",
+  "Laurent",
+  "Lefebvre",
+  "Michel",
+  "Garcia",
+  "David",
+  "Bertrand",
+  "Roux",
+  "Vincent",
+  "Fournier",
+  "Morel",
+  "Girard",
+  "Andre",
+  "Lefevre",
+  "Mercier",
+  "Dupont",
+  "Lambert",
+  "Bonnet",
+];
+
+const randomInt = (min: number, max: number, seed: number) =>
+  min + (((seed * 1103515245 + 12345) >>> 0) % (max - min + 1));
+
+const setupContacts = async () => {
+  const emailDef = await prisma.contactPropertyDefinition.create({
+    data: {
+      key: "email",
+      type: "EMAIL",
+      isUnique: true,
+      workspaceId: proWorkspaceId,
+    },
+  });
+  const phoneDef = await prisma.contactPropertyDefinition.create({
+    data: {
+      key: "phone",
+      type: "PHONE",
+      isUnique: true,
+      workspaceId: proWorkspaceId,
+    },
+  });
+
+  const contactCount = 100;
+  for (let i = 0; i < contactCount; i++) {
+    const seed = i + 42;
+    const firstName = FIRST_NAMES[randomInt(0, FIRST_NAMES.length - 1, seed)];
+    const lastName = LAST_NAMES[randomInt(0, LAST_NAMES.length - 1, seed + 1)];
+    const email = `contact.${i}.${firstName.toLowerCase()}.${lastName.toLowerCase()}@example.com`;
+    const phone = i % 3 === 0 ? null : `+33${600000000 + i}`;
+    const name = i % 2 === 0 ? `${firstName} ${lastName}` : null;
+    await prisma.contact.create({
+      data: {
+        workspaceId: proWorkspaceId,
+        name,
+        properties: {
+          create: [
+            {
+              definitionId: emailDef.id,
+              valueString: email,
+              valueNumber: null,
+            },
+            ...(phone
+              ? [
+                  {
+                    definitionId: phoneDef.id,
+                    valueString: phone,
+                    valueNumber: null,
+                  },
+                ]
+              : []),
+          ],
+        },
+      },
+    });
+  }
+};
+
 export const setupDatabase = async () => {
   await setupWorkspaces();
   await setupUsers();
   await setupTypebots();
-  return setupCredentials();
+  await setupCredentials();
+  await setupContacts();
 };
 
 export const teardownDatabase = async () => {

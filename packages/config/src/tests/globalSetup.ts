@@ -3,6 +3,7 @@ import { access } from "node:fs/promises";
 import { promisify } from "node:util";
 import { PostgreSqlContainer } from "@testcontainers/postgresql";
 import type { TestProject } from "vitest/node";
+import { runDatabaseSetup } from "./runDatabaseSetup";
 
 declare module "vitest" {
   export interface ProvidedContext {
@@ -54,6 +55,8 @@ export default async function globalSetup(project: TestProject) {
   console.log("*** container started", container.getConnectionUri());
 
   const databaseUrl = container.getConnectionUri();
+
+  await runDatabaseSetup(databaseUrl);
 
   project.provide("pgContainerDatabaseUri", databaseUrl);
 

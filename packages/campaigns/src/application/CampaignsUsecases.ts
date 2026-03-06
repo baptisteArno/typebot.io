@@ -2,22 +2,20 @@ import type {
   CampaignId,
   TypebotId,
 } from "@typebot.io/shared-primitives/domain";
+import { TypebotRepo } from "@typebot.io/typebot/application/TypebotRepo";
 import type { UserId } from "@typebot.io/user/schemas";
-import { Context, Effect, Layer } from "effect";
+import { Effect, Layer, ServiceMap } from "effect";
 import type { Campaign } from "../domain/Campaign";
 import {
   CampaignsForbiddenError,
   type CampaignsForbiddenError as CampaignsForbiddenErrorType,
   type CampaignsNotFoundError,
 } from "../domain/errors";
-import { CampaignsAuthorization } from "./CampaignsAuthorization";
 import { CampaignsRepo } from "./CampaignsRepo";
 import type { CampaignUpdateInput } from "./CampaignUpdateInput";
 import type { WhatsAppCampaignInput } from "./WhatsAppCampaignInput";
 
-export class CampaignsUsecases extends Context.Tag(
-  "@typebot.io/CampaignsUsecases",
-)<
+export class CampaignsUsecases extends ServiceMap.Service<
   CampaignsUsecases,
   {
     readonly list: (
@@ -59,21 +57,21 @@ export class CampaignsUsecases extends Context.Tag(
       CampaignsForbiddenErrorType | CampaignsNotFoundError
     >;
   }
->() {
+>()("@typebot.io/CampaignsUsecases") {
   static readonly layer = Layer.effect(
     CampaignsUsecases,
     Effect.gen(function* () {
       const campaignsRepo = yield* CampaignsRepo;
-      const campaignsAuthorization = yield* CampaignsAuthorization;
+      const typebotRepo = yield* TypebotRepo;
 
       const list = Effect.fn("CampaignsUsecases.list")(function* (
         { typebotId, userId }: { typebotId: TypebotId; userId: UserId },
         pagination: { limit: number; cursor?: string },
-      ) {
-        const canRead = yield* campaignsAuthorization.canReadCampaign(
-          typebotId,
-          userId,
-        );
+      ): Effect.fn.Return<
+        { campaigns: readonly Campaign[]; nextCursor: string | undefined },
+        CampaignsForbiddenErrorType
+      > {
+        const canRead = yield* typebotRepo.canReadTypebot(typebotId, userId);
 
         if (!canRead) return yield* new CampaignsForbiddenError();
 
@@ -85,11 +83,8 @@ export class CampaignsUsecases extends Context.Tag(
       )(function* (
         { typebotId, userId }: { typebotId: TypebotId; userId: UserId },
         input: WhatsAppCampaignInput,
-      ) {
-        const canWrite = yield* campaignsAuthorization.canWriteCampaign(
-          typebotId,
-          userId,
-        );
+      ): Effect.fn.Return<Campaign, CampaignsForbiddenErrorType> {
+        const canWrite = yield* typebotRepo.canWriteTypebot(typebotId, userId);
 
         if (!canWrite) return yield* new CampaignsForbiddenError();
 
@@ -104,11 +99,11 @@ export class CampaignsUsecases extends Context.Tag(
         typebotId: TypebotId;
         campaignId: CampaignId;
         userId: UserId;
-      }) {
-        const canRead = yield* campaignsAuthorization.canReadCampaign(
-          typebotId,
-          userId,
-        );
+      }): Effect.fn.Return<
+        Campaign,
+        CampaignsForbiddenErrorType | CampaignsNotFoundError
+      > {
+        const canRead = yield* typebotRepo.canReadTypebot(typebotId, userId);
 
         if (!canRead) return yield* new CampaignsForbiddenError();
 
@@ -126,11 +121,11 @@ export class CampaignsUsecases extends Context.Tag(
           userId: UserId;
         },
         input: CampaignUpdateInput,
-      ) {
-        const canWrite = yield* campaignsAuthorization.canWriteCampaign(
-          typebotId,
-          userId,
-        );
+      ): Effect.fn.Return<
+        Campaign,
+        CampaignsForbiddenErrorType | CampaignsNotFoundError
+      > {
+        const canWrite = yield* typebotRepo.canWriteTypebot(typebotId, userId);
 
         if (!canWrite) return yield* new CampaignsForbiddenError();
 
@@ -145,11 +140,11 @@ export class CampaignsUsecases extends Context.Tag(
         typebotId: TypebotId;
         campaignId: CampaignId;
         userId: UserId;
-      }) {
-        const canWrite = yield* campaignsAuthorization.canWriteCampaign(
-          typebotId,
-          userId,
-        );
+      }): Effect.fn.Return<
+        void,
+        CampaignsForbiddenErrorType | CampaignsNotFoundError
+      > {
+        const canWrite = yield* typebotRepo.canWriteTypebot(typebotId, userId);
 
         if (!canWrite) return yield* new CampaignsForbiddenError();
 

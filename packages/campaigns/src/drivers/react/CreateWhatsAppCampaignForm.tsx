@@ -10,19 +10,16 @@ import { Schema } from "effect";
 import type { RefObject } from "react";
 
 export const FormSchema = Schema.Struct({
-  name: Schema.String.pipe(Schema.nonEmptyString()),
-  templateId: Schema.String.pipe(Schema.nonEmptyString()),
-  credentialsId: Schema.String.pipe(Schema.nonEmptyString()),
-  segmentId: Schema.NullOr(Schema.String.pipe(Schema.nonEmptyString())),
+  name: Schema.NonEmptyString,
+  templateId: Schema.NonEmptyString,
+  credentialsId: Schema.NonEmptyString,
+  segmentId: Schema.NullOr(Schema.NonEmptyString),
   templateAttributesMapping: Schema.optional(
-    Schema.Record({
-      key: Schema.String,
-      value: Schema.String.pipe(Schema.nonEmptyString()),
-    }),
+    Schema.Record(Schema.String, Schema.NonEmptyString),
   ),
 });
 export type Form = typeof FormSchema.Type;
-const FormSchemaStandardSchema = FormSchema.pipe(Schema.standardSchemaV1);
+const FormSchemaStandardSchema = Schema.toStandardSchemaV1(FormSchema);
 
 type Props = {
   segments: readonly Segment[];
@@ -37,17 +34,27 @@ export const CreateWhatsAppCampaignForm = ({
   initialFocusRef,
   className,
 }: Props) => {
+  const defaultSegmentId: Form["segmentId"] = null;
+  const segmentItems: Array<{ label: string; value: Form["segmentId"] }> = [
+    { label: "All contacts", value: null },
+    ...segments.map((segment) => ({
+      label: segment.name,
+      value: segment.id,
+    })),
+  ];
+
   const form = useForm({
     defaultValues: {
       name: "",
       templateId: "",
       credentialsId: "",
-    } as Form,
+      segmentId: defaultSegmentId,
+    },
     validators: {
       onSubmit: FormSchemaStandardSchema,
     },
     onSubmit: async ({ value }) => {
-      await onValidSubmit(value);
+      await onValidSubmit(Schema.decodeSync(FormSchema)(value));
     },
   });
 
@@ -72,7 +79,7 @@ export const CreateWhatsAppCampaignForm = ({
                 name={field.name}
                 value={field.state.value}
                 onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onValueChange={field.handleChange}
                 aria-invalid={isInvalid}
                 placeholder="My audience"
               />
@@ -90,14 +97,7 @@ export const CreateWhatsAppCampaignForm = ({
                 name={field.name}
                 value={field.state.value}
                 onValueChange={field.handleChange}
-                items={[
-                  { label: "All contacts", value: null as string | null },
-                ].concat(
-                  segments.map((segment) => ({
-                    label: segment.name,
-                    value: segment.id,
-                  })),
-                )}
+                items={segmentItems}
               >
                 <Select.Trigger />
                 <Select.Content>

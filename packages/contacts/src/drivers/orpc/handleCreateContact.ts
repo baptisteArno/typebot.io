@@ -1,53 +1,30 @@
 import { ORPCError } from "@orpc/server";
-import { SpaceId } from "@typebot.io/shared-primitives/domain";
 import { type User, UserId } from "@typebot.io/user/schemas";
-import { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Schema } from "effect";
-import { ContactCreateInputSchema } from "../../application/ContactCreateInput";
+import type { ContactCreateInput } from "../../application/ContactsUsecases";
 import { ContactsUsecases } from "../../application/ContactsUsecases";
-
-export const CreateContactInputStandardSchema = ContactCreateInputSchema.pipe(
-  Schema.extend(
-    Schema.Struct({
-      workspaceId: WorkspaceId,
-      spaceId: Schema.optional(SpaceId),
-    }),
-  ),
-  Schema.standardSchemaV1,
-);
 
 export const handleCreateContact = Effect.fn("handleCreateContact")(
   function* ({
-    input: {
-      workspaceId,
-      spaceId,
-      firstName,
-      lastName,
-      email,
-      phone,
-      customAttributes,
-    },
+    input,
     context: { user },
   }: {
-    input: typeof CreateContactInputStandardSchema.Type;
+    input: ContactCreateInput;
     context: { user: Pick<User, "id"> };
   }) {
     const contactsUsecases = yield* ContactsUsecases;
-    const contact = yield* contactsUsecases.create(
-      {
-        workspaceId,
-        spaceId,
-        userId: UserId.make(user.id),
-      },
-      { firstName, lastName, email, phone, customAttributes },
-    );
+    const userId = Schema.decodeSync(UserId)(user.id);
+    const contact = yield* contactsUsecases.create(input, {
+      userId,
+    });
     return { contact };
   },
   Effect.catchTags({
     ContactsAlreadyExistsError: () =>
       Effect.fail(
         new ORPCError("CONFLICT", {
-          message: "A contact with this email or phone already exists",
+          message:
+            "A contact with one of these unique property values already exists",
         }),
       ),
     ContactsForbiddenError: () =>
@@ -57,7 +34,7 @@ export const handleCreateContact = Effect.fn("handleCreateContact")(
         }),
       ),
   }),
-  Effect.catchAllDefect((defect) =>
+  Effect.catchDefect((defect) =>
     Effect.fail(
       new ORPCError("INTERNAL_SERVER_ERROR", {
         message: "Failed to create contact",

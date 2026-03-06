@@ -6,14 +6,14 @@ import { Effect, Schema } from "effect";
 import { SegmentCreateInputSchema } from "../../application/SegmentCreateInput";
 import { SegmentsUsecases } from "../../application/SegmentsUsecases";
 
-export const CreateSegmentInputSchema = SegmentCreateInputSchema.pipe(
-  Schema.extend(
-    Schema.Struct({
-      workspaceId: WorkspaceId,
-      spaceId: Schema.optional(SpaceId),
-    }),
-  ),
-  Schema.standardSchemaV1,
+const CreateSegmentInputSchema = Schema.Struct({
+  workspaceId: WorkspaceId,
+  spaceId: Schema.optional(SpaceId),
+  name: SegmentCreateInputSchema.fields.name,
+});
+
+export const CreateSegmentInputStandardSchema = Schema.toStandardSchemaV1(
+  CreateSegmentInputSchema,
 );
 
 export const handleCreateSegment = Effect.fn("handleCreateSegment")(
@@ -25,11 +25,12 @@ export const handleCreateSegment = Effect.fn("handleCreateSegment")(
     context: { user: Pick<User, "id"> };
   }) {
     const segmentsUsecases = yield* SegmentsUsecases;
+    const userId = Schema.decodeSync(UserId)(user.id);
     const segment = yield* segmentsUsecases.create(
       {
         workspaceId,
         spaceId,
-        userId: UserId.make(user.id),
+        userId,
       },
       { name },
     );
@@ -49,7 +50,7 @@ export const handleCreateSegment = Effect.fn("handleCreateSegment")(
         }),
       ),
   }),
-  Effect.catchAllDefect((defect) =>
+  Effect.catchDefect((defect) =>
     Effect.fail(
       new ORPCError("INTERNAL_SERVER_ERROR", {
         message: "Failed to create segment",

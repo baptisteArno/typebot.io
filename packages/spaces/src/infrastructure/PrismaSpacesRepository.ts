@@ -26,9 +26,9 @@ export const PrismaSpacesRepository = Layer.effect(
         })
         .pipe(Effect.orDie);
 
-      return yield* Schema.decodeUnknown(Schema.Array(Space))(spaces).pipe(
-        Effect.orDie,
-      );
+      return yield* Schema.decodeUnknownEffect(Schema.Array(Space))(
+        spaces,
+      ).pipe(Effect.orDie);
     });
 
     const create = Effect.fn("PrismaSpacesRepository.create")(function* (
@@ -44,15 +44,15 @@ export const PrismaSpacesRepository = Layer.effect(
           },
         })
         .pipe(
-          Effect.catchAll((error) =>
+          Effect.catch((error) =>
             error instanceof PrismaClientKnownRequestError &&
             error.code === "P2002"
-              ? new SpacesAlreadyExistsError()
+              ? Effect.fail(new SpacesAlreadyExistsError())
               : Effect.die(error),
           ),
         );
 
-      return yield* Schema.decodeUnknown(Space)(space).pipe(Effect.orDie);
+      return yield* Schema.decodeUnknownEffect(Space)(space).pipe(Effect.orDie);
     });
 
     return SpacesRepo.of({

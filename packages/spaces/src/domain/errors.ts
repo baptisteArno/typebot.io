@@ -1,11 +1,11 @@
 import { Schema } from "effect";
 
-export class SpacesAlreadyExistsError extends Schema.TaggedError<SpacesAlreadyExistsError>()(
+export class SpacesAlreadyExistsError extends Schema.TaggedErrorClass<SpacesAlreadyExistsError>()(
   "SpacesAlreadyExistsError",
   {},
 ) {}
 
-export class SpacesForbiddenError extends Schema.TaggedError<SpacesForbiddenError>()(
+export class SpacesForbiddenError extends Schema.TaggedErrorClass<SpacesForbiddenError>()(
   "SpacesForbiddenError",
   {},
 ) {}
