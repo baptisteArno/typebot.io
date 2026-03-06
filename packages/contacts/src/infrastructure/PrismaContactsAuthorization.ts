@@ -1,4 +1,4 @@
-import type { SpaceId } from "@typebot.io/domain/shared-primitives";
+import type { SpaceId } from "@typebot.io/shared-primitives/domain";
 import type { UserId } from "@typebot.io/user/schemas";
 import { WorkspaceAuthorization } from "@typebot.io/workspaces/application/WorkspaceAuthorization";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";

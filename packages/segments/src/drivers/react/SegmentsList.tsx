@@ -1,5 +1,5 @@
 import { Table } from "@typebot.io/ui/components/Table";
-import type { Segment } from "../../core/Segment";
+import type { Segment } from "../../domain/Segment";
 
 type Props = {
   segments: readonly Segment[];

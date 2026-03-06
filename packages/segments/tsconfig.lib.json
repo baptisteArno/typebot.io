@@ -18,7 +18,10 @@
       "path": "../prisma/tsconfig.lib.json"
     },
     {
-      "path": "../domain/tsconfig.lib.json"
+      "path": "../shared-primitives/tsconfig.lib.json"
+    },
+    {
+      "path": "../shared-core/tsconfig.lib.json"
     },
     {
       "path": "../user/tsconfig.lib.json"

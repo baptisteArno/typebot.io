@@ -1,17 +1,22 @@
 import { useForm } from "@tanstack/react-form";
-import { Name } from "@typebot.io/domain/shared-primitives";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
 import { Input } from "@typebot.io/ui/components/Input";
+import { Schema } from "effect";
 import type { RefObject } from "react";
-import type { SegmentCreateInputSchema } from "../../core/Segment";
-import { SegmentCreateInputStandardSchema } from "../../core/Segment";
+import type { SegmentCreateInput } from "../../application/SegmentCreateInput";
+import { SegmentCreateInputSchema } from "../../application/SegmentCreateInput";
+import { SegmentName } from "../../domain/Segment";
+
+const SegmentCreateInputStandardSchema = SegmentCreateInputSchema.pipe(
+  Schema.standardSchemaV1,
+);
 
 export const CreateSegmentForm = ({
   onValidSubmit,
   initialFocusRef,
 }: {
-  onValidSubmit: (input: SegmentCreateInputSchema) => Promise<void>;
+  onValidSubmit: (input: SegmentCreateInput) => Promise<void>;
   initialFocusRef?: RefObject<HTMLInputElement | null>;
 }) => {
   const form = useForm({
@@ -22,7 +27,7 @@ export const CreateSegmentForm = ({
     onSubmit: async ({ value }) => {
       await onValidSubmit({
         ...value,
-        name: Name.make(value.name),
+        name: SegmentName.make(value.name),
       });
     },
   });

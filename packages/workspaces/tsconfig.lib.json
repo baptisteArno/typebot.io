@@ -9,9 +9,6 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
-      "path": "../domain/tsconfig.lib.json"
-    },
-    {
       "path": "../user/tsconfig.lib.json"
     },
     {
@@ -19,6 +16,9 @@
     },
     {
       "path": "../env/tsconfig.lib.json"
+    },
+    {
+      "path": "../shared-core/tsconfig.lib.json"
     }
   ]
 }

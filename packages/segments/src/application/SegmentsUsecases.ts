@@ -1,12 +1,13 @@
-import type { Name, SpaceId } from "@typebot.io/domain/shared-primitives";
+import type { SpaceId } from "@typebot.io/shared-primitives/domain";
 import type { UserId } from "@typebot.io/user/schemas";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Context, Effect, Layer } from "effect";
-import type { Segment } from "../core/Segment";
 import {
-  type AlreadyExistsError,
-  ForbiddenError,
-} from "../core/SegmentsErrors";
+  type SegmentsAlreadyExistsError,
+  SegmentsForbiddenError,
+} from "../domain/errors";
+import type { Segment } from "../domain/Segment";
+import type { SegmentCreateInput } from "./SegmentCreateInput";
 import { SegmentsAuthorization } from "./SegmentsAuthorization";
 import { SegmentsRepo } from "./SegmentsRepo";
 
@@ -19,15 +20,18 @@ export class SegmentsUsecases extends Context.Tag(
       workspaceId: WorkspaceId;
       spaceId?: SpaceId;
       userId: UserId;
-    }) => Effect.Effect<readonly Segment[], ForbiddenError>;
+    }) => Effect.Effect<readonly Segment[], SegmentsForbiddenError>;
     readonly create: (
       ressource: {
         workspaceId: WorkspaceId;
         spaceId?: SpaceId;
         userId: UserId;
       },
-      input: { name: Name },
-    ) => Effect.Effect<Segment, AlreadyExistsError | ForbiddenError>;
+      input: SegmentCreateInput,
+    ) => Effect.Effect<
+      Segment,
+      SegmentsAlreadyExistsError | SegmentsForbiddenError
+    >;
   }
 >() {
   static readonly layer = Layer.effect(
@@ -50,7 +54,7 @@ export class SegmentsUsecases extends Context.Tag(
           userId,
         );
 
-        if (!canList) return yield* new ForbiddenError();
+        if (!canList) return yield* new SegmentsForbiddenError();
 
         return yield* segmentsRepo.listByWorkspaceAndSpace(
           workspaceId,
@@ -68,14 +72,14 @@ export class SegmentsUsecases extends Context.Tag(
           spaceId?: SpaceId;
           userId: UserId;
         },
-        input: { name: Name },
+        input: SegmentCreateInput,
       ) {
         const canCreate = yield* segmentsAuthorization.canWriteSegments(
           workspaceId,
           userId,
         );
 
-        if (!canCreate) return yield* new ForbiddenError();
+        if (!canCreate) return yield* new SegmentsForbiddenError();
 
         return yield* segmentsRepo.create(workspaceId, spaceId, input);
       });

@@ -1,5 +1,5 @@
 import { useForm } from "@tanstack/react-form";
-import type { Segment } from "@typebot.io/domain/segments";
+import type { Segment } from "@typebot.io/segments/domain";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
 import { Input } from "@typebot.io/ui/components/Input";

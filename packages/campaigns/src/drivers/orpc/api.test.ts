@@ -4,11 +4,12 @@ import {
   proTypebotId,
   userId,
 } from "@typebot.io/config/tests/seedDatabaseForTest";
-import { type CampaignId, Name } from "@typebot.io/domain/shared-primitives";
+import type { CampaignId } from "@typebot.io/shared-core/domain";
 import { PrismaTypebotAuthorization } from "@typebot.io/typebot/infrastructure/PrismaTypebotAuthorization";
 import { Effect, Layer, Schema } from "effect";
 import { describe } from "vitest";
 import { CampaignsUsecases } from "../../application/CampaignsUsecases";
+import { CampaignName } from "../../domain/Campaign";
 import { PrismaCampaignsAuthorization } from "../../infrastructure/PrismaCampaignsAuthorization";
 import { PrismaCampaignsRepository } from "../../infrastructure/PrismaCampaignsRepository";
 import {
@@ -46,7 +47,7 @@ describe.skip("skipped suite", () => {
             input: Schema.decodeSync(CreateCampaignInputStandardSchema)({
               typebotId: proTypebotId,
               channel: "WHATSAPP",
-              name: Name.make("Test Campaign"),
+              name: CampaignName.make("Test Campaign"),
               templateId: "template-id",
               credentialsId: "credentials-id",
             }),

@@ -2,8 +2,8 @@ import { ORPCError } from "@orpc/server";
 import { type User, UserId } from "@typebot.io/user/schemas";
 import { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Schema } from "effect";
+import { SpaceCreateInputSchema } from "../../application/SpaceCreateInput";
 import { SpacesUsecases } from "../../application/SpacesUsecases";
-import { SpaceCreateInputSchema } from "../../core/Space";
 
 export const CreateSpaceInputSchema = SpaceCreateInputSchema.pipe(
   Schema.extend(

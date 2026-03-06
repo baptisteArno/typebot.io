@@ -1,5 +1,5 @@
 import { ORPCError } from "@orpc/server";
-import { TypebotId } from "@typebot.io/domain/shared-primitives";
+import { TypebotId } from "@typebot.io/shared-primitives/domain";
 import { type User, UserId } from "@typebot.io/user/schemas";
 import { Effect, Schema } from "effect";
 import { CampaignsUsecases } from "../../application/CampaignsUsecases";

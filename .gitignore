@@ -78,4 +78,4 @@ opensrc/sources.json
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
 
-out-tsc
+**/out-tsc/

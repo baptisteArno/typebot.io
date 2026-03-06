@@ -1,0 +1,22 @@
+{
+  "name": "@typebot.io/shared-core",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./schemas": {
+      "types": "./src/schemas.ts",
+      "import": "./src/schemas.ts",
+      "default": "./src/schemas.ts"
+    },
+    "./domain": {
+      "types": "./src/domain.ts",
+      "import": "./src/domain.ts",
+      "default": "./src/domain.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "effect": "^3.19.18"
+  }
+}

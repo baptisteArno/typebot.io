@@ -1,15 +1,15 @@
-import type { SpaceId } from "@typebot.io/domain/shared-primitives";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
+import type { SpaceId } from "@typebot.io/shared-primitives/domain";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Layer, Schema } from "effect";
+import type { ContactCreateInput } from "../application/ContactCreateInput";
 import { ContactsRepo } from "../application/ContactsRepo";
+import { Contact, type ContactId } from "../domain/Contact";
 import {
-  Contact,
-  type ContactCreateInput,
-  type ContactId,
-} from "../core/Contact";
-import { AlreadyExistsError, NotFoundError } from "../core/ContactsErrors";
+  ContactsAlreadyExistsError,
+  ContactsNotFoundError,
+} from "../domain/errors";
 
 export const PrismaContactsRepository = Layer.effect(
   ContactsRepo,
@@ -69,7 +69,7 @@ export const PrismaContactsRepository = Layer.effect(
           Effect.catchAll((error) =>
             error instanceof PrismaClientKnownRequestError &&
             error.code === "P2002"
-              ? Effect.fail(new AlreadyExistsError())
+              ? Effect.fail(new ContactsAlreadyExistsError())
               : Effect.die(error),
           ),
         );
@@ -92,7 +92,7 @@ export const PrismaContactsRepository = Layer.effect(
         })
         .pipe(Effect.orDie);
 
-      if (!contact) return yield* new NotFoundError();
+      if (!contact) return yield* new ContactsNotFoundError();
 
       return yield* Schema.decodeUnknown(Contact)(contact).pipe(Effect.orDie);
     });

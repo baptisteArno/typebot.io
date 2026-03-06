@@ -1,5 +1,5 @@
 import { Table } from "@typebot.io/ui/components/Table";
-import type { Campaign } from "../../core/Campaign";
+import type { Campaign } from "../../domain/Campaign";
 
 type Props = {
   campaigns: readonly Campaign[];

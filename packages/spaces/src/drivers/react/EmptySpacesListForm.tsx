@@ -1,17 +1,17 @@
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useRef, useState } from "react";
-import type { SpaceCreateInputSchema } from "../../core/Space";
+import type { SpaceCreateInput } from "../../application/SpaceCreateInput";
 import { CreateSpaceForm } from "./CreateSpaceForm";
 
 type Props = {
-  onCreateSubmit: (input: SpaceCreateInputSchema) => Promise<void>;
+  onCreateSubmit: (input: SpaceCreateInput) => Promise<void>;
 };
 export const EmptySpacesListForm = ({ onCreateSubmit }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const initialFocusRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = async (input: SpaceCreateInputSchema) => {
+  const handleSubmit = async (input: SpaceCreateInput) => {
     await onCreateSubmit(input);
     setIsOpen(false);
   };

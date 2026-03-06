@@ -1,13 +1,14 @@
-import type { SpaceId } from "@typebot.io/domain/shared-primitives";
+import type { SpaceId } from "@typebot.io/shared-primitives/domain";
 import type { UserId } from "@typebot.io/user/schemas";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Context, Effect, Layer } from "effect";
-import type { Contact, ContactCreateInput, ContactId } from "../core/Contact";
+import type { Contact, ContactId } from "../domain/Contact";
 import {
-  type AlreadyExistsError,
-  ForbiddenError,
-  type NotFoundError,
-} from "../core/ContactsErrors";
+  type ContactsAlreadyExistsError,
+  ContactsForbiddenError,
+  type ContactsNotFoundError,
+} from "../domain/errors";
+import type { ContactCreateInput } from "./ContactCreateInput";
 import { ContactsAuthorization } from "./ContactsAuthorization";
 import { ContactsRepo } from "./ContactsRepo";
 
@@ -25,7 +26,7 @@ export class ContactsUsecases extends Context.Tag(
       pagination: { limit: number; cursor?: number },
     ) => Effect.Effect<
       { contacts: readonly Contact[]; nextCursor: number | undefined },
-      ForbiddenError
+      ContactsForbiddenError
     >;
     readonly create: (
       resource: {
@@ -34,13 +35,19 @@ export class ContactsUsecases extends Context.Tag(
         userId: UserId;
       },
       input: ContactCreateInput,
-    ) => Effect.Effect<Contact, AlreadyExistsError | ForbiddenError>;
+    ) => Effect.Effect<
+      Contact,
+      ContactsAlreadyExistsError | ContactsForbiddenError
+    >;
     readonly get: (resource: {
       workspaceId: WorkspaceId;
       spaceId?: SpaceId;
       contactId: ContactId;
       userId: UserId;
-    }) => Effect.Effect<Contact, ForbiddenError | NotFoundError>;
+    }) => Effect.Effect<
+      Contact,
+      ContactsForbiddenError | ContactsNotFoundError
+    >;
   }
 >() {
   static readonly layer = Layer.effect(
@@ -67,7 +74,7 @@ export class ContactsUsecases extends Context.Tag(
           userId,
         );
 
-        if (!canList) return yield* new ForbiddenError();
+        if (!canList) return yield* new ContactsForbiddenError();
 
         return yield* contactsRepo.listByWorkspaceAndSpace(
           workspaceId,
@@ -94,7 +101,7 @@ export class ContactsUsecases extends Context.Tag(
           userId,
         );
 
-        if (!canCreate) return yield* new ForbiddenError();
+        if (!canCreate) return yield* new ContactsForbiddenError();
 
         return yield* contactsRepo.create(workspaceId, spaceId, input);
       });
@@ -116,7 +123,7 @@ export class ContactsUsecases extends Context.Tag(
           userId,
         );
 
-        if (!canGet) return yield* new ForbiddenError();
+        if (!canGet) return yield* new ContactsForbiddenError();
 
         return yield* contactsRepo.getById(workspaceId, spaceId, contactId);
       });

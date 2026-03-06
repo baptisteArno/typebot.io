@@ -5,7 +5,7 @@
   "private": true,
   "exports": {
     "./orpc/router": "./src/drivers/orpc/router.ts",
-    "./core": "./src/core/Campaign.ts",
+    "./core": "./src/domain/Campaign.ts",
     "./react/*": "./src/drivers/react/*.tsx",
     "./workflows/*": "./src/workflows/*.ts"
   },
@@ -15,7 +15,8 @@
     "@orpc/server": "^1.13.4",
     "@typebot.io/config": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
-    "@typebot.io/domain": "workspace:*",
+    "@typebot.io/shared-core": "workspace:*",
+    "@typebot.io/shared-primitives": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/segments": "workspace:*",
     "@typebot.io/typebot": "workspace:*",

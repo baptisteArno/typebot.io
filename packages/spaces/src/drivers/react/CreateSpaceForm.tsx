@@ -1,17 +1,22 @@
 import { useForm } from "@tanstack/react-form";
-import { Name } from "@typebot.io/domain/shared-primitives";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
 import { Input } from "@typebot.io/ui/components/Input";
+import { Schema } from "effect";
 import type { RefObject } from "react";
-import type { SpaceCreateInputSchema } from "../../core/Space";
-import { SpaceCreateInputStandardSchema } from "../../core/Space";
+import type { SpaceCreateInput } from "../../application/SpaceCreateInput";
+import { SpaceCreateInputSchema } from "../../application/SpaceCreateInput";
+import { SpaceName } from "../../domain/Space";
+
+const SpaceCreateInputStandardSchema = SpaceCreateInputSchema.pipe(
+  Schema.standardSchemaV1,
+);
 
 export const CreateSpaceForm = ({
   onValidSubmit,
   initialFocusRef,
 }: {
-  onValidSubmit: (input: SpaceCreateInputSchema) => Promise<void>;
+  onValidSubmit: (input: SpaceCreateInput) => Promise<void>;
   initialFocusRef?: RefObject<HTMLInputElement | null>;
 }) => {
   const form = useForm({
@@ -24,7 +29,7 @@ export const CreateSpaceForm = ({
     onSubmit: async ({ value }) => {
       await onValidSubmit({
         ...value,
-        name: Name.make(value.name),
+        name: SpaceName.make(value.name),
       });
     },
   });

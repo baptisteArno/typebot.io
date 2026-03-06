@@ -1,8 +1,12 @@
-import type { SpaceId } from "@typebot.io/domain/shared-primitives";
+import type { SpaceId } from "@typebot.io/shared-primitives/domain";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Context, type Effect } from "effect";
-import type { Contact, ContactCreateInput, ContactId } from "../core/Contact";
-import type { AlreadyExistsError, NotFoundError } from "../core/ContactsErrors";
+import type { Contact, ContactId } from "../domain/Contact";
+import type {
+  ContactsAlreadyExistsError,
+  ContactsNotFoundError,
+} from "../domain/errors";
+import type { ContactCreateInput } from "./ContactCreateInput";
 
 export class ContactsRepo extends Context.Tag("@typebot.io/ContactsRepo")<
   ContactsRepo,
@@ -19,11 +23,11 @@ export class ContactsRepo extends Context.Tag("@typebot.io/ContactsRepo")<
       workspaceId: WorkspaceId,
       spaceId: SpaceId | undefined,
       input: ContactCreateInput,
-    ) => Effect.Effect<Contact, AlreadyExistsError>;
+    ) => Effect.Effect<Contact, ContactsAlreadyExistsError>;
     readonly getById: (
       workspaceId: WorkspaceId,
       spaceId: SpaceId | undefined,
       contactId: ContactId,
-    ) => Effect.Effect<Contact, NotFoundError>;
+    ) => Effect.Effect<Contact, ContactsNotFoundError>;
   }
 >() {}

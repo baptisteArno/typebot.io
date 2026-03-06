@@ -1,5 +1,5 @@
-import type { TypebotId } from "@typebot.io/domain/shared-primitives";
 import { PrismaService } from "@typebot.io/prisma/effect";
+import type { TypebotId } from "@typebot.io/shared-primitives/domain";
 import type { UserId } from "@typebot.io/user/schemas";
 import { Effect, Layer } from "effect";
 import { TypebotAuthorization } from "../application/TypebotAuthorization";

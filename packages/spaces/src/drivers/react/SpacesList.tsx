@@ -1,5 +1,5 @@
 import { Table } from "@typebot.io/ui/components/Table";
-import type { Space } from "../../core/Space";
+import type { Space } from "../../domain/Space";
 
 type Props = {
   spaces: readonly Space[];

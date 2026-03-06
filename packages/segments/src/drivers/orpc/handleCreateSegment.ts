@@ -1,10 +1,10 @@
 import { ORPCError } from "@orpc/server";
-import { SpaceId } from "@typebot.io/domain/shared-primitives";
+import { SpaceId } from "@typebot.io/shared-primitives/domain";
 import { type User, UserId } from "@typebot.io/user/schemas";
 import { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Schema } from "effect";
+import { SegmentCreateInputSchema } from "../../application/SegmentCreateInput";
 import { SegmentsUsecases } from "../../application/SegmentsUsecases";
-import { SegmentCreateInputSchema } from "../../core/Segment";
 
 export const CreateSegmentInputSchema = SegmentCreateInputSchema.pipe(
   Schema.extend(

@@ -117,7 +117,7 @@
       "path": "../../packages/segments"
     },
     {
-      "path": "../../packages/domain"
+      "path": "../../packages/shared-core"
     },
     {
       "path": "../../packages/contacts"

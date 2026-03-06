@@ -7,7 +7,7 @@ import {
 import { PrismaWorkspaceAuthorization } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceAuthorization";
 import { Effect, Layer } from "effect";
 import { ContactsUsecases } from "../../application/ContactsUsecases";
-import type { ContactId } from "../../core/Contact";
+import type { ContactId } from "../../domain/Contact";
 import { PrismaContactsAuthorization } from "../../infrastructure/PrismaContactsAuthorization";
 import { PrismaContactsRepository } from "../../infrastructure/PrismaContactsRepository";
 import { handleCreateContact } from "./handleCreateContact";

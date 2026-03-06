@@ -1,14 +1,12 @@
 import type {
   CampaignId,
   TypebotId,
-} from "@typebot.io/domain/shared-primitives";
+} from "@typebot.io/shared-primitives/domain";
 import { Context, type Effect } from "effect";
-import type {
-  Campaign,
-  CampaignUpdateInput,
-  WhatsAppCampaignInput,
-} from "../core/Campaign";
-import type { NotFoundError } from "../core/CampaignsErrors";
+import type { Campaign } from "../domain/Campaign";
+import type { CampaignsNotFoundError } from "../domain/errors";
+import type { CampaignUpdateInput } from "./CampaignUpdateInput";
+import type { WhatsAppCampaignInput } from "./WhatsAppCampaignInput";
 
 export class CampaignsRepo extends Context.Tag("@typebot.io/CampaignsRepo")<
   CampaignsRepo,
@@ -27,15 +25,15 @@ export class CampaignsRepo extends Context.Tag("@typebot.io/CampaignsRepo")<
     readonly getById: (
       typebotId: TypebotId,
       campaignId: CampaignId,
-    ) => Effect.Effect<Campaign, NotFoundError>;
+    ) => Effect.Effect<Campaign, CampaignsNotFoundError>;
     readonly update: (
       typebotId: TypebotId,
       campaignId: CampaignId,
       input: CampaignUpdateInput,
-    ) => Effect.Effect<Campaign, NotFoundError>;
+    ) => Effect.Effect<Campaign, CampaignsNotFoundError>;
     readonly delete: (
       typebotId: TypebotId,
       campaignId: CampaignId,
-    ) => Effect.Effect<void, NotFoundError>;
+    ) => Effect.Effect<void, CampaignsNotFoundError>;
   }
 >() {}

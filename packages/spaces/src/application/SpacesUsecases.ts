@@ -1,9 +1,12 @@
-import type { Name } from "@typebot.io/domain/shared-primitives";
 import type { UserId } from "@typebot.io/user/schemas";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Context, Effect, Layer } from "effect";
-import type { Space, SpaceIcon } from "../core/Space";
-import { type AlreadyExistsError, ForbiddenError } from "../core/SpacesErrors";
+import {
+  type SpacesAlreadyExistsError,
+  SpacesForbiddenError,
+} from "../domain/errors";
+import type { Space } from "../domain/Space";
+import type { SpaceCreateInput } from "./SpaceCreateInput";
 import { SpacesAuthorization } from "./SpacesAuthorization";
 import { SpacesRepo } from "./SpacesRepo";
 
@@ -15,15 +18,12 @@ export class SpacesUsecases extends Context.Tag("@typebot.io/SpacesUsecases")<
         workspaceId: WorkspaceId;
         userId: UserId;
       },
-      input: {
-        name: Name;
-        icon?: SpaceIcon;
-      },
-    ) => Effect.Effect<Space, AlreadyExistsError | ForbiddenError>;
+      input: SpaceCreateInput,
+    ) => Effect.Effect<Space, SpacesAlreadyExistsError | SpacesForbiddenError>;
     readonly list: (resource: {
       workspaceId: WorkspaceId;
       userId: UserId;
-    }) => Effect.Effect<readonly Space[], ForbiddenError>;
+    }) => Effect.Effect<readonly Space[], SpacesForbiddenError>;
   }
 >() {
   static readonly layer = Layer.effect(
@@ -44,7 +44,7 @@ export class SpacesUsecases extends Context.Tag("@typebot.io/SpacesUsecases")<
           userId,
         );
 
-        if (!canList) return yield* new ForbiddenError();
+        if (!canList) return yield* new SpacesForbiddenError();
 
         return yield* spacesRepo.listByWorkspaceId(workspaceId);
       });
@@ -57,17 +57,14 @@ export class SpacesUsecases extends Context.Tag("@typebot.io/SpacesUsecases")<
           workspaceId: WorkspaceId;
           userId: UserId;
         },
-        input: {
-          name: Name;
-          icon?: SpaceIcon;
-        },
+        input: SpaceCreateInput,
       ) {
         const canCreate = yield* spacesAuthorization.canCreateSpace(
           workspaceId,
           userId,
         );
 
-        if (!canCreate) return yield* new ForbiddenError();
+        if (!canCreate) return yield* new SpacesForbiddenError();
 
         return yield* spacesRepo.create(workspaceId, input);
       });

@@ -223,9 +223,6 @@
       "path": "./apps/workflows"
     },
     {
-      "path": "./packages/domain"
-    },
-    {
       "path": "./packages/contacts"
     },
     {
@@ -236,6 +233,12 @@
     },
     {
       "path": "./packages/segments"
+    },
+    {
+      "path": "./packages/shared-core"
+    },
+    {
+      "path": "./packages/shared-primitives"
     }
   ]
 }

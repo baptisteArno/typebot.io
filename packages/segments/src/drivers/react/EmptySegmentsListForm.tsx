@@ -1,17 +1,17 @@
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useRef, useState } from "react";
-import type { SegmentCreateInputSchema } from "../../core/Segment";
+import type { SegmentCreateInput } from "../../application/SegmentCreateInput";
 import { CreateSegmentForm } from "./CreateSegmentForm";
 
 type Props = {
-  onCreateSubmit: (input: SegmentCreateInputSchema) => Promise<void>;
+  onCreateSubmit: (input: SegmentCreateInput) => Promise<void>;
 };
 export const EmptySegmentsListForm = ({ onCreateSubmit }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const initialFocusRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = async (input: SegmentCreateInputSchema) => {
+  const handleSubmit = async (input: SegmentCreateInput) => {
     await onCreateSubmit(input);
     setIsOpen(false);
   };

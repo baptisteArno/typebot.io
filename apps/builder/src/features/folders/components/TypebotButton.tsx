@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
-import type { Space } from "@typebot.io/domain/spaces";
+import type { Space } from "@typebot.io/spaces/domain";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";

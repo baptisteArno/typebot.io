@@ -1,9 +1,9 @@
 import { ORPCError } from "@orpc/server";
-import { TypebotId } from "@typebot.io/domain/shared-primitives";
+import { TypebotId } from "@typebot.io/shared-primitives/domain";
 import { type User, UserId } from "@typebot.io/user/schemas";
 import { Effect, Schema } from "effect";
 import { CampaignsUsecases } from "../../application/CampaignsUsecases";
-import { WhatsAppCampaignInputSchema } from "../../core/Campaign";
+import { WhatsAppCampaignInputSchema } from "../../application/WhatsAppCampaignInput";
 
 export const CreateCampaignInputStandardSchema =
   WhatsAppCampaignInputSchema.pipe(

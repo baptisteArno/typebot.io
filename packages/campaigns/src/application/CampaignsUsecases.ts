@@ -1,21 +1,19 @@
 import type {
   CampaignId,
   TypebotId,
-} from "@typebot.io/domain/shared-primitives";
+} from "@typebot.io/shared-primitives/domain";
 import type { UserId } from "@typebot.io/user/schemas";
 import { Context, Effect, Layer } from "effect";
-import type {
-  Campaign,
-  CampaignUpdateInput,
-  WhatsAppCampaignInput,
-} from "../core/Campaign";
+import type { Campaign } from "../domain/Campaign";
 import {
-  ForbiddenError,
-  type ForbiddenError as ForbiddenErrorType,
-  type NotFoundError,
-} from "../core/CampaignsErrors";
+  CampaignsForbiddenError,
+  type CampaignsForbiddenError as CampaignsForbiddenErrorType,
+  type CampaignsNotFoundError,
+} from "../domain/errors";
 import { CampaignsAuthorization } from "./CampaignsAuthorization";
 import { CampaignsRepo } from "./CampaignsRepo";
+import type { CampaignUpdateInput } from "./CampaignUpdateInput";
+import type { WhatsAppCampaignInput } from "./WhatsAppCampaignInput";
 
 export class CampaignsUsecases extends Context.Tag(
   "@typebot.io/CampaignsUsecases",
@@ -27,17 +25,20 @@ export class CampaignsUsecases extends Context.Tag(
       pagination: { limit: number; cursor?: string },
     ) => Effect.Effect<
       { campaigns: readonly Campaign[]; nextCursor: string | undefined },
-      ForbiddenErrorType
+      CampaignsForbiddenErrorType
     >;
     readonly createWhatsAppCampaign: (
       resource: { typebotId: TypebotId; userId: UserId },
       input: WhatsAppCampaignInput,
-    ) => Effect.Effect<Campaign, ForbiddenErrorType>;
+    ) => Effect.Effect<Campaign, CampaignsForbiddenErrorType>;
     readonly get: (resource: {
       typebotId: TypebotId;
       campaignId: CampaignId;
       userId: UserId;
-    }) => Effect.Effect<Campaign, ForbiddenErrorType | NotFoundError>;
+    }) => Effect.Effect<
+      Campaign,
+      CampaignsForbiddenErrorType | CampaignsNotFoundError
+    >;
     readonly update: (
       resource: {
         typebotId: TypebotId;
@@ -45,12 +46,18 @@ export class CampaignsUsecases extends Context.Tag(
         userId: UserId;
       },
       input: CampaignUpdateInput,
-    ) => Effect.Effect<Campaign, ForbiddenErrorType | NotFoundError>;
+    ) => Effect.Effect<
+      Campaign,
+      CampaignsForbiddenErrorType | CampaignsNotFoundError
+    >;
     readonly delete: (resource: {
       typebotId: TypebotId;
       campaignId: CampaignId;
       userId: UserId;
-    }) => Effect.Effect<void, ForbiddenErrorType | NotFoundError>;
+    }) => Effect.Effect<
+      void,
+      CampaignsForbiddenErrorType | CampaignsNotFoundError
+    >;
   }
 >() {
   static readonly layer = Layer.effect(
@@ -68,7 +75,7 @@ export class CampaignsUsecases extends Context.Tag(
           userId,
         );
 
-        if (!canRead) return yield* new ForbiddenError();
+        if (!canRead) return yield* new CampaignsForbiddenError();
 
         return yield* campaignsRepo.listByTypebotId(typebotId, pagination);
       });
@@ -84,7 +91,7 @@ export class CampaignsUsecases extends Context.Tag(
           userId,
         );
 
-        if (!canWrite) return yield* new ForbiddenError();
+        if (!canWrite) return yield* new CampaignsForbiddenError();
 
         return yield* campaignsRepo.create(typebotId, input);
       });
@@ -103,7 +110,7 @@ export class CampaignsUsecases extends Context.Tag(
           userId,
         );
 
-        if (!canRead) return yield* new ForbiddenError();
+        if (!canRead) return yield* new CampaignsForbiddenError();
 
         return yield* campaignsRepo.getById(typebotId, campaignId);
       });
@@ -125,7 +132,7 @@ export class CampaignsUsecases extends Context.Tag(
           userId,
         );
 
-        if (!canWrite) return yield* new ForbiddenError();
+        if (!canWrite) return yield* new CampaignsForbiddenError();
 
         return yield* campaignsRepo.update(typebotId, campaignId, input);
       });
@@ -144,7 +151,7 @@ export class CampaignsUsecases extends Context.Tag(
           userId,
         );
 
-        if (!canWrite) return yield* new ForbiddenError();
+        if (!canWrite) return yield* new CampaignsForbiddenError();
 
         return yield* campaignsRepo.delete(typebotId, campaignId);
       });

@@ -1,9 +1,9 @@
 import { ORPCError } from "@orpc/server";
-import { CampaignId, TypebotId } from "@typebot.io/domain/shared-primitives";
+import { CampaignId, TypebotId } from "@typebot.io/shared-primitives/domain";
 import { type User, UserId } from "@typebot.io/user/schemas";
 import { Effect, Schema } from "effect";
 import { CampaignsUsecases } from "../../application/CampaignsUsecases";
-import { CampaignUpdateInputSchema } from "../../core/Campaign";
+import { CampaignUpdateInputSchema } from "../../application/CampaignUpdateInput";
 
 export const UpdateCampaignInputStandardSchema = CampaignUpdateInputSchema.pipe(
   Schema.extend(

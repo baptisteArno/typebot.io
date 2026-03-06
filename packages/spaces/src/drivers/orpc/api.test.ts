@@ -4,10 +4,10 @@ import {
   proWorkspaceId,
   userId,
 } from "@typebot.io/config/tests/seedDatabaseForTest";
-import { Name } from "@typebot.io/domain/shared-primitives";
 import { PrismaWorkspaceAuthorization } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceAuthorization";
 import { Effect, Layer } from "effect";
 import { SpacesUsecases } from "../../application/SpacesUsecases";
+import { SpaceName } from "../../domain/Space";
 import { PrismaSpacesAuthorization } from "../../infrastructure/PrismaSpacesAuthorization";
 import { PrismaSpacesRepository } from "../../infrastructure/PrismaSpacesRepository";
 import { handleCreateSpace } from "./handleCreateSpace";
@@ -35,7 +35,7 @@ it.layer(SpacesLiveLayer, { timeout: "30 seconds" })("SpacesLayer", (it) => {
       const { space } = yield* handleCreateSpace({
         input: {
           workspaceId: proWorkspaceId,
-          name: Name.make("Test Space"),
+          name: SpaceName.make("Test Space"),
         },
         context: {
           user: {

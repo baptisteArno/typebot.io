@@ -1,11 +1,12 @@
-import type { Name, SpaceId } from "@typebot.io/domain/shared-primitives";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
+import type { SpaceId } from "@typebot.io/shared-primitives/domain";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Layer, Schema } from "effect";
+import type { SegmentCreateInput } from "../application/SegmentCreateInput";
 import { SegmentsRepo } from "../application/SegmentsRepo";
-import { Segment } from "../core/Segment";
-import { AlreadyExistsError } from "../core/SegmentsErrors";
+import { SegmentsAlreadyExistsError } from "../domain/errors";
+import { Segment } from "../domain/Segment";
 
 export const PrismaSegmentsRepository = Layer.effect(
   SegmentsRepo,
@@ -32,7 +33,7 @@ export const PrismaSegmentsRepository = Layer.effect(
     const create = Effect.fn("PrismaSegmentsRepository.create")(function* (
       workspaceId: WorkspaceId,
       spaceId: SpaceId | undefined,
-      input: { name: Name },
+      input: SegmentCreateInput,
     ) {
       const segment = yield* prisma.segment
         .create({
@@ -46,7 +47,7 @@ export const PrismaSegmentsRepository = Layer.effect(
           Effect.catchAll((error) =>
             error instanceof PrismaClientKnownRequestError &&
             error.code === "P2002"
-              ? Effect.fail(new AlreadyExistsError())
+              ? Effect.fail(new SegmentsAlreadyExistsError())
               : Effect.die(error),
           ),
         );

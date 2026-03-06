@@ -9,31 +9,34 @@
   "include": ["src/**/*.ts", "src/drivers/react/**/*.tsx"],
   "references": [
     {
-      "path": "../domain/tsconfig.lib.json"
+      "path": "../workspaces/tsconfig.lib.json"
     },
     {
-      "path": "../segments/tsconfig.lib.json"
-    },
-    {
-      "path": "../ui/tsconfig.lib.json"
+      "path": "../whatsapp/tsconfig.lib.json"
     },
     {
       "path": "../user/tsconfig.lib.json"
     },
     {
+      "path": "../ui/tsconfig.lib.json"
+    },
+    {
       "path": "../typebot/tsconfig.lib.json"
     },
     {
-      "path": "../workspaces/tsconfig.lib.json"
+      "path": "../segments/tsconfig.lib.json"
     },
     {
       "path": "../prisma/tsconfig.lib.json"
     },
     {
-      "path": "../credentials/tsconfig.lib.json"
+      "path": "../shared-primitives/tsconfig.lib.json"
     },
     {
-      "path": "../whatsapp/tsconfig.lib.json"
+      "path": "../shared-core/tsconfig.lib.json"
+    },
+    {
+      "path": "../credentials/tsconfig.lib.json"
     },
     {
       "path": "../config/tsconfig.lib.json"

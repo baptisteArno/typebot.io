@@ -1,6 +1,6 @@
-import type { SegmentId } from "@typebot.io/domain/shared-primitives";
+import type { SegmentId } from "@typebot.io/shared-primitives/domain";
 import { Select } from "@typebot.io/ui/components/Select";
-import type { Segment } from "../../core/Segment";
+import type { Segment } from "../../domain/Segment";
 
 type Props = {
   segments: readonly Segment[];

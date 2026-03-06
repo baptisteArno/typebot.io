@@ -1,12 +1,11 @@
-import type { Name } from "@typebot.io/domain/shared-primitives";
 import { PrismaService } from "@typebot.io/prisma/effect";
 import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Effect, Layer, Schema } from "effect";
+import type { SpaceCreateInput } from "../application/SpaceCreateInput";
 import { SpacesRepo } from "../application/SpacesRepo";
-import type { SpaceIcon } from "../core/Space";
-import { Space } from "../core/Space";
-import { AlreadyExistsError } from "../core/SpacesErrors";
+import { SpacesAlreadyExistsError } from "../domain/errors";
+import { Space } from "../domain/Space";
 
 export const PrismaSpacesRepository = Layer.effect(
   SpacesRepo,
@@ -34,10 +33,7 @@ export const PrismaSpacesRepository = Layer.effect(
 
     const create = Effect.fn("PrismaSpacesRepository.create")(function* (
       workspaceId: WorkspaceId,
-      input: {
-        name: Name;
-        icon?: SpaceIcon;
-      },
+      input: SpaceCreateInput,
     ) {
       const space = yield* prisma.space
         .create({
@@ -51,7 +47,7 @@ export const PrismaSpacesRepository = Layer.effect(
           Effect.catchAll((error) =>
             error instanceof PrismaClientKnownRequestError &&
             error.code === "P2002"
-              ? new AlreadyExistsError()
+              ? new SpacesAlreadyExistsError()
               : Effect.die(error),
           ),
         );

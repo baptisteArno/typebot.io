@@ -1,16 +1,14 @@
+import { PrismaService } from "@typebot.io/prisma/effect";
 import type {
   CampaignId,
   TypebotId,
-} from "@typebot.io/domain/shared-primitives";
-import { PrismaService } from "@typebot.io/prisma/effect";
+} from "@typebot.io/shared-primitives/domain";
 import { Effect, Layer, Schema } from "effect";
 import { CampaignsRepo } from "../application/CampaignsRepo";
-import {
-  Campaign,
-  type CampaignUpdateInput,
-  type WhatsAppCampaignInput,
-} from "../core/Campaign";
-import { NotFoundError } from "../core/CampaignsErrors";
+import type { CampaignUpdateInput } from "../application/CampaignUpdateInput";
+import type { WhatsAppCampaignInput } from "../application/WhatsAppCampaignInput";
+import { Campaign } from "../domain/Campaign";
+import { CampaignsNotFoundError } from "../domain/errors";
 
 export const PrismaCampaignsRepository = Layer.effect(
   CampaignsRepo,
@@ -80,7 +78,7 @@ export const PrismaCampaignsRepository = Layer.effect(
         })
         .pipe(Effect.orDie);
 
-      if (!campaign) return yield* new NotFoundError();
+      if (!campaign) return yield* new CampaignsNotFoundError();
 
       return yield* Schema.decodeUnknown(Campaign)(campaign).pipe(Effect.orDie);
     });
@@ -97,7 +95,7 @@ export const PrismaCampaignsRepository = Layer.effect(
         })
         .pipe(Effect.orDie);
 
-      if (!campaign) return yield* new NotFoundError();
+      if (!campaign) return yield* new CampaignsNotFoundError();
 
       if (input.templateId !== undefined) {
         if (campaign.whatsAppConfig) {
@@ -145,7 +143,7 @@ export const PrismaCampaignsRepository = Layer.effect(
         })
         .pipe(Effect.orDie);
 
-      if (!campaign) return yield* new NotFoundError();
+      if (!campaign) return yield* new CampaignsNotFoundError();
 
       yield* prisma.campaign
         .delete({

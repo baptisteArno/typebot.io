@@ -1,8 +1,9 @@
-import type { Name, SpaceId } from "@typebot.io/domain/shared-primitives";
+import type { SpaceId } from "@typebot.io/shared-primitives/domain";
 import type { WorkspaceId } from "@typebot.io/workspaces/schemas";
 import { Context, type Effect } from "effect";
-import type { Segment } from "../core/Segment";
-import type { AlreadyExistsError } from "../core/SegmentsErrors";
+import type { SegmentsAlreadyExistsError } from "../domain/errors";
+import type { Segment } from "../domain/Segment";
+import type { SegmentCreateInput } from "./SegmentCreateInput";
 
 export class SegmentsRepo extends Context.Tag("@typebot.io/SegmentsRepo")<
   SegmentsRepo,
@@ -14,7 +15,7 @@ export class SegmentsRepo extends Context.Tag("@typebot.io/SegmentsRepo")<
     readonly create: (
       workspaceId: WorkspaceId,
       spaceId: SpaceId | undefined,
-      input: { name: Name },
-    ) => Effect.Effect<Segment, AlreadyExistsError>;
+      input: SegmentCreateInput,
+    ) => Effect.Effect<Segment, SegmentsAlreadyExistsError>;
   }
 >() {}
