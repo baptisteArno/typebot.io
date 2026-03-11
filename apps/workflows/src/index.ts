@@ -1,16 +1,9 @@
-import { ClusterWorkflowEngine } from "@effect/cluster";
 import { NodeSdk } from "@effect/opentelemetry";
-import {
-  HttpLayerRouter,
-  HttpServerRequest,
-  HttpServerResponse,
-} from "@effect/platform";
 import {
   BunClusterSocket,
   BunHttpServer,
   BunRuntime,
 } from "@effect/platform-bun";
-import { RpcSerialization, RpcServer } from "@effect/rpc";
 import { PgClient } from "@effect/sql-pg";
 import { OTLPLogExporter } from "@opentelemetry/exporter-logs-otlp-http";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
@@ -43,17 +36,24 @@ import {
 } from "@typebot.io/user/workflows/rpc";
 import { StartUserOnboardingWorkflowLayer } from "@typebot.io/user/workflows/startUserOnboardingWorkflow";
 import { Effect, Equivalence, Layer, Redacted } from "effect";
+import { ClusterWorkflowEngine } from "effect/unstable/cluster";
+import {
+  HttpRouter,
+  HttpServerRequest,
+  HttpServerResponse,
+} from "effect/unstable/http";
+import { RpcSerialization, RpcServer } from "effect/unstable/rpc";
 
 const WorkflowEngineLayer = ClusterWorkflowEngine.layer.pipe(
   Layer.provideMerge(BunClusterSocket.layer()),
   Layer.provideMerge(
-    WorkflowsDatabaseConfig.pipe(
-      Effect.map((config) =>
-        PgClient.layer({
+    Layer.unwrap(
+      Effect.gen(function* () {
+        const config = yield* WorkflowsDatabaseConfig;
+        return PgClient.layer({
           url: config.databaseUrl,
-        }),
-      ),
-      Layer.unwrapEffect,
+        });
+      }),
     ),
   ),
 );
@@ -65,11 +65,11 @@ const WorkflowLayer = Layer.mergeAll(
 ).pipe(Layer.provideMerge(WorkflowEngineLayer));
 
 const PrismaLayer = Layer.provide(
-  PrismaService.Default,
+  PrismaService.layer,
   Layer.succeed(PrismaClientService, prisma),
 );
 
-const AuthMiddleware = HttpLayerRouter.middleware(
+const AuthMiddleware = HttpRouter.middleware(
   Effect.gen(function* () {
     const { rpcSecret: expectedRpcSecret } = yield* WorkflowsServerConfig;
 
@@ -79,7 +79,7 @@ const AuthMiddleware = HttpLayerRouter.middleware(
 
       if (
         !rpcSecret ||
-        !Redacted.getEquivalence(Equivalence.string)(
+        !Redacted.makeEquivalence(Equivalence.String)(
           rpcSecret,
           expectedRpcSecret,
         )
@@ -100,7 +100,7 @@ const AuthMiddleware = HttpLayerRouter.middleware(
 
 const WorkflowsRpcGroup = ResultsWorkflowsRpc.merge(UsersWorkflowsRpc);
 
-const WorkflowsRpcRouterLayer = RpcServer.layerHttpRouter({
+const WorkflowsRpcRouterLayer = RpcServer.layerHttp({
   group: WorkflowsRpcGroup,
   path: "/rpc",
   protocol: "http",
@@ -111,7 +111,7 @@ const WorkflowsRpcRouterLayer = RpcServer.layerHttpRouter({
   Layer.provide(RpcSerialization.layerNdjson),
 );
 
-const HealthRoute = HttpLayerRouter.add(
+const HealthRoute = HttpRouter.add(
   "GET",
   "/healthz",
   HttpServerResponse.json({
@@ -128,7 +128,7 @@ const OtelNodeSdkLive = NodeSdk.layer(() => ({
 
 const Routes = Layer.mergeAll(HealthRoute, WorkflowsRpcRouterLayer);
 
-const Main = HttpLayerRouter.serve(Routes).pipe(
+const Main = HttpRouter.serve(Routes).pipe(
   Layer.provide(WorkflowLayer),
   Layer.provide(ResultsServiceLayer),
   Layer.provide(TypebotServiceLayer),
@@ -137,14 +137,14 @@ const Main = HttpLayerRouter.serve(Routes).pipe(
   Layer.provide(NodemailerClientLayer),
   Layer.provide(RedisClientLayer),
   Layer.provide(
-    WorkflowsServerConfig.pipe(
-      Effect.map((config) =>
-        BunHttpServer.layer({
+    Layer.unwrap(
+      Effect.gen(function* () {
+        const config = yield* WorkflowsServerConfig;
+        return BunHttpServer.layer({
           port: config.port,
           hostname: "0.0.0.0",
-        }),
-      ),
-      Layer.unwrapEffect,
+        });
+      }),
     ),
   ),
   Layer.provide(WorkflowsDatabaseConfig.layer),

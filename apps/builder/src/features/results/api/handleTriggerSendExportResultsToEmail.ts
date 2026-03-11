@@ -10,7 +10,7 @@ import { z } from "zod";
 
 const MainLayer = Layer.provideMerge(
   Layer.provide(
-    ResultsWorkflowsRpcClient.Default,
+    ResultsWorkflowsRpcClient.layer,
     WorkflowsRpcClientConfig.layer,
   ),
   TelemetryLayer,

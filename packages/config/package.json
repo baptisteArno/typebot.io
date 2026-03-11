@@ -8,9 +8,7 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@effect/platform": "^0.94.4",
-    "@effect/rpc": "^0.73.0",
-    "effect": "^3.19.16"
+    "effect": "4.0.0-beta.30"
   },
   "devDependencies": {
     "@typebot.io/tsconfig": "workspace:*"

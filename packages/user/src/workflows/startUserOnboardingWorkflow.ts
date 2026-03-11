@@ -1,4 +1,3 @@
-import { Activity, DurableClock, Workflow } from "@effect/workflow";
 import { listSuppressedEmails } from "@typebot.io/emails/helpers/suppressedEmails";
 import { renderUserOnboardingEmail } from "@typebot.io/emails/transactional/UserOnboardingEmail";
 import { env } from "@typebot.io/env";
@@ -7,6 +6,7 @@ import {
   NodemailerError,
 } from "@typebot.io/lib/nodemailer/NodemailerClient";
 import { Effect, Option, Schema } from "effect";
+import { Activity, DurableClock, Workflow } from "effect/unstable/workflow";
 import { createUnsubscribeToken } from "../createUnsubscribeToken";
 import { normalizeEmail } from "../normalizeEmail";
 
@@ -16,16 +16,17 @@ export const StartUserOnboardingWorkflow = Workflow.make({
     userId: Schema.String,
     email: Schema.String,
   },
-  error: Schema.Union(NodemailerError),
+  error: NodemailerError,
   idempotencyKey: ({ userId }) => userId,
 });
 
 export const StartUserOnboardingWorkflowLayer =
   StartUserOnboardingWorkflow.toLayer(
-    Effect.fn(function* (payload) {
+    Effect.fnUntraced(function* (payload, executionId) {
       yield* Effect.annotateLogsScoped({
         userId: payload.userId,
         email: payload.email,
+        executionId,
       });
 
       const normalizedEmail = normalizeEmail(payload.email);
@@ -43,7 +44,7 @@ export const StartUserOnboardingWorkflowLayer =
         normalizedEmail,
       ]).pipe(
         Effect.map(Option.some),
-        Effect.catchAll((error) =>
+        Effect.catch((error) =>
           Effect.logError("Suppressed email check failed").pipe(
             Effect.annotateLogs({
               error: String(error),
@@ -81,7 +82,7 @@ export const StartUserOnboardingWorkflowLayer =
 
       yield* Activity.make({
         name: "SendUserOnboardingEmail",
-        error: Schema.Union(NodemailerError),
+        error: NodemailerError,
         execute: Effect.gen(function* () {
           const emailClient = yield* NodemailerClient;
           const html = yield* Effect.tryPromise({
@@ -104,16 +105,18 @@ export const StartUserOnboardingWorkflowLayer =
             headers,
           });
         }),
-      }).pipe(
-        Effect.tapError((error) =>
-          Effect.logError("SendUserOnboardingEmail failed").pipe(
-            Effect.annotateLogs({
-              error: String(error),
-              email: normalizedEmail,
-            }),
+      })
+        .asEffect()
+        .pipe(
+          Effect.tapError((error) =>
+            Effect.logError("SendUserOnboardingEmail failed").pipe(
+              Effect.annotateLogs({
+                error: String(error),
+                email: normalizedEmail,
+              }),
+            ),
           ),
-        ),
-      );
+        );
     }),
   );
 

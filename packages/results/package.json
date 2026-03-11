@@ -11,7 +11,7 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "effect": "^3.19.16",
+    "effect": "4.0.0-beta.30",
     "papaparse": "^5.4.1",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/emails": "workspace:*",

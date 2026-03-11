@@ -6,7 +6,7 @@ import { Effect, Layer } from "effect";
 import type { SendMailOptions } from "nodemailer";
 
 const PrismaLayer = Layer.provide(
-  PrismaService.Default,
+  PrismaService.layer,
   Layer.succeed(PrismaClientService, prisma),
 );
 
@@ -181,7 +181,7 @@ export const recordTransientGeneralBounces = Effect.fn(
           .create({ data: createData })
           .pipe(
             Effect.as(true),
-            Effect.catchAll((error) => {
+            Effect.catch((error) => {
               if (
                 error instanceof PrismaClientKnownRequestError &&
                 error.code === "P2002"

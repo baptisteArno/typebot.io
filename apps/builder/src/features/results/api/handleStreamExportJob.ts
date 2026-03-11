@@ -12,7 +12,7 @@ import { z } from "zod";
 
 const MainLayer = Layer.provideMerge(
   Layer.provide(
-    ResultsWorkflowsRpcClient.Default,
+    ResultsWorkflowsRpcClient.layer,
     WorkflowsRpcClientConfig.layer,
   ),
   TelemetryLayer,
@@ -84,18 +84,18 @@ export async function* handleStreamExportJob({
     });
 
     yield* stream.pipe(
-      Stream.tapErrorCause((cause) =>
+      Stream.tapError((error) =>
         Effect.logError("Export workflow failed").pipe(
           Effect.annotateLogs({
             typebotId,
-            cause: Cause.pretty(cause, { renderErrorCause: true }),
+            cause: Cause.pretty(Cause.fail(error)),
           }),
         ),
       ),
       Stream.runForEach((chunk) => Queue.offer(queue, chunk)),
     );
   }).pipe(
-    Effect.catchAllCause((cause) =>
+    Effect.catchCause((cause) =>
       Queue.offer(queue, {
         status: "error",
         message: Cause.prettyErrors(cause)
@@ -110,10 +110,11 @@ export async function* handleStreamExportJob({
     }),
   );
 
-  Effect.runFork(program.pipe(Effect.provide(MainLayer)));
+  Effect.runFork(Effect.scoped(program.pipe(Effect.provide(MainLayer))));
 
   while (true) {
-    const chunk = await Effect.runPromise(Queue.take(queue));
+    const chunk: ExportResultsWorkflowStatusChunk | null =
+      await Effect.runPromise(Queue.take(queue));
     if (chunk === null) {
       break;
     }

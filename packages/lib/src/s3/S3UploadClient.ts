@@ -2,17 +2,17 @@ import { Readable } from "node:stream";
 import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 import {
   Config,
-  Context,
   Effect,
   Layer,
   Option,
   Redacted,
   Schema,
+  ServiceMap,
   Stream,
 } from "effect";
 import { Client } from "minio";
 
-export class S3ClientUploadError extends Schema.TaggedError<S3ClientUploadError>()(
+export class S3ClientUploadError extends Schema.TaggedErrorClass<S3ClientUploadError>()(
   "@typebot/S3ClientUploadError",
   {
     message: Schema.String,
@@ -22,7 +22,7 @@ export class S3ClientUploadError extends Schema.TaggedError<S3ClientUploadError>
 
 type UploadBody = Buffer | Readable | Stream.Stream<Uint8Array, unknown>;
 
-export class S3UploadClient extends Context.Tag("@typebot/S3UploadClient")<
+export class S3UploadClient extends ServiceMap.Service<
   S3UploadClient,
   {
     uploadObject: (params: {
@@ -30,63 +30,59 @@ export class S3UploadClient extends Context.Tag("@typebot/S3UploadClient")<
       body: UploadBody;
     }) => Effect.Effect<void, S3ClientUploadError>;
   }
->() {}
+>()("@typebot/S3UploadClient") {
+  static readonly layer = Layer.effect(
+    S3UploadClient,
+    Effect.gen(function* () {
+      const accessKey = yield* Config.string("S3_ACCESS_KEY");
+      const secretKey = yield* Config.redacted("S3_SECRET_KEY");
+      const endpoint = yield* Config.string("S3_ENDPOINT");
+      const portOption = yield* Config.option(Config.number("S3_PORT"));
+      const region = yield* Config.string("S3_REGION").pipe(
+        Config.withDefault("us-east-1"),
+      );
+      const ssl = yield* Config.boolean("S3_SSL").pipe(
+        Config.withDefault(true),
+      );
+      const bucket = yield* Config.string("S3_BUCKET");
+      const port = Option.isSome(portOption) ? portOption.value : undefined;
 
-export const S3UploadClientLayer = Layer.effect(
-  S3UploadClient,
-  Effect.gen(function* () {
-    const accessKey = yield* Schema.Config("S3_ACCESS_KEY", Schema.String);
-    const secretKey = yield* Schema.Config(
-      "S3_SECRET_KEY",
-      Schema.Redacted(Schema.String),
-    );
-    const endpoint = yield* Schema.Config("S3_ENDPOINT", Schema.String);
-    const port = Option.getOrNull(
-      yield* Schema.Config("S3_PORT", Schema.NumberFromString).pipe(
-        Config.option,
-      ),
-    );
-    const region = yield* Schema.Config("S3_REGION", Schema.String).pipe(
-      Config.withDefault("us-east-1"),
-    );
-    const ssl = yield* Schema.Config("S3_SSL", Schema.BooleanFromString).pipe(
-      Config.withDefault(true),
-    );
-    const bucket = yield* Schema.Config("S3_BUCKET", Schema.String);
+      const client = new Client({
+        endPoint: endpoint,
+        port,
+        useSSL: ssl,
+        accessKey,
+        secretKey: Redacted.value(secretKey),
+        region,
+      });
 
-    const client = new Client({
-      endPoint: endpoint,
-      port: port ?? undefined,
-      useSSL: ssl,
-      accessKey,
-      secretKey: Redacted.value(secretKey),
-      region,
-    });
+      const uploadObject = Effect.fn("S3UploadClient.uploadObject")(function* ({
+        key,
+        body,
+      }: {
+        key: string;
+        body: UploadBody;
+      }) {
+        const readableBody = yield* toReadable(body);
 
-    const uploadObject = Effect.fn("S3UploadClient.uploadObject")(function* ({
-      key,
-      body,
-    }: {
-      key: string;
-      body: UploadBody;
-    }) {
-      const readableBody = yield* toReadable(body);
+        yield* Effect.tryPromise({
+          try: () => client.putObject(bucket, key, readableBody),
+          catch: (error) =>
+            new S3ClientUploadError({
+              message: formatUnknownError(error),
+              cause: error,
+            }),
+        }).pipe(Effect.asVoid);
+      });
 
-      yield* Effect.tryPromise({
-        try: () => client.putObject(bucket, key, readableBody),
-        catch: (error) =>
-          new S3ClientUploadError({
-            message: formatUnknownError(error),
-            cause: error,
-          }),
-      }).pipe(Effect.asVoid);
-    });
+      return S3UploadClient.of({
+        uploadObject,
+      });
+    }),
+  );
+}
 
-    return S3UploadClient.of({
-      uploadObject,
-    });
-  }),
-);
+export const S3UploadClientLayer = S3UploadClient.layer;
 
 const toReadable = (
   body: UploadBody,

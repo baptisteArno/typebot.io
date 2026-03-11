@@ -1,52 +1,73 @@
-import { Config, Context, Layer } from "effect";
+import {
+  Config,
+  Effect,
+  Layer,
+  type Option,
+  type Redacted,
+  ServiceMap,
+} from "effect";
 
 const WorkflowsRpcClientConfigSchema = Config.all({
   rpcUrl: Config.url("WORKFLOWS_RPC_URL").pipe(Config.option),
-  rpcSecret: Config.redacted(Config.string("WORKFLOWS_RPC_SECRET")),
+  rpcSecret: Config.redacted("WORKFLOWS_RPC_SECRET"),
 });
 
-export class WorkflowsRpcClientConfig extends Context.Tag(
-  "@typebot/WorkflowsRpcClientConfig",
-)<
+type WorkflowsRpcClientConfigService = {
+  rpcUrl: Option.Option<URL>;
+  rpcSecret: Redacted.Redacted<string>;
+};
+
+export class WorkflowsRpcClientConfig extends ServiceMap.Service<
   WorkflowsRpcClientConfig,
-  Config.Config.Success<typeof WorkflowsRpcClientConfigSchema>
->() {
+  WorkflowsRpcClientConfigService
+>()("@typebot/WorkflowsRpcClientConfig") {
   static readonly layer = Layer.effect(
     WorkflowsRpcClientConfig,
-    WorkflowsRpcClientConfigSchema,
+    Effect.gen(function* () {
+      return WorkflowsRpcClientConfig.of(yield* WorkflowsRpcClientConfigSchema);
+    }),
   );
 }
 
 const WorkflowsServerConfigSchema = Config.all({
   port: Config.number("WORKFLOWS_SERVER_PORT").pipe(Config.withDefault(3000)),
-  rpcSecret: Config.redacted(Config.string("WORKFLOWS_RPC_SECRET")),
+  rpcSecret: Config.redacted("WORKFLOWS_RPC_SECRET"),
 });
 
-export class WorkflowsServerConfig extends Context.Tag(
-  "@typebot/WorkflowsServerConfig",
-)<
+type WorkflowsServerConfigService = {
+  port: number;
+  rpcSecret: Redacted.Redacted<string>;
+};
+
+export class WorkflowsServerConfig extends ServiceMap.Service<
   WorkflowsServerConfig,
-  Config.Config.Success<typeof WorkflowsServerConfigSchema>
->() {
+  WorkflowsServerConfigService
+>()("@typebot/WorkflowsServerConfig") {
   static readonly layer = Layer.effect(
     WorkflowsServerConfig,
-    WorkflowsServerConfigSchema,
+    Effect.gen(function* () {
+      return WorkflowsServerConfig.of(yield* WorkflowsServerConfigSchema);
+    }),
   );
 }
 
 const WorkflowsDatabaseConfigSchema = Config.all({
-  databaseUrl: Config.redacted(Config.string("WORKFLOWS_DATABASE_URL")),
+  databaseUrl: Config.redacted("WORKFLOWS_DATABASE_URL"),
 });
 
-export class WorkflowsDatabaseConfig extends Context.Tag(
-  "@typebot/WorkflowsDatabaseConfig",
-)<
+type WorkflowsDatabaseConfigService = {
+  databaseUrl: Redacted.Redacted<string>;
+};
+
+export class WorkflowsDatabaseConfig extends ServiceMap.Service<
   WorkflowsDatabaseConfig,
-  Config.Config.Success<typeof WorkflowsDatabaseConfigSchema>
->() {
+  WorkflowsDatabaseConfigService
+>()("@typebot/WorkflowsDatabaseConfig") {
   static readonly layer = Layer.effect(
     WorkflowsDatabaseConfig,
-    WorkflowsDatabaseConfigSchema,
+    Effect.gen(function* () {
+      return WorkflowsDatabaseConfig.of(yield* WorkflowsDatabaseConfigSchema);
+    }),
   );
 }
 
@@ -54,9 +75,16 @@ const NextAuthConfigSchema = Config.all({
   nextAuthUrl: Config.url("NEXTAUTH_URL"),
 });
 
-export class NextAuthConfig extends Context.Tag("@typebot/NextAuthConfig")<
+export class NextAuthConfig extends ServiceMap.Service<
   NextAuthConfig,
-  Config.Config.Success<typeof NextAuthConfigSchema>
->() {
-  static readonly layer = Layer.effect(NextAuthConfig, NextAuthConfigSchema);
+  {
+    nextAuthUrl: URL;
+  }
+>()("@typebot/NextAuthConfig") {
+  static readonly layer = Layer.effect(
+    NextAuthConfig,
+    Effect.gen(function* () {
+      return NextAuthConfig.of(yield* NextAuthConfigSchema);
+    }),
+  );
 }

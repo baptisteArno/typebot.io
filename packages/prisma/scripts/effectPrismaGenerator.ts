@@ -346,19 +346,18 @@ const generateUnifiedService = async ({
     : "";
 
   const serviceContent = `${header}
-import { Cause, Context, Data, Effect, Exit, Option, Runtime } from "effect"
-import { Service } from "effect/Effect"
+import { Cause, Data, Effect, Exit, Layer, Option, ServiceMap } from "effect"
 import { Prisma, PrismaClient } from "${clientImportPath}"${runtimeImport}
 
-export class PrismaClientService extends Context.Tag("PrismaClientService")<
+export class PrismaClientService extends ServiceMap.Service<
   PrismaClientService,
   PrismaClient
->() {}
+>()("PrismaClientService") {}
 
-export class PrismaTransactionClientService extends Context.Tag("PrismaTransactionClientService")<
+export class PrismaTransactionClientService extends ServiceMap.Service<
   PrismaTransactionClientService,
   Prisma.TransactionClient
->() {}
+>()("PrismaTransactionClientService") {}
 
 export class PrismaUniqueConstraintError extends Data.TaggedError("PrismaUniqueConstraintError")<{
   cause: Prisma.PrismaClientKnownRequestError
@@ -692,15 +691,15 @@ const mapUpdateManyError = (error: unknown, operation: string, model: string): P
   throw error;
 }
 
-const clientOrTx = (client: PrismaClient) => Effect.map(
-  Effect.serviceOption(PrismaTransactionClientService),
-  Option.getOrElse(() => client),
-);
+const clientOrTx = (client: PrismaClient) =>
+  Effect.map(
+    Effect.serviceOption(PrismaTransactionClientService),
+    Option.getOrElse(() => client),
+  );
 
-export class PrismaService extends Service<PrismaService>()("PrismaService", {
-  effect: Effect.gen(function* () {
-    const client = yield* PrismaClientService;
-    return {
+const makePrismaService = Effect.gen(function* () {
+  const client = yield* PrismaClientService;
+  return {
       $transaction: Effect.fn("PrismaService.$transaction")(
         function* <A, E, R>(
           effect: Effect.Effect<A, E, R>,
@@ -710,14 +709,14 @@ export class PrismaService extends Service<PrismaService>()("PrismaService", {
             isolationLevel?: Prisma.TransactionIsolationLevel
           }
         ) {
-          const runtime = yield* Effect.runtime<R>();
+          const services = yield* Effect.services<R>();
           const tx = yield* Effect.serviceOption(PrismaTransactionClientService);
           return yield* Option.match(tx, {
             onSome: (_tx) => effect,
             onNone: () => Effect.tryPromise({
               try: () =>
                 client.$transaction(async (tx) => {
-                  const exit = await Runtime.runPromiseExit(runtime)(
+                  const exit = await Effect.runPromiseExitWith(services)(
                     effect.pipe(Effect.provideService(PrismaTransactionClientService, tx)) as Effect.Effect<A, E, R>,
                   )
                   if (Exit.isSuccess(exit)) {
@@ -732,9 +731,17 @@ export class PrismaService extends Service<PrismaService>()("PrismaService", {
       ),
 ${rawSqlOperations ? `\n${rawSqlOperations},\n` : ""}
 ${modelOperations}
-    }
-  })
-}) {}
+  }
+})
+
+type PrismaServiceShape = Effect.Success<typeof makePrismaService>
+
+export class PrismaService extends ServiceMap.Service<
+  PrismaService,
+  PrismaServiceShape
+>()("PrismaService") {
+  static readonly layer = Layer.effect(PrismaService, makePrismaService)
+}
 `;
 
   await writeFile(outputPath, serviceContent);

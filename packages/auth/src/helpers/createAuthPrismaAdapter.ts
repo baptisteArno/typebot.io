@@ -26,10 +26,7 @@ import { getNewUserInvitations } from "./getNewUserInvitations";
 import { joinWorkspaces } from "./joinWorkspaces";
 
 const MainLayer = Layer.provideMerge(
-  Layer.provide(
-    UsersWorkflowsRpcClient.Default,
-    WorkflowsRpcClientConfig.layer,
-  ),
+  Layer.provide(UsersWorkflowsRpcClient.layer, WorkflowsRpcClientConfig.layer),
   TelemetryLayer,
 );
 
@@ -220,7 +217,7 @@ const triggerStartUserOnboardingWorkflow = (userId: string, email: string) => {
       root: true,
     }),
     Effect.provide(MainLayer),
-    Effect.catchAll((error) =>
+    Effect.catch((error) =>
       Effect.sync(() => {
         console.error("Failed to trigger onboarding email workflow", error);
       }),

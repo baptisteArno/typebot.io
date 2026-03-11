@@ -131,7 +131,7 @@ export const handleUpdateSubscription = async ({
           customer: workspace.stripeId,
           limit: 1,
         });
-        const lastPaymentMethodId = lastPaymentMethod.data.at(0)?.id;
+        const lastPaymentMethodId = lastPaymentMethod.data[0]?.id;
         if (!lastPaymentMethodId)
           throw new ORPCError("INTERNAL_SERVER_ERROR", {
             message: "Last payment method not found",

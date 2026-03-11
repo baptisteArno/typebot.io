@@ -4,7 +4,7 @@ import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { env } from "@typebot.io/env";
 import { Effect, Layer } from "effect";
 
-export const TelemetryLayer = Layer.unwrapEffect(
+export const TelemetryLayer = Layer.unwrap(
   Effect.sync(() => {
     const endpoint = env.OTEL_EXPORTER_OTLP_ENDPOINT;
     if (!endpoint) return Layer.empty;
