@@ -1,7 +1,6 @@
 import { PlatformError } from "@effect/platform/Error";
 import { Activity, Workflow } from "@effect/workflow";
-import { MultipartUpload } from "@effect-aws/s3";
-import { NextAuthConfig, S3ReadableConfig } from "@typebot.io/config";
+import { NextAuthConfig } from "@typebot.io/config";
 import { listSuppressedEmails } from "@typebot.io/emails/helpers/suppressedEmails";
 import { renderResultsExportLinkEmail } from "@typebot.io/emails/transactional/ResultsExportLinkEmail";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
@@ -10,6 +9,7 @@ import {
   NodemailerError,
 } from "@typebot.io/lib/nodemailer/NodemailerClient";
 import { RedisClient } from "@typebot.io/lib/redis/RedisClient";
+import { S3UploadClient } from "@typebot.io/lib/s3/S3UploadClient";
 import { TypebotService } from "@typebot.io/typebot/services/TypebotService";
 import { Context, Effect, Layer, Option, Ref, Schema } from "effect";
 import { getExportFileName } from "../getExportFileName";
@@ -189,22 +189,23 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
           },
         );
 
-        const s3Config = yield* S3ReadableConfig;
+        const s3UploadClient = yield* S3UploadClient;
 
-        yield* MultipartUpload.uploadObject({
-          Bucket: s3Config.bucket,
-          Key: s3Key,
-          Body: csvStream,
-        }).pipe(
-          Effect.tapError((error) => Effect.logError(error)),
-          Effect.mapError(
-            (error) =>
-              new S3UploadError({
-                message:
-                  error instanceof Error ? error.message : "Unknown error",
-              }),
-          ),
-        );
+        yield* s3UploadClient
+          .uploadObject({
+            key: s3Key,
+            body: csvStream,
+          })
+          .pipe(
+            Effect.tapError((error) => Effect.logError(error)),
+            Effect.mapError(
+              (error) =>
+                new S3UploadError({
+                  message:
+                    error instanceof Error ? error.message : "Unknown error",
+                }),
+            ),
+          );
 
         const totalRowsExported = yield* Ref.get(totalRowsExportedRef);
 

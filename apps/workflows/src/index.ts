@@ -18,13 +18,13 @@ import { BatchLogRecordProcessor } from "@opentelemetry/sdk-logs";
 import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import {
   NextAuthConfig,
-  S3ConfigLayer,
   WorkflowsDatabaseConfig,
   WorkflowsServerConfig,
 } from "@typebot.io/config";
 import { RPC_SECRET_HEADER_KEY } from "@typebot.io/config/constants";
 import { NodemailerClientLayer } from "@typebot.io/lib/nodemailer/NodemailerClient";
 import { RedisClientLayer } from "@typebot.io/lib/redis/RedisClient";
+import { S3UploadClientLayer } from "@typebot.io/lib/s3/S3UploadClient";
 import prisma from "@typebot.io/prisma";
 import { PrismaClientService, PrismaService } from "@typebot.io/prisma/effect";
 import { ResultsServiceLayer } from "@typebot.io/results/services/ResultsService";
@@ -133,7 +133,7 @@ const Main = HttpLayerRouter.serve(Routes).pipe(
   Layer.provide(ResultsServiceLayer),
   Layer.provide(TypebotServiceLayer),
   Layer.provide(PrismaLayer),
-  Layer.provide(S3ConfigLayer),
+  Layer.provide(S3UploadClientLayer),
   Layer.provide(NodemailerClientLayer),
   Layer.provide(RedisClientLayer),
   Layer.provide(

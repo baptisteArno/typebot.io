@@ -1,13 +1,4 @@
-import { MultipartUpload } from "@effect-aws/s3";
-import {
-  Config,
-  Context,
-  Effect,
-  Layer,
-  Option,
-  Redacted,
-  Schema,
-} from "effect";
+import { Config, Context, Layer } from "effect";
 
 const WorkflowsRpcClientConfigSchema = Config.all({
   rpcUrl: Config.url("WORKFLOWS_RPC_URL").pipe(Config.option),
@@ -69,49 +60,3 @@ export class NextAuthConfig extends Context.Tag("@typebot/NextAuthConfig")<
 >() {
   static readonly layer = Layer.effect(NextAuthConfig, NextAuthConfigSchema);
 }
-
-export class S3ReadableConfig extends Context.Tag("@typebot/S3ReadableConfig")<
-  S3ReadableConfig,
-  {
-    bucket: string;
-  }
->() {}
-
-export const S3ConfigLayer = Layer.unwrapEffect(
-  Effect.gen(function* () {
-    const accessKey = yield* Schema.Config(
-      "S3_ACCESS_KEY",
-      Schema.Redacted(Schema.String),
-    );
-    const secretKey = yield* Schema.Config(
-      "S3_SECRET_KEY",
-      Schema.Redacted(Schema.String),
-    );
-    const endpoint = yield* Schema.Config("S3_ENDPOINT", Schema.String);
-    const port = Option.getOrNull(
-      yield* Schema.Config("S3_PORT", Schema.NumberFromString).pipe(
-        Config.option,
-      ),
-    );
-    const region = yield* Schema.Config("S3_REGION", Schema.String).pipe(
-      Config.withDefault("us-east-1"),
-    );
-    const bucket = yield* Schema.Config("S3_BUCKET", Schema.String);
-    const ssl = yield* Schema.Config("S3_SSL", Schema.BooleanFromString).pipe(
-      Config.withDefault(true),
-    );
-
-    return Layer.mergeAll(
-      Layer.succeed(S3ReadableConfig, { bucket }),
-      MultipartUpload.layer({
-        endpoint: `http${ssl ? "s" : ""}://${endpoint}${port ? `:${port}` : ""}`,
-        region,
-        credentials: {
-          accessKeyId: Redacted.value(accessKey),
-          secretAccessKey: Redacted.value(secretKey),
-        },
-        forcePathStyle: true,
-      }),
-    );
-  }),
-);

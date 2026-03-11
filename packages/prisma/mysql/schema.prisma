@@ -8,7 +8,7 @@ datasource db {
 }
 
 generator effect {
-  provider         = "effect-prisma-generator"
+  provider         = "bun scripts/effectPrismaGenerator.ts"
   output           = "../.effect/index.ts"
   clientImportPath = "@prisma/client"
 }
