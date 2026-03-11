@@ -54,7 +54,12 @@ export const createHttpReqResponseMappingRunner = ({
     try {
       const jail = context.global;
       jail.setSync("global", jail.derefInto());
-      jail.setSync("response", new ivm.ExternalCopy(response).copyInto());
+      const responseCopy = new ivm.ExternalCopy(response);
+      try {
+        jail.setSync("response", responseCopy.copyInto());
+      } finally {
+        responseCopy.release();
+      }
       return context.evalClosureSync(
         `globalThis.evaluateExpression = function(expression) {
           try {
@@ -80,7 +85,12 @@ export const createHttpReqResponseMappingRunner = ({
 
 export const parseTransferrableValue = (value: unknown) => {
   if (typeof value === "object") {
-    return new ivm.ExternalCopy(value).copyInto();
+    const copy = new ivm.ExternalCopy(value);
+    try {
+      return copy.copyInto();
+    } finally {
+      copy.release();
+    }
   }
   return value;
 };
