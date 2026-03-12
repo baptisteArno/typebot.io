@@ -1,14 +1,10 @@
-import { NodeSdk } from "@effect/opentelemetry";
+import "./sentry";
 import {
   BunClusterSocket,
   BunHttpServer,
   BunRuntime,
 } from "@effect/platform-bun";
 import { PgClient } from "@effect/sql-pg";
-import { OTLPLogExporter } from "@opentelemetry/exporter-logs-otlp-http";
-import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
-import { BatchLogRecordProcessor } from "@opentelemetry/sdk-logs";
-import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import {
   NextAuthConfig,
   WorkflowsDatabaseConfig,
@@ -23,19 +19,25 @@ import { PrismaClientService, PrismaService } from "@typebot.io/prisma/effect";
 import { ResultsServiceLayer } from "@typebot.io/results/services/ResultsService";
 import {
   ExportResultsWorkflowLayer,
+  SendExportToEmailWorkflow,
   SendExportToEmailWorkflowLayer,
 } from "@typebot.io/results/workflows/exportResultsWorkflow";
 import {
+  executeExportResultsWorkflowHandler,
   ResultsWorkflowsRpc,
-  ResultsWorkflowsRpcLayer,
 } from "@typebot.io/results/workflows/rpc";
-import { TypebotServiceLayer } from "@typebot.io/typebot/services/TypebotService";
+import { createTelemetryLayer } from "@typebot.io/telemetry/createTelemetryLayer";
 import {
-  UsersWorkflowsRpc,
-  UsersWorkflowsRpcLayer,
-} from "@typebot.io/user/workflows/rpc";
-import { StartUserOnboardingWorkflowLayer } from "@typebot.io/user/workflows/startUserOnboardingWorkflow";
-import { Effect, Equivalence, Layer, Redacted } from "effect";
+  reportWorkflowFailureToSentry,
+  WorkflowSentryConfig,
+} from "@typebot.io/telemetry/reportWorkflowFailureToSentry";
+import { TypebotServiceLayer } from "@typebot.io/typebot/services/TypebotService";
+import { UsersWorkflowsRpc } from "@typebot.io/user/workflows/rpc";
+import {
+  StartUserOnboardingWorkflow,
+  StartUserOnboardingWorkflowLayer,
+} from "@typebot.io/user/workflows/startUserOnboardingWorkflow";
+import { Effect, Equivalence, Layer, Redacted, Stream } from "effect";
 import { ClusterWorkflowEngine } from "effect/unstable/cluster";
 import {
   HttpRouter,
@@ -43,6 +45,7 @@ import {
   HttpServerResponse,
 } from "effect/unstable/http";
 import { RpcSerialization, RpcServer } from "effect/unstable/rpc";
+import { reportFatalCauseToSentry } from "./reportFatalCauseToSentry";
 
 const WorkflowEngineLayer = ClusterWorkflowEngine.layer.pipe(
   Layer.provideMerge(BunClusterSocket.layer()),
@@ -100,6 +103,54 @@ const AuthMiddleware = HttpRouter.middleware(
 
 const WorkflowsRpcGroup = ResultsWorkflowsRpc.merge(UsersWorkflowsRpc);
 
+const ResultsWorkflowsRpcLayer = ResultsWorkflowsRpc.toLayer(
+  Effect.succeed({
+    ExecuteExportResultsWorkflow: (payload) =>
+      executeExportResultsWorkflowHandler(payload).pipe(
+        Stream.tapError((error) =>
+          reportWorkflowFailureToSentry(error, {
+            rpc: "ExecuteExportResultsWorkflow",
+            workflow: "ExportResultsWorkflow",
+            workflowId: payload.id,
+            typebotId: payload.typebotId,
+          }),
+        ),
+      ),
+    SendExportToEmail: (payload) =>
+      SendExportToEmailWorkflow.execute(payload, {
+        discard: true,
+      }).pipe(
+        Effect.tapError((error) =>
+          reportWorkflowFailureToSentry(error, {
+            rpc: "SendExportToEmail",
+            workflow: "SendExportToEmail",
+            workflowId: payload.exportResultsWorkflowId,
+            typebotId: payload.typebotId,
+          }),
+        ),
+        Effect.asVoid,
+      ),
+  }),
+);
+
+const UsersWorkflowsRpcLayer = UsersWorkflowsRpc.toLayer(
+  Effect.succeed({
+    SendUserOnboardingEmail: (payload) =>
+      StartUserOnboardingWorkflow.execute(payload, {
+        discard: true,
+      }).pipe(
+        Effect.tapError((error) =>
+          reportWorkflowFailureToSentry(error, {
+            rpc: "SendUserOnboardingEmail",
+            workflow: "StartUserOnboardingWorkflow",
+            userId: payload.userId,
+          }),
+        ),
+        Effect.asVoid,
+      ),
+  }),
+);
+
 const WorkflowsRpcRouterLayer = RpcServer.layerHttp({
   group: WorkflowsRpcGroup,
   path: "/rpc",
@@ -119,12 +170,6 @@ const HealthRoute = HttpRouter.add(
     timestamp: new Date().toISOString(),
   }),
 );
-
-const OtelNodeSdkLive = NodeSdk.layer(() => ({
-  resource: { serviceName: "workflows" },
-  spanProcessor: new BatchSpanProcessor(new OTLPTraceExporter()),
-  logRecordProcessor: new BatchLogRecordProcessor(new OTLPLogExporter()),
-}));
 
 const Routes = Layer.mergeAll(HealthRoute, WorkflowsRpcRouterLayer);
 
@@ -149,8 +194,14 @@ const Main = HttpRouter.serve(Routes).pipe(
   ),
   Layer.provide(WorkflowsDatabaseConfig.layer),
   Layer.provide(WorkflowsServerConfig.layer),
+  Layer.provide(WorkflowSentryConfig.layer),
   Layer.provide(NextAuthConfig.layer),
-  Layer.provide(OtelNodeSdkLive),
+  Layer.provide(createTelemetryLayer("workflows")),
 );
 
-BunRuntime.runMain(Layer.launch(Main));
+const MainProgram = Layer.launch(Main).pipe(
+  Effect.tapCause(reportFatalCauseToSentry),
+  Effect.provide(WorkflowSentryConfig.layer),
+);
+
+BunRuntime.runMain(MainProgram);

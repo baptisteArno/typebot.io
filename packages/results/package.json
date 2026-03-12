@@ -21,6 +21,7 @@
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "zod": "^4.3.5"

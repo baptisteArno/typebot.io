@@ -13,6 +13,7 @@
     "@typebot.io/env": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/telemetry": "workspace:*",
     "zod": "^4.3.5"
   },
   "devDependencies": {

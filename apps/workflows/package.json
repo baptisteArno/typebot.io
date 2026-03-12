@@ -10,22 +10,16 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@effect/opentelemetry": "4.0.0-beta.30",
     "@effect/platform-bun": "4.0.0-beta.30",
     "@effect/sql-pg": "4.0.0-beta.30",
-    "@opentelemetry/exporter-logs-otlp-http": "^0.211.0",
-    "@opentelemetry/exporter-trace-otlp-http": "^0.211.0",
-    "@opentelemetry/resources": "^2.5.0",
-    "@opentelemetry/sdk-logs": "^0.211.0",
-    "@opentelemetry/sdk-trace-base": "^2.5.0",
-    "@opentelemetry/sdk-trace-node": "^2.5.0",
-    "@opentelemetry/sdk-trace-web": "^2.5.0",
+    "@sentry/bun": "^10.43.0",
     "@typebot.io/config": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/results": "workspace:*",
-    "@typebot.io/user": "workspace:*",
+    "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
+    "@typebot.io/user": "workspace:*",
     "effect": "4.0.0-beta.30"
   },
   "devDependencies": {

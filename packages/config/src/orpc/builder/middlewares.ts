@@ -46,6 +46,7 @@ const requireAuth = oo.spec(
   os.middleware(async ({ next, context }) => {
     const user = await context.authenticate();
     if (user) {
+      Sentry.setUser({ id: user.id });
       return next({
         context: {
           ...context,
@@ -65,6 +66,9 @@ const requireAuth = oo.spec(
 const needsOptionalAuthenticatedUser = os.middleware(
   async ({ next, context }) => {
     const user = await context.authenticate();
+    if (user) {
+      Sentry.setUser({ id: user.id });
+    }
     return next({
       context: {
         ...context,

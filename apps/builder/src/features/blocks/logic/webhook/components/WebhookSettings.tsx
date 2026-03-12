@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/nextjs";
 import type { ResponseVariableMapping } from "@typebot.io/blocks-integrations/httpRequest/schema";
 import type { WebhookBlock } from "@typebot.io/blocks-logic/webhook/schema";
 import { env } from "@typebot.io/env";
@@ -63,7 +62,6 @@ export const WebhookSettings = ({
     async onError(e) {
       console.error(e);
       console.log((await parseUnknownError({ err: e })).details);
-      Sentry.captureException(e);
     },
     startClosed: true,
   });

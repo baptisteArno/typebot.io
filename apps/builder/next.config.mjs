@@ -103,12 +103,13 @@ const nextConfig = {
   },
 };
 
-export default process.env.SENTRY_DSN && process.env.SENTRY_AUTH_TOKEN
+export default process.env.SENTRY_DSN
   ? withSentryConfig(nextConfig, {
-      telemetry: false,
       org: process.env.SENTRY_ORG,
       project: process.env.SENTRY_PROJECT,
       authToken: process.env.SENTRY_AUTH_TOKEN,
       widenClientFileUpload: true,
+      // Only print logs for uploading source maps in CI
+      silent: !process.env.CI,
     })
   : nextConfig;

@@ -4,7 +4,7 @@ import { createId } from "@typebot.io/lib/createId";
 import prisma from "@typebot.io/prisma";
 import type { ExportResultsWorkflowStatusChunk } from "@typebot.io/results/workflows/rpc";
 import { ResultsWorkflowsRpcClient } from "@typebot.io/results/workflows/rpc";
-import { TelemetryLayer } from "@typebot.io/telemetry/telemetryLayer";
+import { createGlobalTelemetryLayer } from "@typebot.io/telemetry/createGlobalTelemetryLayer";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { User } from "@typebot.io/user/schemas";
 import { Cause, Effect, Layer, Queue, Stream } from "effect";
@@ -15,7 +15,7 @@ const MainLayer = Layer.provideMerge(
     ResultsWorkflowsRpcClient.layer,
     WorkflowsRpcClientConfig.layer,
   ),
-  TelemetryLayer,
+  createGlobalTelemetryLayer("builder"),
 );
 
 export const streamExportJobInputSchema = z.object({

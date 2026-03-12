@@ -381,6 +381,16 @@ The related environment variables are listed here but you are probably not inter
 
 </Accordion>
 
+<Accordion title="OpenTelemetry">
+
+| Parameter                  | Default  | Description                                                                                                     |
+| -------------------------- | -------- | --------------------------------------------------------------------------------------------------------------- |
+| OTEL_EXPORTER_OTLP_ENDPOINT |          | OTLP HTTP endpoint used to export telemetry. Typebot sends traces to `/v1/traces` and logs to `/v1/logs`.     |
+| OTEL_EXPORTER_OTLP_HEADERS  |          | Comma-separated OTLP headers passed to the exporter. Format: `key=value,another=value`.                        |
+| OTEL_EXPORTER_OTLP_SIGNALS  | `traces` | Which signals to export. Possible values are `traces`, `logs`, `both`. Set `logs` if you only want Effect logs. |
+
+</Accordion>
+
 <Accordion title="PostHog">
 
 | Parameter                | Default                | Description              |

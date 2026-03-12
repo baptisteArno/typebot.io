@@ -14,8 +14,8 @@ import {
   WorkspaceRole,
 } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
+import { createGlobalTelemetryLayer } from "@typebot.io/telemetry/createGlobalTelemetryLayer";
 import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
-import { TelemetryLayer } from "@typebot.io/telemetry/telemetryLayer";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { userSchema } from "@typebot.io/user/schemas";
 import { UsersWorkflowsRpcClient } from "@typebot.io/user/workflows/rpc";
@@ -27,7 +27,7 @@ import { joinWorkspaces } from "./joinWorkspaces";
 
 const MainLayer = Layer.provideMerge(
   Layer.provide(UsersWorkflowsRpcClient.layer, WorkflowsRpcClientConfig.layer),
-  TelemetryLayer,
+  createGlobalTelemetryLayer("builder"),
 );
 
 export const createAuthPrismaAdapter = (p: Prisma.PrismaClient): Adapter => ({

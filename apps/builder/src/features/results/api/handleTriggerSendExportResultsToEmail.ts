@@ -2,7 +2,7 @@ import { ORPCError } from "@orpc/server";
 import { WorkflowsRpcClientConfig } from "@typebot.io/config";
 import prisma from "@typebot.io/prisma";
 import { ResultsWorkflowsRpcClient } from "@typebot.io/results/workflows/rpc";
-import { TelemetryLayer } from "@typebot.io/telemetry/telemetryLayer";
+import { createGlobalTelemetryLayer } from "@typebot.io/telemetry/createGlobalTelemetryLayer";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { User } from "@typebot.io/user/schemas";
 import { Effect, Layer } from "effect";
@@ -13,7 +13,7 @@ const MainLayer = Layer.provideMerge(
     ResultsWorkflowsRpcClient.layer,
     WorkflowsRpcClientConfig.layer,
   ),
-  TelemetryLayer,
+  createGlobalTelemetryLayer("builder"),
 );
 
 export const triggerSendExportResultsToEmailInputSchema = z.object({

@@ -8,6 +8,7 @@ import {
 } from "@typebot.io/lib/nodemailer/NodemailerClient";
 import { RedisClient } from "@typebot.io/lib/redis/RedisClient";
 import { S3UploadClient } from "@typebot.io/lib/s3/S3UploadClient";
+import { reportWorkflowFailureToSentry } from "@typebot.io/telemetry/reportWorkflowFailureToSentry";
 import { TypebotService } from "@typebot.io/typebot/services/TypebotService";
 import { Effect, Layer, Option, Ref, Schema, ServiceMap } from "effect";
 import { PlatformError } from "effect/PlatformError";
@@ -244,71 +245,89 @@ export const SendExportToEmailWorkflow = Workflow.make({
 });
 
 export const SendExportToEmailWorkflowLayer = SendExportToEmailWorkflow.toLayer(
-  Effect.fnUntraced(function* (payload, executionId) {
-    yield* Effect.annotateLogsScoped({
-      exportResultsWorkflowId: payload.exportResultsWorkflowId,
-      email: payload.email,
-      typebotId: payload.typebotId,
-      executionId,
-    });
+  Effect.fnUntraced(
+    function* (payload, executionId) {
+      yield* Effect.annotateLogsScoped({
+        exportResultsWorkflowId: payload.exportResultsWorkflowId,
+        email: payload.email,
+        typebotId: payload.typebotId,
+        executionId,
+      });
 
-    const exportResult = yield* ExportResultsWorkflow.execute({
-      id: payload.exportResultsWorkflowId,
-      typebotId: payload.typebotId,
-    }).pipe(Effect.timeout("1 hour"), Effect.option);
+      const exportResult = yield* ExportResultsWorkflow.execute({
+        id: payload.exportResultsWorkflowId,
+        typebotId: payload.typebotId,
+      }).pipe(Effect.timeout("1 hour"), Effect.option);
 
-    if (Option.isNone(exportResult)) {
-      yield* Effect.logWarning("Export timed out, skipping email");
-      return;
-    }
+      if (Option.isNone(exportResult)) {
+        yield* Effect.logWarning("Export timed out, skipping email");
+        return;
+      }
 
-    const emptySuppressedEmails: string[] = [];
-    const suppressedEmails = yield* listSuppressedEmails([payload.email]).pipe(
-      Effect.catch((error) =>
-        Effect.logError("Suppressed email check failed").pipe(
-          Effect.annotateLogs({ error: String(error), email: payload.email }),
-          Effect.as(emptySuppressedEmails),
-        ),
-      ),
-    );
-
-    if (suppressedEmails.length > 0) {
-      yield* Effect.logWarning("Email suppressed, skipping export email").pipe(
-        Effect.annotateLogs({ email: payload.email, suppressedEmails }),
-      );
-      return;
-    }
-
-    yield* Activity.make({
-      name: "SendEmail",
-      error: NodemailerError,
-      execute: Effect.gen(function* () {
-        const emailClient = yield* NodemailerClient;
-        const html = yield* Effect.tryPromise({
-          try: () =>
-            renderResultsExportLinkEmail({
-              email: payload.email,
-              typebotName: exportResult.value.typebotName,
-              fileUrl: exportResult.value.fileUrl.toString(),
-            }),
-          catch: (error) => new NodemailerError({ cause: error }),
-        });
-        yield* emailClient.sendMail({
-          to: payload.email,
-          subject: `Your results export is ready`,
-          html,
-        });
-      }),
-    })
-      .asEffect()
-      .pipe(
-        Effect.tapError((error) =>
-          Effect.logError("SendEmail activity failed").pipe(
+      const emptySuppressedEmails: string[] = [];
+      const suppressedEmails = yield* listSuppressedEmails([
+        payload.email,
+      ]).pipe(
+        Effect.catch((error) =>
+          Effect.logError("Suppressed email check failed").pipe(
             Effect.annotateLogs({ error: String(error), email: payload.email }),
+            Effect.as(emptySuppressedEmails),
           ),
         ),
       );
-  }),
+
+      if (suppressedEmails.length > 0) {
+        yield* Effect.logWarning(
+          "Email suppressed, skipping export email",
+        ).pipe(Effect.annotateLogs({ email: payload.email, suppressedEmails }));
+        return;
+      }
+
+      yield* Activity.make({
+        name: "SendEmail",
+        error: NodemailerError,
+        execute: Effect.gen(function* () {
+          const emailClient = yield* NodemailerClient;
+          const html = yield* Effect.tryPromise({
+            try: () =>
+              renderResultsExportLinkEmail({
+                email: payload.email,
+                typebotName: exportResult.value.typebotName,
+                fileUrl: exportResult.value.fileUrl.toString(),
+              }),
+            catch: (error) => new NodemailerError({ cause: error }),
+          });
+          yield* emailClient.sendMail({
+            to: payload.email,
+            subject: `Your results export is ready`,
+            html,
+          });
+        }),
+      })
+        .asEffect()
+        .pipe(
+          Effect.tapError((error) =>
+            Effect.logError("SendEmail activity failed").pipe(
+              Effect.annotateLogs({
+                error: String(error),
+                email: payload.email,
+              }),
+            ),
+          ),
+        );
+    },
+    (effect, payload) =>
+      effect.pipe(
+        Effect.tapError((error) =>
+          reportWorkflowFailureToSentry(error, {
+            rpc: "SendExportToEmail",
+            workflow: "SendExportToEmail",
+            workflowId: payload.exportResultsWorkflowId,
+            typebotId: payload.typebotId,
+          }),
+        ),
+      ),
+  ),
 );
 
 class WorkflowId extends ServiceMap.Service<WorkflowId, string>()(

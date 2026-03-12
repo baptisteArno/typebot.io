@@ -15,7 +15,7 @@
   "dependencies": {
     "partysocket": "^1.0.2",
     "@planetscale/database": "^1.8.0",
-    "@sentry/nextjs": "^10.32.1",
+    "@sentry/nextjs": "^10.43.0",
     "@orpc/server": "^1.13.4",
     "@orpc/openapi": "^1.13.4",
     "@orpc/zod": "^1.13.4",
@@ -26,6 +26,7 @@
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/settings": "workspace:*",
+    "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/whatsapp": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
