@@ -12,6 +12,7 @@ import {
   textMessageSchema,
 } from "@typebot.io/chat-api/schemas";
 import { createContext } from "@typebot.io/config/orpc/viewer/context";
+import { logServerRequest } from "@typebot.io/telemetry/logServerRequest";
 import type { NextRequest } from "next/server";
 import { appRouter } from "./router";
 
@@ -78,6 +79,7 @@ async function handleRequest(
   request: NextRequest,
   ctx: RouteContext<"/api/[[...rest]]">,
 ) {
+  const startedAt = Date.now();
   // Reconstruct request to make it work with Next.js rewrites
   const resolvedPathname = `/api/${(await ctx.params)?.rest?.join("/") ?? ""}`;
   const resolvedRequest =
@@ -87,19 +89,36 @@ async function handleRequest(
           request.url.replace(request.nextUrl.pathname, resolvedPathname),
           request,
         );
-  const { response } = await handler.handle(resolvedRequest, {
-    prefix: "/api",
-    context: createContext({
-      req: resolvedRequest,
-      authenticate: async () => {
-        const user = await authenticateWithBearerToken(resolvedRequest);
-        if (!user) return null;
-        return user;
-      },
-    }),
-  });
+  try {
+    const { response } = await handler.handle(resolvedRequest, {
+      prefix: "/api",
+      context: createContext({
+        req: resolvedRequest,
+        authenticate: async () => {
+          const user = await authenticateWithBearerToken(resolvedRequest);
+          if (!user) return null;
+          return user;
+        },
+      }),
+    });
 
-  return response ?? new Response("Not found", { status: 404 });
+    const resolvedResponse =
+      response ?? new Response("Not found", { status: 404 });
+    await logServerRequest({
+      request: resolvedRequest,
+      response: resolvedResponse,
+      startedAt,
+    });
+
+    return resolvedResponse;
+  } catch (error) {
+    await logServerRequest({
+      error,
+      request: resolvedRequest,
+      startedAt,
+    });
+    throw error;
+  }
 }
 
 export const HEAD = handleRequest;

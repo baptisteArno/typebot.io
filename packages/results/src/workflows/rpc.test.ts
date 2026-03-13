@@ -1,12 +1,12 @@
 import { describe, expect, it } from "bun:test";
-import { WorkflowEngine } from "@effect/workflow";
 import {
   RedisClient,
   RedisGetError,
   RedisPublishError,
   RedisSetError,
 } from "@typebot.io/lib/redis/RedisClient";
-import { Chunk, Effect, Exit, Fiber, Layer, Queue, Stream } from "effect";
+import { Effect, Exit, Fiber, Layer, Queue, Stream } from "effect";
+import { WorkflowEngine } from "effect/unstable/workflow";
 import {
   ExportResultsWorkflow,
   TypebotNotFoundError,
@@ -32,7 +32,7 @@ describe("ExecuteExportResultsWorkflow", () => {
             cause: "Not implemented",
           }),
         ),
-      subscribe: () => Stream.fromQueue(progressQueue, { shutdown: true }),
+      subscribe: () => Stream.fromQueue(progressQueue),
       publish: () =>
         Effect.fail(
           new RedisPublishError({
@@ -57,35 +57,34 @@ describe("ExecuteExportResultsWorkflow", () => {
       typebotId: "test-typebot-id",
     };
 
-    const result = await Effect.gen(function* () {
+    const program = Effect.gen(function* () {
       const streamFiber = yield* executeExportResultsWorkflowHandler(
         testPayload,
-      ).pipe(Stream.runCollect, Effect.fork);
+      ).pipe(Stream.runCollect, Effect.forkChild);
 
       yield* Effect.sleep("5 millis");
-      yield* progressQueue.offer("0");
+      yield* Queue.offer(progressQueue, "0");
       yield* Effect.sleep("5 millis");
-      yield* progressQueue.offer("25");
+      yield* Queue.offer(progressQueue, "25");
       yield* Effect.sleep("5 millis");
-      yield* progressQueue.offer("50");
+      yield* Queue.offer(progressQueue, "50");
       yield* Effect.sleep("5 millis");
-      yield* progressQueue.offer("75");
+      yield* Queue.offer(progressQueue, "75");
       yield* Effect.sleep("5 millis");
-      yield* progressQueue.offer("100");
-      yield* progressQueue.shutdown;
+      yield* Queue.offer(progressQueue, "100");
 
-      const collected = yield* Fiber.join(streamFiber);
-      return Chunk.toReadonlyArray(collected);
+      return yield* Fiber.join(streamFiber);
     }).pipe(
       Effect.provide(
         mockWorkflowLayer.pipe(
           Layer.provideMerge(
-            Layer.merge(mockRedisClientLayer, WorkflowEngine.layerMemory),
+            Layer.mergeAll(mockRedisClientLayer, WorkflowEngine.layerMemory),
           ),
         ),
       ),
-      Effect.runPromise,
     );
+
+    const result = await Effect.runPromise(program);
 
     expect(result.length).toBe(6);
     expect(result[0]).toEqual({
@@ -120,7 +119,7 @@ describe("ExecuteExportResultsWorkflow", () => {
             cause: "Not implemented",
           }),
         ),
-      subscribe: () => Stream.fromQueue(progressQueue, { shutdown: true }),
+      subscribe: () => Stream.fromQueue(progressQueue),
       publish: () =>
         Effect.fail(
           new RedisPublishError({
@@ -142,33 +141,31 @@ describe("ExecuteExportResultsWorkflow", () => {
       typebotId: "test-typebot-id",
     };
 
-    const result = await Effect.gen(function* () {
+    const program = Effect.gen(function* () {
       const streamFiber = yield* executeExportResultsWorkflowHandler(
         testPayload,
-      ).pipe(Stream.runCollect, Effect.fork);
+      ).pipe(Stream.runCollect, Effect.forkChild);
 
       yield* Effect.sleep("5 millis");
-      yield* progressQueue.offer("0");
+      yield* Queue.offer(progressQueue, "0");
       yield* Effect.sleep("5 millis");
-      yield* progressQueue.offer("25");
+      yield* Queue.offer(progressQueue, "25");
       yield* Effect.sleep("5 millis");
-      yield* progressQueue.offer("50");
+      yield* Queue.offer(progressQueue, "50");
 
       return yield* Fiber.join(streamFiber).pipe(Effect.exit);
     }).pipe(
-      Effect.timeoutFail({
-        duration: "1 second",
-        onTimeout: () => new Error("Timed out"),
-      }),
+      Effect.timeout("1 second"),
       Effect.provide(
         mockWorkflowLayer.pipe(
           Layer.provideMerge(
-            Layer.merge(mockRedisClientLayer, WorkflowEngine.layerMemory),
+            Layer.mergeAll(mockRedisClientLayer, WorkflowEngine.layerMemory),
           ),
         ),
       ),
-      Effect.runPromise,
     );
+
+    const result = await Effect.runPromise(program);
 
     expect(Exit.isFailure(result)).toBe(true);
   }, 2_000);

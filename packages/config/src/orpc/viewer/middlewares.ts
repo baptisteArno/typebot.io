@@ -15,7 +15,11 @@ const sentryMiddleware = os.middleware(async ({ next, path }) => {
   try {
     return await next();
   } catch (error) {
+    console.error(error);
     if (isUnknownError(error, path.join("/"))) {
+      if (error instanceof ORPCError) {
+        console.log(JSON.stringify(error.cause));
+      }
       if (error instanceof ORPCError && error.code?.includes("BAD_REQUEST")) {
         Sentry.addBreadcrumb({
           data: {
@@ -44,6 +48,7 @@ const requireAuth = oo.spec(
   os.middleware(async ({ next, context }) => {
     const user = await context.authenticate();
     if (user) {
+      Sentry.setUser({ id: user.id });
       return next({
         context: {
           ...context,
@@ -63,6 +68,9 @@ const requireAuth = oo.spec(
 const needsOptionalAuthenticatedUser = os.middleware(
   async ({ next, context }) => {
     const user = await context.authenticate();
+    if (user) {
+      Sentry.setUser({ id: user.id });
+    }
     return next({
       context: {
         ...context,

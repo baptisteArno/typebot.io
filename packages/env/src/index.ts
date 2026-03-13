@@ -471,6 +471,10 @@ const otelEnv = {
   server: {
     OTEL_EXPORTER_OTLP_ENDPOINT: z.string().url().optional(),
     OTEL_EXPORTER_OTLP_HEADERS: z.string().optional(),
+    OTEL_EXPORTER_OTLP_SIGNALS: z
+      .enum(["traces", "logs", "both"])
+      .optional()
+      .default("traces"),
   },
 };
 

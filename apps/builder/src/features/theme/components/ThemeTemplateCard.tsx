@@ -89,8 +89,8 @@ export const ThemeTemplateCard = ({
       style={
         {
           "--tw-shadow": isSelected
-            ? `rgb(var(--orange-8)) 0 0 0 2px`
-            : `rgba(0, 0, 0, 0.08) 0px 2px 2px`,
+            ? "rgb(var(--orange-8)) 0 0 0 2px"
+            : "rgba(0, 0, 0, 0.08) 0px 2px 2px",
           "--rounded":
             themeTemplate.theme.chat?.roundness === "large"
               ? "md"

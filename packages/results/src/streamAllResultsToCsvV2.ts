@@ -5,7 +5,7 @@ import {
   type TypebotV6,
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
-import { Context, Effect, Option, Ref, Schema, Stream } from "effect";
+import { Effect, Ref, Schema, ServiceMap, Stream } from "effect";
 import * as Papaparse from "papaparse";
 import { z } from "zod";
 import { convertResultsToTableData } from "./convertResultsToTableData";
@@ -15,21 +15,21 @@ import { parseResultHeader } from "./parseResultHeader";
 import { resultWithAnswersSchema } from "./schemas/results";
 import { ResultsService } from "./services/ResultsService";
 
-export class ProgressReporterError extends Schema.TaggedError<ProgressReporterError>()(
+export class ProgressReporterError extends Schema.TaggedErrorClass<ProgressReporterError>()(
   "@typebot/ProgressReporterError",
   {
     message: Schema.String,
   },
 ) {}
 
-export class ProgressReporter extends Context.Tag("@typebot/ProgressReporter")<
+export class ProgressReporter extends ServiceMap.Service<
   ProgressReporter,
   {
     readonly report: (
       progress: number,
     ) => Effect.Effect<void, ProgressReporterError>;
   }
->() {}
+>()("@typebot/ProgressReporter") {}
 
 const BATCH_SIZE = 100;
 
@@ -103,9 +103,9 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
     const totalRowsExportedRef = yield* Ref.make(0);
 
     // Create a stream of CSV chunks
-    const csvStream = Stream.make(Papaparse.unparse([csvHeaders]) + "\n").pipe(
+    const csvStream = Stream.make(`${Papaparse.unparse([csvHeaders])}\n`).pipe(
       Stream.concat(
-        Stream.unfoldEffect(
+        Stream.unfold(
           {
             processedCount: 0,
             lastCreatedAt: null as Date | null,
@@ -113,7 +113,7 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
           },
           Effect.fn(function* (state) {
             if (state.processedCount >= totalResultsToExport) {
-              return Option.none();
+              return;
             }
 
             const rawBatch = z.array(resultWithAnswersSchema).parse(
@@ -153,7 +153,7 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
             const batch = rawBatch.filter((r) => !state.processedIds.has(r.id));
 
             if (batch.length === 0) {
-              return Option.none();
+              return;
             }
 
             batch.forEach((r) => state.processedIds.add(r.id));
@@ -182,7 +182,7 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
 
             const csvContent =
               csvRows.length > 0
-                ? Papaparse.unparse(csvRows, { header: false }) + "\n"
+                ? `${Papaparse.unparse(csvRows, { header: false })}\n`
                 : "";
 
             const newProcessedCount = state.processedCount + batch.length;
@@ -193,14 +193,14 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
               Math.round((newProcessedCount / totalResultsToExport) * 100),
             );
 
-            return Option.some([
+            return [
               csvContent,
               {
                 processedCount: newProcessedCount,
                 lastCreatedAt: batch[batch.length - 1].createdAt,
                 processedIds: state.processedIds,
               },
-            ] as const);
+            ] as const;
           }),
         ),
       ),
@@ -223,7 +223,7 @@ const getDeletedBlockHeaders = Effect.fn("getDeletedBlockHeaders")(function* ({
   typebotId: string;
   existingHeaderIds: string[];
   groups: TypebotV6["groups"];
-  resultsService: Context.Tag.Service<typeof ResultsService>;
+  resultsService: ResultsService["Service"];
 }) {
   const allAnswerBlockIds =
     yield* resultsService.findDistinctAnswerBlockIds(typebotId);

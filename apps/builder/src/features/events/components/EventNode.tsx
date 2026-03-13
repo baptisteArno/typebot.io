@@ -141,7 +141,7 @@ export const EventNode = ({ event, eventIndex }: Props) => {
               <div
                 style={
                   {
-                    "--width": eventWidth + "px",
+                    "--width": `${eventWidth}px`,
                     transform: `translate(${eventCoordinates?.x ?? 0}px, ${
                       eventCoordinates?.y ?? 0
                     }px)`,

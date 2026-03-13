@@ -62,14 +62,14 @@ export const CardsCaroussel = (props: Props) => {
                 <ArrowLeftIcon class="w-4 h-4" />
               </Button>
             )}
-          ></Carousel.PrevTrigger>
+          />
           <Carousel.NextTrigger
             asChild={(props) => (
               <Button variant="secondary" {...props}>
                 <ArrowRightIcon class="w-4 h-4" />
               </Button>
             )}
-          ></Carousel.NextTrigger>
+          />
         </Carousel.Control>
       </div>
       <Carousel.ItemGroup class="rounded-l-host-bubble @xs:pr-5 pr-4">

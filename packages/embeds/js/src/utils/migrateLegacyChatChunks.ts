@@ -131,7 +131,7 @@ const injectLegacyDynamicTheme = ({
       hostAvatarUrl: avatars.find((item) => item.role === "host")?.avatarUrl,
       guestAvatarUrl: avatars.find((item) => item.role === "guest")?.avatarUrl,
     };
-  return undefined;
+  return;
 };
 
 const getAndRemoveLegacyAvatarsHistory = ({

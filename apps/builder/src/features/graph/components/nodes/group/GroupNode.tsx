@@ -157,7 +157,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
         <div
           style={
             {
-              "--group-width": groupWidth + "px",
+              "--group-width": `${groupWidth}px`,
               transform: `translate(${groupCoordinates?.x ?? 0}px, ${
                 groupCoordinates?.y ?? 0
               }px)`,

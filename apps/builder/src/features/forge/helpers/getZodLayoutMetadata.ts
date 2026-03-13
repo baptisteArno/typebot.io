@@ -5,7 +5,7 @@ export const getZodLayoutMetadata = (
   schema: ZodTypeAny,
 ): ZodLayoutMetadata | undefined => {
   const meta = schema.meta?.();
-  if (!meta) return undefined;
+  if (!meta) return;
   return isZodLayoutMetadata(meta.layout) ? meta.layout : undefined;
 };
 

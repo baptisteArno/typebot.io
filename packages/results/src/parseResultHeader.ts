@@ -126,7 +126,7 @@ const parseInputsResultHeader = ({
       ).length;
       const newHeaderCell: ResultHeaderCellWithBlock = {
         id: inputBlock.id,
-        label: label + ` (${totalPrevious})`,
+        label: `${label} (${totalPrevious})`,
         blocks: [
           {
             id: inputBlock.id,

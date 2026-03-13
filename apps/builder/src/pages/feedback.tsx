@@ -15,7 +15,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return {
       redirect: {
         permanent: false,
-        destination: `/signin?redirectPath=%2Ffeedback`,
+        destination: "/signin?redirectPath=%2Ffeedback",
       },
     };
   const sleekplanToken = createSSOToken(session?.user as Prisma.User);

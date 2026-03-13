@@ -12,7 +12,7 @@ const deleteArchivedTypebots = async () => {
   lastDayTwoMonthsAgo.setMonth(lastDayTwoMonthsAgo.getMonth() - 1);
   lastDayTwoMonthsAgo.setDate(0);
   lastDayTwoMonthsAgo.setHours(0, 0, 0, 0);
-  console.log(`Fetching archived typebots...`);
+  console.log("Fetching archived typebots...");
   const typebots = await prisma.typebot.findMany({
     where: {
       updatedAt: {

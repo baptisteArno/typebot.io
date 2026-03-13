@@ -23,9 +23,8 @@ function escapeRegExpChar(char?: string) {
     char === "\\"
   ) {
     return `\\${char}`;
-  } else {
-    return char;
   }
+  return char;
 }
 
 /**

@@ -18,9 +18,7 @@ export const AudioBubble = (props: Props) => {
   let isPlayed = false;
   let ref: HTMLDivElement | undefined;
   let audioElement: HTMLAudioElement | undefined;
-  const [isTyping, setIsTyping] = createSignal(
-    props.onTransitionEnd ? true : false,
-  );
+  const [isTyping, setIsTyping] = createSignal(!!props.onTransitionEnd);
 
   onMount(() => {
     typingTimeout = setTimeout(() => {

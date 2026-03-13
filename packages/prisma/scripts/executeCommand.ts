@@ -1,19 +1,21 @@
-import { exec } from "child_process";
-import { join, relative } from "path";
+import { exec } from "node:child_process";
+import { join, relative } from "node:path";
 
-const postgesqlSchemaPath = relative(
-  process.cwd(),
-  join(__dirname, `../postgresql/schema.prisma`),
+const prismaPackagePath = join(__dirname, "..");
+
+const postgresqlSchemaPath = relative(
+  prismaPackagePath,
+  join(prismaPackagePath, "postgresql/schema.prisma"),
 );
 
 const mysqlSchemaPath = relative(
-  process.cwd(),
-  join(__dirname, `../mysql/schema.prisma`),
+  prismaPackagePath,
+  join(prismaPackagePath, "mysql/schema.prisma"),
 );
 
 const prismaConfigPath = relative(
-  process.cwd(),
-  join(__dirname, `../prisma.config.ts`),
+  prismaPackagePath,
+  join(prismaPackagePath, "prisma.config.ts"),
 );
 
 type Options = {
@@ -48,7 +50,7 @@ export const executePrismaCommand = (command: string, options?: Options) => {
     console.log("Executing for PostgreSQL schema");
     return executeCommand(
       `${command} --config ${prismaConfigPath}${
-        includeSchema ? ` --schema ${postgesqlSchemaPath}` : ""
+        includeSchema ? ` --schema ${postgresqlSchemaPath}` : ""
       }`,
     );
   }
@@ -61,7 +63,7 @@ export const executePrismaCommand = (command: string, options?: Options) => {
 
 const executeCommand = (command: string) => {
   return new Promise<void>((resolve, reject) => {
-    exec(command, (error, stdout, stderr) => {
+    exec(command, { cwd: prismaPackagePath }, (error, stdout, stderr) => {
       if (error) {
         console.log(error.message);
         reject(error);

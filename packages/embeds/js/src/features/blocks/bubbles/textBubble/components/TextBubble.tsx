@@ -20,9 +20,7 @@ let typingTimeout: NodeJS.Timeout;
 
 export const TextBubble = (props: Props) => {
   let ref: HTMLDivElement | undefined;
-  const [isTyping, setIsTyping] = createSignal(
-    props.onTransitionEnd ? true : false,
-  );
+  const [isTyping, setIsTyping] = createSignal(!!props.onTransitionEnd);
 
   const onTypingEnd = () => {
     if (!isTyping()) return;

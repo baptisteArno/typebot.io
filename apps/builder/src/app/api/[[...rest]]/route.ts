@@ -2,11 +2,11 @@ import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
 import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
-import * as Sentry from "@sentry/nextjs";
 import { authenticateWithBearerToken } from "@typebot.io/auth/helpers/authenticateWithBearerToken";
 import { auth } from "@typebot.io/auth/lib/nextAuth";
 import { createContext } from "@typebot.io/config/orpc/builder/context";
 import { convertSchemasListToCommonSchemas } from "@typebot.io/lib/convertSchemasListToCommonSchemas";
+import { logServerRequest } from "@typebot.io/telemetry/logServerRequest";
 import {
   publicTypebotSchemaV5,
   publicTypebotSchemaV6,
@@ -101,6 +101,7 @@ async function handleRequest(
   request: NextRequest,
   routeContext: RouteContext<"/api/[[...rest]]">,
 ) {
+  const startedAt = Date.now();
   const resolvedPathname = `/api/${(await routeContext.params)?.rest?.join("/") ?? ""}`;
   const resolvedRequest =
     resolvedPathname === request.nextUrl.pathname
@@ -109,21 +110,37 @@ async function handleRequest(
           request.url.replace(request.nextUrl.pathname, resolvedPathname),
           request,
         );
-  const { response } = await handler.handle(resolvedRequest, {
-    prefix: "/api",
-    context: createContext({
-      authenticate: async () => {
-        const user =
-          (await auth())?.user ||
-          (await authenticateWithBearerToken(resolvedRequest));
-        if (!user) return null;
-        Sentry.setUser({ id: user?.id });
-        return user;
-      },
-    }),
-  });
+  try {
+    const { response } = await handler.handle(resolvedRequest, {
+      prefix: "/api",
+      context: createContext({
+        authenticate: async () => {
+          const user =
+            (await auth())?.user ||
+            (await authenticateWithBearerToken(resolvedRequest));
+          if (!user) return null;
+          return user;
+        },
+      }),
+    });
 
-  return response ?? new Response("Not found", { status: 404 });
+    const resolvedResponse =
+      response ?? new Response("Not found", { status: 404 });
+    await logServerRequest({
+      request: resolvedRequest,
+      response: resolvedResponse,
+      startedAt,
+    });
+
+    return resolvedResponse;
+  } catch (error) {
+    await logServerRequest({
+      error,
+      request: resolvedRequest,
+      startedAt,
+    });
+    throw error;
+  }
 }
 
 export const HEAD = handleRequest;

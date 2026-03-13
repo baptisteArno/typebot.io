@@ -40,7 +40,7 @@ export const SharePage = () => {
     if (!typebot?.customDomain) return;
     const existingHost = typebot.customDomain?.split("/")[0];
     const newDomain =
-      pathname === "" ? existingHost : existingHost + "/" + pathname;
+      pathname === "" ? existingHost : `${existingHost}/${pathname}`;
     handleCustomDomainChange(newDomain);
   };
 
@@ -108,7 +108,7 @@ export const SharePage = () => {
                 {typebot?.customDomain && (
                   <div className="flex items-center gap-2">
                     <EditableUrl
-                      hostname={"https://" + typebot.customDomain.split("/")[0]}
+                      hostname={`https://${typebot.customDomain.split("/")[0]}`}
                       pathname={typebot.customDomain.split("/")[1]}
                       isValid={checkIfPathnameIsValid}
                       onPathnameChange={handlePathnameChange}

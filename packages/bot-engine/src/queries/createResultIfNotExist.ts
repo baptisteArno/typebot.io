@@ -24,7 +24,7 @@ export const createResultIfNotExist = async ({
       {
         id: resultId,
         typebotId: typebot.id,
-        isCompleted: isCompleted ? true : false,
+        isCompleted: !!isCompleted,
         hasStarted,
         variables: typebot.variables,
       },

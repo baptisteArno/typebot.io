@@ -125,16 +125,16 @@ const generateKeyFromDiscriminant = (
   discriminator: string,
   value: unknown,
 ): string | undefined => {
-  if (typeof value !== "string") return undefined;
+  if (typeof value !== "string") return;
   if (discriminator === "version") return `V${value}`;
   return toPascalCase(value);
 };
 
 const generateKeyFromSchema = (schema: z.ZodTypeAny): string | undefined => {
-  if (!isZodObject(schema)) return undefined;
+  if (!isZodObject(schema)) return;
 
   const shape = getObjectShape(schema);
-  if (!shape) return undefined;
+  if (!shape) return;
 
   const typeField = isZodType(shape.type)
     ? unwrapSchema(shape.type)
@@ -155,11 +155,11 @@ const generateKeyFromSchema = (schema: z.ZodTypeAny): string | undefined => {
     if (typeof value === "string") return toPascalCase(value);
   }
 
-  return undefined;
+  return;
 };
 
 const getObjectShape = (schema: z.ZodTypeAny): z.ZodRawShape | undefined => {
-  if (!isZodObject(schema)) return undefined;
+  if (!isZodObject(schema)) return;
   return schema.shape;
 };
 

@@ -102,7 +102,7 @@ export const toolsSchema = z
 export type Tools = z.infer<typeof toolsSchema>;
 
 const normalizeToolItem = (item: unknown) => {
-  if (!isRecord(item)) return undefined;
+  if (!isRecord(item)) return;
   if (typeof item.type === "string") return item;
   return { ...item, type: "function" };
 };

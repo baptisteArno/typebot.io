@@ -1,6 +1,11 @@
-import { Rpc, RpcClient, RpcGroup } from "@effect/rpc";
 import { WorkflowsRpcClientProtocolLayer } from "@typebot.io/config/workflowsRpcProtocol";
-import { Effect } from "effect";
+import { Effect, Layer, ServiceMap } from "effect";
+import {
+  Rpc,
+  RpcClient,
+  type RpcClientError,
+  RpcGroup,
+} from "effect/unstable/rpc";
 import { StartUserOnboardingWorkflow } from "./startUserOnboardingWorkflow";
 
 export class UsersWorkflowsRpc extends RpcGroup.make(
@@ -15,14 +20,21 @@ export const UsersWorkflowsRpcLayer = UsersWorkflowsRpc.toLayer(
     SendUserOnboardingEmail: (payload) =>
       StartUserOnboardingWorkflow.execute(payload, {
         discard: true,
-      }),
+      }).pipe(Effect.asVoid),
   }),
 );
 
-export class UsersWorkflowsRpcClient extends Effect.Service<UsersWorkflowsRpcClient>()(
-  "@typebot/UsersWorkflowsRpcClient",
-  {
-    scoped: RpcClient.make(UsersWorkflowsRpc),
-    dependencies: [WorkflowsRpcClientProtocolLayer],
-  },
-) {}
+export class UsersWorkflowsRpcClient extends ServiceMap.Service<
+  UsersWorkflowsRpcClient,
+  RpcClient.RpcClient<
+    RpcGroup.Rpcs<typeof UsersWorkflowsRpc>,
+    RpcClientError.RpcClientError
+  >
+>()("@typebot/UsersWorkflowsRpcClient") {
+  static readonly layer = Layer.effect(
+    UsersWorkflowsRpcClient,
+    RpcClient.make(UsersWorkflowsRpc),
+  ).pipe(Layer.provide(WorkflowsRpcClientProtocolLayer));
+}
+
+export const UsersWorkflowsRpcClientLayer = UsersWorkflowsRpcClient.layer;

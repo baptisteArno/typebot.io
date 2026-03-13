@@ -14,6 +14,6 @@ export const parseVariableNumber = (
   const parsedInput = parseGuessedValueType(
     parseVariables(input, { variables, sessionStore }),
   );
-  if (typeof parsedInput !== "number") return undefined;
+  if (typeof parsedInput !== "number") return;
   return parsedInput;
 };

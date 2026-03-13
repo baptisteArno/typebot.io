@@ -24,7 +24,7 @@ export type GroupsActions = {
       block: BlockV6 | BlockV6["type"];
       indices: BlockIndices;
     },
-  ) => string | void;
+  ) => string | undefined;
   updateGroup: (
     groupIndex: number,
     updates: Partial<Omit<GroupV6, "id">>,

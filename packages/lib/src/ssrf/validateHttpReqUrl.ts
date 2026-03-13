@@ -211,7 +211,7 @@ const validateIPAddress = (ip: ParsedIP) => {
         const octets = ipv4Part.split(".").map(Number);
         if (
           octets.length === 4 &&
-          octets.every((o) => !isNaN(o) && o >= 0 && o <= 255)
+          octets.every((o) => !Number.isNaN(o) && o >= 0 && o <= 255)
         ) {
           validateIPAddress({ version: 4, octets });
           return;
@@ -224,7 +224,7 @@ const validateIPAddress = (ip: ParsedIP) => {
         const group1 = parseInt(hexGroups[0], 16);
         const group2 = parseInt(hexGroups[1], 16);
 
-        if (!isNaN(group1) && !isNaN(group2)) {
+        if (!Number.isNaN(group1) && !Number.isNaN(group2)) {
           const octets = [
             (group1 >> 8) & 0xff,
             group1 & 0xff,

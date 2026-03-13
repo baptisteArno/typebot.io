@@ -6,7 +6,7 @@ import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions"
 import { createSmtpCredentials } from "./utils/databaseActions";
 import { getTestAsset } from "./utils/playwright";
 
-export const mockSmtpCredentials: SmtpCredentials["data"] = {
+const mockSmtpCredentials: SmtpCredentials["data"] = {
   from: {
     email: "hilda63@ethereal.email",
     name: "Hilda Leannon",

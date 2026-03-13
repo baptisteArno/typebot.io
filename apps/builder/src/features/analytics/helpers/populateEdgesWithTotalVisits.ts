@@ -220,12 +220,12 @@ const edgeIdToHumanReadableLabel = (
     (group) => group.id === (edge.to as Target).groupId,
   );
   if (!toGroup) throw new Error("Group not found while debugging edge");
-  label += " -> " + toGroup?.title;
+  label += ` -> ${toGroup?.title}`;
   if (edge.to?.blockId) {
     const toBlock = toGroup.blocks.find(
       (block) => block.id === (edge.to as Target).blockId,
     );
-    if (toBlock) label += " > " + toBlock?.type;
+    if (toBlock) label += ` > ${toBlock?.type}`;
   }
 
   label += "]";

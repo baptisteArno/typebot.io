@@ -77,12 +77,11 @@ export const UseCases = ({ className }: { className?: string }) => {
       setCurrentUseCase((prev) => {
         if (prev.value < 100) {
           return { ...prev, value: prev.value + 1 };
-        } else {
-          return {
-            index: prev.index === useCases.length - 1 ? 0 : prev.index + 1,
-            value: 0,
-          };
         }
+        return {
+          index: prev.index === useCases.length - 1 ? 0 : prev.index + 1,
+          value: 0,
+        };
       });
     }, 100);
 

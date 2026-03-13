@@ -76,5 +76,5 @@ const detectDeviceType = (
   )
     return "Desktop";
 
-  return undefined;
+  return;
 };

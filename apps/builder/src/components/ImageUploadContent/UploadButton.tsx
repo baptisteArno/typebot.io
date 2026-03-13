@@ -53,7 +53,7 @@ export const UploadButton = ({
           return;
         }
 
-        onFileUploaded(data.fileUrl + "?v=" + Date.now());
+        onFileUploaded(`${data.fileUrl}?v=${Date.now()}`);
       },
     }),
   );

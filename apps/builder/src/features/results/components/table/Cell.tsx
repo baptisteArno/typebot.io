@@ -26,7 +26,7 @@ const Cell = ({
       key={cell.id}
       style={
         {
-          "--size": size + "px",
+          "--size": `${size}px`,
         } as React.CSSProperties
       }
       className={cx(

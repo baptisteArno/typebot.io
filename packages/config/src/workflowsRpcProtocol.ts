@@ -1,10 +1,10 @@
+import { Effect, Layer, Option, Redacted, Schedule } from "effect";
 import {
   FetchHttpClient,
   HttpClient,
   HttpClientRequest,
-} from "@effect/platform";
-import { RpcClient, RpcSerialization } from "@effect/rpc";
-import { Effect, Layer, Option, Redacted, Schedule } from "effect";
+} from "effect/unstable/http";
+import { RpcClient, RpcSerialization } from "effect/unstable/rpc";
 import { RPC_SECRET_HEADER_KEY } from "./constants";
 import { WorkflowsRpcClientConfig } from "./index";
 
@@ -36,7 +36,7 @@ export const WorkflowsRpcClientProtocolLayer = Effect.gen(function* () {
       ),
   });
 }).pipe(
-  Layer.unwrapEffect,
+  Layer.unwrap,
   Layer.provide(FetchHttpClient.layer),
   Layer.provide(RpcSerialization.layerNdjson),
 );

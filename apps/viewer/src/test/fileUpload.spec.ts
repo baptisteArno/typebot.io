@@ -1,9 +1,9 @@
+import { readFileSync } from "node:fs";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions";
-import { readFileSync } from "fs";
 import { parse } from "papaparse";
 import { getTestAsset } from "@/test/utils/playwright";
 

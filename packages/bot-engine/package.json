@@ -14,7 +14,7 @@
     "@orpc/server": "^1.13.4",
     "@paralleldrive/cuid2": "^2.2.1",
     "@planetscale/database": "^1.8.0",
-    "@sentry/nextjs": "^10.32.1",
+    "@sentry/nextjs": "^10.43.0",
     "@typebot.io/blocks-bubbles": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",

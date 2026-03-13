@@ -21,7 +21,7 @@ export default [
 
       try {
         const response = await got
-          .post(baseUrl + "/v1/text-to-speech/" + options.voiceId, {
+          .post(`${baseUrl}/v1/text-to-speech/${options.voiceId}`, {
             headers: {
               Accept: "audio/mpeg",
               "xi-api-key": credentials.apiKey,
@@ -62,7 +62,7 @@ export default [
 
       try {
         const response = await got
-          .get(baseUrl + "/v1/voices", {
+          .get(`${baseUrl}/v1/voices`, {
             headers: {
               "xi-api-key": credentials.apiKey,
             },
@@ -93,7 +93,7 @@ export default [
 
       try {
         const response = await got
-          .get(baseUrl + "/v1/models", {
+          .get(`${baseUrl}/v1/models`, {
             headers: {
               "xi-api-key": credentials.apiKey,
             },

@@ -9,7 +9,7 @@ export const trackAndReportYesterdaysResults = async () => {
   yesterdayMidnight.setDate(yesterdayMidnight.getDate() - 1);
   yesterdayMidnight.setUTCHours(0, 0, 0, 0);
 
-  console.log(`🔍 Fetching recently active workspaces...`);
+  console.log("🔍 Fetching recently active workspaces...");
 
   const recentWorkspaces = await prisma.workspace.findMany({
     where: {

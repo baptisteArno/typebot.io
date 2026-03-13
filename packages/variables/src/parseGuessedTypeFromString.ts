@@ -1,5 +1,5 @@
 export const parseGuessedTypeFromString = (value: string): unknown => {
-  if (value === "undefined") return undefined;
+  if (value === "undefined") return;
   return safeJsonParse(value);
 };
 

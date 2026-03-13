@@ -64,6 +64,7 @@ snapshots
 .nitro
 
 **/test/.auth
+**/out-tsc
 
 opensrc/repos
 opensrc/sources.json

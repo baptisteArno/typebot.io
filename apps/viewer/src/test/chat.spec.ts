@@ -258,7 +258,7 @@ test("API chat execution should work on published bot", async ({ request }) => {
   await test.step("Starting with a message when typebot starts with input should proceed", async () => {
     const response = await (
       await request.post(
-        `/api/v1/typebots/starting-with-input-public/startChat`,
+        "/api/v1/typebots/starting-with-input-public/startChat",
         {
           data: {
             //@ts-expect-error We want to test if message is correctly preprocessed by zod

@@ -72,7 +72,7 @@ export const GuestTypebotHeader = () => {
               href={
                 !user
                   ? {
-                      pathname: `/register`,
+                      pathname: "/register",
                       query: {
                         redirectPath: `/typebots/${typebot.id}/duplicate`,
                       },
@@ -103,7 +103,7 @@ export const GuestTypebotHeader = () => {
           <>
             <hr className="h-6 w-px border-0 bg-gray-6" />
             <ButtonLink
-              href={`/register`}
+              href={"/register"}
               variant="outline-secondary"
               size="sm"
             >

@@ -165,7 +165,9 @@ const FeatureCard = ({
       style={style}
     >
       <div
-        className={`size-16 flex items-center justify-center rounded-2xl bg-cover`}
+        className={
+          "size-16 flex items-center justify-center rounded-2xl bg-cover"
+        }
         style={{
           backgroundImage: `url('${bgImageSrcs[index]}')`,
         }}
@@ -186,7 +188,8 @@ const Dots = () => (
     style={{
       animation: "fade-in ease-out forwards, fade-out ease-out forwards",
       animationTimeline: "--cards-container",
-      animationRange: `exit-crossing 0% exit-crossing 10%, exit-crossing 80% exit-crossing 90%`,
+      animationRange:
+        "exit-crossing 0% exit-crossing 10%, exit-crossing 80% exit-crossing 90%",
     }}
   >
     {cards.map((card, index) => (

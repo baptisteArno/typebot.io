@@ -27,4 +27,4 @@ const authenticateByToken = async (
 };
 
 const extractBearerToken = (req: NextApiRequest) =>
-  req.headers["authorization"]?.slice(7);
+  req.headers.authorization?.slice(7);

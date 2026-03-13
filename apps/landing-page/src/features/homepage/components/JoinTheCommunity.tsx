@@ -104,7 +104,7 @@ const FloatingAvatars = ({ className }: { className?: string }) => (
         src={src}
         alt={alt}
         className={cx(
-          `rounded-full w-16 h-16 border-4 absolute animate-float`,
+          "rounded-full w-16 h-16 border-4 absolute animate-float",
           position,
         )}
       />

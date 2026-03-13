@@ -1,17 +1,30 @@
-import { Rpc, RpcClient, RpcGroup } from "@effect/rpc";
 import { WorkflowsRpcClientProtocolLayer } from "@typebot.io/config/workflowsRpcProtocol";
 import {
   RedisClient,
   RedisSubscribeError,
 } from "@typebot.io/lib/redis/RedisClient";
-import { Cause, Effect, Fiber, Schema, Stream } from "effect";
+import {
+  Cause,
+  Effect,
+  Fiber,
+  Layer,
+  Schema,
+  ServiceMap,
+  Stream,
+} from "effect";
+import {
+  Rpc,
+  RpcClient,
+  type RpcClientError,
+  RpcGroup,
+} from "effect/unstable/rpc";
 import {
   EXPORT_PROGRESS_CHANNEL_PREFIX,
   ExportResultsWorkflow,
   SendExportToEmailWorkflow,
 } from "./exportResultsWorkflow";
 
-const ExportResultsWorkflowStatusChunk = Schema.Union(
+const ExportResultsWorkflowStatusChunk = Schema.Union([
   Schema.Struct({
     status: Schema.Literal("starting"),
     workflowId: Schema.String,
@@ -28,7 +41,7 @@ const ExportResultsWorkflowStatusChunk = Schema.Union(
     status: Schema.Literal("error"),
     message: Schema.String,
   }),
-);
+]);
 
 export type ExportResultsWorkflowStatusChunk = Schema.Schema.Type<
   typeof ExportResultsWorkflowStatusChunk
@@ -37,7 +50,10 @@ export type ExportResultsWorkflowStatusChunk = Schema.Schema.Type<
 export class ResultsWorkflowsRpc extends RpcGroup.make(
   Rpc.make("ExecuteExportResultsWorkflow", {
     success: ExportResultsWorkflowStatusChunk,
-    error: Schema.Union(RedisSubscribeError, ExportResultsWorkflow.errorSchema),
+    error: Schema.Union([
+      RedisSubscribeError,
+      ExportResultsWorkflow.errorSchema,
+    ]),
     stream: true,
     payload: ExportResultsWorkflow.payloadSchema,
   }),
@@ -60,7 +76,7 @@ export const executeExportResultsWorkflowHandler = (payload: {
     );
 
     const workflowFiber = yield* ExportResultsWorkflow.execute(payload).pipe(
-      Effect.fork,
+      Effect.forkChild,
     );
 
     const interruptProgress = Fiber.await(workflowFiber).pipe(Effect.as(true));
@@ -88,12 +104,12 @@ export const executeExportResultsWorkflowHandler = (payload: {
         ),
       ),
     ).pipe(
-      Stream.tapErrorCause((cause) =>
+      Stream.tapError((error) =>
         Effect.logError("Export workflow failed").pipe(
           Effect.annotateLogs({
             workflowId: payload.id,
             typebotId: payload.typebotId,
-            cause: Cause.pretty(cause, { renderErrorCause: true }),
+            cause: Cause.pretty(Cause.fail(error)),
           }),
         ),
       ),
@@ -106,14 +122,21 @@ export const ResultsWorkflowsRpcLayer = ResultsWorkflowsRpc.toLayer(
     SendExportToEmail: (payload) =>
       SendExportToEmailWorkflow.execute(payload, {
         discard: true,
-      }),
+      }).pipe(Effect.asVoid),
   }),
 );
 
-export class ResultsWorkflowsRpcClient extends Effect.Service<ResultsWorkflowsRpcClient>()(
-  "@typebot/ResultsWorkflowsRpcClient",
-  {
-    scoped: RpcClient.make(ResultsWorkflowsRpc),
-    dependencies: [WorkflowsRpcClientProtocolLayer],
-  },
-) {}
+export class ResultsWorkflowsRpcClient extends ServiceMap.Service<
+  ResultsWorkflowsRpcClient,
+  RpcClient.RpcClient<
+    RpcGroup.Rpcs<typeof ResultsWorkflowsRpc>,
+    RpcClientError.RpcClientError
+  >
+>()("@typebot/ResultsWorkflowsRpcClient") {
+  static readonly layer = Layer.effect(
+    ResultsWorkflowsRpcClient,
+    RpcClient.make(ResultsWorkflowsRpc),
+  ).pipe(Layer.provide(WorkflowsRpcClientProtocolLayer));
+}
+
+export const ResultsWorkflowsRpcClientLayer = ResultsWorkflowsRpcClient.layer;

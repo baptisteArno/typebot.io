@@ -26,11 +26,6 @@ export const handleProductionWebhookRequest = async ({
 
   if (errors.length > 0) {
     console.warn("Incoming WhatsApp errors", errors);
-    Sentry.captureMessage("Incoming WhatsApp errors", {
-      extra: {
-        errors,
-      },
-    });
   }
 
   const incomingMessagesDetails = groupIncomingWebhookEntriesPerUser(entry);

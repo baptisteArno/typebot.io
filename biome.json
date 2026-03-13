@@ -33,7 +33,6 @@
       "recommended": true,
       "security": {},
       "a11y": {
-        "useFocusableInteractive": "off",
         "noStaticElementInteractions": "off"
       },
       "performance": {
@@ -41,43 +40,18 @@
       },
       "style": {
         "noNonNullAssertion": "off",
-        "useNodejsImportProtocol": "off",
-        "noUnusedTemplateLiteral": "off",
-        "useTemplate": "off",
-        "useSelfClosingElements": "off",
-        "noUselessElse": "off",
-        "noParameterAssign": "off",
-        "useShorthandFunctionType": "off",
-        "useExponentiationOperator": "off",
-        "useSingleVarDeclarator": "off",
-        "noDescendingSpecificity": "off"
+        "noParameterAssign": "off"
       },
       "correctness": {
         "useExhaustiveDependencies": "off",
-        "noSwitchDeclarations": "off",
-        "noEmptyPattern": "off",
-        "noUnsafeOptionalChaining": "off",
-        "useJsxKeyInIterable": "off",
         "useUniqueElementIds": "off",
         "useHookAtTopLevel": "off"
       },
       "complexity": {
-        "noForEach": "off",
-        "noUselessTernary": "off",
-        "useLiteralKeys": "off",
-        "useOptionalChain": "off",
-        "noBannedTypes": "off"
+        "noForEach": "off"
       },
       "suspicious": {
         "noExplicitAny": "off",
-        "noExportsInTest": "off",
-        "noConfusingVoidType": "off",
-        "noGlobalIsNan": "off",
-        "useIsArray": "off",
-        "noThenProperty": "off",
-        "noAsyncPromiseExecutor": "off",
-        "noMisleadingCharacterClass": "off",
-        "noUnknownAtRules": "off",
         "useIterableCallbackReturn": "off",
         "noDocumentCookie": "off"
       }

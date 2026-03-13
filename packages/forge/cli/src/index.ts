@@ -1,14 +1,14 @@
-import * as p from "@clack/prompts";
-import { isCancel, spinner } from "@clack/prompts";
-import { spawn } from "child_process";
+import { spawn } from "node:child_process";
 import {
   existsSync,
   mkdirSync,
   readdirSync,
   readFileSync,
   writeFileSync,
-} from "fs";
-import { join } from "path";
+} from "node:fs";
+import { join } from "node:path";
+import * as p from "@clack/prompts";
+import { isCancel, spinner } from "@clack/prompts";
 
 type CliArgs = {
   name?: string;
@@ -339,7 +339,7 @@ export const ${camelCaseName}Block = createBlock({
   id: '${id}',
   name: '${name}',
   tags: [],
-  LightLogo: ${capitalize(camelCaseName)}Logo,${auth !== "none" ? `auth,` : ""}
+  LightLogo: ${capitalize(camelCaseName)}Logo,${auth !== "none" ? "auth," : ""}
   actions: [],
 })
 `,
@@ -461,7 +461,7 @@ const addBlockToRepository = async ({
 };
 
 const createHandlersFile = async (path: string) => {
-  writeFileSync(join(path, "handlers.ts"), `export default []`);
+  writeFileSync(join(path, "handlers.ts"), "export default []");
 };
 
 const createSchemasFile = async (
@@ -620,7 +620,7 @@ ${existingHandlersData.slice(newObjectEntryIndex)}`;
 }
 
 async function addBlockToRepoPackageJson(id: string) {
-  const schemasPath = join(process.cwd(), `../repository`);
+  const schemasPath = join(process.cwd(), "../repository");
   const packageJson = require(join(schemasPath, "package.json"));
   packageJson.dependencies[`@typebot.io/${id}-block`] = "workspace:*";
   writeFileSync(

@@ -84,7 +84,7 @@ export default [
   createFetcherHandler(createChatCompletion, modelsFetcher.id, async () => {
     try {
       const response = await ky
-        .get(defaultOpenRouterOptions.baseUrl + "/models")
+        .get(`${defaultOpenRouterOptions.baseUrl}/models`)
         .json<ModelsResponse>();
 
       return {

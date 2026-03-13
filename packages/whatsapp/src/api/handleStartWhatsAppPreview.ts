@@ -148,33 +148,32 @@ export const handleStartWhatsAppPreview = async ({
         return {
           message: "Sent direct WA message",
         };
-      } else {
-        await restartSession({
-          state: newSessionState,
-          id: sessionId,
-        });
-
-        await sendWhatsAppMessage({
-          to,
-          message: {
-            type: "template",
-            template: {
-              language: {
-                code: env.WHATSAPP_PREVIEW_TEMPLATE_LANG,
-              },
-              name: env.WHATSAPP_PREVIEW_TEMPLATE_NAME!,
-            },
-          },
-          credentials: {
-            provider: "meta",
-            phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID!,
-            systemUserAccessToken: env.META_SYSTEM_USER_TOKEN!,
-          },
-        });
-        return {
-          message: "Sent WA template",
-        };
       }
+      await restartSession({
+        state: newSessionState,
+        id: sessionId,
+      });
+
+      await sendWhatsAppMessage({
+        to,
+        message: {
+          type: "template",
+          template: {
+            language: {
+              code: env.WHATSAPP_PREVIEW_TEMPLATE_LANG,
+            },
+            name: env.WHATSAPP_PREVIEW_TEMPLATE_NAME!,
+          },
+        },
+        credentials: {
+          provider: "meta",
+          phoneNumberId: env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID!,
+          systemUserAccessToken: env.META_SYSTEM_USER_TOKEN!,
+        },
+      });
+      return {
+        message: "Sent WA template",
+      };
     } catch (error) {
       throw await createToastORPCError(error);
     }

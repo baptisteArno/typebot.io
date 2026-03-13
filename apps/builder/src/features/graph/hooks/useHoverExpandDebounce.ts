@@ -13,12 +13,11 @@ export const useHoverExpandDebounce = (
         setIsExpanded(true);
       }, 500);
       return () => clearTimeout(timeout);
-    } else {
-      const timeout = setTimeout(() => {
-        setIsExpanded(false);
-      }, 300);
-      return () => clearTimeout(timeout);
     }
+    const timeout = setTimeout(() => {
+      setIsExpanded(false);
+    }, 300);
+    return () => clearTimeout(timeout);
   }, [isHovered, enabled]);
 
   return {

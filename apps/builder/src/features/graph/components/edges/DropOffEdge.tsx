@@ -103,8 +103,8 @@ export const DropOffEdge = ({
   }, [currentBlockId, publishedTypebot?.groups, sourceEndpoints]);
 
   const endpointCoordinates = useMemo(() => {
-    if (!groupId) return undefined;
-    if (!groupCoordinates) return undefined;
+    if (!groupId) return;
+    if (!groupCoordinates) return;
     return computeSourceCoordinates({
       sourcePosition: groupCoordinates,
       sourceTop: sourceTop ?? 0,
@@ -198,7 +198,7 @@ export const DropOffEdge = ({
                 </Badge>
               </div>
             }
-          ></Tooltip.Trigger>
+          />
           <Tooltip.Popup>
             {isWorkspaceProPlan ? (
               <>

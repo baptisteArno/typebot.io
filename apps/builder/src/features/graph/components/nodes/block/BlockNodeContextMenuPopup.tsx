@@ -39,19 +39,17 @@ export const BlockNodeContextMenuPopup = ({
 
   return (
     <ContextMenu.Popup>
-      {actionDef &&
-        actionDef?.turnableInto &&
-        actionDef?.turnableInto.length > 0 && (
-          <ContextMenu.SubmenuRoot>
-            <ContextMenu.SubmenuTrigger>
-              <RepeatIcon /> Turn into <ArrowRight01Icon />
-            </ContextMenu.SubmenuTrigger>
-            <ForgedBlockTurnIntoContextMenuPopup
-              turnableInto={actionDef.turnableInto}
-              onTurnIntoClick={onTurnIntoClick}
-            />
-          </ContextMenu.SubmenuRoot>
-        )}
+      {actionDef?.turnableInto && actionDef?.turnableInto.length > 0 && (
+        <ContextMenu.SubmenuRoot>
+          <ContextMenu.SubmenuTrigger>
+            <RepeatIcon /> Turn into <ArrowRight01Icon />
+          </ContextMenu.SubmenuTrigger>
+          <ForgedBlockTurnIntoContextMenuPopup
+            turnableInto={actionDef.turnableInto}
+            onTurnIntoClick={onTurnIntoClick}
+          />
+        </ContextMenu.SubmenuRoot>
+      )}
       <ContextMenu.Item onClick={handleDuplicateClick}>
         <Copy01Icon />
         {t("duplicate")}

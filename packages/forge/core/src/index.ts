@@ -31,8 +31,12 @@ export const createVersionedBlock = <
 
 export const createAction = <
   A extends AuthDefinition<any>,
-  BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
-  O extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
+  BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<
+    Record<never, z.ZodTypeAny>
+  >,
+  O extends z.ZodObject<z.ZodRawShape> = z.ZodObject<
+    Record<never, z.ZodTypeAny>
+  >,
 >(
   actionDefinition: {
     auth?: A;
@@ -42,8 +46,12 @@ export const createAction = <
 
 export const createActionHandler = <
   Auth extends AuthDefinition<any>,
-  BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
-  Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
+  BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<
+    Record<never, z.ZodTypeAny>
+  >,
+  Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<
+    Record<never, z.ZodTypeAny>
+  >,
 >(
   action: ActionDefinition<Auth, BaseOptions, Options> & {
     auth?: Auth;
@@ -61,8 +69,12 @@ export const createActionHandler = <
 
 export const createFetcherHandler = <
   Auth extends AuthDefinition<any>,
-  BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
-  Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
+  BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<
+    Record<never, z.ZodTypeAny>
+  >,
+  Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<
+    Record<never, z.ZodTypeAny>
+  >,
 >(
   _action: ActionDefinition<Auth, BaseOptions, Options> & {
     auth?: Auth;

@@ -22,7 +22,7 @@ export const sendVerificationRequest = async ({ identifier, url }: Props) => {
     });
   } catch (err) {
     console.error(err);
-    throw new Error(`Magic link email could not be sent. See error above.`);
+    throw new Error("Magic link email could not be sent. See error above.");
   }
 };
 

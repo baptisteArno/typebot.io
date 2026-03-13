@@ -42,7 +42,7 @@ export const parseVideoUrl = (
       type: VideoBubbleContentType.YOUTUBE,
       url: parsedUrl,
       id,
-      queryParamsStr: queryParams ? "?" + queryParams.toString() : undefined,
+      queryParamsStr: queryParams ? `?${queryParams.toString()}` : undefined,
       videoSizeSuggestion: url.includes("shorts")
         ? verticalVideoSuggestionSize
         : horizontalVideoSuggestionSize,

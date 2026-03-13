@@ -14,8 +14,8 @@ import {
   WorkspaceRole,
 } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
+import { createGlobalTelemetryLayer } from "@typebot.io/telemetry/createGlobalTelemetryLayer";
 import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
-import { TelemetryLayer } from "@typebot.io/telemetry/telemetryLayer";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { userSchema } from "@typebot.io/user/schemas";
 import { UsersWorkflowsRpcClient } from "@typebot.io/user/workflows/rpc";
@@ -26,11 +26,8 @@ import { getNewUserInvitations } from "./getNewUserInvitations";
 import { joinWorkspaces } from "./joinWorkspaces";
 
 const MainLayer = Layer.provideMerge(
-  Layer.provide(
-    UsersWorkflowsRpcClient.Default,
-    WorkflowsRpcClientConfig.layer,
-  ),
-  TelemetryLayer,
+  Layer.provide(UsersWorkflowsRpcClient.layer, WorkflowsRpcClientConfig.layer),
+  createGlobalTelemetryLayer("builder"),
 );
 
 export const createAuthPrismaAdapter = (p: Prisma.PrismaClient): Adapter => ({
@@ -51,7 +48,7 @@ export const createAuthPrismaAdapter = (p: Prisma.PrismaClient): Adapter => ({
       throw Error("New users are forbidden");
 
     const newWorkspaceData = {
-      name: data.name ? `${data.name}'s workspace` : `My workspace`,
+      name: data.name ? `${data.name}'s workspace` : "My workspace",
       plan: parseWorkspaceDefaultPlan(data.email),
     };
     const createdUser = await p.user.create({
@@ -220,7 +217,7 @@ const triggerStartUserOnboardingWorkflow = (userId: string, email: string) => {
       root: true,
     }),
     Effect.provide(MainLayer),
-    Effect.catchAll((error) =>
+    Effect.catch((error) =>
       Effect.sync(() => {
         console.error("Failed to trigger onboarding email workflow", error);
       }),

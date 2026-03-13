@@ -11,8 +11,7 @@
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@effect-aws/s3": "^0.2.5",
-    "effect": "^3.19.16",
+    "effect": "4.0.0-beta.30",
     "papaparse": "^5.4.1",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/emails": "workspace:*",
@@ -22,6 +21,7 @@
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "zod": "^4.3.5"

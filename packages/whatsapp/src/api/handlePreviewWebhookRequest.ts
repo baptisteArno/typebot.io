@@ -41,11 +41,6 @@ export const handlePreviewWebhookRequest = async ({
       );
     } else {
       console.warn("Incoming WhatsApp errors", errors);
-      Sentry.captureMessage("Incoming WhatsApp errors", {
-        extra: {
-          errors,
-        },
-      });
     }
   }
 
@@ -81,7 +76,7 @@ export const handlePreviewWebhookRequest = async ({
 
 const handleUnknownError = async (err: unknown) => {
   if (err instanceof WhatsAppError) {
-    Sentry.captureMessage(err.message, err.details);
+    console.warn(err.message, err.details);
   } else {
     console.log("Sending unkown error to Sentry");
     const details = safeJsonParse((await parseUnknownError({ err })).details);

@@ -82,7 +82,7 @@ function splitForDiscord(text: string, maxLen = DISCORD_LIMIT): string[] {
 
     // If we remain inside a fence, prefix next chunk with reopening fence
     if (openFenceLang !== null) {
-      parts.push("```" + (openFenceLang ?? "") + "\n"); // temporary marker; will be merged with next content
+      parts.push(`\`\`\`${openFenceLang ?? ""}\n`); // temporary marker; will be merged with next content
     }
   };
 

@@ -341,7 +341,7 @@ const executeGroup = ({
             const nextBlockInGroup = nextGroup.group.blocks.at(
               currentBlockIndex + 1,
             );
-            if (!nextBlockInGroup) return undefined;
+            if (!nextBlockInGroup) return;
             const virtualId = createVirtualEdgeId({
               groupId: nextGroup.group.id,
               blockId: nextBlockInGroup.id,

@@ -57,7 +57,7 @@ export const TextBubbleEditor = ({
     if (!variable) return;
     variablesPopoverControls.onClose();
     editor.tf.focus();
-    editor.tf.insertText("{{" + variable.name + "}}");
+    editor.tf.insertText(`{{${variable.name}}}`);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -159,8 +159,8 @@ export const TextBubbleEditor = ({
           <Popover.Trigger
             className="absolute"
             style={{
-              top: variablePopoverAnchorCoords?.top + "px",
-              left: variablePopoverAnchorCoords?.left + "px",
+              top: `${variablePopoverAnchorCoords?.top}px`,
+              left: `${variablePopoverAnchorCoords?.left}px`,
             }}
           />
           <Popover.Popup

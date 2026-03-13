@@ -42,7 +42,7 @@ export const ZodObjectLayout = ({
       const layout = getZodLayoutMetadata(keySchema);
 
       if (evaluateIsHidden(layout?.isHidden, blockOptions)) return nodes;
-      if (layout && layout.accordion && !isInAccordion) {
+      if (layout?.accordion && !isInAccordion) {
         if (nodes.accordionsCreated.includes(layout.accordion)) return nodes;
         const accordionKeys = getObjectKeysWithSameAccordionAttr(
           layout.accordion,

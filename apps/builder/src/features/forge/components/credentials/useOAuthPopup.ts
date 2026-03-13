@@ -1,4 +1,4 @@
-import { stringify } from "querystring";
+import { stringify } from "qs";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "@/lib/toast";
 

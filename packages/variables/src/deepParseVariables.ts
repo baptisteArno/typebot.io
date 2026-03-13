@@ -55,7 +55,7 @@ export const deepParseVariables = <T>(
         return newObj;
       }
 
-      if (currentValue instanceof Array) {
+      if (Array.isArray(currentValue)) {
         (newObj as Record<string, unknown>)[key] = currentValue.map((value) =>
           deepParseVariables(value, {
             variables,

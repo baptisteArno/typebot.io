@@ -153,5 +153,5 @@ const getClient = (
     const secret = getRuntimeVariable(authDef.defaultClientEnvKeys.secret);
     if (id && secret) return { id, secret };
   }
-  return undefined;
+  return;
 };

@@ -15,7 +15,7 @@
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/chat-api": "workspace:*",
-    "@sentry/nextjs": "^10.32.1",
+    "@sentry/nextjs": "^10.43.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {

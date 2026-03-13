@@ -43,10 +43,10 @@ export const handleDeleteCustomDomain = async ({
         message: "Failed to delete domain on Vercel",
         cause: await error.response.text(),
       });
-    else
-      throw new ORPCError("INTERNAL_SERVER_ERROR", {
-        message: "Failed to delete domain on Vercel",
-      });
+
+    throw new ORPCError("INTERNAL_SERVER_ERROR", {
+      message: "Failed to delete domain on Vercel",
+    });
   }
   await prisma.customDomain.deleteMany({
     where: {

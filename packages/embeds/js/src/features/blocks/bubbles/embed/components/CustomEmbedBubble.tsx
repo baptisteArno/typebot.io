@@ -17,9 +17,7 @@ export const showAnimationDuration = 400;
 
 export const CustomEmbedBubble = (props: Props) => {
   let ref: HTMLDivElement | undefined;
-  const [isTyping, setIsTyping] = createSignal(
-    props.onTransitionEnd ? true : false,
-  );
+  const [isTyping, setIsTyping] = createSignal(!!props.onTransitionEnd);
   let containerRef: HTMLDivElement | undefined;
 
   onMount(() => {

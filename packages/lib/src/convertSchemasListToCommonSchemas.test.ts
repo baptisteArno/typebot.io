@@ -22,8 +22,8 @@ describe("convertSchemasListToCommonSchemas", () => {
 
       expect(Object.keys(result)).toContain("Text");
       expect(Object.keys(result)).toContain("Image");
-      expect(result["Text"]?.schema).toBe(textSchema);
-      expect(result["Image"]?.schema).toBe(imageSchema);
+      expect(result.Text?.schema).toBe(textSchema);
+      expect(result.Image?.schema).toBe(imageSchema);
     });
 
     it("should handle version-based discriminants", () => {

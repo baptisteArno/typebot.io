@@ -17,7 +17,7 @@ export const updateCurrentBlockIdWithEvent = ({ state, event }: Props) => {
 
   if (!edge)
     throw new ORPCError("BAD_REQUEST", {
-      message: `Could not find outgoing edge`,
+      message: "Could not find outgoing edge",
     });
 
   newSessionState = addDummyFirstBlockToGroupIfMissing(

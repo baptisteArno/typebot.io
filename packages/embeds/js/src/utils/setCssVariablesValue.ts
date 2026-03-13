@@ -321,7 +321,7 @@ const setHostBubbles = ({
   if (isDefined(borderThickness)) {
     documentStyle.setProperty(
       botCssVariableNames.chat.hostBubbles.borderWidth,
-      borderThickness + "px",
+      `${borderThickness}px`,
     );
   }
 
@@ -396,7 +396,7 @@ const setGuestBubbles = ({
   if (isDefined(borderThickness)) {
     documentStyle.setProperty(
       botCssVariableNames.chat.guestBubbles.borderWidth,
-      borderThickness + "px",
+      `${borderThickness}px`,
     );
   }
 

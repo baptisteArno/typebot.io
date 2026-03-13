@@ -344,7 +344,7 @@ const parseAttachments = (
   fileUrls: string | string[] | undefined,
   typebotId: string,
 ): Promise<{ path: string }[]> | undefined => {
-  if (!fileUrls) return undefined;
+  if (!fileUrls) return;
   const urls = Array.isArray(fileUrls) ? fileUrls : fileUrls.split(", ");
   return Promise.all(
     urls.map(async (url) => {
