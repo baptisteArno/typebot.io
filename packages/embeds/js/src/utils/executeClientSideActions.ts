@@ -21,7 +21,7 @@ type ClientSideActionResponse =
   | { replyToSend: string | undefined; logs?: LogInSession[] }
   | { logs: LogInSession[] }
   | { scriptCallbackMessage: string }
-  | void;
+  | undefined;
 
 type Props = {
   clientSideAction: NonNullable<ContinueChatResponse["clientSideActions"]>[0];
@@ -42,7 +42,8 @@ export const executeClientSideAction = async ({
     });
   }
   if ("googleAnalytics" in clientSideAction) {
-    return executeGoogleAnalyticsBlock(clientSideAction.googleAnalytics);
+    await executeGoogleAnalyticsBlock(clientSideAction.googleAnalytics);
+    return;
   }
   if ("scriptToExecute" in clientSideAction) {
     return executeScript(clientSideAction.scriptToExecute, {
@@ -96,10 +97,12 @@ export const executeClientSideAction = async ({
     return { replyToSend: response };
   }
   if ("startPropsToInject" in clientSideAction) {
-    return injectStartProps(clientSideAction.startPropsToInject);
+    await injectStartProps(clientSideAction.startPropsToInject);
+    return;
   }
   if ("pixel" in clientSideAction) {
-    return executePixel(clientSideAction.pixel);
+    await executePixel(clientSideAction.pixel);
+    return;
   }
   if ("codeToExecute" in clientSideAction) {
     return executeCode(clientSideAction.codeToExecute);

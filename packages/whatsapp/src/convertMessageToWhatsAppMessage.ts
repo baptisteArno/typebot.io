@@ -130,7 +130,7 @@ export const convertMessageToWhatsAppMessage = async ({
           },
         };
       return null;
-    case BubbleBlockType.EMBED:
+    case BubbleBlockType.EMBED: {
       if (!message.content.url) return null;
       const fileExtension = message.content.url.split(".").pop();
       const filename = message.content.url.split("/").pop();
@@ -176,6 +176,7 @@ export const convertMessageToWhatsAppMessage = async ({
           preview_url: true,
         },
       };
+    }
     case "custom-embed":
       if (!message.content.url) return null;
       return {

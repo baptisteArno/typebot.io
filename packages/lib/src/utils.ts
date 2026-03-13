@@ -53,15 +53,12 @@ export const byId = (id?: string) => (obj: { id: string }) => obj.id === id;
 
 export const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-interface Omit {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  <T extends object, K extends [...(keyof T)[]]>(
-    obj: T,
-    ...keys: K
-  ): {
-    [K2 in Exclude<keyof T, K[number]>]: T[K2];
-  };
-}
+type Omit = <T extends object, K extends [...(keyof T)[]]>(
+  obj: T,
+  ...keys: K
+) => {
+  [K2 in Exclude<keyof T, K[number]>]: T[K2];
+};
 
 export const omit: Omit = (obj, ...keys) => {
   const ret = {} as {
@@ -142,12 +139,12 @@ export const injectCustomHeadCode = (customHeadCode: string) => {
 };
 
 export const getAtPath = <T>(obj: T, path: string): unknown => {
-  if (isNotDefined(obj)) return undefined;
+  if (isNotDefined(obj)) return;
   const pathParts = path.split(".");
   let current: any = obj;
   for (const part of pathParts) {
     if (current === undefined) {
-      return undefined;
+      return;
     }
     current = current[part];
   }

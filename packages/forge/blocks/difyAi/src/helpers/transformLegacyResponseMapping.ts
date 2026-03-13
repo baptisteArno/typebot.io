@@ -14,7 +14,7 @@ export const transformLegacyResponseMapping = (
       variableId?: string;
     }>
   | undefined => {
-  if (!responseMapping) return undefined;
+  if (!responseMapping) return;
 
   return responseMapping
     .map((mapping) => ({

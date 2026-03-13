@@ -4,7 +4,7 @@ export const parseGuessedValueType = (
   value: Variable["value"],
 ): string | (string | null)[] | boolean | number | null | undefined => {
   if (value === null) return null;
-  if (value === undefined) return undefined;
+  if (value === undefined) return;
   if (typeof value !== "string") return value;
   const isStartingWithZero =
     value.startsWith("0") && !value.startsWith("0.") && value.length > 1;
@@ -15,7 +15,7 @@ export const parseGuessedValueType = (
   if (value === "true") return true;
   if (value === "false") return false;
   if (value === "null") return null;
-  if (value === "undefined") return undefined;
+  if (value === "undefined") return;
   // isNaN works with strings
   if (isNaN(value as unknown as number)) return value;
   return Number(value);

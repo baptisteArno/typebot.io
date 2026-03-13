@@ -22,7 +22,7 @@ export const numberInputHelper = (value: () => any) => {
     }
 
     if (el.value === "") {
-      return undefined;
+      return;
     }
 
     return el.valueAsNumber;

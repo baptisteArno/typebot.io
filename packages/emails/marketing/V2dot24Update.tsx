@@ -30,7 +30,7 @@ type Props = {
 
 const imagesBaseUrl = `${env.NEXTAUTH_URL}/images/emails/V2dot24Update`;
 
-export const V2dot24Update = ({}: Props) => (
+export const V2dot24Update = (_: Props) => (
   <Html>
     <Head />
     <Preview>Unveiling Typebot's Latest Innovations - v2.24 Update! 🌟</Preview>

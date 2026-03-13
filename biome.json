@@ -33,7 +33,6 @@
       "recommended": true,
       "security": {},
       "a11y": {
-        "useFocusableInteractive": "off",
         "noStaticElementInteractions": "off"
       },
       "performance": {
@@ -46,18 +45,10 @@
         "useTemplate": "off",
         "useSelfClosingElements": "off",
         "noUselessElse": "off",
-        "noParameterAssign": "off",
-        "useShorthandFunctionType": "off",
-        "useExponentiationOperator": "off",
-        "useSingleVarDeclarator": "off",
-        "noDescendingSpecificity": "off"
+        "noParameterAssign": "off"
       },
       "correctness": {
         "useExhaustiveDependencies": "off",
-        "noSwitchDeclarations": "off",
-        "noEmptyPattern": "off",
-        "noUnsafeOptionalChaining": "off",
-        "useJsxKeyInIterable": "off",
         "useUniqueElementIds": "off",
         "useHookAtTopLevel": "off"
       },
@@ -70,14 +61,7 @@
       },
       "suspicious": {
         "noExplicitAny": "off",
-        "noExportsInTest": "off",
-        "noConfusingVoidType": "off",
         "noGlobalIsNan": "off",
-        "useIsArray": "off",
-        "noThenProperty": "off",
-        "noAsyncPromiseExecutor": "off",
-        "noMisleadingCharacterClass": "off",
-        "noUnknownAtRules": "off",
         "useIterableCallbackReturn": "off",
         "noDocumentCookie": "off"
       }

@@ -149,5 +149,5 @@ const getDisplayCondition = (item: Item) => {
     item.options.displayCondition.condition
   )
     return item.options.displayCondition.condition;
-  return undefined;
+  return;
 };

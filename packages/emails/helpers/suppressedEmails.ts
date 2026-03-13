@@ -78,13 +78,13 @@ export const filterSuppressedRecipients = (
   recipients: SendMailOptions["to"],
   suppressedEmails: string[],
 ) => {
-  if (!recipients) return undefined;
+  if (!recipients) return;
   if (suppressedEmails.length === 0) return recipients;
   const suppressed = new Set(suppressedEmails.map(normalizeEmail));
 
   if (typeof recipients === "string") {
     const filtered = filterRecipientsString(recipients, suppressed);
-    if (!filtered) return undefined;
+    if (!filtered) return;
     return filtered;
   }
 
@@ -105,7 +105,7 @@ export const filterSuppressedRecipients = (
       if (!filteredAddress) continue;
       filtered.push({ ...entry, address: filteredAddress });
     }
-    if (filtered.length === 0) return undefined;
+    if (filtered.length === 0) return;
     return filtered;
   }
 
@@ -114,7 +114,7 @@ export const filterSuppressedRecipients = (
     recipients.address,
     suppressed,
   );
-  if (!filteredAddress) return undefined;
+  if (!filteredAddress) return;
   return { ...recipients, address: filteredAddress };
 };
 

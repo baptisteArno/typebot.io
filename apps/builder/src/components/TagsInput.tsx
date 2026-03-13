@@ -88,6 +88,7 @@ export const TagsInput = ({ items, placeholder, onValueChange }: Props) => {
     >
       {items?.map((item, index) => (
         <Tag
+          key={item}
           content={item}
           onDeleteClick={() => removeItem(index)}
           isFocused={focusedTagIndex === index}

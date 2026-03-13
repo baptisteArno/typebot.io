@@ -113,7 +113,7 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
           },
           Effect.fn(function* (state) {
             if (state.processedCount >= totalResultsToExport) {
-              return undefined;
+              return;
             }
 
             const rawBatch = z.array(resultWithAnswersSchema).parse(
@@ -153,7 +153,7 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
             const batch = rawBatch.filter((r) => !state.processedIds.has(r.id));
 
             if (batch.length === 0) {
-              return undefined;
+              return;
             }
 
             batch.forEach((r) => state.processedIds.add(r.id));

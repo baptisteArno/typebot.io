@@ -9,15 +9,15 @@ import { isNotEmpty } from "@typebot.io/lib/utils";
  */
 export const getIframeReferrerOrigin = (): string | undefined => {
   try {
-    if (typeof window === "undefined") return undefined;
+    if (typeof window === "undefined") return;
     const isEmbedded = parent !== window;
-    if (!isEmbedded || !isNotEmpty(document.referrer)) return undefined;
+    if (!isEmbedded || !isNotEmpty(document.referrer)) return;
     try {
       return new URL(document.referrer).origin;
     } catch {
-      return undefined;
+      return;
     }
   } catch {
-    return undefined;
+    return;
   }
 };

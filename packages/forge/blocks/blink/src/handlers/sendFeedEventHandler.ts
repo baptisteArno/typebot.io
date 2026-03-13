@@ -63,7 +63,7 @@ export const sendFeedEventHandler = createActionHandler(sendFeedEvent, {
                 })),
               };
 
-            case "YouTube":
+            case "YouTube": {
               if (!section.link) return;
               const { id } = parseVideoUrl(section.link);
               if (!id) return logs.add("Invalid YouTube URL.");
@@ -71,6 +71,7 @@ export const sendFeedEventHandler = createActionHandler(sendFeedEvent, {
                 type: "youtube",
                 video_id: id,
               };
+            }
 
             case "Link":
               return {
