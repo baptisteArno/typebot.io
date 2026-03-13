@@ -18,9 +18,7 @@ export const showAnimationDuration = 400;
 
 export const EmbedBubble = (props: Props) => {
   let ref: HTMLDivElement | undefined;
-  const [isTyping, setIsTyping] = createSignal(
-    props.onTransitionEnd ? true : false,
-  );
+  const [isTyping, setIsTyping] = createSignal(!!props.onTransitionEnd);
 
   const handleMessage = (
     event: MessageEvent<{ name?: string; data?: string }>,

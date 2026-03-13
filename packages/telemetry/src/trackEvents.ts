@@ -29,8 +29,8 @@ export const trackEvents = async (events: TelemetryEvent[]) => {
       continue;
     }
     const groups: { workspace?: string; typebot?: string } = {};
-    if ("workspaceId" in event) groups["workspace"] = event.workspaceId;
-    if ("typebotId" in event) groups["typebot"] = event.typebotId;
+    if ("workspaceId" in event) groups.workspace = event.workspaceId;
+    if ("typebotId" in event) groups.typebot = event.typebotId;
     client.capture({
       distinctId: "userId" in event ? event.userId : event.visitorId,
       event: event.name,

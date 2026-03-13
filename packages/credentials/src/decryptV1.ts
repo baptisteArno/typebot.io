@@ -5,7 +5,7 @@ const algorithm = "aes-256-gcm";
 const secretKey = env.ENCRYPTION_SECRET;
 
 export const decryptV1 = (encryptedData: string, auth: string): object => {
-  if (!secretKey) throw new Error(`ENCRYPTION_SECRET is not in environment`);
+  if (!secretKey) throw new Error("ENCRYPTION_SECRET is not in environment");
   const [iv, tag] = auth.split(".");
   if (!iv || !tag) return {};
   const decipher = createDecipheriv(

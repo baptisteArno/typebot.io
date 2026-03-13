@@ -66,7 +66,7 @@ export const setInitialChatReplyInStorage = (
 
 export const setBotOpenedStateInStorage = () => {
   try {
-    sessionStorage.setItem(`typebot-botOpened`, "true");
+    sessionStorage.setItem("typebot-botOpened", "true");
   } catch {
     /* empty */
   }
@@ -74,7 +74,7 @@ export const setBotOpenedStateInStorage = () => {
 
 export const removeBotOpenedStateInStorage = () => {
   try {
-    sessionStorage.removeItem(`typebot-botOpened`);
+    sessionStorage.removeItem("typebot-botOpened");
   } catch {
     /* empty */
   }
@@ -82,7 +82,7 @@ export const removeBotOpenedStateInStorage = () => {
 
 export const getBotOpenedStateFromStorage = () => {
   try {
-    return sessionStorage.getItem(`typebot-botOpened`) === "true";
+    return sessionStorage.getItem("typebot-botOpened") === "true";
   } catch {
     return false;
   }

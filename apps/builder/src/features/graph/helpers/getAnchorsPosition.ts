@@ -67,17 +67,16 @@ const computeGroupTargetPosition = ({
         sourceGroupPosition.x + elementWidth / 2 + stubLength;
     const targetPosition = parseGroupAnchorPosition(targetGroupPosition, "top");
     return { totalSegments: isExterior ? 2 : 4, targetPosition };
-  } else {
-    const isExterior =
-      targetGroupPosition.x < sourceGroupPosition.x - elementWidth ||
-      targetGroupPosition.x > sourceGroupPosition.x + elementWidth;
-    const targetPosition = parseGroupAnchorPosition(
-      targetGroupPosition,
-      isTargetGroupToTheRight ? "right" : "left",
-      targetOffsetY,
-    );
-    return { totalSegments: isExterior ? 3 : 5, targetPosition };
   }
+  const isExterior =
+    targetGroupPosition.x < sourceGroupPosition.x - elementWidth ||
+    targetGroupPosition.x > sourceGroupPosition.x + elementWidth;
+  const targetPosition = parseGroupAnchorPosition(
+    targetGroupPosition,
+    isTargetGroupToTheRight ? "right" : "left",
+    targetOffsetY,
+  );
+  return { totalSegments: isExterior ? 3 : 5, targetPosition };
 };
 
 const parseGroupAnchorPosition = (

@@ -135,8 +135,8 @@ const StackWithGhostableItems = ({
       <div
         style={
           {
-            "--gap": (isNullGroup ? (isExpanded ? 1 : 0) : gapPixel) + "px",
-            "--mb": gapPixel + "px",
+            "--gap": `${isNullGroup ? (isExpanded ? 1 : 0) : gapPixel}px`,
+            "--mb": `${gapPixel}px`,
           } as React.CSSProperties
         }
         className={cx(
@@ -182,7 +182,7 @@ export const GhostableItem = ({
             {
               "--available-height": isExpanded
                 ? "24px"
-                : ghostItemHeight + "px",
+                : `${ghostItemHeight}px`,
             } as React.CSSProperties
           }
           className={cn(

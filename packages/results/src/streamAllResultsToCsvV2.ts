@@ -103,7 +103,7 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
     const totalRowsExportedRef = yield* Ref.make(0);
 
     // Create a stream of CSV chunks
-    const csvStream = Stream.make(Papaparse.unparse([csvHeaders]) + "\n").pipe(
+    const csvStream = Stream.make(`${Papaparse.unparse([csvHeaders])}\n`).pipe(
       Stream.concat(
         Stream.unfold(
           {
@@ -182,7 +182,7 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
 
             const csvContent =
               csvRows.length > 0
-                ? Papaparse.unparse(csvRows, { header: false }) + "\n"
+                ? `${Papaparse.unparse(csvRows, { header: false })}\n`
                 : "";
 
             const newProcessedCount = state.processedCount + batch.length;

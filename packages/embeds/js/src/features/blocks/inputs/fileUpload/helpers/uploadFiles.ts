@@ -29,8 +29,7 @@ export const uploadFiles = async ({
   const errors: string[] = [];
   let i = 0;
   for (const { input, file } of files) {
-    onUploadProgress &&
-      onUploadProgress({ progress: (i / files.length) * 100, fileIndex: i });
+    onUploadProgress?.({ progress: (i / files.length) * 100, fileIndex: i });
     i += 1;
     const { data, error } = await sendRequest<{
       presignedUrl: string;
@@ -53,21 +52,20 @@ export const uploadFiles = async ({
     }
 
     if (!data?.presignedUrl) continue;
-    else {
-      const formData = new FormData();
-      Object.entries(data.formData).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
-      formData.append("file", file);
-      const upload = await fetch(data.presignedUrl, {
-        method: "POST",
-        body: formData,
-      });
 
-      if (!upload.ok) continue;
+    const formData = new FormData();
+    Object.entries(data.formData).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    formData.append("file", file);
+    const upload = await fetch(data.presignedUrl, {
+      method: "POST",
+      body: formData,
+    });
 
-      urls.push({ url: data.fileUrl, type: file.type });
-    }
+    if (!upload.ok) continue;
+
+    urls.push({ url: data.fileUrl, type: file.type });
   }
   return errors.length > 0
     ? { type: "error", error: errors.join(", ") }

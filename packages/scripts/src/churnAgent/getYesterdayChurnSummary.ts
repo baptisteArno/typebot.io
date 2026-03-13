@@ -1,3 +1,5 @@
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import path from "node:path";
 import { openai } from "@ai-sdk/openai";
 import { zodToSchema } from "@typebot.io/ai/zodToSchema";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
@@ -11,8 +13,6 @@ import type { Prisma } from "@typebot.io/prisma/types";
 import prisma from "@typebot.io/prisma/withReadReplica";
 import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichTextToMarkdown";
 import { generateObject } from "ai";
-import { existsSync, mkdirSync, writeFileSync } from "fs";
-import path from "path";
 import { z } from "zod";
 import { executePostHogQuery } from "../helpers/executePostHogQuery";
 import {
@@ -178,7 +178,7 @@ export const getYesterdayChurnSummary = async ({
       : null;
 
     if (workspace.stripeId && !cancellationReason) {
-      console.log(`   ❌ Cancellation was most likely unscheduled`);
+      console.log("   ❌ Cancellation was most likely unscheduled");
       continue;
     }
 
@@ -213,7 +213,7 @@ export const getYesterdayChurnSummary = async ({
     createFolderIfNotExists(workspacePromptPath);
     writeFileSync(workspacePromptPath, userMessage);
 
-    console.log(`   🧠 Generating churn report...`);
+    console.log("   🧠 Generating churn report...");
     const { object: churnSummary } = await generateObject({
       model: openai("gpt-5"),
       schema: zodToSchema(churnSummarySchema),
@@ -226,7 +226,7 @@ export const getYesterdayChurnSummary = async ({
       ],
     });
 
-    console.log(`   ✅ Success`);
+    console.log("   ✅ Success");
     const workspaceSummaryPath = path.join(
       __dirname,
       `../../logs/workspaces/${workspace.id}/summary.txt`,
@@ -279,7 +279,7 @@ const getWorkspaceJsonRepresentation = async (
   };
 
   const workspaceEvents = [];
-  console.log(`   📊 Fetching workspace events...`);
+  console.log("   📊 Fetching workspace events...");
   for (const member of workspace.members.filter(
     (member) => member.role !== "GUEST",
   )) {
@@ -350,13 +350,14 @@ const getWorkspaceJsonRepresentation = async (
         if (
           lastEvent.event === "New results collected" &&
           event.event === "New results collected" &&
-          !isNaN(event.total)
+          !Number.isNaN(event.total)
         ) {
           lastEvent.total += event.total ?? 0;
           lastEvent.createdAt = event.createdAt;
           if (!lastEvent.updatedAt) lastEvent.updatedAt = lastEvent.createdAt;
           return acc;
-        } else if (
+        }
+        if (
           lastEvent.event === "Typebot published" &&
           event.event === "Typebot published"
         ) {

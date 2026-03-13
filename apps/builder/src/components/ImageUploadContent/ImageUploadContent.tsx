@@ -53,7 +53,7 @@ export const ImageUploadContent = ({
 
   const handleSubmit = (url: string) => {
     onSubmit(url);
-    onClose && onClose();
+    onClose?.();
   };
 
   return (

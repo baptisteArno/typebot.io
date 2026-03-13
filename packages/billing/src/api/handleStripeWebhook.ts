@@ -298,7 +298,7 @@ export const handleStripeWebhook = async ({
       });
       const outstandingInvoicesWithAdditionalUsageCosts =
         outstandingInvoices.data.filter(
-          (invoice) => invoice.amount_due > prices["PRO"] * 100,
+          (invoice) => invoice.amount_due > prices.PRO * 100,
         );
 
       const existingWorkspace = await prisma.workspace.findFirst({

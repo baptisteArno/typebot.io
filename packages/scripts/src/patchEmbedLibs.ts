@@ -1,4 +1,4 @@
-import { writeFileSync } from "fs";
+import { writeFileSync } from "node:fs";
 import jsPackageJson from "../../embeds/js/package.json";
 import reactPackageJson from "../../embeds/react/package.json";
 
@@ -12,24 +12,24 @@ const newVersion = `${currentVersion.split(".")[0]}.${
 
 writeFileSync(
   "./packages/embeds/js/package.json",
-  JSON.stringify(
+  `${JSON.stringify(
     {
       ...jsPackageJson,
       version: newVersion,
     },
     null,
     2,
-  ) + "\n",
+  )}\n`,
 );
 
 writeFileSync(
   "./packages/embeds/react/package.json",
-  JSON.stringify(
+  `${JSON.stringify(
     {
       ...reactPackageJson,
       version: newVersion,
     },
     null,
     2,
-  ) + "\n",
+  )}\n`,
 );

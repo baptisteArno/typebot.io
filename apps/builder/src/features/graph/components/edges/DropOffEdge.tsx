@@ -198,7 +198,7 @@ export const DropOffEdge = ({
                 </Badge>
               </div>
             }
-          ></Tooltip.Trigger>
+          />
           <Tooltip.Popup>
             {isWorkspaceProPlan ? (
               <>

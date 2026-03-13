@@ -1,6 +1,6 @@
+import { existsSync, readdirSync } from "node:fs";
+import { join, resolve } from "node:path";
 import { $ } from "bun";
-import { existsSync, readdirSync } from "fs";
-import { join, resolve } from "path";
 
 // Path to the root of your monorepo ../..
 const rootDir = resolve(__dirname, "../../..");

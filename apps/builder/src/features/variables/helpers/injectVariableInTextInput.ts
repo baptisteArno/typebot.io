@@ -15,8 +15,7 @@ export const injectVariableInText = ({
 }: Props): { text: string; carretPosition: number } => {
   const textBeforeCursorPosition = text.substring(0, start);
   const textAfterCursorPosition = text.substring(end, text.length);
-  const newText =
-    textBeforeCursorPosition + `{{${variable.name}}}` + textAfterCursorPosition;
+  const newText = `${textBeforeCursorPosition}{{${variable.name}}}${textAfterCursorPosition}`;
   const newCarretPosition = start + `{{${variable.name}}}`.length;
   return {
     text: newText,

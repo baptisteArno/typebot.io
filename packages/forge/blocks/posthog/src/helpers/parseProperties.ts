@@ -17,14 +17,14 @@ export const parseProperties = ({
     parsedProperties[key] = value;
   });
 
-  if (isAnonymous) parsedProperties["$process_person_profile"] = false;
+  if (isAnonymous) parsedProperties.$process_person_profile = false;
   else if (personProperties) {
     const set: Record<string, string> = {};
     personProperties.forEach(({ key, value }) => {
       if (!key || !value) return;
       set[key] = value;
     });
-    parsedProperties["$set"] = set;
+    parsedProperties.$set = set;
   }
 
   return parsedProperties;

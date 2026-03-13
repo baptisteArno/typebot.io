@@ -12,7 +12,7 @@ export const numberInputHelper = (value: () => any) => {
 
       const nodeV = el.value;
       if ((v === 0 && nodeV === "") || v !== nodeV) {
-        el.value = v + "";
+        el.value = `${v}`;
       }
     });
   };

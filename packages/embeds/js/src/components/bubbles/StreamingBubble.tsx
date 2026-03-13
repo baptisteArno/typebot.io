@@ -40,23 +40,22 @@ export const StreamingBubble = (props: Props) => {
                 },
               ),
             );
-          } else {
-            return [
-              domPurify.sanitize(
-                marked.parse(
-                  "```" +
-                    block +
-                    "```".replace(/</g, "&lt;").replace(/>/g, "&gt;"),
-                  {
-                    breaks: true,
-                  },
-                ),
+          }
+          return [
+            domPurify.sanitize(
+              marked.parse(
+                "```" +
+                  block +
+                  "```".replace(/</g, "&lt;").replace(/>/g, "&gt;"),
                 {
-                  ADD_ATTR: ["target"],
+                  breaks: true,
                 },
               ),
-            ];
-          }
+              {
+                ADD_ATTR: ["target"],
+              },
+            ),
+          ];
         })
         ?.filter(isNotEmpty) ?? []
     );

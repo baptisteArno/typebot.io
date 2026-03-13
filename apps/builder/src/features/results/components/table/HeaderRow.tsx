@@ -15,7 +15,7 @@ export const HeaderRow = ({ headerGroup }: Props) => {
             key={header.id}
             style={
               {
-                "--size": header.getSize() + "px",
+                "--size": `${header.getSize()}px`,
               } as React.CSSProperties
             }
             className="px-4 py-3 bg-gray-1 z-10 sticky top-0 font-normal whitespace-nowrap word-break-normal border-t border-b border-r first:border-l"

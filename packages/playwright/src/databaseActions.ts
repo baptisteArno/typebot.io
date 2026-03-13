@@ -1,9 +1,9 @@
+import { readFileSync } from "node:fs";
 import { createId } from "@typebot.io/lib/createId";
 import prisma from "@typebot.io/prisma";
 import { DbNull } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
 import type { Typebot, TypebotV6 } from "@typebot.io/typebot/schemas/typebot";
-import { readFileSync } from "fs";
 import {
   parseTestTypebot,
   parseTypebotToPublicTypebot,
@@ -117,7 +117,7 @@ export const createTypebots = async (partialTypebots: Partial<TypebotV6>[]) => {
     return {
       ...typebot,
       id: typebotId,
-      publicId: typebot.publicId ?? typebotId + "-public",
+      publicId: typebot.publicId ?? `${typebotId}-public`,
     };
   });
   await prisma.typebot.createMany({

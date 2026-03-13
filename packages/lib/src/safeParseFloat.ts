@@ -2,5 +2,5 @@ export const safeParseFloat = (value: string | number | undefined) => {
   if (typeof value === "number") return value;
   if (!value) return;
   const parsedValue = Number.parseFloat(value.toString().replace(",", "."));
-  return isNaN(parsedValue) ? undefined : parsedValue;
+  return Number.isNaN(parsedValue) ? undefined : parsedValue;
 };

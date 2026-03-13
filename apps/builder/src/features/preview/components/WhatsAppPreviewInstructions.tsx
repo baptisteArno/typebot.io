@@ -103,7 +103,7 @@ export const WhatsAppPreviewInstructions = ({
       )}
       {isMessageSent && (
         <div className="flex flex-col gap-2 animate-in fade-in-0 slide-in-from-bottom-2">
-          <ButtonLink href={`https://web.whatsapp.com/`} target="_blank">
+          <ButtonLink href={"https://web.whatsapp.com/"} target="_blank">
             Open WhatsApp Web
             <ArrowUpRight01Icon />
           </ButtonLink>

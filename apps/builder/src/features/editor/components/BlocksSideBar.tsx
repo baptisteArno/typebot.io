@@ -136,10 +136,9 @@ export const BlocksSideBar = () => {
     .filter((block) => {
       return (
         block.id.toLowerCase().includes(searchInput.toLowerCase()) ||
-        (block.tags &&
-          block.tags.some((tag: string) =>
-            tag.toLowerCase().includes(searchInput.toLowerCase()),
-          )) ||
+        block.tags?.some((tag: string) =>
+          tag.toLowerCase().includes(searchInput.toLowerCase()),
+        ) ||
         block.name.toLowerCase().includes(searchInput.toLowerCase())
       );
     })

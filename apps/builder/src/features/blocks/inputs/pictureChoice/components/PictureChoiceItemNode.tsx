@@ -66,7 +66,7 @@ export const PictureChoiceItemNode = ({ item, indices }: Props) => {
             )}
           </div>
         )}
-      ></Popover.Trigger>
+      />
       <Popover.Popup side="right" className="p-4">
         {typebot && blockId && (
           <PictureChoiceItemSettings

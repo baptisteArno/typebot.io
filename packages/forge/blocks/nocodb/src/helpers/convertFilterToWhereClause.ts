@@ -41,7 +41,7 @@ export const convertFilterToWhereClause = (
       }
     })
     .filter(Boolean)
-    .join("~" + (filter.joiner === "OR" ? "or" : "and"));
+    .join(`~${filter.joiner === "OR" ? "or" : "and"}`);
 
   if (isEmpty(where)) return;
   return where;

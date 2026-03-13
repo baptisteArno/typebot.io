@@ -40,7 +40,7 @@ type BivariantCallback<TArg, TResult> = {
   bivarianceHack(arg: TArg): TResult;
 }["bivarianceHack"];
 
-export type TurnableIntoParam<T = {}> = {
+export type TurnableIntoParam<T = Record<never, never>> = {
   blockId: string;
   /**
    * If defined will be used to convert the existing block options into the new block options.
@@ -50,8 +50,12 @@ export type TurnableIntoParam<T = {}> = {
 
 export type ActionHandler<
   Auth extends AuthDefinition<any> = AuthDefinition<any>,
-  BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
-  Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
+  BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<
+    Record<never, z.ZodTypeAny>
+  >,
+  Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<
+    Record<never, z.ZodTypeAny>
+  >,
 > = {
   actionName: string;
   type: "action";
@@ -117,8 +121,12 @@ export type ActionHandler<
 
 export type ActionDefinition<
   A extends AuthDefinition<any>,
-  BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
-  Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<{}>,
+  BaseOptions extends z.ZodObject<z.ZodRawShape> = z.ZodObject<
+    Record<never, z.ZodTypeAny>
+  >,
+  Options extends z.ZodObject<z.ZodRawShape> = z.ZodObject<
+    Record<never, z.ZodTypeAny>
+  >,
 > = {
   name: string;
   parseBlockNodeLabel?: BivariantCallback<

@@ -1,5 +1,5 @@
-import { exec } from "child_process";
-import { join, relative } from "path";
+import { exec } from "node:child_process";
+import { join, relative } from "node:path";
 
 const prismaPackagePath = join(__dirname, "..");
 

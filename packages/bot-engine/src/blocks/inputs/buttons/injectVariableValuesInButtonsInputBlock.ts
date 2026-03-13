@@ -31,7 +31,7 @@ export const injectVariableValuesInButtonsInputBlock = (
         sessionStore,
       }),
       items: uniqueValues.filter(isDefined).map((item, idx) => ({
-        id: "choice" + idx.toString(),
+        id: `choice${idx.toString()}`,
         blockId: block.id,
         content: item,
       })),

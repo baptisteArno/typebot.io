@@ -49,8 +49,8 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
           {
             "--py":
               isExpanded || isHoverExpanded
-                ? expandedPaddingPixel + "px"
-                : initialPaddingPixel + "px",
+                ? `${expandedPaddingPixel}px`
+                : `${initialPaddingPixel}px`,
           } as React.CSSProperties
         }
         className={cn(
@@ -80,8 +80,8 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
             {
               "--h":
                 isExpanded || isHoverExpanded
-                  ? expandedHeightPixels + "px"
-                  : initialHeightPixels + "px",
+                  ? `${expandedHeightPixels}px`
+                  : `${initialHeightPixels}px`,
             } as React.CSSProperties
           }
           className={cx(

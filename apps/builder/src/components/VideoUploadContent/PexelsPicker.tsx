@@ -132,7 +132,7 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
               debounceTimeout={500}
             />
           </div>
-          <a target="_blank" href={`https://www.pexels.com`} rel="noopener">
+          <a target="_blank" href={"https://www.pexels.com"} rel="noopener">
             <PexelsLogo width="100px" height="40px" />
           </a>
         </div>

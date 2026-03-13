@@ -72,7 +72,7 @@ export const updateRow = async (
     if (filteredRows.length === 0) {
       logs.push({
         status: "info",
-        description: `Could not find any row that matches the filter`,
+        description: "Could not find any row that matches the filter",
         details: JSON.stringify(filter),
       });
       return { outgoingEdgeId, logs };
@@ -100,7 +100,7 @@ export const updateRow = async (
 
     logs.push({
       status: "success",
-      description: `Succesfully updated matching rows`,
+      description: "Succesfully updated matching rows",
     });
   } catch (err) {
     logs.push(

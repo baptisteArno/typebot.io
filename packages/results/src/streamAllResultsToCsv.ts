@@ -1,12 +1,12 @@
+import { createWriteStream, type PathLike } from "node:fs";
+import type { Writable } from "node:stream";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import type { GroupV6 } from "@typebot.io/groups/schemas";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { typebotV6Schema } from "@typebot.io/typebot/schemas/typebot";
-import { createWriteStream, type PathLike } from "fs";
 import { unparse } from "papaparse";
-import type { Writable } from "stream";
 import { z } from "zod";
 import { convertResultsToTableData } from "./convertResultsToTableData";
 import { parseBlockIdVariableIdMap } from "./parseBlockIdVariableIdMap";
@@ -123,7 +123,7 @@ export const streamAllResultsToCsv = async (
     });
 
     const processResults = async () => {
-      csvStream.write(unparse([csvHeaders]) + "\n");
+      csvStream.write(`${unparse([csvHeaders])}\n`);
 
       let lastCreatedAt: Date | null = null;
       const processedIds = new Set<string>();
@@ -187,7 +187,7 @@ export const streamAllResultsToCsv = async (
 
         if (csvRows.length > 0) {
           const csvContent = unparse(csvRows, { header: false });
-          csvStream.write(csvContent + "\n");
+          csvStream.write(`${csvContent}\n`);
         }
 
         lastCreatedAt = batch[batch.length - 1].createdAt;

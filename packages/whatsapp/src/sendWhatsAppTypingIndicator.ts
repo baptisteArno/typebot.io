@@ -30,17 +30,16 @@ export const sendWhatsAppTypingIndicator = async ({
       //   },
       //   json,
       // });
-    } else {
-      await ky.post(
-        `${env.WHATSAPP_CLOUD_API_URL}/v21.0/${credentials.phoneNumberId}/messages`,
-        {
-          headers: {
-            Authorization: `Bearer ${credentials.systemUserAccessToken}`,
-          },
-          json,
-        },
-      );
     }
+    await ky.post(
+      `${env.WHATSAPP_CLOUD_API_URL}/v21.0/${credentials.phoneNumberId}/messages`,
+      {
+        headers: {
+          Authorization: `Bearer ${credentials.systemUserAccessToken}`,
+        },
+        json,
+      },
+    );
   } catch (err) {
     // Typing indicators are non-critical, log the error but don't throw
     Sentry.captureException(err, {

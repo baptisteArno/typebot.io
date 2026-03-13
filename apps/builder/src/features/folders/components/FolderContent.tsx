@@ -172,31 +172,28 @@ export const FolderContent = ({ folder }: Props) => {
               />
             )}
             {isFolderLoading && <ButtonSkeleton />}
-            {folders &&
-              folders.map((folder, index) => (
-                <FolderButton
-                  key={folder.id}
-                  index={index}
-                  folder={folder}
-                  onFolderDeleted={refetchFolders}
-                  onFolderRenamed={() => refetchFolders()}
-                />
-              ))}
+            {folders?.map((folder, index) => (
+              <FolderButton
+                key={folder.id}
+                index={index}
+                folder={folder}
+                onFolderDeleted={refetchFolders}
+                onFolderRenamed={() => refetchFolders()}
+              />
+            ))}
             {isTypebotLoading && <ButtonSkeleton />}
-            {typebotsData?.typebots &&
-              typebotsData?.typebots.map((typebot) => (
-                <TypebotButton
-                  key={typebot.id}
-                  typebot={typebot}
-                  draggedTypebot={draggedTypebot}
-                  onTypebotUpdated={refetchTypebots}
-                  onDrag={handleTypebotDrag(typebot)}
-                  isReadOnly={
-                    typebot.accessRight !== "write" &&
-                    currentUserMode !== "write"
-                  }
-                />
-              ))}
+            {typebotsData?.typebots?.map((typebot) => (
+              <TypebotButton
+                key={typebot.id}
+                typebot={typebot}
+                draggedTypebot={draggedTypebot}
+                onTypebotUpdated={refetchTypebots}
+                onDrag={handleTypebotDrag(typebot)}
+                isReadOnly={
+                  typebot.accessRight !== "write" && currentUserMode !== "write"
+                }
+              />
+            ))}
           </div>
         </div>
       </div>

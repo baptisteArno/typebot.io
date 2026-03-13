@@ -58,7 +58,7 @@ export const parseVariables = (
           (fieldToParse === "id" || isDefined(variable.value))
         );
       }) as VariableWithValue | undefined;
-      if (!variable) return dollarSign + "";
+      if (!variable) return `${dollarSign}`;
       if (fieldToParse === "id") return dollarSign + variable.id;
       const { value } = variable;
       if (isInsideJson) return dollarSign + parseVariableValueInJson(value);
@@ -69,7 +69,7 @@ export const parseVariables = (
             ? value[value.length - 1]
             : value,
         );
-      if (!parsedValue) return dollarSign + "";
+      if (!parsedValue) return `${dollarSign}`;
       if (isInsideHtml) return parseVariableValueInHtml(parsedValue);
       return parsedValue;
     },

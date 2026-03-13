@@ -57,7 +57,7 @@ export const handleVerifyCustomDomain = async ({
     status = "Pending Verification";
     const verificationJson = await verifyDomain(name);
 
-    if (verificationJson && verificationJson.verified) {
+    if (verificationJson?.verified) {
       status = "Valid Configuration";
     }
   } else if (configJson.misconfigured) {

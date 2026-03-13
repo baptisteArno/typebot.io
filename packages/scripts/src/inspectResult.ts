@@ -1,3 +1,5 @@
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import path from "node:path";
 import * as p from "@clack/prompts";
 import {
   computeResultTranscript,
@@ -9,8 +11,6 @@ import prisma from "@typebot.io/prisma";
 import type { Answer } from "@typebot.io/results/schemas/answers";
 import { streamAllResultsToCsv } from "@typebot.io/results/streamAllResultsToCsv";
 import { SessionStore } from "@typebot.io/runtime-session-store";
-import { existsSync, mkdirSync, writeFileSync } from "fs";
-import path from "path";
 import { z } from "zod";
 import { promptAndSetEnvironment } from "./utils";
 

@@ -67,7 +67,7 @@ export const Edge = ({ edge, fromElementId }: Props) => {
   }, [deleteEdge, edge.id, edge.to.blockId, targetEndpointYOffsets]);
 
   const path = useMemo(() => {
-    if (!fromElementCoordinates || !toGroupCoordinates || !sourceTop) return ``;
+    if (!fromElementCoordinates || !toGroupCoordinates || !sourceTop) return "";
     const anchorsPosition = getAnchorsPosition({
       sourceGroupCoordinates: fromElementCoordinates,
       targetGroupCoordinates: toGroupCoordinates,

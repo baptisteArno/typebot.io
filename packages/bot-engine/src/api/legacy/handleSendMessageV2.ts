@@ -151,68 +151,67 @@ export const handleSendMessageV2 = async ({
         logs,
         clientSideActions,
       };
-    } else {
-      assertOriginIsAllowed(origin, {
-        allowedOrigins: session.state.allowedOrigins,
-        iframeReferrerOrigin,
-      });
-
-      const {
-        messages,
-        input,
-        clientSideActions,
-        newSessionState,
-        logs,
-        lastMessageNewFormat,
-        visitedEdges,
-        setVariableHistory,
-      } = await continueBotFlow(
-        message ? { type: "text", text: message } : undefined,
-        {
-          version: 2,
-          state: session.state,
-          textBubbleContentFormat: "richText",
-          sessionStore,
-        },
-      );
-
-      const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs;
-
-      if (newSessionState)
-        await saveStateToDatabase({
-          sessionId: {
-            type: "existing",
-            id: session.id,
-          },
-          session: {
-            state: newSessionState,
-          },
-          input,
-          logs: allLogs,
-          clientSideActions,
-          visitedEdges,
-          isWaitingForExternalEvent: messages.some(
-            (message) =>
-              message.type === "custom-embed" ||
-              (message.type === BubbleBlockType.EMBED &&
-                message.content.waitForEvent?.isEnabled),
-          ),
-          setVariableHistory,
-        });
-
-      const dynamicTheme = parseDynamicTheme({
-        state: newSessionState,
-        sessionStore,
-      });
-
-      return {
-        messages,
-        input,
-        clientSideActions,
-        dynamicTheme,
-        logs,
-        lastMessageNewFormat,
-      };
     }
+    assertOriginIsAllowed(origin, {
+      allowedOrigins: session.state.allowedOrigins,
+      iframeReferrerOrigin,
+    });
+
+    const {
+      messages,
+      input,
+      clientSideActions,
+      newSessionState,
+      logs,
+      lastMessageNewFormat,
+      visitedEdges,
+      setVariableHistory,
+    } = await continueBotFlow(
+      message ? { type: "text", text: message } : undefined,
+      {
+        version: 2,
+        state: session.state,
+        textBubbleContentFormat: "richText",
+        sessionStore,
+      },
+    );
+
+    const allLogs = clientLogs ? [...(logs ?? []), ...clientLogs] : logs;
+
+    if (newSessionState)
+      await saveStateToDatabase({
+        sessionId: {
+          type: "existing",
+          id: session.id,
+        },
+        session: {
+          state: newSessionState,
+        },
+        input,
+        logs: allLogs,
+        clientSideActions,
+        visitedEdges,
+        isWaitingForExternalEvent: messages.some(
+          (message) =>
+            message.type === "custom-embed" ||
+            (message.type === BubbleBlockType.EMBED &&
+              message.content.waitForEvent?.isEnabled),
+        ),
+        setVariableHistory,
+      });
+
+    const dynamicTheme = parseDynamicTheme({
+      state: newSessionState,
+      sessionStore,
+    });
+
+    return {
+      messages,
+      input,
+      clientSideActions,
+      dynamicTheme,
+      logs,
+      lastMessageNewFormat,
+    };
   });
 };

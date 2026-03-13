@@ -14,7 +14,7 @@ export const mockedUser: User = {
   onboardingCategories: [],
   updatedAt: new Date("2022-01-01"),
   displayedInAppNotifications: {
-    ["graphGestureNotification"]: true,
+    graphGestureNotification: true,
   },
   referral: null,
   groupTitlesAutoGeneration: null,

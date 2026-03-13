@@ -51,6 +51,6 @@ export const sendResultsExportLinkEmail = async (
 ) =>
   sendEmail({
     to: props.email,
-    subject: `Your results export is ready`,
+    subject: "Your results export is ready",
     html: await render(<ResultsExportLinkEmail {...props} />),
   });

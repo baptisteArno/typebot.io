@@ -1,3 +1,5 @@
+import fs, { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import path from "node:path";
 import { openai } from "@ai-sdk/openai";
 import * as p from "@clack/prompts";
 import type { $Enums } from "@prisma/client";
@@ -13,8 +15,6 @@ import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichTextToMarkdown";
 import { generateObject } from "ai";
-import fs, { existsSync, mkdirSync, writeFileSync } from "fs";
-import path from "path";
 import Stripe from "stripe";
 import { z } from "zod";
 import { executePostHogQuery } from "./helpers/executePostHogQuery";
@@ -160,7 +160,7 @@ const getTypebotAISummary = async (
 const saveToFile = (filePath: string, data: string) => {
   const completeFilePath = path.join(
     __dirname,
-    `../logs/workspaces/`,
+    "../logs/workspaces/",
     filePath,
   );
   createFolderIfNotExists(completeFilePath);
@@ -516,19 +516,19 @@ const toReadableFormat = (summary: workspaceSummaryType) => {
   output += `**Plan:** ${summary.workspace.plan}\n\n`;
   // Workspace AI summary
   if (summary.ai_analysis) {
-    output += `## AI Analysis\n\n`;
+    output += "## AI Analysis\n\n";
     output += `- **Business Activity:** ${summary.ai_analysis.businessActivity}\n`;
     output += `- **Purpose:** ${summary.ai_analysis.purpose}\n`;
     output += `- **Workspace Level:** ${summary.ai_analysis.workspaceLevel}\n`;
     output += `- **Engagement Level:** ${summary.ai_analysis.engagementLevel}\n`;
     output += `- **Churn Risk:** ${summary.ai_analysis.churnRisk}\n`;
     const recLines = summary.ai_analysis.recommendations.split("\n");
-    output += `- **Recommendations:**\n`;
+    output += "- **Recommendations:**\n";
     recLines.forEach((line) => {
       output += `  ${line.trim()}\n`;
     });
-    output += `\n`;
-    output += `- **Typebot categories:**\n`;
+    output += "\n";
+    output += "- **Typebot categories:**\n";
     Object.entries(summary.typebots.category_count).forEach(
       ([category, count]) => {
         output += `  - **${category}:** ${count}\n`;
@@ -536,7 +536,7 @@ const toReadableFormat = (summary: workspaceSummaryType) => {
     );
   }
   // User journeys
-  output += `## User Journeys\n\n`;
+  output += "## User Journeys\n\n";
   for (const journey of summary.user_journeys) {
     output += `### User: ${journey.email}\n\n`;
     output += `${journey.summary}\n\n`;
@@ -546,7 +546,7 @@ const toReadableFormat = (summary: workspaceSummaryType) => {
   for (const member of summary.members.list) {
     output += `- **Email:** ${member.email} | **Role:** ${member.role} | **User ID:** ${member.user_id}\n`;
   }
-  output += `\n`;
+  output += "\n";
   // Subscriptions
   output += `## Subscriptions (${summary.subscriptions.total_subscriptions})\n\n`;
   for (const sub of summary.subscriptions.list) {
@@ -555,7 +555,7 @@ const toReadableFormat = (summary: workspaceSummaryType) => {
     output += `  - **Status:** ${sub.status}\n`;
     output += `  - **Current Period End:** ${sub.current_period_end}\n`;
     if (sub.cancel_at_period_end) {
-      output += `  - **Cancel At Period End:** Yes\n`;
+      output += "  - **Cancel At Period End:** Yes\n";
     }
     if (sub.canceled_at) {
       output += `  - **Canceled At:** ${sub.canceled_at}\n`;
@@ -585,7 +585,7 @@ const toReadableFormat = (summary: workspaceSummaryType) => {
     }
   }
   // Last events
-  output += `\n## Last occurrence of events\n\n`;
+  output += "\n## Last occurrence of events\n\n";
   for (const [event, date] of Object.entries(summary.last_events)) {
     output += `- **${event}:** ${date}\n`;
   }

@@ -235,9 +235,9 @@ const compare = (
 
 const parseDateOrNumberOrStringLength = (value: string): number => {
   const parsed = value.startsWith("+") ? NaN : Number(value);
-  if (isNaN(parsed)) {
+  if (Number.isNaN(parsed)) {
     const time = Date.parse(value);
-    if (isNaN(time)) return value.length;
+    if (Number.isNaN(time)) return value.length;
     return time;
   }
   return parsed;

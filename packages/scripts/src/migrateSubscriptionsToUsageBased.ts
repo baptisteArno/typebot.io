@@ -1,6 +1,6 @@
+import { writeFileSync } from "node:fs";
 import { createId } from "@paralleldrive/cuid2";
 import prisma from "@typebot.io/prisma";
-import { writeFileSync } from "fs";
 import { Stripe } from "stripe";
 import { promptAndSetEnvironment } from "./utils";
 
@@ -218,7 +218,7 @@ const migrateSubscriptionsToUsageBased = async () => {
       )?.id;
 
       if (!currentPlanItemId)
-        throw new Error(`Could not find current plan item ID for workspace`);
+        throw new Error("Could not find current plan item ID for workspace");
 
       await stripe.subscriptions.update(newSubscription.id, {
         items: [

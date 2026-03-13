@@ -19,7 +19,8 @@ export function middleware(req: NextRequest) {
     url.pathname = isMostLikelySignedIn ? toSignedIn : toSignin;
 
     return NextResponse.redirect(url);
-  } else if (pathname === "/typebots") {
+  }
+  if (pathname === "/typebots") {
     const callbackUrl = searchParams.get("callbackUrl");
     const redirectPath = sanitizeRedirectPath(
       searchParams.get("redirectPath") ??

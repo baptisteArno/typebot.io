@@ -22,8 +22,8 @@ export const defaultSettings = {
   metadata: {
     description:
       "Build beautiful conversational forms and embed them directly in your applications without a line of code. Triple your response rate and collect answers that has more value compared to a traditional form.",
-    favIconUrl: (viewerBaseUrl: string) => viewerBaseUrl + "/favicon.svg",
-    imageUrl: (viewerBaseUrl: string) => viewerBaseUrl + "/site-preview.jpeg",
+    favIconUrl: (viewerBaseUrl: string) => `${viewerBaseUrl}/favicon.svg`,
+    imageUrl: (viewerBaseUrl: string) => `${viewerBaseUrl}/site-preview.jpeg`,
   },
 } as const;
 

@@ -9,7 +9,7 @@ const insertUsersInBrevoList = async () => {
   const listId = await text({
     message: "List ID?",
   });
-  if (!listId || isCancel(listId) || isNaN(listId as unknown as number))
+  if (!listId || isCancel(listId) || Number.isNaN(listId as unknown as number))
     process.exit();
 
   const threeMonthsAgo = new Date();

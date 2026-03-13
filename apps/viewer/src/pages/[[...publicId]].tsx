@@ -1,3 +1,4 @@
+import type { IncomingMessage } from "node:http";
 import { env } from "@typebot.io/env";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
@@ -10,7 +11,6 @@ import {
 } from "@typebot.io/theme/constants";
 import { themeSchema } from "@typebot.io/theme/schemas";
 import type { PublicTypebot } from "@typebot.io/typebot/schemas/publicTypebot";
-import type { IncomingMessage } from "http";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { ErrorPage } from "@/components/ErrorPage";
 import { NotFoundPage } from "@/components/NotFoundPage";
@@ -46,10 +46,7 @@ export const getServerSideProps: GetServerSideProps = async (
     const isMatchingViewerUrl = viewerUrls.some(
       (url) =>
         host.split(":")[0].includes(url.split("//")[1].split(":")[0]) ||
-        (forwardedHost &&
-          forwardedHost
-            .split(":")[0]
-            .includes(url.split("//")[1].split(":")[0])),
+        forwardedHost?.split(":")[0].includes(url.split("//")[1].split(":")[0]),
     );
     log(`isMatchingViewerUrl: ${isMatchingViewerUrl}`);
     if (isMatchingViewerUrl && pathname === "/") {

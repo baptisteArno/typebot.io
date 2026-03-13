@@ -120,7 +120,7 @@ export const CustomDomainConfigDialog = ({
               <div className="flex flex-col gap-2">
                 <p className="font-bold">Value</p>
                 <p className="text-sm font-mono">
-                  {recordType === "A" ? "76.76.21.21" : `cname.vercel-dns.com`}
+                  {recordType === "A" ? "76.76.21.21" : "cname.vercel-dns.com"}
                 </p>
               </div>
               <div className="flex flex-col gap-2">

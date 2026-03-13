@@ -11,11 +11,11 @@ const emojiTags = emojiTagsData as Record<string, string[]>;
 const people = emojis["Smileys & Emotion"].concat(emojis["People & Body"]);
 const nature = emojis["Animals & Nature"];
 const food = emojis["Food & Drink"];
-const activities = emojis["Activities"];
+const activities = emojis.Activities;
 const travel = emojis["Travel & Places"];
-const objects = emojis["Objects"];
-const symbols = emojis["Symbols"];
-const flags = emojis["Flags"];
+const objects = emojis.Objects;
+const symbols = emojis.Symbols;
+const flags = emojis.Flags;
 
 const localStorageRecentEmojisKey = "recentEmojis";
 

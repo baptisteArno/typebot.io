@@ -109,7 +109,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
     if (error instanceof HTTPError) {
       if (isPreview) {
         return setError(
-          new Error(`An error occurred while loading the bot.`, {
+          new Error("An error occurred while loading the bot.", {
             cause: {
               status: error.response.status,
               body: await error.response.json(),
@@ -137,7 +137,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
         console.error(error);
         if (isPreview) {
           return setError(
-            new Error(`Error! Could not reach server. Check your connection.`, {
+            new Error("Error! Could not reach server. Check your connection.", {
               cause: error,
             }),
           );
@@ -164,8 +164,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
         data.typebot.id,
       );
       if (
-        initialChatInStorage &&
-        initialChatInStorage.typebot.publishedAt &&
+        initialChatInStorage?.typebot.publishedAt &&
         data.typebot.publishedAt
       ) {
         console.log(

@@ -120,7 +120,7 @@ export const resumeWhatsAppFlow = async ({
 
   if (!isSessionExpired && session?.isReplying && callFrom !== "webhook")
     throw new WhatsAppError("Is in reply state");
-  else if (aggregationResponse.status === "treat as unique message") {
+  if (aggregationResponse.status === "treat as unique message") {
     await upsertSession(sessionId, {
       isReplying: true,
     });
@@ -279,7 +279,7 @@ const convertWhatsAppMessageToTypebotMessage = async ({
           fileUrl =
             env.NEXTAUTH_URL +
             `/api/typebots/${typebotId}/whatsapp/media/${
-              workspaceId ? `` : "preview/"
+              workspaceId ? "" : "preview/"
             }${mediaId}${extension ? `.${extension}` : ""}`;
         } else {
           const { file, mimeType } = await downloadMedia({

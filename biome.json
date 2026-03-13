@@ -40,11 +40,6 @@
       },
       "style": {
         "noNonNullAssertion": "off",
-        "useNodejsImportProtocol": "off",
-        "noUnusedTemplateLiteral": "off",
-        "useTemplate": "off",
-        "useSelfClosingElements": "off",
-        "noUselessElse": "off",
         "noParameterAssign": "off"
       },
       "correctness": {
@@ -53,15 +48,10 @@
         "useHookAtTopLevel": "off"
       },
       "complexity": {
-        "noForEach": "off",
-        "noUselessTernary": "off",
-        "useLiteralKeys": "off",
-        "useOptionalChain": "off",
-        "noBannedTypes": "off"
+        "noForEach": "off"
       },
       "suspicious": {
         "noExplicitAny": "off",
-        "noGlobalIsNan": "off",
         "useIterableCallbackReturn": "off",
         "noDocumentCookie": "off"
       }

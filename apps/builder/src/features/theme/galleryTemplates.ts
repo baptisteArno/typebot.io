@@ -206,7 +206,7 @@ export const galleryTemplates: (Pick<ThemeTemplate, "id" | "name" | "theme"> & {
         },
         background: {
           type: BackgroundType.IMAGE,
-          content: getOrigin() + "/images/backgrounds/brightRain.jpeg",
+          content: `${getOrigin()}/images/backgrounds/brightRain.jpeg`,
         },
       },
     },
@@ -231,7 +231,7 @@ export const galleryTemplates: (Pick<ThemeTemplate, "id" | "name" | "theme"> & {
         },
         background: {
           type: BackgroundType.IMAGE,
-          content: getOrigin() + "/images/backgrounds/rayOfLights.jpeg",
+          content: `${getOrigin()}/images/backgrounds/rayOfLights.jpeg`,
         },
       },
     },

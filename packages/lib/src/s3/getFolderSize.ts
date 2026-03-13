@@ -13,7 +13,7 @@ export const getFolderSize = async ({ folderPath }: Props) => {
 
     const stream = minioClient.listObjectsV2(
       env.S3_BUCKET,
-      "public/" + folderPath,
+      `public/${folderPath}`,
       true,
     );
 

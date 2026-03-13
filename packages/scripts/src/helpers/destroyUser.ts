@@ -1,10 +1,10 @@
+import { writeFileSync } from "node:fs";
 import { confirm, isCancel, text } from "@clack/prompts";
 import {
   removeObjectsFromUser,
   removeObjectsFromWorkspace,
 } from "@typebot.io/lib/s3/removeObjectsRecursively";
 import prisma from "@typebot.io/prisma";
-import { writeFileSync } from "fs";
 
 export const destroyUser = async (userEmail?: string) => {
   const email =
@@ -49,7 +49,7 @@ export const destroyUser = async (userEmail?: string) => {
       }
       await prisma.user.delete({ where: { id: user.id } });
       await removeObjectsFromUser(user.id);
-      console.log(`User deleted.`, JSON.stringify(user, null, 2));
+      console.log("User deleted.", JSON.stringify(user, null, 2));
     }
     return;
   }
@@ -62,7 +62,7 @@ export const destroyUser = async (userEmail?: string) => {
     )
   ) {
     console.log(
-      `Some workspaces have other members. Something is wrong. Logging and exiting...`,
+      "Some workspaces have other members. Something is wrong. Logging and exiting...",
     );
     writeFileSync(
       "logs/workspaces-issue.json",
@@ -119,7 +119,7 @@ export const destroyUser = async (userEmail?: string) => {
   const user = await prisma.user.delete({ where: { email } });
   await removeObjectsFromUser(user.id);
 
-  console.log(`User deleted.`, JSON.stringify(user, null, 2));
+  console.log("User deleted.", JSON.stringify(user, null, 2));
 };
 
 const deleteTypebotResultsInBatches = async (resultIds: readonly string[]) => {

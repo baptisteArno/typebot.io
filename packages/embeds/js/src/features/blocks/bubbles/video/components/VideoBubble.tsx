@@ -23,9 +23,7 @@ let typingTimeout: NodeJS.Timeout;
 
 export const VideoBubble = (props: Props) => {
   let ref: HTMLDivElement | undefined;
-  const [isTyping, setIsTyping] = createSignal(
-    props.onTransitionEnd ? true : false,
-  );
+  const [isTyping, setIsTyping] = createSignal(!!props.onTransitionEnd);
 
   onMount(() => {
     const typingDuration =

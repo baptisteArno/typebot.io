@@ -33,7 +33,7 @@ export const evaluateSetVariableExpression = async (
     };
   // To avoid octal number evaluation
   if (
-    !isNaN(expression.code as unknown as number) &&
+    !Number.isNaN(expression.code as unknown as number) &&
     /0[^.].+/.test(expression.code)
   )
     return { value: expression.code };

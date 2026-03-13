@@ -60,7 +60,7 @@ export const CodeEditor = ({
 
   const setValue = useDebouncedCallback((value) => {
     _setValue(value);
-    onChange && onChange(value);
+    onChange?.(value);
   }, debounceTimeout);
 
   const handleVariableSelected = (variable?: Pick<Variable, "id" | "name">) => {
@@ -162,8 +162,8 @@ export const CodeEditor = ({
             <Popover.Trigger
               className="absolute"
               style={{
-                top: variablePopoverAnchorCoords?.top + "px",
-                left: variablePopoverAnchorCoords?.left + "px",
+                top: `${variablePopoverAnchorCoords?.top}px`,
+                left: `${variablePopoverAnchorCoords?.left}px`,
               }}
             />
             <Popover.Popup

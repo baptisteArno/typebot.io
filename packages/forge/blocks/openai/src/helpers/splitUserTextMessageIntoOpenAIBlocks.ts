@@ -37,7 +37,7 @@ export const splitUserTextMessageIntoOpenAIBlocks = async (
       if (parts.at(-1)?.type === "text") {
         const lastText = parts.at(-1) as OpenAI.ChatCompletionContentPartText;
         parts = parts.slice(0, -1);
-        parts.push({ type: "text", text: lastText.text + "\n\n" + part });
+        parts.push({ type: "text", text: `${lastText.text}\n\n${part}` });
       } else {
         parts.push({ type: "text", text: part });
       }

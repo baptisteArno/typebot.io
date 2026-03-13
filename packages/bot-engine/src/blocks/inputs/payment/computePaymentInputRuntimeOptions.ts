@@ -67,7 +67,7 @@ const createStripePaymentIntent = async (
     Number(parseVariables(options.amount, { variables, sessionStore })) *
       (isZeroDecimalCurrency(currency) ? 1 : 100),
   );
-  if (isNaN(amount))
+  if (Number.isNaN(amount))
     throw new ORPCError("BAD_REQUEST", {
       message:
         "Could not parse amount, make sure your block is configured correctly",

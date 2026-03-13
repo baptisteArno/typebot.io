@@ -94,9 +94,8 @@ export const getMessageStream = async ({
             status: 500,
             message,
           };
-        } else {
-          throw error;
         }
+        throw error;
       }
     }
     if (!isForgedBlockType(block.type))

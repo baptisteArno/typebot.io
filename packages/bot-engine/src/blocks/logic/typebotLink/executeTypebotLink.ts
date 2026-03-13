@@ -30,8 +30,8 @@ export const executeTypebotLink = async (
   if (!typebotId) {
     logs.push({
       status: "error",
-      description: `Failed to link typebot`,
-      details: `Typebot ID is not specified`,
+      description: "Failed to link typebot",
+      details: "Typebot ID is not specified",
     });
     return { outgoingEdgeId: block.outgoingEdgeId, logs };
   }
@@ -51,7 +51,7 @@ export const executeTypebotLink = async (
     if (!linkedTypebot) {
       logs.push({
         status: "error",
-        description: `Failed to link typebot`,
+        description: "Failed to link typebot",
         details: `Typebot with ID ${block.options?.typebotId} not found`,
       });
       return { outgoingEdgeId: block.outgoingEdgeId, logs };
@@ -71,7 +71,7 @@ export const executeTypebotLink = async (
   if (!nextGroupId) {
     logs.push({
       status: "error",
-      description: `Failed to link typebot`,
+      description: "Failed to link typebot",
       details: `Group with ID "${block.options?.groupId}" not found`,
     });
     return { outgoingEdgeId: block.outgoingEdgeId, logs };

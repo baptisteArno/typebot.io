@@ -1,6 +1,6 @@
+import assert from "node:assert";
 import { useMutation } from "@tanstack/react-query";
 import { omit } from "@typebot.io/lib/utils";
-import assert from "assert";
 import { useMemo, useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useUser } from "@/features/user/hooks/useUser";
@@ -53,8 +53,7 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
     : undefined;
 
   const targetGroupCoordinates =
-    elementsCoordinates &&
-    elementsCoordinates[connectingIds?.target?.groupId ?? ""];
+    elementsCoordinates?.[connectingIds?.target?.groupId ?? ""];
 
   const sourceTop = useMemo(() => {
     if (!connectingIds) return 0;
@@ -80,7 +79,7 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
       !mousePosition ||
       !connectingIds?.source
     )
-      return ``;
+      return "";
 
     return targetGroupCoordinates
       ? computeConnectingEdgePath({

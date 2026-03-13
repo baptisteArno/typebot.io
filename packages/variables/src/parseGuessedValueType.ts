@@ -17,6 +17,6 @@ export const parseGuessedValueType = (
   if (value === "null") return null;
   if (value === "undefined") return;
   // isNaN works with strings
-  if (isNaN(value as unknown as number)) return value;
+  if (Number.isNaN(value as unknown as number)) return value;
   return Number(value);
 };

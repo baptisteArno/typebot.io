@@ -33,9 +33,7 @@ export const SendButton = (props: SendButtonProps) => {
       <Switch>
         <Match when={showIcon}>
           <SendIcon
-            class={
-              "send-icon flex w-6 h-6 " + (local.disableIcon ? "hidden" : "")
-            }
+            class={`send-icon flex w-6 h-6 ${local.disableIcon ? "hidden" : ""}`}
           />
         </Match>
         <Match when={!showIcon}>{props.children}</Match>

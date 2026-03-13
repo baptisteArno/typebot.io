@@ -47,7 +47,7 @@ const PlateTextContent = ({ text }: { text: string }) => {
             const matchingVariable = typebot?.variables.find(
               (variable) => variable.name === variableName,
             );
-            if (!matchingVariable) return "{{" + str;
+            if (!matchingVariable) return `{{${str}`;
             return (
               <span
                 className="bg-purple-9 text-white rounded-sm py-0.5 px-1.5"

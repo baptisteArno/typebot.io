@@ -16,7 +16,7 @@ export const computeSelectBoxDimensions = ({ initial, movement }: Props) => {
         height: Math.abs(movement[1]),
       },
     };
-  else if (movement[0] < 0)
+  if (movement[0] < 0)
     return {
       origin: {
         x: initial[0] + movement[0],
@@ -27,7 +27,7 @@ export const computeSelectBoxDimensions = ({ initial, movement }: Props) => {
         height: movement[1],
       },
     };
-  else if (movement[1] < 0)
+  if (movement[1] < 0)
     return {
       origin: {
         x: initial[0],
@@ -38,15 +38,15 @@ export const computeSelectBoxDimensions = ({ initial, movement }: Props) => {
         height: Math.abs(movement[1]),
       },
     };
-  else
-    return {
-      origin: {
-        x: initial[0],
-        y: initial[1],
-      },
-      dimension: {
-        width: movement[0],
-        height: movement[1],
-      },
-    };
+
+  return {
+    origin: {
+      x: initial[0],
+      y: initial[1],
+    },
+    dimension: {
+      width: movement[0],
+      height: movement[1],
+    },
+  };
 };

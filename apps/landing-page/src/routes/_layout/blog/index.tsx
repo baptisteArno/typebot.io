@@ -36,20 +36,24 @@ function RouteComponent() {
             (a, b) =>
               new Date(b.postedAt!).getTime() - new Date(a.postedAt!).getTime(),
           )
-          .map((post) => (
-            <li key={post._meta.path}>
-              <Link to={"/" + post._meta.path}>
-                <Card>
-                  <time className="text-foreground/50">
-                    {formatDate(post.postedAt!)}
-                  </time>
-                  <h3>{post.title}</h3>
-                  <p>{post.description}</p>
-                  <p className="font-medium underline">Read more</p>
-                </Card>
-              </Link>
-            </li>
-          ))}
+          .map((post) => {
+            const slug = post._meta.path.split("/").at(-1) ?? post._meta.path;
+
+            return (
+              <li key={post._meta.path}>
+                <Link to="/blog/$slug" params={{ slug }}>
+                  <Card>
+                    <time className="text-foreground/50">
+                      {formatDate(post.postedAt!)}
+                    </time>
+                    <h3>{post.title}</h3>
+                    <p>{post.description}</p>
+                    <p className="font-medium underline">Read more</p>
+                  </Card>
+                </Link>
+              </li>
+            );
+          })}
       </ol>
     </ContentPageWrapper>
   );

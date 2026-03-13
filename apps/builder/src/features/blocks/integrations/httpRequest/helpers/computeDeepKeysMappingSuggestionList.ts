@@ -47,7 +47,7 @@ export const computeDeepKeysMappingSuggestionList = (obj: any): string[] => {
 
 const parsePrevKey = (key: string, suffix: string) => {
   let currentKey = key;
-  if (key.includes(" ") || key.includes("-") || !isNaN(key as any)) {
+  if (shouldUseBracketNotation(key)) {
     currentKey = parseBracketsKey(key);
   }
   return parseNextKey(suffix).startsWith("[") ? currentKey : `${currentKey}.`;
@@ -55,7 +55,7 @@ const parsePrevKey = (key: string, suffix: string) => {
 
 const parseNextKey = (key: string) => {
   if (
-    (key.includes(" ") || key.includes("-") || !isNaN(key as any)) &&
+    shouldUseBracketNotation(key) &&
     !key.includes(".flatMap(item => item") &&
     !key.includes("['") &&
     !key.includes("']")
@@ -66,6 +66,11 @@ const parseNextKey = (key: string) => {
 };
 
 const parseBracketsKey = (key: string) => {
-  if (isNaN(key as any)) return `['${key}']`;
+  if (!isNumericKey(key)) return `['${key}']`;
   return `[${key}]`;
 };
+
+const shouldUseBracketNotation = (key: string) =>
+  key.includes(" ") || key.includes("-") || isNumericKey(key);
+
+const isNumericKey = (key: string) => !Number.isNaN(Number(key));

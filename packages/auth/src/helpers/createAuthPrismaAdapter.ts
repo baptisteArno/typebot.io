@@ -48,7 +48,7 @@ export const createAuthPrismaAdapter = (p: Prisma.PrismaClient): Adapter => ({
       throw Error("New users are forbidden");
 
     const newWorkspaceData = {
-      name: data.name ? `${data.name}'s workspace` : `My workspace`,
+      name: data.name ? `${data.name}'s workspace` : "My workspace",
       plan: parseWorkspaceDefaultPlan(data.email),
     };
     const createdUser = await p.user.create({

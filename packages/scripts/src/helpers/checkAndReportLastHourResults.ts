@@ -304,7 +304,7 @@ const reportUsageToStripe = async (
   );
 
   if (!subscriptionItem)
-    throw new Error(`Could not find subscription item for workspace`);
+    throw new Error("Could not find subscription item for workspace");
 
   const idempotencyKey = createId();
 
@@ -379,7 +379,7 @@ const autoUpgradeToPro = async (
   )?.id;
 
   if (!currentPlanItemId)
-    throw new Error(`Could not find current plan item ID for workspace`);
+    throw new Error("Could not find current plan item ID for workspace");
 
   const newSubscription = await stripe.subscriptions.update(subscription.id, {
     items: [

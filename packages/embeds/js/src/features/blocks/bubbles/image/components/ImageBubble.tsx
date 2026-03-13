@@ -20,9 +20,7 @@ export const ImageBubble = (props: Props) => {
   let ref: HTMLDivElement | undefined;
   let image: HTMLImageElement | undefined;
   const [isExpanded, setIsExpanded] = createSignal(false);
-  const [isTyping, setIsTyping] = createSignal(
-    props.onTransitionEnd ? true : false,
-  );
+  const [isTyping, setIsTyping] = createSignal(!!props.onTransitionEnd);
 
   const onTypingEnd = () => {
     if (!isTyping()) return;
