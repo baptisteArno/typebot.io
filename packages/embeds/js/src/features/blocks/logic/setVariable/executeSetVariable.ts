@@ -23,7 +23,7 @@ export const executeSetVariable = async (
       };
     }
     // To avoid octal number evaluation
-    if (!Number.isNaN(content as unknown as number) && /0[^.].+/.test(content))
+    if (!Number.isNaN(Number(content)) && /0[^.].+/.test(content))
       return {
         replyToSend: content,
       };

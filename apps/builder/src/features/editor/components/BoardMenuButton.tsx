@@ -1,4 +1,3 @@
-import assert from "node:assert";
 import { useTranslate } from "@tolgee/react";
 import { getPublicId } from "@typebot.io/typebot/helpers/getPublicId";
 import { Menu } from "@typebot.io/ui/components/Menu";
@@ -18,7 +17,7 @@ export const BoardMenuButton = () => {
   const { t } = useTranslate();
 
   const downloadFlow = () => {
-    assert(typebot);
+    if (!typebot) return;
     setIsDownloading(true);
     const data =
       "data:application/json;charset=utf-8," +

@@ -11,12 +11,12 @@ export const parseGuessedValueType = (
   if (typeof value === "string" && isStartingWithZero) return value;
   const isStartingWithPlus = value.startsWith("+");
   if (typeof value === "string" && isStartingWithPlus) return value;
-  if (typeof value === "number") return value;
+  if (typeof value === "number") return Number.isNaN(value) ? null : value;
   if (value === "true") return true;
   if (value === "false") return false;
   if (value === "null") return null;
   if (value === "undefined") return;
-  // isNaN works with strings
-  if (Number.isNaN(value as unknown as number)) return value;
-  return Number(value);
+  const num = Number(value);
+  if (Number.isNaN(num)) return value;
+  return num;
 };

@@ -1,4 +1,3 @@
-import assert from "node:assert";
 import { useMutation } from "@tanstack/react-query";
 import { omit } from "@typebot.io/lib/utils";
 import { useMemo, useState } from "react";
@@ -126,7 +125,7 @@ export const DrawingEdge = ({ connectingIds }: Props) => {
   });
 
   const createNewEdge = async (connectingIds: ConnectingIds) => {
-    assert(connectingIds.target);
+    if (!connectingIds.target) return;
     createEdge({
       from:
         "groupId" in connectingIds.source

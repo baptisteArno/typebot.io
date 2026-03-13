@@ -15,7 +15,11 @@ const sentryMiddleware = os.middleware(async ({ next, path }) => {
   try {
     return await next();
   } catch (error) {
+    console.error(error);
     if (isUnknownError(error, path.join("/"))) {
+      if (error instanceof ORPCError) {
+        console.log(JSON.stringify(error.cause));
+      }
       if (error instanceof ORPCError && error.code?.includes("BAD_REQUEST")) {
         Sentry.addBreadcrumb({
           data: {

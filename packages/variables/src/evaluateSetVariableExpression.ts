@@ -32,10 +32,7 @@ export const evaluateSetVariableExpression = async (
       value: parseVariables(expression.code, { variables, sessionStore }),
     };
   // To avoid octal number evaluation
-  if (
-    !Number.isNaN(expression.code as unknown as number) &&
-    /0[^.].+/.test(expression.code)
-  )
+  if (!Number.isNaN(Number(expression.code)) && /0[^.].+/.test(expression.code))
     return { value: expression.code };
   const { output, error } = await executeFunction({
     body: injectReturnKeywordIfNeeded(expression.code),
