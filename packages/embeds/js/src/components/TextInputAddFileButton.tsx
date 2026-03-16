@@ -1,5 +1,6 @@
 import { Menu } from "@ark-ui/solid";
 import { cx } from "@typebot.io/ui/lib/cva";
+import { createUniqueId } from "solid-js";
 import { FileIcon } from "./icons/FileIcon";
 import { PaperClipIcon } from "./icons/PaperClipIcon";
 import { PictureIcon } from "./icons/PictureIcon";
@@ -9,11 +10,15 @@ type Props = {
   class?: string;
 };
 export const TextInputAddFileButton = (props: Props) => {
+  const baseId = createUniqueId();
+  const documentUploadId = `${baseId}-document-upload`;
+  const photosUploadId = `${baseId}-photos-upload`;
+
   return (
     <>
       <input
         type="file"
-        id="document-upload"
+        id={documentUploadId}
         multiple
         class="hidden"
         onChange={(e) => {
@@ -24,7 +29,7 @@ export const TextInputAddFileButton = (props: Props) => {
       />
       <input
         type="file"
-        id="photos-upload"
+        id={photosUploadId}
         accept="image/avif, image/*, video/*, capture=camera"
         multiple
         class="hidden"
@@ -37,7 +42,7 @@ export const TextInputAddFileButton = (props: Props) => {
 
       <label
         aria-label="Add attachments"
-        for="document-upload"
+        for={documentUploadId}
         class={cx(
           "filter data-[state=open]:backdrop-brightness-90 hover:backdrop-brightness-95 transition rounded-md p-2 focus:outline-none @xs:hidden",
           props.class,
@@ -62,7 +67,7 @@ export const TextInputAddFileButton = (props: Props) => {
               asChild={(props) => (
                 <label
                   {...props()}
-                  for="document-upload"
+                  for={documentUploadId}
                   class="p-2 filter hover:brightness-95 flex gap-3 items-center"
                 >
                   <FileIcon class="w-4" /> Document
@@ -74,7 +79,7 @@ export const TextInputAddFileButton = (props: Props) => {
               asChild={(props) => (
                 <label
                   {...props()}
-                  for="photos-upload"
+                  for={photosUploadId}
                   class="p-2 filter hover:brightness-95 flex gap-3 items-center"
                 >
                   <PictureIcon class="w-4" /> Photos & videos

@@ -4,7 +4,7 @@ import { isDefined } from "@typebot.io/lib/utils";
 import type { Stats } from "@typebot.io/results/schemas/answers";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { Graph } from "@/features/graph/components/Graph";
@@ -28,6 +28,7 @@ export const AnalyticsGraphContainer = ({
   onTimeFilterChange,
   stats,
 }: Props) => {
+  const analyticsContainerRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslate();
   const { isOpen, onOpen, onClose } = useOpenControls();
   const { typebot, publishedTypebot } = useTypebot();
@@ -80,6 +81,7 @@ export const AnalyticsGraphContainer = ({
   return (
     <div
       className="flex w-full relative h-full justify-center overflow-clip bg-gray-3 dark:bg-gray-2"
+      ref={analyticsContainerRef}
       style={{
         backgroundImage: backgroundImage,
         backgroundSize: "40px 40px",
@@ -90,6 +92,7 @@ export const AnalyticsGraphContainer = ({
         <GraphProvider isReadOnly isAnalytics>
           <Graph
             className="flex-1"
+            editorContainerRef={analyticsContainerRef}
             typebot={publishedTypebot}
             onUnlockProPlanClick={onOpen}
             totalAnswers={data?.totalAnswers}

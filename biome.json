@@ -44,7 +44,6 @@
       },
       "correctness": {
         "useExhaustiveDependencies": "off",
-        "useUniqueElementIds": "off",
         "useHookAtTopLevel": "off"
       },
       "complexity": {
@@ -52,8 +51,7 @@
       },
       "suspicious": {
         "noExplicitAny": "off",
-        "useIterableCallbackReturn": "off",
-        "noDocumentCookie": "off"
+        "useIterableCallbackReturn": "off"
       }
     }
   },

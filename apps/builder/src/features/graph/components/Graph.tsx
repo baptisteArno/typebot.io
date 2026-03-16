@@ -47,12 +47,14 @@ export const Graph = ({
   edgesWithTotalUsers,
   onUnlockProPlanClick,
   className,
+  editorContainerRef,
 }: {
   typebot: TypebotV6 | PublicTypebotV6;
   edgesWithTotalUsers?: EdgeWithTotalVisits[];
   totalAnswers?: TotalAnswers[];
   onUnlockProPlanClick?: () => void;
   className?: string;
+  editorContainerRef: React.RefObject<HTMLDivElement | null>;
 }) => {
   const {
     draggedBlockType,
@@ -120,7 +122,6 @@ export const Graph = ({
   const [isDragging, setIsDragging] = useState(false);
 
   const graphContainerRef = useRef<HTMLDivElement | null>(null);
-  const editorContainerRef = useRef<HTMLDivElement | null>(null);
 
   useAutoMoveBoard(autoMoveDirection, setGraphPosition);
 
@@ -132,12 +133,6 @@ export const Graph = ({
       )}px) scale(${graphPosition.scale})`,
     [graphPosition],
   );
-
-  useEffect(() => {
-    editorContainerRef.current = document.getElementById(
-      "editor-container",
-    ) as HTMLDivElement;
-  }, []);
 
   useEffect(() => {
     if (!graphContainerRef.current) return;

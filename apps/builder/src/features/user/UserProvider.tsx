@@ -95,7 +95,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const currentLocale = router.locale;
 
     if (preferredLanguage && preferredLanguage !== currentLocale) {
-      setLocaleInCookies(preferredLanguage);
+      void setLocaleInCookies(preferredLanguage).catch(console.error);
       router.replace(
         {
           pathname: router.pathname,

@@ -91,7 +91,7 @@ function RootComponent() {
             isOpen={cookieConsentStatus === "need-consent"}
             openDelay={HERO_ANIMATION_DELAY}
             onSubmit={(response) => {
-              setCookie(response);
+              void setCookie(response).catch(console.error);
               setCookieConsentStatus(response);
             }}
           />

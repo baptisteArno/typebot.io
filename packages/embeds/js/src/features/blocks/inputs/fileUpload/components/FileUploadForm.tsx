@@ -2,7 +2,14 @@ import { defaultFileInputOptions } from "@typebot.io/blocks-inputs/file/constant
 import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
 import { isDefined } from "@typebot.io/lib/utils";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
-import { createSignal, For, Match, Show, Switch } from "solid-js";
+import {
+  createSignal,
+  createUniqueId,
+  For,
+  Match,
+  Show,
+  Switch,
+} from "solid-js";
 import { Button } from "@/components/Button";
 import { SendButton } from "@/components/SendButton";
 import { Spinner } from "@/components/Spinner";
@@ -22,6 +29,7 @@ type Props = {
 };
 
 export const FileUploadForm = (props: Props) => {
+  const fileInputId = createUniqueId();
   const [selectedFiles, setSelectedFiles] = createSignal<File[]>([]);
   const [isUploading, setIsUploading] = createSignal(false);
   const [uploadProgressPercent, setUploadProgressPercent] = createSignal(0);
@@ -184,7 +192,7 @@ export const FileUploadForm = (props: Props) => {
   return (
     <form class="flex flex-col w-full gap-2" onSubmit={handleSubmit}>
       <label
-        for="dropzone-file"
+        for={fileInputId}
         class={
           "typebot-upload-input py-6 flex flex-col justify-center items-center w-full bg-gray-50 border-2 border-gray-300 border-dashed cursor-pointer hover:bg-gray-100 px-8 " +
           (isDraggingOver() ? "dragging-over" : "")
@@ -238,7 +246,7 @@ export const FileUploadForm = (props: Props) => {
               />
             </div>
             <input
-              id="dropzone-file"
+              id={fileInputId}
               type="file"
               class="hidden"
               accept={

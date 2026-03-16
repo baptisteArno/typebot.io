@@ -22,7 +22,7 @@ export const useCookieConsentStatus = () => {
       if (response.isEU) {
         setCookieConsentStatus("need-consent");
       } else {
-        setCookie("accepted");
+        void setCookie("accepted").catch(console.error);
         setCookieConsentStatus("not-needed");
       }
     });

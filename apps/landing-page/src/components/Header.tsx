@@ -250,7 +250,9 @@ const Desktop = React.forwardRef<
   }, []);
 
   useEffect(() => {
-    const separator = document.getElementById("magic-animation-separator");
+    const separator = document.querySelector(
+      "[data-magic-animation-separator]",
+    );
     if (!separator) return;
 
     const observer = new IntersectionObserver(

@@ -3,7 +3,7 @@ import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Input } from "@typebot.io/ui/components/Input";
 import { Select } from "@typebot.io/ui/components/Select";
 import { cx } from "@typebot.io/ui/lib/cva";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Card } from "@/components/Card";
 
 // Types for our form elements
@@ -365,6 +365,8 @@ const PropertiesPanel = ({
   selectedElement: FormElement | null;
   onUpdate: (updates: Partial<FormElement>) => void;
 }) => {
+  const baseId = useId();
+
   if (!selectedElement) {
     return (
       <div className="w-full">
@@ -375,6 +377,9 @@ const PropertiesPanel = ({
     );
   }
   const optionItems = selectedElement.options ?? [];
+  const labelInputId = `${baseId}-label`;
+  const placeholderInputId = `${baseId}-placeholder`;
+  const requiredInputId = `${baseId}-required`;
 
   // Function to handle options changes for select elements
   const handleOptionsChange = (optionIndex: number, newValue: string) => {
@@ -405,13 +410,13 @@ const PropertiesPanel = ({
         {/* label Field */}
         <div>
           <label
-            htmlFor="element-label"
+            htmlFor={labelInputId}
             className="block text-sm font-medium text-foreground/90"
           >
             Label
           </label>
           <Input
-            id="element-label"
+            id={labelInputId}
             type="text"
             value={selectedElement.label}
             onChange={(e) => onUpdate({ label: e.target.value })}
@@ -423,13 +428,13 @@ const PropertiesPanel = ({
         {["text", "email", "phone"].includes(selectedElement.type) && (
           <div>
             <label
-              htmlFor="element-placeholder"
+              htmlFor={placeholderInputId}
               className="block text-sm font-medium text-foreground/90"
             >
               Placeholder
             </label>
             <Input
-              id="element-placeholder"
+              id={placeholderInputId}
               type="text"
               value={selectedElement.placeholder || ""}
               onChange={(e) => onUpdate({ placeholder: e.target.value })}
@@ -441,14 +446,14 @@ const PropertiesPanel = ({
         {/* Required Field */}
         <div className="flex items-center gap-2">
           <Input
-            id="element-required"
+            id={requiredInputId}
             type="checkbox"
             checked={selectedElement.required || false}
             onChange={(e) => onUpdate({ required: e.target.checked })}
             className="h-4 w-4 text-blue-600"
           />
           <label
-            htmlFor="element-required"
+            htmlFor={requiredInputId}
             className="text-sm font-medium text-foreground/90"
           >
             Required

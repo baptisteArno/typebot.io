@@ -1,5 +1,5 @@
 import { Bubble, close } from "@typebot.io/react";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 type Props = {
   isOpen: boolean;
@@ -9,10 +9,11 @@ type Props = {
 
 export const CookieConsentBot = ({ isOpen, onSubmit, openDelay }: Props) => {
   const isOpenDelayed = useDelayedOpen(isOpen, openDelay);
+  const bubbleId = useId();
 
   return (
     <Bubble
-      id="cookie-consent"
+      id={bubbleId}
       typebot="cookie-consent"
       isOpen={isOpenDelayed}
       theme={{
@@ -26,7 +27,7 @@ export const CookieConsentBot = ({ isOpen, onSubmit, openDelay }: Props) => {
         },
       }}
       onEnd={() => {
-        close({ id: "cookie-consent" });
+        close({ id: bubbleId });
       }}
       onAnswer={({ message }) => {
         onSubmit(parseConsentBotAnswer(message));

@@ -45,7 +45,7 @@ export const UserPreferencesForm = () => {
   const updateLocale = (locale: keyof typeof localeHumanReadable) => {
     updateUser({ preferredLanguage: locale });
 
-    setLocaleInCookies(locale);
+    void setLocaleInCookies(locale).catch(console.error);
     router.replace(
       {
         pathname: router.pathname,

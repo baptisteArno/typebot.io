@@ -41,7 +41,7 @@ function Home() {
             <UseCases className="md:sticky top-0" />
           </div>
           <Companies />
-          <div id="magic-animation-separator" className="invisible -mt-32" />
+          <div data-magic-animation-separator className="invisible -mt-32" />
           <MainFeatures />
         </Section>
         <Section className="dark">

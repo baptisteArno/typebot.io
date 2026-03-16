@@ -1,4 +1,5 @@
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
+import { useRef } from "react";
 import { Seo } from "@/components/Seo";
 import { Graph } from "@/features/graph/components/Graph";
 import { GraphDndProvider } from "@/features/graph/providers/GraphDndProvider";
@@ -18,6 +19,7 @@ import { TypebotHeader } from "./TypebotHeader";
 export const EditorPage = () => {
   const { typebot, currentUserMode } = useTypebot();
   const { workspace } = useWorkspace();
+  const editorContainerRef = useRef<HTMLDivElement>(null);
   const backgroundImage = useThemeValue(
     "radial-gradient(var(--gray-7) 1px, transparent 0)",
     "radial-gradient(var(--gray-5) 1px, transparent 0)",
@@ -30,7 +32,7 @@ export const EditorPage = () => {
       <Seo title={typebot?.name ? `${typebot.name} | Editor` : "Editor"} />
       <div
         className="flex overflow-clip h-screen flex-col"
-        id="editor-container"
+        ref={editorContainerRef}
       >
         <VideoOnboardingFloatingWindow type="editor" />
         {isSuspicious && <SuspectedTypebotBanner typebotId={typebot.id} />}
@@ -50,7 +52,12 @@ export const EditorPage = () => {
                   currentUserMode === "read" || currentUserMode === "guest"
                 }
               >
-                <Graph className="flex-1" typebot={typebot} key={typebot.id} />
+                <Graph
+                  className="flex-1"
+                  editorContainerRef={editorContainerRef}
+                  typebot={typebot}
+                  key={typebot.id}
+                />
 
                 <RightPanel />
               </GraphProvider>

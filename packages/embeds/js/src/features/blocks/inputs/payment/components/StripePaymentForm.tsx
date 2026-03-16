@@ -3,7 +3,7 @@ import { loadStripe } from "@stripe/stripe-js/pure";
 import { defaultPaymentInputOptions } from "@typebot.io/blocks-inputs/payment/constants";
 import type { PaymentInputBlock } from "@typebot.io/blocks-inputs/payment/schema";
 import type { RuntimeOptions } from "@typebot.io/chat-api/schemas";
-import { createSignal, onMount, Show } from "solid-js";
+import { createSignal, createUniqueId, onMount, Show } from "solid-js";
 import { SendButton } from "@/components/SendButton";
 import type { BotContext } from "@/types";
 import {
@@ -25,13 +25,14 @@ let stripe: Stripe | null = null;
 let elements: StripeElements | null = null;
 
 export const StripePaymentForm = (props: Props) => {
+  const paymentElementId = createUniqueId();
   const [message, setMessage] = createSignal<string>();
   const [isMounted, setIsMounted] = createSignal(false);
   const [isLoading, setIsLoading] = createSignal(false);
 
   onMount(async () => {
     if (!paymentElementSlot) return;
-    initShadowMountPoint(paymentElementSlot);
+    initShadowMountPoint(paymentElementSlot, paymentElementId);
     if (!props.options?.publicKey)
       return setMessage("Missing Stripe public key");
     stripe = await loadStripe(props.options?.publicKey);
@@ -54,7 +55,7 @@ export const StripePaymentForm = (props: Props) => {
       setIsMounted(true);
       props.onTransitionEnd();
     });
-    paymentElement.mount("#payment-element");
+    paymentElement.mount(`#${paymentElementId}`);
   });
 
   const handleSubmit = async (event: SubmitEvent) => {
@@ -100,7 +101,6 @@ export const StripePaymentForm = (props: Props) => {
 
   return (
     <form
-      id="payment-form"
       onSubmit={handleSubmit}
       class="flex flex-col p-4 typebot-input w-full items-center"
     >
@@ -126,7 +126,10 @@ export const StripePaymentForm = (props: Props) => {
   );
 };
 
-const initShadowMountPoint = (element: HTMLElement) => {
+const initShadowMountPoint = (
+  element: HTMLElement,
+  paymentElementId: string,
+) => {
   const rootNode = element.getRootNode() as ShadowRoot;
   const host = rootNode.host;
   const slotPlaceholder = document.createElement("div");
@@ -134,6 +137,6 @@ const initShadowMountPoint = (element: HTMLElement) => {
   slotPlaceholder.slot = slotName;
   host.appendChild(slotPlaceholder);
   const paymentElementContainer = document.createElement("div");
-  paymentElementContainer.id = "payment-element";
+  paymentElementContainer.id = paymentElementId;
   slotPlaceholder.appendChild(paymentElementContainer);
 };

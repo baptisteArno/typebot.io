@@ -117,7 +117,7 @@ export const OnboardingPage = () => {
       <div className="flex w-full h-full justify-center items-center">
         <div className="flex w-full max-w-[800px] rounded-lg h-full max-h-[70vh]">
           <Standard
-            id="onboarding"
+            className="onboarding-typebot"
             typebot={env.NEXT_PUBLIC_ONBOARDING_TYPEBOT_ID}
             style={{ borderRadius: "1rem" }}
             prefilledVariables={{ Name: user?.name, Email: user?.email }}
