@@ -132,6 +132,7 @@ const StackWithGhostableItems = ({
       ghostItemHeight={gapPixel / childrenLength}
       closeExpanded={onAbort}
     >
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: This hover surface only expands placeholder spacing; the interactive controls are the ghost buttons inside. */}
       <div
         style={
           {

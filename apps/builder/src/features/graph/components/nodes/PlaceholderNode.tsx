@@ -43,54 +43,61 @@ export const PlaceholderNode = forwardRef<HTMLDivElement, Props>(
       enabled: isDefined(onClick),
     });
 
-    return (
-      <div
+    const placeholderContent = (
+      <span
         style={
           {
-            "--py":
+            "--h":
               isExpanded || isHoverExpanded
-                ? `${expandedPaddingPixel}px`
-                : `${initialPaddingPixel}px`,
+                ? `${expandedHeightPixels}px`
+                : `${initialHeightPixels}px`,
           } as React.CSSProperties
         }
-        className={cn(
-          "flex font-semibold justify-center items-center relative py-(--py) text-sm",
-          className,
+        className={cx(
+          "flex w-full rounded-lg justify-center items-center bg-gray-3 h-(--h) transition-[opacity,height]",
+          isVisible || isHovered ? "opacity-100" : "opacity-0",
         )}
-        ref={ref}
-        onMouseEnter={onHover}
-        onMouseLeave={onLeave}
-        onMouseUpCapture={onAbort}
-        {...(onClick
-          ? {
-              role: "button",
-              tabIndex: 0,
-              onClick,
-              onKeyDown: (event: React.KeyboardEvent) => {
-                if (event.key !== "Enter" && event.key !== " ") return;
-                event.preventDefault();
-                onClick();
-              },
-            }
-          : {})}
       >
-        {onClick && <span className="absolute left-0 z-1 w-full" />}
-        <div
-          style={
-            {
-              "--h":
-                isExpanded || isHoverExpanded
-                  ? `${expandedHeightPixels}px`
-                  : `${initialHeightPixels}px`,
-            } as React.CSSProperties
-          }
-          className={cx(
-            "flex w-full rounded-lg justify-center items-center bg-gray-3 h-(--h) transition-[opacity,height]",
-            isVisible || isHovered ? "opacity-100" : "opacity-0",
-          )}
-        >
-          {isHovered && isHoverExpanded ? children : null}
-        </div>
+        {isHovered && isHoverExpanded ? children : null}
+      </span>
+    );
+
+    return (
+      <div className={cn("relative", className)} ref={ref}>
+        {onClick ? (
+          <button
+            type="button"
+            style={
+              {
+                "--py":
+                  isExpanded || isHoverExpanded
+                    ? `${expandedPaddingPixel}px`
+                    : `${initialPaddingPixel}px`,
+              } as React.CSSProperties
+            }
+            className="flex w-full font-semibold justify-center items-center py-(--py) text-sm"
+            onMouseEnter={onHover}
+            onMouseLeave={onLeave}
+            onMouseUpCapture={onAbort}
+            onClick={onClick}
+          >
+            {placeholderContent}
+          </button>
+        ) : (
+          <div
+            style={
+              {
+                "--py":
+                  isExpanded || isHoverExpanded
+                    ? `${expandedPaddingPixel}px`
+                    : `${initialPaddingPixel}px`,
+              } as React.CSSProperties
+            }
+            className="flex w-full font-semibold justify-center items-center py-(--py) text-sm"
+          >
+            {placeholderContent}
+          </div>
+        )}
       </div>
     );
   },

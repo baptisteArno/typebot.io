@@ -1,13 +1,19 @@
 import { Input, type InputProps } from "@typebot.io/ui/components/Input";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { forwardRef, type HTMLAttributes, useRef, useState } from "react";
+import {
+  type ButtonHTMLAttributes,
+  forwardRef,
+  type HTMLAttributes,
+  useRef,
+  useState,
+} from "react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 export type SingleLineEditableProps = {
   className?: string;
   input?: Omit<InputProps, "value">;
-  preview?: HTMLAttributes<HTMLSpanElement>;
-  common?: HTMLAttributes<HTMLSpanElement | HTMLInputElement>;
+  preview?: ButtonHTMLAttributes<HTMLButtonElement>;
+  common?: HTMLAttributes<HTMLButtonElement | HTMLInputElement>;
   defaultEdit?: boolean;
   value?: string;
   defaultValue?: string;
@@ -75,17 +81,12 @@ export const SingleLineEditable = forwardRef<
             )}
           />
         ) : (
-          <span
+          <button
             {...preview}
+            type="button"
             onClick={(e) => {
               preview?.onClick?.(e);
-              setIsEditing(true);
-            }}
-            onKeyDown={(event) => {
-              preview?.onKeyDown?.(event);
-              if (event.defaultPrevented) return;
-              if (event.key !== "Enter" && event.key !== " ") return;
-              event.preventDefault();
+              if (e.defaultPrevented) return;
               setIsEditing(true);
             }}
             className={cn(
@@ -95,7 +96,7 @@ export const SingleLineEditable = forwardRef<
             )}
           >
             {value ?? currentValue}
-          </span>
+          </button>
         )}
         {children}
       </div>

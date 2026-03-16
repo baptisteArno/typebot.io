@@ -3,7 +3,7 @@ import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { ArrowUp01Icon } from "@typebot.io/ui/icons/ArrowUp01Icon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useId, useState } from "react";
 import threeDButton from "./assets/3d-button.png";
 
 const data = [
@@ -81,19 +81,18 @@ const Principle = ({
   isLastItem: boolean;
   onClick: () => void;
 }) => {
+  const contentId = useId();
+
   return (
-    <details
-      className="rounded-xl md:rounded-none md:px-0 bg-white border md:border-0 border-border cursor-pointer"
-      open={isOpened}
-    >
-      <summary
-        className="px-4 py-4 md:py-2 font-display font-medium text-2xl flex flex-col gap-3 list-none"
-        onClick={(e) => {
-          e.preventDefault();
-          onClick();
-        }}
+    <div className="rounded-xl md:rounded-none md:px-0 bg-white border md:border-0 border-border">
+      <button
+        type="button"
+        className="w-full px-4 py-4 font-display font-medium text-2xl flex flex-col items-stretch gap-3 text-left cursor-pointer"
+        aria-expanded={isOpened}
+        aria-controls={contentId}
+        onClick={onClick}
       >
-        <div className="flex justify-between">
+        <span className="flex justify-between">
           {title}
           <span
             className={cn(
@@ -107,11 +106,12 @@ const Principle = ({
               <ArrowDown01Icon />
             )}
           </span>
-        </div>
-
-        {isLastItem ? null : <hr className="hidden md:block" />}
-      </summary>
+        </span>
+      </button>
+      {isLastItem ? null : <hr className="hidden md:block mx-4" />}
       <motion.div
+        id={contentId}
+        className="overflow-hidden"
         initial={{ height: 0, opacity: 0 }}
         animate={{
           height: isOpened ? "auto" : 0,
@@ -120,8 +120,8 @@ const Principle = ({
         transition={{ duration: 0.4, type: "spring", bounce: 0.15 }}
       >
         <hr className="mb-4 md:hidden mx-4 border-border" />
-        <p className="pb-4 mx-4">{content}</p>
+        <p className="py-4 mx-4">{content}</p>
       </motion.div>
-    </details>
+    </div>
   );
 };

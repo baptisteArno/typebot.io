@@ -42,7 +42,6 @@ export const PrimitiveList = <T extends number | string | boolean>({
   onItemsChange,
 }: Props<T>) => {
   const [items, setItems] = useState<ItemWithId<T>[]>();
-  const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (items) return;
@@ -79,13 +78,8 @@ export const PrimitiveList = <T extends number | string | boolean>({
     onItemsChange(removeIdFromItems([...newItems]));
   };
 
-  const handleMouseEnter = (itemIndex: number) => () =>
-    setShowDeleteIndex(itemIndex);
-
   const handleCellChange = (itemIndex: number) => (item: T) =>
     updateItem(itemIndex, item);
-
-  const handleMouseLeave = () => setShowDeleteIndex(null);
 
   return (
     <div className="flex flex-col gap-0">
@@ -96,27 +90,23 @@ export const PrimitiveList = <T extends number | string | boolean>({
           )}
           <div
             className={cx(
-              "flex relative justify-center pb-4",
+              "group/item flex relative justify-center pb-4",
               itemIndex !== 0 && ComponentBetweenItems ? "mt-4" : "mt-0",
             )}
-            onMouseEnter={handleMouseEnter(itemIndex)}
-            onMouseLeave={handleMouseLeave}
           >
             {children({
               item: item.value as T,
               onItemChange: handleCellChange(itemIndex),
             })}
-            {showDeleteIndex === itemIndex && (
-              <Button
-                variant="secondary"
-                className="size-6 animate-in fade-in-0 absolute left-[-15px] top-[-15px] z-10"
-                size="icon"
-                aria-label="Remove item"
-                onClick={deleteItem(itemIndex)}
-              >
-                <TrashIcon />
-              </Button>
-            )}
+            <Button
+              variant="secondary"
+              className="size-6 absolute left-[-15px] top-[-15px] z-10 invisible opacity-0 transition-opacity group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100"
+              size="icon"
+              aria-label="Remove item"
+              onClick={deleteItem(itemIndex)}
+            >
+              <TrashIcon />
+            </Button>
           </div>
         </div>
       ))}

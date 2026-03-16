@@ -31,10 +31,6 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "security": {},
-      "a11y": {
-        "noStaticElementInteractions": "off"
-      },
       "performance": {
         "noImgElement": "off"
       },

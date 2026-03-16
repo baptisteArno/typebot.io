@@ -39,7 +39,6 @@ export const TableList = <T extends object>({
     addIdsIfMissing(initialItems) ??
       (hasDefaultItem ? ([defaultItem] as T[]) : []),
   );
-  const [showDeleteIndex, setShowDeleteIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (items.length && initialItems && initialItems?.length === 0)
@@ -78,13 +77,8 @@ export const TableList = <T extends object>({
     onItemsChange([...newItems]);
   };
 
-  const handleMouseEnter = (itemIndex: number) => () =>
-    setShowDeleteIndex(itemIndex);
-
   const handleCellChange = (itemIndex: number) => (item: T) =>
     updateItem(itemIndex, item);
-
-  const handleMouseLeave = () => setShowDeleteIndex(null);
 
   return (
     <div className="flex flex-col gap-0">
@@ -95,32 +89,28 @@ export const TableList = <T extends object>({
           )}
           <div
             className={cx(
-              "flex relative justify-center pb-4",
+              "group/item flex relative justify-center pb-4",
               itemIndex !== 0 && ComponentBetweenItems ? "mt-4" : "mt-0",
             )}
-            onMouseEnter={handleMouseEnter(itemIndex)}
-            onMouseLeave={handleMouseLeave}
           >
             {children({ item, onItemChange: handleCellChange(itemIndex) })}
-            {showDeleteIndex === itemIndex && (
-              <Button
-                size="icon"
-                aria-label="Remove cell"
-                onClick={deleteItem(itemIndex)}
-                variant="secondary"
-                className="shadow-md size-6 animate-in fade-in-0 absolute left-[-8px] top-[-8px]"
-              >
-                <TrashIcon />
-              </Button>
-            )}
-            {isOrdered && showDeleteIndex === itemIndex && (
+            <Button
+              size="icon"
+              aria-label="Remove cell"
+              onClick={deleteItem(itemIndex)}
+              variant="secondary"
+              className="shadow-md size-6 absolute left-[-8px] top-[-8px] invisible opacity-0 transition-opacity group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100"
+            >
+              <TrashIcon />
+            </Button>
+            {isOrdered && (
               <>
                 <Button
                   size="icon"
                   aria-label={addLabel}
                   onClick={insertItemAt(itemIndex)}
                   variant="secondary"
-                  className="shadow-md size-6 animate-in fade-in-0 slide-in-from-bottom-1 absolute top-[-10px]"
+                  className="shadow-md size-6 absolute top-[-10px] invisible opacity-0 transition-opacity group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100"
                 >
                   <PlusSignIcon />
                 </Button>
@@ -129,7 +119,7 @@ export const TableList = <T extends object>({
                   aria-label={addLabel}
                   onClick={insertItemAt(itemIndex + 1)}
                   variant="secondary"
-                  className="shadow-md size-6 animate-in fade-in-0 slide-in-from-top-1 absolute bottom-2"
+                  className="shadow-md size-6 absolute bottom-2 invisible opacity-0 transition-opacity group-hover/item:visible group-hover/item:opacity-100 group-focus-within/item:visible group-focus-within/item:opacity-100"
                 >
                   <PlusSignIcon />
                 </Button>

@@ -102,9 +102,9 @@ export const TextInput = (props: Props) => {
     } else inputRef?.focus();
   };
 
-  const submitWhenEnter = (e: KeyboardEvent) => {
-    if (props.block.options?.isLong) return;
-    if (e.key === "Enter") submit();
+  const handleSubmit = (event: Event) => {
+    event.preventDefault();
+    submit();
   };
 
   const submitIfCtrlEnter = (e: KeyboardEvent) => {
@@ -261,14 +261,14 @@ export const TextInput = (props: Props) => {
   };
 
   return (
-    <div
+    <form
       class={cx(
         "typebot-input-form flex w-full gap-2 items-end",
         props.block.options?.isLong && recordingStatus() !== "started"
           ? "max-w-full"
           : "max-w-[350px]",
       )}
-      onKeyDown={submitWhenEnter}
+      onSubmit={handleSubmit}
       onDrop={handleDropFile}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
@@ -365,7 +365,8 @@ export const TextInput = (props: Props) => {
           }
         >
           <Button
-            class="h-[56px] flex items-center"
+            type="button"
+            class="h-14 flex items-center"
             on:click={recordVoice}
             aria-label="Record voice"
           >
@@ -374,15 +375,14 @@ export const TextInput = (props: Props) => {
         </Match>
         <Match when={true}>
           <SendButton
-            type="button"
-            on:click={submit}
+            type="submit"
             isDisabled={Boolean(uploadProgress())}
-            class="h-[56px]"
+            class="h-14"
           >
             {props.block.options?.labels?.button}
           </SendButton>
         </Match>
       </Switch>
-    </div>
+    </form>
   );
 };

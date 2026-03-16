@@ -108,6 +108,7 @@ export const Edge = ({ edge, fromElementId }: Props) => {
       <ContextMenu.Trigger
         render={(props) => (
           <>
+            {/* biome-ignore lint/a11y/noStaticElementInteractions: SVG paths are graph hit areas, not HTML controls, and React Flow relies on this shape for edge selection. */}
             <path
               {...props}
               data-testid="clickable-edge"

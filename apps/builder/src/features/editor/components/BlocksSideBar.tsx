@@ -15,7 +15,7 @@ import { SquareLock01Icon } from "@typebot.io/ui/icons/SquareLock01Icon";
 import { SquareUnlock01Icon } from "@typebot.io/ui/icons/SquareUnlock01Icon";
 import { cx } from "@typebot.io/ui/lib/cva";
 import type React from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { Portal } from "@/components/Portal";
 import { useBlockDnd } from "@/features/graph/providers/GraphDndProvider";
@@ -59,22 +59,36 @@ export const BlocksSideBar = () => {
     localStorage.getItem(leftSidebarLockedStorageKey) !== "false",
   );
   const [searchInput, setSearchInput] = useState("");
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const dockBarRef = useRef<HTMLButtonElement>(null);
 
   const closeSideBar = useDebouncedCallback(() => setIsExtended(false), 200);
 
   const handleMouseMove = (event: MouseEvent) => {
-    if (!draggedBlockType && !draggedEventType) return;
     const { clientX, clientY } = event;
-    setPosition({
-      ...position,
-      x: clientX - relativeCoordinates.x,
-      y: clientY - relativeCoordinates.y,
-    });
+    if (draggedBlockType || draggedEventType) {
+      setPosition({
+        x: clientX - relativeCoordinates.x,
+        y: clientY - relativeCoordinates.y,
+      });
+    }
+    if (isLocked) return;
+    if (isMouseInElement(sidebarRef.current, clientX, clientY)) {
+      closeSideBar.flush();
+      return;
+    }
+    if (isMouseInElement(dockBarRef.current, clientX, clientY)) {
+      closeSideBar.flush();
+      setIsExtended(true);
+      return;
+    }
+    if (clientX < 100) return;
+    closeSideBar();
   };
   useEventListener("mousemove", handleMouseMove);
 
   const initBlockDragging = (e: React.MouseEvent, type: BlockV6["type"]) => {
-    const element = e.currentTarget as HTMLDivElement;
+    const element = e.currentTarget as HTMLElement;
     const rect = element.getBoundingClientRect();
     setPosition({ x: rect.left, y: rect.top });
     const x = e.clientX - rect.left;
@@ -87,7 +101,7 @@ export const BlocksSideBar = () => {
     e: React.MouseEvent,
     type: TDraggableEvent["type"],
   ) => {
-    const element = e.currentTarget as HTMLDivElement;
+    const element = e.currentTarget as HTMLElement;
     const rect = element.getBoundingClientRect();
     setPosition({ x: rect.left, y: rect.top });
     const x = e.clientX - rect.left;
@@ -114,16 +128,6 @@ export const BlocksSideBar = () => {
       console.error(error);
     }
     setIsLocked(!isLocked);
-  };
-
-  const handleDockBarEnter = () => {
-    closeSideBar.flush();
-    setIsExtended(true);
-  };
-
-  const handleMouseLeave = (e: React.MouseEvent) => {
-    if (isLocked || e.clientX < 100) return;
-    closeSideBar();
   };
 
   const handleSearchInputChange = (event: {
@@ -187,11 +191,11 @@ export const BlocksSideBar = () => {
 
   return (
     <div
+      ref={sidebarRef}
       className={cx(
         "flex w-[360px] absolute pl-4 py-4 left-0 transition-transform duration-150 ease-out h-[calc(100vh-var(--header-height))]",
         isExtended ? "translate-x-0" : "translate-x-[-350px]",
       )}
-      onMouseLeave={handleMouseLeave}
     >
       <div className="flex flex-col w-full rounded-lg border pt-4 pb-10 px-4 gap-6 overflow-y-auto bg-gray-1 select-none">
         <div className="flex justify-between w-full items-center gap-3">
@@ -303,7 +307,6 @@ export const BlocksSideBar = () => {
           <Portal>
             <BlockCardOverlay
               type={draggedBlockType}
-              onMouseUp={handleMouseUp}
               className="fixed top-0 left-0"
               style={{
                 transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
@@ -315,7 +318,6 @@ export const BlocksSideBar = () => {
           <Portal>
             <EventCardOverlay
               type={draggedEventType}
-              onMouseUp={handleMouseUp}
               className="fixed top-0 left-0"
               style={{
                 transform: `translate(${position.x}px, ${position.y}px) rotate(-2deg)`,
@@ -325,13 +327,34 @@ export const BlocksSideBar = () => {
         )}
       </div>
       {!isLocked && (
-        <div
+        <button
+          ref={dockBarRef}
+          type="button"
+          aria-label="Open blocks sidebar"
           className="flex animate-in fade-in-0 absolute h-full w-[450px] justify-end pr-10 items-center -right-[70px] top-0 -z-10"
-          onMouseEnter={handleDockBarEnter}
+          onFocus={() => {
+            closeSideBar.flush();
+            setIsExtended(true);
+          }}
         >
-          <div className="flex w-[5px] h-[20px] rounded-md bg-gray-7" />
-        </div>
+          <span className="flex w-[5px] h-[20px] rounded-md bg-gray-7" />
+        </button>
       )}
     </div>
+  );
+};
+
+const isMouseInElement = (
+  element: HTMLElement | null,
+  clientX: number,
+  clientY: number,
+) => {
+  if (!element) return false;
+  const rect = element.getBoundingClientRect();
+  return (
+    clientX >= rect.left &&
+    clientX <= rect.right &&
+    clientY >= rect.top &&
+    clientY <= rect.bottom
   );
 };

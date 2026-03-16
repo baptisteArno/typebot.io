@@ -1,6 +1,6 @@
 import { Textarea } from "@typebot.io/ui/components/Textarea";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { type HTMLAttributes, useEffect, useRef, useState } from "react";
+import { type ButtonHTMLAttributes, useEffect, useRef, useState } from "react";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 
 export type MultiLineEditableProps = {
@@ -11,7 +11,7 @@ export type MultiLineEditableProps = {
   > & {
     onValueChange?: (value: string) => void;
   };
-  preview?: HTMLAttributes<HTMLSpanElement>;
+  preview?: ButtonHTMLAttributes<HTMLButtonElement>;
   defaultEdit: boolean;
   value: string;
   onValueCommit: (value: string) => void;
@@ -80,14 +80,12 @@ export const MultiLineEditable = ({
           autoFocus
         />
       ) : (
-        <span
+        <button
           {...preview}
-          onClick={() => setIsEditing(true)}
-          onKeyDown={(event) => {
-            preview?.onKeyDown?.(event);
+          type="button"
+          onClick={(event) => {
+            preview?.onClick?.(event);
             if (event.defaultPrevented) return;
-            if (event.key !== "Enter" && event.key !== " ") return;
-            event.preventDefault();
             setIsEditing(true);
           }}
           className={cn(
@@ -96,7 +94,7 @@ export const MultiLineEditable = ({
           )}
         >
           {value}
-        </span>
+        </button>
       )}
     </div>
   );

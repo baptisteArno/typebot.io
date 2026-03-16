@@ -36,7 +36,9 @@ export const EventCardLayout = ({
       <Tooltip.Trigger
         render={
           <div className="flex relative">
-            <div
+            <button
+              type="button"
+              disabled={isDisabled}
               className={cx(
                 "flex items-center gap-2 border rounded-lg flex-1 px-4 py-2 bg-gray-1 transition-[box-shadow,background-color]",
                 isMouseDown ? "min-h-[42px]" : undefined,
@@ -48,7 +50,7 @@ export const EventCardLayout = ({
               onMouseDown={handleMouseDown}
             >
               {!isMouseDown ? children : null}
-            </div>
+            </button>
           </div>
         }
       />

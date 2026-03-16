@@ -49,8 +49,9 @@ export const NumberInput = (props: NumberInputProps) => {
     } else numberInput().focus();
   };
 
-  const submitWhenEnter = (e: KeyboardEvent) => {
-    if (e.key === "Enter") submit();
+  const handleSubmit = (event: Event) => {
+    event.preventDefault();
+    submit();
   };
 
   onMount(() => {
@@ -71,9 +72,9 @@ export const NumberInput = (props: NumberInputProps) => {
   };
 
   return (
-    <div
+    <form
       class="typebot-input-form flex w-full gap-2 items-end max-w-[350px]"
-      onKeyDown={submitWhenEnter}
+      onSubmit={handleSubmit}
     >
       <ArkNumberInput.RootProvider
         value={numberInput}
@@ -89,18 +90,24 @@ export const NumberInput = (props: NumberInputProps) => {
           }
         />
         <ArkNumberInput.Control class="flex flex-col rounded-r-md overflow-hidden divide-y h-[56px]">
-          <ArkNumberInput.IncrementTrigger class="flex items-center justify-center h-7 w-8 border-input-border border-l">
+          <ArkNumberInput.IncrementTrigger
+            type="button"
+            class="flex items-center justify-center h-7 w-8 border-input-border border-l"
+          >
             <ChevronUpIcon class="size-4" />
           </ArkNumberInput.IncrementTrigger>
-          <ArkNumberInput.DecrementTrigger class="flex items-center justify-center h-7 w-8 border-input-border border-l">
+          <ArkNumberInput.DecrementTrigger
+            type="button"
+            class="flex items-center justify-center h-7 w-8 border-input-border border-l"
+          >
             <ChevronDownIcon class="size-4" />
           </ArkNumberInput.DecrementTrigger>
         </ArkNumberInput.Control>
       </ArkNumberInput.RootProvider>
-      <SendButton type="button" class="h-[56px]" on:click={submit}>
+      <SendButton type="submit" class="h-14">
         {props.block.options?.labels?.button ?? defaultNumberInputButtonLabel}
       </SendButton>
-    </div>
+    </form>
   );
 };
 

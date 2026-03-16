@@ -6,23 +6,16 @@ import type { TypebotInDashboard } from "@/features/dashboard/types";
 type Props = {
   typebot: TypebotInDashboard;
   className?: string;
-  onMouseUp?: () => Promise<void>;
   style?: React.CSSProperties;
 };
 
-export const TypebotButtonOverlay = ({
-  typebot,
-  className,
-  onMouseUp,
-  style,
-}: Props) => {
+export const TypebotButtonOverlay = ({ typebot, className, style }: Props) => {
   return (
     <div
       className={cn(
         "flex flex-col justify-center w-[225px] h-[270px] border rounded-md shadow-md whitespace-normal transition-none pointer-events-none opacity-70 bg-gray-1",
         className,
       )}
-      onMouseUp={onMouseUp}
       style={style}
     >
       <div className="flex flex-col items-center gap-4">

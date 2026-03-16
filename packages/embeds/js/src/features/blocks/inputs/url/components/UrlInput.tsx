@@ -32,8 +32,9 @@ export const UrlInput = (props: Props) => {
     else inputRef?.focus();
   };
 
-  const submitWhenEnter = (e: KeyboardEvent) => {
-    if (e.key === "Enter") submit();
+  const handleSubmit = (event: Event) => {
+    event.preventDefault();
+    submit();
   };
 
   onMount(() => {
@@ -57,9 +58,9 @@ export const UrlInput = (props: Props) => {
   };
 
   return (
-    <div
+    <form
       class="typebot-input-form flex w-full gap-2 items-end max-w-[350px]"
-      onKeyDown={submitWhenEnter}
+      onSubmit={handleSubmit}
     >
       <div class={"flex typebot-input w-full"}>
         <ShortTextInput
@@ -74,9 +75,9 @@ export const UrlInput = (props: Props) => {
           autocomplete="url"
         />
       </div>
-      <SendButton type="button" class="h-[56px]" on:click={submit}>
+      <SendButton type="submit" class="h-14">
         {props.block.options?.labels?.button}
       </SendButton>
-    </div>
+    </form>
   );
 };

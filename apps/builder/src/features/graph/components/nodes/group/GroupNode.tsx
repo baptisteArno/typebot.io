@@ -154,6 +154,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
       disabled={isReadOnly}
     >
       <ContextMenu.Trigger>
+        {/* biome-ignore lint/a11y/noStaticElementInteractions: This group container is a draggable graph surface with nested controls, not a standalone HTML action. */}
         <div
           style={
             {

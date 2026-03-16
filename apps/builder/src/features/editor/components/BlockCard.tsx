@@ -53,14 +53,14 @@ export const BlockCard = (
           tooltip={t("blocks.inputs.fileUpload.blockCard.tooltip")}
         >
           <BlockIcon type={props.type} />
-          <div className="flex items-center gap-2">
+          <span className="flex items-center gap-2">
             <BlockLabel type={props.type} />
             {isFreePlan(workspace) && (
               <Badge colorScheme="orange">
                 <SquareLock01Icon />
               </Badge>
             )}
-          </div>
+          </span>
         </BlockCardLayout>
       );
     case LogicBlockType.SCRIPT:

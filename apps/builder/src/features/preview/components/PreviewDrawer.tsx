@@ -27,7 +27,6 @@ export const PreviewDrawer = () => {
   const { t } = useTranslate();
   const { setPreviewingBlock } = useGraph();
   const [width, setWidth] = useState(500);
-  const [isResizeHandleVisible, setIsResizeHandleVisible] = useState(false);
   const [selectedRuntime, setSelectedRuntime] = useState<
     (typeof runtimes)[number]
   >(getDefaultRuntime(typebot?.id));
@@ -61,19 +60,13 @@ export const PreviewDrawer = () => {
 
   return (
     <div
-      className="flex absolute border-l shadow-md p-6 right-0 top-0 h-full bg-gray-1 rounded-l-lg z-10"
-      onMouseOver={() => setIsResizeHandleVisible(true)}
-      onMouseLeave={() => setIsResizeHandleVisible(false)}
-      onFocus={() => setIsResizeHandleVisible(true)}
-      onBlur={() => setIsResizeHandleVisible(false)}
+      className="group/drawer flex absolute border-l shadow-md p-6 right-0 top-0 h-full bg-gray-1 rounded-l-lg z-10"
       style={{ width: `${width}px` }}
     >
-      {isResizeHandleVisible && (
-        <ResizeHandle
-          {...useResizeHandleDrag()}
-          className="animate-in fade-in-0 absolute left-[-7.5px] top-1/2 -translate-y-1/2"
-        />
-      )}
+      <ResizeHandle
+        {...useResizeHandleDrag()}
+        className="absolute left-[-7.5px] top-1/2 -translate-y-1/2 opacity-0 pointer-events-none transition-opacity group-hover/drawer:opacity-100 group-hover/drawer:pointer-events-auto group-focus-within/drawer:opacity-100 group-focus-within/drawer:pointer-events-auto"
+      />
       <div className="flex flex-col items-center w-full gap-4">
         <div className="flex items-center gap-2 justify-between w-full">
           <div className="flex items-center gap-2">

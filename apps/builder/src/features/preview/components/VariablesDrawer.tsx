@@ -33,7 +33,6 @@ export const VariablesDrawer = ({ onClose }: Props) => {
   const { typebot, createVariable, updateVariable, deleteVariable } =
     useTypebot();
   const [width, setWidth] = useState(500);
-  const [isResizeHandleVisible, setIsResizeHandleVisible] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const filteredVariables = typebot?.variables.filter((v) =>
     isNotEmpty(searchValue)
@@ -71,20 +70,14 @@ export const VariablesDrawer = ({ onClose }: Props) => {
 
   return (
     <div
-      className="flex absolute border-l shadow-md p-6 right-0 top-0 h-full bg-gray-1 rounded-l-lg"
-      onMouseOver={() => setIsResizeHandleVisible(true)}
-      onFocus={() => setIsResizeHandleVisible(true)}
-      onBlur={() => setIsResizeHandleVisible(false)}
-      onMouseLeave={() => setIsResizeHandleVisible(false)}
+      className="group/drawer flex absolute border-l shadow-md p-6 right-0 top-0 h-full bg-gray-1 rounded-l-lg"
       style={{ width: `${width}px` }}
     >
-      {isResizeHandleVisible && (
-        <ResizeHandle
-          {...useResizeHandleDrag()}
-          className="animate-in fade-in-0 absolute left-[-7.5px]"
-          style={{ top: `calc(50% - ${headerHeight}px)` }}
-        />
-      )}
+      <ResizeHandle
+        {...useResizeHandleDrag()}
+        className="absolute left-[-7.5px] opacity-0 pointer-events-none transition-opacity group-hover/drawer:opacity-100 group-hover/drawer:pointer-events-auto group-focus-within/drawer:opacity-100 group-focus-within/drawer:pointer-events-auto"
+        style={{ top: `calc(50% - ${headerHeight}px)` }}
+      />
       <div className="flex flex-col w-full gap-4">
         <Button
           className="absolute right-2 top-2"

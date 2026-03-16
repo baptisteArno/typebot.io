@@ -5,6 +5,6 @@ export const setLocaleInCookies = async (locale: string) => {
     name: "NEXT_LOCALE",
     value: encodeURIComponent(locale),
     path: "/",
-    expires: new Date(Date.now() + 31_536_000_000),
+    expires: Date.now() + 31_536_000_000,
   });
 };

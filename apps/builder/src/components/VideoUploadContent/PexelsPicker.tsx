@@ -224,14 +224,12 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
   }, [isImageHovered, imageIndex, video_pictures]);
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setIsImageHovered(true)}
-      onMouseLeave={() => setIsImageHovered(false)}
-    >
+    <div className="group relative">
       <button
         type="button"
         className="size-full rounded-md cursor-pointer p-0 border-none bg-transparent"
+        onMouseEnter={() => setIsImageHovered(true)}
+        onMouseLeave={() => setIsImageHovered(false)}
         onClick={onClick}
       >
         <img
@@ -243,12 +241,7 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
           alt={`Pexels Video ${video.id}`}
         />
       </button>
-      <div
-        className={cx(
-          "absolute px-2 rounded-md bottom-0 left-0 bg-black/50 opacity-0 transition-opacity",
-          isImageHovered ? "opacity-100" : "opacity-0",
-        )}
-      >
+      <div className="absolute px-2 rounded-md bottom-0 left-0 bg-black/50 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
         <TextLink className="text-xs text-white" isExternal href={url}>
           {user.name}
         </TextLink>

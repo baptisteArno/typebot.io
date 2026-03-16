@@ -201,7 +201,6 @@ export const FolderContent = ({ folder }: Props) => {
         <Portal>
           <TypebotButtonOverlay
             typebot={draggedTypebot}
-            onMouseUp={handleMouseUp}
             className="fixed top-0 left-0 origin-[0_0_0]"
             style={{
               transform: `translate(${draggablePosition.x}px, ${draggablePosition.y}px) rotate(-2deg)`,

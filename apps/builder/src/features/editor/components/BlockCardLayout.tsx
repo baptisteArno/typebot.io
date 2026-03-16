@@ -32,7 +32,8 @@ export const BlockCardLayout = ({
       <Tooltip.Trigger
         render={
           <div className="flex relative">
-            <div
+            <button
+              type="button"
               className={cx(
                 "flex items-center gap-2 border dark:border-gray-3 rounded-lg flex-1 px-4 py-2 cursor-grab bg-gray-2 hover:shadow-md dark:hover:bg-gray-3 dark:hover:shadow-none transition-[box-shadow,background-color]",
                 isMouseDown ? "opacity-40 min-h-[42px]" : "opacity-100",
@@ -40,7 +41,7 @@ export const BlockCardLayout = ({
               onMouseDown={handleMouseDown}
             >
               {!isMouseDown ? children : null}
-            </div>
+            </button>
           </div>
         }
       />

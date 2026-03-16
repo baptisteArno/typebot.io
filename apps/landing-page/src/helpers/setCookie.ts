@@ -11,6 +11,6 @@ export const setCookie = async (consent: "declined" | "accepted") => {
     value: encodeURIComponent(JSON.stringify({ consent })),
     domain: DEFAULT_COOKIE_DOMAIN,
     path: "/",
-    expires: new Date(Date.now() + COOKIE_EXPIRATION * 1000),
+    expires: Date.now() + COOKIE_EXPIRATION * 1000,
   });
 };

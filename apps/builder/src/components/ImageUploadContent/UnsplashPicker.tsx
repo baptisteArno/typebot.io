@@ -179,16 +179,10 @@ type UnsplashImageProps = {
 };
 
 const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
-  const [isImageHovered, setIsImageHovered] = useState(false);
-
   const { user, urls, alt_description } = image;
 
   return (
-    <div
-      className="relative h-full"
-      onMouseEnter={() => setIsImageHovered(true)}
-      onMouseLeave={() => setIsImageHovered(false)}
-    >
+    <div className="group relative h-full">
       <button
         type="button"
         className="size-full rounded-md cursor-pointer p-0 border-none bg-transparent"
@@ -202,8 +196,7 @@ const UnsplashImage = ({ image, onClick }: UnsplashImageProps) => {
       </button>
       <div
         className={cx(
-          "absolute px-2 rounded-md bottom-0 left-0 bg-black/50 opacity-0 transition-opacity duration-200",
-          isImageHovered ? "opacity-100" : "opacity-0",
+          "absolute px-2 rounded-md bottom-0 left-0 bg-black/50 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100",
         )}
       >
         <TextLink

@@ -143,21 +143,7 @@ Workspaces cibles:
 
 Pourquoi: demande souvent un vrai choix de markup ou de composition de composant, surtout quand il y a des boutons imbriques.
 
-### PR 3C - politique image par workspace
-
-Isoler la regle image dans une PR dediee:
-
-- `performance/noImgElement`
-
-Workspaces cibles:
-
-- `apps/landing-page`
-- autres apps Next si necessaire
-- `packages/embeds/js` a traiter a part ou a exclure selon la politique retenue
-
-Pourquoi: la regle pousse naturellement vers `next/image`, mais ce n'est pas adapte tel quel a tous les workspaces du monorepo.
-
-### PR 3D - nettoyage boucles / callbacks / mutation de parametres
+### PR 3C - nettoyage boucles / callbacks / mutation de parametres
 
 Regrouper les refactors surtout mecaniques et peu lies a React:
 
@@ -172,7 +158,7 @@ Workspaces cibles:
 
 Pourquoi: diff assez reviewable si isole, risque produit faible a moyen, et bon rendement sur du code de support.
 
-### PR 3E - durcissement de typage
+### PR 3D - durcissement de typage
 
 Traiter ensuite les raccourcis de typage les plus bruyants:
 
@@ -186,7 +172,7 @@ Workspaces cibles:
 
 Pourquoi: risque plus eleve sur les contrats de types partages; mieux vaut ne pas melanger ca avec les changements UI ou hooks.
 
-### PR 3F - correction des hooks React
+### PR 3E - correction des hooks React
 
 Finir par les regles les plus semantiques cote React:
 

@@ -155,48 +155,33 @@ export const DropOffEdge = ({
         <Tooltip.Root>
           <Tooltip.Trigger
             render={
-              <div
-                className={cx(
-                  "flex flex-col items-center rounded-md p-2 justify-center w-full h-full gap-0.5 bg-red-9 text-white",
-                  isWorkspaceProPlan ? "cursor-auto" : "cursor-pointer",
-                )}
-                data-testid={`dropoff-edge-${blockId}`}
-                role={isWorkspaceProPlan ? undefined : "button"}
-                tabIndex={isWorkspaceProPlan ? undefined : 0}
-                onClick={isWorkspaceProPlan ? undefined : onUnlockProPlanClick}
-                onKeyDown={(event) => {
-                  if (
-                    isWorkspaceProPlan ||
-                    !onUnlockProPlanClick ||
-                    (event.key !== "Enter" && event.key !== " ")
-                  )
-                    return;
-                  event.preventDefault();
-                  onUnlockProPlanClick();
-                }}
-              >
-                <p
-                  className={cx(
-                    "text-sm",
-                    isWorkspaceProPlan ? undefined : "blur-[2px]",
-                  )}
+              isWorkspaceProPlan ? (
+                <div
+                  className="flex flex-col items-center rounded-md p-2 justify-center w-full h-full gap-0.5 bg-red-9 text-white"
+                  data-testid={`dropoff-edge-${blockId}`}
                 >
-                  {isWorkspaceProPlan ? (
-                    dropOffRate
-                  ) : (
-                    <span className="blur-[2px]">X</span>
-                  )}
-                  %
-                </p>
-                <Badge colorScheme="red">
-                  {isWorkspaceProPlan ? (
-                    totalDroppedUser
-                  ) : (
-                    <span className="mr-1 blur-[3px]">NN</span>
-                  )}{" "}
-                  user{(totalDroppedUser ?? 2) > 1 ? "s" : ""}
-                </Badge>
-              </div>
+                  <span className="text-sm">{dropOffRate}%</span>
+                  <Badge colorScheme="red">
+                    {totalDroppedUser} user
+                    {(totalDroppedUser ?? 2) > 1 ? "s" : ""}
+                  </Badge>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  className="flex flex-col items-center rounded-md p-2 justify-center w-full h-full gap-0.5 bg-red-9 text-white cursor-pointer"
+                  data-testid={`dropoff-edge-${blockId}`}
+                  onClick={onUnlockProPlanClick}
+                >
+                  <span className={cx("text-sm", "blur-[2px]")}>
+                    <span className="blur-[2px]">X</span>%
+                  </span>
+                  <Badge colorScheme="red">
+                    <span className="mr-1 blur-[3px]">NN</span> user
+                    {(totalDroppedUser ?? 2) > 1 ? "s" : ""}
+                  </Badge>
+                </button>
+              )
             }
           />
           <Tooltip.Popup>

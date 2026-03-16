@@ -81,9 +81,6 @@ export const TagsInput = ({ items, placeholder, onValueChange }: Props) => {
   return (
     <div
       className="flex flex-wrap gap-1 border py-1 px-2 rounded-md data-[focus=true]:outline-none data-[focus=true]:ring-orange-8 data-[focus=true]:ring-2 data-[focus=true]:border-transparent transition-[box-shadow,border-color]"
-      onClick={() => inputRef.current?.focus()}
-      onBlur={addItem}
-      onKeyDown={handleKeyDown}
       data-focus={isFocused}
     >
       {items?.map((item, index) => (
@@ -101,8 +98,12 @@ export const TagsInput = ({ items, placeholder, onValueChange }: Props) => {
         value={inputValue}
         onValueChange={handleInputChange}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onBlur={() => {
+          setIsFocused(false);
+          addItem();
+        }}
         onKeyDown={(e) => {
+          handleKeyDown(e);
           if (e.key === "Enter") addItem();
         }}
         placeholder={items && items.length === 0 ? placeholder : undefined}
