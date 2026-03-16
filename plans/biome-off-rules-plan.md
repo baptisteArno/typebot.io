@@ -73,7 +73,7 @@ Objectif: supprimer progressivement les rules en `off` dans `biome.json` avec un
 - `style/noNonNullAssertion` - interdit les `!` TypeScript - `76 diags`, `unsafe`
 - `suspicious/noExplicitAny` - interdit `any` - `170 diags`, `manual`
 
-## Plan recommande en 3 PRs
+## Plan recommande
 
 ### PR 1
 
@@ -115,26 +115,104 @@ Activer les regles mecaniques avec auto-fix ou refactor simple:
 
 Pourquoi: diff plus gros, mais encore assez reviewable et souvent automatisable.
 
-### PR 3
+### PR 3A - cookies navigateur + ids uniques
 
-Garder les regles semantiques ou potentiellement bruyantes pour la fin:
+Commencer la fin de migration par les corrections les plus bornees:
+
+- `suspicious/noDocumentCookie`
+- `correctness/useUniqueElementIds`
+
+Workspaces cibles:
+
+- `apps/landing-page`
+- `apps/builder`
+
+Pourquoi: faible blast radius, pattern de correction deja present dans le repo, tres bon candidat pour une petite PR rapide.
+
+### PR 3B - semantique interactive / accessibilite
+
+Traiter ensuite les elements statiques rendus interactifs:
 
 - `a11y/noStaticElementInteractions`
-- `performance/noImgElement`
-- `style/noParameterAssign`
-- `style/noNonNullAssertion`
-- `correctness/useExhaustiveDependencies`
-- `correctness/useUniqueElementIds`
-- `correctness/useHookAtTopLevel`
-- `complexity/noForEach`
-- `suspicious/noExplicitAny`
-- `suspicious/useIterableCallbackReturn`
-- `suspicious/noDocumentCookie`
 
-Pourquoi: forte valeur long terme, mais ce sont celles qui risquent le plus de demander des choix d'architecture ou des corrections manuelles.
+Workspaces cibles:
+
+- `apps/builder`
+- `apps/landing-page`
+- `packages/embeds/js`
+
+Pourquoi: demande souvent un vrai choix de markup ou de composition de composant, surtout quand il y a des boutons imbriques.
+
+### PR 3C - politique image par workspace
+
+Isoler la regle image dans une PR dediee:
+
+- `performance/noImgElement`
+
+Workspaces cibles:
+
+- `apps/landing-page`
+- autres apps Next si necessaire
+- `packages/embeds/js` a traiter a part ou a exclure selon la politique retenue
+
+Pourquoi: la regle pousse naturellement vers `next/image`, mais ce n'est pas adapte tel quel a tous les workspaces du monorepo.
+
+### PR 3D - nettoyage boucles / callbacks / mutation de parametres
+
+Regrouper les refactors surtout mecaniques et peu lies a React:
+
+- `complexity/noForEach`
+- `suspicious/useIterableCallbackReturn`
+- `style/noParameterAssign`
+
+Workspaces cibles:
+
+- `packages/*`
+- helpers/actions de `apps/builder`
+
+Pourquoi: diff assez reviewable si isole, risque produit faible a moyen, et bon rendement sur du code de support.
+
+### PR 3E - durcissement de typage
+
+Traiter ensuite les raccourcis de typage les plus bruyants:
+
+- `style/noNonNullAssertion`
+- `suspicious/noExplicitAny`
+
+Workspaces cibles:
+
+- d'abord `packages/*`
+- puis `apps/builder`
+
+Pourquoi: risque plus eleve sur les contrats de types partages; mieux vaut ne pas melanger ca avec les changements UI ou hooks.
+
+### PR 3F - correction des hooks React
+
+Finir par les regles les plus semantiques cote React:
+
+- `correctness/useExhaustiveDependencies`
+- `correctness/useHookAtTopLevel`
+
+Workspaces cibles:
+
+- `apps/builder`
+
+Pourquoi: c'est la partie la plus sensible fonctionnellement car elle peut changer le timing d'initialisation, d'auto-save et de synchronisation d'etat.
 
 ## Ordre d'execution propose
 
 1. Faire la PR 1 tout de suite.
 2. Faire la PR 2 avec `bunx biome lint . --write --unsafe --only=...` par petits lots.
-3. Faire la PR 3 par workspace, en finissant par `suspicious/noExplicitAny`.
+3. Faire la PR 3A pour eliminer rapidement les cas les plus simples et locaux.
+4. Faire la PR 3B separement pour laisser la review se concentrer sur la semantique HTML et l'accessibilite.
+5. Faire la PR 3C apres avoir decide la politique `noImgElement` par workspace.
+6. Faire la PR 3D sur les packages et helpers avec une approche mecanique.
+7. Faire la PR 3E en commencant par les packages partages avant `apps/builder`.
+8. Faire la PR 3F en dernier, avec verification manuelle des comportements React critiques.
+
+## Resume de priorisation pour PR 3
+
+- ne pas melanger UI semantique, politique framework (`next/image`), typage partage et hooks React dans la meme PR
+- commencer par les changements locaux avec pattern clair
+- garder les hooks React et `noExplicitAny` pour la fin
+- preferer une lecture par famille de risque plutot qu'une seule grosse PR finale
