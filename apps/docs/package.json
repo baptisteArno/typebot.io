@@ -2,13 +2,13 @@
   "name": "docs",
   "private": true,
   "devDependencies": {
-    "mintlify": "4.0.228",
+    "mintlify": "4.2.435",
     "tsx": "^4.19.1",
     "dotenv-cli": "^8.0.0"
   },
   "nx": {
     "targets": {
-      "mintlify:dev": {
+      "dev": {
         "executor": "nx:run-commands",
         "options": {
           "cwd": "apps/docs",
