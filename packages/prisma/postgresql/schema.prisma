@@ -112,10 +112,6 @@ model Workspace {
   lastActivityAt                DateTime?
   inactiveFirstEmailSentAt      DateTime?
   inactiveSecondEmailSentAt     DateTime?
-  spaces                        Space[]
-  contacts                      Contact[]
-  segments                      Segment[]
-  contactPropertyDefinitions    ContactPropertyDefinition[]
 }
 
 model MemberInWorkspace {
@@ -222,9 +218,6 @@ model Typebot {
   whatsAppCredentialsId   String?
   riskLevel               Int?
   bannedIps               BannedIp[]
-  space                   Space?                    @relation(fields: [spaceId], references: [id])
-  spaceId                 String?
-  campaigns               Campaign[]
 
   @@index([workspaceId])
   @@index([isArchived, createdAt(sort: Desc)])
@@ -441,136 +434,6 @@ model SuppressedEmail {
   transientGeneralBounceCount Int       @default(0)
   suppressedAt                DateTime?
   lastWebhookId               String?
-}
-
-model Space {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  name      String
-  icon      String?
-
-  workspaceId                String
-  workspace                  Workspace                   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  typebots                   Typebot[]
-  contacts                   Contact[]
-  segments                   Segment[]
-  contactPropertyDefinitions ContactPropertyDefinition[]
-
-  @@unique([id, workspaceId])
-}
-
-model Contact {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  name      String?
-
-  workspaceId String
-  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  spaceId     String?
-  space       Space?    @relation(fields: [spaceId], references: [id])
-
-  properties ContactProperty[]
-  segments   ContactsInSegments[]
-}
-
-model ContactPropertyDefinition {
-  id       Int                 @id @default(autoincrement())
-  key      String
-  type     ContactPropertyType
-  isUnique Boolean             @default(false)
-
-  workspaceId String
-  workspace   Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  spaceId     String?
-  space       Space?            @relation(fields: [spaceId], references: [id])
-  properties  ContactProperty[]
-
-  @@unique([workspaceId, spaceId, key])
-}
-
-enum ContactPropertyType {
-  STRING
-  NUMBER
-  EMAIL
-  PHONE
-  URL
-  IMAGE_URL
-}
-
-model ContactProperty {
-  valueString String?
-  valueNumber Float?
-
-  contactId    String
-  contact      Contact                   @relation(fields: [contactId], references: [id], onDelete: Cascade)
-  definitionId Int
-  definition   ContactPropertyDefinition @relation(fields: [definitionId], references: [id], onDelete: Cascade)
-
-  @@id([contactId, definitionId])
-}
-
-model Segment {
-  id   String @id @default(cuid())
-  name String
-
-  workspaceId String
-  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  spaceId     String?
-  space       Space?    @relation(fields: [spaceId], references: [id])
-
-  contacts  ContactsInSegments[]
-  campaigns Campaign[]
-
-  @@unique([workspaceId, name])
-}
-
-model ContactsInSegments {
-  contactId  String
-  segmentId  String
-  assignedAt DateTime @default(now())
-
-  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
-  segment Segment @relation(fields: [segmentId], references: [id], onDelete: Cascade)
-
-  @@id([segmentId, contactId])
-  @@index([contactId, segmentId])
-}
-
-model Campaign {
-  id        String          @id @default(cuid())
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @default(now()) @updatedAt
-  name      String
-  status    CampaignStatus
-  channel   CampaignChannel
-
-  recipientSegmentId String?
-  recipientSegment   Segment? @relation(fields: [recipientSegmentId], references: [id])
-  typebotId          String
-  typebot            Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
-
-  whatsAppConfig WhatsAppCampaignConfig?
-}
-
-model WhatsAppCampaignConfig {
-  campaignId String   @id
-  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-
-  templateId String?
-}
-
-enum CampaignChannel {
-  WHATSAPP
-}
-
-enum CampaignStatus {
-  DRAFT
-  SCHEDULED
-  RUNNING
-  COMPLETED
-  FAILED
 }
 
 enum WorkspaceRole {

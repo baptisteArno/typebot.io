@@ -223,18 +223,6 @@
       "path": "./apps/workflows"
     },
     {
-      "path": "./packages/contacts"
-    },
-    {
-      "path": "./packages/spaces"
-    },
-    {
-      "path": "./packages/campaigns"
-    },
-    {
-      "path": "./packages/segments"
-    },
-    {
       "path": "./packages/shared-core"
     },
     {

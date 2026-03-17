@@ -29,7 +29,6 @@ export const parseTestTypebot = (
   resultsTablePreferences: null,
   whatsAppCredentialsId: null,
   riskLevel: null,
-  spaceId: null,
   events: [
     {
       id: "event1",

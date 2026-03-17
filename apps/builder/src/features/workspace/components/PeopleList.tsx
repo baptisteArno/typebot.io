@@ -1,17 +1,12 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { getSeatsLimit } from "@typebot.io/billing/helpers/getSeatsLimit";
 import { WorkspaceRole } from "@typebot.io/prisma/enum";
-import { EmptySpacesListForm } from "@typebot.io/spaces/react/EmptySpacesListForm";
-import { SpacesIcon } from "@typebot.io/spaces/react/SpacesIcon";
-import { SpacesList } from "@typebot.io/spaces/react/SpacesList";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Skeleton } from "@typebot.io/ui/components/Skeleton";
-import { Tabs } from "@typebot.io/ui/components/Tabs";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
-import { UsersIcon } from "@typebot.io/ui/icons/UsersIcon";
 import { ChangePlanDialog } from "@/features/billing/components/ChangePlanDialog";
 import { useUser } from "@/features/user/hooks/useUser";
 import { orpc } from "@/lib/queryClient";
@@ -21,66 +16,7 @@ import { AddMemberForm } from "./AddMemberForm";
 import { MemberItem } from "./MemberItem";
 
 export const PeopleList = () => {
-  const { membersCount, seatsLimit } = useSeatsLimit();
-
-  return (
-    <Tabs.Root defaultValue="members" className="flex-1 gap-6">
-      <Tabs.List>
-        <Tabs.Tab value="members">
-          <UsersIcon />
-          Members {seatsLimit === -1 ? "" : `(${membersCount}/${seatsLimit})`}
-        </Tabs.Tab>
-        <Tabs.Tab value="spaces">
-          <SpacesIcon />
-          Spaces
-        </Tabs.Tab>
-      </Tabs.List>
-      <Tabs.Panel value="members">
-        <MembersList />
-      </Tabs.Panel>
-      <Tabs.Panel value="spaces">
-        <SpacesTabContent />
-      </Tabs.Panel>
-    </Tabs.Root>
-  );
-};
-
-const SpacesTabContent = () => {
-  const queryClient = useQueryClient();
-  const { workspace } = useWorkspace();
-  const { data } = useQuery(
-    orpc.spaces.list.queryOptions({
-      input: {
-        workspaceId: workspace?.id ?? "",
-      },
-      enabled: !!workspace?.id,
-    }),
-  );
-  const { mutateAsync: createSpace } = useMutation(
-    orpc.spaces.create.mutationOptions({
-      onSuccess: (_data, variables) => {
-        queryClient.invalidateQueries({
-          queryKey: orpc.spaces.list.key({
-            input: { workspaceId: variables.workspaceId },
-          }),
-        });
-      },
-    }),
-  );
-  if (!data) return null;
-  if (data.spaces.length === 0)
-    return (
-      <EmptySpacesListForm
-        onCreateSubmit={async (input) => {
-          if (!workspace?.id) return;
-          await createSpace({
-            workspaceId: workspace.id,
-            name: input.name,
-          });
-        }}
-      />
-    );
-  return <SpacesList spaces={data.spaces} />;
+  return <MembersList />;
 };
 
 const MembersList = () => {

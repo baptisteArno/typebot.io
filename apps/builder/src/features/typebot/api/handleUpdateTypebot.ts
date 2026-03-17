@@ -39,7 +39,6 @@ const typebotUpdateSchemaPick = {
   riskLevel: true,
   events: true,
   updatedAt: true,
-  spaceId: true,
 } as const;
 
 export const updateTypebotInputSchema = z.object({
@@ -170,7 +169,6 @@ export const handleUpdateTypebot = async ({
             "update",
           )
         : undefined,
-      spaceId: typebot.spaceId,
       folderId: typebot.folderId,
       variables:
         typebot.variables && groups

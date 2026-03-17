@@ -287,7 +287,6 @@ export const BlockNode = ({
         )}
       />
       {/* Prevent triggering parent group context menu */}
-      {/* biome-ignore lint/a11y/noNoninteractiveElementInteractions: This wrapper only stops context-menu propagation for nested popovers. */}
       {/* biome-ignore lint/a11y/noStaticElementInteractions: This wrapper only stops context-menu propagation for nested popovers. */}
       <div onContextMenu={(e) => e.stopPropagation()}>
         {hasSettingsPopover(block) && (

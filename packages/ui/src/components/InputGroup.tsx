@@ -46,6 +46,7 @@ function Addon({
 }: React.ComponentProps<"div"> & VariantProps<typeof inputGroupAddonVariants>) {
   return (
     // biome-ignore lint/a11y/useKeyWithClickEvents: not necessary as it's siblings to the input which is accessible.
+    // biome-ignore lint/a11y/noStaticElementInteractions: This is a static element that is interactive.
     <div
       data-slot="input-group-addon"
       data-align={align}

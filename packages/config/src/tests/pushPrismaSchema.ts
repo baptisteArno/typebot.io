@@ -39,8 +39,6 @@ export const pushPrismaSchema = Effect.fn("pushPrismaSchema")(function* (
       }),
   });
 
-  yield* Effect.log(output);
-
   if (output.toLowerCase().includes("error"))
     return yield* new DbPushCommandError({
       output,

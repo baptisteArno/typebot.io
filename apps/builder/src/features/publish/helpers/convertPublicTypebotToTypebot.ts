@@ -30,6 +30,5 @@ export const convertPublicTypebotToTypebot = (
     whatsAppCredentialsId: existingTypebot.whatsAppCredentialsId,
     riskLevel: existingTypebot.riskLevel,
     events: typebot.events,
-    spaceId: existingTypebot.spaceId,
   };
 };

@@ -1,14 +1,15 @@
-import { defineProject } from "vitest/config";
+import { defineConfig } from "vitest/config";
 
-export default defineProject(() => ({
+export default defineConfig(() => ({
   root: __dirname,
-  cacheDir: "../../node_modules/.vite/packages/spaces",
+  cacheDir: "../../node_modules/.vite/packages/whatsapp",
   test: {
-    name: "@typebot.io/spaces",
+    name: "@typebot.io/whatsapp",
     watch: false,
     globals: true,
     environment: "node",
     include: ["{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    setupFiles: ["./vitest.setup.ts"],
     reporters: ["default"],
     coverage: {
       reportsDirectory: "./test-output/vitest/coverage",

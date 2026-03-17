@@ -90,35 +90,6 @@ export const seedDatabaseForTest = Effect.gen(function* () {
     },
   });
 
-  const emailPropertyDef = yield* prisma.contactPropertyDefinition.create({
-    data: {
-      key: "email",
-      type: "EMAIL",
-      isUnique: true,
-      workspaceId: proWorkspaceId,
-    },
-  });
-
-  const contactCount = 75;
-  yield* Effect.forEach(
-    Array.from({ length: contactCount }, (_, i) => i + 1),
-    (index) =>
-      prisma.contact.create({
-        data: {
-          workspaceId: proWorkspaceId,
-          name: `Contact ${index}`,
-          properties: {
-            create: {
-              definitionId: emailPropertyDef.id,
-              valueString: `contact-${index}@test.local`,
-              valueNumber: null,
-            },
-          },
-        },
-      }),
-    { concurrency: 1 },
-  );
-
   return {
     userId,
     workspaceId: proWorkspaceId,

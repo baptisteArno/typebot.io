@@ -342,24 +342,13 @@ const TypebotNav = ({
         {t("share.button.label")}
       </ButtonLink>
       {isResultsDisplayed && (
-        <>
-          <ButtonLink
-            href={`/typebots/${typebotId}/results`}
-            variant={router.pathname.includes("results") ? "outline" : "ghost"}
-            size="sm"
-          >
-            {t("editor.header.resultsButton.label")}
-          </ButtonLink>
-          <ButtonLink
-            href={`/typebots/${typebotId}/campaigns`}
-            variant={
-              router.pathname.includes("campaigns") ? "outline" : "ghost"
-            }
-            size="sm"
-          >
-            {t("editor.header.campaignsButton.label")}
-          </ButtonLink>
-        </>
+        <ButtonLink
+          href={`/typebots/${typebotId}/results`}
+          variant={router.pathname.includes("results") ? "outline" : "ghost"}
+          size="sm"
+        >
+          {t("editor.header.resultsButton.label")}
+        </ButtonLink>
       )}
     </div>
   );

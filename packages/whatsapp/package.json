@@ -11,8 +11,20 @@
     },
     "./package.json": "./package.json"
   },
-  "scripts": {
-    "test": "bun test"
+  "nx": {
+    "targets": {
+      "test": {
+        "executor": "@nx/vitest:test",
+        "outputs": [
+          "{options.reportsDirectory}"
+        ],
+        "options": {
+          "configFile": "{projectRoot}/vitest.config.mts",
+          "project": "@typebot.io/whatsapp",
+          "reportsDirectory": "../../coverage/packages/whatsapp"
+        }
+      }
+    }
   },
   "dependencies": {
     "@typebot.io/blocks-core": "workspace:*",
@@ -38,7 +50,7 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@types/bun": "^1.3.9",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.0.18"
   }
 }

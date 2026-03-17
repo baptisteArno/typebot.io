@@ -189,12 +189,7 @@ export const WorkspaceProvider = ({
   const switchWorkspace = (newWorkspaceId: string) => {
     setWorkspaceIdInLocalStorage(newWorkspaceId);
     setWorkspaceId(newWorkspaceId);
-    const isOnContactsRoute = pathname.includes("/contacts");
-    replace(
-      isOnContactsRoute
-        ? `/w/${newWorkspaceId}/contacts`
-        : `/w/${newWorkspaceId}/typebots`,
-    );
+    replace(`/w/${newWorkspaceId}/typebots`);
   };
 
   const createWorkspace = async (userFullName?: string) => {

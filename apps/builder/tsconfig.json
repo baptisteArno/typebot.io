@@ -55,9 +55,6 @@
       "path": "../../packages/rich-text"
     },
     {
-      "path": "../../packages/spaces"
-    },
-    {
       "path": "../../packages/blocks/fileInput"
     },
     {
@@ -112,16 +109,7 @@
       "path": "../../packages/conditions"
     },
     {
-      "path": "../../packages/segments"
-    },
-    {
       "path": "../../packages/shared-core"
-    },
-    {
-      "path": "../../packages/contacts"
-    },
-    {
-      "path": "../../packages/campaigns"
     },
     {
       "path": "../../packages/chat-session"
