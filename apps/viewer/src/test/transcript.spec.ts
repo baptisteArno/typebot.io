@@ -24,38 +24,12 @@ test("Transcript set variable should be correctly computed", async ({
   await page.getByPlaceholder("Type your answer...").fill("hey 3");
   await page.getByLabel("Send").click();
   await expect(
-    page.getByTestId("guest-bubble").getByText("hey 3"),
-  ).toBeVisible();
-  await expect(
-    page.getByText('Assistant: "How are you? You said "'),
-  ).toBeVisible();
-  await expect(
-    page.getByText('Assistant: "How are you? You said hey"'),
-  ).toBeVisible();
-  await expect(
-    page.getByText('Assistant: "How are you? You said hey 2"'),
-  ).toBeVisible();
-  await expect(
-    page.getByText('Assistant: "Let me think..."', { exact: true }).nth(0),
-  ).toBeVisible();
-  await expect(
-    page.getByText('Assistant: "Let me think..."', { exact: true }).nth(1),
-  ).toBeVisible();
-  await expect(
-    page.getByText('Assistant: "Let me think..."', { exact: true }).nth(2),
-  ).toBeVisible();
-  await expect(
-    page.getByText('Assistant: "How are you? You said "', { exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByText('Assistant: "How are you? You said hey"', { exact: true }),
-  ).toBeVisible();
-  await expect(
-    page.getByText('Assistant: "How are you? You said hey 2"', { exact: true }),
-  ).toBeVisible();
-  await expect(page.getByText('User: "hey"', { exact: true })).toBeVisible();
-  await expect(page.getByText('User: "hey 2"', { exact: true })).toBeVisible();
-  await expect(page.getByText('User: "hey 3"', { exact: true })).toBeVisible();
+    page.getByText(
+      'Assistant: "Let me think..."Assistant: "How are you? You said "User: "hey"',
+    ),
+  ).toHaveText(
+    'Assistant: "Let me think..."Assistant: "How are you? You said "User: "hey"Assistant: "Let me think..."Assistant: "How are you? You said hey"User: "hey 2"Assistant: "Let me think..."Assistant: "How are you? You said hey 2"User: "hey 3"',
+  );
 });
 
 test("Transcript set variable should work in loop example", async ({

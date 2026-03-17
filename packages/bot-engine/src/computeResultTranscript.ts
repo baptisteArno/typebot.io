@@ -197,13 +197,7 @@ const executeGroup = ({
   const { answers, setVariableHistory, visitedEdges } = queues;
 
   for (const block of nextGroup.group.blocks.slice(nextGroup.blockIndex ?? 0)) {
-    if (
-      currentBlockId &&
-      block.id === currentBlockId &&
-      !answers.peek() &&
-      !setVariableHistory.peek() &&
-      !visitedEdges.peek()
-    )
+    if (currentBlockId && block.id === currentBlockId && !answers.peek())
       return currentTranscript;
 
     const typebot = typebotsQueue[0]?.typebot;
@@ -218,6 +212,7 @@ const executeGroup = ({
     }
 
     let nextEdgeId = block.outgoingEdgeId;
+    let nextReturnEdgeId = returnEdgeId;
 
     // ──────────────────────────────────────────────────────────── Bubble blocks
     if (isBubbleBlock(block)) {
@@ -406,6 +401,25 @@ const executeGroup = ({
           blockId: block.options.blockId,
         },
       });
+      const currentBlockIndex = nextGroup.group.blocks.findIndex(
+        (b) => b.id === block.id,
+      );
+      const nextBlockInGroup = nextGroup.group.blocks.at(currentBlockIndex + 1);
+      if (nextBlockInGroup) {
+        const returnVirtualEdgeId = createVirtualEdgeId({
+          groupId: nextGroup.group.id,
+          blockId: nextBlockInGroup.id,
+        });
+        typebotsQueue[0].typebot.edges.push({
+          id: returnVirtualEdgeId,
+          from: { blockId: block.id },
+          to: {
+            groupId: nextGroup.group.id,
+            blockId: nextBlockInGroup.id,
+          },
+        });
+        nextReturnEdgeId = returnVirtualEdgeId;
+      }
       nextEdgeId = virtualId;
     } else if (block.type === LogicBlockType.RETURN && returnEdgeId) {
       nextEdgeId = returnEdgeId;
@@ -473,7 +487,7 @@ const executeGroup = ({
           currentBlockId,
           sessionStore,
           userMessageIndex,
-          returnEdgeId,
+          returnEdgeId: nextReturnEdgeId,
           debug,
         });
       }
