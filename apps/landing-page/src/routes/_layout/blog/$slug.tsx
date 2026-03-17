@@ -3,7 +3,6 @@ import { cx } from "@typebot.io/ui/lib/cva";
 import codeSnippetsCssUrl from "@/assets/code-snippet.css?url";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { TextLink } from "@/components/link";
-import { allPosts } from "@/content-collections";
 import { Mdx } from "@/features/blog/components/mdx";
 import { authors } from "@/features/blog/data/authors";
 import { formatDate } from "@/features/blog/helpers";
@@ -11,6 +10,7 @@ import { createMetaTags } from "@/lib/createMetaTags";
 
 export const Route = createFileRoute("/_layout/blog/$slug")({
   loader: async ({ params }) => {
+    const { allPosts } = await import("@/content-collections");
     const post = allPosts.find((post) => post._meta.path.endsWith(params.slug));
 
     if (!post) {

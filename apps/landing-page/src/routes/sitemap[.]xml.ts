@@ -1,12 +1,17 @@
 import { createServerFileRoute } from "@tanstack/react-start/server";
 import { templates } from "@typebot.io/templates";
 import { currentBaseUrl } from "@/constants";
-import { allPosts } from "@/content-collections";
 
 type SitemapUrlEntry = {
   loc: string;
   lastmod: string;
 };
+
+const templatesIndexLastmod = templates.reduce(
+  (latest, template) =>
+    template.updatedAt > latest ? template.updatedAt : latest,
+  "2026-01-05",
+);
 
 function generateSitemapXml(entries: SitemapUrlEntry[]) {
   const urls = entries
@@ -18,8 +23,35 @@ function generateSitemapXml(entries: SitemapUrlEntry[]) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}\n</urlset>`;
 }
 
+function transformPathToSitemapUrlEntry(
+  path: string,
+  allPosts: Array<{
+    _meta: { path: string };
+    updatedAt?: string;
+    postedAt?: string;
+    title?: string;
+  }>,
+) {
+  const post = allPosts.find((p) => p._meta.path === path);
+  const lastmod = post?.updatedAt
+    ? new Date(post.updatedAt).toISOString().split("T")[0]
+    : post?.postedAt
+      ? new Date(post.postedAt).toISOString().split("T")[0]
+      : undefined;
+  if (!lastmod)
+    throw new Error(
+      `Content file ${post?.title} needs either postedAt or updatedAt to generate coherent sitemap`,
+    );
+  return {
+    loc: `${currentBaseUrl}/${path}`.replace(/\/+$|(?<!:)\/\//g, "/"),
+    lastmod,
+  } satisfies SitemapUrlEntry;
+}
+
 export const ServerRoute = createServerFileRoute("/sitemap.xml").methods({
   GET: async () => {
+    const { allPosts } = await import("@/content-collections");
+
     const staticEntries = [
       { loc: `${currentBaseUrl}/`, lastmod: "2025-07-05" },
       { loc: `${currentBaseUrl}/pricing`, lastmod: "2025-07-05" },
@@ -34,21 +66,18 @@ export const ServerRoute = createServerFileRoute("/sitemap.xml").methods({
       lastmod: template.updatedAt,
     }));
 
-    const contentEntries: SitemapUrlEntry[] = Array.from(
-      new Set(allPosts.map((p) => p._meta.path)),
-    )
+    const contentPaths = Array.from(new Set(allPosts.map((p) => p._meta.path)));
+    const contentEntries: SitemapUrlEntry[] = contentPaths
       .filter(
         (p) => typeof p === "string" && p.length > 0 && !p.includes("blog"),
       )
-      .map(transformPathToSitemapUrlEntry);
+      .map((path) => transformPathToSitemapUrlEntry(path, allPosts));
 
-    const blogContentEntries: SitemapUrlEntry[] = Array.from(
-      new Set(allPosts.map((p) => p._meta.path)),
-    )
+    const blogContentEntries: SitemapUrlEntry[] = contentPaths
       .filter(
         (p) => typeof p === "string" && p.length > 0 && p.includes("blog"),
       )
-      .map(transformPathToSitemapUrlEntry)
+      .map((path) => transformPathToSitemapUrlEntry(path, allPosts))
       .sort(
         (a, b) => new Date(b.lastmod).getTime() - new Date(a.lastmod).getTime(),
       );
@@ -68,26 +97,3 @@ export const ServerRoute = createServerFileRoute("/sitemap.xml").methods({
     });
   },
 });
-
-const templatesIndexLastmod = templates.reduce(
-  (latest, template) =>
-    template.updatedAt > latest ? template.updatedAt : latest,
-  "2026-01-05",
-);
-
-const transformPathToSitemapUrlEntry = (path: string) => {
-  const post = allPosts.find((p) => p._meta.path === path);
-  const lastmod = post?.updatedAt
-    ? new Date(post.updatedAt).toISOString().split("T")[0]
-    : post?.postedAt
-      ? new Date(post.postedAt).toISOString().split("T")[0]
-      : undefined;
-  if (!lastmod)
-    throw new Error(
-      `Content file ${post?.title} needs either postedAt or updatedAt to generate coherent sitemap`,
-    );
-  return {
-    loc: `${currentBaseUrl}/${path}`.replace(/\/+$|(?<!:)\/\//g, "/"),
-    lastmod,
-  } satisfies SitemapUrlEntry;
-};
