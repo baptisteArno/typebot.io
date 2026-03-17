@@ -30,14 +30,15 @@ Building a WhatsApp AI Agent might sound daunting. However, tools like **Typebot
 Here's how these tools can help:
 
 - **Typebot**: It's an [open-source](./open-source-chatbots.mdx) no-code platform. It allows you to design conversational interfaces with a drag-and-drop builder. It supports multi-platform deployment, including WhatsApp. It also offers features like API integrations, conditional logic, and advanced theming to match your brand identity.
-
 - [Flowise](./flowise-alternatives.mdx): This is a backend tool built on LangChain. It enables you to create Retrieval-Augmented Generation (RAG) workflows. It also integrates function-calling capabilities. It connects to [knowledge bases](./build-ai-chatbot-with-custom-knowledge-base.mdx), vector databases, and APIs. This makes it ideal for building intelligent, task-oriented agents.
 
-**By combining Typebot’s user-friendly interface with Flowise’s powerful backend capabilities, you can create AI agents that are not only functional but also scalable and highly customizable.**
+**By combining Typebot’s user-friendly interface with Flowise’s powerful backend capabilities, you can create AI agents that are not only functional but also scalable and highly customizable.** 
+
+To enhance your agent's knowledge, explore our guide on [building a RAG chatbot](./how-to-build-a-rag-chatbot.mdx).
 
 ### Example of a WhatsApp AI Agent
 
-<Image src="/blog-assets/whatsapp-ai-agent/example-ai-agent-reservation.avif" alt="Example Ai Agent Reservation" width="1170px" height="2532px" />
+<Image src="/blog-assets/whatsapp-ai-agent/example-ai-agent-reservation.avif" alt="Example Ai Agent Reservation" width={1170} height={2532}  />
 
 
 Imagine a hotel AI chatbot designed to handle a variety of guest requests, such as answering frequently asked questions, booking rooms, scheduling services, and providing real-time updates.
@@ -58,7 +59,7 @@ Typebot is a no-code platform that allows you to design conversational flows eas
 
 #### Set Up Your Typebot Account
 
-To begin, **visit [Typebot](/) and create an account.** Once logged in:
+To begin, **visit [Typebot](https://typebot.io) and create an account.** Once logged in:
 
 - Click **"Create a Typebot"** and select a blank template.
 - Name your bot (e.g., "Hotel Assistant") to reflect its purpose.
@@ -85,7 +86,7 @@ Flowise acts as the backend for your chatbot. **It enables it to process user qu
 Readwise is currently in private beta, which is why we’re demonstrating how to deploy it on Render.
 </Warning>
 
-To deploy Flowise, [follow our Flowise installation guide](./build-ai-chatbot-with-custom-knowledge-base.mdx) to set up Flowise on your local machine or a cloud platform like Render.com. Ensure you have the necessary API keys (e.g., OpenAI, Pinecone) and configure them in Flowise.
+To deploy Flowise, [follow our Flowise installation guide](https://typebot.io/blog/build-ai-chatbot-with-custom-knowledge-base#deploying-flowise-on-rendercom) to set up Flowise on your local machine or a cloud platform like Render.com. Ensure you have the necessary API keys (e.g., OpenAI, Pinecone) and configure them in Flowise.
 
 #### Build the Knowledge Base
 
@@ -98,14 +99,14 @@ You can use Notion to create a structured knowledge base for your hotel. In our 
 
 Then, connect your Notion database to Flowise using the Notion Loader. Configure it to retrieve and process information dynamically. Here's what your knowledge base could look like:
 
-<Image src="/blog-assets/whatsapp-ai-agent/example-notion-knowledge-base.avif" alt="Example Notion Knowledge Base" width="1156px" height="559px" />
+<Image src="/blog-assets/whatsapp-ai-agent/example-notion-knowledge-base.avif" alt="Example Notion Knowledge Base" width={1156} height={559}  />
 
 
 #### Create the AI Processing Flow
 
 In Flowise, design a **Retrieval-Augmented Generation (RAG) workflow**. This involves several steps:
 
-<Image src="/blog-assets/whatsapp-ai-agent/notion-loader-with-markdown-splitter.avif" alt="Notion Loader With Markdown Splitter" width="1189px" height="859px" />
+<Image src="/blog-assets/whatsapp-ai-agent/notion-loader-with-markdown-splitter.avif" alt="Notion Loader With Markdown Splitter" width={1189} height={859}  />
 
 
 - Add a **Notion Loader** to pull data from your knowledge base.
@@ -115,15 +116,11 @@ In Flowise, design a **Retrieval-Augmented Generation (RAG) workflow**. This inv
 
 Test the flow to ensure it retrieves accurate and relevant information.
 
-<Info>
-To have more details on creating chatbots that leverage a custom knowledge base, check out our article on [building an AI chatbot with a custom knowledge base](./build-ai-chatbot-with-custom-knowledge-base.mdx).
-</Info>
-
 #### Integrate Flowise with Typebot
 
 To integrate Flowise, **add an API Block in Typebot to connect to your Flowise endpoint.** Pass the user’s query (`user_message`) to Flowise and display the AI-generated response using a Text Block.
 
-<Image src="/blog-assets/whatsapp-ai-agent/typebot-flow-using-flowise.avif" alt="Typebot Flow Using Flowise" width="1300px" height="741px" />
+<Image src="/blog-assets/whatsapp-ai-agent/typebot-flow-using-flowise.avif" alt="Typebot Flow Using Flowise" width={1300} height={741}  />
 
 
 By completing these steps, you’ll have a functional WhatsApp AI agent that can answer FAQs, provide personalized recommendations, and handle basic user requests. In the next section, we’ll explore how to take this further by creating a pool of specialized agents for complex tasks.
@@ -151,7 +148,7 @@ Consider a [hotel chatbot](./ai-chatbot-for-hotels.mdx) with the following struc
 - **Concierge Agent**: Manages special requests like spa bookings or restaurant reservations.
 - **Local Attractions Agent**: Provides recommendations and bookings for nearby tourist attractions, museums, events, and experiences.
 
-<Image src="/blog-assets/whatsapp-ai-agent/example-chatbot-local-attractions-agent.avif" alt="Example Chatbot Local Attractions Agent" width="2270px" height="1601px" />
+<Image src="/blog-assets/whatsapp-ai-agent/example-chatbot-local-attractions-agent.avif" alt="Example Chatbot Local Attractions Agent" width={2270} height={1601}  />
 
 
 **This modular approach ensures that each query is handled by the most capable agent, improving accuracy and user satisfaction.**
@@ -187,16 +184,16 @@ The **Master Brain Agent** is the cornerstone of a multi-agent system. **It ensu
 Here are the steps to build a Master Brain Agent:
 
 1. **Set Up the Master Brain Agent**:
-   - Use Typebot to create a chatbot flow for the Master Brain Agent.
-   - Integrate OpenAI’s reasoning models (e.g., GPT-4-turbo or GPT-4-32k) to analyze user intent.
+  - Use Typebot to create a chatbot flow for the Master Brain Agent.
+  - Integrate OpenAI’s reasoning models (e.g., GPT-4-turbo or GPT-4-32k) to analyze user intent.
 2. **Define Routing Logic**: configure the agent to classify user queries based on keywords, context, or intent.
 3. **Enable Clarification Questions**:
-   - If the intent is unclear, the Master Brain Agent can ask follow-up questions to refine the query. Example:
-   - User: "I need help with my stay."
-   - Master Brain Agent: "Could you clarify? Are you looking to book a room, ask a question, or make a special request?"
+  - If the intent is unclear, the Master Brain Agent can ask follow-up questions to refine the query. Example:
+  - User: "I need help with my stay."
+  - Master Brain Agent: "Could you clarify? Are you looking to book a room, ask a question, or make a special request?"
 4. **Handoff to Sub-Agents**:
-   - Once the intent is clear, the Master Brain Agent hands off the query to the appropriate sub-agent.
-   - Use Typebot’s **Typebot Link** feature to seamlessly transition between agents while preserving context.
+  - Once the intent is clear, the Master Brain Agent hands off the query to the appropriate sub-agent.
+  - Use Typebot’s **Typebot Link** feature to seamlessly transition between agents while preserving context.
 
 **This handoff ensures that users receive specialized assistance without confusion or delays.**
 
@@ -212,7 +209,7 @@ Want to explore real-world examples of how WhatsApp chatbots are transforming cu
 
 Customers expect quick responses. **WhatsApp AI agents are changing how businesses meet these expectations.** By automating customer service, businesses can provide 24/7 support, reduce response times, and improve customer satisfaction.
 
-<Typebot typebot="faq-pqtvb87" />
+<Typebot Typebot="faq-pqtvb87" />
 
 AI agents can help with:
 
@@ -255,8 +252,9 @@ By integrating WhatsApp AI agents into their operations, businesses across indus
 
 ## The Future is Conversational
 
-Building sophisticated **WhatsApp AI agents is now within reach for businesses of all sizes** using no-code platforms like Typebot and Flowise.
+Building sophisticated **WhatsApp AI agents is now within reach for businesses of all sizes** using no-code platforms like Typebot and Flowise. 
 
 This opens new avenues for customer engagement, streamlined operations, and innovative services. As AI evolves, expect these intelligent chatbots to become even more integral to daily interactions, transforming how we communicate and transact on WhatsApp.
 
 <Cta />
+
