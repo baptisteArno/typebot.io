@@ -5,9 +5,15 @@ type Props = {
   children: React.ReactNode;
   icon?: React.ReactElement;
   onClick?: () => void;
+  documentationUrl?: string;
 };
 
-export const MoreInfoTooltip = ({ children, icon, onClick }: Props) => {
+export const MoreInfoTooltip = ({
+  children,
+  icon,
+  onClick,
+  documentationUrl,
+}: Props) => {
   return (
     <Popover.Root openOnHover delay={0} closeDelay={100}>
       <Popover.Trigger
@@ -22,6 +28,16 @@ export const MoreInfoTooltip = ({ children, icon, onClick }: Props) => {
         offset={8}
       >
         {children}
+        {documentationUrl && (
+          <a
+            href={documentationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block mt-1 text-blue-11 hover:underline"
+          >
+            Learn more
+          </a>
+        )}
       </Popover.Popup>
     </Popover.Root>
   );

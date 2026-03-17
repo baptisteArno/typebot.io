@@ -43,7 +43,7 @@ export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
         />
         <Field.Label>
           Execute on client{" "}
-          <MoreInfoTooltip>
+          <MoreInfoTooltip documentationUrl="https://docs.typebot.io/editor/blocks/logic/script">
             Check this if you need access to client variables like `window` or
             `document`."
           </MoreInfoTooltip>
