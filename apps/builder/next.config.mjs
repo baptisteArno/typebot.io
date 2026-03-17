@@ -40,7 +40,13 @@ const nextConfig = {
     "next-auth",
     "@typebot.io/billing",
     "@typebot.io/blocks-bubbles",
+    "@ark-ui/solid",
   ],
+  turbopack: {
+    resolveAlias: {
+      "solid-js/web": "solid-js/web/dist/web.js",
+    },
+  },
   reactStrictMode: true,
   output: "standalone",
   i18n: {

@@ -197,9 +197,9 @@ export const PublishButton = ({
             </AlertDialog.Description>
           </AlertDialog.Header>
           <AlertDialog.Footer>
-            <AlertDialog.CloseButton ref={trademarkCancelRef}>
+            <AlertDialog.Cancel ref={trademarkCancelRef}>
               {t("cancel")}
-            </AlertDialog.CloseButton>
+            </AlertDialog.Cancel>
             <AlertDialog.Action
               variant="default"
               onClick={onTrademarkInfringementClose}
@@ -240,9 +240,9 @@ export const PublishButton = ({
               </AlertDialog.Description>
             </AlertDialog.Header>
             <AlertDialog.Footer>
-              <AlertDialog.CloseButton ref={versionWarningCancelRef}>
+              <AlertDialog.Cancel ref={versionWarningCancelRef}>
                 {t("cancel")}
-              </AlertDialog.CloseButton>
+              </AlertDialog.Cancel>
               <AlertDialog.Action
                 variant="default"
                 disabled={versionWarningConfirmLoading}

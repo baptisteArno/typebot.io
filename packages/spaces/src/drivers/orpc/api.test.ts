@@ -5,8 +5,9 @@ import {
   userId,
 } from "@typebot.io/config/tests/seedDatabaseForTest";
 import { PrismaWorkspaceRepository } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceRepository";
-import { Effect, Layer } from "effect";
+import { Effect, Layer, Schema } from "effect";
 import { SpacesUsecases } from "../../application/SpacesUsecases";
+import { SpaceName } from "../../domain/Space";
 import { PrismaSpacesRepository } from "../../infrastructure/PrismaSpacesRepository";
 import { handleCreateSpace } from "./handleCreateSpace";
 import { handleListSpaces } from "./handleListSpaces";
@@ -29,7 +30,7 @@ it.layer(SpacesLiveLayer, { timeout: "30 seconds" })("SpacesLayer", (it) => {
       const { space } = yield* handleCreateSpace({
         input: {
           workspaceId: proWorkspaceId,
-          name: "Test Space",
+          name: Schema.decodeSync(SpaceName)("Test Space"),
         },
         context: {
           user: {

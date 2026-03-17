@@ -6,7 +6,6 @@ import {
 } from "@typebot.io/config/tests/seedDatabaseForTest";
 import { PrismaWorkspaceRepository } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceRepository";
 import { Effect, Layer } from "effect";
-import { ContactPropertyDefinitionsUsecases } from "../../application/ContactPropertyDefinitionsUsecases";
 import { ContactsUsecases } from "../../application/ContactsUsecases";
 import type { ContactId } from "../../domain/Contact";
 import { PrismaContactPropertyDefinitionsRepository } from "../../infrastructure/PrismaContactPropertyDefinitionsRepository";
@@ -30,12 +29,9 @@ const AllContactsInfrastructureLayer = Layer.mergeAll(
   ContactPropertyDefinitionsInfrastructureLayer,
 );
 
-const ContactsLiveLayer = Layer.mergeAll(
-  Layer.provide(ContactsUsecases.layer, AllContactsInfrastructureLayer),
-  Layer.provide(
-    ContactPropertyDefinitionsUsecases.layer,
-    ContactPropertyDefinitionsInfrastructureLayer,
-  ),
+const ContactsLiveLayer = Layer.provide(
+  ContactsUsecases.layer,
+  AllContactsInfrastructureLayer,
 );
 
 let contactId: ContactId;

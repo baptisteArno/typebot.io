@@ -176,9 +176,9 @@ export const SelectionToolbar = ({
                 </AlertDialog.Description>
               </AlertDialog.Header>
               <AlertDialog.Footer>
-                <AlertDialog.CloseButton ref={deleteCancelRef}>
+                <AlertDialog.Cancel ref={deleteCancelRef}>
                   {t("cancel")}
-                </AlertDialog.CloseButton>
+                </AlertDialog.Cancel>
                 <AlertDialog.Action
                   variant="destructive"
                   onClick={async () => {

@@ -8,6 +8,7 @@ import type { SegmentId } from "@typebot.io/shared-primitives/domain";
 import { PrismaWorkspaceRepository } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceRepository";
 import { Effect, Layer } from "effect";
 import { SegmentsUsecases } from "../../application/SegmentsUsecases";
+import { SegmentName } from "../../domain/Segment";
 import { PrismaSegmentsRepository } from "../../infrastructure/PrismaSegmentsRepository";
 import { handleCreateSegment } from "./handleCreateSegment";
 import { handleListSegments } from "./handleListSegments";
@@ -32,7 +33,7 @@ it.layer(SegmentsLiveLayer, { timeout: "30 seconds" })(
         const { segment } = yield* handleCreateSegment({
           input: {
             workspaceId: proWorkspaceId,
-            name: "VIP customers",
+            name: SegmentName.makeUnsafe("VIP customers"),
           },
           context: {
             user: {

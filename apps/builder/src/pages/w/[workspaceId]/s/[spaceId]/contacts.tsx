@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { ContactsPageContent } from "@/features/contacts/ContactsPageContent";
 
 export default function Page() {
   const router = useRouter();
@@ -8,5 +7,5 @@ export default function Page() {
 
   if (!workspaceId || !spaceId) return null;
 
-  return <ContactsPageContent workspaceId={workspaceId} spaceId={spaceId} />;
+  return null;
 }

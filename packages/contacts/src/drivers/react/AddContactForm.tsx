@@ -49,7 +49,7 @@ export const AddContactForm = ({
   onSubmit,
   initialFocusRef,
 }: AddContactFormProps) => {
-  const defaultPropertyKeysMapping: (string | null)[] = [];
+  const defaultPropertyKeysMapping: readonly (string | null)[] = [];
 
   const form = useForm({
     defaultValues: {

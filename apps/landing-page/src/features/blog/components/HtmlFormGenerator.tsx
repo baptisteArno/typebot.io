@@ -467,7 +467,10 @@ const PropertiesPanel = ({
           </span>
           <Select.Root
             items={WIDTH_OPTIONS}
-            onValueChange={(value) => onUpdate({ width: value })}
+            onValueChange={(value) => {
+              if (typeof value !== "string") return;
+              onUpdate({ width: value });
+            }}
           >
             <Select.Trigger>
               <Select.Value />

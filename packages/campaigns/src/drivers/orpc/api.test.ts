@@ -7,7 +7,6 @@ import {
 import type { CampaignId } from "@typebot.io/shared-primitives/domain";
 import { PrismaTypebotRepository } from "@typebot.io/typebot/infrastructure/PrismaTypebotRepository";
 import { Effect, Layer, Schema } from "effect";
-import { describe } from "vitest";
 import { CampaignsUsecases } from "../../application/CampaignsUsecases";
 import { WhatsAppCampaignInputSchema } from "../../application/WhatsAppCampaignInput";
 import { CampaignName } from "../../domain/Campaign";
@@ -30,109 +29,109 @@ const CampaignsLiveLayer = Layer.provide(
 
 let campaignId: CampaignId;
 
-describe.skip("skipped suite", () => {
-  it.layer(CampaignsLiveLayer, { timeout: "30 seconds" })(
-    "CampaignsLayer",
-    (it) => {
-      it.effect("should create campaign with valid data", () =>
-        Effect.gen(function* () {
-          const campaign = yield* handleCreateCampaign({
-            input: {
-              typebotId: proTypebotId,
-              channel: "WHATSAPP",
-              name: Schema.decodeSync(CampaignName)("Test Campaign"),
-              templateId: Schema.decodeSync(
-                WhatsAppCampaignInputSchema.fields.templateId,
-              )("template-id"),
-              credentialsId: Schema.decodeSync(
-                WhatsAppCampaignInputSchema.fields.credentialsId,
-              )("credentials-id"),
+it.layer(CampaignsLiveLayer, { timeout: "30 seconds" })(
+  "CampaignsLayer",
+  (it) => {
+    it.effect("should create campaign with valid data", () =>
+      Effect.gen(function* () {
+        const campaign = yield* handleCreateCampaign({
+          input: {
+            typebotId: proTypebotId,
+            channel: "WHATSAPP",
+            name: Schema.decodeSync(CampaignName)("Test Campaign"),
+            templateId: Schema.decodeSync(
+              WhatsAppCampaignInputSchema.fields.templateId,
+            )("template-id"),
+            credentialsId: Schema.decodeSync(
+              WhatsAppCampaignInputSchema.fields.credentialsId,
+            )("credentials-id"),
+          },
+          context: {
+            user: {
+              id: userId,
             },
-            context: {
-              user: {
-                id: userId,
-              },
-            },
-          });
-          campaignId = campaign.id;
-          expect(campaign).toBeDefined();
-          expect(campaign.name).toBe("Test Campaign");
-          expect(campaign.channel).toBe("WHATSAPP");
-          expect(campaign.status).toBe("DRAFT");
-        }),
-      );
+          },
+        });
+        campaignId = campaign.id;
+        expect(campaign).toBeDefined();
+        expect(campaign.name).toBe("Test Campaign");
+        expect(campaign.channel).toBe("WHATSAPP");
+        expect(campaign.status).toBe("DRAFT");
+      }),
+    );
 
-      it.effect("gets campaign", () =>
-        Effect.gen(function* () {
-          const campaign = yield* handleGetCampaign({
-            input: {
-              typebotId: proTypebotId,
-              campaignId,
+    it.effect("gets campaign", () =>
+      Effect.gen(function* () {
+        const campaign = yield* handleGetCampaign({
+          input: {
+            typebotId: proTypebotId,
+            campaignId,
+          },
+          context: {
+            user: {
+              id: userId,
             },
-            context: {
-              user: {
-                id: userId,
-              },
-            },
-          });
-          expect(campaign).toBeDefined();
-          expect(campaign.id).toBe(campaignId);
-          expect(campaign.name).toBe("Test Campaign");
-        }),
-      );
+          },
+        });
+        expect(campaign).toBeDefined();
+        expect(campaign.id).toBe(campaignId);
+        expect(campaign.name).toBe("Test Campaign");
+      }),
+    );
 
-      it.effect("lists campaigns", () =>
-        Effect.gen(function* () {
-          const { campaigns } = yield* handleListCampaigns({
-            input: {
-              typebotId: proTypebotId,
+    it.effect("lists campaigns", () =>
+      Effect.gen(function* () {
+        const { campaigns } = yield* handleListCampaigns({
+          input: {
+            typebotId: proTypebotId,
+          },
+          context: {
+            user: {
+              id: userId,
             },
-            context: {
-              user: {
-                id: userId,
-              },
-            },
-          });
-          expect(campaigns.length).toBeGreaterThanOrEqual(1);
-          expect(campaigns.some((campaign) => campaign.id === campaignId)).toBe(
-            true,
-          );
-        }),
-      );
+          },
+        });
+        expect(campaigns.length).toBeGreaterThanOrEqual(1);
+        expect(
+          campaigns.some(
+            (campaign: { id: CampaignId }) => campaign.id === campaignId,
+          ),
+        ).toBe(true);
+      }),
+    );
 
-      it.effect("updates campaign", () =>
-        Effect.gen(function* () {
-          const campaign = yield* handleUpdateCampaign({
-            input: {
-              typebotId: proTypebotId,
-              campaignId,
-              status: "SCHEDULED",
+    it.effect("updates campaign", () =>
+      Effect.gen(function* () {
+        const campaign = yield* handleUpdateCampaign({
+          input: {
+            typebotId: proTypebotId,
+            campaignId,
+            status: "SCHEDULED",
+          },
+          context: {
+            user: {
+              id: userId,
             },
-            context: {
-              user: {
-                id: userId,
-              },
-            },
-          });
-          expect(campaign.status).toBe("SCHEDULED");
-        }),
-      );
+          },
+        });
+        expect(campaign.status).toBe("SCHEDULED");
+      }),
+    );
 
-      it.effect("deletes campaign", () =>
-        Effect.gen(function* () {
-          yield* handleDeleteCampaign({
-            input: {
-              typebotId: proTypebotId,
-              campaignId,
+    it.effect("deletes campaign", () =>
+      Effect.gen(function* () {
+        yield* handleDeleteCampaign({
+          input: {
+            typebotId: proTypebotId,
+            campaignId,
+          },
+          context: {
+            user: {
+              id: userId,
             },
-            context: {
-              user: {
-                id: userId,
-              },
-            },
-          });
-        }),
-      );
-    },
-  );
-});
+          },
+        });
+      }),
+    );
+  },
+);

@@ -43,12 +43,19 @@ export const CreateWhatsAppCampaignForm = ({
     })),
   ];
 
+  const defaultValues: Pick<
+    Form,
+    "name" | "templateId" | "credentialsId" | "segmentId"
+  > = {
+    name: "",
+    templateId: "",
+    credentialsId: "",
+    segmentId: defaultSegmentId,
+  };
+
   const form = useForm({
     defaultValues: {
-      name: "",
-      templateId: "",
-      credentialsId: "",
-      segmentId: defaultSegmentId,
+      ...defaultValues,
     },
     validators: {
       onSubmit: FormSchemaStandardSchema,

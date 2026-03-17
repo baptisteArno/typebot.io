@@ -1,5 +1,5 @@
 {
-  "name": "@typebot.io/source",
+  "name": "@typebot.io/root",
   "version": "3.15.2",
   "private": true,
   "workspaces": [
