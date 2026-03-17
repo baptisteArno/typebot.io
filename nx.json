@@ -1,6 +1,5 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "nxCloudId": "699de1dad0ad66918e8a54f2",
   "tui": {
     "enabled": false
   },
