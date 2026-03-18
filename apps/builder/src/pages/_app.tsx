@@ -23,6 +23,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/pages";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
 import { queryClient } from "@/lib/queryClient";
 import { toast, toastManager } from "@/lib/toast";
+import { isCloudProdInstance } from "../helpers/isCloudProdInstance";
 
 const App = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -69,7 +70,8 @@ const App = ({ Component, pageProps }: AppProps) => {
                   <TypebotProvider typebotId={typebotId}>
                     <WorkspaceProvider typebotId={typebotId}>
                       <Component {...pageProps} />
-                      {!router.pathname.endsWith("edit") && <SupportBubble />}
+                      {!router.pathname.endsWith("edit") &&
+                        isCloudProdInstance() && <SupportBubble />}
                     </WorkspaceProvider>
                   </TypebotProvider>
                 </UserProvider>
