@@ -12,16 +12,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: "package.json"
-      - name: Run Nx ignore
+      - name: Run Turbo ignore
         id: check_changes
         run: |
-          echo "Running nx-ignore..."
+          echo "Running turbo-ignore..."
 
           set +e
-          bunx nx-ignore workflows --slim-install
+          bunx turbo-ignore workflows --task=typecheck
           exit_code=$?
           set -e
 
