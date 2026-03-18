@@ -35,7 +35,7 @@ const badgeVariants = cva(
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "secondary",
     },
     compoundVariants: [
       {
@@ -92,7 +92,7 @@ const badgeVariants = cva(
 
 function Badge({
   className,
-  variant = "default",
+  variant,
   colorScheme,
   render,
   ...props

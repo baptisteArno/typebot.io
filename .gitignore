@@ -82,3 +82,4 @@ vitest.config.*.timestamp*
 
 content-collections.d.ts.map
 content-collections.d.ts
+**/next-env.d.ts
