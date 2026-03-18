@@ -28,17 +28,6 @@
     "db:migrate": "bun migrate:deploy",
     "reset": "prisma migrate reset --config prisma.config.ts --schema postgresql/schema.prisma"
   },
-  "nx": {
-    "targets": {
-      "prisma:generate": {
-        "executor": "nx:run-commands",
-        "options": {
-          "cwd": "packages/prisma",
-          "command": "tsx scripts/db-generate.ts"
-        }
-      }
-    }
-  },
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.0",
     "@prisma/adapter-planetscale": "^7.4.0",

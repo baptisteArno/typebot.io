@@ -22,7 +22,7 @@ jobs:
           echo "Running script..."
 
           set +e
-          bunx turbo-ignore @typebot.io/partykit
+          bunx nx-ignore partykit --slim-install
           exit_code=$?
           set -e
 

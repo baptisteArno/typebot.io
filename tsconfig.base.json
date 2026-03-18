@@ -17,6 +17,6 @@
     "target": "ESNext",
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
-    "customConditions": ["@typebot.io/source"]
+    "customConditions": ["@typebot.io/root"]
   }
 }

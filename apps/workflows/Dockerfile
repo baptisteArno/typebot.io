@@ -1,53 +1,49 @@
-FROM oven/bun:1.3.6-slim AS bun
+ARG BUN_VERSION=1.3.9
 
-# ================= ADD BUN IN NODE 22 IMAGE ===================
+FROM oven/bun:${BUN_VERSION}-slim AS bun
 
-FROM node:22-bullseye-slim AS base
-ARG BUN_RUNTIME_TRANSPILER_CACHE_PATH=0
-ENV BUN_RUNTIME_TRANSPILER_CACHE_PATH=${BUN_RUNTIME_TRANSPILER_CACHE_PATH}
-ARG BUN_INSTALL_BIN=/usr/local/bin
-ENV BUN_INSTALL_BIN=${BUN_INSTALL_BIN}
+FROM node:24-bullseye-slim AS base
+
 COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun
-RUN groupadd bun \
-    --gid 2000 \
-    && useradd bun \
-    --uid 2000 \
-    --gid bun \
-    --shell /bin/sh \
-    --create-home \
-    && ln -s /usr/local/bin/bun /usr/local/bin/bunx \
-    && which bun \
-    && which bunx \
-    && bun --version
-RUN apt-get -qy update \
-    && apt-get -qy --no-install-recommends install openssl ca-certificates git python3 g++ build-essential \
-    && update-ca-certificates
-WORKDIR /app
+RUN ln -s /usr/local/bin/bun /usr/local/bin/bunx
 
-# =============== PRUNE =================
+RUN apt-get update -qq \
+    && apt-get install -qq --no-install-recommends \
+    build-essential \
+    ca-certificates \
+    git \
+    g++ \
+    openssl \
+    python3 \
+    && rm -rf /var/lib/apt/lists/*
 
-FROM base AS pruned
-COPY . .
-RUN bunx turbo prune "workflows" --docker
-
-# =============== INSTALL =================
+WORKDIR /usr/src/app
 
 FROM base AS install
-COPY --from=pruned /app/out/full/ .
-COPY bun.lock .
-COPY bunfig.toml .
-ARG DATABASE_URL=postgresql://
-RUN bun install
-RUN DATABASE_URL=$DATABASE_URL bunx tsx packages/prisma/scripts/db-generate.ts
 
-# =============== RELEASE =================
+COPY . .
+
+RUN SKIP_ENV_CHECK=true \
+    DATABASE_URL=postgresql:// \
+    ENCRYPTION_SECRET=12345678901234567890123456789012 \
+    NEXTAUTH_URL=http://localhost:3000 \
+    NEXT_PUBLIC_VIEWER_URL=http://localhost:3001 \
+    SENTRYCLI_SKIP_DOWNLOAD=1 \
+    bun install --frozen-lockfile
+
+RUN DATABASE_URL=postgresql:// bunx nx db:generate prisma
 
 FROM base AS release
-COPY --from=install /app/node_modules node_modules
-COPY --from=install /app/packages packages
-COPY --from=install /app/apps/workflows/src ./src
-COPY --from=install /app/apps/workflows/package.json .
 
-USER bun
+ENV NODE_ENV=production
+
+COPY --from=install /usr/src/app/package.json ./package.json
+COPY --from=install /usr/src/app/bun.lock ./bun.lock
+COPY --from=install /usr/src/app/bunfig.toml ./bunfig.toml
+COPY --from=install /usr/src/app/node_modules ./node_modules
+COPY --from=install /usr/src/app/apps/workflows ./apps/workflows
+COPY --from=install /usr/src/app/packages ./packages
+
+USER node
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "start" ]
+ENTRYPOINT ["bun", "apps/workflows/src/index.ts"]

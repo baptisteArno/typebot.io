@@ -11,32 +11,8 @@
     "packages/blocks/*",
     "apps/*"
   ],
-  "nx": {
-    "targets": {
-      "format-and-lint": {
-        "executor": "nx:run-commands",
-        "options": {
-          "command": "bunx biome check ."
-        }
-      },
-      "lint-repo": {
-        "executor": "nx:run-commands",
-        "options": {
-          "command": "bun run lint-repo"
-        }
-      },
-      "test": {
-        "executor": "nx:run-commands",
-        "options": {
-          "command": "bunx vitest run --config vitest.config.ts",
-          "cwd": ".",
-          "forwardAllArgs": true
-        }
-      }
-    }
-  },
   "scripts": {
-    "postinstall": "cd packages/env && bun run compile && nx prisma:generate prisma",
+    "postinstall": "cd packages/env && bun run compile && nx db:generate prisma",
     "prepare": "husky && effect-language-service patch",
     "pre-commit": "nx affected -t format-and-lint,lint-repo,check-broken-links,test --parallel=4",
     "dev": "nx run-many --configuration=development -t dev,watch-deps -p builder,viewer,workflows",
@@ -63,13 +39,8 @@
     "@nx/next": "22.5.2",
     "@nx/vite": "22.5.2",
     "@nx/vitest": "22.5.2",
-    "@nx/web": "22.5.2",
-    "@swc-node/register": "~1.11.1",
-    "@swc/core": "~1.15.13",
-    "@swc/helpers": "~0.5.19",
     "@tolgee/cli": "^2.16.1",
     "@types/node": "^24.10.13",
-    "@vitest/coverage-v8": "^4.0.18",
     "effect-solutions": "^0.4.13",
     "esbuild": "^0.27.3",
     "husky": "^9.1.7",
@@ -77,10 +48,7 @@
     "nx": "22.5.2",
     "rimraf": "^6.1.3",
     "sherif": "^1.10.0",
-    "tslib": "^2.3.0",
-    "typescript": "^5.9.3",
-    "vite": "^7.0.0",
-    "vitest": "^4.0.18"
+    "typescript": "^5.9.3"
   },
   "packageManager": "bun@1.3.9",
   "engines": {
@@ -92,7 +60,6 @@
     "@prisma/client",
     "@prisma/engines",
     "@sentry/cli",
-    "@swc/core",
     "core-js",
     "esbuild",
     "isolated-vm",

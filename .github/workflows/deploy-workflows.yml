@@ -21,7 +21,7 @@ jobs:
           echo "Running turbo-ignore..."
 
           set +e
-          bunx turbo-ignore workflows --task=typecheck
+          bunx nx-ignore workflows --slim-install
           exit_code=$?
           set -e
 
