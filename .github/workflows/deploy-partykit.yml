@@ -7,6 +7,11 @@ on:
 
 jobs:
   deploy:
+    env:
+      DATABASE_URL: "${{ secrets.DATABASE_URL }}"
+      ENCRYPTION_SECRET: "${{ secrets.ENCRYPTION_SECRET }}"
+      NEXTAUTH_URL: "http://localhost:3000"
+      NEXT_PUBLIC_VIEWER_URL: "http://localhost:3001"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

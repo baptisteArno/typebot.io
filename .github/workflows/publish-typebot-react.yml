@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      DATABASE_URL: "${{ secrets.DATABASE_URL }}"
+      ENCRYPTION_SECRET: "${{ secrets.ENCRYPTION_SECRET }}"
+      NEXTAUTH_URL: "http://localhost:3000"
+      NEXT_PUBLIC_VIEWER_URL: "http://localhost:3001"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v4
