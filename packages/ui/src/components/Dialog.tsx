@@ -1,4 +1,4 @@
-import { Dialog as DialogPrimitive } from "@base-ui-components/react/dialog";
+import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import * as React from "react";
 import { Cancel01Icon } from "../icons/Cancel01Icon";
 import { cn } from "../lib/cn";

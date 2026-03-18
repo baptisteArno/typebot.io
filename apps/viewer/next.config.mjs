@@ -47,20 +47,10 @@ const currentHost = "typebot.io";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   transpilePackages: ["@typebot.io/settings"],
   reactStrictMode: true,
   output: "standalone",
   outputFileTracingRoot: join(__dirname, "../../"),
-  webpack: (config) => {
-    config.ignoreWarnings = [
-      { module: /@opentelemetry\/instrumentation/ },
-      { module: /require-in-the-middle/ },
-    ];
-    return config;
-  },
   async redirects() {
     return [
       {

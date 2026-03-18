@@ -2,14 +2,22 @@
   "name": "@typebot.io/emails",
   "type": "module",
   "scripts": {
-    "preview": "SKIP_ENV_CHECK=true dotenv -e ./.env -e ../../.env -- email dev --port=3005 --dir=transactional",
-    "preview-marketing": "SKIP_ENV_CHECK=true dotenv -e ./.env -e ../../.env -- email dev --port=3005 --dir=marketing",
-    "test": "dotenv -e ./.env -e ../../.env -- bun test",
-    "check-types": "tsc --noEmit"
+    "preview": "SKIP_ENV_CHECK=true email dev --port=3005 --dir=transactional",
+    "preview-marketing": "SKIP_ENV_CHECK=true email dev --port=3005 --dir=marketing",
+    "test": "bun test"
   },
   "exports": {
-    "./*": "./*.tsx",
-    "./helpers/*": "./helpers/*.ts"
+    "./*": {
+      "types": "./*.tsx",
+      "import": "./*.tsx",
+      "default": "./*.tsx"
+    },
+    "./helpers/*": {
+      "types": "./helpers/*.ts",
+      "import": "./helpers/*.ts",
+      "default": "./helpers/*.ts"
+    },
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "@react-email/components": "^0.5.1",
@@ -20,14 +28,13 @@
     "react-email": "^4.2.8",
     "@react-email/render": "^1.2.1",
     "@typebot.io/lib": "workspace:*",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
     "@react-email/preview-server": "^4.2.8",
-    "@typebot.io/tsconfig": "workspace:*",
     "dotenv-cli": "^8.0.0",
-    "@types/react": "^19.2.7",
+    "@types/react": "^19.2.14",
     "@types/nodemailer": "^7.0.1"
   }
 }

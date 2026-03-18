@@ -8,9 +8,9 @@ import {
   isSvgSrc,
 } from "@typebot.io/lib/utils";
 import { createEffect, createSignal, For, onMount, Show } from "solid-js";
-import { SearchInput } from "@/components/inputs/SearchInput";
-import { SendButton } from "@/components/SendButton";
-import type { InputSubmitContent } from "@/types";
+import { SearchInput } from "../../../../components/inputs/SearchInput";
+import { SendButton } from "../../../../components/SendButton";
+import type { InputSubmitContent } from "../../../../types";
 import { Checkbox } from "../buttons/components/Checkbox";
 
 type Props = {

@@ -130,6 +130,7 @@ export const GoogleSheetsSettings = ({
         options.credentialsId &&
         isDefined(options.sheetId) && (
           <BasicSelect
+            className="w-full"
             value={"action" in options ? options.action : undefined}
             onChange={handleActionChange}
             items={Object.values(GoogleSheetsAction)}
@@ -254,6 +255,7 @@ const ActionOptions = ({
 
             <Accordion.Panel>
               <BasicSelect
+                className="w-full"
                 items={totalRowsToExtractOptions}
                 value={
                   options.totalRowsToExtract ??

@@ -36,8 +36,8 @@ export const TypebotsDropdown = ({
   return (
     <div className="flex items-center gap-2 flex-1">
       <BasicSelect
-        value={typebotId}
         className="w-full"
+        value={typebotId}
         items={[
           {
             label: "Current typebot",

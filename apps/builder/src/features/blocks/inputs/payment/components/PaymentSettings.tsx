@@ -111,6 +111,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
       <div className="flex flex-col gap-2">
         <p>{t("blocks.inputs.payment.settings.provider.label")}</p>
         <BasicSelect
+          className="w-full"
           items={providers}
           onChange={updateProvider}
           value={options?.provider}
@@ -149,6 +150,7 @@ export const PaymentSettings = ({ options, onOptionsChange }: Props) => {
         <div className="flex flex-col gap-2">
           <p>{t("blocks.inputs.payment.settings.currency.label")}</p>
           <BasicSelect
+            className="w-full"
             items={currencies.map((currency) => currency.code)}
             onChange={updateCurrency}
             value={options?.currency}

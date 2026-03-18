@@ -4,12 +4,20 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./*": "./src/*.ts",
-    "./plate": "./src/plate/index.ts"
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./plate": {
+      "types": "./src/plate/index.ts",
+      "import": "./src/plate/index.ts",
+      "default": "./src/plate/index.ts"
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
-    "test": "dotenv -e ./.env -e ../../.env -- bun test .test.ts --external isolated-vm",
-    "check-types": "tsc --noEmit"
+    "test": "bun test .test.ts --external isolated-vm"
   },
   "dependencies": {
     "@platejs/basic-nodes": "49.0.0",
@@ -24,11 +32,10 @@
     "unified": "^11.0.5",
     "mdast": "^3.0.0",
     "platejs": "49.2.21",
-    "react": "^19.2.3"
+    "react": "^19.2.4"
   },
   "devDependencies": {
     "@types/mdast": "^4.0.4",
-    "@typebot.io/tsconfig": "workspace:*",
     "@types/bun": "^1.3.9"
   }
 }

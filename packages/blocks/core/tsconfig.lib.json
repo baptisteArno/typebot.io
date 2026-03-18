@@ -1,0 +1,36 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    {
+      "path": "../integrations/tsconfig.lib.json"
+    },
+    {
+      "path": "../logic/tsconfig.lib.json"
+    },
+    {
+      "path": "../inputs/tsconfig.lib.json"
+    },
+    {
+      "path": "../bubbles/tsconfig.lib.json"
+    },
+    {
+      "path": "../base/tsconfig.lib.json"
+    },
+    {
+      "path": "../../lib/tsconfig.lib.json"
+    },
+    {
+      "path": "../../conditions/tsconfig.lib.json"
+    },
+    {
+      "path": "../../forge/repository/tsconfig.lib.json"
+    }
+  ]
+}

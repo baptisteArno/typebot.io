@@ -1,4 +1,4 @@
-import type { BubbleProps } from "@/features/bubble/components/Bubble";
+import type { BubbleProps } from "../features/bubble/components/Bubble";
 
 export const resolveButtonSize = (
   size: NonNullable<NonNullable<BubbleProps["theme"]>["button"]>["size"],

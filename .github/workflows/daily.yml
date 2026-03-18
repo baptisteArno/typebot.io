@@ -32,4 +32,4 @@ jobs:
         with:
           bun-version-file: "package.json"
       - run: bun install
-      - run: bunx turbo run cron:daily
+      - run: bunx nx cron:daily scripts

@@ -1,5 +1,10 @@
 {
-  "extends": "@typebot.io/tsconfig/base.json",
-  "include": ["src/**/*.ts", "scripts/**/*.ts", ".effect/**/*.ts"],
-  "exclude": ["node_modules"]
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
 }

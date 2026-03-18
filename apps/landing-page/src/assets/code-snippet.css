@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/style/noDescendingSpecificity: Tailwind classes are used for styling. */
 @reference "./globals.css";
 
 :root {

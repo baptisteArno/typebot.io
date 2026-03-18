@@ -27,6 +27,7 @@ export const ChatwootSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <div className="flex flex-col gap-4">
       <BasicSelect
+        className="w-full"
         value={options?.task}
         defaultValue={defaultChatwootOptions.task}
         onChange={updateTask}

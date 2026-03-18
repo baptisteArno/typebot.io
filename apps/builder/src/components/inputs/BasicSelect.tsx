@@ -1,6 +1,6 @@
-import type { Select as PrimitiveSelect } from "@base-ui-components/react/select";
+import type { Select as PrimitiveSelect } from "@base-ui/react/select";
 import { Badge } from "@typebot.io/ui/components/Badge";
-import { Select, type TriggerProps } from "@typebot.io/ui/components/Select";
+import { Select } from "@typebot.io/ui/components/Select";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { useMemo } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
@@ -22,7 +22,6 @@ type Props<ItemValue, Value extends ItemValue | undefined = ItemValue> = Omit<
     | readonly ItemValue[];
   placeholder?: React.ReactNode;
   className?: string;
-  size?: TriggerProps["size"];
   includeVariables?: boolean;
   onChange?: [undefined] extends [Value]
     ? (value: ItemValue | undefined) => void
@@ -34,7 +33,6 @@ export const BasicSelect = <ItemValue, Value extends ItemValue | undefined>({
   onChange,
   placeholder,
   className,
-  size,
   includeVariables,
   ...props
 }: Props<ItemValue, Value>) => {
@@ -46,7 +44,7 @@ export const BasicSelect = <ItemValue, Value extends ItemValue | undefined>({
     variables: includeVariables ? typebot?.variables : undefined,
   });
 
-  const handleValueChange = (value: ItemValue) => {
+  const handleValueChange = (value: ItemValue | null) => {
     onChange?.(
       value === null || value === props.defaultValue
         ? (undefined as ItemValue)
@@ -67,17 +65,21 @@ export const BasicSelect = <ItemValue, Value extends ItemValue | undefined>({
       }
       onValueChange={handleValueChange}
     >
-      <Select.Trigger className={className} size={size} />
-      <Select.Popup size={size}>
-        {enrichedItems.map((item) => (
-          <Select.Item
-            key={(item.value as string) ?? "default"}
-            value={item.value}
-          >
-            {item.label}
-          </Select.Item>
-        ))}
-      </Select.Popup>
+      <Select.Trigger className={className}>
+        <Select.Value />
+      </Select.Trigger>
+      <Select.Content>
+        <Select.Group>
+          {enrichedItems.map((item) => (
+            <Select.Item
+              key={(item.value as string) ?? "default"}
+              value={item.value}
+            >
+              {item.label}
+            </Select.Item>
+          ))}
+        </Select.Group>
+      </Select.Content>
     </Select.Root>
   );
 };

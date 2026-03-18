@@ -167,7 +167,6 @@ export const CollaborationList = () => {
 
         {currentUserMode !== "guest" && (
           <BasicSelect
-            size="sm"
             value={invitationType}
             onChange={updateInvitationType}
             items={[

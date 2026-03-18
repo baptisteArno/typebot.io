@@ -12,7 +12,7 @@ import { mergeIds } from "@typebot.io/telemetry/mergeIds";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { clientUserSchema } from "@typebot.io/user/schemas";
 import type { NextRequest } from "next/server";
-import NextAuth from "next-auth";
+import NextAuth, { type NextAuthResult } from "next-auth";
 import { accountHasRequiredOAuthGroups } from "../helpers/accountHasRequiredOAuthGroups";
 import { createAuthPrismaAdapter } from "../helpers/createAuthPrismaAdapter";
 import { isEmailLegit } from "../helpers/emailValidation";
@@ -22,12 +22,7 @@ import { providers } from "./providers";
 
 export const SET_TYPEBOT_COOKIE_HEADER = "Set-Typebot-Cookie" as const;
 
-export const {
-  auth,
-  handlers: authHandlers,
-  signIn,
-  signOut,
-} = NextAuth((req) => ({
+const nextAuth = NextAuth((req) => ({
   adapter: createAuthPrismaAdapter(prisma),
   secret: env.ENCRYPTION_SECRET,
   providers,
@@ -191,3 +186,8 @@ const isValidNextRequest = (
 ): req is NextRequest => {
   return Boolean(req && "headers" in req && "get" in req.headers);
 };
+
+export const authHandlers = nextAuth.handlers;
+export const auth: NextAuthResult["auth"] = nextAuth.auth;
+export const signIn = nextAuth.signIn;
+export const signOut = nextAuth.signOut;

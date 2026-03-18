@@ -4,16 +4,17 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./package.json": "./package.json"
   },
   "devDependencies": {
-    "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*"
+    "@typebot.io/prisma": "workspace:*"
   },
   "dependencies": {
     "zod": "^4.3.5"
-  },
-  "scripts": {
-    "check-types": "tsc --noEmit"
   }
 }

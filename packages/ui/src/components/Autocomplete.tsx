@@ -1,4 +1,4 @@
-import { Autocomplete as AutocompletePrimitive } from "@base-ui-components/react/autocomplete";
+import { Autocomplete as AutocompletePrimitive } from "@base-ui/react/autocomplete";
 import type * as React from "react";
 import { forwardRef } from "react";
 import { cn } from "../lib/cn";

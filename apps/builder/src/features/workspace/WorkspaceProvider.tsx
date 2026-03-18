@@ -126,6 +126,11 @@ export const WorkspaceProvider = ({
       (typebotId && !typebot?.workspaceId)
     )
       return;
+
+    const pathWorkspaceId = pathname.startsWith("/w/")
+      ? query.workspaceId?.toString()
+      : undefined;
+
     if (workspaceId) {
       const currentWorkspace = workspaces.find(byId(workspaceId));
       // Workspace was just deleted
@@ -133,9 +138,19 @@ export const WorkspaceProvider = ({
         setWorkspaceIdInLocalStorage(workspaces[0].id);
         setWorkspaceId(workspaces[0].id);
       }
+      // Sync workspace to path when on /w/ route and path has different workspace
+      else if (pathWorkspaceId && pathWorkspaceId !== workspaceId) {
+        const pathWorkspace = workspaces.find(byId(pathWorkspaceId));
+        if (pathWorkspace) {
+          setWorkspaceIdInLocalStorage(pathWorkspaceId);
+          setWorkspaceId(pathWorkspaceId);
+        }
+      }
       return;
     }
+
     const lastWorspaceId =
+      pathWorkspaceId ??
       typebot?.workspaceId ??
       query.workspaceId?.toString() ??
       localStorage.getItem("workspaceId");
@@ -171,10 +186,10 @@ export const WorkspaceProvider = ({
     }
   }, [pathname, push, workspace?.isPastDue, workspace?.isSuspended]);
 
-  const switchWorkspace = (workspaceId: string) => {
-    setWorkspaceIdInLocalStorage(workspaceId);
-    setWorkspaceId(workspaceId);
-    replace("/typebots");
+  const switchWorkspace = (newWorkspaceId: string) => {
+    setWorkspaceIdInLocalStorage(newWorkspaceId);
+    setWorkspaceId(newWorkspaceId);
+    replace(`/w/${newWorkspaceId}/typebots`);
   };
 
   const createWorkspace = async (userFullName?: string) => {

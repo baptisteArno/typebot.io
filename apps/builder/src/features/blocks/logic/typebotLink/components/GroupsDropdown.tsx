@@ -21,6 +21,7 @@ export const GroupsDropdown = ({
 
   return (
     <BasicSelect
+      className="w-full"
       items={groups.map((group) => ({
         label: group.title,
         value: group.id,

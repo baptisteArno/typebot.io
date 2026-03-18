@@ -42,7 +42,7 @@ export const WordpressStandardInstructions = ({ publicId }: Props) => {
           <p>
             You can now place the following shortcode anywhere on your site:
           </p>
-          <CodeEditor value={elementCode} lang="shell" isReadOnly />
+          <CodeEditor value={elementCode} lang="sh" isReadOnly />
           <p>
             Note: Your page templating system probably has a{" "}
             <code>Shortcode</code> element (if not, use a text element).

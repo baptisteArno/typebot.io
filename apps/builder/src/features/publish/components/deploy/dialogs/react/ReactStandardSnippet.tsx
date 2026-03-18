@@ -25,5 +25,5 @@ export const ReactStandardSnippet = ({
       plugins: [parserBabel],
     },
   );
-  return <CodeEditor value={snippet} lang="javascript" isReadOnly />;
+  return <CodeEditor value={snippet} lang="js" isReadOnly />;
 };

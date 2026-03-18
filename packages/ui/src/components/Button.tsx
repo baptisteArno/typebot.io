@@ -1,4 +1,4 @@
-import { mergeProps, useRender } from "@base-ui-components/react";
+import { mergeProps, useRender } from "@base-ui/react";
 import * as React from "react";
 import { cn } from "../lib/cn";
 import { cva, cx, type VariantProps } from "../lib/cva";

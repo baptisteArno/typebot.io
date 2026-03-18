@@ -1,10 +1,10 @@
 import { EnvironmentProvider } from "@ark-ui/solid";
 import typebotColors from "@typebot.io/ui/colors.css";
 import { createEffect, createSignal, onCleanup, onMount, Show } from "solid-js";
-import { Bot, type BotProps } from "@/components/Bot";
-import type { CommandData } from "@/features/commands/types";
-import { wipeExistingChatStateInStorage } from "@/utils/storage";
 import styles from "../../../assets/index.css";
+import { Bot, type BotProps } from "../../../components/Bot";
+import { wipeExistingChatStateInStorage } from "../../../utils/storage";
+import type { CommandData } from "../../commands/types";
 
 const hostElementCss = `
 :host {
@@ -53,7 +53,8 @@ export const Standard = (props: BotProps, { element }: { element: any }) => {
 
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
     const { data } = event;
-    if (!data.isFromTypebot || (data.id && props.id !== data.id)) return;
+    const elementId = element.id || props.id;
+    if (!data.isFromTypebot || (data.id && elementId !== data.id)) return;
     switch (data.command) {
       case "setPrefilledVariables":
         setPrefilledVariables((existingPrefilledVariables) => ({
@@ -86,9 +87,7 @@ export const Standard = (props: BotProps, { element }: { element: any }) => {
   });
 
   return (
-    <EnvironmentProvider
-      value={document.querySelector("typebot-standard")?.shadowRoot as Node}
-    >
+    <EnvironmentProvider value={element.shadowRoot as Node}>
       <style>
         {typebotColors}
         {styles}

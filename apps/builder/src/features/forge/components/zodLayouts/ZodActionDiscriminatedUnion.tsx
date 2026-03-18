@@ -38,6 +38,7 @@ export const ZodActionDiscriminatedUnion = ({
   return (
     <>
       <BasicSelect
+        className="w-full"
         value={blockOptions?.action}
         onChange={(item) => onDataChange({ ...blockOptions, action: item })}
         items={[...optionsMap.keys()].filter(isDefined)}

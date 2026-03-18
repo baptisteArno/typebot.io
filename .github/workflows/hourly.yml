@@ -34,4 +34,4 @@ jobs:
         with:
           bun-version-file: "package.json"
       - run: bun install
-      - run: bunx turbo run cron:hourly
+      - run: bunx nx run cron:hourly scripts

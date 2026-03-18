@@ -4,27 +4,29 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "@typebot.io/blocks-core": "workspace:*",
+    "@typebot.io/shared-core": "workspace:*",
+    "@typebot.io/shared-primitives": "workspace:*",
+    "@typebot.io/env": "workspace:*",
+    "@typebot.io/events": "workspace:*",
     "@typebot.io/groups": "workspace:*",
+    "@typebot.io/lib": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/schemas": "workspace:*",
     "@typebot.io/settings": "workspace:*",
     "@typebot.io/theme": "workspace:*",
+    "@typebot.io/user": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "@typebot.io/schemas": "workspace:*",
-    "@typebot.io/prisma": "workspace:*",
-    "@typebot.io/lib": "workspace:*",
-    "@typebot.io/env": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
-    "@typebot.io/events": "workspace:*",
     "effect": "4.0.0-beta.30",
     "zod": "^4.3.5"
-  },
-  "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
-  },
-  "scripts": {
-    "check-types": "tsc --noEmit"
   }
 }

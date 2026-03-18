@@ -54,7 +54,7 @@ export const ScriptSettings = ({ options, onOptionsChange }: Props) => {
       )}
       <CodeEditor
         defaultValue={options?.content}
-        lang="javascript"
+        lang="js"
         onChange={handleCodeChange}
         withLineNumbers={true}
       />

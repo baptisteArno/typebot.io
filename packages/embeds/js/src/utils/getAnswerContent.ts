@@ -1,4 +1,4 @@
-import type { InputSubmitContent } from "@/types";
+import type { InputSubmitContent } from "../types";
 
 export const getAnswerContent = (answer: InputSubmitContent): string => {
   if (answer.type === "text") return answer.label ?? answer.value;

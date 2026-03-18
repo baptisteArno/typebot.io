@@ -1,6 +1,7 @@
 import type { PopupProps } from "@typebot.io/js";
 import type React from "react";
 import { useCallback, useEffect, useRef } from "react";
+import { ensureWebComponentsLoaded } from "./ensureWebComponentsLoaded";
 
 type Props = PopupProps;
 
@@ -42,7 +43,7 @@ export const Popup = (props: Props) => {
   }, [attachPopupToContainer, props]);
 
   useEffect(() => {
-    import("./web");
+    void ensureWebComponentsLoaded();
     return () => {
       popupRef.current?.remove();
       popupRef.current = null;

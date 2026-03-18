@@ -19,51 +19,61 @@ import {
 import { handleHealthz } from "./handleHealthz";
 import { handleListTypebots } from "./handleListTypebots";
 
-export const appRouter = {
-  publicChatRouter: chatRouter,
-  fileInput: fileUploadViewerRouter,
-  healthz: publicProcedure
+const healthz = publicProcedure
+  .route({
+    method: "GET",
+    path: "/healthz",
+  })
+  .output(z.object({ status: z.literal("ok") }))
+  .handler(handleHealthz);
+
+const automationPlatformsRouter = {
+  me: protectedProcedure
     .route({
       method: "GET",
-      path: "/healthz",
+      path: "/users/me",
     })
-    .output(z.object({ status: z.literal("ok") }))
-    .handler(handleHealthz),
+    .handler(handleGetMe),
 
+  typebots: protectedProcedure
+    .route({
+      method: "GET",
+      path: "/typebots",
+    })
+    .handler(handleListTypebots),
+
+  zapierStepsEndpoint: protectedProcedure
+    .route({
+      method: "GET",
+      path: "/typebots/{typebotId}/webhookSteps",
+    })
+    .input(getZapierStepsInputSchema)
+    .handler(handleGetZapierSteps),
+
+  makeComBlocksEndpoint: protectedProcedure
+    .route({
+      method: "GET",
+      path: "/typebots/{typebotId}/webhookBlocks",
+    })
+    .input(getMakeComBlocksInputSchema)
+    .handler(handleGetMakeComBlocks),
+};
+
+export type AppRouter = {
+  publicChatRouter: typeof chatRouter;
+  fileInput: typeof fileUploadViewerRouter;
+  healthz: typeof healthz;
+  automationPlatformsRouter: typeof automationPlatformsRouter;
+  webhook: typeof webhookRouter;
+  chatWhatsAppRouter: typeof chatWhatsAppRouter;
+};
+
+export const appRouter: AppRouter = {
+  publicChatRouter: chatRouter,
+  fileInput: fileUploadViewerRouter,
+  healthz,
   // TODO: Migrate to builder (once builder migrated to oRPC) and add rewrites
-  automationPlatformsRouter: {
-    me: protectedProcedure
-      .route({
-        method: "GET",
-        path: "/users/me",
-      })
-      .handler(handleGetMe),
-
-    typebots: protectedProcedure
-      .route({
-        method: "GET",
-        path: "/typebots",
-      })
-      .handler(handleListTypebots),
-
-    zapierStepsEndpoint: protectedProcedure
-      .route({
-        method: "GET",
-        path: "/typebots/{typebotId}/webhookSteps",
-      })
-      .input(getZapierStepsInputSchema)
-      .handler(handleGetZapierSteps),
-
-    makeComBlocksEndpoint: protectedProcedure
-      .route({
-        method: "GET",
-        path: "/typebots/{typebotId}/webhookBlocks",
-      })
-      .input(getMakeComBlocksInputSchema)
-      .handler(handleGetMakeComBlocks),
-  },
+  automationPlatformsRouter,
   webhook: webhookRouter,
   chatWhatsAppRouter,
 };
-
-export type AppRouter = typeof appRouter;

@@ -50,7 +50,7 @@ export const WordpressPopupInstructions = ({
             You can now place the following code snippet in the Typebot panel in
             your WordPress admin:
           </p>
-          <CodeEditor value={initCode} lang="javascript" isReadOnly />
+          <CodeEditor value={initCode} lang="js" isReadOnly />
         </div>
       </li>
     </ol>

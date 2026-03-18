@@ -153,6 +153,7 @@ export const HttpRequestAdvancedConfigForm = ({
             <div className="flex items-center gap-2 justify-between">
               <p>Method:</p>
               <BasicSelect
+                className="w-full"
                 value={httpRequest?.method}
                 defaultValue={defaultHttpRequestAttributes.method}
                 onChange={updateMethod}

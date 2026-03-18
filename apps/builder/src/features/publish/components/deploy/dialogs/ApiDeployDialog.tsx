@@ -41,7 +41,7 @@ export const ApiDeployDialog = ({
               </p>
               <CodeEditor
                 isReadOnly
-                lang={"shell"}
+                lang="sh"
                 value={`${parseApiHost(
                   typebot?.customDomain,
                 )}/api/v1/typebots/${publicId}/startChat`}
@@ -59,7 +59,7 @@ export const ApiDeployDialog = ({
               </p>
               <CodeEditor
                 isReadOnly
-                lang={"shell"}
+                lang="sh"
                 value={`${parseApiHost(
                   typebot?.customDomain,
                 )}/api/v1/sessions/<ID_FROM_FIRST_RESPONSE>/continueChat`}

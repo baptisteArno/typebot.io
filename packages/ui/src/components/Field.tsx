@@ -1,4 +1,5 @@
-import { Field as PrimitiveField } from "@base-ui-components/react/field";
+import { Field as PrimitiveField } from "@base-ui/react/field";
+import { useMemo } from "react";
 import { cn } from "../lib/cn";
 
 const Root = ({ className, ...props }: PrimitiveField.Root.Props) => (
@@ -34,11 +35,62 @@ const Container = ({
   </div>
 );
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: is exported as Field.Error
+const Error = ({
+  className,
+  children,
+  errors,
+  ...props
+}: PrimitiveField.Error.Props & {
+  errors?: Array<{ message?: string } | undefined>;
+}) => {
+  const content = useMemo(() => {
+    if (children) {
+      return children;
+    }
+
+    if (!errors?.length) {
+      return null;
+    }
+
+    const uniqueErrors = [
+      ...new Map(errors.map((error) => [error?.message, error])).values(),
+    ];
+
+    if (uniqueErrors?.length === 1) {
+      return uniqueErrors[0]?.message;
+    }
+
+    return (
+      <ul className="ml-4 flex list-disc flex-col gap-1">
+        {uniqueErrors.map(
+          (error) =>
+            error?.message && <li key={error.message}>{error.message}</li>,
+        )}
+      </ul>
+    );
+  }, [children, errors]);
+
+  return (
+    <PrimitiveField.Error
+      className={cn(
+        "text-destructive/90 text-sm font-normal border border-destructive/70 rounded-md p-2 bg-destructive/2.5",
+        className,
+      )}
+      match={true}
+      {...props}
+    >
+      {content}
+    </PrimitiveField.Error>
+  );
+};
+
 export type ChangeEventDetails = PrimitiveField.Control.ChangeEventDetails;
 
 export const Field = {
   Root,
   Label,
+  Error,
   Description,
   Container,
   Control: PrimitiveField.Control,

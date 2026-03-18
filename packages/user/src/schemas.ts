@@ -1,5 +1,6 @@
 import { GraphNavigation } from "@typebot.io/prisma/enum";
 import type { Prisma } from "@typebot.io/prisma/types";
+import { Schema } from "effect";
 import { z } from "zod";
 
 const displayedInAppNotificationsSchema = z.record(z.string(), z.boolean());
@@ -66,3 +67,6 @@ export const updateUserSchema = userSchema.pick({
   referral: true,
 });
 export type UpdateUser = z.infer<typeof updateUserSchema>;
+
+export const UserId = Schema.String.pipe(Schema.brand("UserId"));
+export type UserId = typeof UserId.Type;

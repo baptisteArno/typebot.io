@@ -1,19 +1,172 @@
 {
-  "extends": "@typebot.io/tsconfig/nextjs.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    "jsx": "preserve",
+    "noEmit": true,
+    "emitDeclarationOnly": false,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
-    "strictNullChecks": true
+    "outDir": "dist",
+    "rootDir": "src",
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
   "include": [
     "next-env.d.ts",
-    "tolgee.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
     ".next/types/**/*.ts",
-    "../../packages/auth/src/next-auth.d.ts"
+    "../../packages/auth/src/next-auth.d.ts",
+    "src/components/ImageUploadContent/emoji/emojiList.json",
+    "src/i18n/*.json"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "out-tsc",
+    "dist",
+    "node_modules",
+    "jest.config.ts",
+    "jest.config.cts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    ".next"
+  ],
+  "references": [
+    {
+      "path": "../../packages/embeds/js"
+    },
+    {
+      "path": "../../packages/ai"
+    },
+    {
+      "path": "../../packages/rich-text"
+    },
+    {
+      "path": "../../packages/blocks/fileInput"
+    },
+    {
+      "path": "../../packages/workspaces"
+    },
+    {
+      "path": "../../packages/whatsapp"
+    },
+    {
+      "path": "../../packages/user"
+    },
+    {
+      "path": "../../packages/ui"
+    },
+    {
+      "path": "../../packages/typebot"
+    },
+    {
+      "path": "../../packages/theme"
+    },
+    {
+      "path": "../../packages/telemetry"
+    },
+    {
+      "path": "../../packages/templates"
+    },
+    {
+      "path": "../../packages/settings"
+    },
+    {
+      "path": "../../packages/runtime-session-store"
+    },
+    {
+      "path": "../../packages/embeds/react"
+    },
+    {
+      "path": "../../packages/logs"
+    },
+    {
+      "path": "../../packages/groups"
+    },
+    {
+      "path": "../../packages/events"
+    },
+    {
+      "path": "../../packages/emails"
+    },
+    {
+      "path": "../../packages/credentials"
+    },
+    {
+      "path": "../../packages/config"
+    },
+    {
+      "path": "../../packages/conditions"
+    },
+    {
+      "path": "../../packages/shared-core"
+    },
+    {
+      "path": "../../packages/chat-session"
+    },
+    {
+      "path": "../../packages/chat-api"
+    },
+    {
+      "path": "../../packages/bot-engine"
+    },
+    {
+      "path": "../../packages/blocks/logic"
+    },
+    {
+      "path": "../../packages/blocks/integrations"
+    },
+    {
+      "path": "../../packages/blocks/inputs"
+    },
+    {
+      "path": "../../packages/blocks/core"
+    },
+    {
+      "path": "../../packages/blocks/bubbles"
+    },
+    {
+      "path": "../../packages/auth"
+    },
+    {
+      "path": "../../packages/variables"
+    },
+    {
+      "path": "../../packages/schemas"
+    },
+    {
+      "path": "../../packages/results"
+    },
+    {
+      "path": "../../packages/radar"
+    },
+    {
+      "path": "../../packages/lib"
+    },
+    {
+      "path": "../../packages/forge/repository"
+    },
+    {
+      "path": "../../packages/forge/core"
+    },
+    {
+      "path": "../../packages/billing"
+    },
+    {
+      "path": "../../packages/env"
+    }
+  ]
 }

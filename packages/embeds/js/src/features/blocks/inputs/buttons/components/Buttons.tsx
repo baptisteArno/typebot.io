@@ -3,9 +3,9 @@ import type { ChoiceInputBlock } from "@typebot.io/blocks-inputs/choice/schema";
 import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, For, onMount, Show } from "solid-js";
-import { Button } from "@/components/Button";
-import { SearchInput } from "@/components/inputs/SearchInput";
-import type { InputSubmitContent } from "@/types";
+import { Button } from "../../../../../components/Button";
+import { SearchInput } from "../../../../../components/inputs/SearchInput";
+import type { InputSubmitContent } from "../../../../../types";
 
 type Props = {
   chunkIndex: number;

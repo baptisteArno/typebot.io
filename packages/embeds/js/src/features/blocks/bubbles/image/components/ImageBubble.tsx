@@ -2,8 +2,8 @@ import { defaultImageBubbleContent } from "@typebot.io/blocks-bubbles/image/cons
 import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, onCleanup, onMount } from "solid-js";
-import { Modal } from "@/components/Modal";
-import { TypingBubble } from "@/components/TypingBubble";
+import { Modal } from "../../../../../components/Modal";
+import { TypingBubble } from "../../../../../components/TypingBubble";
 
 type Props = {
   content: ImageBubbleBlock["content"];

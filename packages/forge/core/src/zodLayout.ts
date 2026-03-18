@@ -4,7 +4,7 @@ export type ZodLayoutMetadata<TDefaultValue = unknown> = {
   accordion?: string;
   label?: string;
   inputType?: "variableDropdown" | "textarea" | "password" | "code";
-  lang?: "javascript" | "html" | "css" | "json";
+  lang?: "js" | "html" | "css" | "json";
   defaultValue?: TDefaultValue;
   placeholder?: string;
   helperText?: string;

@@ -152,7 +152,6 @@ export const ContainerThemeForm = <
             <Field.Root className="flex-row">
               <Field.Label>Shadow:</Field.Label>
               <BasicSelect
-                size="sm"
                 value={shadow}
                 onChange={updateShadow}
                 items={shadows}
@@ -204,7 +203,6 @@ const BorderThemeForm = ({
         <Field.Label>Roundness:</Field.Label>
         <div className="flex items-center gap-2">
           <BasicSelect
-            size="sm"
             value={border?.roundeness}
             defaultValue={defaultBorder?.roundeness}
             onChange={updateRoundness}

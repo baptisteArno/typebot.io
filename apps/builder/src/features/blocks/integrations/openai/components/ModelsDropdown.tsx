@@ -38,6 +38,7 @@ export const ModelsDropdown = ({
 
   return (
     <BasicSelect
+      className="w-full"
       items={data?.models ?? []}
       value={defaultValue}
       onChange={onChange}

@@ -130,7 +130,7 @@ export const MainFeatures = () => {
       let currentIndex = 0;
       let minDistance = Number.POSITIVE_INFINITY;
 
-      [...items].forEach((item, index) => {
+      Array.from(items).forEach((item, index) => {
         const rect = item.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
 

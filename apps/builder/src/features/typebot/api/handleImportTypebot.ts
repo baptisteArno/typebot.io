@@ -76,7 +76,7 @@ const migrateImportingTypebot = async (
     whatsAppCredentialsId: null,
     publicId: null,
     riskLevel: null,
-  } satisfies Typebot;
+  } satisfies Partial<Typebot>;
   return (await migrateTypebot(fullTypebot)).typebot;
 };
 

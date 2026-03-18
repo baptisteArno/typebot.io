@@ -14,16 +14,20 @@ import {
   Show,
   Switch,
 } from "solid-js";
-import { Button } from "@/components/Button";
-import { MicrophoneIcon } from "@/components/icons/MicrophoneIcon";
-import { ShortTextInput } from "@/components/inputs/ShortTextInput";
-import { Textarea } from "@/components/inputs/Textarea";
-import { SendButton } from "@/components/SendButton";
-import { TextInputAddFileButton } from "@/components/TextInputAddFileButton";
-import type { CommandData } from "@/features/commands/types";
-import type { Attachment, BotContext, InputSubmitContent } from "@/types";
-import { guessApiHost } from "@/utils/guessApiHost";
-import { toaster } from "@/utils/toaster";
+import { Button } from "../../../../../components/Button";
+import { MicrophoneIcon } from "../../../../../components/icons/MicrophoneIcon";
+import { ShortTextInput } from "../../../../../components/inputs/ShortTextInput";
+import { Textarea } from "../../../../../components/inputs/Textarea";
+import { SendButton } from "../../../../../components/SendButton";
+import { TextInputAddFileButton } from "../../../../../components/TextInputAddFileButton";
+import type {
+  Attachment,
+  BotContext,
+  InputSubmitContent,
+} from "../../../../../types";
+import { guessApiHost } from "../../../../../utils/guessApiHost";
+import { toaster } from "../../../../../utils/toaster";
+import type { CommandData } from "../../../../commands/types";
 import { SelectedFile } from "../../fileUpload/components/SelectedFile";
 import { sanitizeNewFile } from "../../fileUpload/helpers/sanitizeSelectedFiles";
 import { uploadFiles } from "../../fileUpload/helpers/uploadFiles";

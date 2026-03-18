@@ -29,12 +29,14 @@ export const RowsFilterComparisonItem = ({
   return (
     <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border">
       <BasicSelect
+        className="w-full"
         value={item.column}
         onChange={handleColumnSelect}
         items={columns}
         placeholder="Select a column"
       />
       <BasicSelect
+        className="w-full"
         value={item.comparisonOperator}
         onChange={handleSelectComparisonOperator}
         items={Object.values(ComparisonOperators)}

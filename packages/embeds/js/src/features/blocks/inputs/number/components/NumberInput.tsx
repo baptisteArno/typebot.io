@@ -9,11 +9,11 @@ import type { NumberInputBlock } from "@typebot.io/blocks-inputs/number/schema";
 import { guessDeviceIsMobile } from "@typebot.io/lib/guessDeviceIsMobile";
 import { safeParseFloat } from "@typebot.io/lib/safeParseFloat";
 import { onCleanup, onMount } from "solid-js";
-import { ChevronDownIcon } from "@/components/icons/ChevronDownIcon";
-import { ChevronUpIcon } from "@/components/icons/ChevronUpIcon";
-import { SendButton } from "@/components/SendButton";
-import type { CommandData } from "@/features/commands/types";
-import type { InputSubmitContent } from "@/types";
+import { ChevronDownIcon } from "../../../../../components/icons/ChevronDownIcon";
+import { ChevronUpIcon } from "../../../../../components/icons/ChevronUpIcon";
+import { SendButton } from "../../../../../components/SendButton";
+import type { InputSubmitContent } from "../../../../../types";
+import type { CommandData } from "../../../../commands/types";
 
 type NumberInputProps = {
   block: NumberInputBlock;

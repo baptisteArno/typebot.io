@@ -4,9 +4,22 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./schemas": "./src/schemas.ts",
-    "./handlers": "./src/handlers/index.ts"
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./schemas": {
+      "types": "./src/schemas.ts",
+      "import": "./src/schemas.ts",
+      "default": "./src/schemas.ts"
+    },
+    "./handlers": {
+      "types": "./src/handlers/index.ts",
+      "import": "./src/handlers/index.ts",
+      "default": "./src/handlers/index.ts"
+    },
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "@typebot.io/ai": "workspace:*",
@@ -16,10 +29,6 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "^19.2.7"
-  },
-  "scripts": {
-    "check-types": "tsc --noEmit"
+    "@types/react": "^19.2.14"
   }
 }

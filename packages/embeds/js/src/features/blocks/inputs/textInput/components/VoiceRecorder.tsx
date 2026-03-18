@@ -4,8 +4,8 @@ import { defaultButtonsBackgroundColor } from "@typebot.io/theme/constants";
 import type { Theme } from "@typebot.io/theme/schemas";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createEffect, createSignal, onCleanup } from "solid-js";
-import { CloseIcon } from "@/components/icons/CloseIcon";
-import type { BotContext } from "@/types";
+import { CloseIcon } from "../../../../../components/icons/CloseIcon";
+import type { BotContext } from "../../../../../types";
 import { volumeProcessorCode } from "./VolumeProcessor";
 
 const barWidth = 3;

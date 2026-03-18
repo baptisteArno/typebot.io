@@ -4,14 +4,14 @@ import { PostHog } from "posthog-node";
 import { z } from "zod";
 
 const flagsSchema = z.object({
-  flags: z.record(z.enum(["cards", "360dialog"]), z.boolean()),
+  flags: z.record(z.enum(["cards", "360dialog", "campaigns"]), z.boolean()),
 });
 
 export const getFeatureFlags = authenticatedProcedure
   .output(flagsSchema)
   .handler(async ({ context: { user } }) => {
     if (!env.NEXT_PUBLIC_POSTHOG_KEY)
-      return { flags: { "360dialog": false, cards: false } };
+      return { flags: { "360dialog": false, cards: false, campaigns: true } };
     const client = new PostHog(env.NEXT_PUBLIC_POSTHOG_KEY, {
       host: env.POSTHOG_API_HOST,
     });
@@ -20,6 +20,7 @@ export const getFeatureFlags = authenticatedProcedure
       flags: {
         "360dialog": Boolean(rawFlags["360dialog"]),
         cards: Boolean(rawFlags.cards),
+        campaigns: Boolean(rawFlags.campaigns),
       },
     };
   });

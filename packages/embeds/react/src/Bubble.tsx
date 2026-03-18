@@ -1,6 +1,7 @@
 import { type BubbleProps, resolveButtonSize } from "@typebot.io/js";
 import type React from "react";
 import { useEffect, useMemo, useRef } from "react";
+import { ensureWebComponentsLoaded } from "./ensureWebComponentsLoaded";
 
 type Props = BubbleProps & {
   inlineStyle?: {
@@ -25,7 +26,7 @@ export const Bubble = (props: Props) => {
   const ref = useRef<BubbleElement | null>(null);
 
   useEffect(() => {
-    import("./web");
+    void ensureWebComponentsLoaded();
   }, []);
 
   useEffect(() => {

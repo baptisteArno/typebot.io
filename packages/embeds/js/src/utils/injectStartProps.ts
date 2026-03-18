@@ -4,9 +4,9 @@ import {
   isDefined,
   isNotEmpty,
 } from "@typebot.io/lib/utils";
-import { initGoogleAnalytics } from "@/lib/gtag";
-import { gtmBodyElement } from "@/lib/gtm";
-import { initPixel } from "@/lib/pixel";
+import { initGoogleAnalytics } from "../lib/gtag";
+import { gtmBodyElement } from "../lib/gtm";
+import { initPixel } from "../lib/pixel";
 
 export const injectStartProps = async (
   startPropsToInject: StartPropsToInject,

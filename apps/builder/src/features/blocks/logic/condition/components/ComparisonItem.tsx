@@ -36,6 +36,7 @@ export const ComparisonItem = ({
         onSelectVariable={handleSelectVariable}
       />
       <BasicSelect
+        className="w-full"
         value={item.comparisonOperator}
         onChange={handleSelectComparisonOperator}
         items={Object.values(ComparisonOperators)}

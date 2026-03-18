@@ -11,7 +11,7 @@ import type {
   BotContext,
   ChatChunk as ChatChunkType,
   InputSubmitContent,
-} from "@/types";
+} from "../../types";
 import { HostBubble } from "../bubbles/HostBubble";
 import { StreamingBubble } from "../bubbles/StreamingBubble";
 import { InputChatBlock } from "../InputChatBlock";

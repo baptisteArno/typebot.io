@@ -1,4 +1,4 @@
-import { Combobox as ComboboxPrimitive } from "@base-ui-components/react/combobox";
+import { Combobox as ComboboxPrimitive } from "@base-ui/react/combobox";
 import type * as React from "react";
 import { forwardRef } from "react";
 import { cn } from "../lib/cn";

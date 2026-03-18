@@ -1,0 +1,48 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
+    "rootDir": "src"
+  },
+  "exclude": [
+    "out-tsc",
+    "dist",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.js",
+    "src/**/*.test.js",
+    "src/**/*.spec.jsx",
+    "src/**/*.test.jsx",
+    "vite.config.ts",
+    "vite.config.mts",
+    "vitest.config.ts",
+    "vitest.config.mts",
+    "eslint.config.js",
+    "eslint.config.cjs",
+    "eslint.config.mjs"
+  ],
+  "include": ["src/**/*.ts"],
+  "references": [
+    {
+      "path": "../../packages/user/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/typebot/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/telemetry/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/results/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/lib/tsconfig.lib.json"
+    },
+    {
+      "path": "../../packages/config/tsconfig.lib.json"
+    }
+  ]
+}

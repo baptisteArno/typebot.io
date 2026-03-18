@@ -22,6 +22,7 @@ export const CellWithVariableIdStack = ({
   return (
     <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border">
       <BasicSelect
+        className="w-full"
         value={item.column}
         onChange={handleColumnSelect}
         items={columns}

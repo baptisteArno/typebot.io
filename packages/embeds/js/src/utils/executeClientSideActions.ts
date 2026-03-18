@@ -1,19 +1,19 @@
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import type { LogInSession } from "@typebot.io/logs/schemas";
-import { executeChatwoot } from "@/features/blocks/integrations/chatwoot/utils/executeChatwoot";
-import { executeGoogleAnalyticsBlock } from "@/features/blocks/integrations/googleAnalytics/utils/executeGoogleAnalytics";
-import { executeHttpRequest } from "@/features/blocks/integrations/httpRequest/executeHttpRequest";
-import { streamChat } from "@/features/blocks/integrations/openai/streamChat";
-import { executePixel } from "@/features/blocks/integrations/pixel/executePixel";
-import { executeRedirect } from "@/features/blocks/logic/redirect/utils/executeRedirect";
+import { executeChatwoot } from "../features/blocks/integrations/chatwoot/utils/executeChatwoot";
+import { executeGoogleAnalyticsBlock } from "../features/blocks/integrations/googleAnalytics/utils/executeGoogleAnalytics";
+import { executeHttpRequest } from "../features/blocks/integrations/httpRequest/executeHttpRequest";
+import { streamChat } from "../features/blocks/integrations/openai/streamChat";
+import { executePixel } from "../features/blocks/integrations/pixel/executePixel";
+import { executeRedirect } from "../features/blocks/logic/redirect/utils/executeRedirect";
 import {
   executeCode,
   executeScript,
-} from "@/features/blocks/logic/script/executeScript";
-import { executeSetVariable } from "@/features/blocks/logic/setVariable/executeSetVariable";
-import { executeWait } from "@/features/blocks/logic/wait/utils/executeWait";
-import { listenForWebhook } from "@/features/blocks/logic/webhook/listenForWebhook";
-import type { ClientSideActionContext } from "@/types";
+} from "../features/blocks/logic/script/executeScript";
+import { executeSetVariable } from "../features/blocks/logic/setVariable/executeSetVariable";
+import { executeWait } from "../features/blocks/logic/wait/utils/executeWait";
+import { listenForWebhook } from "../features/blocks/logic/webhook/listenForWebhook";
+import type { ClientSideActionContext } from "../types";
 import { injectStartProps } from "./injectStartProps";
 
 type ClientSideActionResponse =

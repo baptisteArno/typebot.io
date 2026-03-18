@@ -1,4 +1,4 @@
-import { createServerFileRoute } from "@tanstack/react-start/server";
+import { createFileRoute } from "@tanstack/react-router";
 import { templates } from "@typebot.io/templates";
 import { currentBaseUrl } from "@/constants";
 
@@ -48,52 +48,70 @@ function transformPathToSitemapUrlEntry(
   } satisfies SitemapUrlEntry;
 }
 
-export const ServerRoute = createServerFileRoute("/sitemap.xml").methods({
-  GET: async () => {
-    const { allPosts } = await import("@/content-collections");
+export const Route = createFileRoute("/sitemap.xml")({
+  server: {
+    handlers: {
+      GET: async () => {
+        const { allPosts } = await import("@/content-collections");
 
-    const staticEntries = [
-      { loc: `${currentBaseUrl}/`, lastmod: "2025-07-05" },
-      { loc: `${currentBaseUrl}/pricing`, lastmod: "2025-07-05" },
-      { loc: `${currentBaseUrl}/about`, lastmod: "2025-07-05" },
-      { loc: `${currentBaseUrl}/oss-friends`, lastmod: "2025-07-05" },
-      { loc: `${currentBaseUrl}/blog`, lastmod: "2025-07-05" },
-      { loc: `${currentBaseUrl}/templates`, lastmod: templatesIndexLastmod },
-    ] satisfies SitemapUrlEntry[];
+        const staticEntries = [
+          { loc: `${currentBaseUrl}/`, lastmod: "2025-07-05" },
+          { loc: `${currentBaseUrl}/pricing`, lastmod: "2025-07-05" },
+          { loc: `${currentBaseUrl}/about`, lastmod: "2025-07-05" },
+          { loc: `${currentBaseUrl}/oss-friends`, lastmod: "2025-07-05" },
+          { loc: `${currentBaseUrl}/blog`, lastmod: "2025-07-05" },
+          {
+            loc: `${currentBaseUrl}/templates`,
+            lastmod: templatesIndexLastmod,
+          },
+        ] satisfies SitemapUrlEntry[];
 
-    const templateEntries: SitemapUrlEntry[] = templates.map((template) => ({
-      loc: `${currentBaseUrl}/templates/${template.slug}`,
-      lastmod: template.updatedAt,
-    }));
+        const templateEntries: SitemapUrlEntry[] = templates.map(
+          (template) => ({
+            loc: `${currentBaseUrl}/templates/${template.slug}`,
+            lastmod: template.updatedAt,
+          }),
+        );
 
-    const contentPaths = Array.from(new Set(allPosts.map((p) => p._meta.path)));
-    const contentEntries: SitemapUrlEntry[] = contentPaths
-      .filter(
-        (p) => typeof p === "string" && p.length > 0 && !p.includes("blog"),
-      )
-      .map((path) => transformPathToSitemapUrlEntry(path, allPosts));
+        const contentPaths = Array.from(
+          new Set(allPosts.map((post) => post._meta.path)),
+        );
+        const contentEntries: SitemapUrlEntry[] = contentPaths
+          .filter(
+            (path) =>
+              typeof path === "string" &&
+              path.length > 0 &&
+              !path.includes("blog"),
+          )
+          .map((path) => transformPathToSitemapUrlEntry(path, allPosts));
 
-    const blogContentEntries: SitemapUrlEntry[] = contentPaths
-      .filter(
-        (p) => typeof p === "string" && p.length > 0 && p.includes("blog"),
-      )
-      .map((path) => transformPathToSitemapUrlEntry(path, allPosts))
-      .sort(
-        (a, b) => new Date(b.lastmod).getTime() - new Date(a.lastmod).getTime(),
-      );
+        const blogContentEntries: SitemapUrlEntry[] = contentPaths
+          .filter(
+            (path) =>
+              typeof path === "string" &&
+              path.length > 0 &&
+              path.includes("blog"),
+          )
+          .map((path) => transformPathToSitemapUrlEntry(path, allPosts))
+          .sort(
+            (a, b) =>
+              new Date(b.lastmod).getTime() - new Date(a.lastmod).getTime(),
+          );
 
-    const xml = generateSitemapXml([
-      ...staticEntries,
-      ...templateEntries,
-      ...contentEntries,
-      ...blogContentEntries,
-    ]);
+        const xml = generateSitemapXml([
+          ...staticEntries,
+          ...templateEntries,
+          ...contentEntries,
+          ...blogContentEntries,
+        ]);
 
-    return new Response(xml, {
-      headers: {
-        "Content-Type": "application/xml; charset=utf-8",
-        "Cache-Control": "public, max-age=3600",
+        return new Response(xml, {
+          headers: {
+            "Content-Type": "application/xml; charset=utf-8",
+            "Cache-Control": "public, max-age=3600",
+          },
+        });
       },
-    });
+    },
   },
 });

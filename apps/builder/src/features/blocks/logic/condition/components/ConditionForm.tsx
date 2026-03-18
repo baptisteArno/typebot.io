@@ -25,6 +25,7 @@ export const ConditionForm = ({ condition, onConditionChange }: Props) => {
       ComponentBetweenItems={() => (
         <div className="flex justify-center">
           <BasicSelect
+            className="w-full"
             value={
               condition?.logicalOperator ??
               defaultConditionItemContent.logicalOperator

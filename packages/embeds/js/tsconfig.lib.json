@@ -1,0 +1,59 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "declaration": true,
+    "declarationMap": true,
+    "lib": ["dom", "es2023"]
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "references": [
+    {
+      "path": "../../forge/blocks/zendesk/tsconfig.lib.json"
+    },
+    {
+      "path": "../../ui/tsconfig.lib.json"
+    },
+    {
+      "path": "../../theme/tsconfig.lib.json"
+    },
+    {
+      "path": "../../settings/tsconfig.lib.json"
+    },
+    {
+      "path": "../../schemas/tsconfig.lib.json"
+    },
+    {
+      "path": "../../rich-text/tsconfig.lib.json"
+    },
+    {
+      "path": "../../logs/tsconfig.lib.json"
+    },
+    {
+      "path": "../../lib/tsconfig.lib.json"
+    },
+    {
+      "path": "../../env/tsconfig.lib.json"
+    },
+    {
+      "path": "../../chat-api/tsconfig.lib.json"
+    },
+    {
+      "path": "../../blocks/logic/tsconfig.lib.json"
+    },
+    {
+      "path": "../../blocks/integrations/tsconfig.lib.json"
+    },
+    {
+      "path": "../../blocks/inputs/tsconfig.lib.json"
+    },
+    {
+      "path": "../../blocks/bubbles/tsconfig.lib.json"
+    }
+  ]
+}

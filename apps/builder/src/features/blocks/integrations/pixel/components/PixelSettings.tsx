@@ -115,6 +115,7 @@ export const PixelSettings = ({ options, onOptionsChange }: Props) => {
               to better understand the available options.
             </p>
             <BasicSelect
+              className="w-full"
               items={["Custom", ...pixelEventTypes]}
               value={options?.eventType}
               placeholder="Select event type"
@@ -191,6 +192,7 @@ const ParamItem = ({ item, eventType, onItemChange }: ParamItemProps) => {
         />
       ) : (
         <BasicSelect
+          className="w-full"
           value={item.key}
           items={possibleObjectProps.map((prop) => prop.key)}
           onChange={updateKey}
@@ -199,7 +201,7 @@ const ParamItem = ({ item, eventType, onItemChange }: ParamItemProps) => {
       )}
       {currentObject?.type === "code" ? (
         <CodeEditor
-          lang={"javascript"}
+          lang={"js"}
           defaultValue={item.value}
           onChange={updateValue}
         />

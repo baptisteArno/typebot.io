@@ -41,11 +41,11 @@ If you deploy on a Vercel Hobby plan, you will need to reduce the `maxDuration` 
 1. Create a new Vercel project and import the forked repo
 2. Change the project name to: `typebot-builder` (or anything else)
 3. Choose Next.js framework
-4. Change the root directory to: `apps/builder`
+4. Change the output directory to: `apps/builder/.next`
 5. Change the build command to:
 
    ```sh
-   bunx turbo build && bunx turbo db:migrate --filter=@typebot.io/prisma
+   bunx nx build builder && bunx nx db:migrate prisma
    ```
 
 6. Add the required environment variables ([Check out the configuration guide](/self-hosting/configuration))
@@ -56,11 +56,11 @@ If you deploy on a Vercel Hobby plan, you will need to reduce the `maxDuration` 
 1. Create a new Vercel project and import the forked repo
 2. Change the project name to: `typebot-viewer` (or anything else)
 3. Choose Next.js framework
-4. Change the root directory to: `apps/viewer`
+4. Change the output directory to: `apps/viewer/.next`
 5. Change the build command to:
 
    ```sh
-   bunx turbo build && bunx turbo db:migrate --filter=@typebot.io/prisma
+   bunx nx build viewer && bunx nx db:migrate prisma
    ```
 
 6. Add the required environment variables ([Check out the configuration guide](/self-hosting/configuration))

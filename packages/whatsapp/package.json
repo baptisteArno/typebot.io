@@ -4,11 +4,27 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./package.json": "./package.json"
   },
-  "scripts": {
-    "test": "dotenv -e ./.env -e ../../.env -- bun test",
-    "check-types": "tsc --noEmit"
+  "nx": {
+    "targets": {
+      "test": {
+        "executor": "@nx/vitest:test",
+        "outputs": [
+          "{options.reportsDirectory}"
+        ],
+        "options": {
+          "configFile": "{projectRoot}/vitest.config.mts",
+          "project": "@typebot.io/whatsapp",
+          "reportsDirectory": "../../coverage/packages/whatsapp"
+        }
+      }
+    }
   },
   "dependencies": {
     "@typebot.io/blocks-core": "workspace:*",
@@ -34,8 +50,7 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*",
-    "@types/bun": "^1.3.9",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.0.18"
   }
 }

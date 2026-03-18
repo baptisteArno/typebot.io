@@ -16,7 +16,7 @@ import { MyAccountForm } from "@/features/user/components/MyAccountForm";
 import { UserPreferencesForm } from "@/features/user/components/UserPreferencesForm";
 import packageJson from "../../../../../../package.json";
 import { useWorkspace, type WorkspaceInApp } from "../WorkspaceProvider";
-import { MembersList } from "./MembersList";
+import { PeopleList } from "./PeopleList";
 import { WorkspaceSettingsForm } from "./WorkspaceSettingsForm";
 
 type Props = {
@@ -165,7 +165,7 @@ const SettingsContent = ({
     case "workspace-settings":
       return <WorkspaceSettingsForm onClose={onClose} />;
     case "members":
-      return <MembersList />;
+      return <PeopleList />;
     case "billing":
       return <BillingSettingsLayout />;
     case "credentials":
