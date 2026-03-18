@@ -12,7 +12,6 @@
   "files.watcherExclude": {
     "**/node_modules/**": true,
     "**/.next/**": true,
-    "**/.turbo/**": true,
     "**/dist/**": true,
     "**/opensrc/**": true,
     "**/packages/embeds/wordpress/.svn/**": true,

@@ -36,5 +36,5 @@ Portal.displayName = PORTAL_NAME;
 
 /* -----------------------------------------------------------------------------------------------*/
 
-export { Portal };
 export type { PortalProps };
+export { Portal };

@@ -283,7 +283,7 @@ const main = async () => {
   s.start("Formatting...");
   try {
     await new Promise<void>((resolve, reject) => {
-      const ls = spawn("bunx", ["turbo", "//#format-and-lint:fix"]);
+      const ls = spawn("bun", ["format-and-lint:fix"]);
       ls.stderr.on("data", (data) => {
         console.log(data.toString());
       });

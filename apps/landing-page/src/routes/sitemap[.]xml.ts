@@ -60,13 +60,18 @@ export const Route = createFileRoute("/sitemap.xml")({
           { loc: `${currentBaseUrl}/about`, lastmod: "2025-07-05" },
           { loc: `${currentBaseUrl}/oss-friends`, lastmod: "2025-07-05" },
           { loc: `${currentBaseUrl}/blog`, lastmod: "2025-07-05" },
-          { loc: `${currentBaseUrl}/templates`, lastmod: templatesIndexLastmod },
+          {
+            loc: `${currentBaseUrl}/templates`,
+            lastmod: templatesIndexLastmod,
+          },
         ] satisfies SitemapUrlEntry[];
 
-        const templateEntries: SitemapUrlEntry[] = templates.map((template) => ({
-          loc: `${currentBaseUrl}/templates/${template.slug}`,
-          lastmod: template.updatedAt,
-        }));
+        const templateEntries: SitemapUrlEntry[] = templates.map(
+          (template) => ({
+            loc: `${currentBaseUrl}/templates/${template.slug}`,
+            lastmod: template.updatedAt,
+          }),
+        );
 
         const contentPaths = Array.from(
           new Set(allPosts.map((post) => post._meta.path)),
@@ -74,14 +79,18 @@ export const Route = createFileRoute("/sitemap.xml")({
         const contentEntries: SitemapUrlEntry[] = contentPaths
           .filter(
             (path) =>
-              typeof path === "string" && path.length > 0 && !path.includes("blog"),
+              typeof path === "string" &&
+              path.length > 0 &&
+              !path.includes("blog"),
           )
           .map((path) => transformPathToSitemapUrlEntry(path, allPosts));
 
         const blogContentEntries: SitemapUrlEntry[] = contentPaths
           .filter(
             (path) =>
-              typeof path === "string" && path.length > 0 && path.includes("blog"),
+              typeof path === "string" &&
+              path.length > 0 &&
+              path.includes("blog"),
           )
           .map((path) => transformPathToSitemapUrlEntry(path, allPosts))
           .sort(

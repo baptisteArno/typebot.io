@@ -15,10 +15,10 @@ jobs:
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: "package.json"
-      - name: Run Turbo ignore
+      - name: Run Nx ignore
         id: check_changes
         run: |
-          echo "Running turbo-ignore..."
+          echo "Running nx-ignore..."
 
           set +e
           bunx nx-ignore workflows --slim-install
