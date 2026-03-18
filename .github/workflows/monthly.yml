@@ -7,9 +7,6 @@ on:
 jobs:
   clean:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/scripts
     env:
       DATABASE_URL: "${{ secrets.DATABASE_URL }}"
       DATABASE_URL_REPLICA: "${{ secrets.DATABASE_URL_REPLICA }}"
@@ -25,4 +22,4 @@ jobs:
         with:
           bun-version-file: "package.json"
       - run: bun install
-      - run: bunx nx cron:monthly scripts
+      - run: bunx nx run @typebot.io/scripts:cron:monthly

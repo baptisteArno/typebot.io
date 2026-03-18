@@ -23,6 +23,9 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 COPY --from=builder --chown=bun:bun /app/apps/workflows/dist/index.js /app/index.js
+COPY --from=builder --chown=bun:bun /app/node_modules/react /app/node_modules/react
+COPY --from=builder --chown=bun:bun /app/node_modules/react-dom /app/node_modules/react-dom
+COPY --from=builder --chown=bun:bun /app/node_modules/scheduler /app/node_modules/scheduler
 
 USER bun
 EXPOSE 3000/tcp

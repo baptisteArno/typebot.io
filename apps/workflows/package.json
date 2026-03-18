@@ -5,7 +5,7 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "build": "bun build src/index.ts --target bun --outdir dist"
+    "build": "bun build src/index.ts --target bun --outdir dist --external react-dom/server"
   },
   "nx": {
     "targets": {
