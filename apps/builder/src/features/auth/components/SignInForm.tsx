@@ -138,15 +138,17 @@ export const SignInForm = ({ defaultEmail, className }: Props) => {
                 className="flex items-center gap-2"
                 onSubmit={handleEmailSubmit}
               >
-                <Input
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="email@company.com"
-                  required
-                  value={emailValue}
-                  onValueChange={setEmailValue}
-                />
+                <Field.Root>
+                  <Input
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="email@company.com"
+                    required
+                    value={emailValue}
+                    onValueChange={setEmailValue}
+                  />
+                </Field.Root>
                 <Button
                   type="submit"
                   disabled={
