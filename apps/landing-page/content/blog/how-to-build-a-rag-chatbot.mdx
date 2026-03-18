@@ -270,6 +270,7 @@ Add one required string parameter:
 
 Paste the tool code below, which calls the Pinecone Assistant context endpoint and returns relevant snippets from your uploaded documents:
 
+<Details summary="Show the Pinecone tool code">
 ```js
 const apiKey = "REPLACE_WITH_PINECONE_API_KEY";
 const apiVersion = "2025-10";
@@ -279,11 +280,11 @@ const rawInput = typeof input === "undefined" ? undefined : input;
 const directQuery = typeof query === "undefined" ? undefined : query;
 
 const prompt =
-  typeof directQuery === "string" &amp;&amp; directQuery.trim()
+  typeof directQuery === "string" && directQuery.trim()
     ? directQuery.trim()
-    : typeof rawInput === "string" &amp;&amp; rawInput.trim()
+    : typeof rawInput === "string" && rawInput.trim()
       ? rawInput.trim()
-      : typeof rawInput?.query === "string" &amp;&amp; rawInput.query.trim()
+      : typeof rawInput?.query === "string" && rawInput.query.trim()
         ? rawInput.query.trim()
         : "";
 
@@ -313,7 +314,7 @@ function coerceJson(value) {
   }
 }
 
-const response = await fetchhttps://prod-1-data.ke.pinecone.io/assistant/chat/${assistantName}/context, {
+const response = await fetch(`https://prod-1-data.ke.pinecone.io/assistant/chat/${assistantName}/context`, {
   method: "POST",
   headers: {
     "Api-Key": apiKey,
@@ -354,6 +355,7 @@ return JSON.stringify({
   rawType: typeof rawData
 });
 ```
+</Details>
 
 **Remember to replace:**
 
@@ -460,4 +462,3 @@ The key insight is that RAG isn't about smarter models. It's about a smarter pro
 Start with a small, focused knowledge base. Upload your most-asked FAQs or help articles to Pinecone, build the conversation loop in Typebot, and test with real questions. 
 
 <Cta buttonLabel="Integrate AI Now">Leverage the power of OpenAI and Anthropic to create smarter, more human-like conversations.</Cta>
-
