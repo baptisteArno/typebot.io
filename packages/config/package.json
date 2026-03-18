@@ -19,5 +19,8 @@
   "dependencies": {
     "effect": "4.0.0-beta.30"
   },
-  "scripts": {}
+  "scripts": {},
+  "devDependencies": {
+    "@testcontainers/postgresql": "^11.13.0"
+  }
 }
