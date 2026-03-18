@@ -79,3 +79,6 @@ vite.config.*.timestamp*
 vitest.config.*.timestamp*
 
 **/out-tsc/
+
+content-collections.d.ts.map
+content-collections.d.ts

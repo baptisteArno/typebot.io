@@ -23,6 +23,7 @@
     "db:generate": "tsx scripts/db-generate.ts",
     "db:generate:mysql": "DATABASE_URL=mysql:// tsx scripts/db-generate.ts",
     "db:push": "tsx scripts/db-push.ts",
+    "db:push:vercel-preview": "prisma db push --schema mysql/schema.prisma --url $DATABASE_URL_VERCEL_PREVIEW",
     "migrate:deploy": "tsx scripts/migrate-deploy.ts",
     "create-migration-file": "prisma migrate dev --config prisma.config.ts --create-only --schema postgresql/schema.prisma",
     "db:migrate": "bun migrate:deploy",

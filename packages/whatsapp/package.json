@@ -50,7 +50,7 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "vite-tsconfig-paths": "^5.1.4",
+    "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^4.0.18"
   }
 }

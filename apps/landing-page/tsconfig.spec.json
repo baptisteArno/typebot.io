@@ -13,7 +13,6 @@
     "lib": ["es2022", "dom"]
   },
   "include": [
-    "content-collection-vite-plugin.ts",
     "vite.config.ts",
     "vite.config.mts",
     "vitest.config.ts",

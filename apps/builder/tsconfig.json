@@ -76,6 +76,9 @@
       "path": "../../packages/theme"
     },
     {
+      "path": "../../packages/telemetry"
+    },
+    {
       "path": "../../packages/templates"
     },
     {
@@ -142,9 +145,6 @@
       "path": "../../packages/variables"
     },
     {
-      "path": "../../packages/telemetry"
-    },
-    {
       "path": "../../packages/schemas"
     },
     {
@@ -152,9 +152,6 @@
     },
     {
       "path": "../../packages/radar"
-    },
-    {
-      "path": "../../packages/prisma"
     },
     {
       "path": "../../packages/lib"

@@ -54,9 +54,6 @@
       "path": "../../packages/embeds/react/tsconfig.lib.json"
     },
     {
-      "path": "../../packages/prisma/tsconfig.lib.json"
-    },
-    {
       "path": "../../packages/lib/tsconfig.lib.json"
     },
     {

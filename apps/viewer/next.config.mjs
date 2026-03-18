@@ -47,12 +47,7 @@ const currentHost = "typebot.io";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@typebot.io/settings", "@ark-ui/solid"],
-  turbopack: {
-    resolveAlias: {
-      "solid-js/web": "solid-js/web/dist/web.js",
-    },
-  },
+  transpilePackages: ["@typebot.io/settings"],
   reactStrictMode: true,
   output: "standalone",
   outputFileTracingRoot: join(__dirname, "../../"),

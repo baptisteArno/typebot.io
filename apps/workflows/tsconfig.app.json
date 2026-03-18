@@ -39,9 +39,6 @@
       "path": "../../packages/results/tsconfig.lib.json"
     },
     {
-      "path": "../../packages/prisma/tsconfig.lib.json"
-    },
-    {
       "path": "../../packages/lib/tsconfig.lib.json"
     },
     {

@@ -29,6 +29,9 @@
           ],
           "tsConfig": "{workspaceRoot}/packages/embeds/react/tsconfig.lib.json",
           "platform": "browser",
+          "esbuildOptions": {
+            "splitting": true
+          },
           "format": [
             "esm"
           ],
@@ -41,10 +44,7 @@
             "deleteOutputPath": false
           },
           "production": {
-            "minify": true,
-            "excludeFromExternal": [
-              "@typebot.io/js"
-            ]
+            "minify": true
           }
         }
       }

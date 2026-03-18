@@ -8,9 +8,9 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createServerRootRoute } from '@tanstack/react-start/server'
-
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as HealthzRouteImport } from './routes/healthz'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LayoutPricingRouteImport } from './routes/_layout/pricing'
@@ -21,11 +21,17 @@ import { Route as LayoutTemplatesIndexRouteImport } from './routes/_layout/templ
 import { Route as LayoutBlogIndexRouteImport } from './routes/_layout/blog/index'
 import { Route as LayoutTemplatesSlugRouteImport } from './routes/_layout/templates/$slug'
 import { Route as LayoutBlogSlugRouteImport } from './routes/_layout/blog/$slug'
-import { ServerRoute as SitemapDotxmlServerRouteImport } from './routes/sitemap[.]xml'
-import { ServerRoute as HealthzServerRouteImport } from './routes/healthz'
 
-const rootServerRouteImport = createServerRootRoute()
-
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HealthzRoute = HealthzRouteImport.update({
+  id: '/healthz',
+  path: '/healthz',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => rootRouteImport,
@@ -75,30 +81,24 @@ const LayoutBlogSlugRoute = LayoutBlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => LayoutRoute,
 } as any)
-const SitemapDotxmlServerRoute = SitemapDotxmlServerRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
-const HealthzServerRoute = HealthzServerRouteImport.update({
-  id: '/healthz',
-  path: '/healthz',
-  getParentRoute: () => rootServerRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/healthz': typeof HealthzRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$slug': typeof LayoutSlugRoute
   '/about': typeof LayoutAboutRoute
   '/oss-friends': typeof LayoutOssFriendsRoute
   '/pricing': typeof LayoutPricingRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
   '/templates/$slug': typeof LayoutTemplatesSlugRoute
-  '/blog': typeof LayoutBlogIndexRoute
-  '/templates': typeof LayoutTemplatesIndexRoute
+  '/blog/': typeof LayoutBlogIndexRoute
+  '/templates/': typeof LayoutTemplatesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/healthz': typeof HealthzRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$slug': typeof LayoutSlugRoute
   '/about': typeof LayoutAboutRoute
   '/oss-friends': typeof LayoutOssFriendsRoute
@@ -112,6 +112,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
+  '/healthz': typeof HealthzRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_layout/$slug': typeof LayoutSlugRoute
   '/_layout/about': typeof LayoutAboutRoute
   '/_layout/oss-friends': typeof LayoutOssFriendsRoute
@@ -125,17 +127,21 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/healthz'
+    | '/sitemap.xml'
     | '/$slug'
     | '/about'
     | '/oss-friends'
     | '/pricing'
     | '/blog/$slug'
     | '/templates/$slug'
-    | '/blog'
-    | '/templates'
+    | '/blog/'
+    | '/templates/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/healthz'
+    | '/sitemap.xml'
     | '/$slug'
     | '/about'
     | '/oss-friends'
@@ -148,6 +154,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_layout'
+    | '/healthz'
+    | '/sitemap.xml'
     | '/_layout/$slug'
     | '/_layout/about'
     | '/_layout/oss-friends'
@@ -161,39 +169,30 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
-}
-export interface FileServerRoutesByFullPath {
-  '/healthz': typeof HealthzServerRoute
-  '/sitemap.xml': typeof SitemapDotxmlServerRoute
-}
-export interface FileServerRoutesByTo {
-  '/healthz': typeof HealthzServerRoute
-  '/sitemap.xml': typeof SitemapDotxmlServerRoute
-}
-export interface FileServerRoutesById {
-  __root__: typeof rootServerRouteImport
-  '/healthz': typeof HealthzServerRoute
-  '/sitemap.xml': typeof SitemapDotxmlServerRoute
-}
-export interface FileServerRouteTypes {
-  fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/healthz' | '/sitemap.xml'
-  fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/healthz' | '/sitemap.xml'
-  id: '__root__' | '/healthz' | '/sitemap.xml'
-  fileServerRoutesById: FileServerRoutesById
-}
-export interface RootServerRouteChildren {
-  HealthzServerRoute: typeof HealthzServerRoute
-  SitemapDotxmlServerRoute: typeof SitemapDotxmlServerRoute
+  HealthzRoute: typeof HealthzRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/healthz': {
+      id: '/healthz'
+      path: '/healthz'
+      fullPath: '/healthz'
+      preLoaderRoute: typeof HealthzRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_layout': {
       id: '/_layout'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof LayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -235,14 +234,14 @@ declare module '@tanstack/react-router' {
     '/_layout/templates/': {
       id: '/_layout/templates/'
       path: '/templates'
-      fullPath: '/templates'
+      fullPath: '/templates/'
       preLoaderRoute: typeof LayoutTemplatesIndexRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/blog/': {
       id: '/_layout/blog/'
       path: '/blog'
-      fullPath: '/blog'
+      fullPath: '/blog/'
       preLoaderRoute: typeof LayoutBlogIndexRouteImport
       parentRoute: typeof LayoutRoute
     }
@@ -259,24 +258,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof LayoutBlogSlugRouteImport
       parentRoute: typeof LayoutRoute
-    }
-  }
-}
-declare module '@tanstack/react-start/server' {
-  interface ServerFileRoutesByPath {
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlServerRouteImport
-      parentRoute: typeof rootServerRouteImport
-    }
-    '/healthz': {
-      id: '/healthz'
-      path: '/healthz'
-      fullPath: '/healthz'
-      preLoaderRoute: typeof HealthzServerRouteImport
-      parentRoute: typeof rootServerRouteImport
     }
   }
 }
@@ -309,14 +290,18 @@ const LayoutRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
+  HealthzRoute: HealthzRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-const rootServerRouteChildren: RootServerRouteChildren = {
-  HealthzServerRoute: HealthzServerRoute,
-  SitemapDotxmlServerRoute: SitemapDotxmlServerRoute,
+
+import type { getRouter } from './router.ts'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
 }
-export const serverRouteTree = rootServerRouteImport
-  ._addFileChildren(rootServerRouteChildren)
-  ._addFileTypes<FileServerRouteTypes>()
