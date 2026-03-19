@@ -3,6 +3,16 @@
   "version": "0.0.1",
   "type": "module",
   "private": true,
+  "nx": {
+    "targets": {
+      "build": {
+        "outputs": [
+          "{projectRoot}/.vercel",
+          "{projectRoot}/.output"
+        ]
+      }
+    }
+  },
   "scripts": {
     "content-collections:build": "bunx @content-collections/cli build --config content-collections.ts",
     "check-broken-links": "mdx-local-link-checker content public '*/(index.mdx|blog|about|pricing?isTiersModalOpened=true)'"
