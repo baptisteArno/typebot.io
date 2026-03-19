@@ -15,6 +15,9 @@
       "path": "../env/tsconfig.lib.json"
     },
     {
+      "path": "../prisma/tsconfig.lib.json"
+    },
+    {
       "path": "../lib/tsconfig.lib.json"
     }
   ]

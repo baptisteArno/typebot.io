@@ -13,10 +13,6 @@ import { ButtonLink } from "@/components/ButtonLink";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { orpc } from "@/lib/queryClient";
-import {
-  getPhoneNumberFromLocalStorage,
-  setPhoneNumberInLocalStorage,
-} from "../helpers/phoneNumberFromLocalStorage";
 
 export const WhatsAppPreviewInstructions = ({
   className,
@@ -25,9 +21,7 @@ export const WhatsAppPreviewInstructions = ({
 }) => {
   const { typebot, save } = useTypebot();
   const { startPreviewFrom } = useEditor();
-  const [phoneNumber, setPhoneNumber] = useState(
-    getPhoneNumberFromLocalStorage() ?? "",
-  );
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [isSendingMessage, setIsSendingMessage] = useState(false);
   const [isMessageSent, setIsMessageSent] = useState(false);
   const [hasMessageBeenSent, setHasMessageBeenSent] = useState(false);
@@ -36,12 +30,7 @@ export const WhatsAppPreviewInstructions = ({
     orpc.whatsApp.startWhatsAppPreview.mutationOptions({
       onMutate: () => setIsSendingMessage(true),
       onSettled: () => setIsSendingMessage(false),
-      onSuccess: async (data) => {
-        if (
-          data?.message === "success" &&
-          phoneNumber !== getPhoneNumberFromLocalStorage()
-        )
-          setPhoneNumberInLocalStorage(phoneNumber);
+      onSuccess: async () => {
         setHasMessageBeenSent(true);
         setIsMessageSent(true);
         setTimeout(() => setIsMessageSent(false), 30000);

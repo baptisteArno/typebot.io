@@ -9,6 +9,9 @@
   "include": ["**/*.ts", "**/*.tsx"],
   "references": [
     {
+      "path": "../prisma/tsconfig.lib.json"
+    },
+    {
       "path": "../lib/tsconfig.lib.json"
     },
     {

@@ -30,6 +30,9 @@
       "path": "../chat-session/tsconfig.lib.json"
     },
     {
+      "path": "../prisma/tsconfig.lib.json"
+    },
+    {
       "path": "../blocks/inputs/tsconfig.lib.json"
     },
     {

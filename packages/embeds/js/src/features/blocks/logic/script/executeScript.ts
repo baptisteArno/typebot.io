@@ -10,7 +10,7 @@ export const executeScript = async (
   { isPreview }: Pick<ClientSideActionContext, "isPreview">,
 ) => {
   try {
-    const code = content.replace(/<script>/g, "").replace(/<\/script>/g, "");
+    const code = unwrapScriptTag(content);
     if (isPreview && isUnsafe) {
       const argsRecord = Object.fromEntries(args.map((a) => [a.id, a.value]));
 
@@ -57,4 +57,19 @@ export const executeCode = async ({
   } catch (err) {
     console.warn("Script threw an error:", err);
   }
+};
+
+const unwrapScriptTag = (content: string) => {
+  if (typeof document === "undefined") return content;
+
+  const trimmedContent = content.trim();
+  if (!trimmedContent.toLowerCase().startsWith("<script")) return content;
+
+  const template = document.createElement("template");
+  template.innerHTML = trimmedContent;
+
+  const firstElementChild = template.content.firstElementChild;
+  if (firstElementChild?.tagName !== "SCRIPT") return content;
+
+  return firstElementChild.textContent ?? content;
 };

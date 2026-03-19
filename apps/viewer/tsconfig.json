@@ -131,6 +131,9 @@
       "path": "../../packages/groups"
     },
     {
+      "path": "../../packages/prisma"
+    },
+    {
       "path": "../../packages/embeds/react"
     },
     {
