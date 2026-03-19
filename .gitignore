@@ -74,6 +74,7 @@ opensrc/sources.json
 .ralph-tui/iterations
 
 .nx/cache
+.nx/installation
 .nx/workspace-data
 vite.config.*.timestamp*
 vitest.config.*.timestamp*

@@ -1,0 +1,693 @@
+#!/usr/bin/env bun
+
+import {
+  lstat,
+  mkdir,
+  mkdtemp,
+  readFile,
+  rename,
+  rm,
+  symlink,
+  writeFile,
+} from "node:fs/promises";
+import { builtinModules } from "node:module";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+const helpMessage = `Usage: bun commands/nx-ignore <project> [--base=<git-ref>] [--verbose]
+
+Determine whether an Nx project is affected by HEAD^..HEAD without relying on the workspace node_modules.
+
+Examples:
+  bun commands/nx-ignore builder
+  bun commands/nx-ignore landing-page
+  bun commands/nx-ignore @typebot.io/ui
+  bun commands/nx-ignore viewer --base=origin/main`;
+
+const builtInModuleNames = new Set(
+  builtinModules.flatMap((moduleName) =>
+    moduleName.startsWith("node:")
+      ? [moduleName, moduleName.slice(5)]
+      : [moduleName, `node:${moduleName}`],
+  ),
+);
+
+const args = Bun.argv.slice(2);
+const isVerbose = args.includes("--verbose");
+const isHelp = args.includes("--help");
+const baseArgument = args.find((arg) => arg.startsWith("--base="));
+const project = args.find((arg) => !arg.startsWith("--"));
+
+if (isHelp) {
+  console.log(helpMessage);
+  process.exit(0);
+}
+
+if (!project) {
+  console.error("≫ No project passed to nx-ignore");
+  console.log(helpMessage);
+  process.exit(1);
+}
+
+const result = await main(project, baseArgument?.slice(7)).catch((error) => {
+  const message = error instanceof Error ? error.message : String(error);
+  return {
+    exitCode: 1,
+    message: `🛑 - nx-ignore failed: ${message}`,
+  };
+});
+
+console.log(result.message);
+process.exit(result.exitCode);
+
+async function main(projectName, requestedBaseRef) {
+  const workspaceRoot = await getWorkspaceRoot();
+  const rootPackageJson = await readJsonFile(
+    join(workspaceRoot, "package.json"),
+  );
+  const workspacePatterns = getWorkspacePatterns(rootPackageJson);
+  const rootDependencies = getDependenciesFromPackageJson(rootPackageJson);
+  const packageJsonPaths = await getWorkspacePackageJsonPaths(
+    workspaceRoot,
+    workspacePatterns,
+  );
+  const packageVersions = await getPackageVersions(
+    packageJsonPaths,
+    rootDependencies,
+  );
+  const nxPlugins = await getNxPlugins(workspaceRoot);
+  const configDependencies = await getConfigDependencies(
+    workspaceRoot,
+    workspacePatterns,
+    packageVersions,
+  );
+  const installDependencies = getInstallDependencies(
+    nxPlugins,
+    configDependencies,
+    rootDependencies,
+  );
+
+  let tempDirectoryPath;
+  let installationLock;
+  let installationLink;
+
+  try {
+    tempDirectoryPath = await mkdtemp(join(tmpdir(), "typebot-nx-ignore-"));
+
+    logDebug(`≫ Workspace root: ${workspaceRoot}`);
+    logDebug(
+      `≫ Installing temporary dependencies: ${Object.keys(installDependencies).join(", ")}`,
+    );
+
+    await writeTemporaryPackageJson(tempDirectoryPath, installDependencies);
+    await installTemporaryDependencies(tempDirectoryPath);
+    installationLock = await acquireInstallationLock(workspaceRoot);
+    installationLink = await linkTemporaryNxInstallation(
+      workspaceRoot,
+      join(tempDirectoryPath, "node_modules"),
+    );
+
+    const nxBinaryPath = join(tempDirectoryPath, "node_modules", ".bin", "nx");
+    const availableProjects = await getProjects(nxBinaryPath, workspaceRoot);
+
+    if (!availableProjects.includes(projectName)) {
+      return {
+        exitCode: 1,
+        message: `≫ Unknown Nx project: ${projectName}`,
+      };
+    }
+
+    const baseRef = await resolveBaseRef(workspaceRoot, requestedBaseRef);
+
+    if (baseRef === null) {
+      return {
+        exitCode: 1,
+        message: `✅ - Build can proceed since ${projectName} is affected`,
+      };
+    }
+
+    logDebug(`≫ Comparing ${baseRef}...HEAD`);
+
+    const affectedProjects = await getAffectedProjects(
+      nxBinaryPath,
+      workspaceRoot,
+      baseRef,
+    );
+
+    logDebug(`≫ Affected projects: ${affectedProjects.join(", ")}`);
+
+    if (affectedProjects.includes(projectName)) {
+      return {
+        exitCode: 1,
+        message: `✅ - Build can proceed since ${projectName} is affected`,
+      };
+    }
+
+    return {
+      exitCode: 0,
+      message: `🛑 - Build cancelled since ${projectName} is not affected`,
+    };
+  } finally {
+    if (installationLink) {
+      await unlinkTemporaryNxInstallation(installationLink);
+    }
+
+    if (installationLock) {
+      await releaseInstallationLock(installationLock);
+    }
+
+    if (tempDirectoryPath) {
+      await rm(tempDirectoryPath, { force: true, recursive: true });
+    }
+  }
+}
+
+function logDebug(message) {
+  if (isVerbose) {
+    console.log(message);
+  }
+}
+
+async function getWorkspaceRoot() {
+  const { stdout } = await runCommand(["git", "rev-parse", "--show-toplevel"], {
+    cwd: process.cwd(),
+  });
+
+  return stdout.trim();
+}
+
+async function getNxPlugins(workspaceRoot) {
+  const nxJson = await readJsonFile(join(workspaceRoot, "nx.json"));
+  const plugins = Array.isArray(nxJson.plugins) ? nxJson.plugins : [];
+
+  return plugins
+    .map((plugin) => {
+      if (typeof plugin === "string") {
+        return normalizePackageName(plugin);
+      }
+
+      if (
+        typeof plugin === "object" &&
+        plugin !== null &&
+        "plugin" in plugin &&
+        typeof plugin.plugin === "string"
+      ) {
+        return normalizePackageName(plugin.plugin);
+      }
+
+      return null;
+    })
+    .filter((pluginName) => typeof pluginName === "string");
+}
+
+function getWorkspacePatterns(packageJson) {
+  if (!Array.isArray(packageJson.workspaces)) {
+    return [];
+  }
+
+  return packageJson.workspaces.filter(
+    (workspace) => typeof workspace === "string",
+  );
+}
+
+async function getWorkspacePackageJsonPaths(workspaceRoot, workspacePatterns) {
+  const packageJsonPaths = await Promise.all(
+    workspacePatterns.map((workspacePattern) =>
+      scanGlob(`${workspacePattern}/package.json`, workspaceRoot),
+    ),
+  );
+
+  return packageJsonPaths.flat();
+}
+
+async function getPackageVersions(packageJsonPaths, rootDependencies) {
+  const packageVersions = new Map(Object.entries(rootDependencies));
+
+  for (const packageJsonPath of packageJsonPaths) {
+    const packageJson = await readJsonFile(packageJsonPath);
+    const dependencies = getDependenciesFromPackageJson(packageJson);
+
+    for (const [packageName, version] of Object.entries(dependencies)) {
+      if (version.startsWith("workspace:")) {
+        continue;
+      }
+
+      if (!packageVersions.has(packageName)) {
+        packageVersions.set(packageName, version);
+      }
+    }
+  }
+
+  logDebug(`≫ Loaded package versions (${packageVersions.size} packages)`);
+
+  return packageVersions;
+}
+
+async function getConfigDependencies(
+  workspaceRoot,
+  workspacePatterns,
+  packageVersions,
+) {
+  const configFilePaths = (
+    await Promise.all([
+      scanGlob("next.config.*", workspaceRoot),
+      scanGlob("vite.config.*", workspaceRoot),
+      scanGlob("vitest.config.*", workspaceRoot),
+      ...workspacePatterns.flatMap((workspacePattern) => [
+        scanGlob(`${workspacePattern}/next.config.*`, workspaceRoot),
+        scanGlob(`${workspacePattern}/vite.config.*`, workspaceRoot),
+        scanGlob(`${workspacePattern}/vitest.config.*`, workspaceRoot),
+        scanGlob(`${workspacePattern}/content-collections.ts`, workspaceRoot),
+      ]),
+    ])
+  ).flat();
+  const packageNames = new Set();
+
+  for (const configFilePath of configFilePaths) {
+    const fileContent = await readFile(configFilePath, "utf8");
+
+    for (const specifier of getImportSpecifiers(fileContent)) {
+      const packageName = normalizePackageName(specifier);
+
+      if (!packageName) {
+        continue;
+      }
+
+      if (packageName.startsWith("@typebot.io/")) {
+        continue;
+      }
+
+      if (builtInModuleNames.has(packageName)) {
+        continue;
+      }
+
+      packageNames.add(packageName);
+    }
+  }
+
+  const configDependencies = {};
+
+  for (const packageName of packageNames) {
+    const version = packageVersions.get(packageName);
+
+    if (!version) {
+      throw new Error(
+        `Could not find a version for config dependency "${packageName}"`,
+      );
+    }
+
+    configDependencies[packageName] = version;
+  }
+
+  return configDependencies;
+}
+
+function getInstallDependencies(
+  nxPlugins,
+  configDependencies,
+  rootDependencies,
+) {
+  const nxVersion = rootDependencies.nx;
+
+  if (!nxVersion) {
+    throw new Error('Could not find "nx" in the root package.json');
+  }
+
+  const installDependencies = {
+    nx: nxVersion,
+    "@nx/devkit": nxVersion,
+  };
+
+  for (const plugin of nxPlugins) {
+    const version = rootDependencies[plugin];
+
+    if (!version) {
+      throw new Error(
+        `Could not find "${plugin}" in the root package.json dependencies`,
+      );
+    }
+
+    installDependencies[plugin] = version;
+  }
+
+  return {
+    ...installDependencies,
+    ...configDependencies,
+  };
+}
+
+function getImportSpecifiers(fileContent) {
+  const importSpecifiers = new Set();
+  const patterns = [
+    /\bimport\s+[\s\S]*?\sfrom\s+["'`]([^"'`]+)["'`]/g,
+    /\bimport\s+["'`]([^"'`]+)["'`]/g,
+    /await\s+import\(\s*["'`]([^"'`]+)["'`]\s*\)/g,
+  ];
+
+  for (const pattern of patterns) {
+    const matches = fileContent.matchAll(pattern);
+
+    for (const match of matches) {
+      const specifier = match[1];
+
+      if (specifier) {
+        importSpecifiers.add(specifier);
+      }
+    }
+  }
+
+  return importSpecifiers;
+}
+
+function normalizePackageName(specifier) {
+  if (
+    specifier.startsWith("node:") ||
+    specifier.startsWith(".") ||
+    specifier.startsWith("/")
+  ) {
+    return null;
+  }
+
+  if (specifier.startsWith("@")) {
+    const segments = specifier.split("/");
+
+    if (segments.length < 2) {
+      return specifier;
+    }
+
+    return `${segments[0]}/${segments[1]}`;
+  }
+
+  return specifier.split("/")[0] ?? null;
+}
+
+async function writeTemporaryPackageJson(tempDirectoryPath, dependencies) {
+  await writeFile(
+    join(tempDirectoryPath, "package.json"),
+    JSON.stringify(
+      {
+        name: "typebot-nx-ignore",
+        private: true,
+        dependencies,
+      },
+      null,
+      2,
+    ),
+  );
+}
+
+async function installTemporaryDependencies(tempDirectoryPath) {
+  await runCommand(
+    [process.execPath, "install", "--no-save", "--ignore-scripts", "--silent"],
+    {
+      cwd: tempDirectoryPath,
+    },
+  );
+}
+
+async function acquireInstallationLock(workspaceRoot) {
+  const nxDirectoryPath = join(workspaceRoot, ".nx");
+  const installationLockPath = join(nxDirectoryPath, "nx-ignore.lock");
+  const timeoutAt = Date.now() + 60_000;
+
+  await mkdir(nxDirectoryPath, { recursive: true });
+
+  while (true) {
+    try {
+      await mkdir(installationLockPath);
+      return { installationLockPath };
+    } catch (error) {
+      if (!isFileAlreadyExistsError(error)) {
+        throw error;
+      }
+
+      if (Date.now() >= timeoutAt) {
+        throw new Error("Timed out while waiting for the nx-ignore lock");
+      }
+
+      await Bun.sleep(200);
+    }
+  }
+}
+
+async function releaseInstallationLock(installationLock) {
+  await rm(installationLock.installationLockPath, {
+    force: true,
+    recursive: true,
+  });
+}
+
+async function linkTemporaryNxInstallation(
+  workspaceRoot,
+  temporaryNodeModulesPath,
+) {
+  const installationDirectoryPath = join(workspaceRoot, ".nx", "installation");
+  const installationNodeModulesPath = join(
+    installationDirectoryPath,
+    "node_modules",
+  );
+  const workspaceNodeModulesPath = join(workspaceRoot, "node_modules");
+  const backupNodeModulesPath = join(
+    installationDirectoryPath,
+    `node_modules.nx-ignore-backup-${process.pid}-${Date.now()}`,
+  );
+
+  await mkdir(installationDirectoryPath, { recursive: true });
+
+  let shouldRestoreBackup = false;
+
+  if (await pathExists(installationNodeModulesPath)) {
+    await rename(installationNodeModulesPath, backupNodeModulesPath);
+    shouldRestoreBackup = true;
+  }
+
+  await symlink(temporaryNodeModulesPath, installationNodeModulesPath, "dir");
+
+  let shouldRemoveWorkspaceNodeModulesLink = false;
+
+  if (!(await pathExists(workspaceNodeModulesPath))) {
+    await symlink(temporaryNodeModulesPath, workspaceNodeModulesPath, "dir");
+    shouldRemoveWorkspaceNodeModulesLink = true;
+  }
+
+  return {
+    installationNodeModulesPath,
+    backupNodeModulesPath,
+    shouldRestoreBackup,
+    shouldRemoveWorkspaceNodeModulesLink,
+    workspaceNodeModulesPath,
+  };
+}
+
+async function unlinkTemporaryNxInstallation(installationLink) {
+  if (installationLink.shouldRemoveWorkspaceNodeModulesLink) {
+    await rm(installationLink.workspaceNodeModulesPath, {
+      force: true,
+      recursive: true,
+    });
+  }
+
+  await rm(installationLink.installationNodeModulesPath, {
+    force: true,
+    recursive: true,
+  });
+
+  if (installationLink.shouldRestoreBackup) {
+    await rename(
+      installationLink.backupNodeModulesPath,
+      installationLink.installationNodeModulesPath,
+    );
+  }
+}
+
+async function resolveBaseRef(workspaceRoot, requestedBaseRef) {
+  const defaultBaseRef = "HEAD^";
+
+  if (requestedBaseRef) {
+    const isRequestedBaseRefValid = await isValidGitRef(
+      workspaceRoot,
+      requestedBaseRef,
+    );
+
+    if (isRequestedBaseRefValid) {
+      return requestedBaseRef;
+    }
+
+    logDebug(`≫ Invalid base ref "${requestedBaseRef}", falling back to HEAD^`);
+  }
+
+  const isDefaultBaseRefValid = await isValidGitRef(
+    workspaceRoot,
+    defaultBaseRef,
+  );
+
+  if (isDefaultBaseRefValid) {
+    return defaultBaseRef;
+  }
+
+  logDebug('≫ "HEAD^" does not exist, treating the project as affected');
+
+  return null;
+}
+
+async function isValidGitRef(workspaceRoot, gitRef) {
+  try {
+    await runCommand(["git", "rev-parse", "--verify", `${gitRef}^{commit}`], {
+      cwd: workspaceRoot,
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function getProjects(nxBinaryPath, workspaceRoot) {
+  const output = await runNxCommand(nxBinaryPath, workspaceRoot, [
+    "show",
+    "projects",
+    "--json",
+  ]);
+  const parsedOutput = parseLastJsonLine(output);
+
+  if (!Array.isArray(parsedOutput)) {
+    throw new Error("Nx did not return a JSON project list");
+  }
+
+  return parsedOutput.filter((value) => typeof value === "string");
+}
+
+async function getAffectedProjects(nxBinaryPath, workspaceRoot, baseRef) {
+  const output = await runNxCommand(nxBinaryPath, workspaceRoot, [
+    "show",
+    "projects",
+    "--affected",
+    "--json",
+    `--base=${baseRef}`,
+    "--head=HEAD",
+  ]);
+  const parsedOutput = parseLastJsonLine(output);
+
+  if (!Array.isArray(parsedOutput)) {
+    throw new Error("Nx did not return a JSON affected project list");
+  }
+
+  return parsedOutput.filter((value) => typeof value === "string");
+}
+
+async function runNxCommand(nxBinaryPath, workspaceRoot, args) {
+  const { stdout } = await runCommand([nxBinaryPath, ...args], {
+    cwd: workspaceRoot,
+    env: {
+      ...process.env,
+      NX_DAEMON: "false",
+    },
+  });
+
+  logDebug(`≫ Nx output: ${stdout.trim()}`);
+
+  return stdout.trim();
+}
+
+function parseLastJsonLine(output) {
+  const lines = output
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const jsonLine = lines.at(-1);
+
+  if (!jsonLine) {
+    throw new Error("Nx returned no JSON output");
+  }
+
+  return JSON.parse(jsonLine);
+}
+
+function getDependenciesFromPackageJson(packageJson) {
+  const dependencies = getStringRecord(packageJson.dependencies);
+  const devDependencies = getStringRecord(packageJson.devDependencies);
+  const peerDependencies = getStringRecord(packageJson.peerDependencies);
+
+  return {
+    ...dependencies,
+    ...devDependencies,
+    ...peerDependencies,
+  };
+}
+
+function getStringRecord(value) {
+  if (typeof value !== "object" || value === null) {
+    return {};
+  }
+
+  const record = {};
+
+  for (const [key, entryValue] of Object.entries(value)) {
+    if (typeof entryValue === "string") {
+      record[key] = entryValue;
+    }
+  }
+
+  return record;
+}
+
+async function readJsonFile(filePath) {
+  const parsedValue = JSON.parse(await readFile(filePath, "utf8"));
+
+  if (typeof parsedValue !== "object" || parsedValue === null) {
+    throw new Error(`Invalid JSON object in ${filePath}`);
+  }
+
+  return parsedValue;
+}
+
+async function scanGlob(pattern, cwd) {
+  const glob = new Bun.Glob(pattern);
+  const paths = [];
+
+  for await (const path of glob.scan({ absolute: true, cwd })) {
+    paths.push(path);
+  }
+
+  return paths;
+}
+
+async function pathExists(path) {
+  try {
+    await lstat(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function isFileAlreadyExistsError(error) {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    error.code === "EEXIST"
+  );
+}
+
+async function runCommand(command, options) {
+  const subprocess = Bun.spawn(command, {
+    cwd: options.cwd,
+    env: options.env,
+    stdout: "pipe",
+    stderr: "pipe",
+  });
+  const stdoutPromise = new Response(subprocess.stdout).text();
+  const stderrPromise = new Response(subprocess.stderr).text();
+  const exitCode = await subprocess.exited;
+  const [stdout, stderr] = await Promise.all([stdoutPromise, stderrPromise]);
+
+  if (exitCode !== 0) {
+    throw new Error(
+      [`Command failed: ${command.join(" ")}`, stdout.trim(), stderr.trim()]
+        .filter(Boolean)
+        .join("\n"),
+    );
+  }
+
+  return { stdout, stderr };
+}
