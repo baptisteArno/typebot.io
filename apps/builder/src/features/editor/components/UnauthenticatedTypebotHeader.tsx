@@ -1,12 +1,12 @@
 import { useTranslate } from "@tolgee/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
+import { EmojiOrImageIcon } from "@typebot.io/ui/components/EmojiOrImageIcon";
 import { Copy01Icon } from "@typebot.io/ui/icons/Copy01Icon";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { PlayIcon } from "@typebot.io/ui/icons/PlayIcon";
 import { useRouter } from "next/router";
 import { ButtonLink } from "@/components/ButtonLink";
-import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { TypebotLogo } from "@/components/TypebotLogo";
 import { useUser } from "@/features/user/hooks/useUser";
 import { useRightPanel } from "@/hooks/useRightPanel";
@@ -57,6 +57,7 @@ export const GuestTypebotHeader = () => {
           {typebot && (
             <EmojiOrImageIcon
               icon={typebot.icon}
+              className="size-6.25 text-2xl"
               defaultIcon={LayoutBottomIcon}
             />
           )}

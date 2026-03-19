@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
+import { EmojiOrImageIcon } from "@typebot.io/ui/components/EmojiOrImageIcon";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Label } from "@typebot.io/ui/components/Label";
 import { Radio, RadioGroup } from "@typebot.io/ui/components/RadioGroup";
 import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { PlanBadge } from "@/features/billing/components/PlanTag";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
@@ -51,7 +51,7 @@ const Page = () => {
               <Radio value={workspace.id} className="hidden" />
               <EmojiOrImageIcon
                 icon={workspace.icon}
-                size="sm"
+                className="size-4.5 text-xl"
                 defaultIcon={HardDriveIcon}
               />
               {workspace.name}

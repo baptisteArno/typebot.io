@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
+import { EmojiOrImageIcon } from "@typebot.io/ui/components/EmojiOrImageIcon";
 import { Input } from "@typebot.io/ui/components/Input";
 import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { useRouter } from "next/router";
 import { ButtonLink } from "@/components/ButtonLink";
-import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { orpc } from "@/lib/queryClient";
 
@@ -49,7 +49,7 @@ export const TypebotsDropdown = ({
               icon: (
                 <EmojiOrImageIcon
                   icon={typebot.icon}
-                  size="sm"
+                  className="size-4.5 text-xl"
                   defaultIcon={LayoutBottomIcon}
                 />
               ),

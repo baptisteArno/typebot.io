@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
+import { EmojiOrImageIcon } from "@typebot.io/ui/components/EmojiOrImageIcon";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
 import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
 import { LogoutSquare02Icon } from "@typebot.io/ui/icons/LogoutSquare02Icon";
 import { PlusSignIcon } from "@typebot.io/ui/icons/PlusSignIcon";
 import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
-import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { PlanBadge } from "@/features/billing/components/PlanTag";
 import { orpc } from "@/lib/queryClient";
 import type { WorkspaceInApp } from "../WorkspaceProvider";
@@ -55,7 +55,7 @@ export const WorkspaceDropdown = ({
                 <EmojiOrImageIcon
                   icon={workspace.icon}
                   defaultIcon={HardDriveIcon}
-                  size="sm"
+                  className="size-4.5 text-xl"
                 />
                 <p className="max-w-[250px] truncate">{workspace.name}</p>
                 <PlanBadge plan={workspace.plan} />

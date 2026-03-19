@@ -1,6 +1,6 @@
+import { EmojiOrImageIcon } from "@typebot.io/ui/components/EmojiOrImageIcon";
 import { LayoutBottomIcon } from "@typebot.io/ui/icons/LayoutBottomIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 
 type Props = {
@@ -22,7 +22,7 @@ export const TypebotButtonOverlay = ({ typebot, className, style }: Props) => {
         <div className="flex rounded-full justify-center items-center text-4xl">
           <EmojiOrImageIcon
             icon={typebot.icon}
-            size="lg"
+            className="size-9 text-[2.25rem]"
             defaultIcon={LayoutBottomIcon}
           />
         </div>

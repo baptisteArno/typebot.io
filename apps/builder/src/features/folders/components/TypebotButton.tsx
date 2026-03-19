@@ -4,6 +4,7 @@ import { Alert } from "@typebot.io/ui/components/Alert";
 import { AlertDialog } from "@typebot.io/ui/components/AlertDialog";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
+import { EmojiOrImageIcon } from "@typebot.io/ui/components/EmojiOrImageIcon";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { DragDropHorizontalIcon } from "@typebot.io/ui/icons/DragDropHorizontalIcon";
@@ -14,7 +15,6 @@ import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import React, { memo, useRef } from "react";
 import { useDebounce } from "use-debounce";
-import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 import {
   type NodePosition,
@@ -191,7 +191,7 @@ const TypebotButton = ({
         <div className="flex flex-col items-center gap-4">
           <EmojiOrImageIcon
             icon={typebot.icon}
-            size="lg"
+            className="size-9 text-[2.25rem]"
             defaultIcon={LayoutBottomIcon}
           />
           <p className="text-center max-w-[180px] line-clamp-4">
