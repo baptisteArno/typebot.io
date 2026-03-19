@@ -25,19 +25,8 @@ WORKDIR /app
 FROM base AS builder
 ARG SCOPE
 COPY . .
-RUN SKIP_ENV_CHECK=true \
-    DATABASE_URL=postgresql:// \
-    ENCRYPTION_SECRET=12345678901234567890123456789012 \
-    NEXTAUTH_URL=http://localhost:3000 \
-    NEXT_PUBLIC_VIEWER_URL=http://localhost:3001 \
-    SENTRYCLI_SKIP_DOWNLOAD=1 \
-    bun install --frozen-lockfile
-RUN SKIP_ENV_CHECK=true \
-    DATABASE_URL=postgresql:// \
-    ENCRYPTION_SECRET=12345678901234567890123456789012 \
-    NEXTAUTH_URL=http://localhost:3000 \
-    NEXT_PUBLIC_VIEWER_URL=http://localhost:3001 \
-    bunx nx build ${SCOPE}
+RUN SENTRYCLI_SKIP_DOWNLOAD=1 bun install --frozen-lockfile
+RUN SKIP_ENV_CHECK=true NEXT_PUBLIC_VIEWER_URL=http://localhost bunx nx build ${SCOPE}
 RUN DATABASE_URL=postgresql:// bunx nx db:generate prisma
 
 # ================== RELEASE ======================
