@@ -163,6 +163,8 @@ export const importTypebot = authenticatedProcedure
         edges: migratedTypebot.edges ?? [],
         resultsTablePreferences:
           migratedTypebot.resultsTablePreferences ?? undefined,
+        tenant: migratedTypebot.tenant ?? undefined,
+        toolDescription: migratedTypebot.toolDescription ?? undefined,
       } satisfies Partial<TypebotV6>,
     })
 
