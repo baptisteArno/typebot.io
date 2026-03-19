@@ -56,7 +56,7 @@
     "openai": "^6.9.1",
     "qs": "^6.11.2",
     "stripe": "17.1.0",
-    "undici": "7.16.0",
+    "undici": "7.24.4",
     "zod": "^4.3.5"
   },
   "devDependencies": {
