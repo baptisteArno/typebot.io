@@ -8,7 +8,10 @@ import {
 } from "@react-email/components";
 import { render } from "@react-email/render";
 import type { ComponentProps } from "react";
+import * as React from "react";
 import { bodyText, container, main, primaryButton } from "./styles";
+
+void React;
 
 const EMAIL_REGEX =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

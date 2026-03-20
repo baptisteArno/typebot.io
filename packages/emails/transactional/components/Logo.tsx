@@ -1,5 +1,8 @@
 import { Img } from "@react-email/components";
 import { env } from "@typebot.io/env";
+import * as React from "react";
+
+void React;
 
 export const Logo = () => (
   <Img

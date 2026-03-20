@@ -3,9 +3,12 @@ import { render } from "@react-email/render";
 import { parseNumberWithCommas } from "@typebot.io/lib/utils";
 import type { SendMailOptions } from "nodemailer";
 import type { ComponentProps } from "react";
+import * as React from "react";
 import { sendEmail } from "../helpers/sendEmail";
 import { Logo } from "./components/Logo";
 import { container, footerText, hr, main, paragraph } from "./styles";
+
+void React;
 
 interface Props {
   usagePercent: number;
