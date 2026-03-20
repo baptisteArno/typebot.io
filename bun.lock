@@ -217,7 +217,7 @@
       "dependencies": {
         "@orpc/openapi": "^1.13.4",
         "@orpc/otel": "^1.13.4",
-        "@orpc/server": "^1.13.9",
+        "@orpc/server": "^1.13.4",
         "@orpc/zod": "^1.13.4",
         "@paralleldrive/cuid2": "^2.2.1",
         "@planetscale/database": "^1.8.0",
@@ -293,7 +293,7 @@
         "@typebot.io/telemetry": "workspace:*",
         "@typebot.io/typebot": "workspace:*",
         "@typebot.io/user": "workspace:*",
-        "effect": "4.0.0-beta.35",
+        "effect": "4.0.0-beta.30",
       },
       "devDependencies": {
         "@types/bun": "^1.3.9",
@@ -323,7 +323,7 @@
         "@typebot.io/telemetry": "workspace:*",
         "@typebot.io/user": "workspace:*",
         "@upstash/ratelimit": "^0.4.3",
-        "effect": "4.0.0-beta.35",
+        "effect": "4.0.0-beta.30",
         "next-auth": "^5.0.0-beta.30",
       },
     },
@@ -331,7 +331,7 @@
       "name": "@typebot.io/billing",
       "version": "0.0.1",
       "dependencies": {
-        "@orpc/server": "^1.13.9",
+        "@orpc/server": "^1.13.4",
         "@typebot.io/env": "workspace:*",
         "@typebot.io/lib": "workspace:*",
         "@typebot.io/prisma": "workspace:*",
@@ -385,7 +385,7 @@
       "name": "@typebot.io/file-input-block",
       "version": "0.0.1",
       "dependencies": {
-        "@orpc/server": "^1.13.9",
+        "@orpc/server": "^1.13.4",
         "@typebot.io/blocks-core": "workspace:*",
         "@typebot.io/blocks-inputs": "workspace:*",
         "@typebot.io/blocks-logic": "workspace:*",
@@ -432,7 +432,7 @@
       "name": "@typebot.io/webhook-block",
       "version": "0.0.1",
       "dependencies": {
-        "@orpc/server": "^1.13.9",
+        "@orpc/server": "^1.13.4",
         "@typebot.io/blocks-logic": "workspace:*",
         "@typebot.io/chat-session": "workspace:*",
         "@typebot.io/config": "workspace:*",
@@ -451,7 +451,7 @@
       "name": "@typebot.io/bot-engine",
       "version": "0.0.1",
       "dependencies": {
-        "@orpc/server": "^1.13.9",
+        "@orpc/server": "^1.13.4",
         "@paralleldrive/cuid2": "^2.2.1",
         "@planetscale/database": "^1.8.0",
         "@sentry/nextjs": "^10.43.0",
@@ -550,7 +550,7 @@
       "name": "@typebot.io/config",
       "version": "0.0.1",
       "dependencies": {
-        "effect": "4.0.0-beta.35",
+        "effect": "4.0.0-beta.30",
       },
       "devDependencies": {
         "@testcontainers/postgresql": "^11.13.0",
@@ -586,7 +586,7 @@
         "@typebot.io/env": "workspace:*",
         "@typebot.io/lib": "workspace:*",
         "@typebot.io/prisma": "workspace:*",
-        "effect": "4.0.0-beta.35",
+        "effect": "4.0.0-beta.30",
         "nodemailer": "^7.0.6",
         "react": "^19.2.4",
         "react-dom": "^19.2.4",
@@ -987,7 +987,7 @@
       "dependencies": {
         "@paralleldrive/cuid2": "^2.2.1",
         "@sentry/nextjs": "^10.43.0",
-        "effect": "4.0.0-beta.35",
+        "effect": "4.0.0-beta.30",
         "ioredis": "^5.4.1",
         "ky": "^1.2.4",
         "minio": "7.1.3",
@@ -1047,7 +1047,7 @@
         "@prisma/adapter-planetscale": "^7.4.0",
         "@prisma/client": "^7.4.0",
         "@prisma/extension-read-replicas": "^0.5.0",
-        "effect": "4.0.0-beta.35",
+        "effect": "4.0.0-beta.30",
         "prisma": "^7.4.0",
       },
       "devDependencies": {
@@ -1084,7 +1084,7 @@
         "@typebot.io/telemetry": "workspace:*",
         "@typebot.io/typebot": "workspace:*",
         "@typebot.io/variables": "workspace:*",
-        "effect": "4.0.0-beta.35",
+        "effect": "4.0.0-beta.30",
         "papaparse": "^5.4.1",
         "zod": "^4.3.5",
       },
@@ -1178,24 +1178,15 @@
       "name": "@typebot.io/shared-core",
       "version": "0.0.1",
       "dependencies": {
-        "effect": "4.0.0-beta.35",
+        "effect": "4.0.0-beta.30",
       },
     },
-    "packages/spaces": {
-      "name": "@typebot.io/spaces",
+    "packages/shared-primitives": {
+      "name": "@typebot.io/shared-primitives",
       "version": "0.0.1",
       "dependencies": {
-        "@orpc/server": "^1.13.9",
-        "@tanstack/react-form": "^1.28.5",
-        "@typebot.io/config": "workspace:*",
-        "@typebot.io/prisma": "workspace:*",
         "@typebot.io/shared-core": "workspace:*",
-        "@typebot.io/ui": "workspace:*",
-        "@typebot.io/workspaces": "workspace:*",
-        "effect": "4.0.0-beta.35",
-      },
-      "devDependencies": {
-        "@effect/vitest": "4.0.0-beta.35",
+        "effect": "4.0.0-beta.30",
       },
     },
     "packages/telemetry": {
@@ -1217,7 +1208,7 @@
         "@typebot.io/lib": "workspace:*",
         "@typebot.io/prisma": "workspace:*",
         "cookie": "^1.0.2",
-        "effect": "4.0.0-beta.35",
+        "effect": "4.0.0-beta.30",
         "ky": "^1.2.4",
         "posthog-node": "^5.8.2",
         "zod": "^4.3.5",
@@ -1250,11 +1241,12 @@
         "@typebot.io/schemas": "workspace:*",
         "@typebot.io/settings": "workspace:*",
         "@typebot.io/shared-core": "workspace:*",
+        "@typebot.io/shared-primitives": "workspace:*",
         "@typebot.io/theme": "workspace:*",
         "@typebot.io/user": "workspace:*",
         "@typebot.io/variables": "workspace:*",
         "@typebot.io/workspaces": "workspace:*",
-        "effect": "4.0.0-beta.35",
+        "effect": "4.0.0-beta.30",
         "zod": "^4.3.5",
       },
     },
@@ -1284,7 +1276,7 @@
         "@typebot.io/lib": "workspace:*",
         "@typebot.io/prisma": "workspace:*",
         "@typebot.io/telemetry": "workspace:*",
-        "effect": "4.0.0-beta.35",
+        "effect": "4.0.0-beta.30",
         "zod": "^4.3.5",
       },
     },
@@ -1339,11 +1331,11 @@
         "@typebot.io/prisma": "workspace:*",
         "@typebot.io/shared-core": "workspace:*",
         "@typebot.io/user": "workspace:*",
-        "effect": "4.0.0-beta.35",
+        "effect": "4.0.0-beta.30",
         "zod": "^4.3.5",
       },
       "devDependencies": {
-        "@effect/vitest": "4.0.0-beta.35",
+        "@effect/vitest": "4.0.0-beta.30",
         "vitest": "^4.0.18",
       },
     },
@@ -1832,7 +1824,7 @@
 
     "@effect/sql-pg": ["@effect/sql-pg@4.0.0-beta.30", "", { "dependencies": { "pg": "^8.18.0", "pg-connection-string": "2.11.0", "pg-cursor": "^2.17.0", "pg-pool": "^3.11.0", "pg-types": "^4.1.0" }, "peerDependencies": { "effect": "^4.0.0-beta.30" } }, "sha512-LYaWEVjMvsWTrbnK4mGMoYm3Pr+yKXJCJvJaOAIwl0SCcLx40hGpy/wDLA31jbUjeOpRPSFeS0k4c2RuecChsQ=="],
 
-    "@effect/vitest": ["@effect/vitest@4.0.0-beta.35", "", { "peerDependencies": { "effect": "^4.0.0-beta.35", "vitest": "^3.0.0 || ^4.0.0" } }, "sha512-wdt6j7yNL8cYXSyi1QWch4UPpjB0C7QBzStmdMSmIzAZ3ZVAUcyQkdfg/hnUJt6NPZMdjVmbI7m93ml5Mqqnhw=="],
+    "@effect/vitest": ["@effect/vitest@4.0.0-beta.30", "", { "peerDependencies": { "effect": "^4.0.0-beta.30", "vitest": "^3.0.0 || ^4.0.0" } }, "sha512-2RjNnPd1zHBuYkJNiWmhCmKUsKanO2dCBGmHhP2aBnvj5hbvI76p4JkalFMqTnHmbEKFaqgeGWfx+TS974uxgA=="],
 
     "@electric-sql/pglite": ["@electric-sql/pglite@0.3.15", "", {}, "sha512-Cj++n1Mekf9ETfdc16TlDi+cDDQF0W7EcbyRHYOAeZdsAe8M/FJg18itDTSwyHfar2WIezawM9o0EKaRGVKygQ=="],
 
@@ -3172,17 +3164,9 @@
 
     "@tailwindcss/vite": ["@tailwindcss/vite@4.1.16", "", { "dependencies": { "@tailwindcss/node": "4.1.16", "@tailwindcss/oxide": "4.1.16", "tailwindcss": "4.1.16" }, "peerDependencies": { "vite": "^5.2.0 || ^6 || ^7" } }, "sha512-bbguNBcDxsRmi9nnlWJxhfDWamY3lmcyACHcdO1crxfzuLpOhHLLtEIN/nCbbAtj5rchUgQD17QVAKi1f7IsKg=="],
 
-    "@tanstack/devtools-event-client": ["@tanstack/devtools-event-client@0.4.3", "", { "bin": { "intent": "bin/intent.js" } }, "sha512-OZI6QyULw0FI0wjgmeYzCIfbgPsOEzwJtCpa69XrfLMtNXLGnz3d/dIabk7frg0TmHo+Ah49w5I4KC7Tufwsvw=="],
-
-    "@tanstack/form-core": ["@tanstack/form-core@1.28.5", "", { "dependencies": { "@tanstack/devtools-event-client": "^0.4.1", "@tanstack/pacer-lite": "^0.1.1", "@tanstack/store": "^0.9.1" } }, "sha512-8lYnduHHfP6uaXF9+2OLnh3Fo27tH4TdtekWLG2b/Bp26ynbrWG6L4qhBgEb7VcvTpJw/RjvJF/JyFhZkG3pfQ=="],
-
     "@tanstack/history": ["@tanstack/history@1.161.6", "", {}, "sha512-NaOGLRrddszbQj9upGat6HG/4TKvXLvu+osAIgfxPYA+eIvYKv8GKDJOrY2D3/U9MRnKfMWD7bU4jeD4xmqyIg=="],
 
-    "@tanstack/pacer-lite": ["@tanstack/pacer-lite@0.1.1", "", {}, "sha512-y/xtNPNt/YeyoVxE/JCx+T7yjEzpezmbb+toK8DDD1P4m7Kzs5YR956+7OKexG3f8aXgC3rLZl7b1V+yNUSy5w=="],
-
     "@tanstack/query-core": ["@tanstack/query-core@5.80.6", "", {}, "sha512-nl7YxT/TAU+VTf+e2zTkObGTyY8YZBMnbgeA1ee66lIVqzKlYursAII6z5t0e6rXgwUMJSV4dshBTNacNpZHbQ=="],
-
-    "@tanstack/react-form": ["@tanstack/react-form@1.28.5", "", { "dependencies": { "@tanstack/form-core": "1.28.5", "@tanstack/react-store": "^0.9.1" }, "peerDependencies": { "react": "^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-CL8IeWkeXnEEDsHt5wBuIOZvSYrKiLRtsC9ca0LzfJJ22SYCma9cBmh1UX1EBX0o3gH2U21PmUf+y5f9OJNoEQ=="],
 
     "@tanstack/react-query": ["@tanstack/react-query@5.80.6", "", { "dependencies": { "@tanstack/query-core": "5.80.6" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-izX+5CnkpON3NQGcEm3/d7LfFQNo9ZpFtX2QsINgCYK9LT2VCIdi8D3bMaMSNhrAJCznRoAkFic76uvLroALBw=="],
 
@@ -3354,7 +3338,7 @@
 
     "@typebot.io/shared-core": ["@typebot.io/shared-core@workspace:packages/shared-core"],
 
-    "@typebot.io/spaces": ["@typebot.io/spaces@workspace:packages/spaces"],
+    "@typebot.io/shared-primitives": ["@typebot.io/shared-primitives@workspace:packages/shared-primitives"],
 
     "@typebot.io/telemetry": ["@typebot.io/telemetry@workspace:packages/telemetry"],
 
@@ -4460,7 +4444,7 @@
 
     "ee-first": ["ee-first@1.1.1", "", {}, "sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow=="],
 
-    "effect": ["effect@4.0.0-beta.35", "", { "dependencies": { "@standard-schema/spec": "^1.1.0", "fast-check": "^4.5.3", "find-my-way-ts": "^0.1.6", "ini": "^6.0.0", "kubernetes-types": "^1.30.0", "msgpackr": "^1.11.8", "multipasta": "^0.2.7", "toml": "^3.0.0", "uuid": "^13.0.0", "yaml": "^2.8.2" } }, "sha512-64j8dgJmoEMeq6Y3WLYcZIRqPZ5E/lqnULCf6QW5te3hQ/sa13UodWLGwBEviEqBoq72U8lArhVX+T7ntzhJGQ=="],
+    "effect": ["effect@4.0.0-beta.30", "", { "dependencies": { "@standard-schema/spec": "^1.1.0", "fast-check": "^4.5.3", "find-my-way-ts": "^0.1.6", "ini": "^6.0.0", "kubernetes-types": "^1.30.0", "msgpackr": "^1.11.8", "multipasta": "^0.2.7", "toml": "^3.0.0", "uuid": "^13.0.0", "yaml": "^2.8.2" } }, "sha512-ZQoOPu9yyqdHhoSv6TXTvCOPNd2zjAdHPofGupHjpXSHJ2TiOZtZGSJJ35ewcms/Aip6eOX7tLy5Cpoxb0M87g=="],
 
     "ejs": ["ejs@3.1.10", "", { "dependencies": { "jake": "^10.8.5" }, "bin": { "ejs": "bin/cli.js" } }, "sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA=="],
 
@@ -8085,6 +8069,8 @@
     "boxen/wrap-ansi": ["wrap-ansi@9.0.0", "", { "dependencies": { "ansi-styles": "^6.2.1", "string-width": "^7.0.0", "strip-ansi": "^7.1.0" } }, "sha512-G8ura3S+3Z2G+mkgNRq8dqaFZAuxfsxpBB8OCTGRTCtp+l/v9nbFNmCUP1BZMts3G1142MsZfn6eeUKrr4PD1Q=="],
 
     "browserslist/caniuse-lite": ["caniuse-lite@1.0.30001778", "", {}, "sha512-PN7uxFL+ExFJO61aVmP1aIEG4i9whQd4eoSCebav62UwDyp5OHh06zN4jqKSMePVgxHifCw1QJxdRkA1Pisekg=="],
+
+    "builder/effect": ["effect@4.0.0-beta.35", "", { "dependencies": { "@standard-schema/spec": "^1.1.0", "fast-check": "^4.5.3", "find-my-way-ts": "^0.1.6", "ini": "^6.0.0", "kubernetes-types": "^1.30.0", "msgpackr": "^1.11.8", "multipasta": "^0.2.7", "toml": "^3.0.0", "uuid": "^13.0.0", "yaml": "^2.8.2" } }, "sha512-64j8dgJmoEMeq6Y3WLYcZIRqPZ5E/lqnULCf6QW5te3hQ/sa13UodWLGwBEviEqBoq72U8lArhVX+T7ntzhJGQ=="],
 
     "bun-types/@types/node": ["@types/node@22.19.1", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-LCCV0HdSZZZb34qifBsyWlUmok6W7ouER+oQIGBScS8EsZsQbrtFTUrDX4hOl+CS6p7cnNC4td+qrSVGSCTUfQ=="],
 
