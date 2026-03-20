@@ -12,7 +12,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@orpc/server": "^1.13.4",
+    "@orpc/server": "^1.13.9",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/lib": "workspace:*",

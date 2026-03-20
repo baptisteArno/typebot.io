@@ -4,6 +4,7 @@
   "private": true,
   "workspaces": [
     "packages/*",
+    "packages/services/*",
     "packages/deprecated/*",
     "packages/embeds/*",
     "packages/forge/*",
@@ -11,6 +12,20 @@
     "packages/blocks/*",
     "apps/*"
   ],
+  "nx": {
+    "targets": {
+      "typecheck": {
+        "dependsOn": [
+          {
+            "projects": [
+              "@typebot.io/react"
+            ],
+            "target": "build"
+          }
+        ]
+      }
+    }
+  },
   "scripts": {
     "postinstall": "cd packages/env && bun run compile && nx db:generate prisma",
     "prepare": "husky && effect-language-service patch",

@@ -87,6 +87,9 @@
       "path": "../../packages/runtime-session-store"
     },
     {
+      "path": "../../packages/services/feature-flags"
+    },
+    {
       "path": "../../packages/embeds/react"
     },
     {

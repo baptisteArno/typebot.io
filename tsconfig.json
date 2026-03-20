@@ -226,6 +226,9 @@
       "path": "./packages/shared-core"
     },
     {
+      "path": "./packages/services/feature-flags"
+    },
+    {
       "path": "./packages/shared-primitives"
     }
   ]

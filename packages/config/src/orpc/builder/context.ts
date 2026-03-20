@@ -1,12 +1,16 @@
+import type { UserId } from "@typebot.io/shared-core/domain";
+
+export type UserInOrpcContext = {
+  id: UserId;
+  email: string;
+  // TODO: review package org
+  groupTitlesAutoGeneration: any;
+};
+
 export function createContext({
   authenticate,
 }: {
-  authenticate: () => Promise<{
-    id: string;
-    email: string;
-    // TODO: review package org
-    groupTitlesAutoGeneration: any;
-  } | null>;
+  authenticate: () => Promise<UserInOrpcContext | null>;
 }) {
   return {
     authenticate,

@@ -1,0 +1,35 @@
+{
+  "name": "@typebot.io/feature-flags",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./orpc/router": "./src/drivers/orpc/router.ts",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@orpc/server": "^1.13.9",
+    "@typebot.io/config": "workspace:*",
+    "@typebot.io/shared-core": "workspace:*",
+    "effect": "4.0.0-beta.36",
+    "posthog-node": "^5.8.2"
+  },
+  "devDependencies": {
+    "@effect/vitest": "4.0.0-beta.35"
+  },
+  "nx": {
+    "targets": {
+      "test": {
+        "executor": "@nx/vitest:test",
+        "outputs": [
+          "{options.reportsDirectory}"
+        ],
+        "options": {
+          "configFile": "vitest.config.ts",
+          "project": "@typebot.io/feature-flags",
+          "reportsDirectory": "../../../coverage/packages/services/feature-flags"
+        }
+      }
+    }
+  }
+}

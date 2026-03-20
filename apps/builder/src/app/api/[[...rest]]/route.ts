@@ -6,6 +6,7 @@ import { authenticateWithBearerToken } from "@typebot.io/auth/helpers/authentica
 import { auth } from "@typebot.io/auth/lib/nextAuth";
 import { createContext } from "@typebot.io/config/orpc/builder/context";
 import { convertSchemasListToCommonSchemas } from "@typebot.io/lib/convertSchemasListToCommonSchemas";
+import { UserId } from "@typebot.io/shared-core/domain";
 import { logServerRequest } from "@typebot.io/telemetry/logServerRequest";
 import {
   publicTypebotSchemaV5,
@@ -119,7 +120,11 @@ async function handleRequest(
             (await auth())?.user ||
             (await authenticateWithBearerToken(resolvedRequest));
           if (!user) return null;
-          return user;
+          return {
+            id: UserId.makeUnsafe(user.id),
+            email: user.email,
+            groupTitlesAutoGeneration: user.groupTitlesAutoGeneration,
+          };
         },
       }),
     });
