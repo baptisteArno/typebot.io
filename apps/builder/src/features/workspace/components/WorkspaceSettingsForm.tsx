@@ -40,7 +40,7 @@ export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {
             icon={workspace.icon}
             onChangeIcon={handleChangeIcon}
             size="lg"
-            defaultIcon={HardDriveIcon}
+            defaultIcon={<HardDriveIcon className="size-full" />}
           />
         )}
       </Field.Root>

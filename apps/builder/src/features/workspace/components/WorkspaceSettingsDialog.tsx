@@ -102,7 +102,7 @@ export const WorkspaceSettingsDialog = ({
                   <EmojiOrImageIcon
                     icon={workspace.icon}
                     className="size-4.5 text-xl"
-                    defaultIcon={HardDriveIcon}
+                    defaultIcon={<HardDriveIcon className="size-full" />}
                   />
                   {t("workspace.settings.modal.menu.settings.label")}
                 </Button>

@@ -26,6 +26,7 @@
   "dependencies": {
     "@base-ui/react": "1.2.0",
     "class-variance-authority": "^0.7.1",
+    "emojilib": "^3.0.10",
     "input-otp": "^1.4.2",
     "next": "^16.1.6",
     "react": "^19.2.4",

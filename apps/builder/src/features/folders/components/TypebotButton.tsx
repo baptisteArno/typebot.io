@@ -192,7 +192,7 @@ const TypebotButton = ({
           <EmojiOrImageIcon
             icon={typebot.icon}
             className="size-9 text-[2.25rem]"
-            defaultIcon={LayoutBottomIcon}
+            defaultIcon={<LayoutBottomIcon className="size-full" />}
           />
           <p className="text-center max-w-[180px] line-clamp-4">
             {typebot.name}

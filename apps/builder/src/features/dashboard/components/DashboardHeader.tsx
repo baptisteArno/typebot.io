@@ -41,7 +41,7 @@ export const DashboardHeader = () => {
           <EmojiOrImageIcon
             icon={workspace?.icon}
             className="size-6.25 text-2xl"
-            defaultIcon={HardDriveIcon}
+            defaultIcon={<HardDriveIcon className="size-full" />}
           />
         </Link>
         <div className="flex items-center gap-2">

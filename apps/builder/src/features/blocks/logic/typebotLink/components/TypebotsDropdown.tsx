@@ -50,7 +50,7 @@ export const TypebotsDropdown = ({
                 <EmojiOrImageIcon
                   icon={typebot.icon}
                   className="size-4.5 text-xl"
-                  defaultIcon={LayoutBottomIcon}
+                  defaultIcon={<LayoutBottomIcon className="size-full" />}
                 />
               ),
               label: typebot.name,

@@ -58,7 +58,7 @@ export const GuestTypebotHeader = () => {
             <EmojiOrImageIcon
               icon={typebot.icon}
               className="size-6.25 text-2xl"
-              defaultIcon={LayoutBottomIcon}
+              defaultIcon={<LayoutBottomIcon className="size-full" />}
             />
           )}
           <p className="max-w-[150px] overflow-hidden text-[14px] min-w-[30px] min-h-[20px] line-clamp-2">

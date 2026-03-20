@@ -189,7 +189,7 @@ export const CollaborationList = () => {
             <EmojiOrImageIcon
               icon={workspace.icon}
               className="size-6.25 text-2xl"
-              defaultIcon={HardDriveIcon}
+              defaultIcon={<HardDriveIcon className="size-full" />}
             />
             <p className="text-[15px] truncate">Everyone at {workspace.name}</p>
           </div>

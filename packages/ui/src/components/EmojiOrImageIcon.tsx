@@ -3,14 +3,19 @@ import { cx } from "../lib/cva";
 type Props = {
   icon?: string | null;
   className?: string;
-  defaultIcon: (props: React.SVGProps<SVGSVGElement>) => React.ReactNode;
+  defaultIcon: React.ReactNode;
 };
 
 export const EmojiOrImageIcon = ({ icon, className, defaultIcon }: Props) => {
   if (icon) {
     if (isImageSource(icon)) {
       return (
-        <span className={cx("inline-flex shrink-0 items-center justify-center", className)}>
+        <span
+          className={cx(
+            "inline-flex shrink-0 items-center justify-center",
+            className,
+          )}
+        >
           <img
             className={cx(
               "size-full rounded-[10%]",
@@ -37,13 +42,19 @@ export const EmojiOrImageIcon = ({ icon, className, defaultIcon }: Props) => {
   }
 
   return (
-    <span className={cx("inline-flex shrink-0 items-center justify-center", className)}>
-      {defaultIcon({ className: "size-full" })}
+    <span
+      className={cx(
+        "inline-flex shrink-0 items-center justify-center",
+        className,
+      )}
+    >
+      {defaultIcon}
     </span>
   );
 };
 
-const isImageSource = (icon: string) => icon.startsWith("http") || isSvgSource(icon);
+const isImageSource = (icon: string) =>
+  icon.startsWith("http") || isSvgSource(icon);
 
 const isSvgSource = (icon: string) =>
   icon.startsWith("data:image/svg+xml") || icon.includes(".svg");

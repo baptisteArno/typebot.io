@@ -4,7 +4,6 @@ import { Popover } from "@typebot.io/ui/components/Popover";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { cx } from "@typebot.io/ui/lib/cva";
-import type { JSX } from "react";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
 import { ImageUploadContent } from "./ImageUploadContent";
 
@@ -13,7 +12,7 @@ type Props = {
   icon?: string | null;
   onChangeIcon: (icon: string) => void;
   size?: "sm" | "md" | "lg";
-  defaultIcon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
+  defaultIcon: React.ReactNode;
 };
 
 export const EditableEmojiOrImageIcon = ({

@@ -54,7 +54,7 @@ export const WorkspaceDropdown = ({
               <div className="flex items-center gap-2">
                 <EmojiOrImageIcon
                   icon={workspace.icon}
-                  defaultIcon={HardDriveIcon}
+                  defaultIcon={<HardDriveIcon className="size-full" />}
                   className="size-4.5 text-xl"
                 />
                 <p className="max-w-[250px] truncate">{workspace.name}</p>

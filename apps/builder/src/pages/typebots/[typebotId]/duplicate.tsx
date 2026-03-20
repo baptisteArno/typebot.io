@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
-import { EmojiOrImageIcon } from "@typebot.io/ui/components/EmojiOrImageIcon";
 import { Button } from "@typebot.io/ui/components/Button";
+import { EmojiOrImageIcon } from "@typebot.io/ui/components/EmojiOrImageIcon";
 import { Label } from "@typebot.io/ui/components/Label";
 import { Radio, RadioGroup } from "@typebot.io/ui/components/RadioGroup";
 import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
@@ -52,7 +52,7 @@ const Page = () => {
               <EmojiOrImageIcon
                 icon={workspace.icon}
                 className="size-4.5 text-xl"
-                defaultIcon={HardDriveIcon}
+                defaultIcon={<HardDriveIcon className="size-full" />}
               />
               {workspace.name}
               <PlanBadge plan={workspace.plan} />

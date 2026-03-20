@@ -23,7 +23,7 @@ export const TypebotButtonOverlay = ({ typebot, className, style }: Props) => {
           <EmojiOrImageIcon
             icon={typebot.icon}
             className="size-9 text-[2.25rem]"
-            defaultIcon={LayoutBottomIcon}
+            defaultIcon={<LayoutBottomIcon className="size-full" />}
           />
         </div>
         <p className="font-medium">{typebot.name}</p>
