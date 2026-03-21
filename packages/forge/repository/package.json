@@ -31,6 +31,7 @@
     "@typebot.io/deepseek-block": "workspace:*",
     "@typebot.io/blink-block": "workspace:*",
     "@typebot.io/gmail-block": "workspace:*",
-    "zod": "^4.3.5"
+    "zod": "^4.3.5",
+    "@typebot.io/google-places-autocomplete-block": "workspace:*"
   }
 }

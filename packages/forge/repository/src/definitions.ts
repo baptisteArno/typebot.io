@@ -18,6 +18,8 @@ import { qrCodeBlock } from "@typebot.io/qrcode-block";
 import { segmentBlock } from "@typebot.io/segment-block";
 import { togetherAiBlock } from "@typebot.io/together-ai-block";
 import { zendeskBlock } from "@typebot.io/zendesk-block";
+import { googlePlacesAutocompleteBlock } from '@typebot.io/google-places-autocomplete-block'
+
 
 export const forgedBlocks = {
   [openAIBlock.id]: openAIBlock,
@@ -39,6 +41,8 @@ export const forgedBlocks = {
   [deepSeekBlock.id]: deepSeekBlock,
   [blinkBlock.id]: blinkBlock,
   [gmailBlock.id]: gmailBlock,
+  [googlePlacesAutocompleteBlock.id]: googlePlacesAutocompleteBlock,
+
 };
 export type ForgedBlockDefinition =
   (typeof forgedBlocks)[keyof typeof forgedBlocks];

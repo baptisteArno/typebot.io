@@ -38,6 +38,8 @@ import { togetherAiBlockSchema } from "@typebot.io/together-ai-block/schemas";
 import { zendeskBlock } from "@typebot.io/zendesk-block";
 import { zendeskBlockSchema } from "@typebot.io/zendesk-block/schemas";
 import { z } from "zod";
+import { googlePlacesAutocompleteBlock } from '@typebot.io/google-places-autocomplete-block'
+import { googlePlacesAutocompleteBlockSchema } from '@typebot.io/google-places-autocomplete-block/schemas'
 
 export const forgedBlockSchemas = {
   [openAIBlock.id]: openAIBlockSchema,
@@ -59,7 +61,7 @@ export const forgedBlockSchemas = {
   [deepSeekBlock.id]: deepSeekBlockSchema,
   [blinkBlock.id]: blinkBlockSchema,
   [gmailBlock.id]: gmailBlockSchema,
-} as const;
+[googlePlacesAutocompleteBlock.id]: googlePlacesAutocompleteBlockSchema,} as const;
 
 export const forgedBlockSchema = z.discriminatedUnion("type", [
   openAIBlockSchema,
@@ -81,5 +83,5 @@ export const forgedBlockSchema = z.discriminatedUnion("type", [
   deepSeekBlockSchema,
   blinkBlockSchema,
   gmailBlockSchema,
-]);
+googlePlacesAutocompleteBlockSchema]);
 export type ForgedBlock = z.infer<typeof forgedBlockSchema>;

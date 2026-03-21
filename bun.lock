@@ -787,6 +787,12 @@
         "@types/react": "^19.2.14",
       },
     },
+    "packages/forge/blocks/googlePlacesAutocomplete": {
+      "name": "@typebot.io/google-places-autocomplete-block",
+      "dependencies": {
+        "@typebot.io/forge": "workspace:*",
+      },
+    },
     "packages/forge/blocks/groq": {
       "name": "@typebot.io/groq-block",
       "version": "1.0.0",
@@ -958,6 +964,7 @@
         "@typebot.io/dify-ai-block": "workspace:*",
         "@typebot.io/elevenlabs-block": "workspace:*",
         "@typebot.io/gmail-block": "workspace:*",
+        "@typebot.io/google-places-autocomplete-block": "workspace:*",
         "@typebot.io/groq-block": "workspace:*",
         "@typebot.io/mistral-block": "workspace:*",
         "@typebot.io/nocodb-block": "workspace:*",
@@ -3285,6 +3292,8 @@
     "@typebot.io/forge-repository": ["@typebot.io/forge-repository@workspace:packages/forge/repository"],
 
     "@typebot.io/gmail-block": ["@typebot.io/gmail-block@workspace:packages/forge/blocks/gmail"],
+
+    "@typebot.io/google-places-autocomplete-block": ["@typebot.io/google-places-autocomplete-block@workspace:packages/forge/blocks/googlePlacesAutocomplete"],
 
     "@typebot.io/groq-block": ["@typebot.io/groq-block@workspace:packages/forge/blocks/groq"],
 

@@ -227,6 +227,9 @@
     },
     {
       "path": "./packages/shared-primitives"
+    },
+    {
+      "path": "./packages/forge/blocks/googlePlacesAutocomplete"
     }
   ]
 }

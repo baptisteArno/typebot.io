@@ -21,4 +21,4 @@ export const forgedBlockIds = [
   "deepseek",
   "blink",
   "gmail",
-] as const satisfies readonly ForgedBlock["type"][];
+'google-places-autocomplete'] as const satisfies readonly ForgedBlock["type"][];

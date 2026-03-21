@@ -37,6 +37,9 @@ import { togetherAiBlock } from "@typebot.io/together-ai-block";
 import togetherAiBlockHandlers from "@typebot.io/together-ai-block/handlers";
 import { zendeskBlock } from "@typebot.io/zendesk-block";
 import zendeskBlockHandlers from "@typebot.io/zendesk-block/handlers";
+import { googlePlacesAutocompleteBlock } from "@typebot.io/google-places-autocomplete-block";
+import googlePlacesAutocompleteBlockHandlers from "@typebot.io/google-places-autocomplete-block/handlers";
+
 
 export const forgedBlockHandlers = {
   [openAIBlock.id]: openAIBlockHandlers,
@@ -58,4 +61,6 @@ export const forgedBlockHandlers = {
   [deepSeekBlock.id]: deepSeekBlockHandlers,
   [blinkBlock.id]: blinkBlockHandlers,
   [gmailBlock.id]: gmailBlockHandlers,
+  [googlePlacesAutocompleteBlock.id]: googlePlacesAutocompleteBlockHandlers,
+
 };

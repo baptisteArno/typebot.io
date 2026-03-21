@@ -45,9 +45,13 @@ export const ForgedBlockNodeContent = ({ block, indices }: Props) => {
     typebot?.variables,
   ]);
 
-  const setVariableIds = (
-    actionDef?.getSetVariableIds?.(block.options) ?? []
-  ).concat(actionDef?.getEmbedSaveVariableId?.(block.options) ?? []);
+  const setVariableIds = [
+    ...new Set(
+      (actionDef?.getSetVariableIds?.(block.options) ?? []).concat(
+        actionDef?.getEmbedSaveVariableId?.(block.options) ?? [],
+      ),
+    ),
+  ];
 
   const isConfigured =
     block.options?.action && (!blockDef?.auth || block.options.credentialsId);

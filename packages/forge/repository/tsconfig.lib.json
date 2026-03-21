@@ -9,6 +9,9 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
+      "path": "../blocks/googlePlacesAutocomplete"
+    },
+    {
       "path": "../blocks/gmail/tsconfig.lib.json"
     },
     {
