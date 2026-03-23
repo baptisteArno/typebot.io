@@ -2,6 +2,7 @@ import { ORPCError } from "@orpc/server";
 import { authRouter } from "@typebot.io/auth/api/router";
 import { billingRouter } from "@typebot.io/billing/api/router";
 import { publicProcedure } from "@typebot.io/config/orpc/builder/middlewares";
+import { featureFlagsRouter } from "@typebot.io/feature-flags/orpc/router";
 import { fileUploadBuilderRouter } from "@typebot.io/file-input-block/api/router";
 import { builderWhatsAppRouter } from "@typebot.io/whatsapp/api/router";
 import { z } from "zod";
@@ -16,7 +17,6 @@ import { credentialsRouter } from "@/features/credentials/api/router";
 import { customDomainsRouter } from "@/features/customDomains/api/router";
 import { generateGroupTitle } from "@/features/editor/api/generateGroupTitle";
 import { emailsRouter } from "@/features/emails/api/router";
-import { getFeatureFlags } from "@/features/featureFlags/api/getFeatureFlags";
 import { folderRouter } from "@/features/folders/api/router";
 import { forgeRouter } from "@/features/forge/api/router";
 import { resultsRouter } from "@/features/results/api/router";
@@ -78,7 +78,7 @@ export const appRouter: AppRouter = {
   telemetry: telemetryRouter,
   generateGroupTitle,
   credentials: credentialsRouter,
-  getFeatureFlags,
+  featureFlags: featureFlagsRouter,
   auth: authRouter,
   billing: billingRouter,
 };
@@ -108,7 +108,7 @@ export type AppRouter = {
   telemetry: typeof telemetryRouter;
   generateGroupTitle: typeof generateGroupTitle;
   credentials: typeof credentialsRouter;
-  getFeatureFlags: typeof getFeatureFlags;
+  featureFlags: typeof featureFlagsRouter;
   auth: typeof authRouter;
   billing: typeof billingRouter;
 };

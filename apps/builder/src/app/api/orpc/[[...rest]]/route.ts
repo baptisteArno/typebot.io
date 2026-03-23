@@ -2,6 +2,7 @@ import { RPCHandler } from "@orpc/server/fetch";
 import { CORSPlugin } from "@orpc/server/plugins";
 import { auth } from "@typebot.io/auth/lib/nextAuth";
 import { createContext } from "@typebot.io/config/orpc/builder/context";
+import { UserId } from "@typebot.io/shared-core/domain";
 import { logServerRequest } from "@typebot.io/telemetry/logServerRequest";
 import { appRouter } from "../../router";
 
@@ -19,7 +20,11 @@ async function handleRequest(request: Request) {
         authenticate: async () => {
           const session = await auth();
           if (!session?.user) return null;
-          return session.user;
+          return {
+            id: UserId.makeUnsafe(session.user.id),
+            email: session.user.email,
+            groupTitlesAutoGeneration: session.user.groupTitlesAutoGeneration,
+          };
         },
       }),
     });

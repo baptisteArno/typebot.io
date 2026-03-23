@@ -26,7 +26,7 @@
     "@typebot.io/user": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
-    "effect": "4.0.0-beta.30",
+    "effect": "4.0.0-beta.36",
     "zod": "^4.3.5"
   }
 }

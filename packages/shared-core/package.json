@@ -17,6 +17,6 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "effect": "4.0.0-beta.30"
+    "effect": "4.0.0-beta.36"
   }
 }
