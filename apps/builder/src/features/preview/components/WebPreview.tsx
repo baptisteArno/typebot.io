@@ -31,6 +31,7 @@ export const WebPreview = () => {
     <Standard
       key={`web-preview-${startPreviewFrom?.id ?? ""}`}
       typebot={typebot}
+      apiHost={window.location.origin}
       sessionId={user ? `${typebot.id}-${user.id}` : undefined}
       startFrom={
         startPreviewFrom?.type === "group"

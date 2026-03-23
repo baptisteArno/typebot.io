@@ -3,6 +3,7 @@ import {
   startChatResponseSchema,
   startPreviewChatResponseSchema,
 } from "@typebot.io/chat-api/schemas";
+import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import {
   procedureWithOptionalUser,
   protectedProcedure,
@@ -37,6 +38,33 @@ import {
 import { handleSendMessageV1 } from "./legacy/handleSendMessageV1";
 import { handleSendMessageV2 } from "./legacy/handleSendMessageV2";
 
+export const builderChatRouter = {
+  continueChatProcedure: authenticatedProcedure
+    .route({
+      method: "POST",
+      path: "/v1/sessions/{sessionId}/continueChat",
+    })
+    .input(continueChatInputSchema)
+    .output(continueChatResponseSchema)
+    .handler(({ input }) =>
+      handleContinueChat({
+        input,
+        context: {
+          origin: undefined,
+          iframeReferrerOrigin: undefined,
+        },
+      }),
+    ),
+  startChatPreviewProcedure: authenticatedProcedure
+    .route({
+      method: "POST",
+      path: "/v1/typebots/{typebotId}/preview/startChat",
+    })
+    .input(startPreviewChatInputSchema)
+    .output(startPreviewChatResponseSchema)
+    .handler(handleStartChatPreview),
+};
+
 export const chatRouter = {
   startChatProcedure: publicProcedure
     .route({
@@ -68,7 +96,7 @@ export const chatRouter = {
     .input(saveClientLogsInputSchema)
     .output(z.object({ message: z.string() }))
     .handler(handleSaveClientLogs),
-  startChatPreviewProcedure: procedureWithOptionalUser
+  startChatPreviewProcedure: protectedProcedure
     .route({
       method: "POST",
       path: "/v1/typebots/{typebotId}/preview/startChat",

@@ -17,6 +17,7 @@ All scripts must be ran with `bunx nx`:
 
 - Typescript project references can be automatically updated with `bunx nx sync`.
 - Most of the scripts are inferred with nx plugins. A few examples:
+  - fastest way to typecheck `builder` and/or `viewer`: run root `bunx nx typecheck` (runs `tsc --build --emitDeclarationOnly`)
   - typecheck a particular package: `bunx nx typecheck package_name`.
   - test a package: `bunx nx test package_name`
   - typecheck all afffected packages: `bunx nx affected -t typecheck` (**IMPORTANT**: Rely first on IDE's TS server diagnostics first for faster feedback loop)

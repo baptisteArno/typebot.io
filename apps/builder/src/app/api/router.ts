@@ -1,6 +1,7 @@
 import { ORPCError } from "@orpc/server";
 import { authRouter } from "@typebot.io/auth/api/router";
 import { billingRouter } from "@typebot.io/billing/api/router";
+import { builderChatRouter } from "@typebot.io/bot-engine/api/router";
 import { publicProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { featureFlagsRouter } from "@typebot.io/feature-flags/orpc/router";
 import { fileUploadBuilderRouter } from "@typebot.io/file-input-block/api/router";
@@ -77,6 +78,7 @@ export const appRouter: AppRouter = {
   email: emailRouter,
   telemetry: telemetryRouter,
   generateGroupTitle,
+  chat: builderChatRouter,
   credentials: credentialsRouter,
   featureFlags: featureFlagsRouter,
   auth: authRouter,
@@ -107,6 +109,7 @@ export type AppRouter = {
   email: typeof emailRouter;
   telemetry: typeof telemetryRouter;
   generateGroupTitle: typeof generateGroupTitle;
+  chat: typeof builderChatRouter;
   credentials: typeof credentialsRouter;
   featureFlags: typeof featureFlagsRouter;
   auth: typeof authRouter;

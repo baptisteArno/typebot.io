@@ -332,13 +332,13 @@ export const startSession = async ({
 };
 
 const getTypebot = async (startParams: StartParams) => {
-  if (startParams.type === "preview" && startParams.typebot)
-    return startParams.typebot;
-
   if (startParams.type === "preview" && !startParams.userId)
     throw new ORPCError("UNAUTHORIZED", {
       message: "You need to be authenticated to perform this action",
     });
+
+  if (startParams.type === "preview" && startParams.typebot)
+    return startParams.typebot;
 
   const typebotQuery =
     startParams.type === "preview"

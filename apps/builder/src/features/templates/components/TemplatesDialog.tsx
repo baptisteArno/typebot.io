@@ -173,6 +173,7 @@ export const TemplatesDialog = ({
             <Standard
               key={typebot.id}
               typebot={typebot}
+              apiHost={window.location.origin}
               style={{
                 borderRadius: "0.25rem",
                 backgroundColor: "#fff",

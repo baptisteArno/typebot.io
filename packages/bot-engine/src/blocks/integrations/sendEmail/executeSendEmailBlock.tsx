@@ -312,7 +312,9 @@ const parseEmailRecipient = (
 ): { email?: string; name?: string } => {
   if (!recipient) return {};
 
-  const namedRecipientMatch = recipient.match(/^(?<name>[^<]+)<(?<email>[^>]+)>$/);
+  const namedRecipientMatch = recipient.match(
+    /^(?<name>[^<]+)<(?<email>[^>]+)>$/,
+  );
   const email = namedRecipientMatch?.groups?.email?.trim();
   const name = namedRecipientMatch?.groups?.name?.trim().replaceAll('"', "");
 

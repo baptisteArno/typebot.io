@@ -18,6 +18,7 @@ export const SettingsPage = () => {
           {typebot && (
             <Standard
               typebot={typebot}
+              apiHost={window.location.origin}
               style={{
                 borderRadius: "0.75rem",
                 width: "100%",
