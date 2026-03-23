@@ -59,6 +59,7 @@ export const startWhatsAppPreview = authenticatedProcedure
         id: true,
         workspace: {
           select: {
+            id: true,
             isSuspended: true,
             isPastDue: true,
             members: {

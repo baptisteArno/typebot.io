@@ -4,7 +4,7 @@ import { getUserRoleInWorkspace } from './getUserRoleInWorkspace'
 
 describe('getUserRoleInWorkspace', () => {
   const userId = 'user-123'
-  const workspaceName = 'shopee'
+  const workspaceId = 'workspace-456'
   const workspaceMembers = [
     {
       userId: 'user-123',
@@ -15,62 +15,97 @@ describe('getUserRoleInWorkspace', () => {
     },
   ]
 
-  describe('Cognito token claims with workspace name matching', () => {
-    it('should return ADMIN role when hub_role is ADMIN and tenant_id matches workspace name', () => {
+  describe('Cognito token claims with workspace ID matching', () => {
+    it('should return ADMIN role when hub_role is ADMIN and eddie_workspaces contains workspace id', () => {
       const user = {
-        'custom:hub_role': 'ADMIN',
-        'custom:tenant_id': 'shopee',
+        id: userId,
+        email: 'test@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'ADMIN',
+          'custom:eddie_workspaces': 'workspace-456,ws-789',
+        },
       }
 
       const role = getUserRoleInWorkspace(
         userId,
         workspaceMembers,
-        workspaceName,
+        workspaceId,
         user
       )
       expect(role).toBe(WorkspaceRole.ADMIN)
     })
 
-    it('should return ADMIN role when hub_role is MANAGER and tenant_id matches workspace name', () => {
+    it('should return ADMIN role when hub_role is MANAGER and eddie_workspaces contains workspace id', () => {
       const user = {
-        'custom:hub_role': 'MANAGER',
-        'custom:tenant_id': 'shopee',
+        id: userId,
+        email: 'test@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'MANAGER',
+          'custom:eddie_workspaces': 'workspace-456',
+        },
       }
 
       const role = getUserRoleInWorkspace(
         userId,
         workspaceMembers,
-        workspaceName,
+        workspaceId,
         user
       )
       expect(role).toBe(WorkspaceRole.ADMIN)
     })
 
-    it('should return MEMBER role when hub_role is CLIENT and tenant_id matches workspace name', () => {
+    it('should return MEMBER role when hub_role is CLIENT and eddie_workspaces contains workspace id', () => {
       const user = {
-        'custom:hub_role': 'CLIENT',
-        'custom:tenant_id': 'shopee',
+        id: userId,
+        email: 'test@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'CLIENT',
+          'custom:eddie_workspaces': 'workspace-456',
+        },
       }
 
       const role = getUserRoleInWorkspace(
         userId,
         workspaceMembers,
-        workspaceName,
+        workspaceId,
         user
       )
       expect(role).toBe(WorkspaceRole.MEMBER)
     })
 
-    it('should fallback to database when tenant_id does not match workspace name', () => {
+    it('should return ADMIN for hub_role ADMIN even when eddie_workspaces does not contain workspace id', () => {
       const user = {
-        'custom:hub_role': 'ADMIN',
-        'custom:tenant_id': 'different-tenant',
+        id: userId,
+        email: 'test@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'ADMIN',
+          'custom:eddie_workspaces': 'ws-other,ws-999',
+        },
       }
 
       const role = getUserRoleInWorkspace(
         userId,
         workspaceMembers,
-        workspaceName,
+        workspaceId,
+        user
+      )
+      expect(role).toBe(WorkspaceRole.ADMIN)
+    })
+
+    it('should fallback to database when eddie_workspaces does not contain workspace id for non-ADMIN roles', () => {
+      const user = {
+        id: userId,
+        email: 'test@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'CLIENT',
+          'custom:eddie_workspaces': 'ws-other,ws-999',
+        },
+      }
+
+      const role = getUserRoleInWorkspace(
+        userId,
+        workspaceMembers,
+        workspaceId,
         user
       )
       expect(role).toBe(WorkspaceRole.MEMBER)
@@ -82,7 +117,7 @@ describe('getUserRoleInWorkspace', () => {
       const role = getUserRoleInWorkspace(
         userId,
         workspaceMembers,
-        workspaceName,
+        workspaceId,
         undefined
       )
       expect(role).toBe(WorkspaceRole.MEMBER)
@@ -92,94 +127,123 @@ describe('getUserRoleInWorkspace', () => {
       const role = getUserRoleInWorkspace(
         userId,
         workspaceMembers,
-        workspaceName,
+        workspaceId,
         {}
       )
       expect(role).toBe(WorkspaceRole.MEMBER)
     })
 
-    it('should return undefined when no access found anywhere', () => {
+    it('should return ADMIN when hub_role is ADMIN even with unknown user and no database match', () => {
       const user = {
-        'custom:hub_role': 'ADMIN',
-        'custom:tenant_id': 'other-tenant',
+        id: 'unknown-user',
+        email: 'unknown@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'ADMIN',
+          'custom:eddie_workspaces': 'ws-other',
+        },
       }
 
-      const role = getUserRoleInWorkspace(
-        'unknown-user',
-        [],
-        workspaceName,
-        user
-      )
+      const role = getUserRoleInWorkspace('unknown-user', [], workspaceId, user)
+      expect(role).toBe(WorkspaceRole.ADMIN)
+    })
+
+    it('should return undefined when no access found anywhere for non-ADMIN roles', () => {
+      const user = {
+        id: 'unknown-user',
+        email: 'unknown@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'CLIENT',
+          'custom:eddie_workspaces': 'ws-other',
+        },
+      }
+
+      const role = getUserRoleInWorkspace('unknown-user', [], workspaceId, user)
       expect(role).toBeUndefined()
     })
   })
 
-  describe('New claudia_projects functionality', () => {
-    it('should return ADMIN role when workspace matches claudia_projects (case-insensitive)', () => {
+  describe('eddie_workspaces functionality', () => {
+    it('should return ADMIN role when workspace id is in eddie_workspaces', () => {
       const user = {
-        'custom:hub_role': 'ADMIN',
-        'custom:tenant_id': 'different-tenant',
-        'custom:claudia_projects': 'Project1,SHOPEE,Project3',
+        id: userId,
+        email: 'test@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'ADMIN',
+          'custom:eddie_workspaces': 'ws-111,workspace-456,ws-333',
+        },
       }
 
-      const role = getUserRoleInWorkspace(
-        userId,
-        [],
-        workspaceName, // "shopee"
-        user
-      )
+      const role = getUserRoleInWorkspace(userId, [], workspaceId, user)
       expect(role).toBe(WorkspaceRole.ADMIN)
     })
 
-    it('should return MEMBER role when workspace matches claudia_projects and hub_role is CLIENT', () => {
+    it('should return MEMBER role when hub_role is CLIENT and workspace id matches', () => {
       const user = {
-        'custom:hub_role': 'CLIENT',
-        'custom:tenant_id': 'different-tenant',
-        'custom:claudia_projects': 'Project1,shopee,Project3',
+        id: userId,
+        email: 'test@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'CLIENT',
+          'custom:eddie_workspaces': 'ws-111,workspace-456,ws-333',
+        },
       }
 
-      const role = getUserRoleInWorkspace(userId, [], workspaceName, user)
+      const role = getUserRoleInWorkspace(userId, [], workspaceId, user)
       expect(role).toBe(WorkspaceRole.MEMBER)
     })
 
-    it('should handle case-insensitive tenant_id matching', () => {
+    it('should use exact match (case-sensitive) for workspace id', () => {
       const user = {
-        'custom:hub_role': 'MANAGER',
-        'custom:tenant_id': 'SHOPEE',
-      }
-
-      const role = getUserRoleInWorkspace(
-        userId,
-        [],
-        workspaceName, // "shopee"
-        user
-      )
-      expect(role).toBe(WorkspaceRole.ADMIN)
-    })
-
-    it('should prioritize tenant_id over claudia_projects when both match', () => {
-      const user = {
-        'custom:hub_role': 'CLIENT', // Would be MEMBER via claudia_projects
-        'custom:tenant_id': 'SHOPEE', // But tenant_id makes it MEMBER too
-        'custom:claudia_projects': 'shopee,other-project',
-      }
-
-      const role = getUserRoleInWorkspace(userId, [], workspaceName, user)
-      // Should use hub_role mapping from tenant_id match
-      expect(role).toBe(WorkspaceRole.MEMBER)
-    })
-
-    it('should fallback to database when no Cognito match found', () => {
-      const user = {
-        'custom:hub_role': 'ADMIN',
-        'custom:tenant_id': 'different-tenant',
-        'custom:claudia_projects': 'Project1,Project2,Project3',
+        id: userId,
+        email: 'test@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'MANAGER',
+          'custom:eddie_workspaces': 'WORKSPACE-456',
+        },
       }
 
       const role = getUserRoleInWorkspace(
         userId,
         workspaceMembers,
-        workspaceName,
+        workspaceId, // "workspace-456"
+        user
+      )
+      // Should NOT match because case-sensitive, falls back to database
+      expect(role).toBe(WorkspaceRole.MEMBER)
+    })
+
+    it('should return ADMIN for hub_role ADMIN even when no Cognito workspace match found', () => {
+      const user = {
+        id: userId,
+        email: 'test@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'ADMIN',
+          'custom:eddie_workspaces': 'ws-111,ws-222,ws-333',
+        },
+      }
+
+      const role = getUserRoleInWorkspace(
+        userId,
+        workspaceMembers,
+        workspaceId,
+        user
+      )
+      expect(role).toBe(WorkspaceRole.ADMIN)
+    })
+
+    it('should fallback to database when no Cognito match found for non-ADMIN roles', () => {
+      const user = {
+        id: userId,
+        email: 'test@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'CLIENT',
+          'custom:eddie_workspaces': 'ws-111,ws-222,ws-333',
+        },
+      }
+
+      const role = getUserRoleInWorkspace(
+        userId,
+        workspaceMembers,
+        workspaceId,
         user
       )
       expect(role).toBe(WorkspaceRole.MEMBER) // From database
@@ -193,20 +257,20 @@ describe('getUserRoleInWorkspace', () => {
     })
 
     it('should work with three-parameter signature (no user)', () => {
-      const role = getUserRoleInWorkspace(
-        userId,
-        workspaceMembers,
-        workspaceName
-      )
+      const role = getUserRoleInWorkspace(userId, workspaceMembers, workspaceId)
       expect(role).toBe(WorkspaceRole.MEMBER)
     })
   })
 
   describe('Edge cases', () => {
-    it('should handle missing workspace name gracefully', () => {
+    it('should handle missing workspace id gracefully', () => {
       const user = {
-        'custom:hub_role': 'ADMIN',
-        'custom:tenant_id': 'shopee',
+        id: userId,
+        email: 'test@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'ADMIN',
+          'custom:eddie_workspaces': 'workspace-456',
+        },
       }
 
       const role = getUserRoleInWorkspace(
@@ -218,30 +282,38 @@ describe('getUserRoleInWorkspace', () => {
       expect(role).toBe(WorkspaceRole.MEMBER)
     })
 
-    it('should handle empty tenant_id', () => {
+    it('should handle empty eddie_workspaces', () => {
       const user = {
-        'custom:hub_role': 'ADMIN',
-        'custom:tenant_id': '',
+        id: userId,
+        email: 'test@example.com',
+        cognitoClaims: {
+          'custom:hub_role': 'ADMIN',
+          'custom:eddie_workspaces': '',
+        },
       }
 
       const role = getUserRoleInWorkspace(
         userId,
         workspaceMembers,
-        workspaceName,
+        workspaceId,
         user
       )
       expect(role).toBe(WorkspaceRole.MEMBER)
     })
 
-    it('should handle missing hub_role', () => {
+    it('should handle missing hub_role but with eddie_workspaces match', () => {
       const user = {
-        'custom:tenant_id': 'shopee',
+        id: userId,
+        email: 'test@example.com',
+        cognitoClaims: {
+          'custom:eddie_workspaces': 'workspace-456',
+        },
       }
 
       const role = getUserRoleInWorkspace(
         userId,
         workspaceMembers,
-        workspaceName,
+        workspaceId,
         user
       )
       expect(role).toBe(WorkspaceRole.MEMBER)
@@ -250,13 +322,13 @@ describe('getUserRoleInWorkspace', () => {
     it('should handle invalid JSON-like structures gracefully', () => {
       const user = {
         'custom:hub_role': null,
-        'custom:tenant_id': undefined,
+        'custom:eddie_workspaces': undefined,
       }
 
       const role = getUserRoleInWorkspace(
         userId,
         workspaceMembers,
-        workspaceName,
+        workspaceId,
         user
       )
       expect(role).toBe(WorkspaceRole.MEMBER)

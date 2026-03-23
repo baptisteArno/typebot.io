@@ -34,6 +34,7 @@ export const getCollaborators = authenticatedProcedure
         collaborators: true,
         workspace: {
           select: {
+            id: true,
             isSuspended: true,
             isPastDue: true,
             members: {

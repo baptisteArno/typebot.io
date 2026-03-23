@@ -50,8 +50,7 @@ const authenticateByEmbeddedToken = async (
       ...user,
       cognitoClaims: {
         'custom:hub_role': payload['custom:hub_role'],
-        'custom:tenant_id': payload['custom:tenant_id'],
-        'custom:claudia_projects': payload['custom:claudia_projects'],
+        'custom:eddie_workspaces': payload['custom:eddie_workspaces'],
       },
     }
   } catch (error) {

@@ -116,7 +116,7 @@ export const importTypebot = authenticatedProcedure
     const userRole = getUserRoleInWorkspace(
       user.id,
       workspace?.members,
-      workspace?.name,
+      workspaceId,
       user
     )
     if (

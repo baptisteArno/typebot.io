@@ -52,6 +52,7 @@ export const getTypebot = publicProcedure
           workspace: {
             select: {
               name: true,
+              id: true,
               isSuspended: true,
               isPastDue: true,
               members: {
@@ -99,7 +100,11 @@ const getCurrentUserMode = (
     | { email: string | null; id: string; cognitoClaims?: unknown }
     | undefined,
   typebot: { collaborators: { userId: string; type: CollaborationType }[] } & {
-    workspace: { members: { userId: string }[]; name?: string | null }
+    workspace: {
+      id: string
+      name: string | null
+      members: { userId: string }[]
+    }
   }
 ) => {
   const collaborator = typebot.collaborators.find((c) => c.userId === user?.id)
@@ -119,10 +124,10 @@ const getCurrentUserMode = (
   if (user?.email && env.ADMIN_EMAIL?.includes(user.email)) return 'read'
 
   // Check for Cognito-based workspace access
-  if (user?.cognitoClaims && typebot.workspace.name) {
+  if (user?.cognitoClaims && typebot.workspace.id) {
     const cognitoAccess = checkCognitoWorkspaceAccess(
       user,
-      typebot.workspace.name
+      typebot.workspace.id
     )
 
     if (cognitoAccess.hasAccess) {

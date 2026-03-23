@@ -35,7 +35,7 @@ export const getFolder = authenticatedProcedure
     const userRole = getUserRoleInWorkspace(
       user.id,
       workspace?.members,
-      workspace?.name,
+      workspaceId,
       user
     )
     if (

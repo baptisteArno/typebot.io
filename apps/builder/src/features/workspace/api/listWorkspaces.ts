@@ -45,8 +45,7 @@ export const listWorkspaces = authenticatedProcedure
     })
 
     cognitoWorkspaces = remainingWorkspaces.filter((workspace) => {
-      if (!workspace.name) return false
-      const cognitoAccess = checkCognitoWorkspaceAccess(user, workspace.name)
+      const cognitoAccess = checkCognitoWorkspaceAccess(user, workspace.id)
       return cognitoAccess.hasAccess
     })
 

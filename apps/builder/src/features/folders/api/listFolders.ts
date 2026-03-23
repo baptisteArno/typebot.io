@@ -43,7 +43,7 @@ export const listFolders = authenticatedProcedure
     const userRole = getUserRoleInWorkspace(
       user.id,
       workspace.members,
-      workspace.name,
+      workspaceId,
       user
     )
 

@@ -47,6 +47,7 @@ export const trackClientEvents = authenticatedProcedure
         workspaceId: true,
         workspace: {
           select: {
+            id: true,
             name: true,
             isSuspended: true,
             isPastDue: true,
@@ -72,7 +73,7 @@ export const trackClientEvents = authenticatedProcedure
         const userRole = getUserRoleInWorkspace(
           user.id,
           workspace?.members,
-          workspace?.name,
+          workspace?.id,
           user
         )
         if (

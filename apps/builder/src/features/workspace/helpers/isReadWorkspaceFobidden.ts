@@ -5,7 +5,7 @@ import { checkCognitoWorkspaceAccess } from './cognitoUtils'
 export const isReadWorkspaceFobidden = (
   workspace: {
     members: Pick<MemberInWorkspace, 'userId'>[]
-    name?: string
+    id?: string
   },
   user: Pick<User, 'email' | 'id'> & { cognitoClaims?: unknown }
 ) => {
@@ -14,8 +14,8 @@ export const isReadWorkspaceFobidden = (
     return false
   }
 
-  // Primary: Check Cognito token claims if workspace name is available
-  const cognitoAccess = checkCognitoWorkspaceAccess(user, workspace.name)
+  // Primary: Check Cognito token claims if workspace ID is available
+  const cognitoAccess = checkCognitoWorkspaceAccess(user, workspace.id)
   if (cognitoAccess.hasAccess) {
     return false
   }

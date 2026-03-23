@@ -62,7 +62,7 @@ export const listMembersInWorkspace = authenticatedProcedure
 
     let allMembers = dbMembers
 
-    const cognitoAccess = checkCognitoWorkspaceAccess(user, workspace.name)
+    const cognitoAccess = checkCognitoWorkspaceAccess(user, workspace.id)
     if (cognitoAccess.hasAccess && !isDbMember) {
       // Fetch the full user object for the virtual member
       const fullUser = await prisma.user.findUnique({

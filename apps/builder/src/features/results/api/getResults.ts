@@ -67,6 +67,7 @@ export const getResults = authenticatedProcedure
         },
         workspace: {
           select: {
+            id: true,
             isSuspended: true,
             isPastDue: true,
             members: {

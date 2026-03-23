@@ -28,21 +28,21 @@ type BasicPrismaMember = {
 export function getUserRoleInWorkspace(
   userId: string,
   workspaceMembers: WorkspaceMember[] | undefined,
-  workspaceName?: string,
+  workspaceId?: string,
   user?: unknown
 ): WorkspaceRole | undefined
 
 export function getUserRoleInWorkspace(
   userId: string,
   workspaceMembers: PrismaMemberWithUser[] | undefined,
-  workspaceName?: string,
+  workspaceId?: string,
   user?: unknown
 ): WorkspaceRole | undefined
 
 export function getUserRoleInWorkspace(
   userId: string,
   workspaceMembers: BasicPrismaMember[] | undefined,
-  workspaceName?: string,
+  workspaceId?: string,
   user?: unknown
 ): WorkspaceRole | undefined
 
@@ -54,11 +54,11 @@ export function getUserRoleInWorkspace(
     | PrismaMemberWithUser[]
     | BasicPrismaMember[]
     | undefined,
-  workspaceName?: string,
+  workspaceId?: string,
   user?: unknown
 ): WorkspaceRole | undefined {
-  // Primary: Check Cognito token claims if workspace name is provided
-  if (workspaceName && user && typeof user === 'object' && user !== null) {
+  // Primary: Check Cognito token claims if workspace ID is provided
+  if (workspaceId && user && typeof user === 'object' && user !== null) {
     const userWithCognito = user as {
       id: string
       email: string
@@ -66,12 +66,12 @@ export function getUserRoleInWorkspace(
     }
     const cognitoAccess = checkCognitoWorkspaceAccess(
       userWithCognito,
-      workspaceName
+      workspaceId
     )
 
     if (cognitoAccess.hasAccess) {
       logger.info('User authenticated via Cognito token', {
-        workspace: workspaceName,
+        workspace: workspaceId,
         role: cognitoAccess.role,
         userId,
       })
@@ -85,7 +85,7 @@ export function getUserRoleInWorkspace(
     logger.info('User authenticated via database', {
       userId,
       role: dbMember.role,
-      workspace: workspaceName || 'not specified',
+      workspace: workspaceId || 'not specified',
     })
   }
   return dbMember?.role

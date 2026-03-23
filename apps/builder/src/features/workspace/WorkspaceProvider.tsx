@@ -112,7 +112,7 @@ export const WorkspaceProvider = ({
     if (!user || !workspace || !members) return undefined
 
     // Use hybrid approach: Cognito claims first, then database fallback
-    return getUserRoleInWorkspace(user.id, members, workspace.name, user)
+    return getUserRoleInWorkspace(user.id, members, workspace.id, user)
   }, [user, workspace, members])
 
   useEffect(() => {

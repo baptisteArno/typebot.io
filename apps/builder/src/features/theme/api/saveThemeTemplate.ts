@@ -44,7 +44,7 @@ export const saveThemeTemplate = authenticatedProcedure
       const userRole = getUserRoleInWorkspace(
         user.id,
         workspace?.members,
-        workspace?.name,
+        workspaceId,
         user
       )
       if (userRole === undefined || userRole === WorkspaceRole.GUEST)

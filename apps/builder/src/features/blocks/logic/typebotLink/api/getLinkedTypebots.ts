@@ -58,6 +58,7 @@ export const getLinkedTypebots = authenticatedProcedure
         createdAt: true,
         workspace: {
           select: {
+            id: true,
             isSuspended: true,
             isPastDue: true,
             members: {
@@ -109,6 +110,7 @@ export const getLinkedTypebots = authenticatedProcedure
           createdAt: true,
           workspace: {
             select: {
+              id: true,
               isSuspended: true,
               isPastDue: true,
               members: {

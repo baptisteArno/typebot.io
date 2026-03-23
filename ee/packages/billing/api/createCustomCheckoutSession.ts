@@ -30,6 +30,7 @@ export const createCustomCheckoutSession = async ({
       stripeId: true,
       claimableCustomPlan: true,
       name: true,
+      id: true,
       members: {
         select: {
           userId: true,

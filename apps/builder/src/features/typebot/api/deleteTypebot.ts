@@ -40,6 +40,7 @@ export const deleteTypebot = authenticatedProcedure
         groups: true,
         workspace: {
           select: {
+            id: true,
             name: true,
             isSuspended: true,
             isPastDue: true,

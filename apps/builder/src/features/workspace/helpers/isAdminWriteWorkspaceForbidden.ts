@@ -4,12 +4,12 @@ import { checkCognitoWorkspaceAccess } from './cognitoUtils'
 export const isAdminWriteWorkspaceForbidden = (
   workspace: {
     members: Pick<MemberInWorkspace, 'role' | 'userId'>[]
-    name?: string
+    id?: string
   },
   user: Pick<User, 'email' | 'id'> & { cognitoClaims?: unknown }
 ) => {
-  // Primary: Check Cognito token claims if workspace name is available
-  const cognitoAccess = checkCognitoWorkspaceAccess(user, workspace.name)
+  // Primary: Check Cognito token claims if workspace ID is available
+  const cognitoAccess = checkCognitoWorkspaceAccess(user, workspace.id)
   if (cognitoAccess.hasAccess) {
     return cognitoAccess.role !== WorkspaceRole.ADMIN
   }

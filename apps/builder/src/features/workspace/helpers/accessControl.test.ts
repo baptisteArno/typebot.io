@@ -23,7 +23,7 @@ describe('Access Control Helpers', () => {
       { userId: 'user-456', role: WorkspaceRole.ADMIN },
       { userId: 'user-789', role: WorkspaceRole.GUEST },
     ],
-    name: 'shopee',
+    id: 'ws-shopee-123',
   }
 
   const baseUser = {
@@ -32,12 +32,12 @@ describe('Access Control Helpers', () => {
   }
 
   describe('isReadWorkspaceFobidden', () => {
-    it('should allow access via Cognito claims when tenant_id matches workspace name', () => {
+    it('should allow access via Cognito claims when eddie_workspaces contains workspace id', () => {
       const user = {
         ...baseUser,
         cognitoClaims: {
           'custom:hub_role': 'CLIENT',
-          'custom:tenant_id': 'shopee',
+          'custom:eddie_workspaces': 'ws-shopee-123,ws-other',
         },
       }
 
@@ -45,12 +45,25 @@ describe('Access Control Helpers', () => {
       expect(forbidden).toBe(false)
     })
 
-    it('should fallback to database members when Cognito claims do not match', () => {
+    it('should allow access for ADMIN hub_role even when eddie_workspaces does not match', () => {
       const user = {
         ...baseUser,
         cognitoClaims: {
           'custom:hub_role': 'ADMIN',
-          'custom:tenant_id': 'different-tenant',
+          'custom:eddie_workspaces': 'ws-different,ws-other',
+        },
+      }
+
+      const forbidden = isReadWorkspaceFobidden(baseWorkspace, user)
+      expect(forbidden).toBe(false) // ADMIN has universal access
+    })
+
+    it('should fallback to database members when Cognito claims do not match for non-ADMIN roles', () => {
+      const user = {
+        ...baseUser,
+        cognitoClaims: {
+          'custom:hub_role': 'CLIENT',
+          'custom:eddie_workspaces': 'ws-different,ws-other',
         },
       }
 
@@ -68,8 +81,8 @@ describe('Access Control Helpers', () => {
       expect(forbidden).toBe(true)
     })
 
-    it('should handle workspace without name', () => {
-      const workspaceWithoutName = {
+    it('should handle workspace without id', () => {
+      const workspaceWithoutId = {
         members: baseWorkspace.members,
       }
 
@@ -77,11 +90,11 @@ describe('Access Control Helpers', () => {
         ...baseUser,
         cognitoClaims: {
           'custom:hub_role': 'ADMIN',
-          'custom:tenant_id': 'shopee',
+          'custom:eddie_workspaces': 'ws-shopee-123',
         },
       }
 
-      const forbidden = isReadWorkspaceFobidden(workspaceWithoutName, user)
+      const forbidden = isReadWorkspaceFobidden(workspaceWithoutId, user)
       expect(forbidden).toBe(false) // Should fallback to database and find user
     })
 
@@ -91,7 +104,7 @@ describe('Access Control Helpers', () => {
         cognitoClaims: {
           token: {
             'custom:hub_role': 'ADMIN',
-            'custom:tenant_id': 'shopee',
+            'custom:eddie_workspaces': 'ws-shopee-123',
           },
         },
       }
@@ -102,12 +115,12 @@ describe('Access Control Helpers', () => {
   })
 
   describe('isWriteWorkspaceForbidden', () => {
-    it('should allow write access for all Cognito roles when tenant_id matches', () => {
+    it('should allow write access for all Cognito roles when eddie_workspaces matches', () => {
       const adminUser = {
         ...baseUser,
         cognitoClaims: {
           'custom:hub_role': 'ADMIN',
-          'custom:tenant_id': 'shopee',
+          'custom:eddie_workspaces': 'ws-shopee-123',
         },
       }
 
@@ -115,7 +128,7 @@ describe('Access Control Helpers', () => {
         ...baseUser,
         cognitoClaims: {
           'custom:hub_role': 'CLIENT',
-          'custom:tenant_id': 'shopee',
+          'custom:eddie_workspaces': 'ws-shopee-123',
         },
       }
 
@@ -158,7 +171,7 @@ describe('Access Control Helpers', () => {
         ...baseUser,
         cognitoClaims: {
           'custom:hub_role': 'ADMIN',
-          'custom:tenant_id': 'shopee',
+          'custom:eddie_workspaces': 'ws-shopee-123',
         },
       }
 
@@ -166,7 +179,7 @@ describe('Access Control Helpers', () => {
         ...baseUser,
         cognitoClaims: {
           'custom:hub_role': 'MANAGER',
-          'custom:tenant_id': 'shopee',
+          'custom:eddie_workspaces': 'ws-shopee-123',
         },
       }
 
@@ -183,7 +196,7 @@ describe('Access Control Helpers', () => {
         ...baseUser,
         cognitoClaims: {
           'custom:hub_role': 'CLIENT',
-          'custom:tenant_id': 'shopee',
+          'custom:eddie_workspaces': 'ws-shopee-123',
         },
       }
 

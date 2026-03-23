@@ -65,6 +65,7 @@ export const getPublishedTypebot = authenticatedProcedure
           publishedTypebot: true,
           workspace: {
             select: {
+              id: true,
               name: true,
               isSuspended: true,
               isPastDue: true,
@@ -181,6 +182,7 @@ export const getPublishedTypebotCached = authenticatedProcedure
             publishedTypebot: true,
             workspace: {
               select: {
+                id: true,
                 isSuspended: true,
                 isPastDue: true,
                 members: {
@@ -323,6 +325,7 @@ export const getPublishedTypebotVariables = authenticatedProcedure
             publishedTypebot: true,
             workspace: {
               select: {
+                id: true,
                 isSuspended: true,
                 isPastDue: true,
                 members: {

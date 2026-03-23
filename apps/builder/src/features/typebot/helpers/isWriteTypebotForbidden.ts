@@ -14,7 +14,7 @@ export const isWriteTypebotForbidden = async (
   typebot: {
     collaborators: Pick<CollaboratorsOnTypebots, 'userId' | 'type'>[]
   } & {
-    workspace: Pick<Workspace, 'isSuspended' | 'isPastDue' | 'name'> & {
+    workspace: Pick<Workspace, 'isSuspended' | 'isPastDue' | 'id' | 'name'> & {
       members: Pick<MemberInWorkspace, 'userId' | 'role'>[]
     }
   },
@@ -45,12 +45,12 @@ export const isWriteTypebotForbidden = async (
   }
 
   // Check for Cognito-based workspace access
-  if (user.cognitoClaims && typebot.workspace.name) {
+  if (user.cognitoClaims && typebot.workspace.id) {
     const cognitoClaims = extractCognitoUserClaims(user)
 
     if (
       cognitoClaims &&
-      hasWorkspaceAccess(cognitoClaims, typebot.workspace.name)
+      hasWorkspaceAccess(cognitoClaims, typebot.workspace.id)
     ) {
       // User has Cognito-based access to this workspace, grant write access
       return false

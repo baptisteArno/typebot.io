@@ -52,7 +52,7 @@ export const listTypebotsClaudia = authenticatedProcedure
     const userRole = getUserRoleInWorkspace(
       user.id,
       workspace?.members,
-      workspace?.name,
+      workspace?.id,
       user
     )
     if (userRole === undefined)

@@ -35,6 +35,7 @@ export const getResultLogs = authenticatedProcedure
         groups: true,
         workspace: {
           select: {
+            id: true,
             isSuspended: true,
             isPastDue: true,
             members: {

@@ -54,6 +54,7 @@ export const publishTypebot = authenticatedProcedure
         publishedTypebot: true,
         workspace: {
           select: {
+            id: true,
             name: true,
             plan: true,
             isVerified: true,

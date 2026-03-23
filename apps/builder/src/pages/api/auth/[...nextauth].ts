@@ -193,8 +193,7 @@ providers.push(
           emailVerified: user.emailVerified,
           cognitoClaims: {
             'custom:hub_role': payload['custom:hub_role'],
-            'custom:tenant_id': payload['custom:tenant_id'],
-            'custom:claudia_projects': payload['custom:claudia_projects'],
+            'custom:eddie_workspaces': payload['custom:eddie_workspaces'],
           },
           cloudChatAuthorization: true,
         }
@@ -284,12 +283,12 @@ export const getAuthOptions = ({
             logger.debug(
               'Transferring claims from Cognito auth to NextAuth JWT',
               {
-                hasClaudiaProjects:
-                  !!claimsFromCognitoToken['custom:claudia_projects'],
-                claudiaProjectsCount:
-                  typeof claimsFromCognitoToken['custom:claudia_projects'] ===
+                hasEddieWorkspaces:
+                  !!claimsFromCognitoToken['custom:eddie_workspaces'],
+                eddieWorkspacesCount:
+                  typeof claimsFromCognitoToken['custom:eddie_workspaces'] ===
                   'string'
-                    ? claimsFromCognitoToken['custom:claudia_projects'].split(
+                    ? claimsFromCognitoToken['custom:eddie_workspaces'].split(
                         ','
                       ).length
                     : 0,
@@ -299,14 +298,14 @@ export const getAuthOptions = ({
             nextAuthJWT.cognitoClaims = claimsFromCognitoToken
             logger.debug('Final cognitoClaims set', {
               hasHubRole: !!claimsFromCognitoToken['custom:hub_role'],
-              hasTenantId: !!claimsFromCognitoToken['custom:tenant_id'],
-              hasClaudiaProjects:
-                !!claimsFromCognitoToken['custom:claudia_projects'],
+              hasEddieWorkspaces:
+                !!claimsFromCognitoToken['custom:eddie_workspaces'],
             })
 
             logger.info('User authenticated via Cognito token', {
               hubRole: claimsFromCognitoToken['custom:hub_role'],
-              hasTenantId: !!claimsFromCognitoToken['custom:tenant_id'],
+              hasEddieWorkspaces:
+                !!claimsFromCognitoToken['custom:eddie_workspaces'],
               provider: 'cognito',
             })
           }

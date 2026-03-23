@@ -17,6 +17,7 @@ export const isReadTypebotForbidden = async (
     workspace: Pick<Workspace, 'isSuspended' | 'isPastDue'> & {
       members: Pick<MemberInWorkspace, 'userId'>[]
     } & {
+      id?: string
       name?: string
     }
   },
