@@ -15,6 +15,7 @@ import { SendButton } from "../../../../../components/SendButton";
 import { Spinner } from "../../../../../components/Spinner";
 import type { BotContext, InputSubmitContent } from "../../../../../types";
 import { guessApiHost } from "../../../../../utils/guessApiHost";
+import { sanitizeHtmlFragment } from "../../../../../utils/sanitizeHtml";
 import { toaster } from "../../../../../utils/toaster";
 import { injectAndroidCameraCaptureToMimeTypes } from "../helpers/injectAndroidCameraCaptureToMimeTypes";
 import { sanitizeNewFile } from "../helpers/sanitizeSelectedFiles";
@@ -189,6 +190,10 @@ export const FileUploadForm = (props: Props) => {
     );
   };
 
+  const placeholderMarkup = () =>
+    sanitizeHtmlFragment(props.block.options?.labels?.placeholder) ??
+    defaultFileInputOptions.labels.placeholder;
+
   return (
     <form class="flex flex-col w-full gap-2" onSubmit={handleSubmit}>
       <label
@@ -239,10 +244,7 @@ export const FileUploadForm = (props: Props) => {
               </Show>
               <p
                 class="text-sm text-gray-500 text-center"
-                innerHTML={
-                  props.block.options?.labels?.placeholder ??
-                  defaultFileInputOptions.labels.placeholder
-                }
+                innerHTML={placeholderMarkup()}
               />
             </div>
             <input

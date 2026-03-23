@@ -4,6 +4,7 @@ import { isDefined, isEmpty, isNotDefined } from "@typebot.io/lib/utils";
 import { createSignal, createUniqueId, For, Match, Switch } from "solid-js";
 import { SendButton } from "../../../../../components/SendButton";
 import type { InputSubmitContent } from "../../../../../types";
+import { sanitizeSvgFragment } from "../../../../../utils/sanitizeHtml";
 
 type Props = {
   block: RatingInputBlock;
@@ -101,6 +102,12 @@ const RatingButton = (props: RatingButtonProps) => {
   const handleChange = () => {
     props.onClick(props.idx);
   };
+
+  const iconMarkup = () =>
+    sanitizeSvgFragment(
+      props.customIcon?.isEnabled ? props.customIcon.svg : undefined,
+    ) ?? defaultIcon;
+
   return (
     <Switch>
       <Match
@@ -154,7 +161,7 @@ const RatingButton = (props: RatingButtonProps) => {
             class="flex justify-center items-center rating-icon-container"
             innerHTML={
               props.customIcon?.isEnabled && !isEmpty(props.customIcon.svg)
-                ? props.customIcon.svg
+                ? iconMarkup()
                 : defaultIcon
             }
           />
