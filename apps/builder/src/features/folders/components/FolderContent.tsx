@@ -182,21 +182,24 @@ export const FolderContent = ({ folder }: Props) => {
               />
             ))}
             {isTypebotLoading && <ButtonSkeleton />}
-            {typebotsData?.typebots?.map((typebot) => (
-              <TypebotButton
-                key={typebot.id}
-                typebot={typebot}
-                draggedTypebot={draggedTypebot}
-                onTypebotUpdated={refetchTypebots}
-                onDrag={handleTypebotDrag(typebot)}
-                isReadOnly={
-                  typebot.accessRight !== "write" && currentUserMode !== "write"
-                }
-              />
-            ))}
+            {workspace &&
+              typebotsData?.typebots?.map((typebot) => (
+                <TypebotButton
+                  key={typebot.id}
+                  typebot={typebot}
+                  draggedTypebot={draggedTypebot}
+                  onTypebotUpdated={refetchTypebots}
+                  onDrag={handleTypebotDrag(typebot)}
+                  isReadOnly={
+                    typebot.accessRight !== "write" &&
+                    currentUserMode !== "write"
+                  }
+                />
+              ))}
           </div>
         </div>
       </div>
+
       {draggedTypebot && (
         <Portal>
           <TypebotButtonOverlay

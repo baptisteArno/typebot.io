@@ -29,6 +29,7 @@ export const SheetsDropdown = ({
     );
   return (
     <BasicSelect
+      className="w-full"
       value={sheetId}
       items={(sheets ?? []).map((s) => ({ label: s.name, value: s.id }))}
       onChange={onSelectSheetId}

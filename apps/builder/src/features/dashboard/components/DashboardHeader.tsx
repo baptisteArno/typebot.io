@@ -1,13 +1,13 @@
 import { useTranslate } from "@tolgee/react";
 import { isNotDefined } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
+import { EmojiOrImageIcon } from "@typebot.io/ui/components/EmojiOrImageIcon";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
 import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { useUser } from "@/features/user/hooks/useUser";
 import { WorkspaceDropdown } from "@/features/workspace/components/WorkspaceDropdown";
 import { WorkspaceSettingsDialog } from "@/features/workspace/components/WorkspaceSettingsDialog";
@@ -40,7 +40,8 @@ export const DashboardHeader = () => {
         <Link href="/typebots" data-testid="typebot-logo">
           <EmojiOrImageIcon
             icon={workspace?.icon}
-            defaultIcon={HardDriveIcon}
+            className="size-6.25 text-2xl"
+            defaultIcon={<HardDriveIcon className="size-full" />}
           />
         </Link>
         <div className="flex items-center gap-2">

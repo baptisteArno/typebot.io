@@ -13,6 +13,7 @@ import {
   Text,
 } from "@react-email/components";
 import { env } from "@typebot.io/env";
+import * as React from "react";
 import {
   container,
   featureSection,
@@ -24,6 +25,8 @@ import {
   main,
   text,
 } from "./styles";
+
+void React;
 
 type Props = {
   firstName?: string;

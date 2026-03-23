@@ -149,6 +149,7 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
           </MoreInfoTooltip>
         </Field.Label>
         <BasicSelect
+          className="w-full"
           value={options?.visibility}
           defaultValue={defaultFileInputOptions.visibility}
           onChange={updateVisibility}

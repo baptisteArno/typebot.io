@@ -2,4 +2,4 @@ src
 tailwind.config.cjs
 postcss.config.cjs
 tsconfig.json
-tsup.config.ts
+esbuild.web.config.cjs

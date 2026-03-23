@@ -8,6 +8,7 @@ kill_timeout = 120
 
 [build]
 dockerfile = "Dockerfile"
+ignorefile = "Dockerfile.dockerignore"
 
   [build.args]
     DATABASE_URL = "mysql://"

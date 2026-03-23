@@ -76,7 +76,7 @@ export const ForgeSelectInput = ({
       onChange={onChange}
       includeVariables={shouldIncludeVariables}
       placeholder={placeholder}
-      className="flex-1"
+      className="flex-1 w-full"
     />
   );
 };

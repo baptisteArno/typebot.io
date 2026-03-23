@@ -1,4 +1,7 @@
-import { Toast as ToastPrimitive } from "@base-ui-components/react/toast";
+import {
+  type ToastManagerAddOptions,
+  Toast as ToastPrimitive,
+} from "@base-ui/react/toast";
 import type { JSX } from "react";
 import { z } from "zod";
 import { Cancel01Icon } from "../icons/Cancel01Icon";
@@ -8,6 +11,8 @@ import { TriangleAlertIcon } from "../icons/TriangleAlertIcon";
 import { cn } from "../lib/cn";
 import { Accordion } from "./Accordion";
 import { Button, buttonVariants } from "./Button";
+
+export type ToastManager = ReturnType<typeof ToastPrimitive.createToastManager>;
 
 const List = ({
   className,
@@ -21,7 +26,7 @@ const List = ({
   }: {
     isReadOnly: boolean;
     value: string;
-    lang: "shell" | "json";
+    lang: "sh" | "json";
   }) => JSX.Element;
 }) => {
   const { toasts } = ToastPrimitive.useToastManager();
@@ -164,8 +169,7 @@ const ToastIcon = ({
 
 export const ToastProvider = ToastPrimitive.Provider;
 
-export type AddToastOptions =
-  ToastPrimitive.useToastManager.AddOptions<ToastData>;
+export type AddToastOptions = ToastManagerAddOptions<ToastData>;
 
 export type ToastType = "error" | "success" | "info";
 

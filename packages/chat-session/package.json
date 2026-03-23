@@ -4,7 +4,12 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "@typebot.io/theme": "workspace:*",
@@ -18,10 +23,5 @@
     "@sentry/nextjs": "^10.43.0",
     "zod": "^4.3.5"
   },
-  "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
-  },
-  "scripts": {
-    "check-types": "tsc --noEmit"
-  }
+  "scripts": {}
 }

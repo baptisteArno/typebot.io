@@ -3,8 +3,8 @@ import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import { createUniqueId } from "solid-js";
-import type { ClientSideActionContext } from "@/types";
-import { guessApiHost } from "@/utils/guessApiHost";
+import type { ClientSideActionContext } from "../../../../types";
+import { guessApiHost } from "../../../../utils/guessApiHost";
 
 let abortController: AbortController | null = null;
 const secondsToWaitBeforeRetries = 3;

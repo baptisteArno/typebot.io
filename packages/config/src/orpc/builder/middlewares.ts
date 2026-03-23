@@ -19,11 +19,13 @@ const sentryMiddleware = os.middleware(async ({ next, path }) => {
     if (env.NODE_ENV !== "production") console.error(error);
     if (isUnknownError(error, path.join("/"))) {
       if (error instanceof ORPCError && error.code?.includes("BAD_REQUEST")) {
+        const orpcErrorData = JSON.stringify(error.data);
         Sentry.addBreadcrumb({
           data: {
-            orpcErrorData: JSON.stringify(error.data),
+            orpcErrorData,
           },
         });
+        console.log("orpcErrorData", orpcErrorData);
       }
       Sentry.captureException(error);
     }

@@ -47,7 +47,7 @@ export const ApiPreviewInstructions = ({
             </p>
             <CodeEditor
               isReadOnly
-              lang={"shell"}
+              lang="sh"
               value={`${parseApiHost(typebot?.customDomain)}/api/v1/typebots/${
                 typebot?.id
               }/preview/startChat`}
@@ -71,7 +71,7 @@ export const ApiPreviewInstructions = ({
             </p>
             <CodeEditor
               isReadOnly
-              lang={"shell"}
+              lang="sh"
               value={`${parseApiHost(
                 typebot?.customDomain,
               )}/api/v1/sessions/<ID_FROM_FIRST_RESPONSE>/continueChat`}

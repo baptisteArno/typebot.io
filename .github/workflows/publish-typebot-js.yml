@@ -5,16 +5,26 @@ on:
     tags:
       - "js-v*"
 
+permissions:
+  contents: read
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      DATABASE_URL: "${{ secrets.DATABASE_URL }}"
+      ENCRYPTION_SECRET: "${{ secrets.ENCRYPTION_SECRET }}"
+      NEXTAUTH_URL: "http://localhost:3000"
+      NEXT_PUBLIC_VIEWER_URL: "http://localhost:3001"
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: "package.json"
       - run: bun install
-      - run: bunx turbo build --filter=@typebot.io/js...
+      - run: bunx nx build js
       - run: cd packages/embeds/js && bun publish --access public

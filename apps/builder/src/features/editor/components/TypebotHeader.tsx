@@ -173,7 +173,7 @@ const LeftElements = ({
               }}
               icon={typebot?.icon}
               onChangeIcon={handleChangeIcon}
-              defaultIcon={LayoutBottomIcon}
+              defaultIcon={<LayoutBottomIcon className="size-full" />}
             />
           )}
           <EditableTypebotName

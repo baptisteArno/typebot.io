@@ -306,10 +306,9 @@ export const SendExportToEmailWorkflowLayer = SendExportToEmailWorkflow.toLayer(
       })
         .asEffect()
         .pipe(
-          Effect.tapError((error) =>
-            Effect.logError("SendEmail activity failed").pipe(
+          Effect.tapCause((cause) =>
+            Effect.logError("SendEmail activity failed", cause).pipe(
               Effect.annotateLogs({
-                error: String(error),
                 email: payload.email,
               }),
             ),

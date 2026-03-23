@@ -5,9 +5,36 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "start": "dotenv -e ./.env -e ../../.env -- bun src/index.ts",
-    "dev": "dotenv -e ./.env -e ../../.env -- bun --watch --no-clear-screen src/index.ts",
-    "check-types": "tsc --noEmit"
+    "build": "bun build src/index.ts --target bun --outdir dist --external react-dom/server"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "executor": "nx:run-commands",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "options": {
+          "outputPath": "{workspaceRoot}/apps/workflows/dist",
+          "cwd": "{workspaceRoot}/apps/workflows",
+          "command": "bun run build"
+        }
+      },
+      "start": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "{workspaceRoot}/apps/workflows/dist",
+          "command": "bun index.js"
+        }
+      },
+      "dev": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "{workspaceRoot}/apps/workflows",
+          "command": "bun --watch --no-clear-screen src/index.ts"
+        }
+      }
+    }
   },
   "dependencies": {
     "@effect/platform-bun": "4.0.0-beta.30",
@@ -23,7 +50,6 @@
     "effect": "4.0.0-beta.30"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*",
     "@types/bun": "^1.3.9"
   }
 }

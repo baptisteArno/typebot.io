@@ -1,5 +1,8 @@
 import { Heading, Img, Section, Text } from "@react-email/components";
+import * as React from "react";
 import { featureSection, heading, image as imageStyle, text } from "../styles";
+
+void React;
 
 type Props = {
   title: string;

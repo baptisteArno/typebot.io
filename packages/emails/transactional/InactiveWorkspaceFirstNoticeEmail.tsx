@@ -11,12 +11,13 @@ import { render } from "@react-email/render";
 import { env } from "@typebot.io/env";
 import type { SendMailOptions } from "nodemailer";
 import type { ComponentProps } from "react";
-// biome-ignore lint/correctness/noUnusedImports: Need it for tsx execution
-import React from "react";
+import * as React from "react";
 import { sendEmail } from "../helpers/sendEmail";
 import { link } from "../marketing/styles";
 import { Logo } from "./components/Logo";
 import { container, footerText, hr, main, paragraph } from "./styles";
+
+void React;
 
 interface Props {
   workspaceId: string;
@@ -49,7 +50,7 @@ export const InactiveWorkspaceFirstNoticeEmail = ({
         <Text style={paragraph}>
           To keep your workspace active, just{" "}
           <Link
-            href={`${env.NEXTAUTH_URL}/typebots?workspaceId=${workspaceId}`}
+            href={`${env.NEXTAUTH_URL}/typebots?redirectPath=${encodeURIComponent(`/w/${workspaceId}/typebots`)}`}
           >
             log in to your Typebot account
           </Link>{" "}

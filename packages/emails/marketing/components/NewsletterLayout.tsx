@@ -9,7 +9,10 @@ import {
   Text,
 } from "@react-email/components";
 import { env } from "@typebot.io/env";
+import * as React from "react";
 import { container, footer, link, logo, main } from "../styles";
+
+void React;
 
 type Props = {
   children: React.ReactNode;

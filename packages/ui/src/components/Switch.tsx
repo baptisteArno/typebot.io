@@ -1,4 +1,4 @@
-import { Switch as SwitchPrimitive } from "@base-ui-components/react/switch";
+import { Switch as SwitchPrimitive } from "@base-ui/react/switch";
 import type * as React from "react";
 import { cn } from "../lib/cn";
 import { cva, type VariantProps } from "../lib/cva";

@@ -1,10 +1,11 @@
 import {
   type AddToastOptions,
   Toast,
+  type ToastManager,
   type ToastType,
 } from "@typebot.io/ui/components/Toast";
 
-export const toastManager = Toast.createToastManager();
+export const toastManager: ToastManager = Toast.createToastManager();
 
 export const toast = (
   props: Omit<AddToastOptions, "type"> & {

@@ -69,6 +69,7 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
           {t("blocks.inputs.rating.settings.maximum.label")}
         </Field.Label>
         <BasicSelect
+          className="w-full"
           value={options?.length?.toString()}
           defaultValue={defaultRatingInputOptions.length.toString()}
           onChange={handleLengthChange}
@@ -80,6 +81,7 @@ export const RatingInputSettings = ({ options, onOptionsChange }: Props) => {
           {t("blocks.inputs.rating.settings.type.label")}
         </Field.Label>
         <BasicSelect
+          className="w-full"
           items={["Icons", "Numbers"]}
           value={buttonType}
           onChange={handleTypeChange}

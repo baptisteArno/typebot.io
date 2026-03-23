@@ -1,11 +1,10 @@
 import { useTranslate } from "@tolgee/react";
+import { EmojiOrImageIcon } from "@typebot.io/ui/components/EmojiOrImageIcon";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { cx } from "@typebot.io/ui/lib/cva";
-import type { JSX } from "react";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
-import { EmojiOrImageIcon } from "./EmojiOrImageIcon";
 import { ImageUploadContent } from "./ImageUploadContent";
 
 type Props = {
@@ -13,7 +12,7 @@ type Props = {
   icon?: string | null;
   onChangeIcon: (icon: string) => void;
   size?: "sm" | "md" | "lg";
-  defaultIcon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element;
+  defaultIcon: React.ReactNode;
 };
 
 export const EditableEmojiOrImageIcon = ({
@@ -35,14 +34,18 @@ export const EditableEmojiOrImageIcon = ({
               size="icon"
               variant="ghost"
               className={cx(
-                size === "lg" && "size-10 [&_svg]:size-8",
-                size === "md" && "size-9 [&_svg]:size-6",
-                size === "sm" && "size-8 [&_svg]:size-5",
+                size === "lg" && "size-10",
+                size === "md" && "size-9",
+                size === "sm" && "size-8",
               )}
             >
               <EmojiOrImageIcon
                 icon={icon}
-                size={size}
+                className={cx(
+                  size === "lg" && "size-9 text-[2.25rem]",
+                  size === "md" && "size-6.25 text-2xl",
+                  size === "sm" && "size-4.5 text-xl",
+                )}
                 defaultIcon={defaultIcon}
               />
             </Popover.TriggerButton>

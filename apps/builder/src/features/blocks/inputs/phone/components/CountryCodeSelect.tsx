@@ -15,6 +15,7 @@ export const CountryCodeSelect = ({ countryCode, onSelect }: Props) => {
   };
   return (
     <BasicSelect
+      className="w-full"
       placeholder={t(
         "blocks.inputs.phone.settings.international.placeholder.label",
       )}

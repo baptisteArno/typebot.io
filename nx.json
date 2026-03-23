@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "tui": {
+    "enabled": false
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/js/typescript"
+    },
+    {
+      "plugin": "@nx/next/plugin"
+    },
+    {
+      "plugin": "@nx/vite/plugin"
+    }
+  ],
+  "targetDefaults": {
+    "@nx/esbuild:esbuild": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^default"]
+    },
+    "@nx/vitest:test": {
+      "cache": true,
+      "inputs": ["default", "^default"]
+    },
+    "test": {
+      "dependsOn": ["^build"]
+    }
+  }
+}

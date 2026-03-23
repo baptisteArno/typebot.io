@@ -10,6 +10,6 @@ const mainWorktreeRoot = (
   await $`cd ${gitCommonDir} && cd .. && pwd`.text()
 ).trim();
 
-await $`cd ${currentWorktreeRoot} && bun install`;
 await $`cp ${mainWorktreeRoot}/.env ${currentWorktreeRoot}/.env`;
 await $`cp -R ${mainWorktreeRoot}/apps/viewer/src/test/.auth ${currentWorktreeRoot}/apps/viewer/src/test/.auth`;
+await $`cd ${currentWorktreeRoot} && bun install`;

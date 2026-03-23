@@ -1,11 +1,11 @@
-import { Input as InputPrimitive } from "@base-ui-components/react/input";
+import { Input as InputPrimitive } from "@base-ui/react/input";
 import { forwardRef } from "react";
 import { cn } from "../lib/cn";
 import { cva, type VariantProps } from "../lib/cva";
 
 export const inputVariants = cva(
   `
-  bg-transparent flex relative w-full overflow-visible rounded-md border transition-[box-shadow,border-color] border-gray-6 hover:border-gray-7 
+  bg-transparent flex relative w-full overflow-visible rounded-md border transition-[box-shadow,border-color] border-input 
   focus:outline-hidden focus:ring-orange-8 focus:ring-2 focus:border-transparent
   disabled:cursor-not-allowed disabled:opacity-50
   placeholder:text-muted-foreground

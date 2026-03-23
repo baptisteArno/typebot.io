@@ -2,33 +2,57 @@
   "name": "builder",
   "private": true,
   "engines": {
-    "node": "22.x"
+    "node": "24.x"
   },
-  "scripts": {
-    "check-types": "tsc --noEmit",
-    "dev": "dotenv -e ./.env -e ../../.env -- next dev -p 3000",
-    "build": "dotenv -e ./.env -e ../../.env -- next build",
-    "start": "dotenv -e ./.env -e ../../.env -- next start",
-    "test": "dotenv -e ./.env -e ../../.env -- bun test"
+  "nx": {
+    "targets": {
+      "dev": {
+        "dependsOn": [
+          {
+            "projects": [
+              "@typebot.io/react"
+            ],
+            "target": "build"
+          }
+        ]
+      },
+      "test": {
+        "executor": "nx:run-commands",
+        "inputs": [
+          "default",
+          "^default"
+        ],
+        "options": {
+          "cwd": "apps/builder",
+          "command": "bun test"
+        }
+      }
+    }
   },
   "dependencies": {
     "@auth/core": "^0.39.1",
     "@braintree/sanitize-url": "^7.0.1",
     "@dnd-kit/helpers": "^0.1.21",
     "@dnd-kit/react": "^0.1.21",
+    "@effect/opentelemetry": "4.0.0-beta.30",
     "@giphy/js-fetch-api": "^5.7.0",
     "@giphy/react-components": "^10.1.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.211.0",
+    "@opentelemetry/sdk-node": "^0.212.0",
+    "@opentelemetry/sdk-trace-base": "^2.5.0",
+    "@orpc/client": "^1.13.4",
+    "@orpc/openapi": "^1.13.4",
+    "@orpc/otel": "^1.13.4",
+    "@orpc/server": "^1.13.9",
+    "@orpc/tanstack-query": "^1.13.4",
+    "@orpc/zod": "^1.13.4",
     "@paralleldrive/cuid2": "^2.2.1",
     "@sentry/nextjs": "^10.43.0",
     "@tanstack/react-query": "^5.80.6",
     "@tanstack/react-table": "^8.9.3",
     "@tolgee/format-icu": "^6.2.7",
     "@tolgee/react": "^6.2.7",
-    "@orpc/client": "^1.13.4",
-    "@orpc/openapi": "^1.13.4",
-    "@orpc/server": "^1.13.4",
-    "@orpc/tanstack-query": "^1.13.4",
-    "@orpc/zod": "^1.13.4",
+    "@typebot.io/auth": "workspace:*",
     "@typebot.io/blocks-bubbles": "workspace:*",
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
@@ -37,11 +61,11 @@
     "@typebot.io/bot-engine": "workspace:*",
     "@typebot.io/chat-api": "workspace:*",
     "@typebot.io/chat-session": "workspace:*",
+    "@typebot.io/shared-core": "workspace:*",
     "@typebot.io/conditions": "workspace:*",
     "@typebot.io/config": "workspace:*",
     "@typebot.io/credentials": "workspace:*",
     "@typebot.io/emails": "workspace:*",
-    "@typebot.io/auth": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/events": "workspace:*",
     "@typebot.io/groups": "workspace:*",
@@ -57,23 +81,22 @@
     "@typebot.io/user": "workspace:*",
     "@typebot.io/whatsapp": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
-    "@uiw/codemirror-extensions-langs": "^4.23.8",
-    "@uiw/codemirror-theme-github": "^4.23.8",
-    "@uiw/codemirror-theme-tokyo-night": "^4.23.8",
-    "@uiw/react-codemirror": "^4.23.8",
+    "@uiw/codemirror-extensions-langs": "^4.25.8",
+    "@uiw/codemirror-theme-github": "^4.25.8",
+    "@uiw/codemirror-theme-tokyo-night": "^4.25.8",
+    "@uiw/react-codemirror": "^4.25.8",
     "@upstash/ratelimit": "^0.4.3",
     "@use-gesture/react": "^10.3.1",
+    "@vercel/otel": "^2.1.1",
     "ai": "^4.3.19",
     "browser-image-compression": "^2.0.2",
     "canvas-confetti": "^1.6.0",
-    "codemirror": "^6.0.1",
+    "codemirror": "^6.0.2",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "deep-object-diff": "^1.1.9",
     "dequal": "^2.0.3",
-    "emojilib": "^3.0.10",
-    "effect": "4.0.0-beta.30",
-    "motion": "^12.23.25",
+    "effect": "4.0.0-beta.35",
     "google-auth-library": "^10.1.0",
     "immer": "^10.0.2",
     "ioredis": "^5.4.1",
@@ -81,9 +104,10 @@
     "ky": "^1.2.4",
     "mailchecker": "^6.0.16",
     "micro-cors": "^0.1.1",
+    "motion": "^12.23.25",
     "nanoid": "^5.1.5",
-    "next": "^15.5.9",
-    "next-auth": "^5.0.0-beta.28",
+    "next": "^16.1.6",
+    "next-auth": "^5.0.0-beta.30",
     "next-themes": "^0.4.6",
     "nextjs-cors": "^2.1.2",
     "nodemailer": "^7.0.6",
@@ -95,13 +119,13 @@
     "posthog-node": "^5.8.2",
     "prettier": "^2.8.8",
     "qs": "^6.11.2",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "react-markdown": "^9.0.1",
     "shared-zustand": "^2.1.0",
-    "svix": "^1.74.1",
-    "stripe": "^17.1.0",
+    "stripe": "17.1.0",
     "svg-round-corners": "^0.4.1",
+    "svix": "^1.74.1",
     "tinycolor2": "^1.6.0",
     "unsplash-js": "^7.0.18",
     "use-debounce": "^9.0.4",
@@ -118,16 +142,15 @@
     "@typebot.io/radar": "workspace:*",
     "@typebot.io/results": "workspace:*",
     "@typebot.io/schemas": "workspace:*",
-    "@typebot.io/tsconfig": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@types/canvas-confetti": "^1.6.0",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/micro-cors": "^0.1.3",
-    "@types/node": "^22.19.0",
+    "@types/node": "^24.10.13",
     "@types/papaparse": "^5.3.7",
     "@types/prettier": "^2.7.3",
     "@types/qs": "^6.9.7",
-    "@types/react": "^19.2.7",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/tinycolor2": "^1.4.3",
     "dotenv": "^16.4.5",
@@ -136,7 +159,7 @@
     "superjson": "^1.12.4",
     "@tailwindcss/postcss": "^4.1.16",
     "tailwindcss": "^4.1.16",
-    "vite-tsconfig-paths": "^5.1.4",
+    "vite-tsconfig-paths": "^6.1.1",
     "@types/bun": "^1.3.9"
   }
 }

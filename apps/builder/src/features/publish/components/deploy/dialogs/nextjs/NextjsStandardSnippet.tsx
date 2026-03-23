@@ -22,5 +22,5 @@ export const NextjsStandardSnippet = ({ widthLabel, heightLabel }: Props) => {
       plugins: [parserBabel],
     },
   );
-  return <CodeEditor value={snippet} lang="javascript" isReadOnly />;
+  return <CodeEditor value={snippet} lang="js" isReadOnly />;
 };

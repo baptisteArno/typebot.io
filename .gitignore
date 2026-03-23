@@ -3,7 +3,6 @@ node_modules
 .env.local
 workspace.code-workspace
 .DS_Store
-.turbo
 .idea
 authenticatedState.json
 playwright-report
@@ -73,3 +72,15 @@ opensrc/sources.json
 .workflow
 
 .ralph-tui/iterations
+
+.nx/cache
+.nx/installation
+.nx/workspace-data
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
+
+**/out-tsc/
+
+content-collections.d.ts.map
+content-collections.d.ts
+**/next-env.d.ts

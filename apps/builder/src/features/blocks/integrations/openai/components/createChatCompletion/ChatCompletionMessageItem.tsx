@@ -49,6 +49,7 @@ export const ChatCompletionMessageItem = ({ item, onItemChange }: Props) => {
   return (
     <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border">
       <BasicSelect
+        className="w-full"
         value={item.role}
         onChange={changeRole}
         items={roles.filter(
@@ -103,6 +104,7 @@ const ChatCompletionMessageItemContent = ({
           <div className="flex items-center gap-2">
             <p>starts by</p>
             <BasicSelect
+              className="w-full"
               value={item.startsBy ?? "user"}
               onChange={onStartsByChange}
               items={["user", "assistant"]}

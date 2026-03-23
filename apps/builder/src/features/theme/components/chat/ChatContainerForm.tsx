@@ -69,7 +69,6 @@ export const ChatContainerForm = ({
             onValueChange={updateMaxWidth}
           />
           <BasicSelect
-            size="sm"
             items={["px", "%", "vh", "vw"]}
             value={maxWidthUnit}
             onChange={updateMaxWidthUnit}
@@ -88,7 +87,6 @@ export const ChatContainerForm = ({
             withVariableButton={false}
           />
           <BasicSelect
-            size="sm"
             items={["px", "%", "vh", "vw"]}
             value={maxHeightUnit}
             onChange={updateMaxHeightUnit}

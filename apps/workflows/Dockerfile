@@ -1,53 +1,32 @@
-FROM oven/bun:1.3.6-slim AS bun
+# syntax=docker/dockerfile:1.7
 
-# ================= ADD BUN IN NODE 22 IMAGE ===================
+ARG BUN_VERSION=1.3.9
 
-FROM node:22-bullseye-slim AS base
-ARG BUN_RUNTIME_TRANSPILER_CACHE_PATH=0
-ENV BUN_RUNTIME_TRANSPILER_CACHE_PATH=${BUN_RUNTIME_TRANSPILER_CACHE_PATH}
-ARG BUN_INSTALL_BIN=/usr/local/bin
-ENV BUN_INSTALL_BIN=${BUN_INSTALL_BIN}
-COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun
-RUN groupadd bun \
-    --gid 2000 \
-    && useradd bun \
-    --uid 2000 \
-    --gid bun \
-    --shell /bin/sh \
-    --create-home \
-    && ln -s /usr/local/bin/bun /usr/local/bin/bunx \
-    && which bun \
-    && which bunx \
-    && bun --version
-RUN apt-get -qy update \
-    && apt-get -qy --no-install-recommends install openssl ca-certificates git python3 g++ build-essential \
-    && update-ca-certificates
+FROM oven/bun:${BUN_VERSION}-slim AS builder
+
 WORKDIR /app
 
-# =============== PRUNE =================
-
-FROM base AS pruned
 COPY . .
-RUN bunx turbo prune "workflows" --docker
 
-# =============== INSTALL =================
+RUN --mount=type=cache,target=/root/.bun/install/cache \
+    bun install --frozen-lockfile --ignore-scripts --filter workflows
 
-FROM base AS install
-COPY --from=pruned /app/out/full/ .
-COPY bun.lock .
-COPY bunfig.toml .
 ARG DATABASE_URL=postgresql://
-RUN bun install
-RUN DATABASE_URL=$DATABASE_URL bunx tsx packages/prisma/scripts/db-generate.ts
+RUN PATH="/app/node_modules/.bin:${PATH}" DATABASE_URL=$DATABASE_URL bun packages/prisma/scripts/db-generate.ts
 
-# =============== RELEASE =================
+RUN cd apps/workflows && bun run build
 
-FROM base AS release
-COPY --from=install /app/node_modules node_modules
-COPY --from=install /app/packages packages
-COPY --from=install /app/apps/workflows/src ./src
-COPY --from=install /app/apps/workflows/package.json .
+FROM oven/bun:${BUN_VERSION}-slim AS release
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+COPY --from=builder --chown=bun:bun /app/apps/workflows/dist/index.js /app/index.js
+COPY --from=builder --chown=bun:bun /app/node_modules/react /app/node_modules/react
+COPY --from=builder --chown=bun:bun /app/node_modules/react-dom /app/node_modules/react-dom
+COPY --from=builder --chown=bun:bun /app/node_modules/scheduler /app/node_modules/scheduler
 
 USER bun
 EXPOSE 3000/tcp
-ENTRYPOINT [ "bun", "start" ]
+ENTRYPOINT ["bun", "/app/index.js"]

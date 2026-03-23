@@ -1,7 +1,6 @@
 import { dirname, join } from "node:path";
-import { withSentryConfig } from "@sentry/nextjs";
-import "@typebot.io/env/compiled";
 import { fileURLToPath } from "node:url";
+import { withSentryConfig } from "@sentry/nextjs";
 import { configureRuntimeEnv } from "next-runtime-env/build/configure.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -35,9 +34,6 @@ configureRuntimeEnv();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   transpilePackages: [
     // https://github.com/nextauthjs/next-auth/discussions/9385#discussioncomment-12023012
     "next-auth",
@@ -51,13 +47,6 @@ const nextConfig = {
     locales: ["en", "fr", "pt", "pt-BR", "de", "ro", "es", "it", "el"],
   },
   outputFileTracingRoot: join(__dirname, "../../"),
-  webpack: (config) => {
-    config.ignoreWarnings = [
-      { module: /@opentelemetry\/instrumentation/ },
-      { module: /require-in-the-middle/ },
-    ];
-    return config;
-  },
   headers: async () => {
     const isDev = process.env.NODE_ENV !== "production";
     return [
@@ -103,13 +92,20 @@ const nextConfig = {
   },
 };
 
-export default process.env.SENTRY_DSN
-  ? withSentryConfig(nextConfig, {
-      org: process.env.SENTRY_ORG,
-      project: process.env.SENTRY_PROJECT,
-      authToken: process.env.SENTRY_AUTH_TOKEN,
-      widenClientFileUpload: true,
-      // Only print logs for uploading source maps in CI
-      silent: !process.env.CI,
-    })
-  : nextConfig;
+export default async function config() {
+  // Avoid loading env package when NX is creating the graph (nx-ignore command)
+  if (global.NX_GRAPH_CREATION) return nextConfig;
+
+  await import("@typebot.io/env/compiled");
+
+  return process.env.SENTRY_DSN
+    ? withSentryConfig(nextConfig, {
+        org: process.env.SENTRY_ORG,
+        project: process.env.SENTRY_PROJECT,
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        widenClientFileUpload: true,
+        // Only print logs for uploading source maps in CI
+        silent: !process.env.CI,
+      })
+    : nextConfig;
+}

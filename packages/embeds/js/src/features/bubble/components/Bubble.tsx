@@ -11,18 +11,18 @@ import {
   Show,
   splitProps,
 } from "solid-js";
-import { Bot, type BotProps } from "@/components/Bot";
-import { getPaymentInProgressInStorage } from "@/features/blocks/inputs/payment/helpers/paymentInProgressStorage";
-import { chatwootWebWidgetOpenedMessage } from "@/features/blocks/integrations/chatwoot/constants";
-import type { CommandData } from "@/features/commands/types";
-import { resolveButtonSize } from "@/utils/resolveBubbleButtonSize";
+import styles from "../../../assets/index.css";
+import { Bot, type BotProps } from "../../../components/Bot";
+import { resolveButtonSize } from "../../../utils/resolveBubbleButtonSize";
 import {
   getBotOpenedStateFromStorage,
   removeBotOpenedStateInStorage,
   setBotOpenedStateInStorage,
   wipeExistingChatStateInStorage,
-} from "@/utils/storage";
-import styles from "../../../assets/index.css";
+} from "../../../utils/storage";
+import { getPaymentInProgressInStorage } from "../../blocks/inputs/payment/helpers/paymentInProgressStorage";
+import { chatwootWebWidgetOpenedMessage } from "../../blocks/integrations/chatwoot/constants";
+import type { CommandData } from "../../commands/types";
 import type { BubbleParams } from "../types";
 import { BubbleButton } from "./BubbleButton";
 import { PreviewMessage, type PreviewMessageProps } from "./PreviewMessage";
@@ -44,7 +44,7 @@ export type BubbleProps = BotProps &
     onPreviewMessageDismissed?: () => void;
   };
 
-export const Bubble = (props: BubbleProps) => {
+export const Bubble = (props: BubbleProps, { element }: { element: any }) => {
   const [bubbleProps, botProps] = splitProps(props, [
     "isOpen",
     "onOpen",
@@ -104,7 +104,8 @@ export const Bubble = (props: BubbleProps) => {
 
   const handlePostMessage = (event: MessageEvent<CommandData>) => {
     const { data } = event;
-    if (!data.isFromTypebot || (data.id && botProps.id !== data.id)) return;
+    const elementId = element.id || botProps.id;
+    if (!data.isFromTypebot || (data.id && elementId !== data.id)) return;
 
     switch (data.command) {
       case "open":
@@ -240,9 +241,7 @@ export const Bubble = (props: BubbleProps) => {
 
   return (
     <Show when={bubbleLifecycle() !== "unmounted"}>
-      <EnvironmentProvider
-        value={document.querySelector("typebot-bubble")?.shadowRoot as Node}
-      >
+      <EnvironmentProvider value={element.shadowRoot as Node}>
         <style>
           {typebotColors}
           {styles}

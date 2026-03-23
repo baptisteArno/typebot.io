@@ -28,6 +28,7 @@ export const CellWithValueStack = ({
         <MoreVerticalIcon />
       </Button>
       <BasicSelect
+        className="w-full"
         value={item.column}
         onChange={handleColumnSelect}
         items={columns}

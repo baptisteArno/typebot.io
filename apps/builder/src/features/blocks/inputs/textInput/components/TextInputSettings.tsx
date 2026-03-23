@@ -114,6 +114,7 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
       <Field.Root>
         <Field.Label>Input mode</Field.Label>
         <BasicSelect
+          className="w-full"
           value={options?.inputMode}
           defaultValue="text"
           items={inputModeOptions}
@@ -153,6 +154,7 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
                 </MoreInfoTooltip>
               </Field.Label>
               <BasicSelect
+                className="w-full"
                 value={options?.audioClip?.visibility}
                 defaultValue={defaultTextInputOptions.audioClip.visibility}
                 onChange={updateAudioClipVisibility}
@@ -194,6 +196,7 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
                 </MoreInfoTooltip>
               </Field.Label>
               <BasicSelect
+                className="w-full"
                 value={options?.attachments?.visibility}
                 defaultValue={defaultTextInputOptions.attachments.visibility}
                 onChange={updateVisibility}

@@ -1,4 +1,4 @@
-import { Progress as ProgressPrimitive } from "@base-ui-components/react/progress";
+import { Progress as ProgressPrimitive } from "@base-ui/react/progress";
 import { cn } from "../lib/cn";
 
 function Root({ className, children, ...props }: ProgressPrimitive.Root.Props) {

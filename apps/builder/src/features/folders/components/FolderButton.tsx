@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { Alert } from "@typebot.io/ui/components/Alert";
+import { AlertDialog } from "@typebot.io/ui/components/AlertDialog";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
 import { Skeleton } from "@typebot.io/ui/components/Skeleton";
@@ -11,8 +12,7 @@ import { MoreVerticalIcon } from "@typebot.io/ui/icons/MoreVerticalIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
-import { memo, useMemo } from "react";
-import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { memo, useMemo, useRef, useState } from "react";
 import { SingleLineEditable } from "@/components/SingleLineEditable";
 import { orpc } from "@/lib/queryClient";
 import { useTypebotDnd } from "../TypebotDndProvider";
@@ -39,6 +39,8 @@ const FolderButton = ({
     [draggedTypebot, folder.id, mouseOverFolderId],
   );
   const deleteDialogControls = useOpenControls();
+  const deleteCancelRef = useRef<HTMLButtonElement | null>(null);
+  const [deleteConfirmLoading, setDeleteConfirmLoading] = useState(false);
   const { mutate: deleteFolder } = useMutation(
     orpc.folders.deleteFolder.mutationOptions({
       onSuccess: onFolderDeleted,
@@ -132,36 +134,59 @@ const FolderButton = ({
           />
         </div>
       </div>
-      <ConfirmDialog
-        confirmButtonLabel={t("delete")}
-        title={`${t("delete")} ${folder.name}?`}
-        onConfirm={() =>
-          deleteFolder({
-            workspaceId: folder.workspaceId,
-            folderId: folder.id,
-          })
-        }
-        actionType="destructive"
+      <AlertDialog.Root
         isOpen={deleteDialogControls.isOpen}
         onClose={deleteDialogControls.onClose}
       >
-        <div className="flex flex-col gap-4">
-          <p>
-            <T
-              keyName="folders.folderButton.deleteConfirmationMessage"
-              params={{
-                strong: <strong>{folder.name}</strong>,
+        <AlertDialog.Content initialFocus={deleteCancelRef}>
+          <AlertDialog.Header>
+            <AlertDialog.Title>
+              {`${t("delete")} ${folder.name}?`}
+            </AlertDialog.Title>
+            <AlertDialog.Description className="text-foreground">
+              <div className="flex flex-col gap-4">
+                <p>
+                  <T
+                    keyName="folders.folderButton.deleteConfirmationMessage"
+                    params={{
+                      strong: <strong>{folder.name}</strong>,
+                    }}
+                  />
+                </p>
+                <Alert.Root variant="warning">
+                  <TriangleAlertIcon />
+                  <Alert.Description>
+                    {t("folders.folderButton.deleteConfirmationMessageWarning")}
+                  </Alert.Description>
+                </Alert.Root>
+              </div>
+            </AlertDialog.Description>
+          </AlertDialog.Header>
+          <AlertDialog.Footer>
+            <AlertDialog.Cancel ref={deleteCancelRef}>
+              {t("cancel")}
+            </AlertDialog.Cancel>
+            <AlertDialog.Action
+              variant="destructive"
+              disabled={deleteConfirmLoading}
+              onClick={async () => {
+                setDeleteConfirmLoading(true);
+                try {
+                  await deleteFolder({
+                    workspaceId: folder.workspaceId,
+                    folderId: folder.id,
+                  });
+                  deleteDialogControls.onClose();
+                } finally {
+                  setDeleteConfirmLoading(false);
+                }
               }}
-            />
-          </p>
-          <Alert.Root variant="warning">
-            <TriangleAlertIcon />
-            <Alert.Description>
-              {t("folders.folderButton.deleteConfirmationMessageWarning")}
-            </Alert.Description>
-          </Alert.Root>
-        </div>
-      </ConfirmDialog>
+            >
+              {t("delete")}
+            </AlertDialog.Action>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog.Root>
     </>
   );
 };

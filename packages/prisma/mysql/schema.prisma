@@ -457,13 +457,13 @@ model BannedIp {
 }
 
 model SuppressedEmail {
-  id                          String   @id @default(cuid())
-  createdAt                   DateTime @default(now())
-  updatedAt                   DateTime @default(now()) @updatedAt
-  email                       String   @unique @db.VarChar(320)
-  transientGeneralBounceCount Int      @default(0)
+  id                          String    @id @default(cuid())
+  createdAt                   DateTime  @default(now())
+  updatedAt                   DateTime  @default(now()) @updatedAt
+  email                       String    @unique @db.VarChar(320)
+  transientGeneralBounceCount Int       @default(0)
   suppressedAt                DateTime?
-  lastWebhookId               String?  @db.VarChar(255)
+  lastWebhookId               String?   @db.VarChar(255)
 }
 
 enum WorkspaceRole {

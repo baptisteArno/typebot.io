@@ -31,6 +31,7 @@ export const ZodDiscriminatedUnionLayout = ({
   return (
     <>
       <BasicSelect
+        className="w-full"
         value={data?.[discriminant]}
         onChange={(item) => onDataChange({ ...data, [discriminant]: item })}
         items={[...optionsMap.keys()].filter((key) => isDefined(key))}

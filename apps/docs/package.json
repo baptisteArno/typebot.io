@@ -1,15 +1,27 @@
 {
   "name": "docs",
   "private": true,
-  "scripts": {
-    "dev": "mintlify dev --port 3004",
-    "build": "bun check-broken-links",
-    "check-broken-links": "mintlify broken-links",
-    "check-types": "tsc --noEmit"
-  },
   "devDependencies": {
-    "mintlify": "4.0.228",
+    "mintlify": "4.2.435",
     "tsx": "^4.19.1",
     "dotenv-cli": "^8.0.0"
+  },
+  "nx": {
+    "targets": {
+      "dev": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "apps/docs",
+          "command": "bunx mintlify dev --port 3004"
+        }
+      },
+      "mintlify:check-broken-links": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "apps/docs",
+          "command": "bunx mintlify broken-links"
+        }
+      }
+    }
   }
 }

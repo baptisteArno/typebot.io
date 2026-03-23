@@ -12,8 +12,7 @@ import {
 import { render } from "@react-email/render";
 import type { SendMailOptions } from "nodemailer";
 import type { ComponentProps } from "react";
-// biome-ignore lint/correctness/noUnusedImports: Need it for tsx execution
-import React from "react";
+import * as React from "react";
 import { sendEmail } from "../helpers/sendEmail";
 import { Logo } from "./components/Logo";
 import {
@@ -25,6 +24,8 @@ import {
   main,
   paragraph,
 } from "./styles";
+
+void React;
 
 interface Props {
   url: string;

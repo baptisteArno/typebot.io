@@ -1,7 +1,6 @@
 import { dirname, join } from "node:path";
-import { withSentryConfig } from "@sentry/nextjs";
-import "@typebot.io/env/compiled";
 import { fileURLToPath } from "node:url";
+import { withSentryConfig } from "@sentry/nextjs";
 import { configureRuntimeEnv } from "next-runtime-env/build/configure.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -47,20 +46,10 @@ const currentHost = "typebot.io";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   transpilePackages: ["@typebot.io/settings"],
   reactStrictMode: true,
   output: "standalone",
   outputFileTracingRoot: join(__dirname, "../../"),
-  webpack: (config) => {
-    config.ignoreWarnings = [
-      { module: /@opentelemetry\/instrumentation/ },
-      { module: /require-in-the-middle/ },
-    ];
-    return config;
-  },
   async redirects() {
     return [
       {
@@ -164,13 +153,20 @@ const nextConfig = {
   },
 };
 
-export default process.env.SENTRY_DSN && process.env.SENTRY_AUTH_TOKEN
-  ? withSentryConfig(nextConfig, {
-      org: process.env.SENTRY_ORG,
-      project: process.env.SENTRY_PROJECT,
-      authToken: process.env.SENTRY_AUTH_TOKEN,
-      widenClientFileUpload: true,
-      // Only print logs for uploading source maps in CI
-      silent: !process.env.CI,
-    })
-  : nextConfig;
+export default async function config() {
+  // Avoid loading env package when NX is creating the graph (nx-ignore command)
+  if (global.NX_GRAPH_CREATION) return nextConfig;
+
+  await import("@typebot.io/env/compiled");
+
+  return process.env.SENTRY_DSN
+    ? withSentryConfig(nextConfig, {
+        org: process.env.SENTRY_ORG,
+        project: process.env.SENTRY_PROJECT,
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        widenClientFileUpload: true,
+        // Only print logs for uploading source maps in CI
+        silent: !process.env.CI,
+      })
+    : nextConfig;
+}

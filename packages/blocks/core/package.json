@@ -4,7 +4,12 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "@typebot.io/forge-repository": "workspace:*",
@@ -17,11 +22,5 @@
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/blocks-integrations": "workspace:*",
     "zod": "^4.3.5"
-  },
-  "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
-  },
-  "scripts": {
-    "check-types": "tsc --noEmit"
   }
 }

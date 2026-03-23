@@ -1,8 +1,11 @@
 import { Hr, Link, Text } from "@react-email/components";
 import { env } from "@typebot.io/env";
+import * as React from "react";
 import { NewsletterLayout } from "./components/NewsletterLayout";
 import { NewsletterSection } from "./components/NewsletterSection";
 import { hr, text } from "./styles";
+
+void React;
 
 const imagesBaseUrl = `${env.NEXTAUTH_URL}/images/emails/V3dot6Update`;
 

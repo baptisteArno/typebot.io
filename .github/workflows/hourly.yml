@@ -4,12 +4,12 @@ on:
   schedule:
     - cron: "0 * * * *"
 
+permissions:
+  contents: read
+
 jobs:
   send:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/scripts
     env:
       DATABASE_URL: "${{ secrets.DATABASE_URL }}"
       DATABASE_URL_REPLICA: "${{ secrets.DATABASE_URL_REPLICA }}"
@@ -30,8 +30,11 @@ jobs:
       STRIPE_PRO_CHATS_PRICE_ID: "${{ secrets.STRIPE_PRO_CHATS_PRICE_ID }}"
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: "package.json"
       - run: bun install
-      - run: bunx turbo run cron:hourly
+      - run: bunx nx run @typebot.io/scripts:cron:hourly

@@ -1,4 +1,4 @@
-import { ContextMenu as ContextMenuPrimitive } from "@base-ui-components/react/context-menu";
+import { ContextMenu as ContextMenuPrimitive } from "@base-ui/react/context-menu";
 import * as React from "react";
 import { cn } from "../lib/cn";
 import type { VariantProps } from "../lib/cva";

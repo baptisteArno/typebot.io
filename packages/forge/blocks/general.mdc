@@ -1,8 +1,0 @@
----
-alwaysApply: true
----
-
-# Coding rules
-
-- Always put constants in the `constants.ts` file
-- Always put helper functions in a `helpers` folder

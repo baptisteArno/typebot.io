@@ -28,7 +28,7 @@ ${parseInitPopupCode({
         onUpdateSettings={(settings) => setInputValue(settings.autoShowDelay)}
       />
       <p>Run this script to initialize the typebot:</p>
-      <CodeEditor isReadOnly value={scriptSnippet} lang="javascript" />
+      <CodeEditor isReadOnly value={scriptSnippet} lang="js" />
     </div>
   );
 };

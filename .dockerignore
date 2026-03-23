@@ -6,9 +6,8 @@ README.md
 **/.next
 .git
 .github
-.turbo
+.nx
 **/.env
 landing-page
 docs
-packages/scripts
 wordpress

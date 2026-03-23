@@ -39,7 +39,7 @@ export const UpgradeConfirmationDialog = ({
 
   return (
     <AlertDialog.Root isOpen={isOpen} onClose={onClose}>
-      <AlertDialog.Popup initialFocus={cancelRef}>
+      <AlertDialog.Content initialFocus={cancelRef}>
         <AlertDialog.Title>
           {t("billing.upgradeModal.title", { plan: targetPlan })}
         </AlertDialog.Title>
@@ -65,9 +65,9 @@ export const UpgradeConfirmationDialog = ({
           </div>
         </div>
         <AlertDialog.Footer>
-          <AlertDialog.CloseButton variant="secondary" ref={cancelRef}>
+          <AlertDialog.Cancel variant="secondary" ref={cancelRef}>
             {t("cancel")}
-          </AlertDialog.CloseButton>
+          </AlertDialog.Cancel>
           <Button
             variant="default"
             onClick={onConfirmClick}
@@ -76,7 +76,7 @@ export const UpgradeConfirmationDialog = ({
             {t("billing.upgradeModal.confirmButton")}
           </Button>
         </AlertDialog.Footer>
-      </AlertDialog.Popup>
+      </AlertDialog.Content>
     </AlertDialog.Root>
   );
 };

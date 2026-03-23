@@ -4,11 +4,15 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
-    "test": "dotenv -e ./.env -e ../../.env -- bun test .test.ts",
-    "check-types": "tsc --noEmit"
+    "test": "bun test .test.ts"
   },
   "dependencies": {
     "@orpc/server": "^1.13.4",
@@ -51,15 +55,14 @@
     "nodemailer": "^7.0.6",
     "openai": "^6.9.1",
     "qs": "^6.11.2",
-    "stripe": "^17.1.0",
-    "undici": "^7.16.0",
+    "stripe": "17.1.0",
+    "undici": "7.24.4",
     "zod": "^4.3.5"
   },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/forge-repository": "workspace:*",
     "@types/qs": "^6.9.7",
-    "@typebot.io/tsconfig": "workspace:*",
     "@types/nodemailer": "^7.0.1",
     "@types/bun": "^1.3.9",
     "dotenv-cli": "^8.0.0"

@@ -1,7 +1,8 @@
 import { Img } from "@react-email/components";
 import { env } from "@typebot.io/env";
-// biome-ignore lint/correctness/noUnusedImports: Need it for tsx execution
-import React from "react";
+import * as React from "react";
+
+void React;
 
 export const Logo = () => (
   <Img

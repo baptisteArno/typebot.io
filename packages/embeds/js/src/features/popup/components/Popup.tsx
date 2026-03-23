@@ -10,16 +10,16 @@ import {
   Show,
   splitProps,
 } from "solid-js";
-import { Bot, type BotProps } from "@/components/Bot";
-import { getPaymentInProgressInStorage } from "@/features/blocks/inputs/payment/helpers/paymentInProgressStorage";
-import { chatwootWebWidgetOpenedMessage } from "@/features/blocks/integrations/chatwoot/constants";
+import styles from "../../../assets/index.css";
+import { Bot, type BotProps } from "../../../components/Bot";
 import {
   getBotOpenedStateFromStorage,
   removeBotOpenedStateInStorage,
   setBotOpenedStateInStorage,
   wipeExistingChatStateInStorage,
-} from "@/utils/storage";
-import styles from "../../../assets/index.css";
+} from "../../../utils/storage";
+import { getPaymentInProgressInStorage } from "../../blocks/inputs/payment/helpers/paymentInProgressStorage";
+import { chatwootWebWidgetOpenedMessage } from "../../blocks/integrations/chatwoot/constants";
 import type { CommandData } from "../../commands/types";
 import type { PopupParams } from "../types";
 
@@ -31,7 +31,7 @@ export type PopupProps = BotProps &
     onClose?: () => void;
   };
 
-export const Popup = (props: PopupProps) => {
+export const Popup = (props: PopupProps, { element }: { element: any }) => {
   const [popupProps, botProps] = splitProps(props, [
     "onOpen",
     "onClose",
@@ -89,7 +89,8 @@ export const Popup = (props: PopupProps) => {
 
   const processIncomingEvent = (event: MessageEvent<CommandData>) => {
     const { data } = event;
-    if (!data.isFromTypebot || (data.id && botProps.id !== data.id)) return;
+    const elementId = element.id || botProps.id;
+    if (!data.isFromTypebot || (data.id && elementId !== data.id)) return;
     switch (data.command) {
       case "open":
         openBot();
@@ -163,9 +164,7 @@ export const Popup = (props: PopupProps) => {
 
   return (
     <Show when={isBotOpened()}>
-      <EnvironmentProvider
-        value={document.querySelector("typebot-popup")?.shadowRoot as Node}
-      >
+      <EnvironmentProvider value={element.shadowRoot as Node}>
         <style>
           {typebotColors}
           {styles}

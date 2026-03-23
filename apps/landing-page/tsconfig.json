@@ -1,19 +1,13 @@
 {
-  "extends": "@typebot.io/tsconfig/react.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"],
-      "@/content-collections": ["./.content-collections/generated"]
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
     },
-    "module": "ESNext"
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/vite-env.d.ts",
-    "vite.config.ts",
-    "content-collection.ts",
-    "content-collection-vite-plugin.ts"
-  ]
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ],
+  "extends": "../../tsconfig.base.json"
 }

@@ -5,30 +5,57 @@
   "license": "FSL-1.1-ALv2",
   "type": "module",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/packages/embeds/react/src/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/packages/embeds/react/src/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./commands": {
-      "types": "./dist/commands.d.ts",
-      "default": "./dist/commands.js"
+    "./package.json": "./package.json"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "executor": "@nx/esbuild:esbuild",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "defaultConfiguration": "production",
+        "options": {
+          "outputPath": "{workspaceRoot}/packages/embeds/react/dist",
+          "main": "{workspaceRoot}/packages/embeds/react/src/index.ts",
+          "additionalEntryPoints": [
+            "{workspaceRoot}/packages/embeds/react/src/web.ts"
+          ],
+          "tsConfig": "{workspaceRoot}/packages/embeds/react/tsconfig.lib.json",
+          "platform": "browser",
+          "esbuildOptions": {
+            "splitting": true
+          },
+          "format": [
+            "esm"
+          ],
+          "bundle": true,
+          "declaration": true
+        },
+        "configurations": {
+          "development": {
+            "minify": false,
+            "deleteOutputPath": false
+          },
+          "production": {
+            "minify": true
+          }
+        }
+      }
     }
   },
-  "scripts": {
-    "dev": "tsup --watch",
-    "build": "tsup",
-    "check-types": "tsc --noEmit"
-  },
   "dependencies": {
-    "react": "^19.2.3",
+    "react": "^19.2.4",
     "@typebot.io/js": "workspace:*"
   },
   "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*",
-    "@types/react": "^19.2.7",
-    "tsup": "^8.5.0"
+    "@types/react": "^19.2.14"
   },
   "peerDependencies": {
     "react": ">=18"

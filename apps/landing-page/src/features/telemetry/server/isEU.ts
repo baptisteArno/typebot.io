@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getHeaders } from "@tanstack/react-start/server";
+import { getRequestHeaders } from "@tanstack/react-start/server";
 
 const EU_COUNTRIES = new Set([
   "AT",
@@ -35,8 +35,7 @@ const EU_COUNTRIES = new Set([
 ]);
 
 export const isEU = createServerFn().handler(() => {
-  const headers = getHeaders();
-  const countryCode = headers["cf-ipcountry"]?.toUpperCase();
+  const countryCode = getRequestHeaders().get("cf-ipcountry")?.toUpperCase();
   if (!countryCode) return { isEU: true };
   return { isEU: EU_COUNTRIES.has(countryCode) };
 });

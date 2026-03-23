@@ -2,6 +2,7 @@ import { useTranslate } from "@tolgee/react";
 import { Avatar } from "@typebot.io/ui/components/Avatar";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { EmojiOrImageIcon } from "@typebot.io/ui/components/EmojiOrImageIcon";
 import { CreditCardIcon } from "@typebot.io/ui/icons/CreditCardIcon";
 import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
 import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
@@ -9,14 +10,13 @@ import { UsersIcon } from "@typebot.io/ui/icons/UsersIcon";
 import { Wallet01Icon } from "@typebot.io/ui/icons/Wallet01Icon";
 import type { ClientUser } from "@typebot.io/user/schemas";
 import { useState } from "react";
-import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { BillingSettingsLayout } from "@/features/billing/components/BillingSettingsLayout";
 import { CredentialsSettingsForm } from "@/features/credentials/components/CredentialsSettingsForm";
 import { MyAccountForm } from "@/features/user/components/MyAccountForm";
 import { UserPreferencesForm } from "@/features/user/components/UserPreferencesForm";
 import packageJson from "../../../../../../package.json";
 import { useWorkspace, type WorkspaceInApp } from "../WorkspaceProvider";
-import { MembersList } from "./MembersList";
+import { PeopleList } from "./PeopleList";
 import { WorkspaceSettingsForm } from "./WorkspaceSettingsForm";
 
 type Props = {
@@ -101,8 +101,8 @@ export const WorkspaceSettingsDialog = ({
                 >
                   <EmojiOrImageIcon
                     icon={workspace.icon}
-                    size="sm"
-                    defaultIcon={HardDriveIcon}
+                    className="size-4.5 text-xl"
+                    defaultIcon={<HardDriveIcon className="size-full" />}
                   />
                   {t("workspace.settings.modal.menu.settings.label")}
                 </Button>
@@ -165,7 +165,7 @@ const SettingsContent = ({
     case "workspace-settings":
       return <WorkspaceSettingsForm onClose={onClose} />;
     case "members":
-      return <MembersList />;
+      return <PeopleList />;
     case "billing":
       return <BillingSettingsLayout />;
     case "credentials":

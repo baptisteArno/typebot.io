@@ -3,7 +3,7 @@ import { computeTypingDuration } from "@typebot.io/settings/computeTypingDuratio
 import type { Settings } from "@typebot.io/settings/schemas";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, For, onCleanup, onMount } from "solid-js";
-import { TypingBubble } from "@/components/TypingBubble";
+import { TypingBubble } from "../../../../../components/TypingBubble";
 import { computePlainText } from "../helpers/convertRichTextToPlainText";
 import { PlateElement } from "./plate/PlateBlock";
 

@@ -4,16 +4,17 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
-    "start": "bun ./src/index.ts",
-    "check-types": "tsc --noEmit"
+    "start": "bun ./src/index.ts"
   },
   "dependencies": {
     "@clack/prompts": "^0.11.0"
-  },
-  "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
   }
 }

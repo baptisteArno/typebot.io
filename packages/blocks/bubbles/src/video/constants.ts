@@ -48,7 +48,7 @@ export const tiktokRegex = /tiktok\.com\/@[\w.-]+\/video\/(\d+)/;
 const gumletBaseUrl = "https://play.gumlet.io/embed";
 export const gumletRegex = /gumlet\.(com|tv)\/watch\/(\w+)/;
 
-export const oneDriveRegex = /https:\/\/onedrive.live.com\/embed\?[^"]+/;
+export const oneDriveRegex = /https:\/\/onedrive\.live\.com\/embed\?[^"]+/;
 
 export const embedBaseUrls = {
   [VideoBubbleContentType.VIMEO]: vimeoBaseUrl,

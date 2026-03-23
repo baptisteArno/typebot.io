@@ -283,7 +283,7 @@ const main = async () => {
   s.start("Formatting...");
   try {
     await new Promise<void>((resolve, reject) => {
-      const ls = spawn("bunx", ["turbo", "//#format-and-lint:fix"]);
+      const ls = spawn("bun", ["format-and-lint:fix"]);
       ls.stderr.on("data", (data) => {
         console.log(data.toString());
       });
@@ -362,9 +362,6 @@ const createPackageJson = async (path: string, { id }: { id: unknown }) => {
         dependencies: {
           "@typebot.io/forge": "workspace:*",
         },
-        devDependencies: {
-          "@typebot.io/tsconfig": "workspace:*",
-        },
       },
       null,
       2,
@@ -376,7 +373,7 @@ const createTsConfig = async (path: string) => {
   writeFileSync(
     join(path, "tsconfig.json"),
     JSON.stringify({
-      extends: "@typebot.io/tsconfig/react.json",
+      extends: "../../../../tsconfig.base.json",
       include: ["src/**/*.ts", "src/**/*.tsx"],
     }),
   );

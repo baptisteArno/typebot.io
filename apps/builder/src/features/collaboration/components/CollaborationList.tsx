@@ -3,12 +3,12 @@ import { useTranslate } from "@tolgee/react";
 import { CollaborationType } from "@typebot.io/prisma/enum";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
+import { EmojiOrImageIcon } from "@typebot.io/ui/components/EmojiOrImageIcon";
 import { Input } from "@typebot.io/ui/components/Input";
 import { Skeleton } from "@typebot.io/ui/components/Skeleton";
 import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
 import type { FormEvent } from "react";
 import { useState } from "react";
-import { EmojiOrImageIcon } from "@/components/EmojiOrImageIcon";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
@@ -167,7 +167,6 @@ export const CollaborationList = () => {
 
         {currentUserMode !== "guest" && (
           <BasicSelect
-            size="sm"
             value={invitationType}
             onChange={updateInvitationType}
             items={[
@@ -189,7 +188,8 @@ export const CollaborationList = () => {
           <div className="flex items-center min-w-0 gap-3">
             <EmojiOrImageIcon
               icon={workspace.icon}
-              defaultIcon={HardDriveIcon}
+              className="size-6.25 text-2xl"
+              defaultIcon={<HardDriveIcon className="size-full" />}
             />
             <p className="text-[15px] truncate">Everyone at {workspace.name}</p>
           </div>

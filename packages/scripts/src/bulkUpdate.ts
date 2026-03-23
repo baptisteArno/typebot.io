@@ -3,8 +3,6 @@ import prisma from "@typebot.io/prisma";
 import type { Result } from "@typebot.io/results/schemas/results";
 import { promptAndSetEnvironment } from "./utils";
 
-const _progress = 0;
-
 const bulkUpdate = async () => {
   await promptAndSetEnvironment();
 
@@ -37,8 +35,6 @@ const bulkUpdate = async () => {
       }
     })
     .filter(isDefined);
-
-  const _total = queries.length;
 
   await prisma.$transaction(queries);
 };

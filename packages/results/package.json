@@ -4,11 +4,15 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "test": "dotenv -e ./.env -e ../../.env -- bun test",
-    "check-types": "tsc --noEmit"
+    "test": "bun test"
   },
   "exports": {
-    "./*": "./src/*.ts"
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "effect": "4.0.0-beta.30",
@@ -25,8 +29,5 @@
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "zod": "^4.3.5"
-  },
-  "devDependencies": {
-    "@typebot.io/tsconfig": "workspace:*"
   }
 }

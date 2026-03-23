@@ -9,8 +9,7 @@ import {
 } from "@react-email/components";
 import { render } from "@react-email/render";
 import type { ComponentProps } from "react";
-// biome-ignore lint/correctness/noUnusedImports: Need it for tsx execution
-import React from "react";
+import * as React from "react";
 import { sendEmail } from "../helpers/sendEmail";
 import { Logo } from "./components/Logo";
 import {
@@ -21,6 +20,8 @@ import {
   paragraph,
   primaryButton,
 } from "./styles";
+
+void React;
 
 interface Props {
   workspaceName: string;

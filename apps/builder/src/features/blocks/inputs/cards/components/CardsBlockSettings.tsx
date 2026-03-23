@@ -60,6 +60,7 @@ const CardSaveResponseItem = ({
     <div className="flex flex-col gap-2 p-4 rounded-md flex-1 border">
       <BasicSelect
         placeholder="Select a field"
+        className="w-full"
         value={item.field}
         items={cardMappableFields}
         onChange={changeValueToExtract}

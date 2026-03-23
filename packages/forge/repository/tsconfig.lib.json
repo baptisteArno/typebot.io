@@ -1,0 +1,69 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    {
+      "path": "../blocks/gmail/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/blink/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/deepseek/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/perplexity/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/posthog/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/zendesk/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/groq/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/segment/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/nocodb/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/openRouter/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/togetherAi/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/anthropic/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/elevenlabs/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/mistral/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/difyAi/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/qrcode/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/chatNode/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/calCom/tsconfig.lib.json"
+    },
+    {
+      "path": "../blocks/openai/tsconfig.lib.json"
+    }
+  ]
+}
