@@ -6,7 +6,7 @@ import {
 } from "@typebot.io/theme/schemas";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
-import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
+import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
 
 export const saveThemeTemplateInputSchema = z.object({
   workspaceId: z.string(),
@@ -22,24 +22,39 @@ export const handleSaveThemeTemplate = async ({
   input: z.infer<typeof saveThemeTemplateInputSchema>;
   context: { user: Pick<User, "id"> };
 }) => {
-  const workspace = await prisma.workspace.findUnique({
+  const workspace = await prisma.workspace.findFirst({
     where: { id: workspaceId },
     select: {
-      members: true,
+      members: {
+        select: {
+          userId: true,
+          role: true,
+        },
+      },
     },
   });
-  const userRole = getUserModeInWorkspace(user.id, workspace?.members);
-  if (userRole === "guest")
+
+  if (!workspace || isWriteWorkspaceForbidden(workspace, user))
     throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
-  const themeTemplate = (await prisma.themeTemplate.upsert({
-    where: { id: themeTemplateId },
-    create: {
-      ...data,
+  const existingThemeTemplate = await prisma.themeTemplate.findFirst({
+    where: {
+      id: themeTemplateId,
       workspaceId,
     },
-    update: data,
-  })) as ThemeTemplate;
+  });
+
+  const themeTemplate = (existingThemeTemplate
+    ? await prisma.themeTemplate.update({
+        where: { id: themeTemplateId },
+        data,
+      })
+    : await prisma.themeTemplate.create({
+        data: {
+          ...data,
+          workspaceId,
+        },
+      })) as ThemeTemplate;
 
   return {
     themeTemplate,
