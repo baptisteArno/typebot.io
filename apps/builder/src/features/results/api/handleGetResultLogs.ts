@@ -50,7 +50,10 @@ export const handleGetResultLogs = async ({
     throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
   const logs = await prisma.log.findMany({
     where: {
-      resultId,
+      result: {
+        typebotId,
+        id: resultId,
+      },
     },
   });
 
