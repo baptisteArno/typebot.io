@@ -170,7 +170,7 @@ const components = {
     return (
       <details
         open={defaultOpen}
-        className="not-prose rounded-xl border bg-card px-5 py-4 text-card-foreground"
+        className="rounded-xl border bg-card px-5 py-4 text-card-foreground"
         onToggle={(event) =>
           setIsOpen((event.target as HTMLDetailsElement).open)
         }
