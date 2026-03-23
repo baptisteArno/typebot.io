@@ -68,7 +68,7 @@ export const executeFunction = async ({
         request.headers.forEach((value, key) => {
           headers[key] = value;
         });
-        validateHttpReqUrl(request.url);
+        await validateHttpReqUrl(request.url);
         validateHttpReqHeaders(headers);
         const response = await fetch(...fetchArgs);
         return response.text();

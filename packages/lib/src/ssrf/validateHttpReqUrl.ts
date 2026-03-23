@@ -1,3 +1,4 @@
+import { lookup } from "node:dns/promises";
 import { URL } from "node:url";
 import { env } from "@typebot.io/env";
 
@@ -15,10 +16,18 @@ const BLOCKED_HEADERS = [
  * - Localhost and loopback addresses (127.0.0.0/8, ::1)
  * - Link-local addresses (169.254.0.0/16, fe80::/10)
  * - Various IP encoding bypass attempts (decimal, hex, octal)
+ * - Hostnames that resolve to blocked IP ranges
  *
  * @throws Error if the URL is blocked or invalid
  */
-export const validateHttpReqUrl = (urlString: string) => {
+export const validateHttpReqUrl = async (
+  urlString: string,
+  {
+    lookupHost = lookup,
+  }: {
+    lookupHost?: LookupHost;
+  } = {},
+) => {
   if (!urlString?.trim()) {
     throw new Error("URL is required");
   }
@@ -63,6 +72,10 @@ export const validateHttpReqUrl = (urlString: string) => {
     throw new Error("Access to localhost is not allowed for security reasons.");
   }
 
+  if (hostname === "localhost") {
+    return;
+  }
+
   // Detect and block decimal/hex/octal encoded IPs
   // 169.254.169.254 in decimal = 2852039166
   // Common patterns: pure decimal, mixed octal (0251.0376...), hex (0xa9fe...)
@@ -82,7 +95,29 @@ export const validateHttpReqUrl = (urlString: string) => {
   const ip = parseIPAddress(hostname);
   if (ip) {
     validateIPAddress(ip);
+    return;
   }
+
+  const resolvedAddresses = await lookupHost(hostname, {
+    all: true,
+    order: "verbatim",
+  });
+
+  if (resolvedAddresses.length === 0) {
+    throw new Error(`Hostname "${hostname}" could not be resolved.`);
+  }
+
+  resolvedAddresses.forEach((resolvedAddress) => {
+    const parsedResolvedAddress = parseIPAddress(resolvedAddress.address);
+
+    if (!parsedResolvedAddress) {
+      throw new Error(
+        `Hostname "${hostname}" resolved to an invalid IP address.`,
+      );
+    }
+
+    validateIPAddress(parsedResolvedAddress);
+  });
 };
 
 /**
@@ -145,6 +180,14 @@ const parseIPAddress = (hostname: string): ParsedIP | null => {
 type ParsedIP =
   | { version: 4; octets: number[] }
   | { version: 6; address: string };
+
+type LookupHost = (
+  hostname: string,
+  options: {
+    all: true;
+    order: "verbatim";
+  },
+) => Promise<Array<{ address: string; family: number }>>;
 
 /**
  * Validates that an IP address is not in a blocked range

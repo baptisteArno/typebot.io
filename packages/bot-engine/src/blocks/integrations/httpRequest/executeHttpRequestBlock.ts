@@ -244,7 +244,7 @@ export const executeHttpRequest = async (
   const { headers, url, method, basicAuth, isJson } = httpRequest;
 
   try {
-    validateHttpReqUrl(url);
+    await validateHttpReqUrl(url);
     validateHttpReqHeaders(headers);
   } catch (error) {
     logs.push({
