@@ -1,6 +1,5 @@
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
-import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { sessionOnlySetVariableOptions } from "@typebot.io/blocks-logic/setVariable/constants";
@@ -9,7 +8,6 @@ import { Plan } from "@typebot.io/prisma/enum";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { hasProPerks } from "@/features/billing/helpers/hasProPerks";
-import { sanitizeHtmlFragment, sanitizeSvgFragment } from "./sanitizeHtml";
 
 export const sanitizeSettings = (
   settings: Typebot["settings"],
@@ -89,38 +87,6 @@ const sanitizeBlock = async (
       options: {
         ...block.options,
         isUnsafe: block.options.isExecutedOnClient === true,
-      },
-    };
-  }
-
-  if (block.type === InputBlockType.RATING) {
-    return {
-      ...block,
-      options: {
-        ...block.options,
-        customIcon: block.options.customIcon
-          ? {
-              ...block.options.customIcon,
-              svg: sanitizeSvgFragment(block.options.customIcon.svg),
-            }
-          : undefined,
-      },
-    };
-  }
-
-  if (block.type === InputBlockType.FILE) {
-    return {
-      ...block,
-      options: {
-        ...block.options,
-        labels: block.options.labels
-          ? {
-              ...block.options.labels,
-              placeholder: sanitizeHtmlFragment(
-                block.options.labels.placeholder,
-              ),
-            }
-          : undefined,
       },
     };
   }
