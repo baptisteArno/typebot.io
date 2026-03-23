@@ -1,0 +1,35 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Builder",
+      "runtimeExecutable": "bunx",
+      "runtimeArgs": ["nx", "dev", "builder"],
+      "port": 3000
+    },
+    {
+      "name": "Viewer",
+      "runtimeExecutable": "bunx",
+      "runtimeArgs": ["nx", "dev", "viewer"],
+      "port": 3001
+    },
+    {
+      "name": "Workflows",
+      "runtimeExecutable": "bunx",
+      "runtimeArgs": ["nx", "dev", "workflows"],
+      "port": 3007
+    },
+    {
+      "name": "Docs",
+      "runtimeExecutable": "bunx",
+      "runtimeArgs": ["nx", "dev", "docs"],
+      "port": 3004
+    },
+    {
+      "name": "Landing Page",
+      "runtimeExecutable": "bunx",
+      "runtimeArgs": ["nx", "dev", "landing-page"],
+      "port": 3003
+    }
+  ]
+}
