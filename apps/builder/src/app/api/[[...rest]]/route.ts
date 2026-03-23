@@ -13,7 +13,7 @@ import {
   publicTypebotSchemaV6,
 } from "@typebot.io/typebot/schemas/publicTypebot";
 import { typebotSchema } from "@typebot.io/typebot/schemas/typebot";
-import type { NextRequest } from "next/server";
+import { after, type NextRequest } from "next/server";
 import { appRouter } from "../router";
 
 type RouteContext<_T> = {
@@ -131,19 +131,23 @@ async function handleRequest(
 
     const resolvedResponse =
       response ?? new Response("Not found", { status: 404 });
-    await logServerRequest({
-      request: resolvedRequest,
-      response: resolvedResponse,
-      startedAt,
-    });
+    after(() =>
+      logServerRequest({
+        request: resolvedRequest,
+        response: resolvedResponse,
+        startedAt,
+      }),
+    );
 
     return resolvedResponse;
   } catch (error) {
-    await logServerRequest({
-      error,
-      request: resolvedRequest,
-      startedAt,
-    });
+    after(() =>
+      logServerRequest({
+        error,
+        request: resolvedRequest,
+        startedAt,
+      }),
+    );
     throw error;
   }
 }

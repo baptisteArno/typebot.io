@@ -12,7 +12,7 @@ import {
 } from "@typebot.io/chat-api/schemas";
 import { createContext } from "@typebot.io/config/orpc/viewer/context";
 import { logServerRequest } from "@typebot.io/telemetry/logServerRequest";
-import type { NextRequest } from "next/server";
+import { after, type NextRequest } from "next/server";
 import { appRouter } from "./router";
 
 type RouteContext<_T> = {
@@ -102,19 +102,23 @@ async function handleRequest(
 
     const resolvedResponse =
       response ?? new Response("Not found", { status: 404 });
-    await logServerRequest({
-      request: resolvedRequest,
-      response: resolvedResponse,
-      startedAt,
-    });
+    after(() =>
+      logServerRequest({
+        request: resolvedRequest,
+        response: resolvedResponse,
+        startedAt,
+      }),
+    );
 
     return resolvedResponse;
   } catch (error) {
-    await logServerRequest({
-      error,
-      request: resolvedRequest,
-      startedAt,
-    });
+    after(() =>
+      logServerRequest({
+        error,
+        request: resolvedRequest,
+        startedAt,
+      }),
+    );
     throw error;
   }
 }

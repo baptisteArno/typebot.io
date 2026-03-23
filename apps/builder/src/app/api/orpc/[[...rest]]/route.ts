@@ -1,14 +1,12 @@
 import { RPCHandler } from "@orpc/server/fetch";
-import { CORSPlugin } from "@orpc/server/plugins";
 import { auth } from "@typebot.io/auth/lib/nextAuth";
 import { createContext } from "@typebot.io/config/orpc/builder/context";
 import { UserId } from "@typebot.io/shared-core/domain";
 import { logServerRequest } from "@typebot.io/telemetry/logServerRequest";
+import { after } from "next/server";
 import { appRouter } from "../../router";
 
-const handler = new RPCHandler(appRouter, {
-  plugins: [new CORSPlugin()],
-});
+const handler = new RPCHandler(appRouter);
 
 async function handleRequest(request: Request) {
   const startedAt = Date.now();
@@ -31,19 +29,23 @@ async function handleRequest(request: Request) {
 
     const resolvedResponse =
       response ?? new Response("Not found", { status: 404 });
-    await logServerRequest({
-      request,
-      response: resolvedResponse,
-      startedAt,
-    });
+    after(() =>
+      logServerRequest({
+        request,
+        response: resolvedResponse,
+        startedAt,
+      }),
+    );
 
     return resolvedResponse;
   } catch (error) {
-    await logServerRequest({
-      error,
-      request,
-      startedAt,
-    });
+    after(() =>
+      logServerRequest({
+        error,
+        request,
+        startedAt,
+      }),
+    );
     throw error;
   }
 }
