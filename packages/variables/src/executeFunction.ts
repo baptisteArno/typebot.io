@@ -1,5 +1,9 @@
 import { env } from "@typebot.io/env";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
+import {
+  validateHttpReqHeaders,
+  validateHttpReqUrl,
+} from "@typebot.io/lib/ssrf/validateHttpReqUrl";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { Reference } from "isolated-vm";
@@ -57,9 +61,16 @@ export const executeFunction = async ({
   context.evalClosure(
     "globalThis.fetch = (...args) => $0.apply(undefined, args, { arguments: { copy: true }, promise: true, result: { copy: true, promise: true } })",
     [
-      new Reference(async (...args: any[]) => {
-        // @ts-expect-error
-        const response = await fetch(...args);
+      new Reference(async (...fetchArgs: Parameters<typeof fetch>) => {
+        const [input, init] = fetchArgs;
+        const request = new Request(input, init);
+        const headers = {} as Record<string, string>;
+        request.headers.forEach((value, key) => {
+          headers[key] = value;
+        });
+        validateHttpReqUrl(request.url);
+        validateHttpReqHeaders(headers);
+        const response = await fetch(...fetchArgs);
         return response.text();
       }),
     ],
