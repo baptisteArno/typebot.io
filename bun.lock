@@ -6,7 +6,7 @@
       "name": "root",
       "devDependencies": {
         "@biomejs/biome": "^2.4.7",
-        "@effect/language-service": "^0.80.0",
+        "@effect/language-service": "^0.81.0",
         "@nx/esbuild": "22.5.4",
         "@nx/js": "22.5.4",
         "@nx/next": "22.5.4",
@@ -30,7 +30,7 @@
         "@braintree/sanitize-url": "^7.0.1",
         "@dnd-kit/helpers": "^0.1.21",
         "@dnd-kit/react": "^0.1.21",
-        "@effect/opentelemetry": "4.0.0-beta.36",
+        "@effect/opentelemetry": "4.0.0-beta.37",
         "@giphy/js-fetch-api": "^5.7.0",
         "@giphy/react-components": "^10.1.0",
         "@opentelemetry/exporter-trace-otlp-http": "^0.211.0",
@@ -93,7 +93,7 @@
         "date-fns-tz": "^2.0.0",
         "deep-object-diff": "^1.1.9",
         "dequal": "^2.0.3",
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
         "google-auth-library": "^10.1.0",
         "immer": "^10.0.2",
         "ioredis": "^5.4.1",
@@ -284,8 +284,8 @@
       "name": "workflows",
       "version": "0.0.1",
       "dependencies": {
-        "@effect/platform-bun": "4.0.0-beta.30",
-        "@effect/sql-pg": "4.0.0-beta.30",
+        "@effect/platform-bun": "4.0.0-beta.37",
+        "@effect/sql-pg": "4.0.0-beta.37",
         "@sentry/bun": "^10.43.0",
         "@typebot.io/config": "workspace:*",
         "@typebot.io/lib": "workspace:*",
@@ -294,7 +294,7 @@
         "@typebot.io/telemetry": "workspace:*",
         "@typebot.io/typebot": "workspace:*",
         "@typebot.io/user": "workspace:*",
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
       },
       "devDependencies": {
         "@types/bun": "^1.3.9",
@@ -324,7 +324,7 @@
         "@typebot.io/telemetry": "workspace:*",
         "@typebot.io/user": "workspace:*",
         "@upstash/ratelimit": "^0.4.3",
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
         "next-auth": "^5.0.0-beta.30",
       },
     },
@@ -551,7 +551,7 @@
       "name": "@typebot.io/config",
       "version": "0.0.1",
       "dependencies": {
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
       },
       "devDependencies": {
         "@testcontainers/postgresql": "^11.13.0",
@@ -587,7 +587,7 @@
         "@typebot.io/env": "workspace:*",
         "@typebot.io/lib": "workspace:*",
         "@typebot.io/prisma": "workspace:*",
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
         "nodemailer": "^7.0.6",
         "react": "^19.2.4",
         "react-dom": "^19.2.4",
@@ -988,7 +988,7 @@
       "dependencies": {
         "@paralleldrive/cuid2": "^2.2.1",
         "@sentry/nextjs": "^10.43.0",
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
         "ioredis": "^5.4.1",
         "ky": "^1.2.4",
         "minio": "7.1.3",
@@ -1048,7 +1048,7 @@
         "@prisma/adapter-planetscale": "^7.4.0",
         "@prisma/client": "^7.4.0",
         "@prisma/extension-read-replicas": "^0.5.0",
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
         "prisma": "^7.4.0",
       },
       "devDependencies": {
@@ -1085,7 +1085,7 @@
         "@typebot.io/telemetry": "workspace:*",
         "@typebot.io/typebot": "workspace:*",
         "@typebot.io/variables": "workspace:*",
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
         "papaparse": "^5.4.1",
         "zod": "^4.3.5",
       },
@@ -1174,11 +1174,11 @@
         "@orpc/server": "^1.13.9",
         "@typebot.io/config": "workspace:*",
         "@typebot.io/shared-core": "workspace:*",
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
         "posthog-node": "^5.8.2",
       },
       "devDependencies": {
-        "@effect/vitest": "4.0.0-beta.35",
+        "@effect/vitest": "4.0.0-beta.37",
       },
     },
     "packages/settings": {
@@ -1193,7 +1193,7 @@
       "name": "@typebot.io/shared-core",
       "version": "0.0.1",
       "dependencies": {
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
       },
     },
     "packages/shared-primitives": {
@@ -1201,14 +1201,14 @@
       "version": "0.0.1",
       "dependencies": {
         "@typebot.io/shared-core": "workspace:*",
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
       },
     },
     "packages/telemetry": {
       "name": "@typebot.io/telemetry",
       "version": "0.0.1",
       "dependencies": {
-        "@effect/opentelemetry": "4.0.0-beta.36",
+        "@effect/opentelemetry": "4.0.0-beta.37",
         "@opentelemetry/api": "^1.9.0",
         "@opentelemetry/api-logs": "^0.211.0",
         "@opentelemetry/exporter-logs-otlp-http": "^0.211.0",
@@ -1217,13 +1217,14 @@
         "@opentelemetry/sdk-logs": "^0.211.0",
         "@opentelemetry/sdk-trace-base": "^2.5.0",
         "@opentelemetry/sdk-trace-node": "^2.5.0",
+        "@opentelemetry/sdk-trace-web": "^2.5.0",
         "@opentelemetry/semantic-conventions": "^1.39.0",
         "@sentry/bun": "^10.43.0",
         "@typebot.io/env": "workspace:*",
         "@typebot.io/lib": "workspace:*",
         "@typebot.io/prisma": "workspace:*",
         "cookie": "^1.0.2",
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
         "ky": "^1.2.4",
         "posthog-node": "^5.8.2",
         "zod": "^4.3.5",
@@ -1261,7 +1262,7 @@
         "@typebot.io/user": "workspace:*",
         "@typebot.io/variables": "workspace:*",
         "@typebot.io/workspaces": "workspace:*",
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
         "zod": "^4.3.5",
       },
     },
@@ -1291,7 +1292,7 @@
         "@typebot.io/lib": "workspace:*",
         "@typebot.io/prisma": "workspace:*",
         "@typebot.io/telemetry": "workspace:*",
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
         "zod": "^4.3.5",
       },
     },
@@ -1346,11 +1347,11 @@
         "@typebot.io/prisma": "workspace:*",
         "@typebot.io/shared-core": "workspace:*",
         "@typebot.io/user": "workspace:*",
-        "effect": "4.0.0-beta.36",
+        "effect": "4.0.0-beta.37",
         "zod": "^4.3.5",
       },
       "devDependencies": {
-        "@effect/vitest": "4.0.0-beta.35",
+        "@effect/vitest": "4.0.0-beta.37",
         "vitest": "^4.0.18",
       },
     },
@@ -1829,17 +1830,17 @@
 
     "@dnd-kit/state": ["@dnd-kit/state@0.1.21", "", { "dependencies": { "@preact/signals-core": "^1.10.0", "tslib": "^2.6.2" } }, "sha512-pdhntEPvn/QttcF295bOJpWiLsRqA/Iczh1ODOJUxGiR+E4GkYVz9VapNNm9gDq6ST0tr/e1Q2xBztUHlJqQgA=="],
 
-    "@effect/language-service": ["@effect/language-service@0.80.0", "", { "bin": { "effect-language-service": "cli.js" } }, "sha512-dKMATT1fDzaCpNrICpXga7sjJBtFLpKCAoE/1MiGXI8UwcHA9rmAZ2t52JO9g/kJpERWyomkJ+rl+VFlwNIofg=="],
+    "@effect/language-service": ["@effect/language-service@0.81.0", "", { "bin": { "effect-language-service": "cli.js" } }, "sha512-7MYFsq9w9l2MkUw5/33fiG3YAkgnT6U1mwV0QvhokhnLhPW9cIetwAHNtXwsgr5omPQheLuflTIAFvPaZLQcPw=="],
 
-    "@effect/opentelemetry": ["@effect/opentelemetry@4.0.0-beta.36", "", { "peerDependencies": { "@opentelemetry/api": "^1.9", "@opentelemetry/resources": "^2.0.0", "@opentelemetry/sdk-logs": ">=0.203.0 <0.300.0", "@opentelemetry/sdk-metrics": "^2.0.0", "@opentelemetry/sdk-trace-base": "^2.0.0", "@opentelemetry/sdk-trace-node": "^2.0.0", "@opentelemetry/sdk-trace-web": "^2.0.0", "@opentelemetry/semantic-conventions": "^1.33.0", "effect": "^4.0.0-beta.36" }, "optionalPeers": ["@opentelemetry/api", "@opentelemetry/resources", "@opentelemetry/sdk-logs", "@opentelemetry/sdk-metrics", "@opentelemetry/sdk-trace-base", "@opentelemetry/sdk-trace-node", "@opentelemetry/sdk-trace-web"] }, "sha512-SI54UyaffHswklKqzG1ms10r0HbS2m9RMrFBmzuhOjgs0HoS421gAsW7U1XV9aNFW6mYu6x2N9jYdSknHUZ4jg=="],
+    "@effect/opentelemetry": ["@effect/opentelemetry@4.0.0-beta.37", "", { "peerDependencies": { "@opentelemetry/api": "^1.9", "@opentelemetry/resources": "^2.0.0", "@opentelemetry/sdk-logs": ">=0.203.0 <0.300.0", "@opentelemetry/sdk-metrics": "^2.0.0", "@opentelemetry/sdk-trace-base": "^2.0.0", "@opentelemetry/sdk-trace-node": "^2.0.0", "@opentelemetry/sdk-trace-web": "^2.0.0", "@opentelemetry/semantic-conventions": "^1.33.0", "effect": "^4.0.0-beta.37" }, "optionalPeers": ["@opentelemetry/api", "@opentelemetry/resources", "@opentelemetry/sdk-logs", "@opentelemetry/sdk-metrics", "@opentelemetry/sdk-trace-base", "@opentelemetry/sdk-trace-node", "@opentelemetry/sdk-trace-web"] }, "sha512-I1zzQSqibPz+r1/1z6tqcyzxQdYOmt4dkzw2+vICryrSHFFxnlq+jwxf/qNAP8XR2zcD18hvbK7KQJipfdVhKg=="],
 
-    "@effect/platform-bun": ["@effect/platform-bun@4.0.0-beta.30", "", { "dependencies": { "@effect/platform-node-shared": "^4.0.0-beta.30" }, "peerDependencies": { "effect": "^4.0.0-beta.30" } }, "sha512-5H3q/o85U65VKLSo0ju3nH0MLGfGVvdEzGdesUf6swCQyQoHrsfTg9WNlUw7jMWaM/ABvUpjG3zh07L7xT3JKA=="],
+    "@effect/platform-bun": ["@effect/platform-bun@4.0.0-beta.37", "", { "dependencies": { "@effect/platform-node-shared": "^4.0.0-beta.37" }, "peerDependencies": { "effect": "^4.0.0-beta.37" } }, "sha512-SoaZadA9gp6GT64MszCB508l+xXAxcFLTRrw3w47J1NVi3W++72jd5dNOBVAlcdSnpFvNpr0ufvtTakYifiNVg=="],
 
-    "@effect/platform-node-shared": ["@effect/platform-node-shared@4.0.0-beta.30", "", { "dependencies": { "@types/ws": "^8.18.1", "ws": "^8.19.0" }, "peerDependencies": { "effect": "^4.0.0-beta.30" } }, "sha512-nqjwqIQZhmQ/0YeCVAnkxftCw+BH/KhauRzGO1ACs4MRpck9ROIoqBveYThlN/svZVTnzrB6Owot4mtvajqnPA=="],
+    "@effect/platform-node-shared": ["@effect/platform-node-shared@4.0.0-beta.37", "", { "dependencies": { "@types/ws": "^8.18.1", "ws": "^8.19.0" }, "peerDependencies": { "effect": "^4.0.0-beta.37" } }, "sha512-yY7C4pAP9/5yLsitxwR11smcX1osDOBmWq0ZhTp8R8IG5ac0CiHUwDS7ebo/1AwdW4r2AVne3WGo8fWgyuWCEA=="],
 
-    "@effect/sql-pg": ["@effect/sql-pg@4.0.0-beta.30", "", { "dependencies": { "pg": "^8.18.0", "pg-connection-string": "2.11.0", "pg-cursor": "^2.17.0", "pg-pool": "^3.11.0", "pg-types": "^4.1.0" }, "peerDependencies": { "effect": "^4.0.0-beta.30" } }, "sha512-LYaWEVjMvsWTrbnK4mGMoYm3Pr+yKXJCJvJaOAIwl0SCcLx40hGpy/wDLA31jbUjeOpRPSFeS0k4c2RuecChsQ=="],
+    "@effect/sql-pg": ["@effect/sql-pg@4.0.0-beta.37", "", { "dependencies": { "pg": "^8.18.0", "pg-connection-string": "2.11.0", "pg-cursor": "^2.17.0", "pg-pool": "^3.11.0", "pg-types": "^4.1.0" }, "peerDependencies": { "effect": "^4.0.0-beta.37" } }, "sha512-4hnsfhDxvwDl2j9BzibVdjzdGiNScYsyXVdfiVD4B5S62jVAaRjMpfeWGPdzQWh09cdpeKaIWGckgMXxqOEixQ=="],
 
-    "@effect/vitest": ["@effect/vitest@4.0.0-beta.35", "", { "peerDependencies": { "effect": "^4.0.0-beta.35", "vitest": "^3.0.0 || ^4.0.0" } }, "sha512-wdt6j7yNL8cYXSyi1QWch4UPpjB0C7QBzStmdMSmIzAZ3ZVAUcyQkdfg/hnUJt6NPZMdjVmbI7m93ml5Mqqnhw=="],
+    "@effect/vitest": ["@effect/vitest@4.0.0-beta.37", "", { "peerDependencies": { "effect": "^4.0.0-beta.37", "vitest": "^3.0.0 || ^4.0.0" } }, "sha512-Lgwq3qjJk5PuQOpMiOhc4UGEyHt50rUSLrtW6HFQs+JEDx13Nr1iIKgsvGq/6S+2WCfNhmclUts04L+7PKV5rg=="],
 
     "@electric-sql/pglite": ["@electric-sql/pglite@0.3.15", "", {}, "sha512-Cj++n1Mekf9ETfdc16TlDi+cDDQF0W7EcbyRHYOAeZdsAe8M/FJg18itDTSwyHfar2WIezawM9o0EKaRGVKygQ=="],
 
@@ -2454,6 +2455,8 @@
     "@opentelemetry/sdk-trace-base": ["@opentelemetry/sdk-trace-base@2.6.0", "", { "dependencies": { "@opentelemetry/core": "2.6.0", "@opentelemetry/resources": "2.6.0", "@opentelemetry/semantic-conventions": "^1.29.0" }, "peerDependencies": { "@opentelemetry/api": ">=1.3.0 <1.10.0" } }, "sha512-g/OZVkqlxllgFM7qMKqbPV9c1DUPhQ7d4n3pgZFcrnrNft9eJXZM2TNHTPYREJBrtNdRytYyvwjgL5geDKl3EQ=="],
 
     "@opentelemetry/sdk-trace-node": ["@opentelemetry/sdk-trace-node@2.5.1", "", { "dependencies": { "@opentelemetry/context-async-hooks": "2.5.1", "@opentelemetry/core": "2.5.1", "@opentelemetry/sdk-trace-base": "2.5.1" }, "peerDependencies": { "@opentelemetry/api": ">=1.0.0 <1.10.0" } }, "sha512-9lopQ6ZoElETOEN0csgmtEV5/9C7BMfA7VtF4Jape3i954b6sTY2k3Xw3CxUTKreDck/vpAuJM+EDo4zheUw+A=="],
+
+    "@opentelemetry/sdk-trace-web": ["@opentelemetry/sdk-trace-web@2.6.0", "", { "dependencies": { "@opentelemetry/core": "2.6.0", "@opentelemetry/sdk-trace-base": "2.6.0" }, "peerDependencies": { "@opentelemetry/api": ">=1.0.0 <1.10.0" } }, "sha512-xyYmLFatwUeYnB7NtQ2Ydl9Y8uiblN+EDo5YEjnk7ZRMhGFyt1wgPqb8EYvATLuDiRVtxid1fJsL6RH1fCQMIA=="],
 
     "@opentelemetry/semantic-conventions": ["@opentelemetry/semantic-conventions@1.40.0", "", {}, "sha512-cifvXDhcqMwwTlTK04GBNeIe7yyo28Mfby85QXFe1Yk8nmi36Ab/5UQwptOx84SsoGNRg+EVSjwzfSZMy6pmlw=="],
 
@@ -4459,7 +4462,7 @@
 
     "ee-first": ["ee-first@1.1.1", "", {}, "sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow=="],
 
-    "effect": ["effect@4.0.0-beta.36", "", { "dependencies": { "@standard-schema/spec": "^1.1.0", "fast-check": "^4.5.3", "find-my-way-ts": "^0.1.6", "ini": "^6.0.0", "kubernetes-types": "^1.30.0", "msgpackr": "^1.11.8", "multipasta": "^0.2.7", "toml": "^3.0.0", "uuid": "^13.0.0", "yaml": "^2.8.2" } }, "sha512-It0ivpQrAi7cTAISEVPLbPjGGLSN90dZ1Y6iDhYbUdBj/QH8rf/AZVx1tGYLgA++Jfs+5ONrxA88gpNYWXxXKA=="],
+    "effect": ["effect@4.0.0-beta.37", "", { "dependencies": { "@standard-schema/spec": "^1.1.0", "fast-check": "^4.5.3", "find-my-way-ts": "^0.1.6", "ini": "^6.0.0", "kubernetes-types": "^1.30.0", "msgpackr": "^1.11.8", "multipasta": "^0.2.7", "toml": "^3.0.0", "uuid": "^13.0.0", "yaml": "^2.8.2" } }, "sha512-AVMXXtb6n62W4uvo1EvT7FJ41HfDvQRX8IY2FGPvfP361dtBArKK2JtE5vmFXTsxkW90WUdvJZYpVATGIzr/BA=="],
 
     "ejs": ["ejs@3.1.10", "", { "dependencies": { "jake": "^10.8.5" }, "bin": { "ejs": "bin/cli.js" } }, "sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA=="],
 
@@ -7716,6 +7719,8 @@
     "@opentelemetry/sdk-trace-node/@opentelemetry/core": ["@opentelemetry/core@2.5.1", "", { "dependencies": { "@opentelemetry/semantic-conventions": "^1.29.0" }, "peerDependencies": { "@opentelemetry/api": ">=1.0.0 <1.10.0" } }, "sha512-Dwlc+3HAZqpgTYq0MUyZABjFkcrKTePwuiFVLjahGD8cx3enqihmpAmdgNFO1R4m/sIe5afjJrA25Prqy4NXlA=="],
 
     "@opentelemetry/sdk-trace-node/@opentelemetry/sdk-trace-base": ["@opentelemetry/sdk-trace-base@2.5.1", "", { "dependencies": { "@opentelemetry/core": "2.5.1", "@opentelemetry/resources": "2.5.1", "@opentelemetry/semantic-conventions": "^1.29.0" }, "peerDependencies": { "@opentelemetry/api": ">=1.3.0 <1.10.0" } }, "sha512-iZH3Gw8cxQn0gjpOjJMmKLd9GIaNh/E3v3ST67vyzLSxHBs14HsG4dy7jMYyC5WXGdBVEcM7U/XTF5hCQxjDMw=="],
+
+    "@opentelemetry/sdk-trace-web/@opentelemetry/core": ["@opentelemetry/core@2.6.0", "", { "dependencies": { "@opentelemetry/semantic-conventions": "^1.29.0" }, "peerDependencies": { "@opentelemetry/api": ">=1.0.0 <1.10.0" } }, "sha512-HLM1v2cbZ4TgYN6KEOj+Bbj8rAKriOdkF9Ed3tG25FoprSiQl7kYc+RRT6fUZGOvx0oMi5U67GoFdT+XUn8zEg=="],
 
     "@opentelemetry/sql-common/@opentelemetry/core": ["@opentelemetry/core@2.2.0", "", { "dependencies": { "@opentelemetry/semantic-conventions": "^1.29.0" }, "peerDependencies": { "@opentelemetry/api": ">=1.0.0 <1.10.0" } }, "sha512-FuabnnUm8LflnieVxs6eP7Z383hgQU4W1e3KJS6aOG3RxWxcHyBxH8fDMHNgu/gFx/M2jvTOW/4/PHhLz6bjWw=="],
 

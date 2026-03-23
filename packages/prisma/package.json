@@ -34,7 +34,7 @@
     "@prisma/adapter-planetscale": "^7.4.0",
     "@prisma/client": "^7.4.0",
     "@prisma/extension-read-replicas": "^0.5.0",
-    "effect": "4.0.0-beta.36",
+    "effect": "4.0.0-beta.37",
     "prisma": "^7.4.0"
   },
   "devDependencies": {

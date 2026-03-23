@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.7",
-    "@effect/language-service": "^0.80.0",
+    "@effect/language-service": "^0.81.0",
     "@nx/esbuild": "22.5.4",
     "@nx/js": "22.5.4",
     "@nx/next": "22.5.4",

@@ -13,6 +13,6 @@
   },
   "dependencies": {
     "@typebot.io/shared-core": "workspace:*",
-    "effect": "4.0.0-beta.36"
+    "effect": "4.0.0-beta.37"
   }
 }

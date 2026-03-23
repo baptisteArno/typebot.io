@@ -37,8 +37,8 @@
     }
   },
   "dependencies": {
-    "@effect/platform-bun": "4.0.0-beta.30",
-    "@effect/sql-pg": "4.0.0-beta.30",
+    "@effect/platform-bun": "4.0.0-beta.37",
+    "@effect/sql-pg": "4.0.0-beta.37",
     "@sentry/bun": "^10.43.0",
     "@typebot.io/config": "workspace:*",
     "@typebot.io/lib": "workspace:*",
@@ -47,7 +47,7 @@
     "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/user": "workspace:*",
-    "effect": "4.0.0-beta.36"
+    "effect": "4.0.0-beta.37"
   },
   "devDependencies": {
     "@types/bun": "^1.3.9"

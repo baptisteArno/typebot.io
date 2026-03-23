@@ -12,7 +12,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@effect/opentelemetry": "4.0.0-beta.36",
+    "@effect/opentelemetry": "4.0.0-beta.37",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/api-logs": "^0.211.0",
     "@opentelemetry/exporter-logs-otlp-http": "^0.211.0",
@@ -21,13 +21,14 @@
     "@opentelemetry/sdk-logs": "^0.211.0",
     "@opentelemetry/sdk-trace-base": "^2.5.0",
     "@opentelemetry/sdk-trace-node": "^2.5.0",
+    "@opentelemetry/sdk-trace-web": "^2.5.0",
     "@opentelemetry/semantic-conventions": "^1.39.0",
     "@sentry/bun": "^10.43.0",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "cookie": "^1.0.2",
-    "effect": "4.0.0-beta.36",
+    "effect": "4.0.0-beta.37",
     "ky": "^1.2.4",
     "posthog-node": "^5.8.2",
     "zod": "^4.3.5"
