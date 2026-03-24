@@ -12,7 +12,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@effect/opentelemetry": "4.0.0-beta.37",
+    "@effect/opentelemetry": "4.0.0-beta.38",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/api-logs": "^0.211.0",
     "@opentelemetry/exporter-logs-otlp-http": "^0.211.0",
@@ -28,7 +28,7 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "cookie": "^1.0.2",
-    "effect": "4.0.0-beta.37",
+    "effect": "4.0.0-beta.38",
     "ky": "^1.2.4",
     "posthog-node": "^5.8.2",
     "zod": "^4.3.5"

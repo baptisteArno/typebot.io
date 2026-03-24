@@ -4,6 +4,8 @@
   "type": "module",
   "private": true,
   "exports": {
+    "./application/FeatureFlags": "./src/application/FeatureFlags.ts",
+    "./infrastructure/PostHogFeatureFlags": "./src/infrastructure/PostHogFeatureFlags.ts",
     "./orpc/router": "./src/drivers/orpc/router.ts",
     "./package.json": "./package.json"
   },
@@ -11,11 +13,11 @@
     "@orpc/server": "^1.13.9",
     "@typebot.io/config": "workspace:*",
     "@typebot.io/shared-core": "workspace:*",
-    "effect": "4.0.0-beta.37",
+    "effect": "4.0.0-beta.38",
     "posthog-node": "^5.8.2"
   },
   "devDependencies": {
-    "@effect/vitest": "4.0.0-beta.37"
+    "@effect/vitest": "4.0.0-beta.38"
   },
   "nx": {
     "targets": {
