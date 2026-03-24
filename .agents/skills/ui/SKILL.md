@@ -1,5 +1,5 @@
 ---
-name: commit
+name: ui
 description: Use this skill when you need to write any frontend components. It explains project's UI best practices
 ---
 
