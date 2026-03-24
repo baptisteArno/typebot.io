@@ -6,21 +6,21 @@ import type {
 } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
 import { Button } from "@typebot.io/ui/components/Button";
+import {
+  MultiLineEditable,
+  type MultiLineEditableProps,
+} from "@typebot.io/ui/components/MultiLineEditable";
 import { Popover } from "@typebot.io/ui/components/Popover";
+import {
+  SingleLineEditable,
+  type SingleLineEditableProps,
+} from "@typebot.io/ui/components/SingleLineEditable";
 import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
 import { ImageOrPlaceholder } from "@/components/ImageOrPlaceholder";
 import { ImageUploadContent } from "@/components/ImageUploadContent/ImageUploadContent";
-import {
-  MultiLineEditable,
-  type MultiLineEditableProps,
-} from "@/components/MultiLineEditable";
-import {
-  SingleLineEditable,
-  type SingleLineEditableProps,
-} from "@/components/SingleLineEditable";
 import {
   GhostableItem,
   StacksWithGhostableItems,

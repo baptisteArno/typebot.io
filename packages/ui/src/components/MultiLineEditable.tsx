@@ -1,12 +1,18 @@
-import { Textarea } from "@typebot.io/ui/components/Textarea";
-import { cn } from "@typebot.io/ui/lib/cn";
-import { type ButtonHTMLAttributes, useEffect, useRef, useState } from "react";
-import { useOutsideClick } from "@/hooks/useOutsideClick";
+import {
+  type ButtonHTMLAttributes,
+  type TextareaHTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useOutsideClick } from "../hooks/useOutsideClick";
+import { cn } from "../lib/cn";
+import { Textarea } from "./Textarea";
 
 export type MultiLineEditableProps = {
   className?: string;
   input?: Omit<
-    React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+    TextareaHTMLAttributes<HTMLTextAreaElement>,
     "value" | "onChange"
   > & {
     onValueChange?: (value: string) => void;
@@ -17,7 +23,7 @@ export type MultiLineEditableProps = {
   onValueCommit: (value: string) => void;
 };
 
-const ADDITIONAL_FOCUS_HEIGHT = 20 as const;
+const additionalFocusHeight = 20;
 
 export const MultiLineEditable = ({
   input,
@@ -28,23 +34,26 @@ export const MultiLineEditable = ({
   ...props
 }: MultiLineEditableProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const autoResize = (textarea: HTMLTextAreaElement) => {
-    if (!textarea) return;
-    textarea.style.height = "auto";
-    textarea.style.height = `${textarea.scrollHeight + ADDITIONAL_FOCUS_HEIGHT}px`;
-  };
 
-  const handleMouseWheel = (e: WheelEvent) => {
-    e.stopPropagation();
+  const autoResize = (textareaElement: HTMLTextAreaElement) => {
+    textareaElement.style.height = "auto";
+    textareaElement.style.height = `${textareaElement.scrollHeight + additionalFocusHeight}px`;
   };
 
   useEffect(() => {
-    textareaRef.current?.addEventListener("wheel", handleMouseWheel);
+    const textareaElement = textareaRef.current;
+    if (!textareaElement) return;
 
-    return () => {
-      textareaRef.current?.addEventListener("wheel", handleMouseWheel);
+    const stopMouseWheelPropagation = (event: WheelEvent) => {
+      event.stopPropagation();
     };
-  });
+
+    textareaElement.addEventListener("wheel", stopMouseWheelPropagation);
+    return () => {
+      textareaElement.removeEventListener("wheel", stopMouseWheelPropagation);
+    };
+  }, []);
+
   const [isEditing, setIsEditing] = useState(defaultEdit);
 
   const commitValue = () => {
@@ -63,18 +72,18 @@ export const MultiLineEditable = ({
       {isEditing ? (
         <Textarea
           {...input}
-          onKeyDownCapture={(e) => {
-            input?.onKeyDownCapture?.(e);
-            if (e.key === "Enter" && e.metaKey) commitValue();
-            if (e.key === "Escape") setIsEditing(false);
+          onKeyDownCapture={(event) => {
+            input?.onKeyDownCapture?.(event);
+            if (event.key === "Enter" && event.metaKey) commitValue();
+            if (event.key === "Escape") setIsEditing(false);
           }}
           ref={textareaRef}
           size="none"
           value={value}
-          className={cn("px-1 py-1 rounded-md border w-full", input?.className)}
-          onFocus={(e) => {
-            autoResize(e.currentTarget);
-            e.currentTarget.select();
+          className={cn("w-full rounded-md border px-1 py-1", input?.className)}
+          onFocus={(event) => {
+            autoResize(event.currentTarget);
+            event.currentTarget.select();
           }}
           onValueChange={input?.onValueChange}
           autoFocus
@@ -89,7 +98,7 @@ export const MultiLineEditable = ({
             setIsEditing(true);
           }}
           className={cn(
-            "hover:bg-gray-3 inline-flex w-full p-1 border border-transparent rounded-md whitespace-pre-line cursor-pointer",
+            "hover:bg-gray-3 inline-flex w-full cursor-pointer whitespace-pre-line rounded-md border border-transparent p-1",
             preview?.className,
           )}
         >

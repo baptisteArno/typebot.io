@@ -44,17 +44,19 @@ export const handleSaveThemeTemplate = async ({
     },
   });
 
-  const themeTemplate = (existingThemeTemplate
-    ? await prisma.themeTemplate.update({
-        where: { id: themeTemplateId },
-        data,
-      })
-    : await prisma.themeTemplate.create({
-        data: {
-          ...data,
-          workspaceId,
-        },
-      })) as ThemeTemplate;
+  const themeTemplate = (
+    existingThemeTemplate
+      ? await prisma.themeTemplate.update({
+          where: { id: themeTemplateId },
+          data,
+        })
+      : await prisma.themeTemplate.create({
+          data: {
+            ...data,
+            workspaceId,
+          },
+        })
+  ) as ThemeTemplate;
 
   return {
     themeTemplate,

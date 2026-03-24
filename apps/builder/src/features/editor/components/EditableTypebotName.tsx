@@ -1,7 +1,7 @@
 import { useTranslate } from "@tolgee/react";
+import { SingleLineEditable } from "@typebot.io/ui/components/SingleLineEditable";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { useState } from "react";
-import { SingleLineEditable } from "@/components/SingleLineEditable";
 
 type EditableProps = {
   defaultName: string;

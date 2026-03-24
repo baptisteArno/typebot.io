@@ -5,6 +5,7 @@ import { Alert } from "@typebot.io/ui/components/Alert";
 import { AlertDialog } from "@typebot.io/ui/components/AlertDialog";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
 import { Menu } from "@typebot.io/ui/components/Menu";
+import { SingleLineEditable } from "@typebot.io/ui/components/SingleLineEditable";
 import { Skeleton } from "@typebot.io/ui/components/Skeleton";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Folder01SolidIcon } from "@typebot.io/ui/icons/Folder01SolidIcon";
@@ -13,7 +14,6 @@ import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
 import { memo, useMemo, useRef, useState } from "react";
-import { SingleLineEditable } from "@/components/SingleLineEditable";
 import { orpc } from "@/lib/queryClient";
 import { useTypebotDnd } from "../TypebotDndProvider";
 

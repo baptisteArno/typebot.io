@@ -37,7 +37,10 @@
           ],
           "bundle": true,
           "thirdParty": true,
-          "external": ["react", "react/jsx-runtime"],
+          "external": [
+            "react",
+            "react/jsx-runtime"
+          ],
           "declaration": true
         },
         "configurations": {

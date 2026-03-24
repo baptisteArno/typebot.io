@@ -1,6 +1,6 @@
+import { SingleLineEditable } from "@typebot.io/ui/components/SingleLineEditable";
 import { useState } from "react";
 import { CopyButton } from "@/components/CopyButton";
-import { SingleLineEditable } from "@/components/SingleLineEditable";
 
 type EditableUrlProps = {
   hostname: string;

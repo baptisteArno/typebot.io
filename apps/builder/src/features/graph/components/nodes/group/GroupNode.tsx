@@ -1,11 +1,11 @@
 import type { GroupV6 } from "@typebot.io/groups/schemas";
 import { isEmpty, isNotDefined } from "@typebot.io/lib/utils";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
+import { SingleLineEditable } from "@typebot.io/ui/components/SingleLineEditable";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useDrag } from "@use-gesture/react";
 import { useEffect, useRef, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
-import { SingleLineEditable } from "@/components/SingleLineEditable";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { groupWidth } from "@/features/graph/constants";
