@@ -4,8 +4,8 @@ import type { Prisma } from "@typebot.io/prisma/types";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { AlertDialog } from "@typebot.io/ui/components/AlertDialog";
 import { Button, buttonVariants } from "@typebot.io/ui/components/Button";
+import { Editable } from "@typebot.io/ui/components/Editable";
 import { Menu } from "@typebot.io/ui/components/Menu";
-import { SingleLineEditable } from "@typebot.io/ui/components/SingleLineEditable";
 import { Skeleton } from "@typebot.io/ui/components/Skeleton";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Folder01SolidIcon } from "@typebot.io/ui/icons/Folder01SolidIcon";
@@ -119,19 +119,16 @@ const FolderButton = ({
         </Menu.Root>
         <div className="flex flex-col items-center gap-4">
           <Folder01SolidIcon className="size-10 text-blue-10" />
-          <SingleLineEditable
+          <Editable.Root
             className="text-lg"
             defaultValue={folder.name === "" ? "New folder" : folder.name}
-            onValueCommit={onRenameSubmit}
             defaultEdit={index === 0 && folder.name === ""}
-            onClick={(e) => e.stopPropagation()}
-            input={{
-              className: "text-center",
-            }}
-            preview={{
-              className: "cursor-text",
-            }}
-          />
+            onValueCommit={onRenameSubmit}
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
+          >
+            <Editable.Input className="text-center" />
+            <Editable.Preview className="cursor-text" />
+          </Editable.Root>
         </div>
       </div>
       <AlertDialog.Root

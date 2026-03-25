@@ -1,7 +1,7 @@
 import type { GroupV6 } from "@typebot.io/groups/schemas";
 import { isEmpty, isNotDefined } from "@typebot.io/lib/utils";
 import { ContextMenu } from "@typebot.io/ui/components/ContextMenu";
-import { SingleLineEditable } from "@typebot.io/ui/components/SingleLineEditable";
+import { Editable } from "@typebot.io/ui/components/Editable";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useDrag } from "@use-gesture/react";
 import { useEffect, useRef, useState } from "react";
@@ -181,22 +181,21 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <SingleLineEditable
+          <Editable.Root
             value={groupTitle}
-            input={{
-              className: "prevent-group-drag",
-              onValueChange: setGroupTitle,
-            }}
-            preview={{
-              className: cx(
+            className="font-medium pr-8"
+            onValueChange={setGroupTitle}
+            onValueCommit={handleTitleSubmit}
+          >
+            <Editable.Input className="prevent-group-drag" />
+            <Editable.Preview
+              className={cx(
                 isEmpty(groupTitle)
                   ? "absolute block left-4 top-2.5 w-[calc(100%-2rem)] h-2"
                   : "w-fit max-w-[calc(100%-2rem)]",
-              ),
-            }}
-            onValueCommit={handleTitleSubmit}
-            className="font-medium pr-8"
-          />
+              )}
+            />
+          </Editable.Root>
           {typebot && (
             <BlockNodesList
               blocks={group.blocks}

@@ -6,15 +6,8 @@ import type {
 } from "@typebot.io/blocks-core/schemas/items/schema";
 import type { CardsItem } from "@typebot.io/blocks-inputs/cards/schema";
 import { Button } from "@typebot.io/ui/components/Button";
-import {
-  MultiLineEditable,
-  type MultiLineEditableProps,
-} from "@typebot.io/ui/components/MultiLineEditable";
+import { Editable } from "@typebot.io/ui/components/Editable";
 import { Popover } from "@typebot.io/ui/components/Popover";
-import {
-  SingleLineEditable,
-  type SingleLineEditableProps,
-} from "@typebot.io/ui/components/SingleLineEditable";
 import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { cx } from "@typebot.io/ui/lib/cva";
@@ -195,21 +188,26 @@ export const CardsItemNode = ({
             <div className="flex flex-col gap-0 px-2">
               {item.paths?.map((path, idx) => (
                 <SingleLineDeletableEditable
-                  onDelete={() => deletePath(idx)}
                   key={path.id}
-                  onValueCommit={(value) => updatePathText(idx, value)}
                   defaultValue={path.text ?? "Button"}
                   defaultEdit={path.text === undefined}
                   className={cn("relative")}
-                  common={{
-                    className: cn(
-                      "justify-center text-center text-sm relative border-gray-6 rounded-none",
-                      idx === 0 && "rounded-t-md border-b-0",
-                      idx !== 0 && "border border-b-0",
-                      idx === (item.paths?.length ?? 1) - 1 &&
-                        "rounded-b-md border-b",
-                    ),
-                  }}
+                  inputClassName={cn(
+                    "justify-center text-center text-sm relative border-gray-6 rounded-none",
+                    idx === 0 && "rounded-t-md border-b-0",
+                    idx !== 0 && "border border-b-0",
+                    idx === (item.paths?.length ?? 1) - 1 &&
+                      "rounded-b-md border-b",
+                  )}
+                  previewClassName={cn(
+                    "justify-center text-center text-sm relative border-gray-6 rounded-none",
+                    idx === 0 && "rounded-t-md border-b-0",
+                    idx !== 0 && "border border-b-0",
+                    idx === (item.paths?.length ?? 1) - 1 &&
+                      "rounded-b-md border-b",
+                  )}
+                  onValueCommit={(value) => updatePathText(idx, value)}
+                  onDelete={() => deletePath(idx)}
                 >
                   <BlockSourceEndpoint
                     source={{
@@ -265,37 +263,39 @@ const SingleLineDeletableEditable = ({
   className,
   defaultEdit,
   children,
-  preview,
-  input,
-  common,
+  previewClassName,
+  inputClassName,
   onValueCommit,
   onDelete,
-}: Omit<SingleLineEditableProps, "value"> & {
+}: {
   defaultValue: string;
+  className?: string;
+  defaultEdit?: boolean;
+  children?: React.ReactNode;
+  previewClassName?: string;
+  inputClassName?: string;
+  onValueCommit: (value: string) => void;
   onDelete: () => void;
 }) => {
   const [value, setValue] = useState(defaultValue);
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace" && value === "") onDelete();
-  };
-
   return (
-    <SingleLineEditable
+    <Editable.Root
       className={className}
       value={value}
       defaultEdit={defaultEdit}
-      input={{
-        ...input,
-        onValueChange: setValue,
-        onKeyDownCapture: handleKeyPress,
-      }}
-      common={common}
-      preview={preview}
+      onValueChange={setValue}
       onValueCommit={() => onValueCommit(value)}
     >
+      <Editable.Input
+        className={inputClassName}
+        onKeyDownCapture={(e: React.KeyboardEvent) => {
+          if (e.key === "Backspace" && value === "") onDelete();
+        }}
+      />
+      <Editable.Preview className={previewClassName} />
       {children}
-    </SingleLineEditable>
+    </Editable.Root>
   );
 };
 
@@ -305,26 +305,29 @@ const MultiLineDeletableEditable = ({
   defaultEdit,
   onValueCommit,
   onDelete,
-}: Omit<MultiLineEditableProps, "value"> & {
+}: {
   defaultValue: string;
+  className?: string;
+  defaultEdit?: boolean;
+  onValueCommit: (value: string) => void;
   onDelete: () => void;
 }) => {
   const [value, setValue] = useState(defaultValue);
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Backspace" && value === "") onDelete();
-  };
-
   return (
-    <MultiLineEditable
+    <Editable.Root
       className={className}
       value={value}
       defaultEdit={defaultEdit}
-      input={{
-        onValueChange: setValue,
-        onKeyDownCapture: handleKeyPress,
-      }}
+      onValueChange={setValue}
       onValueCommit={() => onValueCommit(value)}
-    />
+    >
+      <Editable.Textarea
+        onKeyDownCapture={(e: React.KeyboardEvent) => {
+          if (e.key === "Backspace" && value === "") onDelete();
+        }}
+      />
+      <Editable.Preview />
+    </Editable.Root>
   );
 };

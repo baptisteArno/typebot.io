@@ -6,11 +6,11 @@ import { sessionOnlySetVariableOptions } from "@typebot.io/blocks-logic/setVaria
 import type { SetVariableBlock } from "@typebot.io/blocks-logic/setVariable/schema";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
+import { Editable } from "@typebot.io/ui/components/Editable";
 import { Field } from "@typebot.io/ui/components/Field";
 import { Input } from "@typebot.io/ui/components/Input";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Popover } from "@typebot.io/ui/components/Popover";
-import { SingleLineEditable } from "@typebot.io/ui/components/SingleLineEditable";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
@@ -151,10 +151,13 @@ const VariableItem = ({
 
   return (
     <div className="flex items-center gap-2 justify-between pl-1">
-      <SingleLineEditable
+      <Editable.Root
         defaultValue={variable.name}
         onValueCommit={(name) => onChange({ name })}
-      />
+      >
+        <Editable.Input />
+        <Editable.Preview />
+      </Editable.Root>
       <div className="flex items-center gap-2">
         {!isSessionOnly && !isLinkedToAnswer && (
           <Popover.Root {...settingsPopoverControls}>

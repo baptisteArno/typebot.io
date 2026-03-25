@@ -1,5 +1,5 @@
 import { useTranslate } from "@tolgee/react";
-import { SingleLineEditable } from "@typebot.io/ui/components/SingleLineEditable";
+import { Editable } from "@typebot.io/ui/components/Editable";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { useState } from "react";
 
@@ -24,14 +24,15 @@ export const EditableTypebotName = ({
     <Tooltip.Root>
       <Tooltip.Trigger
         render={
-          <SingleLineEditable
+          <Editable.Root
             className="text-sm"
             value={currentName}
+            onValueChange={setCurrentName}
             onValueCommit={submitNewName}
-            input={{
-              onValueChange: setCurrentName,
-            }}
-          />
+          >
+            <Editable.Input />
+            <Editable.Preview />
+          </Editable.Root>
         }
       />
       <Tooltip.Popup>{t("rename")}</Tooltip.Popup>
