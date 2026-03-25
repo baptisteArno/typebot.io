@@ -1,3 +1,4 @@
+import { cn } from "../lib/cn";
 import { cx } from "../lib/cva";
 
 type Props = {
@@ -7,15 +8,18 @@ type Props = {
 };
 
 export const EmojiOrImageIcon = ({ icon, className, defaultIcon }: Props) => {
-  if (icon) {
-    if (isImageSource(icon)) {
-      return (
-        <span
-          className={cx(
-            "inline-flex shrink-0 items-center justify-center",
-            className,
-          )}
-        >
+  const isEmoji = icon && !isImageSource(icon);
+  return (
+    <span
+      role={isEmoji ? "img" : undefined}
+      className={cn(
+        "inline-flex items-center align-middle",
+        isEmoji && "leading-none",
+        className,
+      )}
+    >
+      {icon ? (
+        isImageSource(icon) ? (
           <img
             className={cx(
               "size-full rounded-[10%]",
@@ -24,31 +28,12 @@ export const EmojiOrImageIcon = ({ icon, className, defaultIcon }: Props) => {
             src={icon}
             alt="typebot icon"
           />
-        </span>
-      );
-    }
-
-    return (
-      <span
-        role="img"
-        className={cx(
-          "inline-flex shrink-0 items-center justify-center leading-none text-[1em]",
-          className,
-        )}
-      >
-        {icon}
-      </span>
-    );
-  }
-
-  return (
-    <span
-      className={cx(
-        "inline-flex shrink-0 items-center justify-center",
-        className,
+        ) : (
+          icon
+        )
+      ) : (
+        defaultIcon
       )}
-    >
-      {defaultIcon}
     </span>
   );
 };
@@ -57,4 +42,4 @@ const isImageSource = (icon: string) =>
   icon.startsWith("http") || isSvgSource(icon);
 
 const isSvgSource = (icon: string) =>
-  icon.startsWith("data:image/svg+xml") || icon.includes(".svg");
+  icon.startsWith("data:image/svg+xml") || icon.endsWith(".svg");
