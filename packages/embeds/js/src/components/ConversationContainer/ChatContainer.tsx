@@ -361,6 +361,7 @@ export const ChatContainer = (props: Props) => {
       });
       if ("streamOpenAiChatCompletion" in action || "stream" in action) {
         if (response && "replyToSend" in response && !response.replyToSend) {
+          if (response && "logs" in response) saveLogs(response.logs);
           setIsSending(false);
           continue;
         }

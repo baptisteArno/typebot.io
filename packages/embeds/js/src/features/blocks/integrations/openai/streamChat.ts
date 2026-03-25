@@ -1,4 +1,5 @@
 import { processDataStream } from "@ai-sdk/ui-utils";
+import { parseFailingResponse } from "@typebot.io/lib/parseFailingResponse";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
@@ -58,11 +59,9 @@ export const streamChat =
           })({ messages, onMessageStream });
         }
         return {
-          error: {
-            description: "Failed to fetch chat streaming",
-            details: await res.text(),
+          error: await parseFailingResponse(res, {
             context: "While streaming chat",
-          },
+          }),
         };
       }
 
