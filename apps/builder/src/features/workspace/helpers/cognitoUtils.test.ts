@@ -15,6 +15,7 @@ import {
   mapCognitoRoleToWorkspaceRole,
   hasWorkspaceAccess,
   checkCognitoWorkspaceAccess,
+  getCognitoAccessibleWorkspaceIds,
 } from './cognitoUtils'
 
 describe('extractCognitoUserClaims', () => {
@@ -131,26 +132,26 @@ describe('mapCognitoRoleToWorkspaceRole', () => {
     expect(mapCognitoRoleToWorkspaceRole('CLIENT')).toBe(WorkspaceRole.MEMBER)
   })
 
-  it('should default unknown roles to MEMBER', () => {
-    expect(mapCognitoRoleToWorkspaceRole('UNKNOWN')).toBe(WorkspaceRole.MEMBER)
+  it('should default unknown roles to GUEST', () => {
+    expect(mapCognitoRoleToWorkspaceRole('UNKNOWN')).toBe(WorkspaceRole.GUEST)
   })
 
   it('should handle empty string', () => {
-    expect(mapCognitoRoleToWorkspaceRole('')).toBe(WorkspaceRole.MEMBER)
+    expect(mapCognitoRoleToWorkspaceRole('')).toBe(WorkspaceRole.GUEST)
   })
 
   it('should handle null/undefined gracefully', () => {
     expect(mapCognitoRoleToWorkspaceRole(null as unknown as string)).toBe(
-      WorkspaceRole.MEMBER
+      WorkspaceRole.GUEST
     )
     expect(mapCognitoRoleToWorkspaceRole(undefined as unknown as string)).toBe(
-      WorkspaceRole.MEMBER
+      WorkspaceRole.GUEST
     )
   })
 
   it('should be case sensitive', () => {
-    expect(mapCognitoRoleToWorkspaceRole('admin')).toBe(WorkspaceRole.MEMBER)
-    expect(mapCognitoRoleToWorkspaceRole('Admin')).toBe(WorkspaceRole.MEMBER)
+    expect(mapCognitoRoleToWorkspaceRole('admin')).toBe(WorkspaceRole.GUEST)
+    expect(mapCognitoRoleToWorkspaceRole('Admin')).toBe(WorkspaceRole.GUEST)
   })
 })
 
@@ -225,9 +226,9 @@ describe('hasWorkspaceAccess', () => {
     expect(hasWorkspaceAccess(claims, 'ws-123')).toBe(true)
   })
 
-  it('should use exact match (case-sensitive) for workspace id', () => {
+  it('should use exact match (case-sensitive) for workspace id in eddie_workspaces', () => {
     const claims = {
-      'custom:hub_role': 'ADMIN' as const,
+      'custom:hub_role': 'CLIENT' as const,
       'custom:eddie_workspaces': 'ws-123,WS-456',
     }
 
@@ -263,7 +264,7 @@ describe('checkCognitoWorkspaceAccess', () => {
     })
   })
 
-  it('should return hasAccess false when workspace id is not in eddie_workspaces', () => {
+  it('should return hasAccess true for ADMIN even when workspace id is not in eddie_workspaces', () => {
     const user = {
       id: 'user123',
       email: 'test@example.com',
@@ -273,9 +274,9 @@ describe('checkCognitoWorkspaceAccess', () => {
       },
     }
 
-    expect(checkCognitoWorkspaceAccess(user, 'ws-123')).toEqual({
-      hasAccess: false,
-    })
+    const result = checkCognitoWorkspaceAccess(user, 'ws-123')
+    expect(result.hasAccess).toBe(true)
+    expect(result.role).toBe(WorkspaceRole.ADMIN)
   })
 
   it('should return hasAccess true with mapped role when hub_role is present', () => {
@@ -324,5 +325,93 @@ describe('checkCognitoWorkspaceAccess', () => {
     const result = checkCognitoWorkspaceAccess(user, 'ws-123')
     expect(result.hasAccess).toBe(true)
     expect(result.role).toBe(WorkspaceRole.MEMBER)
+  })
+})
+
+describe('getCognitoAccessibleWorkspaceIds', () => {
+  it('should return { type: "all" } when user is ADMIN', () => {
+    const user = {
+      cognitoClaims: {
+        'custom:hub_role': 'ADMIN',
+        'custom:eddie_workspaces': 'ws-123,ws-456',
+      },
+    }
+
+    expect(getCognitoAccessibleWorkspaceIds(user)).toEqual({ type: 'admin' })
+  })
+
+  it('should return specific workspace IDs for non-admin with eddie_workspaces', () => {
+    const user = {
+      cognitoClaims: {
+        'custom:hub_role': 'CLIENT',
+        'custom:eddie_workspaces': 'ws-123,ws-456,ws-789',
+      },
+    }
+
+    expect(getCognitoAccessibleWorkspaceIds(user)).toEqual({
+      type: 'restricted',
+      ids: ['ws-123', 'ws-456', 'ws-789'],
+    })
+  })
+
+  it('should trim whitespace from workspace IDs', () => {
+    const user = {
+      cognitoClaims: {
+        'custom:eddie_workspaces': ' ws-123 , ws-456 , ws-789 ',
+      },
+    }
+
+    expect(getCognitoAccessibleWorkspaceIds(user)).toEqual({
+      type: 'restricted',
+      ids: ['ws-123', 'ws-456', 'ws-789'],
+    })
+  })
+
+  it('should filter out empty strings from workspace IDs', () => {
+    const user = {
+      cognitoClaims: {
+        'custom:eddie_workspaces': 'ws-123,,ws-456,',
+      },
+    }
+
+    expect(getCognitoAccessibleWorkspaceIds(user)).toEqual({
+      type: 'restricted',
+      ids: ['ws-123', 'ws-456'],
+    })
+  })
+
+  it('should return { type: "none" } when no cognito claims', () => {
+    const user = {}
+
+    expect(getCognitoAccessibleWorkspaceIds(user)).toEqual({ type: 'none' })
+  })
+
+  it('should return { type: "none" } when cognitoClaims is undefined', () => {
+    const user = { cognitoClaims: undefined }
+
+    expect(getCognitoAccessibleWorkspaceIds(user)).toEqual({ type: 'none' })
+  })
+
+  it('should return { type: "none" } for non-admin without eddie_workspaces', () => {
+    const user = {
+      cognitoClaims: {
+        'custom:hub_role': 'CLIENT',
+      },
+    }
+
+    expect(getCognitoAccessibleWorkspaceIds(user)).toEqual({ type: 'none' })
+  })
+
+  it('should return single workspace ID correctly', () => {
+    const user = {
+      cognitoClaims: {
+        'custom:eddie_workspaces': 'ws-123',
+      },
+    }
+
+    expect(getCognitoAccessibleWorkspaceIds(user)).toEqual({
+      type: 'restricted',
+      ids: ['ws-123'],
+    })
   })
 })

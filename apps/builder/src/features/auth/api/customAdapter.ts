@@ -38,6 +38,7 @@ export function customAdapter(p: PrismaClient): Adapter {
         name: data.name ? `${data.name}'s workspace` : `My workspace`,
         plan: parseWorkspaceDefaultPlan(data.email),
       }
+
       const createdUser = await p.user.create({
         data: {
           ...data,
