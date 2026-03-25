@@ -16,6 +16,11 @@ export const openAIVoices = [
 ] as const;
 
 export const chatModels = [
+  "gpt-5.4-nano",
+  "gpt-5.4-mini",
+  "gpt-5.3-chat",
+  "gpt-5.2",
+  "gpt-5.1-chat",
   "gpt-5",
   "gpt-5-mini",
   "gpt-5-nano",
@@ -26,7 +31,16 @@ export const chatModels = [
   "gpt-4o-mini",
 ];
 
-export const reasoningModels = ["o3-mini", "o1", "o1-mini"];
+export const reasoningModels = [
+  "gpt-5.4",
+  "gpt-5.4-pro",
+  "gpt-5.2-pro",
+  "o3",
+  "o4-mini",
+  "o3-mini",
+  "o1",
+  "o1-mini",
+];
 
 export const modelsWithImageUrlSupport = [
   "gpt-5*",

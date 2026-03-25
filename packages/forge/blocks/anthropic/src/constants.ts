@@ -1,4 +1,9 @@
 export const anthropicModels = [
+  "claude-opus-4-6",
+  "claude-sonnet-4-6",
+  "claude-haiku-4-5",
+  "claude-sonnet-4-5",
+  "claude-opus-4-5",
   "claude-opus-4-1",
   "claude-sonnet-4-0",
   "claude-opus-4-0",
@@ -10,7 +15,7 @@ export const anthropicModels = [
 
 export const defaultAnthropicMaxTokens = 1024;
 
-export const modelsWithImageUrlSupport = ["claude-3*"];
+export const modelsWithImageUrlSupport = ["claude-*"];
 
 export const supportedImageTypes = [
   "image/png",
