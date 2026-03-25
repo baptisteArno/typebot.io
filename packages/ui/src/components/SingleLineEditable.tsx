@@ -85,7 +85,7 @@ export const SingleLineEditable = ({
             setIsEditing(true);
           }}
           className={cn(
-            "hover:bg-gray-3 inline-flex w-full cursor-pointer rounded-md border border-transparent p-1",
+            "hover:bg-gray-3 inline-flex w-full cursor-text rounded-md border border-transparent p-1",
             common?.className,
             preview?.className,
           )}

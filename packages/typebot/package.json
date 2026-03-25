@@ -14,7 +14,6 @@
   "dependencies": {
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/shared-core": "workspace:*",
-    "@typebot.io/shared-primitives": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/events": "workspace:*",
     "@typebot.io/groups": "workspace:*",

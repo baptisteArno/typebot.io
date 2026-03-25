@@ -1,5 +1,4 @@
-import type { TypebotId } from "@typebot.io/shared-primitives/domain";
-import type { UserId } from "@typebot.io/user/schemas";
+import type { TypebotId, UserId } from "@typebot.io/shared-core/domain";
 import { type Effect, ServiceMap } from "effect";
 
 export class TypebotRepo extends ServiceMap.Service<

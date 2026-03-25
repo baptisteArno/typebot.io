@@ -1,15 +1,14 @@
-import type { UserId } from "@typebot.io/user/schemas";
+import type { UserId, WorkspaceId } from "@typebot.io/shared-core/domain";
 import { type Effect, ServiceMap } from "effect";
-import type { WorkspaceId } from "../schemas";
 
 export class WorkspaceRepo extends ServiceMap.Service<
   WorkspaceRepo,
   {
-    readonly canReadWorkspace: (
+    readonly isMember: (
       workspaceId: WorkspaceId,
       userId: UserId,
     ) => Effect.Effect<boolean>;
-    readonly canAdminWriteWorkspace: (
+    readonly isAdmin: (
       workspaceId: WorkspaceId,
       userId: UserId,
     ) => Effect.Effect<boolean>;

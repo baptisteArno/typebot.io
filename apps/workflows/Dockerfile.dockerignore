@@ -41,8 +41,6 @@
 !packages/settings/**
 !packages/shared-core
 !packages/shared-core/**
-!packages/shared-primitives
-!packages/shared-primitives/**
 !packages/telemetry
 !packages/telemetry/**
 !packages/theme

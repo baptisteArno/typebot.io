@@ -42,9 +42,6 @@
       "path": "../env/tsconfig.lib.json"
     },
     {
-      "path": "../shared-primitives/tsconfig.lib.json"
-    },
-    {
       "path": "../shared-core/tsconfig.lib.json"
     },
     {

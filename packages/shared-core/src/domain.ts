@@ -3,16 +3,8 @@ import { Schema } from "effect";
 export const SpaceId = Schema.NonEmptyString.pipe(Schema.brand("SpaceId"));
 export type SpaceId = typeof SpaceId.Type;
 
-export const CampaignId = Schema.NonEmptyString.pipe(
-  Schema.brand("CampaignId"),
-);
-export type CampaignId = typeof CampaignId.Type;
-
 export const TypebotId = Schema.NonEmptyString.pipe(Schema.brand("TypebotId"));
 export type TypebotId = typeof TypebotId.Type;
-
-export const SegmentId = Schema.NonEmptyString.pipe(Schema.brand("SegmentId"));
-export type SegmentId = typeof SegmentId.Type;
 
 export const CredentialsId = Schema.NonEmptyString.pipe(
   Schema.brand("CredentialsId"),
@@ -26,3 +18,11 @@ export const WorkspaceId = Schema.NonEmptyString.pipe(
   Schema.brand("WorkspaceId"),
 );
 export type WorkspaceId = typeof WorkspaceId.Type;
+
+export const Email = Schema.NonEmptyString.pipe(Schema.brand("Email"));
+export type Email = typeof Email.Type;
+
+export const PhoneNumber = Schema.NonEmptyString.pipe(
+  Schema.brand("PhoneNumber"),
+);
+export type PhoneNumber = typeof PhoneNumber.Type;

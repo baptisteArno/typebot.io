@@ -284,8 +284,8 @@
       "name": "workflows",
       "version": "0.0.1",
       "dependencies": {
-        "@effect/platform-bun": "4.0.0-beta.37",
-        "@effect/sql-pg": "4.0.0-beta.37",
+        "@effect/platform-bun": "4.0.0-beta.38",
+        "@effect/sql-pg": "4.0.0-beta.38",
         "@sentry/bun": "^10.43.0",
         "@typebot.io/config": "workspace:*",
         "@typebot.io/lib": "workspace:*",
@@ -1196,14 +1196,6 @@
         "effect": "4.0.0-beta.38",
       },
     },
-    "packages/shared-primitives": {
-      "name": "@typebot.io/shared-primitives",
-      "version": "0.0.1",
-      "dependencies": {
-        "@typebot.io/shared-core": "workspace:*",
-        "effect": "4.0.0-beta.38",
-      },
-    },
     "packages/telemetry": {
       "name": "@typebot.io/telemetry",
       "version": "0.0.1",
@@ -1257,7 +1249,6 @@
         "@typebot.io/schemas": "workspace:*",
         "@typebot.io/settings": "workspace:*",
         "@typebot.io/shared-core": "workspace:*",
-        "@typebot.io/shared-primitives": "workspace:*",
         "@typebot.io/theme": "workspace:*",
         "@typebot.io/user": "workspace:*",
         "@typebot.io/variables": "workspace:*",
@@ -1854,11 +1845,11 @@
 
     "@effect/opentelemetry": ["@effect/opentelemetry@4.0.0-beta.38", "", { "peerDependencies": { "@opentelemetry/api": "^1.9", "@opentelemetry/resources": "^2.0.0", "@opentelemetry/sdk-logs": ">=0.203.0 <0.300.0", "@opentelemetry/sdk-metrics": "^2.0.0", "@opentelemetry/sdk-trace-base": "^2.0.0", "@opentelemetry/sdk-trace-node": "^2.0.0", "@opentelemetry/sdk-trace-web": "^2.0.0", "@opentelemetry/semantic-conventions": "^1.33.0", "effect": "^4.0.0-beta.38" }, "optionalPeers": ["@opentelemetry/api", "@opentelemetry/resources", "@opentelemetry/sdk-logs", "@opentelemetry/sdk-metrics", "@opentelemetry/sdk-trace-base", "@opentelemetry/sdk-trace-node", "@opentelemetry/sdk-trace-web"] }, "sha512-XwFqp3vFEKzkPerQWvnEMogmxU1XfiISQ9W04LkTgXjwQ1Jv7dZJaXCHUycIk9ESvxEN7eRNdi7yB8NutrTquw=="],
 
-    "@effect/platform-bun": ["@effect/platform-bun@4.0.0-beta.37", "", { "dependencies": { "@effect/platform-node-shared": "^4.0.0-beta.37" }, "peerDependencies": { "effect": "^4.0.0-beta.37" } }, "sha512-SoaZadA9gp6GT64MszCB508l+xXAxcFLTRrw3w47J1NVi3W++72jd5dNOBVAlcdSnpFvNpr0ufvtTakYifiNVg=="],
+    "@effect/platform-bun": ["@effect/platform-bun@4.0.0-beta.38", "", { "dependencies": { "@effect/platform-node-shared": "^4.0.0-beta.38" }, "peerDependencies": { "effect": "^4.0.0-beta.38" } }, "sha512-KHf4uUOgHhJ4AbquUmr+j1jBFKZ38AgTOSzLi3ifAArjJ5G8iUfvthqDn8Kbr4y4eyedcWoDwOHoOsxfryS87A=="],
 
-    "@effect/platform-node-shared": ["@effect/platform-node-shared@4.0.0-beta.37", "", { "dependencies": { "@types/ws": "^8.18.1", "ws": "^8.19.0" }, "peerDependencies": { "effect": "^4.0.0-beta.37" } }, "sha512-yY7C4pAP9/5yLsitxwR11smcX1osDOBmWq0ZhTp8R8IG5ac0CiHUwDS7ebo/1AwdW4r2AVne3WGo8fWgyuWCEA=="],
+    "@effect/platform-node-shared": ["@effect/platform-node-shared@4.0.0-beta.40", "", { "dependencies": { "@types/ws": "^8.18.1", "ws": "^8.19.0" }, "peerDependencies": { "effect": "^4.0.0-beta.40" } }, "sha512-WMRVG7T8ZDALKCOacsx2ZZj3Ccaoq8YGeD9q7ZL4q8RwQv8Nmrl+4+KZl95/zHCqXzgK9oUJOlBfQ7CZr6PQOQ=="],
 
-    "@effect/sql-pg": ["@effect/sql-pg@4.0.0-beta.37", "", { "dependencies": { "pg": "^8.18.0", "pg-connection-string": "2.11.0", "pg-cursor": "^2.17.0", "pg-pool": "^3.11.0", "pg-types": "^4.1.0" }, "peerDependencies": { "effect": "^4.0.0-beta.37" } }, "sha512-4hnsfhDxvwDl2j9BzibVdjzdGiNScYsyXVdfiVD4B5S62jVAaRjMpfeWGPdzQWh09cdpeKaIWGckgMXxqOEixQ=="],
+    "@effect/sql-pg": ["@effect/sql-pg@4.0.0-beta.38", "", { "dependencies": { "pg": "^8.18.0", "pg-connection-string": "2.11.0", "pg-cursor": "^2.17.0", "pg-pool": "^3.11.0", "pg-types": "^4.1.0" }, "peerDependencies": { "effect": "^4.0.0-beta.38" } }, "sha512-2DSEEXEXYONxsMwejHtME5bxSr5djEY34xcaXWpJda+EAHiyNgeTSlhYXVbuXDJEvH+QpF3O9Ry8/tqTYbmrTg=="],
 
     "@effect/vitest": ["@effect/vitest@4.0.0-beta.38", "", { "peerDependencies": { "effect": "^4.0.0-beta.38", "vitest": "^3.0.0 || ^4.0.0" } }, "sha512-UZrEWDnfHtFCD3MpuNre3vh7y4QQkaGOLVQRE8FaeIVJrO/RcMAgfrx1CACRHIiw9kCHrSyzymrbuSYzM+nncw=="],
 
@@ -3375,8 +3366,6 @@
     "@typebot.io/settings": ["@typebot.io/settings@workspace:packages/settings"],
 
     "@typebot.io/shared-core": ["@typebot.io/shared-core@workspace:packages/shared-core"],
-
-    "@typebot.io/shared-primitives": ["@typebot.io/shared-primitives@workspace:packages/shared-primitives"],
 
     "@typebot.io/telemetry": ["@typebot.io/telemetry@workspace:packages/telemetry"],
 

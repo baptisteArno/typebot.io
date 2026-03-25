@@ -5,7 +5,11 @@ const Root = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("w-full overflow-auto", className)} {...props}>
+  <div
+    ref={ref}
+    className={cn("w-full overflow-auto border rounded-md", className)}
+    {...props}
+  >
     <table
       className={cn("w-full caption-bottom text-sm", className)}
       {...props}
@@ -56,7 +60,7 @@ const Row = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
+      "border-b transition-colors data-[state=selected]:bg-muted",
       className,
     )}
     {...props}
@@ -71,7 +75,7 @@ const Head = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-10 px-2 py-4 text-left first:pl-4 align-middle font-bold text-gray-11 [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[2px]",
+      "h-9 px-3 py-1.5 text-left first:pl-3 align-middle font-medium text-gray-11 [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[2px]",
       className,
     )}
     {...props}
@@ -86,7 +90,7 @@ const Cell = React.forwardRef<
   <td
     ref={ref}
     className={cn(
-      "px-2 py-4 align-middle first:pl-4 [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[2px]",
+      "px-3 py-1.5 align-middle first:pl-3 [&:has([role=checkbox])]:pr-0 *:[[role=checkbox]]:translate-y-[2px]",
       className,
     )}
     {...props}

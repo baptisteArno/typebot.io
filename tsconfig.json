@@ -227,9 +227,6 @@
     },
     {
       "path": "./packages/services/feature-flags"
-    },
-    {
-      "path": "./packages/shared-primitives"
     }
   ]
 }
