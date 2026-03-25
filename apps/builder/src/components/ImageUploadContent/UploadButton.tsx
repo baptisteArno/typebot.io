@@ -1,7 +1,7 @@
 import type { ButtonProps } from "@typebot.io/ui/components/Button";
 import { UploadButton as UploadButtonPrimitive } from "@typebot.io/ui/components/UploadButton";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
-import { compressFile } from "@/helpers/compressFile";
+import { type CompressPreset, compressFile } from "@/helpers/compressFile";
 import { orpc } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 
@@ -9,18 +9,20 @@ type UploadButtonProps = {
   fileType: "image" | "audio";
   filePathProps: FilePathUploadProps;
   onFileUploaded: (url: string) => void;
+  compressPreset?: CompressPreset;
 } & ButtonProps;
 
 export const UploadButton = ({
   fileType,
   filePathProps,
   onFileUploaded,
+  compressPreset,
   children,
   variant,
   size = "sm",
 }: UploadButtonProps) => {
   const handleFileUploadRequest = async (rawFile: File) => {
-    const file = await compressFile(rawFile);
+    const file = await compressFile(rawFile, compressPreset);
     const data = await orpc.generateUploadUrl.call({
       filePathProps,
       fileType: file.type,
