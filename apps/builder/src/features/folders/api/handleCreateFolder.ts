@@ -9,13 +9,14 @@ import { z } from "zod";
 import { getUserModeInWorkspace } from "@/features/workspace/helpers/getUserRoleInWorkspace";
 
 export const createFolderInputSchema = z.object({
+  id: z.cuid2().optional(),
+  folderName: z.string().optional(),
   workspaceId: z.string(),
-  folderName: z.string().default(""),
   parentFolderId: z.string().optional(),
 });
 
 export const handleCreateFolder = async ({
-  input: { folderName, parentFolderId, workspaceId },
+  input: { id, folderName, parentFolderId, workspaceId },
   context: { user },
 }: {
   input: z.infer<typeof createFolderInputSchema>;
@@ -36,8 +37,9 @@ export const handleCreateFolder = async ({
 
   const newFolder = await prisma.dashboardFolder.create({
     data: {
+      id,
       workspaceId,
-      name: folderName,
+      name: folderName ?? "Untitled",
       parentFolderId,
     } satisfies Partial<Prisma.DashboardFolder>,
   });

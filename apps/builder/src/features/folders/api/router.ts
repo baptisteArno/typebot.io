@@ -87,7 +87,13 @@ export const folderRouter = {
     .input(listFoldersInputSchema)
     .output(
       z.object({
-        folders: z.array(folderSchema),
+        folders: z.array(
+          folderSchema.pick({
+            id: true,
+            name: true,
+            createdAt: true,
+          }),
+        ),
       }),
     )
     .handler(handleListFolders),

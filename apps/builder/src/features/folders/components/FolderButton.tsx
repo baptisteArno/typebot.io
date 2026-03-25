@@ -13,20 +13,22 @@ import { MoreVerticalIcon } from "@typebot.io/ui/icons/MoreVerticalIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cn } from "@typebot.io/ui/lib/cn";
 import { useRouter } from "next/router";
-import { memo, useMemo, useRef, useState } from "react";
+import { memo, useMemo, useRef } from "react";
 import { orpc } from "@/lib/queryClient";
 import { useTypebotDnd } from "../TypebotDndProvider";
 
 type Props = {
-  folder: Prisma.DashboardFolder;
-  index: number;
+  workspaceId: string;
+  isNameDefaultEditable: boolean;
+  folder: Pick<Prisma.DashboardFolder, "id" | "name">;
   onFolderDeleted: () => void;
   onFolderRenamed: () => void;
 };
 
 const FolderButton = ({
+  workspaceId,
+  isNameDefaultEditable,
   folder,
-  index,
   onFolderDeleted,
   onFolderRenamed,
 }: Props) => {
@@ -40,8 +42,7 @@ const FolderButton = ({
   );
   const deleteDialogControls = useOpenControls();
   const deleteCancelRef = useRef<HTMLButtonElement | null>(null);
-  const [deleteConfirmLoading, setDeleteConfirmLoading] = useState(false);
-  const { mutate: deleteFolder } = useMutation(
+  const { mutate: deleteFolder, isPending } = useMutation(
     orpc.folders.deleteFolder.mutationOptions({
       onSuccess: onFolderDeleted,
     }),
@@ -56,7 +57,7 @@ const FolderButton = ({
   const onRenameSubmit = async (newName: string) => {
     if (newName === "" || newName === folder.name) return;
     updateFolder({
-      workspaceId: folder.workspaceId,
+      workspaceId,
       folderId: folder.id,
       folder: {
         name: newName,
@@ -81,7 +82,7 @@ const FolderButton = ({
             size: "lg",
           }),
           "w-[225px] h-[270px] relative px-6 whitespace-normal transition-all duration-100 justify-center bg-gray-1",
-          isTypebotOver && "border-2 border-orange-8",
+          isTypebotOver && "ring-2 ring-orange-8",
         )}
         role="button"
         tabIndex={0}
@@ -122,7 +123,7 @@ const FolderButton = ({
           <Editable.Root
             className="text-lg"
             defaultValue={folder.name === "" ? "New folder" : folder.name}
-            defaultEdit={index === 0 && folder.name === ""}
+            defaultEdit={isNameDefaultEditable}
             onValueCommit={onRenameSubmit}
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
@@ -165,18 +166,12 @@ const FolderButton = ({
             </AlertDialog.Cancel>
             <AlertDialog.Action
               variant="destructive"
-              disabled={deleteConfirmLoading}
-              onClick={async () => {
-                setDeleteConfirmLoading(true);
-                try {
-                  await deleteFolder({
-                    workspaceId: folder.workspaceId,
-                    folderId: folder.id,
-                  });
-                  deleteDialogControls.onClose();
-                } finally {
-                  setDeleteConfirmLoading(false);
-                }
+              disabled={isPending}
+              onClick={() => {
+                deleteFolder({
+                  workspaceId,
+                  folderId: folder.id,
+                });
               }}
             >
               {t("delete")}
@@ -207,6 +202,6 @@ export default memo(
   FolderButton,
   (prev, next) =>
     prev.folder.id === next.folder.id &&
-    prev.index === next.index &&
+    prev.isNameDefaultEditable === next.isNameDefaultEditable &&
     prev.folder.name === next.folder.name,
 );

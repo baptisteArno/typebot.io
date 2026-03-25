@@ -56,7 +56,7 @@ const Popup = ({
     >
       <DialogPrimitive.Popup
         className={cn(
-          "relative bg-gray-1 p-6 rounded-xl w-full max-w-xl data-open:animate-in data-open:slide-in-from-bottom-5 data-open:fade-in data-closed:animate-out data-closed:slide-out-to-bottom-5 data-closed:fade-out flex flex-col gap-4 shadow-md border data-nested-dialog-open:translate-y-4 [&[data-nested-dialog-open]_[data-scope=inside-backdrop]]:block transition-transform",
+          "relative bg-gray-1 p-6 rounded-xl w-full max-w-xl data-open:animate-in data-open:slide-in-from-bottom-5 data-open:fade-in data-closed:animate-out data-closed:slide-out-to-bottom-5 data-closed:fade-out flex flex-col gap-4 shadow-md border data-nested-dialog-open:translate-y-4 [&[data-nested-dialog-open]_[data-scope=inside-backdrop]]:block transition-transform outline-none",
           className,
         )}
         render={render}

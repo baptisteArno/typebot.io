@@ -142,7 +142,7 @@ export const WorkspaceSettingsDialog = ({
           </div>
         </div>
 
-        <div className="flex flex-1 p-10">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col p-10">
           <SettingsContent tab={selectedTab} onClose={onClose} />
         </div>
       </Dialog.Popup>
