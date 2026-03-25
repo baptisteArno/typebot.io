@@ -602,7 +602,7 @@
     },
     "packages/embeds/js": {
       "name": "@typebot.io/js",
-      "version": "0.9.23",
+      "version": "0.9.24",
       "devDependencies": {
         "@ai-sdk/ui-utils": "^1.2.11",
         "@ark-ui/solid": "^5.19.0",
@@ -637,7 +637,7 @@
     },
     "packages/embeds/react": {
       "name": "@typebot.io/react",
-      "version": "0.9.23",
+      "version": "0.9.24",
       "dependencies": {
         "@typebot.io/js": "workspace:*",
         "react": "^19.2.4",
