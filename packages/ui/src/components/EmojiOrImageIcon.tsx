@@ -13,7 +13,7 @@ export const EmojiOrImageIcon = ({ icon, className, defaultIcon }: Props) => {
     <span
       role={isEmoji ? "img" : undefined}
       className={cn(
-        "inline-flex items-center align-middle",
+        "inline-flex items-center align-middle [&_svg]:size-full",
         isEmoji && "leading-none",
         className,
       )}

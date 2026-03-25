@@ -8,3 +8,4 @@ description: Use this skill when you need to write any frontend components. It e
 - UI primitives are defined in packages/ui. Use them whenever possible. Be very careful when you add custom class names to a primitive components, it should be last resort for a very local exception: we want the design system to be respected.
 - You can write `useEffect` only if syncing with external storage. Otherwise, just derive values from others.
 - Sort component props: values first, functions last
+- Never add explicit type annotations on callback parameters when the type can be inferred from the component prop. e.g. `onValueCommit={(name) =>` not `onValueCommit={(name: string) =>`
