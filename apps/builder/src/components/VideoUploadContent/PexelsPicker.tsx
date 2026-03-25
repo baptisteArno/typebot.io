@@ -1,6 +1,7 @@
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
+import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
@@ -12,7 +13,6 @@ import {
 } from "pexels";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { BasicSelect } from "../inputs/BasicSelect";
-import { DebouncedTextInput } from "../inputs/DebouncedTextInput";
 import { PexelsLogo } from "../logos/PexelsLogo";
 import { TextLink } from "../TextLink";
 

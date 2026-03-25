@@ -1,6 +1,6 @@
 import { useTranslate } from "@tolgee/react";
 import type { CommandEvent } from "@typebot.io/events/schemas";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
+import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 
 export const CommandEventSettings = ({
   options,

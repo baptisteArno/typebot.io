@@ -1,13 +1,13 @@
 import { useTranslate } from "@tolgee/react";
 import { AlertDialog } from "@typebot.io/ui/components/AlertDialog";
 import { Button } from "@typebot.io/ui/components/Button";
+import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 import { Field } from "@typebot.io/ui/components/Field";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { HardDriveIcon } from "@typebot.io/ui/icons/HardDriveIcon";
 import { useRef, useState } from "react";
 import { EditableEmojiOrImageIcon } from "@/components/EditableEmojiOrImageIcon";
 import { CopyInput } from "@/components/inputs/CopyInput";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { useWorkspace } from "../WorkspaceProvider";
 
 export const WorkspaceSettingsForm = ({ onClose }: { onClose: () => void }) => {

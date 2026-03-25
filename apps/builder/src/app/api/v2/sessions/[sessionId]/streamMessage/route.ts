@@ -22,7 +22,12 @@ export async function POST(
         messages,
       });
     if (!stream) {
-      console.error("Stream message error:", { message, status, details, context });
+      console.error("Stream message error:", {
+        message,
+        status,
+        details,
+        context,
+      });
       return NextResponse.json(
         { message, details, context },
         { status: status ?? 500 },

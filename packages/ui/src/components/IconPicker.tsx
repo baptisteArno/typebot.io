@@ -164,7 +164,10 @@ const Root = ({
 const SearchInput = ({
   placeholder = "Search...",
   debounceTimeout = 300,
-}: { placeholder?: string; debounceTimeout?: number }) => {
+}: {
+  placeholder?: string;
+  debounceTimeout?: number;
+}) => {
   const { searchIcon } = useIconPickerContext();
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
@@ -179,7 +182,10 @@ const SearchInput = ({
 const IconColorPicker = ({
   side = "right",
   advancedColorsLabel,
-}: { side?: "top" | "bottom" | "left" | "right"; advancedColorsLabel?: string }) => {
+}: {
+  side?: "top" | "bottom" | "left" | "right";
+  advancedColorsLabel?: string;
+}) => {
   const { selectedColor, updateColor } = useIconPickerContext();
   return (
     <ColorPickerComponent

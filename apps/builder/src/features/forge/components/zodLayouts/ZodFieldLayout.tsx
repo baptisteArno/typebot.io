@@ -2,6 +2,7 @@ import { evaluateIsHidden } from "@typebot.io/forge/helpers/evaluateIsHidden";
 import type { ZodLayoutMetadata } from "@typebot.io/forge/zodLayout";
 import type { ForgedBlockDefinition } from "@typebot.io/forge-repository/definitions";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
+import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
@@ -16,10 +17,7 @@ import {
   DebouncedTextarea,
   DebouncedTextareaWithVariablesButton,
 } from "@/components/inputs/DebouncedTextarea";
-import {
-  DebouncedTextInput,
-  DebouncedTextInputWithVariablesButton,
-} from "@/components/inputs/DebouncedTextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { PrimitiveList } from "@/components/PrimitiveList";
 import { TableList } from "@/components/TableList";

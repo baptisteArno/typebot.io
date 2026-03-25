@@ -1,7 +1,7 @@
 import type { ChangeEventDetails } from "@typebot.io/ui/components/Field";
 import { Input, type InputProps } from "@typebot.io/ui/components/Input";
 import { cn } from "@typebot.io/ui/lib/cn";
-import { forwardRef, useRef } from "react";
+import { useRef } from "react";
 import { VariablesButton } from "@/features/variables/components/VariablesButton";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useInjectableInputValue } from "@/hooks/useInjectableInputValue";
@@ -10,27 +10,6 @@ type Props = Omit<InputProps, "defaultValue"> & {
   defaultValue?: string;
   debounceTimeout?: number;
 };
-
-export const DebouncedTextInput = forwardRef<HTMLInputElement, Props>(
-  ({ debounceTimeout = 1000, ...props }, ref) => {
-    const commitValue = useDebounce(
-      (value: string, eventDetails: ChangeEventDetails) => {
-        props.onValueChange?.(value, eventDetails);
-      },
-      debounceTimeout,
-    );
-
-    return (
-      <Input
-        {...props}
-        ref={ref}
-        onValueChange={(value, eventDetails) => {
-          commitValue(value, eventDetails);
-        }}
-      />
-    );
-  },
-);
 
 export const DebouncedTextInputWithVariablesButton = ({
   debounceTimeout = 1000,

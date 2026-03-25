@@ -1,7 +1,7 @@
 import type { CustomFont } from "@typebot.io/theme/schemas";
+import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 import { Field } from "@typebot.io/ui/components/Field";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 
 type Props = {
   font: CustomFont;

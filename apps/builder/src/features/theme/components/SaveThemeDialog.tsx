@@ -3,10 +3,10 @@ import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import type { ThemeTemplate } from "@typebot.io/theme/schemas";
 import { Button } from "@typebot.io/ui/components/Button";
+import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
 import { type FormEvent, useRef, useState } from "react";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { orpc, queryClient } from "@/lib/queryClient";
 
 type Props = {

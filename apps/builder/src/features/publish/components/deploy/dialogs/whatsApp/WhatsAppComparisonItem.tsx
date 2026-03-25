@@ -1,7 +1,7 @@
 import { ComparisonOperators } from "@typebot.io/conditions/constants";
+import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 import type { WhatsAppComparison } from "@typebot.io/whatsapp/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import type { TableListItemProps } from "@/components/TableList";
 
 export const WhatsAppComparisonItem = ({

@@ -1,11 +1,9 @@
 import { useTranslate } from "@tolgee/react";
 import { Button } from "@typebot.io/ui/components/Button";
+import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 import { useState } from "react";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
-import {
-  DebouncedTextInput,
-  DebouncedTextInputWithVariablesButton,
-} from "../inputs/DebouncedTextInput";
+import { DebouncedTextInputWithVariablesButton } from "../inputs/DebouncedTextInput";
 import { EmojiSearchableList } from "./emoji/EmojiSearchableList";
 import { GiphyPicker } from "./GiphyPicker";
 import { IconPicker } from "./IconPicker";

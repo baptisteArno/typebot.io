@@ -7,8 +7,8 @@ import type { ButtonItem } from "@typebot.io/blocks-inputs/choice/schema";
 import { convertStrToList } from "@typebot.io/lib/convertStrToList";
 import { isEmpty } from "@typebot.io/lib/utils";
 import { Button } from "@typebot.io/ui/components/Button";
-import { Popover } from "@typebot.io/ui/components/Popover";
 import { Editable } from "@typebot.io/ui/components/Editable";
+import { Popover } from "@typebot.io/ui/components/Popover";
 import { Settings01Icon } from "@typebot.io/ui/icons/Settings01Icon";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { useState } from "react";
@@ -107,7 +107,9 @@ export const ButtonsItemNode = ({ item, indices, isMouseOver }: Props) => {
             >
               <Editable.Input
                 onKeyDownCapture={handleKeyPress}
-                onMouseDownCapture={(e: React.MouseEvent) => e.stopPropagation()}
+                onMouseDownCapture={(e: React.MouseEvent) =>
+                  e.stopPropagation()
+                }
                 onWheelCapture={(e: React.WheelEvent) => e.stopPropagation()}
               />
               <Editable.Preview

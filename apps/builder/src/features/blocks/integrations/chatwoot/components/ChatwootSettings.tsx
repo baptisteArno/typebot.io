@@ -4,13 +4,11 @@ import {
 } from "@typebot.io/blocks-integrations/chatwoot/constants";
 import type { ChatwootBlock } from "@typebot.io/blocks-integrations/chatwoot/schema";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
+import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import {
-  DebouncedTextInput,
-  DebouncedTextInputWithVariablesButton,
-} from "@/components/inputs/DebouncedTextInput";
+import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 
 type Props = {
   options: ChatwootBlock["options"];

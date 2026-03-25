@@ -1,10 +1,10 @@
 import { defaultScriptOptions } from "@typebot.io/blocks-logic/script/constants";
 import type { ScriptBlock } from "@typebot.io/blocks-logic/script/schema";
+import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { CodeEditor } from "@/components/inputs/CodeEditor";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 import { UnsafeScriptAlert } from "./UnsafeScriptAlert";
 
 type Props = {

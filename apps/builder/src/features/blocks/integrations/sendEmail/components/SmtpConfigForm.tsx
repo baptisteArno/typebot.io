@@ -1,10 +1,10 @@
 import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
+import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
-import { DebouncedTextInput } from "@/components/inputs/DebouncedTextInput";
 
 type Props = {
   config: SmtpCredentials["data"] | undefined;

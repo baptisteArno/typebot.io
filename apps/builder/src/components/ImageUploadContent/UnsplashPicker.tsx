@@ -1,6 +1,7 @@
 import { env } from "@typebot.io/env";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Alert } from "@typebot.io/ui/components/Alert";
+import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { TriangleAlertIcon } from "@typebot.io/ui/icons/TriangleAlertIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
@@ -8,7 +9,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createApi } from "unsplash-js";
 import type { Basic as UnsplashPhoto } from "unsplash-js/dist/methods/photos/types";
 import { useThemeValue } from "@/hooks/useThemeValue";
-import { DebouncedTextInput } from "../inputs/DebouncedTextInput";
 import { UnsplashLogo } from "../logos/UnsplashLogo";
 import { TextLink } from "../TextLink";
 
