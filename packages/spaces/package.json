@@ -1,0 +1,41 @@
+{
+  "name": "@typebot.io/spaces",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./domain": "./src/domain/Space.ts",
+    "./orpc/router": "./src/drivers/orpc/router.ts",
+    "./react/*": "./src/drivers/react/*.tsx",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@orpc/server": "^1.13.9",
+    "effect": "4.0.0-beta.38",
+    "@typebot.io/config": "workspace:*",
+    "@typebot.io/feature-flags": "workspace:*",
+    "@typebot.io/shared-core": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "@typebot.io/workspaces": "workspace:*",
+    "@typebot.io/ui": "workspace:*",
+    "@tanstack/react-form": "^1.28.5"
+  },
+  "devDependencies": {
+    "@effect/vitest": "4.0.0-beta.38"
+  },
+  "nx": {
+    "targets": {
+      "test": {
+        "executor": "@nx/vitest:test",
+        "outputs": [
+          "{options.reportsDirectory}"
+        ],
+        "options": {
+          "configFile": "vitest.config.ts",
+          "project": "@typebot.io/spaces",
+          "reportsDirectory": "../../coverage/packages/spaces"
+        }
+      }
+    }
+  }
+}

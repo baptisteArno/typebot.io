@@ -227,6 +227,9 @@
     },
     {
       "path": "./packages/services/feature-flags"
+    },
+    {
+      "path": "./packages/spaces"
     }
   ]
 }

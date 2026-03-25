@@ -7,6 +7,8 @@ const typebotDndContext = createContext<{
   setDraggedTypebot: Dispatch<SetStateAction<TypebotInDashboard | undefined>>;
   mouseOverFolderId?: string | null;
   setMouseOverFolderId: Dispatch<SetStateAction<string | undefined | null>>;
+  mouseOverSpaceId?: string | null;
+  setMouseOverSpaceId: Dispatch<SetStateAction<string | undefined | null>>;
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error
 }>({});
@@ -14,6 +16,7 @@ const typebotDndContext = createContext<{
 export const TypebotDndProvider = ({ children }: { children: ReactNode }) => {
   const [draggedTypebot, setDraggedTypebot] = useState<TypebotInDashboard>();
   const [mouseOverFolderId, setMouseOverFolderId] = useState<string | null>();
+  const [mouseOverSpaceId, setMouseOverSpaceId] = useState<string | null>();
 
   useEffect(() => {
     draggedTypebot
@@ -28,6 +31,8 @@ export const TypebotDndProvider = ({ children }: { children: ReactNode }) => {
         setDraggedTypebot,
         mouseOverFolderId,
         setMouseOverFolderId,
+        mouseOverSpaceId,
+        setMouseOverSpaceId,
       }}
     >
       {children}

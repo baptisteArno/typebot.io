@@ -27,7 +27,7 @@
     "migrate:deploy": "tsx scripts/migrate-deploy.ts",
     "create-migration-file": "prisma migrate dev --config prisma.config.ts --create-only --schema postgresql/schema.prisma",
     "db:migrate": "bun migrate:deploy",
-    "reset": "prisma migrate reset --config prisma.config.ts --schema postgresql/schema.prisma"
+    "db:reset": "prisma migrate reset --config prisma.config.ts --schema postgresql/schema.prisma --force"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.0",

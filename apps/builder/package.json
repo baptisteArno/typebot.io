@@ -73,6 +73,7 @@
     "@typebot.io/react": "workspace:*",
     "@typebot.io/runtime-session-store": "workspace:*",
     "@typebot.io/settings": "workspace:*",
+    "@typebot.io/spaces": "workspace:*",
     "@typebot.io/shared-core": "workspace:*",
     "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/templates": "workspace:*",

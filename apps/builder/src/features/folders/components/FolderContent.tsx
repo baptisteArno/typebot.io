@@ -1,12 +1,15 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { createId } from "@typebot.io/lib/createId";
 import type { Prisma } from "@typebot.io/prisma/types";
+import { cn } from "@typebot.io/ui/lib/cn";
 import { useEffect, useState } from "react";
+import z from "zod";
 import { Portal } from "@/components/Portal";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 import type { NodePosition } from "@/features/graph/providers/GraphDndProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
 import { useEventListener } from "@/hooks/useEventListener";
-import { orpc } from "@/lib/queryClient";
+import { orpc, queryClient } from "@/lib/queryClient";
 import { useTypebotDnd } from "../TypebotDndProvider";
 import { BackButton } from "./BackButton";
 import { CreateBotButton } from "./CreateBotButton";
@@ -17,23 +20,31 @@ import { TypebotButtonOverlay } from "./TypebotButtonOverlay";
 
 type Props = { folder: Prisma.DashboardFolder | null };
 
+const optimisticFolderCreateSchema = z.object({
+  id: z.cuid2(),
+  name: z.string(),
+  createdAt: z.date(),
+});
+
 export const FolderContent = ({ folder }: Props) => {
   const { workspace, currentUserMode } = useWorkspace();
-  const [isCreatingFolder, setIsCreatingFolder] = useState(false);
   const {
     setDraggedTypebot,
     draggedTypebot,
     mouseOverFolderId,
     setMouseOverFolderId,
+    mouseOverSpaceId,
+    setMouseOverSpaceId,
   } = useTypebotDnd();
   const [draggablePosition, setDraggablePosition] = useState({ x: 0, y: 0 });
   const [mousePositionInElement, setMousePositionInElement] = useState({
     x: 0,
     y: 0,
   });
+  const [newFolderId, setNewFolderId] = useState<string>();
 
   const {
-    data: { folders } = {},
+    data: foldersData,
     isLoading: isFolderLoading,
     refetch: refetchFolders,
   } = useQuery(
@@ -46,17 +57,84 @@ export const FolderContent = ({ folder }: Props) => {
     }),
   );
 
-  const { mutate: createFolder } = useMutation(
+  const { mutate: createFolder, isPending: isCreatingFolder } = useMutation(
     orpc.folders.createFolder.mutationOptions({
-      onSuccess: () => {
+      onMutate: (data) => {
+        const { success, data: newFolder } =
+          optimisticFolderCreateSchema.safeParse({
+            ...data,
+            name: data.folderName,
+          });
+        if (!success) return;
+        const listFoldersQueryKey = orpc.folders.listFolders.key();
+        const cacheData =
+          queryClient.getQueryData<typeof foldersData>(listFoldersQueryKey);
+        if (!cacheData) return;
+
+        queryClient.cancelQueries({ queryKey: listFoldersQueryKey });
+
+        queryClient.setQueryData<typeof foldersData>(
+          listFoldersQueryKey,
+          (cache) =>
+            cache
+              ? {
+                  folders: [...cache.folders, newFolder],
+                }
+              : undefined,
+        );
+        return { previousCacheData: cacheData, key: listFoldersQueryKey };
+      },
+      onError: (_error, _variables, context) => {
+        if (context?.previousCacheData)
+          queryClient.setQueryData(context.key, context.previousCacheData);
+      },
+      onSettled: () => {
         refetchFolders();
       },
     }),
   );
 
-  const { mutate: updateTypebot } = useMutation(
+  const { mutate: patchTypebot } = useMutation(
     orpc.typebot.updateTypebot.mutationOptions({
-      onSuccess: () => {
+      onMutate: (data) => {
+        const listTypebotsQueryKey = orpc.typebot.listTypebots.key();
+
+        const cacheData =
+          queryClient.getQueryData<typeof typebotsData>(listTypebotsQueryKey);
+
+        if (!cacheData) return;
+
+        queryClient.cancelQueries({ queryKey: listTypebotsQueryKey });
+
+        queryClient.setQueryData<typeof typebotsData>(
+          listTypebotsQueryKey,
+          (cache) =>
+            cache
+              ? {
+                  typebots: cache.typebots
+                    .map((typebot) =>
+                      typebot.id === data.typebotId
+                        ? {
+                            ...typebot,
+                            folderId: data.typebot.folderId ?? null,
+                            spaceId: data.typebot.spaceId ?? null,
+                          }
+                        : typebot,
+                    )
+                    .sort(
+                      (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+                    ),
+                }
+              : undefined,
+        );
+
+        return { previousCacheData: cacheData, key: listTypebotsQueryKey };
+      },
+      onError: (_error, _variables, context) => {
+        if (context?.previousCacheData)
+          queryClient.setQueryData(context.key, context.previousCacheData);
+      },
+      onSettled: () => {
         refetchTypebots();
       },
     }),
@@ -76,30 +154,38 @@ export const FolderContent = ({ folder }: Props) => {
     }),
   );
 
-  const moveTypebotToFolder = async (typebotId: string, folderId: string) => {
-    if (!typebotsData?.typebots) return;
-    updateTypebot({
-      typebotId,
-      typebot: {
-        folderId: folderId === "root" ? null : folderId,
-      },
-    });
-  };
+  const { data: spacesFeatureFlagData } = useQuery(
+    orpc.featureFlags.isEnabled.queryOptions({
+      input: { key: "spaces" },
+    }),
+  );
 
-  const handleCreateFolder = () => {
-    if (!folders || !workspace) return;
-    setIsCreatingFolder(true);
-    createFolder({
-      workspaceId: workspace.id,
-      parentFolderId: folder?.id,
-    });
-    setIsCreatingFolder(false);
-  };
+  const isSpacesEnabled = spacesFeatureFlagData?.enabled === true;
+
+  const { data: spacesData } = useQuery(
+    orpc.spaces.list.queryOptions({
+      input: {
+        workspaceId: workspace?.id ?? "",
+      },
+      enabled: isSpacesEnabled && !!workspace?.id && folder === null,
+    }),
+  );
 
   const handleMouseUp = async () => {
     if (mouseOverFolderId !== undefined && draggedTypebot)
-      await moveTypebotToFolder(draggedTypebot.id, mouseOverFolderId ?? "root");
+      patchTypebot({
+        typebotId: draggedTypebot.id,
+        typebot: {
+          folderId: mouseOverFolderId === "root" ? null : mouseOverFolderId,
+        },
+      });
+    if (mouseOverSpaceId !== undefined && draggedTypebot)
+      patchTypebot({
+        typebotId: draggedTypebot.id,
+        typebot: { spaceId: mouseOverSpaceId },
+      });
     setMouseOverFolderId(undefined);
+    setMouseOverSpaceId(undefined);
     setDraggedTypebot(undefined);
   };
   useEventListener("mouseup", handleMouseUp);
@@ -154,12 +240,35 @@ export const FolderContent = ({ folder }: Props) => {
         {folder?.name !== undefined ? (
           <h1 className="text-2xl font-medium">{folder.name}</h1>
         ) : null}
-        <div className="flex flex-col gap-2">
+        {/* biome-ignore lint/a11y/noStaticElementInteractions: Drop zone for drag-and-drop, not a standalone interactive element. */}
+        <div
+          className={cn(
+            "flex flex-col gap-2 rounded-lg p-4 border-2 border-transparent transition-colors",
+            draggedTypebot &&
+              draggedTypebot.spaceId !== null &&
+              (mouseOverSpaceId === null
+                ? "border-orange-8"
+                : "border-dashed border-gray-7"),
+          )}
+          onMouseEnter={() => {
+            if (draggedTypebot) setMouseOverSpaceId(null);
+          }}
+          onMouseLeave={() => setMouseOverSpaceId(undefined)}
+        >
           <div className="flex items-center gap-2">
             {folder && <BackButton id={folder.parentFolderId} />}
-            {currentUserMode !== "guest" && (
+            {currentUserMode !== "guest" && workspace && (
               <CreateFolderButton
-                onClick={handleCreateFolder}
+                onClick={() => {
+                  const id = createId();
+                  setNewFolderId(id);
+                  createFolder({
+                    id,
+                    folderName: "Untitled",
+                    workspaceId: workspace.id,
+                    parentFolderId: folder?.id ?? undefined,
+                  });
+                }}
                 isLoading={isCreatingFolder || isFolderLoading}
               />
             )}
@@ -172,32 +281,86 @@ export const FolderContent = ({ folder }: Props) => {
               />
             )}
             {isFolderLoading && <ButtonSkeleton />}
-            {folders?.map((folder, index) => (
-              <FolderButton
-                key={folder.id}
-                index={index}
-                folder={folder}
-                onFolderDeleted={refetchFolders}
-                onFolderRenamed={() => refetchFolders()}
-              />
-            ))}
-            {isTypebotLoading && <ButtonSkeleton />}
             {workspace &&
-              typebotsData?.typebots?.map((typebot) => (
-                <TypebotButton
-                  key={typebot.id}
-                  typebot={typebot}
-                  draggedTypebot={draggedTypebot}
-                  onTypebotUpdated={refetchTypebots}
-                  onDrag={handleTypebotDrag(typebot)}
-                  isReadOnly={
-                    typebot.accessRight !== "write" &&
-                    currentUserMode !== "write"
-                  }
+              foldersData?.folders.map((folder) => (
+                <FolderButton
+                  key={folder.id}
+                  isNameDefaultEditable={folder.id === newFolderId}
+                  workspaceId={workspace?.id}
+                  folder={folder}
+                  onFolderDeleted={refetchFolders}
+                  onFolderRenamed={() => refetchFolders()}
                 />
               ))}
+            {isTypebotLoading && <ButtonSkeleton />}
+            {workspace &&
+              typebotsData?.typebots
+                ?.filter((typebot) => typebot.spaceId === null)
+                .map((typebot) => (
+                  <TypebotButton
+                    key={typebot.id}
+                    typebot={typebot}
+                    draggedTypebot={draggedTypebot}
+                    onTypebotUpdated={refetchTypebots}
+                    onDrag={handleTypebotDrag(typebot)}
+                    isReadOnly={
+                      typebot.accessRight !== "write" &&
+                      currentUserMode !== "write"
+                    }
+                  />
+                ))}
           </div>
         </div>
+        {folder === null &&
+          spacesData?.spaces.map((space) => {
+            const spaceTypebots = typebotsData?.typebots.filter(
+              (typebot) => typebot.spaceId === space.id,
+            );
+            if (
+              !draggedTypebot &&
+              (!spaceTypebots || spaceTypebots.length === 0)
+            )
+              return null;
+            return (
+              // biome-ignore lint/a11y/noStaticElementInteractions: Drop zone for drag-and-drop.
+              <div
+                key={space.id}
+                className={cn(
+                  "flex flex-col gap-4 rounded-lg p-4 border-2 border-transparent transition-colors",
+                  draggedTypebot &&
+                    draggedTypebot.spaceId !== space.id &&
+                    (mouseOverSpaceId === space.id
+                      ? "border-orange-8"
+                      : "border-dashed border-gray-7"),
+                  draggedTypebot &&
+                    draggedTypebot.spaceId !== space.id &&
+                    (!spaceTypebots || spaceTypebots.length === 0) &&
+                    "min-h-24",
+                )}
+                onMouseEnter={() => {
+                  if (draggedTypebot) setMouseOverSpaceId(space.id);
+                }}
+                onMouseLeave={() => setMouseOverSpaceId(undefined)}
+              >
+                <h2>{space.name}</h2>
+                <div className="flex flex-wrap gap-4">
+                  {spaceTypebots?.map((typebot) => (
+                    <TypebotButton
+                      key={typebot.id}
+                      typebot={typebot}
+                      draggedTypebot={draggedTypebot}
+                      onTypebotUpdated={refetchTypebots}
+                      onDrag={handleTypebotDrag(typebot)}
+                      isReadOnly={
+                        typebot.accessRight !== "write" &&
+                        currentUserMode !== "write"
+                      }
+                    />
+                  ))}
+                </div>
+              </div>
+            );
+          })}
       </div>
 
       {draggedTypebot && (

@@ -84,6 +84,9 @@
       "path": "../../packages/settings"
     },
     {
+      "path": "../../packages/spaces"
+    },
+    {
       "path": "../../packages/runtime-session-store"
     },
     {

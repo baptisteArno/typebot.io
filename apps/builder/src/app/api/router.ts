@@ -5,6 +5,7 @@ import { builderChatRouter } from "@typebot.io/bot-engine/api/router";
 import { publicProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { featureFlagsRouter } from "@typebot.io/feature-flags/orpc/router";
 import { fileUploadBuilderRouter } from "@typebot.io/file-input-block/api/router";
+import { spacesRouter } from "@typebot.io/spaces/orpc/router";
 import { builderWhatsAppRouter } from "@typebot.io/whatsapp/api/router";
 import { z } from "zod";
 import { analyticsRouter } from "@/features/analytics/api/router";
@@ -57,6 +58,7 @@ const httpRequestSpecMocks = {
 export const appRouter: AppRouter = {
   getLinkedTypebots,
   analytics: analyticsRouter,
+  spaces: spacesRouter,
   workspace: workspaceRouter,
   typebot: typebotRouter,
   httpRequest: httpRequestRouter,
@@ -88,6 +90,7 @@ export const appRouter: AppRouter = {
 export type AppRouter = {
   getLinkedTypebots: typeof getLinkedTypebots;
   analytics: typeof analyticsRouter;
+  spaces: typeof spacesRouter;
   workspace: typeof workspaceRouter;
   typebot: typeof typebotRouter;
   httpRequest: typeof httpRequestRouter;

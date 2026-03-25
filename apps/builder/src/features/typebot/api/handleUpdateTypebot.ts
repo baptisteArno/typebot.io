@@ -39,6 +39,7 @@ const typebotUpdateSchemaPick = {
   riskLevel: true,
   events: true,
   updatedAt: true,
+  spaceId: true,
 } as const;
 
 export const updateTypebotInputSchema = z.object({
@@ -194,6 +195,7 @@ export const handleUpdateTypebot = async ({
       }),
       isClosed: typebot.isClosed,
       whatsAppCredentialsId: typebot.whatsAppCredentialsId ?? undefined,
+      spaceId: typebot.spaceId,
     },
   });
 

@@ -54,7 +54,9 @@ export const handleListTypebots = async ({
       publishedTypebot: { select: { id: true } },
       id: true,
       icon: true,
+      spaceId: true,
       collaborators: { select: { userId: true, type: true } },
+      createdAt: true,
     },
   });
 
@@ -66,7 +68,9 @@ export const handleListTypebots = async ({
       id: typebot.id,
       name: typebot.name,
       icon: typebot.icon,
+      spaceId: typebot.spaceId,
       publishedTypebotId: typebot.publishedTypebot?.id,
+      createdAt: typebot.createdAt,
       accessRight: getTypebotAccessRight(user, {
         ...typebot,
         workspace: { members: workspace.members },

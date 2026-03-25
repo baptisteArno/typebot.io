@@ -31,6 +31,7 @@ const inputSchema = z.object({
     .or(
       z.object({
         workspaceId: z.string(),
+        spaceId: z.string().optional(),
         fileName: z.string(),
       }),
     ),
@@ -117,6 +118,9 @@ const parseFilePath = async ({
       isWriteWorkspaceForbidden(workspace, { id: authenticatedUserId })
     )
       throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
+    if ("spaceId" in input) {
+      return `public/workspaces/${input.workspaceId}/spaces/${input.spaceId}/${input.fileName}`;
+    }
     return `public/workspaces/${input.workspaceId}/${input.fileName}`;
   }
   const typebot = await prisma.typebot.findUnique({

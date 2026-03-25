@@ -118,6 +118,22 @@ model Workspace {
   lastActivityAt                DateTime?
   inactiveFirstEmailSentAt      DateTime?
   inactiveSecondEmailSentAt     DateTime?
+  spaces                        Space[]
+}
+
+model Space {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  name      String   @db.VarChar(255)
+  icon      String?  @db.VarChar(1000)
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  typebots    Typebot[]
+
+  @@unique([id, workspaceId])
+  @@index([workspaceId])
 }
 
 model MemberInWorkspace {
@@ -236,9 +252,12 @@ model Typebot {
   whatsAppCredentialsId   String?
   riskLevel               Int?
   bannedIps               BannedIp[]
+  space                   Space?                    @relation(fields: [spaceId], references: [id], onDelete: SetNull)
+  spaceId                 String?
 
   @@index([workspaceId])
   @@index([folderId])
+  @@index([spaceId])
   @@index([isArchived, createdAt(sort: Desc)])
 }
 

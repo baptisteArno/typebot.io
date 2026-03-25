@@ -70,6 +70,7 @@
         "@typebot.io/runtime-session-store": "workspace:*",
         "@typebot.io/settings": "workspace:*",
         "@typebot.io/shared-core": "workspace:*",
+        "@typebot.io/spaces": "workspace:*",
         "@typebot.io/telemetry": "workspace:*",
         "@typebot.io/templates": "workspace:*",
         "@typebot.io/theme": "workspace:*",
@@ -1193,6 +1194,24 @@
       "version": "0.0.1",
       "dependencies": {
         "effect": "4.0.0-beta.38",
+      },
+    },
+    "packages/spaces": {
+      "name": "@typebot.io/spaces",
+      "version": "0.0.1",
+      "dependencies": {
+        "@orpc/server": "^1.13.9",
+        "@tanstack/react-form": "^1.28.5",
+        "@typebot.io/config": "workspace:*",
+        "@typebot.io/feature-flags": "workspace:*",
+        "@typebot.io/prisma": "workspace:*",
+        "@typebot.io/shared-core": "workspace:*",
+        "@typebot.io/ui": "workspace:*",
+        "@typebot.io/workspaces": "workspace:*",
+        "effect": "4.0.0-beta.38",
+      },
+      "devDependencies": {
+        "@effect/vitest": "4.0.0-beta.38",
       },
     },
     "packages/telemetry": {
@@ -3193,9 +3212,17 @@
 
     "@tailwindcss/vite": ["@tailwindcss/vite@4.1.16", "", { "dependencies": { "@tailwindcss/node": "4.1.16", "@tailwindcss/oxide": "4.1.16", "tailwindcss": "4.1.16" }, "peerDependencies": { "vite": "^5.2.0 || ^6 || ^7" } }, "sha512-bbguNBcDxsRmi9nnlWJxhfDWamY3lmcyACHcdO1crxfzuLpOhHLLtEIN/nCbbAtj5rchUgQD17QVAKi1f7IsKg=="],
 
+    "@tanstack/devtools-event-client": ["@tanstack/devtools-event-client@0.4.3", "", { "bin": { "intent": "bin/intent.js" } }, "sha512-OZI6QyULw0FI0wjgmeYzCIfbgPsOEzwJtCpa69XrfLMtNXLGnz3d/dIabk7frg0TmHo+Ah49w5I4KC7Tufwsvw=="],
+
+    "@tanstack/form-core": ["@tanstack/form-core@1.28.5", "", { "dependencies": { "@tanstack/devtools-event-client": "^0.4.1", "@tanstack/pacer-lite": "^0.1.1", "@tanstack/store": "^0.9.1" } }, "sha512-8lYnduHHfP6uaXF9+2OLnh3Fo27tH4TdtekWLG2b/Bp26ynbrWG6L4qhBgEb7VcvTpJw/RjvJF/JyFhZkG3pfQ=="],
+
     "@tanstack/history": ["@tanstack/history@1.161.6", "", {}, "sha512-NaOGLRrddszbQj9upGat6HG/4TKvXLvu+osAIgfxPYA+eIvYKv8GKDJOrY2D3/U9MRnKfMWD7bU4jeD4xmqyIg=="],
 
+    "@tanstack/pacer-lite": ["@tanstack/pacer-lite@0.1.1", "", {}, "sha512-y/xtNPNt/YeyoVxE/JCx+T7yjEzpezmbb+toK8DDD1P4m7Kzs5YR956+7OKexG3f8aXgC3rLZl7b1V+yNUSy5w=="],
+
     "@tanstack/query-core": ["@tanstack/query-core@5.80.6", "", {}, "sha512-nl7YxT/TAU+VTf+e2zTkObGTyY8YZBMnbgeA1ee66lIVqzKlYursAII6z5t0e6rXgwUMJSV4dshBTNacNpZHbQ=="],
+
+    "@tanstack/react-form": ["@tanstack/react-form@1.28.5", "", { "dependencies": { "@tanstack/form-core": "1.28.5", "@tanstack/react-store": "^0.9.1" }, "peerDependencies": { "react": "^17.0.0 || ^18.0.0 || ^19.0.0" } }, "sha512-CL8IeWkeXnEEDsHt5wBuIOZvSYrKiLRtsC9ca0LzfJJ22SYCma9cBmh1UX1EBX0o3gH2U21PmUf+y5f9OJNoEQ=="],
 
     "@tanstack/react-query": ["@tanstack/react-query@5.80.6", "", { "dependencies": { "@tanstack/query-core": "5.80.6" }, "peerDependencies": { "react": "^18 || ^19" } }, "sha512-izX+5CnkpON3NQGcEm3/d7LfFQNo9ZpFtX2QsINgCYK9LT2VCIdi8D3bMaMSNhrAJCznRoAkFic76uvLroALBw=="],
 
@@ -3366,6 +3393,8 @@
     "@typebot.io/settings": ["@typebot.io/settings@workspace:packages/settings"],
 
     "@typebot.io/shared-core": ["@typebot.io/shared-core@workspace:packages/shared-core"],
+
+    "@typebot.io/spaces": ["@typebot.io/spaces@workspace:packages/spaces"],
 
     "@typebot.io/telemetry": ["@typebot.io/telemetry@workspace:packages/telemetry"],
 
