@@ -38,7 +38,7 @@ export const TypebotHeader = () => {
   const handleHelpClick = () => {
     isCloudProdInstance() && workspace?.plan && workspace.plan !== Plan.FREE
       ? onOpen()
-      : window.open("https://docs.typebot.io/guides/how-to-get-help", "_blank");
+      : window.open("https://docs.typebot.com/guides/how-to-get-help", "_blank");
   };
 
   if (currentUserMode === "guest") return <GuestTypebotHeader />;

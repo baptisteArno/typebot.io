@@ -31,7 +31,7 @@ export const BoardMenuButton = () => {
   };
 
   const redirectToDocumentation = () =>
-    window.open("https://docs.typebot.io/editor/graph", "_blank");
+    window.open("https://docs.typebot.com/editor/graph", "_blank");
 
   return (
     <Menu.Root>

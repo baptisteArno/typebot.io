@@ -11,5 +11,5 @@ export const difyAiBlock = createBlock({
   LightLogo: DifyAiLogo,
   auth,
   actions: [createChatMessage, queryKnowledgeBase],
-  docsUrl: "https://docs.typebot.io/editor/blocks/integrations/dify-ai",
+  docsUrl: "https://docs.typebot.com/editor/blocks/integrations/dify-ai",
 });

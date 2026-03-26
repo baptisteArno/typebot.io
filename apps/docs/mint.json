@@ -23,13 +23,13 @@
     "headings": {
       "family": "Uxum Grotesk",
       "weight": 500,
-      "url": "https://typebot.io/fonts/uxumGrotesque/uxumGrotesqueMedium.woff2",
+      "url": "https://typebot.com/fonts/uxumGrotesque/uxumGrotesqueMedium.woff2",
       "format": "woff2"
     },
     "body": {
       "family": "Untitled Sans",
       "weight": 400,
-      "url": "https://typebot.io/fonts/untitledSans/untitledSansRegular.woff2",
+      "url": "https://typebot.com/fonts/untitledSans/untitledSansRegular.woff2",
       "format": "woff2"
     }
   },
@@ -41,7 +41,7 @@
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://app.typebot.io"
+    "url": "https://app.typebot.com"
   },
   "primaryTab": {
     "name": "Learn"
@@ -64,7 +64,7 @@
     {
       "name": "Community",
       "icon": "discord",
-      "url": "https://typebot.io/discord"
+      "url": "https://typebot.com/discord"
     }
   ],
   "navigation": [
@@ -365,8 +365,8 @@
     }
   ],
   "footerSocials": {
-    "website": "https://typebot.io",
-    "discord": "https://typebot.io/discord",
+    "website": "https://typebot.com",
+    "discord": "https://typebot.com/discord",
     "github": "https://github.com/baptisteArno/typebot.io"
   },
   "redirects": [

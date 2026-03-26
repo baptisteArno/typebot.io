@@ -24,7 +24,7 @@ export const openWebWidget = createAction({
       layout: {
         label: "Web Widget Key",
         helperText:
-          "[Finding web widget key](https://docs.typebot.io/editor/blocks/integrations/zendesk#open-web-widget)",
+          "[Finding web widget key](https://docs.typebot.com/editor/blocks/integrations/zendesk#open-web-widget)",
       },
     }),
   }),

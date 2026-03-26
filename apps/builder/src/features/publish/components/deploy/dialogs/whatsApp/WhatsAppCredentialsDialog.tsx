@@ -379,7 +379,7 @@ const Requirements = () => (
     <p>
       Make sure you have{" "}
       <TextLink
-        href="https://docs.typebot.io/deploy/whatsapp/create-meta-app"
+        href="https://docs.typebot.com/deploy/whatsapp/create-meta-app"
         isExternal
       >
         created a WhatsApp Meta app

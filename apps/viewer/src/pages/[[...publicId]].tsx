@@ -53,7 +53,7 @@ export const getServerSideProps: GetServerSideProps = async (
       // Early return, will just show a root page
       return {
         props: {
-          dashboardUrl: `${env.NEXTAUTH_URL ?? "https://app.typebot.io"}/typebots`,
+          dashboardUrl: `${env.NEXTAUTH_URL ?? "https://app.typebot.com"}/typebots`,
         },
       };
     }

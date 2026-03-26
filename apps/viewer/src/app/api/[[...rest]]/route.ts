@@ -43,7 +43,7 @@ const handler = new OpenAPIHandler(appRouter, {
         },
         servers: [{ url: "https://typebot.io/api" }],
         externalDocs: {
-          url: "https://docs.typebot.io/api-reference",
+          url: "https://docs.typebot.com/api-reference",
         },
         components: {
           securitySchemes: {

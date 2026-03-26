@@ -106,7 +106,7 @@ export const WebhookSettings = ({
               <p className="text-sm">
                 Waiting for an{" "}
                 <TextLink
-                  href={"https://docs.typebot.io/api-reference/authentication"}
+                  href={"https://docs.typebot.com/api-reference/authentication"}
                   isExternal
                 >
                   authenticated
@@ -146,7 +146,7 @@ export const WebhookSettings = ({
               You can easily get the Result ID{" "}
               <TextLink
                 isExternal
-                href="https://docs.typebot.io/editor/blocks/logic/set-variable#result-id"
+                href="https://docs.typebot.com/editor/blocks/logic/set-variable#result-id"
               >
                 with a Set variable block
               </TextLink>

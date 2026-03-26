@@ -31,11 +31,6 @@ export const trackPageView = createServerFn({
 })
   .inputValidator(trackPageViewBodySchema)
   .handler(async (ctx) => {
-    console.log(
-      "TRACK PAGE VIEW",
-      env.LANDING_PAGE_URL,
-      env.NEXT_PUBLIC_POSTHOG_KEY,
-    );
     if (!env.LANDING_PAGE_URL || !env.NEXT_PUBLIC_POSTHOG_KEY)
       return new Response("NO ENV, SKIPPING...", { status: 200 });
 

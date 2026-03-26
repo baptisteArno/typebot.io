@@ -119,7 +119,7 @@ export const SignInForm = ({ defaultEmail, className }: Props) => {
       <p>
         {t("auth.noProvider.preLink")}{" "}
         <TextLink
-          href="https://docs.typebot.io/self-hosting/configuration"
+          href="https://docs.typebot.com/self-hosting/configuration"
           isExternal
         >
           {t("auth.noProvider.link")}

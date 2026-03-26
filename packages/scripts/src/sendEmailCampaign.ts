@@ -115,7 +115,7 @@ export async function sendEmailCampaign() {
       }
 
       const typebotUrls = tbIds.map(
-        (id) => `https://app.typebot.io/typebots/${id}/edit`,
+        (id) => `https://app.typebot.com/typebots/${id}/edit`,
       );
       const text = makeBody(ws.name, typebotUrls);
 
