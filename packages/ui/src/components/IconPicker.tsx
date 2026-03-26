@@ -12,6 +12,7 @@ import { Button } from "./Button";
 import { ColorPicker as ColorPickerComponent } from "./ColorPicker";
 import { Input } from "./Input";
 import { iconNames as defaultIconNames } from "./iconNames";
+import { TypebotLoader } from "./TypebotLoader";
 
 const batchSize = 200;
 const localStorageRecentIconNamesKey = "recentIconNames";
@@ -24,6 +25,7 @@ type IconPickerContextValue = {
   scrollContainerRef: React.RefObject<HTMLDivElement | null>;
   bottomElementRef: React.RefObject<HTMLDivElement | null>;
   isWhiteOnDark: boolean;
+  isBundleLoaded: boolean;
   updateColor: (color: string) => void;
   searchIcon: (query: string) => void;
   selectIcon: (name: string) => void;
@@ -45,7 +47,6 @@ type RootProps = {
   defaultColor?: string;
   children: React.ReactNode;
   onIconSelected: (dataUri: string) => void;
-  getIconSvg?: (name: string) => Promise<string>;
 };
 
 const Root = ({
@@ -53,7 +54,6 @@ const Root = ({
   defaultColor = "#222222",
   children,
   onIconSelected,
-  getIconSvg,
 }: RootProps) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const bottomElementRef = useRef<HTMLDivElement>(null);
@@ -63,6 +63,11 @@ const Root = ({
   );
   const [selectedColor, setSelectedColor] = useState(defaultColor);
   const [recentIconNames, setRecentIconNames] = useState<string[]>([]);
+  const [isBundleLoaded, setIsBundleLoaded] = useState(false);
+
+  useEffect(() => {
+    getIconsBundle().then(() => setIsBundleLoaded(true));
+  }, []);
 
   const isWhiteOnDark = useMemo(
     () =>
@@ -116,11 +121,8 @@ const Root = ({
   }, []);
 
   const fetchSvg = useCallback(
-    (name: string) =>
-      getIconSvg
-        ? getIconSvg(name)
-        : fetch(`/icons/${name}.svg`).then((r) => r.text()),
-    [getIconSvg],
+    (name: string) => getIconsBundle().then((bundle) => bundle[name] ?? ""),
+    [],
   );
 
   const selectIcon = useCallback(
@@ -151,6 +153,7 @@ const Root = ({
         scrollContainerRef,
         bottomElementRef,
         isWhiteOnDark,
+        isBundleLoaded,
         updateColor,
         searchIcon,
         selectIcon,
@@ -206,11 +209,19 @@ const List = () => {
     scrollContainerRef,
     bottomElementRef,
     isWhiteOnDark,
+    isBundleLoaded,
   } = useIconPickerContext();
+
+  if (isBundleLoaded)
+    return (
+      <div className="flex items-center justify-center min-h-87.5">
+        <TypebotLoader />
+      </div>
+    );
 
   return (
     <div
-      className="flex flex-col overflow-y-auto max-h-87.5 gap-4"
+      className="flex flex-col overflow-y-auto max-h-87.5 gap-4 pt-2"
       ref={scrollContainerRef}
     >
       {recentIconNames.length > 0 && (
@@ -218,7 +229,7 @@ const List = () => {
           <p className="text-xs font-medium pl-2 text-gray-7">RECENT</p>
           <div
             className={cn(
-              "grid gap-0 rounded-md grid-cols-[repeat(auto-fill,minmax(38px,1fr))]",
+              "grid justify-center rounded-md grid-cols-[repeat(auto-fill,32px)]",
               isWhiteOnDark && "bg-gray-7",
             )}
           >
@@ -244,7 +255,7 @@ const List = () => {
         )}
         <div
           className={cn(
-            "grid gap-0 rounded-md grid-cols-[repeat(auto-fill,minmax(38px,1fr))]",
+            "grid justify-center rounded-md grid-cols-[repeat(auto-fill,32px)]",
             isWhiteOnDark && "bg-gray-7",
           )}
         >
@@ -266,6 +277,17 @@ const List = () => {
   );
 };
 
+let iconsBundlePromise: Promise<Record<string, string>> | undefined;
+
+const getIconsBundle = () => {
+  if (!iconsBundlePromise) {
+    iconsBundlePromise = fetch("/icons-bundle.json")
+      .then((r) => r.json())
+      .catch(() => ({}));
+  }
+  return iconsBundlePromise;
+};
+
 const IconPreview = ({ name, color }: { name: string; color: string }) => {
   const [svg, setSvg] = useState("");
 
@@ -279,9 +301,10 @@ const IconPreview = ({ name, color }: { name: string; color: string }) => {
   );
 
   useEffect(() => {
-    fetch(`/icons/${name}.svg`)
-      .then((response) => response.text())
-      .then((text) => setSvg(text));
+    getIconsBundle().then((bundle) => {
+      const content = bundle[name];
+      if (content) setSvg(content);
+    });
   }, [name]);
 
   if (!svg) return null;
