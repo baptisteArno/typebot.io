@@ -2,8 +2,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { createId } from "@typebot.io/lib/createId";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { cn } from "@typebot.io/ui/lib/cn";
+import { Schema } from "effect";
 import { useEffect, useState } from "react";
-import z from "zod";
 import { Portal } from "@/components/Portal";
 import type { TypebotInDashboard } from "@/features/dashboard/types";
 import type { NodePosition } from "@/features/graph/providers/GraphDndProvider";
@@ -20,10 +20,9 @@ import { TypebotButtonOverlay } from "./TypebotButtonOverlay";
 
 type Props = { folder: Prisma.DashboardFolder | null };
 
-const optimisticFolderCreateSchema = z.object({
-  id: z.cuid2(),
-  name: z.string(),
-  createdAt: z.date(),
+const OptimisticFolderCreate = Schema.Struct({
+  id: Schema.NonEmptyString,
+  folderName: Schema.NonEmptyString,
 });
 
 export const FolderContent = ({ folder }: Props) => {
@@ -36,6 +35,7 @@ export const FolderContent = ({ folder }: Props) => {
     mouseOverSpaceId,
     setMouseOverSpaceId,
   } = useTypebotDnd();
+
   const [draggablePosition, setDraggablePosition] = useState({ x: 0, y: 0 });
   const [mousePositionInElement, setMousePositionInElement] = useState({
     x: 0,
@@ -60,27 +60,31 @@ export const FolderContent = ({ folder }: Props) => {
   const { mutate: createFolder, isPending: isCreatingFolder } = useMutation(
     orpc.folders.createFolder.mutationOptions({
       onMutate: (data) => {
-        const { success, data: newFolder } =
-          optimisticFolderCreateSchema.safeParse({
-            ...data,
-            name: data.folderName,
-          });
-        if (!success) return;
-        const listFoldersQueryKey = orpc.folders.listFolders.key();
+        const result = Schema.decodeUnknownExit(OptimisticFolderCreate)(data);
+        if (result._tag !== "Success") return;
+        const newFolder = {
+          id: result.value.id,
+          name: result.value.folderName,
+          createdAt: new Date(),
+        };
+        const listFoldersQueryKey = orpc.folders.listFolders.queryKey({
+          input: {
+            workspaceId: data.workspaceId,
+            parentFolderId: data.parentFolderId,
+          },
+        });
         const cacheData =
           queryClient.getQueryData<typeof foldersData>(listFoldersQueryKey);
-        if (!cacheData) return;
 
         queryClient.cancelQueries({ queryKey: listFoldersQueryKey });
 
         queryClient.setQueryData<typeof foldersData>(
           listFoldersQueryKey,
-          (cache) =>
-            cache
-              ? {
-                  folders: [...cache.folders, newFolder],
-                }
-              : undefined,
+          (cache) => ({
+            folders: [...(cache?.folders ?? []), newFolder].sort(
+              (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+            ),
+          }),
         );
         return { previousCacheData: cacheData, key: listFoldersQueryKey };
       },
@@ -93,39 +97,47 @@ export const FolderContent = ({ folder }: Props) => {
       },
     }),
   );
-
   const { mutate: patchTypebot } = useMutation(
     orpc.typebot.updateTypebot.mutationOptions({
-      onMutate: (data) => {
-        const listTypebotsQueryKey = orpc.typebot.listTypebots.key();
+      onMutate: (patchData) => {
+        const currentFolderId = folder === null ? null : folder.id;
+        const listTypebotsQueryKey = orpc.typebot.listTypebots.queryKey({
+          input: {
+            workspaceId: workspace?.id as string,
+            folderId: folder === null ? "root" : folder.id,
+          },
+        });
 
         const cacheData =
           queryClient.getQueryData<typeof typebotsData>(listTypebotsQueryKey);
-
-        if (!cacheData) return;
 
         queryClient.cancelQueries({ queryKey: listTypebotsQueryKey });
 
         queryClient.setQueryData<typeof typebotsData>(
           listTypebotsQueryKey,
-          (cache) =>
-            cache
-              ? {
-                  typebots: cache.typebots
-                    .map((typebot) =>
-                      typebot.id === data.typebotId
-                        ? {
-                            ...typebot,
-                            folderId: data.typebot.folderId ?? null,
-                            spaceId: data.typebot.spaceId ?? null,
-                          }
-                        : typebot,
-                    )
-                    .sort(
-                      (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
-                    ),
-                }
-              : undefined,
+          (cache) => ({
+            typebots:
+              cache?.typebots
+                ?.filter((typebot) => {
+                  if (typebot.id !== patchData.typebotId) return true;
+                  if (patchData.typebot.folderId === undefined) return true;
+                  return patchData.typebot.folderId === currentFolderId;
+                })
+                .map((typebot) =>
+                  typebot.id === patchData.typebotId
+                    ? {
+                        ...typebot,
+                        spaceId:
+                          patchData.typebot.spaceId === undefined
+                            ? typebot.spaceId
+                            : patchData.typebot.spaceId,
+                      }
+                    : typebot,
+                )
+                .sort(
+                  (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+                ) ?? [],
+          }),
         );
 
         return { previousCacheData: cacheData, key: listTypebotsQueryKey };

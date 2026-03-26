@@ -37,6 +37,7 @@ export const SpacesTable = ({
     <Table.Header>
       <Table.Row>
         <Table.Head>Space</Table.Head>
+        <Table.Head className="w-10" />
       </Table.Row>
     </Table.Header>
     <Table.Body>
@@ -56,9 +57,14 @@ export const SpacesTable = ({
               <Editable.Root
                 defaultValue={space.name}
                 defaultEdit={defaultEditableSpaceId === space.id}
-                onValueCommit={(name) =>
-                  onSpaceUpdate({ id: space.id, name, icon: space.icon })
-                }
+                onValueCommit={(newName) => {
+                  if (newName === space.name) return;
+                  onSpaceUpdate({
+                    id: space.id,
+                    name: newName,
+                    icon: space.icon,
+                  });
+                }}
               >
                 <Editable.Preview />
                 <Editable.Input />
@@ -114,7 +120,7 @@ const SpaceIconPopover = ({
         <EmojiOrImageIcon
           icon={defaultValue}
           defaultIcon={<SpacesIcon className="size-full" />}
-          className="size-6"
+          className="size-6 justify-center text-xl"
         />
       </Popover.TriggerButton>
       <Popover.Popup>
@@ -126,7 +132,7 @@ const SpaceIconPopover = ({
             <Tabs.Tab value="upload">Upload</Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="icon">
-            <IconPicker.Root onIconSelected={(icon) => onValueCommit(icon)}>
+            <IconPicker.Root onIconSelected={(icon) => { onValueCommit(icon); popoverControls.onClose(); }}>
               <div className="flex items-center gap-2">
                 <IconPicker.SearchInput />
                 <IconPicker.ColorPicker />
@@ -135,7 +141,7 @@ const SpaceIconPopover = ({
             </IconPicker.Root>
           </Tabs.Panel>
           <Tabs.Panel value="emoji">
-            <EmojiPicker.Root onEmojiSelected={(emoji) => onValueCommit(emoji)}>
+            <EmojiPicker.Root onEmojiSelected={(emoji) => { onValueCommit(emoji); popoverControls.onClose(); }}>
               <EmojiPicker.SearchInput />
               <EmojiPicker.List />
             </EmojiPicker.Root>
@@ -146,11 +152,11 @@ const SpaceIconPopover = ({
               onValueChange={(value) => onValueCommit(value)}
             />
           </Tabs.Panel>
-          <Tabs.Panel value="upload">
+          <Tabs.Panel value="upload" className="flex justify-center py-4">
             <UploadButton
               accept="image/avif, image/*"
               onFileUploadRequest={onFileUploadRequest}
-              onValueCommit={onValueCommit}
+              onValueCommit={(icon) => { onValueCommit(icon); popoverControls.onClose(); }}
             />
           </Tabs.Panel>
         </Tabs.Root>

@@ -1,6 +1,6 @@
 import { ORPCError } from "@orpc/server";
 import prisma from "@typebot.io/prisma";
-import { Plan } from "@typebot.io/prisma/enum";
+import { Plan, PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
 import { folderSchema } from "@typebot.io/schemas/features/folder";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
@@ -37,16 +37,25 @@ export const handleUpdateFolder = async ({
       message: "You need to upgrade to a paid plan to update folders",
     });
 
-  const updatedFolder = await prisma.dashboardFolder.update({
-    where: {
-      id: folderId,
-      workspaceId,
-    },
-    data: {
-      name: folder.name,
-      parentFolderId: folder.parentFolderId,
-    },
-  });
+  try {
+    const updatedFolder = await prisma.dashboardFolder.update({
+      where: {
+        id: folderId,
+        workspaceId,
+      },
+      data: {
+        name: folder.name,
+        parentFolderId: folder.parentFolderId,
+      },
+    });
 
-  return { folder: folderSchema.parse(updatedFolder) };
+    return { folder: folderSchema.parse(updatedFolder) };
+  } catch (error) {
+    if (
+      error instanceof PrismaClientKnownRequestError &&
+      error.code === "P2025"
+    )
+      throw new ORPCError("NOT_FOUND", { message: "Folder not found" });
+    throw error;
+  }
 };

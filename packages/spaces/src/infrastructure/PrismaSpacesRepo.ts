@@ -1,5 +1,8 @@
-import { PrismaService } from "@typebot.io/prisma/effect";
-import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
+import {
+  PrismaRecordNotFoundError,
+  PrismaService,
+  PrismaUniqueConstraintError,
+} from "@typebot.io/prisma/effect";
 import { Effect, Layer, Schema } from "effect";
 import type {
   ListSpacesInput,
@@ -49,8 +52,7 @@ export const PrismaSpacesRepo = Layer.effect(
         })
         .pipe(
           Effect.catch((error) =>
-            error instanceof PrismaClientKnownRequestError &&
-            error.code === "P2002"
+            error instanceof PrismaUniqueConstraintError
               ? Effect.fail(new SpaceAlreadyExistsError())
               : Effect.die(error),
           ),
@@ -77,8 +79,7 @@ export const PrismaSpacesRepo = Layer.effect(
         })
         .pipe(
           Effect.catch((error) =>
-            error instanceof PrismaClientKnownRequestError &&
-            error.code === "P2025"
+            error instanceof PrismaRecordNotFoundError
               ? Effect.fail(new SpaceNotFoundError())
               : Effect.die(error),
           ),
@@ -101,8 +102,7 @@ export const PrismaSpacesRepo = Layer.effect(
         })
         .pipe(
           Effect.catch((error) =>
-            error instanceof PrismaClientKnownRequestError &&
-            error.code === "P2025"
+            error instanceof PrismaRecordNotFoundError
               ? Effect.fail(new SpaceNotFoundError())
               : Effect.die(error),
           ),

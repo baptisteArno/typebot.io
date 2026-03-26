@@ -1,7 +1,10 @@
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
-import { PrismaClientService, PrismaService } from "@typebot.io/prisma/effect";
-import { PrismaClientKnownRequestError } from "@typebot.io/prisma/enum";
+import {
+  PrismaClientService,
+  PrismaService,
+  PrismaUniqueConstraintError,
+} from "@typebot.io/prisma/effect";
 import { Effect, Layer } from "effect";
 import type { SendMailOptions } from "nodemailer";
 
@@ -182,10 +185,7 @@ export const recordTransientGeneralBounces = Effect.fn(
           .pipe(
             Effect.as(true),
             Effect.catch((error) => {
-              if (
-                error instanceof PrismaClientKnownRequestError &&
-                error.code === "P2002"
-              )
+              if (error instanceof PrismaUniqueConstraintError)
                 return Effect.succeed(false);
               return Effect.fail(error);
             }),

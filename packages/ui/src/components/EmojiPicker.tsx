@@ -107,7 +107,7 @@ const List = () => {
   );
 
   return (
-    <div className="flex flex-col overflow-y-auto max-h-87.5 gap-4">
+    <div className="flex flex-col overflow-y-auto max-h-87.5 gap-4 pt-2">
       {recentEmojis.length > 0 && (
         <div className="flex flex-col gap-2">
           <p className="text-xs font-medium pl-2 text-muted-foreground">

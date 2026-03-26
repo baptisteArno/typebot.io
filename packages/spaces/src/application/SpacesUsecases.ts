@@ -150,10 +150,11 @@ export class SpacesUsecases extends ServiceMap.Service<
 }
 
 export const SpaceListResponseSchema = Schema.Array(
-  Space.mapFields(({ id, name, icon }) => ({
+  Space.mapFields(({ id, name, icon, createdAt }) => ({
     id,
     name,
     icon,
+    createdAt,
   })),
 );
 export type SpaceListResponse = typeof SpaceListResponseSchema.Type;

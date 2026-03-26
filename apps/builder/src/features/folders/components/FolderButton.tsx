@@ -1,3 +1,4 @@
+import { ORPCError } from "@orpc/client";
 import { useMutation } from "@tanstack/react-query";
 import { T, useTranslate } from "@tolgee/react";
 import type { Prisma } from "@typebot.io/prisma/types";
@@ -51,6 +52,10 @@ const FolderButton = ({
   const { mutate: updateFolder } = useMutation(
     orpc.folders.updateFolder.mutationOptions({
       onSuccess: onFolderRenamed,
+      retry: (failureCount, error) =>
+        error instanceof ORPCError &&
+        error.code === "NOT_FOUND" &&
+        failureCount < 2,
     }),
   );
 
