@@ -10,3 +10,10 @@ description: Use this skill when you need to write any frontend components. It e
 - Sort component props: values first, functions last
 - Never add explicit type annotations on callback parameters when the type can be inferred from the component prop. e.g. `onValueCommit={(name) =>` not `onValueCommit={(name: string) =>`
 - Use `cn()` when conditionally applying Tailwind classes that may conflict (e.g. border colors).
+- In React components, order declarations as follows:
+  1. Context hooks (useWorkspace, useTranslate, etc.)
+  2. useState / useRef
+  3. useQuery
+  4. useMutation
+  5. Handlers
+  6. Derived variables
