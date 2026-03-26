@@ -212,7 +212,7 @@ const List = () => {
     isBundleLoaded,
   } = useIconPickerContext();
 
-  if (isBundleLoaded)
+  if (!isBundleLoaded)
     return (
       <div className="flex items-center justify-center min-h-87.5">
         <TypebotLoader />
