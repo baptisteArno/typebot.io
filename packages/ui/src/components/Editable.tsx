@@ -15,6 +15,7 @@ import { Textarea, type TextareaProps } from "./Textarea";
 
 type EditableContextValue = {
   isEditing: boolean;
+  isMultilineRef: React.RefObject<boolean>;
   value: string;
   setIsEditing: (editing: boolean) => void;
   setValue: (value: string) => void;
@@ -49,6 +50,7 @@ const Root = ({
   ...props
 }: RootProps) => {
   const [isEditing, setIsEditing] = useState(defaultEdit ?? false);
+  const isMultilineRef = useRef(false);
   const [internalValue, setInternalValue] = useState(defaultValue ?? "");
 
   const value = controlledValue ?? internalValue;
@@ -65,7 +67,14 @@ const Root = ({
 
   return (
     <EditableContext.Provider
-      value={{ isEditing, setIsEditing, value, setValue, commitValue }}
+      value={{
+        isEditing,
+        isMultilineRef,
+        setIsEditing,
+        setValue,
+        value,
+        commitValue,
+      }}
     >
       <div {...props}>{children}</div>
     </EditableContext.Provider>
@@ -114,8 +123,11 @@ const additionalFocusHeight = 20;
 type EditableTextareaProps = Omit<TextareaProps, "value">;
 
 const EditableTextarea = ({ className, ...props }: EditableTextareaProps) => {
-  const { isEditing, value, setValue, commitValue, setIsEditing } =
+  const { isEditing, isMultilineRef, value, setValue, commitValue, setIsEditing } =
     useEditable();
+
+  isMultilineRef.current = true;
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const autoResize = (textareaElement: HTMLTextAreaElement) => {
@@ -172,12 +184,20 @@ const EditableTextarea = ({ className, ...props }: EditableTextareaProps) => {
 
 type PreviewProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children?: ReactNode;
+  maxLines?: number;
 };
 
-const EditablePreview = ({ className, children, ...props }: PreviewProps) => {
-  const { isEditing, setIsEditing, value } = useEditable();
+const EditablePreview = ({
+  className,
+  children,
+  maxLines,
+  ...props
+}: PreviewProps) => {
+  const { isEditing, isMultilineRef, setIsEditing, value } = useEditable();
 
   if (isEditing) return null;
+
+  const isClampedMultiline = isMultilineRef.current || maxLines;
 
   return (
     <button
@@ -189,11 +209,23 @@ const EditablePreview = ({ className, children, ...props }: PreviewProps) => {
         setIsEditing(true);
       }}
       className={cn(
-        "hover:bg-gray-3 inline-flex w-full cursor-text whitespace-pre-line rounded-md border border-transparent p-1",
+        "text-left hover:bg-gray-3 w-full cursor-text rounded-md border border-transparent p-1",
+        isClampedMultiline
+          ? "inline-flex whitespace-pre-line"
+          : "block truncate",
         className,
       )}
     >
-      {children ?? value}
+      <span
+        className={cn(maxLines && "line-clamp-(--max-lines)")}
+        style={
+          maxLines
+            ? ({ "--max-lines": maxLines } as React.CSSProperties)
+            : undefined
+        }
+      >
+        {children ?? value}
+      </span>
     </button>
   );
 };

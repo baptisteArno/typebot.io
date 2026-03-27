@@ -133,7 +133,7 @@ const FolderButton = ({
             onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
             <Editable.Input className="text-center" />
-            <Editable.Preview className="cursor-text" />
+            <Editable.Preview className="cursor-text" maxLines={3} />
           </Editable.Root>
         </div>
       </div>

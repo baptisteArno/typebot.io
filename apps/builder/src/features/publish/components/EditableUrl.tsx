@@ -29,7 +29,7 @@ export const EditableUrl = ({
         <p className="shrink-0">{hostname}/</p>
         <Editable.Root
           value={value}
-          className="font-medium"
+          className="font-medium max-w-xs"
           onValueChange={setValue}
           onValueCommit={handleSubmit}
         >

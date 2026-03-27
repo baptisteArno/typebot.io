@@ -194,7 +194,7 @@ const TypebotButton = ({
             className="size-9 text-[2.25rem]"
             defaultIcon={<LayoutBottomIcon className="size-full" />}
           />
-          <p className="text-center max-w-[180px] line-clamp-4">
+          <p className="text-center max-w-[180px] line-clamp-3">
             {typebot.name}
           </p>
         </div>

@@ -25,7 +25,7 @@ export const EditableTypebotName = ({
       <Tooltip.Trigger
         render={
           <Editable.Root
-            className="text-sm"
+            className="text-sm max-w-[232px]"
             value={currentName}
             onValueChange={setCurrentName}
             onValueCommit={submitNewName}
