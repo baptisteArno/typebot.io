@@ -1,4 +1,5 @@
 import { startChat } from '@typebot.io/bot-engine/apiHandlers/startChat'
+import logger from '@/helpers/logger'
 
 interface ExecuteWorkflowParams {
   publicId: string
@@ -13,7 +14,14 @@ export async function executeWorkflow({
   publicId,
   prefilledVariables,
 }: ExecuteWorkflowParams) {
-  return startChat({
+  logger.info('executeWorkflow: starting', {
+    publicId,
+    variableCount: prefilledVariables
+      ? Object.keys(prefilledVariables).length
+      : 0,
+  })
+
+  const result = await startChat({
     origin: undefined,
     isOnlyRegistering: false,
     publicId,
@@ -21,4 +29,7 @@ export async function executeWorkflow({
     prefilledVariables,
     textBubbleContentFormat: 'markdown',
   })
+
+  logger.info('executeWorkflow: completed', { publicId })
+  return result
 }

@@ -6,6 +6,7 @@ import {
   extractToolOutput,
   transformToMCPTool,
 } from '@/features/mcp'
+import logger from '@/helpers/logger'
 
 /**
  * MCP (Model Context Protocol) endpoint.
@@ -68,6 +69,7 @@ export default async function handler(
       const { method, params, id } = body
 
       if (method === 'initialize') {
+        logger.info('MCP initialize', { tenant, requestId: id })
         return res.status(200).json({
           jsonrpc: '2.0',
           result: {
@@ -86,6 +88,7 @@ export default async function handler(
 
       if (method === 'tools/list') {
         if (!tenant) {
+          logger.warn('MCP tools/list called without tenant', { requestId: id })
           return res.status(200).json({
             jsonrpc: '2.0',
             result: { tools: [] },
@@ -93,9 +96,15 @@ export default async function handler(
           })
         }
 
+        logger.info('MCP tools/list', { tenant, requestId: id })
         const { tools } = await getWorkflowTools({ tenant })
 
         const mcpTools = tools.map(transformToMCPTool)
+        logger.info('MCP tools/list completed', {
+          tenant,
+          toolCount: mcpTools.length,
+          requestId: id,
+        })
 
         return res.status(200).json({
           jsonrpc: '2.0',
@@ -106,6 +115,7 @@ export default async function handler(
 
       if (method === 'tools/call') {
         if (!tenant) {
+          logger.warn('MCP tools/call called without tenant', { requestId: id })
           return res.status(200).json({
             jsonrpc: '2.0',
             error: {
@@ -117,10 +127,18 @@ export default async function handler(
         }
 
         const { name, arguments: args } = params || {}
+        logger.info('MCP tools/call', { tenant, toolName: name, requestId: id })
+
         const { tools } = await getWorkflowTools({ tenant })
         const tool = tools.find((t) => sanitizeToolName(t.name) === name)
 
         if (!tool) {
+          logger.warn('MCP tool not found', {
+            tenant,
+            toolName: name,
+            availableTools: tools.map((t) => sanitizeToolName(t.name)),
+            requestId: id,
+          })
           return res.status(200).json({
             jsonrpc: '2.0',
             error: {
@@ -131,15 +149,27 @@ export default async function handler(
           })
         }
 
+        const startTime = Date.now()
         const result = await executeWorkflow({
           publicId: tool.publicName,
           prefilledVariables: args as Record<string, unknown>,
+        })
+        const durationMs = Date.now() - startTime
+
+        const output = extractToolOutput(result)
+        logger.info('MCP tools/call completed', {
+          tenant,
+          toolName: name,
+          workflowId: tool.id,
+          publicName: tool.publicName,
+          durationMs,
+          requestId: id,
         })
 
         return res.status(200).json({
           jsonrpc: '2.0',
           result: {
-            content: [{ type: 'text', text: extractToolOutput(result) }],
+            content: [{ type: 'text', text: output }],
           },
           id,
         })
@@ -155,6 +185,11 @@ export default async function handler(
       }
 
       // Unknown method
+      logger.warn('MCP unknown method', {
+        tenant,
+        method,
+        requestId: id,
+      })
       return res.status(200).json({
         jsonrpc: '2.0',
         error: {
@@ -164,7 +199,13 @@ export default async function handler(
         id,
       })
     } catch (error) {
-      console.error('MCP request failed:', error)
+      logger.error('MCP request failed', {
+        tenant,
+        method: req.body?.method,
+        requestId: req.body?.id,
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+      })
       return res.status(200).json({
         jsonrpc: '2.0',
         error: {

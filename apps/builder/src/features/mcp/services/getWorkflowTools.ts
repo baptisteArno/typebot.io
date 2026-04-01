@@ -1,4 +1,5 @@
 import prisma from '@typebot.io/lib/prisma'
+import logger from '@/helpers/logger'
 import type { GetWorkflowToolsResult } from '../types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -15,6 +16,7 @@ interface GetWorkflowToolsParams {
 export async function getWorkflowTools({
   tenant,
 }: GetWorkflowToolsParams): Promise<GetWorkflowToolsResult> {
+  logger.debug('getWorkflowTools: querying typebots', { tenant })
   const typebots = await prisma.typebot.findMany({
     where: {
       tenant,
@@ -102,6 +104,12 @@ export async function getWorkflowTools({
         publicName: typebot.publicId ?? `${slug}-${typebot.id.slice(-7)}`,
       }
     })
+
+  logger.debug('getWorkflowTools: completed', {
+    tenant,
+    totalTypebots: typebots.length,
+    filteredTools: tools.length,
+  })
 
   return { tools }
 }
