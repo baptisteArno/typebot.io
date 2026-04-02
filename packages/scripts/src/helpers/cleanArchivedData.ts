@@ -1,10 +1,14 @@
+import { Prisma } from "@prisma/client";
 import prisma from "@typebot.io/prisma/withReadReplica";
 import { archiveResults } from "@typebot.io/results/archiveResults";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 
 export const cleanArchivedData = async () => {
-  await deleteArchivedResults();
+  console.log("🧹 Starting archived data cleanup...");
+  const start = Date.now();
   await deleteArchivedTypebots();
+  const elapsed = ((Date.now() - start) / 1000).toFixed(1);
+  console.log(`✅ Archived data cleanup completed in ${elapsed}s`);
 };
 
 const deleteArchivedTypebots = async () => {
@@ -12,7 +16,10 @@ const deleteArchivedTypebots = async () => {
   lastDayTwoMonthsAgo.setMonth(lastDayTwoMonthsAgo.getMonth() - 1);
   lastDayTwoMonthsAgo.setDate(0);
   lastDayTwoMonthsAgo.setHours(0, 0, 0, 0);
-  console.log("Fetching archived typebots...");
+  console.log(
+    `📅 Cutoff date: ${lastDayTwoMonthsAgo.toISOString().split("T")[0]}`,
+  );
+  console.log("🔍 Fetching archived typebots...");
   const typebots = await prisma.typebot.findMany({
     where: {
       updatedAt: {
@@ -23,61 +30,63 @@ const deleteArchivedTypebots = async () => {
     select: { id: true },
   });
 
-  console.log(`Deleting ${typebots.length} archived typebots...`);
-
-  const chunkSize = 1000;
-  for (let i = 0; i < typebots.length; i += chunkSize) {
-    const chunk = typebots.slice(i, i + chunkSize);
-    await deleteResultsFromArchivedTypebotsIfAny(chunk);
-    await prisma.typebot.deleteMany({
-      where: {
-        id: {
-          in: chunk.map((typebot) => typebot.id),
-        },
-      },
-    });
+  if (typebots.length === 0) {
+    console.log("   No archived typebots to delete.");
+    return;
   }
-  console.log("Done!");
+
+  console.log(`🗑️  Found ${typebots.length} archived typebots to delete`);
+
+  const chunkSize = 100;
+  const totalChunks = Math.ceil(typebots.length / chunkSize);
+  for (let i = 0; i < typebots.length; i += chunkSize) {
+    const chunkIndex = Math.floor(i / chunkSize) + 1;
+    const chunk = typebots.slice(i, i + chunkSize);
+    console.log(
+      `   [${chunkIndex}/${totalChunks}] Processing chunk of ${chunk.length} typebots...`,
+    );
+    const chunkIds = chunk.map((typebot) => typebot.id);
+    await deleteResultsFromArchivedTypebotsIfAny(chunk);
+    try {
+      await prisma.typebot.deleteMany({
+        where: { id: { in: chunkIds } },
+      });
+      console.log(
+        `   [${chunkIndex}/${totalChunks}] ✓ Deleted ${i + chunk.length}/${typebots.length} typebots`,
+      );
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        error.message.includes("Expected zero or one element")
+      ) {
+        console.log(
+          `   [${chunkIndex}/${totalChunks}] ⚠️  Duplicate PublicTypebot detected, cleaning up...`,
+        );
+        await deleteDuplicatePublicTypebots(chunkIds);
+        await prisma.typebot.deleteMany({
+          where: { id: { in: chunkIds } },
+        });
+        console.log(
+          `   [${chunkIndex}/${totalChunks}] ✓ Deleted ${i + chunk.length}/${typebots.length} typebots (after fix)`,
+        );
+      } else {
+        throw error;
+      }
+    }
+  }
 };
 
-const deleteArchivedResults = async () => {
-  const resultsBatch = 10000;
-  const lastDayTwoMonthsAgo = new Date();
-  lastDayTwoMonthsAgo.setMonth(lastDayTwoMonthsAgo.getMonth() - 1);
-  lastDayTwoMonthsAgo.setDate(0);
-  lastDayTwoMonthsAgo.setHours(0, 0, 0, 0);
-  let totalResults: number;
-  do {
-    console.log(`Fetching ${resultsBatch} archived results...`);
-    const results = (await prisma.$queryRaw`
-      SELECT id
-      FROM Result
-      WHERE createdAt <= ${lastDayTwoMonthsAgo}
-        AND isArchived = true
-      LIMIT ${resultsBatch}
-    `) as { id: string }[];
-    totalResults = results.length;
-    console.log(`Deleting ${results.length} archived results...`);
-    const chunkSize = 1000;
-    for (let i = 0; i < results.length; i += chunkSize) {
-      const chunk = results.slice(i, i + chunkSize);
-      await prisma.result.deleteMany({
-        where: {
-          id: {
-            in: chunk.map((result) => result.id),
-          },
-        },
-      });
-    }
-  } while (totalResults === resultsBatch);
-
-  console.log("Done!");
+const deleteDuplicatePublicTypebots = async (typebotIds: string[]) => {
+  if (typebotIds.length === 0) return;
+  const result =
+    await prisma.$executeRaw`DELETE FROM PublicTypebot WHERE typebotId IN (${Prisma.join(typebotIds)})`;
+  console.log(`      Removed ${result} PublicTypebot(s) via raw SQL`);
 };
 
 const deleteResultsFromArchivedTypebotsIfAny = async (
   typebotIds: { id: string }[],
 ) => {
-  console.log("Checking for archived typebots with non-archived results...");
+  console.log("   🔎 Checking for typebots with remaining results...");
   const archivedTypebotsWithResults = (await prisma.typebot.findMany({
     where: {
       id: {
@@ -94,11 +103,15 @@ const deleteResultsFromArchivedTypebotsIfAny = async (
       workspaceId: true,
     },
   })) as Pick<Typebot, "groups" | "id" | "workspaceId">[];
-  if (archivedTypebotsWithResults.length === 0) return;
+  if (archivedTypebotsWithResults.length === 0) {
+    console.log("   No results to archive in this chunk.");
+    return;
+  }
   console.log(
-    `Found ${archivedTypebotsWithResults.length} archived typebots with non-archived results.`,
+    `   📦 Archiving results for ${archivedTypebotsWithResults.length} typebots...`,
   );
-  for (const archivedTypebot of archivedTypebotsWithResults) {
+  for (let i = 0; i < archivedTypebotsWithResults.length; i++) {
+    const archivedTypebot = archivedTypebotsWithResults[i]!;
     // @ts-expect-error
     await archiveResults(prisma)({
       typebot: archivedTypebot,
@@ -106,7 +119,10 @@ const deleteResultsFromArchivedTypebotsIfAny = async (
         typebotId: archivedTypebot.id,
       },
     });
+    await prisma.result.deleteMany({
+      where: {
+        typebotId: archivedTypebot.id,
+      },
+    });
   }
-  console.log("Delete archived results...");
-  await deleteArchivedResults();
 };
