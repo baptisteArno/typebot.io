@@ -6,6 +6,6 @@ export const sanitizeUrl = (url: string): string => {
     if (allowedProtocols.includes(parsed.protocol)) return url;
     return "#";
   } catch {
-    return url;
+    return "#";
   }
 };
