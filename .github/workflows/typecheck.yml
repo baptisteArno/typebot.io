@@ -1,0 +1,24 @@
+name: Typecheck
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: "package.json"
+      - run: bun install --frozen-lockfile
+      - run: bunx nx affected -t typecheck --base=origin/${{ github.event.pull_request.base.ref }}
