@@ -64,7 +64,8 @@ export const generateUploadUrl = authenticatedProcedure
             "S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY",
         });
 
-      if (!fileType || dangerousContentTypes.has(fileType.toLowerCase()))
+      const normalizedFileType = fileType?.toLowerCase().split(";")[0]?.trim();
+      if (!normalizedFileType || dangerousContentTypes.has(normalizedFileType))
         throw new ORPCError("BAD_REQUEST", {
           message:
             "File type not allowed. SVG, HTML, and XML files cannot be uploaded.",
