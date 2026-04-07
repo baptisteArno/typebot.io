@@ -50,9 +50,12 @@ export const GoogleSheetsSettings = ({
       input: {
         credentialsId: options?.credentialsId ?? "",
         spreadsheetId: options?.spreadsheetId ?? "",
-        workspaceId: workspace?.id,
+        workspaceId: workspace?.id ?? "",
       },
-      enabled: !!options?.credentialsId && !!options?.spreadsheetId,
+      enabled:
+        !!options?.credentialsId &&
+        !!options?.spreadsheetId &&
+        !!workspace?.id,
     }),
   );
   const { isOpen, onOpen, onClose } = useOpenControls();
