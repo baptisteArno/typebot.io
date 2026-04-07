@@ -92,7 +92,7 @@ export const handleGenerateUploadUrl = async ({
       message: `File type ${fileType} not allowed`,
     });
 
-  const { visibility } = parseFileUploadParams(block);
+  const { visibility, maxFileSize } = parseFileUploadParams(block);
 
   const resultId = session.state.typebotsQueue[0].resultId;
 
@@ -103,14 +103,16 @@ export const handleGenerateUploadUrl = async ({
         }/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${fileName}`
       : `public/tmp/typebots/${typebotId}/blocks/${blockId}/${fileName}`;
 
-  const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType } = await generatePresignedPutUrl({
+  const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType, maxFileSize: maxFileSizeMB } = await generatePresignedPutUrl({
     fileType,
     filePath,
+    maxFileSize,
   });
 
   return {
     presignedUrl,
     fileType: resolvedFileType,
+    maxFileSize: maxFileSizeMB,
     fileUrl:
       visibility === "Private" && !isPreview
         ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${fileName}`

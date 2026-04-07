@@ -70,7 +70,7 @@ export const handleGenerateUploadUrlV2 = async ({
       message: "Current block does not expect file upload",
     });
 
-  const { visibility } = parseFileUploadParams(block);
+  const { visibility, maxFileSize } = parseFileUploadParams(block);
 
   const resultId = session.state.typebotsQueue[0].resultId;
 
@@ -81,14 +81,16 @@ export const handleGenerateUploadUrlV2 = async ({
         }/typebots/${typebotId}/results/${resultId}/${fileName}`
       : `public/tmp/${typebotId}/${fileName}`;
 
-  const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType } = await generatePresignedPutUrl({
+  const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType, maxFileSize: maxFileSizeMB } = await generatePresignedPutUrl({
     fileType,
     filePath,
+    maxFileSize,
   });
 
   return {
     presignedUrl,
     fileType: resolvedFileType,
+    maxFileSize: maxFileSizeMB,
     fileUrl:
       visibility === "Private" && !isPreview
         ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${fileName}`

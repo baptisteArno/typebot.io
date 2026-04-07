@@ -75,6 +75,9 @@ export const handleGenerateUploadUrlV1 = async ({
     return generatePresignedPutUrl({
       fileType,
       filePath,
+      maxFileSize:
+        fileUploadBlock.options?.sizeLimit ??
+        env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
     });
   }
 
@@ -134,14 +137,19 @@ export const handleGenerateUploadUrlV1 = async ({
     filePathProps.fileName
   }`;
 
-  const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType } = await generatePresignedPutUrl({
+  const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType, maxFileSize: maxFileSizeMB } = await generatePresignedPutUrl({
     fileType,
     filePath,
+    maxFileSize:
+      fileUploadBlock.options && "sizeLimit" in fileUploadBlock.options
+        ? (fileUploadBlock.options.sizeLimit as number)
+        : env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
   });
 
   return {
     presignedUrl,
     fileType: resolvedFileType,
+    maxFileSize: maxFileSizeMB,
     fileUrl:
       fileUploadBlock.options?.visibility === "Private"
         ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${filePathProps.fileName}`

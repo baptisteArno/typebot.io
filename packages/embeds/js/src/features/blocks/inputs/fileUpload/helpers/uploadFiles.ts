@@ -35,6 +35,7 @@ export const uploadFiles = async ({
       presignedUrl: string;
       fileUrl: string;
       fileType?: string;
+      maxFileSize?: number;
     }>({
       method: "POST",
       url: `${apiHost}/api/v3/generate-upload-url`,
@@ -52,6 +53,11 @@ export const uploadFiles = async ({
     }
 
     if (!data?.presignedUrl) continue;
+
+    if (data.maxFileSize && file.size > data.maxFileSize * 1024 * 1024) {
+      errors.push(`File ${file.name} exceeds the ${data.maxFileSize}MB size limit`);
+      continue;
+    }
 
     const upload = await fetch(data.presignedUrl, {
       method: "PUT",

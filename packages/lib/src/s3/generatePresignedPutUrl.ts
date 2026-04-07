@@ -4,6 +4,7 @@ import { initClient } from "./initClient";
 type Props = {
   filePath: string;
   fileType?: string;
+  maxFileSize?: number;
 };
 
 const tenMinutes = 10 * 60;
@@ -11,6 +12,7 @@ const tenMinutes = 10 * 60;
 export const generatePresignedPutUrl = async ({
   filePath,
   fileType,
+  maxFileSize,
 }: Props) => {
   const minioClient = initClient();
 
@@ -26,5 +28,6 @@ export const generatePresignedPutUrl = async ({
       ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
       : `${presignedUrl.split("?")[0]}`,
     fileType,
+    maxFileSize,
   };
 };

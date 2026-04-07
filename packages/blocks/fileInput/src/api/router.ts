@@ -55,6 +55,7 @@ export const fileUploadBuilderRouter = {
       z.object({
         presignedUrl: z.string(),
         fileType: z.string().optional(),
+        maxFileSize: z.number().optional(),
         fileUrl: z.string(),
       }),
     )
@@ -75,6 +76,7 @@ export const fileUploadViewerRouter = {
       z.object({
         presignedUrl: z.string(),
         fileType: z.string().optional(),
+        maxFileSize: z.number().optional(),
         fileUrl: z.string(),
       }),
     )
@@ -93,6 +95,7 @@ export const fileUploadViewerRouter = {
       z.object({
         presignedUrl: z.string(),
         fileType: z.string().optional(),
+        maxFileSize: z.number().optional(),
         fileUrl: z.string(),
       }),
     )
@@ -111,6 +114,7 @@ export const fileUploadViewerRouter = {
       z.object({
         presignedUrl: z.string(),
         fileType: z.string().optional(),
+        maxFileSize: z.number().optional(),
         fileUrl: z.string(),
       }),
     )
