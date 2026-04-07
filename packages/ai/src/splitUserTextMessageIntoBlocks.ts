@@ -1,4 +1,4 @@
-import { ky } from "@typebot.io/lib/ky";
+import { safeKy } from "@typebot.io/lib/ky";
 import type { ImagePart, TextPart, UserContent } from "ai";
 import { HTTPError } from "ky";
 
@@ -18,7 +18,7 @@ export const splitUserTextMessageIntoBlocks = async ({
       for (const url of urls) {
         const cleanUrl = url.trim();
         try {
-          const response = await ky.get(cleanUrl);
+          const response = await safeKy.get(cleanUrl);
           if (
             !response.ok ||
             !response.headers.get("content-type")?.startsWith("image/")

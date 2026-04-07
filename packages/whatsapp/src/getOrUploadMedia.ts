@@ -2,7 +2,7 @@ import { getMediaIdFromCache } from "@typebot.io/bot-engine/mediaCache/getMediaI
 import { insertMediaIdToCache } from "@typebot.io/bot-engine/mediaCache/insertMediaIdToCache";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
-import { ky } from "@typebot.io/lib/ky";
+import { ky, safeKy } from "@typebot.io/lib/ky";
 import { ChatProvider } from "@typebot.io/prisma/enum";
 import { dialog360AuthHeaderName, dialog360BaseUrl } from "./constants";
 
@@ -45,7 +45,7 @@ export const getOrUploadMedia = async ({
     }
 
     // Download the media file from the URL
-    const response = await ky.get(url);
+    const response = await safeKy.get(url);
     const arrayBuffer = await response.arrayBuffer();
 
     // Get the MIME type from the response headers
