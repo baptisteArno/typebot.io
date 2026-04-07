@@ -82,6 +82,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         },
       })
     }
+
+    if (status === 'authenticated' && session && !session.user) logOut()
   }, [router, status, user, session])
 
   const updateUser = (updates: Partial<User>) => {

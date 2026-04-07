@@ -170,6 +170,7 @@ providers.push(
       | 'emailVerified'
       | 'cognitoClaims'
       | 'cloudChatAuthorization'
+      | 'cognitoTokenExp'
     > | null> {
       try {
         if (!credentials?.token) return null
@@ -197,6 +198,7 @@ providers.push(
             'custom:eddie_workspaces': payload['custom:eddie_workspaces'],
           },
           cloudChatAuthorization: true,
+          cognitoTokenExp: payload.exp,
         }
       } catch (error) {
         logger.error('Error in cloudchat-embedded authorize', { error })
@@ -295,8 +297,24 @@ export const getAuthOptions = ({
           nextAuthJWT.cloudChatAuthorization = (
             user as DatabaseUserWithCognito
           ).cloudChatAuthorization
+          nextAuthJWT.cognitoTokenExp = (
+            user as DatabaseUserWithCognito
+          ).cognitoTokenExp
         }
       }
+
+      if (
+        nextAuthJWT.cloudChatAuthorization &&
+        nextAuthJWT.cognitoTokenExp &&
+        Date.now() / 1000 > (nextAuthJWT.cognitoTokenExp as number)
+      ) {
+        logger.info('CloudChat Cognito token expired — invalidating session', {
+          userId: nextAuthJWT.userId,
+          cognitoTokenExp: nextAuthJWT.cognitoTokenExp,
+        })
+        delete nextAuthJWT.userId
+      }
+
       return nextAuthJWT as JWT & NextAuthJWTWithCognito
     },
     session: async ({ session, token }) => {

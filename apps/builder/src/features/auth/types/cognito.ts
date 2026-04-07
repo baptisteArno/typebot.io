@@ -26,7 +26,10 @@ type WithCognitoClaims = {
 
 // Database user extended with Cognito claims
 export type DatabaseUserWithCognito = User &
-  WithCognitoClaims & { cloudChatAuthorization?: boolean }
+  WithCognitoClaims & {
+    cloudChatAuthorization?: boolean
+    cognitoTokenExp?: number
+  }
 
 // NextAuth JWT token that contains Cognito claims
 export type NextAuthJWTWithCognito = Record<string, unknown> &
@@ -37,4 +40,5 @@ export type NextAuthJWTWithCognito = Record<string, unknown> &
     image?: string
     provider?: string
     cloudChatAuthorization?: boolean
+    cognitoTokenExp?: number
   }
