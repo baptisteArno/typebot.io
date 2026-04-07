@@ -41,6 +41,7 @@ import {
 import { toaster } from "../utils/toaster";
 import { buttonVariants } from "./Button";
 import { ChatContainer } from "./ConversationContainer/ChatContainer";
+import { sanitizeUrl } from "../lib/sanitizeUrl";
 import { ErrorMessage } from "./ErrorMessage";
 import { CloseIcon } from "./icons/CloseIcon";
 import { LiteBadge } from "./LiteBadge";
@@ -401,7 +402,7 @@ const BotContent = (props: BotContentProps) => {
               <Show when={toast().meta?.link as string}>
                 {(link) => (
                   <a
-                    href={link()}
+                    href={sanitizeUrl(link())}
                     target="_blank"
                     class={cn(
                       buttonVariants({ variant: "primary", size: "sm" }),

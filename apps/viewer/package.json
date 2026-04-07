@@ -19,6 +19,20 @@
           "command": "next dev -p 3001"
         }
       },
+      "typecheck": {
+        "executor": "nx:run-commands",
+        "inputs": [
+          "default",
+          "^default"
+        ],
+        "dependsOn": [
+          "^typecheck"
+        ],
+        "options": {
+          "cwd": "apps/viewer",
+          "command": "tsc --noEmit"
+        }
+      },
       "test:e2e": {
         "executor": "nx:run-commands",
         "inputs": [

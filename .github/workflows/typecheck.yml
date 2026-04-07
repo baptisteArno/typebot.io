@@ -27,4 +27,5 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bunx @content-collections/cli build --config content-collections.ts
         working-directory: apps/landing-page
+      - run: bunx nx build @typebot.io/react --configuration=production
       - run: bunx nx affected -t typecheck --base=${{ github.event.pull_request.base.sha }}

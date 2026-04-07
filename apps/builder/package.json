@@ -16,6 +16,20 @@
           }
         ]
       },
+      "typecheck": {
+        "executor": "nx:run-commands",
+        "inputs": [
+          "default",
+          "^default"
+        ],
+        "dependsOn": [
+          "^typecheck"
+        ],
+        "options": {
+          "cwd": "apps/builder",
+          "command": "tsc --noEmit"
+        }
+      },
       "test": {
         "executor": "nx:run-commands",
         "inputs": [
