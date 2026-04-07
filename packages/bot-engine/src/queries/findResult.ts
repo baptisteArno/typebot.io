@@ -2,11 +2,12 @@ import prisma from "@typebot.io/prisma";
 
 type Props = {
   id: string;
+  typebotId: string;
 };
-export const findResult = async ({ id }: Props) => {
+export const findResult = async ({ id, typebotId }: Props) => {
   const { answers, answersV2, ...result } =
     (await prisma.result.findFirst({
-      where: { id, isArchived: { not: true } },
+      where: { id, typebotId, isArchived: { not: true } },
       select: {
         id: true,
         variables: true,
