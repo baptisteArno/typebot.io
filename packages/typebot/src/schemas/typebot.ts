@@ -52,7 +52,7 @@ export const typebotV5Schema = z.object({
     .string()
     .refine(isDomainNameWithPathNameCompatible)
     .nullable(),
-  workspaceId: z.string(),
+  workspaceId: z.string().min(1),
   resultsTablePreferences: resultsTablePreferencesSchema.nullable(),
   isArchived: z.boolean(),
   isClosed: z.boolean(),

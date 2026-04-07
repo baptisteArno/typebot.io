@@ -5,7 +5,7 @@ import { z } from "zod";
 
 export const getSheetsInputSchema = z.object({
   credentialsId: z.string(),
-  workspaceId: z.string().optional(),
+  workspaceId: z.string().min(1),
   spreadsheetId: z.string(),
 });
 

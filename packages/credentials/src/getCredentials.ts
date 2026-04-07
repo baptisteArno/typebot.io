@@ -12,7 +12,7 @@ export const getCredentials = async (
       workspaceId: true,
     },
   });
-  if (workspaceId && credentials?.workspaceId !== workspaceId) {
+  if (!workspaceId || credentials?.workspaceId !== workspaceId) {
     return null;
   }
   return credentials;

@@ -14,7 +14,7 @@ const TOKEN_URL = "https://oauth2.googleapis.com/token" as const;
 type Params = {
   spreadsheetId: string;
   credentialsId: string;
-  workspaceId: string | undefined;
+  workspaceId: string;
 };
 
 export const getGoogleSpreadsheet = async ({
