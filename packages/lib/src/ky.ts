@@ -66,15 +66,41 @@ export const ky = kyOriginal.create({
   fetch: rebuildFetchWithoutChunkedEncoding,
 });
 
+const MAX_REDIRECTS = 10;
+
 const safeFetchWithoutChunkedEncoding = async (
   input: string | URL | Request,
   init?: ExtendedRequestInit,
 ): Promise<Response> => {
-  const url = typeof input === "string" || input instanceof URL
-    ? input.toString()
-    : input.url;
+  const url =
+    typeof input === "string" || input instanceof URL
+      ? input.toString()
+      : input.url;
   await validateHttpReqUrl(url);
-  return rebuildFetchWithoutChunkedEncoding(input, init);
+  let response = await rebuildFetchWithoutChunkedEncoding(input, {
+    ...init,
+    redirect: "manual",
+  });
+  let redirectCount = 0;
+  while (
+    response.status >= 300 &&
+    response.status < 400 &&
+    response.headers.has("location")
+  ) {
+    if (redirectCount >= MAX_REDIRECTS)
+      throw new Error("Too many redirects while following safe fetch chain.");
+    const location = new URL(
+      response.headers.get("location")!,
+      response.url || url,
+    ).toString();
+    await validateHttpReqUrl(location);
+    response = await rebuildFetchWithoutChunkedEncoding(location, {
+      ...init,
+      redirect: "manual",
+    });
+    redirectCount++;
+  }
+  return response;
 };
 
 /**
