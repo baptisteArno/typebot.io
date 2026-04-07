@@ -43,6 +43,7 @@ export const uploadFiles = async ({
         fileName: input.fileName,
         sessionId: input.sessionId,
         fileType: file.type,
+        fileSize: file.size,
         blockId: input.blockId,
       },
     });
@@ -53,11 +54,6 @@ export const uploadFiles = async ({
     }
 
     if (!data?.presignedUrl) continue;
-
-    if (data.maxFileSize && file.size > data.maxFileSize * 1024 * 1024) {
-      errors.push(`File ${file.name} exceeds the ${data.maxFileSize}MB size limit`);
-      continue;
-    }
 
     const upload = await fetch(data.presignedUrl, {
       method: "PUT",

@@ -17,10 +17,11 @@ export const generateUploadUrlInputSchema = z.object({
   blockId: z.string(),
   fileName: z.string(),
   fileType: z.string().optional(),
+  fileSize: z.number().optional(),
 });
 
 export const handleGenerateUploadUrl = async ({
-  input: { fileName, sessionId, fileType, blockId },
+  input: { fileName, sessionId, fileType, blockId, fileSize },
 }: {
   input: z.infer<typeof generateUploadUrlInputSchema>;
 }) => {
@@ -93,6 +94,11 @@ export const handleGenerateUploadUrl = async ({
     });
 
   const { visibility, maxFileSize } = parseFileUploadParams(block);
+
+  if (maxFileSize && fileSize && fileSize > maxFileSize * 1024 * 1024)
+    throw new ORPCError("BAD_REQUEST", {
+      message: `File size exceeds the ${maxFileSize}MB limit`,
+    });
 
   const resultId = session.state.typebotsQueue[0].resultId;
 

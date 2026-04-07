@@ -23,10 +23,11 @@ export const generateUploadUrlV1InputSchema = z.object({
       }),
     ),
   fileType: z.string().optional(),
+  fileSize: z.number().optional(),
 });
 
 export const handleGenerateUploadUrlV1 = async ({
-  input: { filePathProps, fileType },
+  input: { filePathProps, fileType, fileSize },
 }: {
   input: z.infer<typeof generateUploadUrlV1InputSchema>;
 }) => {
@@ -72,12 +73,19 @@ export const handleGenerateUploadUrlV1 = async ({
         message: "Can't find file upload block",
       });
 
+    const maxFileSize =
+      fileUploadBlock.options?.sizeLimit ??
+      env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE;
+
+    if (maxFileSize && fileSize && fileSize > maxFileSize * 1024 * 1024)
+      throw new ORPCError("BAD_REQUEST", {
+        message: `File size exceeds the ${maxFileSize}MB limit`,
+      });
+
     return generatePresignedPutUrl({
       fileType,
       filePath,
-      maxFileSize:
-        fileUploadBlock.options?.sizeLimit ??
-        env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
+      maxFileSize,
     });
   }
 
@@ -137,13 +145,20 @@ export const handleGenerateUploadUrlV1 = async ({
     filePathProps.fileName
   }`;
 
+  const maxFileSize =
+    fileUploadBlock.options && "sizeLimit" in fileUploadBlock.options
+      ? (fileUploadBlock.options.sizeLimit as number)
+      : env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE;
+
+  if (maxFileSize && fileSize && fileSize > maxFileSize * 1024 * 1024)
+    throw new ORPCError("BAD_REQUEST", {
+      message: `File size exceeds the ${maxFileSize}MB limit`,
+    });
+
   const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType, maxFileSize: maxFileSizeMB } = await generatePresignedPutUrl({
     fileType,
     filePath,
-    maxFileSize:
-      fileUploadBlock.options && "sizeLimit" in fileUploadBlock.options
-        ? (fileUploadBlock.options.sizeLimit as number)
-        : env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
+    maxFileSize,
   });
 
   return {
