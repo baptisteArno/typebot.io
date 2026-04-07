@@ -2,6 +2,7 @@ import { defaultImageBubbleContent } from "@typebot.io/blocks-bubbles/image/cons
 import type { ImageBubbleBlock } from "@typebot.io/blocks-bubbles/image/schema";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, onCleanup, onMount } from "solid-js";
+import { sanitizeUrl } from "../../../../../lib/sanitizeUrl";
 import { Modal } from "../../../../../components/Modal";
 import { TypingBubble } from "../../../../../components/TypingBubble";
 
@@ -99,7 +100,7 @@ export const ImageBubble = (props: Props) => {
           </div>
           {props.content?.clickLink ? (
             <a
-              href={props.content.clickLink.url}
+              href={props.content.clickLink.url ? sanitizeUrl(props.content.clickLink.url) : "#"}
               target="_blank"
               class={cx("z-10", isTyping() ? "h-8" : "p-4")}
               rel="noreferrer"

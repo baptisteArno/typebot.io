@@ -3,6 +3,7 @@ import { isElementDescendant } from "@typebot.io/rich-text/helpers/isElementDesc
 import { isTextDescendant } from "@typebot.io/rich-text/helpers/isTextDescendant";
 import type { Descendant } from "@typebot.io/rich-text/plate";
 import { createMemo, For, Match, Switch } from "solid-js";
+import { sanitizeUrl } from "../../../../../../lib/sanitizeUrl";
 import { PlateText } from "./PlateText";
 
 type Props = {
@@ -29,7 +30,7 @@ export const PlateElement = (props: Props) => {
           <Switch>
             <Match when={elementDescendant.type === "a"}>
               <a
-                href={elementDescendant.url as string}
+                href={sanitizeUrl(elementDescendant.url as string)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
