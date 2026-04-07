@@ -1,4 +1,4 @@
-import { ky } from "@typebot.io/lib/ky";
+import { safeKy } from "@typebot.io/lib/ky";
 import MailComposer from "nodemailer/lib/mail-composer";
 import type { Attachment } from "nodemailer/lib/mailer";
 
@@ -21,7 +21,7 @@ export const buildEmail = async ({
     attachmentUrls && attachmentUrls.length > 0
       ? await Promise.all(
           attachmentUrls.map<Promise<Attachment>>(async (url, index) => {
-            const response = await ky.get(url);
+            const response = await safeKy.get(url);
             return {
               filename:
                 url.split("/").pop()?.split("?")[0] ?? `attachment-${index}`,

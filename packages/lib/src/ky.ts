@@ -1,5 +1,6 @@
 import kyOriginal from "ky";
 import type { ProxyAgent } from "undici";
+import { validateHttpReqUrl } from "./ssrf/validateHttpReqUrl";
 
 type ExtendedRequestInit = RequestInit & {
   dispatcher?: ProxyAgent;
@@ -63,4 +64,22 @@ export const rebuildFetchWithoutChunkedEncoding = async (
 
 export const ky = kyOriginal.create({
   fetch: rebuildFetchWithoutChunkedEncoding,
+});
+
+const safeFetchWithoutChunkedEncoding = async (
+  input: string | URL | Request,
+  init?: ExtendedRequestInit,
+): Promise<Response> => {
+  const url = typeof input === "string" || input instanceof URL
+    ? input.toString()
+    : input.url;
+  await validateHttpReqUrl(url);
+  return rebuildFetchWithoutChunkedEncoding(input, init);
+};
+
+/**
+ * ky instance with SSRF validation. Use this when the URL may come from user input.
+ */
+export const safeKy = kyOriginal.create({
+  fetch: safeFetchWithoutChunkedEncoding,
 });
