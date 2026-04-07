@@ -1,4 +1,7 @@
-import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
+import {
+  authenticatedProcedure,
+  publicProcedure as builderPublicProcedure,
+} from "@typebot.io/config/orpc/builder/middlewares";
 import { publicProcedure } from "@typebot.io/config/orpc/viewer/middlewares";
 import { z } from "zod";
 import {
@@ -39,6 +42,23 @@ export const fileUploadBuilderRouter = {
     )
     .input(getPrivateFileInputSchema)
     .handler(handleGetPrivateFile),
+  generateUploadUrlProcedure: builderPublicProcedure
+    .route({
+      method: "POST",
+      path: "/v3/generate-upload-url",
+      summary: "Generate upload URL",
+      description: "Used to upload anything from the client to S3 bucket",
+      tags: ["File upload"],
+    })
+    .input(generateUploadUrlInputSchema)
+    .output(
+      z.object({
+        presignedUrl: z.string(),
+        formData: z.record(z.string(), z.any()),
+        fileUrl: z.string(),
+      }),
+    )
+    .handler(handleGenerateUploadUrl),
 };
 
 export const fileUploadViewerRouter = {
