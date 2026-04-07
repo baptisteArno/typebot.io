@@ -1,5 +1,8 @@
 import { afterAll, beforeAll, describe, expect, it } from "bun:test";
+import { env } from "@typebot.io/env";
 import { safeKy } from "./ky";
+
+const isDevelopment = env.NODE_ENV === "development";
 
 describe("safeKy", () => {
   it("should block requests to localhost", async () => {
@@ -30,13 +33,15 @@ describe("safeKy", () => {
     expect(safeKy.get("file:///etc/passwd")).rejects.toThrow("Protocol");
   });
 
-  describe("redirect bypass protection", () => {
+  // These tests require NODE_ENV=development so that localhost is allowed as
+  // the initial URL, letting us verify the redirect-following logic end-to-end.
+  describe.if(isDevelopment)("redirect bypass protection", () => {
     let server: ReturnType<typeof Bun.serve>;
     let serverUrl: string;
 
     beforeAll(() => {
       server = Bun.serve({
-        hostname: "127.0.0.1",
+        hostname: "localhost",
         port: 0,
         fetch(req) {
           const url = new URL(req.url);
@@ -54,35 +59,50 @@ describe("safeKy", () => {
               headers: { location: "http://10.0.0.1/internal" },
             });
           }
+          if (url.pathname === "/redirect-chain") {
+            return new Response(null, {
+              status: 302,
+              headers: {
+                location: `http://localhost:${server.port}/redirect-to-metadata`,
+              },
+            });
+          }
+          if (url.pathname === "/ok") {
+            return new Response(JSON.stringify({ status: "ok" }), {
+              headers: { "content-type": "application/json" },
+            });
+          }
           return new Response("ok");
         },
       });
-      serverUrl = `http://127.0.0.1:${server.port}`;
+      serverUrl = `http://localhost:${server.port}`;
     });
 
     afterAll(() => {
       server.stop();
     });
 
-    // These tests verify that even though the initial URL would normally be
-    // blocked (loopback), the redirect target validation is the important part.
-    // We test the redirect logic by calling the underlying fetch wrapper directly.
     it("should block redirects to cloud metadata endpoints", async () => {
-      // Use native fetch with redirect:manual to get the redirect, then verify
-      // safeKy would block the Location target
-      const response = await fetch(`${serverUrl}/redirect-to-metadata`, {
-        redirect: "manual",
-      });
-      const location = response.headers.get("location")!;
-      expect(safeKy.get(location)).rejects.toThrow("link-local addresses");
+      expect(safeKy.get(`${serverUrl}/redirect-to-metadata`)).rejects.toThrow(
+        "link-local addresses",
+      );
     });
 
     it("should block redirects to private IPs", async () => {
-      const response = await fetch(`${serverUrl}/redirect-to-private`, {
-        redirect: "manual",
-      });
-      const location = response.headers.get("location")!;
-      expect(safeKy.get(location)).rejects.toThrow("10.0.0.0/8");
+      expect(safeKy.get(`${serverUrl}/redirect-to-private`)).rejects.toThrow(
+        "10.0.0.0/8",
+      );
+    });
+
+    it("should block chained redirects to private IPs", async () => {
+      expect(safeKy.get(`${serverUrl}/redirect-chain`)).rejects.toThrow(
+        "link-local addresses",
+      );
+    });
+
+    it("should allow redirects to safe destinations", async () => {
+      const response = await safeKy.get(`${serverUrl}/ok`);
+      expect(response.status).toBe(200);
     });
   });
 });
