@@ -33,8 +33,8 @@ export const uploadFiles = async ({
     i += 1;
     const { data, error } = await sendRequest<{
       presignedUrl: string;
-      formData: Record<string, string>;
       fileUrl: string;
+      fileType?: string;
     }>({
       method: "POST",
       url: `${apiHost}/api/v3/generate-upload-url`,
@@ -53,14 +53,13 @@ export const uploadFiles = async ({
 
     if (!data?.presignedUrl) continue;
 
-    const formData = new FormData();
-    Object.entries(data.formData).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-    formData.append("file", file);
     const upload = await fetch(data.presignedUrl, {
-      method: "POST",
-      body: formData,
+      method: "PUT",
+      body: file,
+      headers: {
+        "Content-Type": file.type,
+        "Cache-Control": "public, max-age=86400",
+      },
     });
 
     if (!upload.ok) continue;

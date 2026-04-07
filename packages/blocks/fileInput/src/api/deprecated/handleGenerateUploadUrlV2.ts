@@ -6,7 +6,7 @@ import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
-import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
+import { generatePresignedPutUrl } from "@typebot.io/lib/s3/generatePresignedPutUrl";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { z } from "zod";
@@ -70,7 +70,7 @@ export const handleGenerateUploadUrlV2 = async ({
       message: "Current block does not expect file upload",
     });
 
-  const { visibility, maxFileSize } = parseFileUploadParams(block);
+  const { visibility } = parseFileUploadParams(block);
 
   const resultId = session.state.typebotsQueue[0].resultId;
 
@@ -81,21 +81,18 @@ export const handleGenerateUploadUrlV2 = async ({
         }/typebots/${typebotId}/results/${resultId}/${fileName}`
       : `public/tmp/${typebotId}/${fileName}`;
 
-  const presignedPostPolicy = await generatePresignedPostPolicy({
+  const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType } = await generatePresignedPutUrl({
     fileType,
     filePath,
-    maxFileSize,
   });
 
   return {
-    presignedUrl: presignedPostPolicy.postURL,
-    formData: presignedPostPolicy.formData,
+    presignedUrl,
+    fileType: resolvedFileType,
     fileUrl:
       visibility === "Private" && !isPreview
         ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${fileName}`
-        : env.S3_PUBLIC_CUSTOM_DOMAIN
-          ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
-          : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
+        : defaultFileUrl,
   };
 };
 

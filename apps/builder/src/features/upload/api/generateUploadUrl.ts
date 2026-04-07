@@ -1,7 +1,7 @@
 import { ORPCError } from "@orpc/server";
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { env } from "@typebot.io/env";
-import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
+import { generatePresignedPutUrl } from "@typebot.io/lib/s3/generatePresignedPutUrl";
 import prisma from "@typebot.io/prisma";
 import { z } from "zod";
 import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
@@ -38,6 +38,18 @@ const inputSchema = z.object({
   fileType: z.string().optional(),
 });
 
+const dangerousContentTypes = new Set([
+  "image/svg+xml",
+  "text/html",
+  "text/xml",
+  "application/xml",
+  "application/xhtml+xml",
+  "application/javascript",
+  "application/ecmascript",
+  "text/javascript",
+  "text/ecmascript",
+]);
+
 export type FilePathUploadProps = z.infer<
   typeof inputSchema.shape.filePathProps
 >;
@@ -52,6 +64,12 @@ export const generateUploadUrl = authenticatedProcedure
             "S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY",
         });
 
+      if (!fileType || dangerousContentTypes.has(fileType.toLowerCase()))
+        throw new ORPCError("BAD_REQUEST", {
+          message:
+            "File type not allowed. SVG, HTML, and XML files cannot be uploaded.",
+        });
+
       if ("resultId" in filePathProps && !user)
         throw new ORPCError("UNAUTHORIZED", {
           message: "You must be logged in to upload a file",
@@ -62,18 +80,10 @@ export const generateUploadUrl = authenticatedProcedure
         uploadProps: filePathProps,
       });
 
-      const presignedPostPolicy = await generatePresignedPostPolicy({
+      return generatePresignedPutUrl({
         fileType,
         filePath,
       });
-
-      return {
-        presignedUrl: presignedPostPolicy.postURL,
-        formData: presignedPostPolicy.formData,
-        fileUrl: env.S3_PUBLIC_CUSTOM_DOMAIN
-          ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
-          : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
-      };
     },
   );
 

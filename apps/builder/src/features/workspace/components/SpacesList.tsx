@@ -164,14 +164,13 @@ export const SpacesList = ({
             },
             fileType: file.type,
           });
-          const formData = new FormData();
-          Object.entries(data.formData).forEach(([key, value]) => {
-            formData.append(key, value);
-          });
-          formData.append("file", file);
           const upload = await fetch(data.presignedUrl, {
-            method: "POST",
-            body: formData,
+            method: "PUT",
+            body: file,
+            headers: {
+              "Content-Type": file.type,
+              "Cache-Control": "public, max-age=86400",
+            },
           });
           if (!upload.ok) {
             toast({
