@@ -70,7 +70,26 @@ export const executeFunction = async ({
         });
         await validateHttpReqUrl(request.url);
         validateHttpReqHeaders(headers);
-        const response = await fetch(...fetchArgs);
+        const maxRedirects = 10;
+        let response = await fetch(input, { ...init, redirect: "manual" });
+        let redirectCount = 0;
+        while (
+          response.status >= 300 &&
+          response.status < 400 &&
+          response.headers.has("location")
+        ) {
+          if (redirectCount >= maxRedirects)
+            throw new Error(
+              "Too many redirects while following safe fetch chain.",
+            );
+          const location = new URL(
+            response.headers.get("location")!,
+            request.url,
+          ).toString();
+          await validateHttpReqUrl(location);
+          response = await fetch(location, { ...init, redirect: "manual" });
+          redirectCount++;
+        }
         return response.text();
       }),
     ],

@@ -23,7 +23,7 @@ import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { httpProxyCredentialsSchema } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import { JSONParse } from "@typebot.io/lib/JSONParse";
-import { ky, rebuildFetchWithoutChunkedEncoding } from "@typebot.io/lib/ky";
+import { rebuildFetchWithoutChunkedEncoding, safeKy } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import {
   validateHttpReqHeaders,
@@ -309,7 +309,7 @@ export const executeHttpRequest = async (
     : baseRequest;
 
   try {
-    const response = await ky(request.url, omit(request, "url"));
+    const response = await safeKy(request.url, omit(request, "url"));
     const body = await response.text();
     logs.push({
       status: "success",
