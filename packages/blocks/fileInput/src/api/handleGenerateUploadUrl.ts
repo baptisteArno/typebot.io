@@ -7,7 +7,7 @@ import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { parseAllowedFileTypesMetadata } from "@typebot.io/lib/extensionFromMimeType";
-import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
+import { generatePresignedPutUrl } from "@typebot.io/lib/s3/generatePresignedPutUrl";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { z } from "zod";
@@ -17,10 +17,11 @@ export const generateUploadUrlInputSchema = z.object({
   blockId: z.string(),
   fileName: z.string(),
   fileType: z.string().optional(),
+  fileSize: z.number().optional(),
 });
 
 export const handleGenerateUploadUrl = async ({
-  input: { fileName, sessionId, fileType, blockId },
+  input: { fileName, sessionId, fileType, blockId, fileSize },
 }: {
   input: z.infer<typeof generateUploadUrlInputSchema>;
 }) => {
@@ -94,6 +95,11 @@ export const handleGenerateUploadUrl = async ({
 
   const { visibility, maxFileSize } = parseFileUploadParams(block);
 
+  if (maxFileSize && fileSize && fileSize > maxFileSize * 1024 * 1024)
+    throw new ORPCError("BAD_REQUEST", {
+      message: `File size exceeds the ${maxFileSize}MB limit`,
+    });
+
   const resultId = session.state.typebotsQueue[0].resultId;
 
   const filePath =
@@ -103,21 +109,20 @@ export const handleGenerateUploadUrl = async ({
         }/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${fileName}`
       : `public/tmp/typebots/${typebotId}/blocks/${blockId}/${fileName}`;
 
-  const presignedPostPolicy = await generatePresignedPostPolicy({
+  const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType, maxFileSize: maxFileSizeMB } = await generatePresignedPutUrl({
     fileType,
     filePath,
     maxFileSize,
   });
 
   return {
-    presignedUrl: presignedPostPolicy.postURL,
-    formData: presignedPostPolicy.formData,
+    presignedUrl,
+    fileType: resolvedFileType,
+    maxFileSize: maxFileSizeMB,
     fileUrl:
       visibility === "Private" && !isPreview
         ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${fileName}`
-        : env.S3_PUBLIC_CUSTOM_DOMAIN
-          ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
-          : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
+        : defaultFileUrl,
   };
 };
 

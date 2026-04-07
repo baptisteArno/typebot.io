@@ -154,7 +154,7 @@ const SpaceIconPopover = ({
           </Tabs.Panel>
           <Tabs.Panel value="upload" className="flex justify-center py-4">
             <UploadButton
-              accept="image/avif, image/*"
+              accept="image/avif, image/png, image/jpeg, image/gif, image/webp, image/bmp, image/tiff"
               onFileUploadRequest={onFileUploadRequest}
               onValueCommit={(icon) => { onValueCommit(icon); popoverControls.onClose(); }}
             />

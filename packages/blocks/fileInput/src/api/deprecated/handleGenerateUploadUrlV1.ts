@@ -4,7 +4,7 @@ import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
-import { generatePresignedPostPolicy } from "@typebot.io/lib/s3/generatePresignedPostPolicy";
+import { generatePresignedPutUrl } from "@typebot.io/lib/s3/generatePresignedPutUrl";
 import prisma from "@typebot.io/prisma";
 import { z } from "zod";
 
@@ -23,10 +23,11 @@ export const generateUploadUrlV1InputSchema = z.object({
       }),
     ),
   fileType: z.string().optional(),
+  fileSize: z.number().optional(),
 });
 
 export const handleGenerateUploadUrlV1 = async ({
-  input: { filePathProps, fileType },
+  input: { filePathProps, fileType, fileSize },
 }: {
   input: z.infer<typeof generateUploadUrlV1InputSchema>;
 }) => {
@@ -72,21 +73,20 @@ export const handleGenerateUploadUrlV1 = async ({
         message: "Can't find file upload block",
       });
 
-    const presignedPostPolicy = await generatePresignedPostPolicy({
+    const maxFileSize =
+      fileUploadBlock.options?.sizeLimit ??
+      env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE;
+
+    if (maxFileSize && fileSize && fileSize > maxFileSize * 1024 * 1024)
+      throw new ORPCError("BAD_REQUEST", {
+        message: `File size exceeds the ${maxFileSize}MB limit`,
+      });
+
+    return generatePresignedPutUrl({
       fileType,
       filePath,
-      maxFileSize:
-        fileUploadBlock.options?.sizeLimit ??
-        env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
+      maxFileSize,
     });
-
-    return {
-      presignedUrl: presignedPostPolicy.postURL,
-      formData: presignedPostPolicy.formData,
-      fileUrl: env.S3_PUBLIC_CUSTOM_DOMAIN
-        ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
-        : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
-    };
   }
 
   const session = await getSession(filePathProps.sessionId);
@@ -145,23 +145,29 @@ export const handleGenerateUploadUrlV1 = async ({
     filePathProps.fileName
   }`;
 
-  const presignedPostPolicy = await generatePresignedPostPolicy({
+  const maxFileSize =
+    fileUploadBlock.options && "sizeLimit" in fileUploadBlock.options
+      ? (fileUploadBlock.options.sizeLimit as number)
+      : env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE;
+
+  if (maxFileSize && fileSize && fileSize > maxFileSize * 1024 * 1024)
+    throw new ORPCError("BAD_REQUEST", {
+      message: `File size exceeds the ${maxFileSize}MB limit`,
+    });
+
+  const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType, maxFileSize: maxFileSizeMB } = await generatePresignedPutUrl({
     fileType,
     filePath,
-    maxFileSize:
-      fileUploadBlock.options && "sizeLimit" in fileUploadBlock.options
-        ? (fileUploadBlock.options.sizeLimit as number)
-        : env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
+    maxFileSize,
   });
 
   return {
-    presignedUrl: presignedPostPolicy.postURL,
-    formData: presignedPostPolicy.formData,
+    presignedUrl,
+    fileType: resolvedFileType,
+    maxFileSize: maxFileSizeMB,
     fileUrl:
       fileUploadBlock.options?.visibility === "Private"
         ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${filePathProps.fileName}`
-        : env.S3_PUBLIC_CUSTOM_DOMAIN
-          ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
-          : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
+        : defaultFileUrl,
   };
 };
