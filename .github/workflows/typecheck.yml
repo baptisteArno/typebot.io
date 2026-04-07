@@ -1,0 +1,30 @@
+name: Typecheck
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: "package.json"
+      - run: bun install --frozen-lockfile
+      - run: bunx @content-collections/cli build --config content-collections.ts
+        working-directory: apps/landing-page
+      - run: bunx nx affected -t typecheck --base=${{ github.event.pull_request.base.sha }}
