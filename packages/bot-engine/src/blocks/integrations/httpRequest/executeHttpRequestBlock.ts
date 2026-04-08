@@ -108,7 +108,10 @@ export const executeHttpRequestBlock = async (
       clientSideActions: [
         {
           type: "httpRequestToExecute",
-          httpRequestToExecute: parsedHttpRequest,
+          httpRequestToExecute: {
+            ...parsedHttpRequest,
+            withCredentials: block.options?.withCredentials ?? false,
+          },
           expectsDedicatedReply: true,
         },
       ],

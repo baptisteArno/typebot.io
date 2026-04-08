@@ -47,6 +47,7 @@ export const httpRequestOptionsV5Schema = z.object({
   responseVariableMapping: z.array(responseVariableMappingSchema).optional(),
   isCustomBody: z.boolean().optional(),
   isExecutedOnClient: z.boolean().optional(),
+  withCredentials: z.boolean().optional(),
   webhook: httpRequestSchemas.v5.optional(),
   timeout: z.number().min(1).max(maxTimeout).optional(),
   proxyCredentialsId: z.string().optional(),
@@ -91,6 +92,7 @@ export const executableHttpRequestSchema = z.object({
   headers: z.record(z.string(), z.string()).optional(),
   body: z.unknown().optional(),
   method: z.nativeEnum(HttpMethod).optional(),
+  withCredentials: z.boolean().optional(),
 });
 
 export type KeyValue = { id: string; key?: string; value?: string };

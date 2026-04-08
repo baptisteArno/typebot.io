@@ -13,7 +13,6 @@ export const sendRequest = async <ResponseData>(
     response = await fetch(url, {
       method: typeof params === "string" ? "GET" : params.method,
       mode: "cors",
-      credentials: "include",
       headers:
         typeof params !== "string" && isDefined(params.body)
           ? {
