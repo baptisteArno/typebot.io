@@ -1,6 +1,6 @@
 <?php
 
-define('TYPEBOT_DEFAULT_LIB_VERSION', '0.3');
+define('TYPEBOT_DEFAULT_LIB_VERSION', '0.x');
 
 class Typebot_Public
 {
@@ -113,7 +113,7 @@ class Typebot_Public
     $lib_version = TYPEBOT_DEFAULT_LIB_VERSION;
     if (array_key_exists('lib_version', $attributes)) {
       $lib_version = $attributes['lib_version'];
-      if (strlen($lib_version) > 10 || !preg_match('/^\d+\.\d+(\.\d+)?$/', $lib_version)) {
+      if (strlen($lib_version) > 10 || !preg_match('/^\d+(\.\d+){0,2}(\.x)?$/', $lib_version)) {
           $lib_version = TYPEBOT_DEFAULT_LIB_VERSION;
       } else {
           $lib_version = sanitize_text_field($lib_version);
