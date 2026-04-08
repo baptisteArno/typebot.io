@@ -36,6 +36,7 @@ ARG SCOPE
 ENV SCOPE=${SCOPE}
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/packages/prisma/postgresql ./packages/prisma/postgresql
+COPY --from=builder /app/packages/prisma/prisma.config.ts ./packages/prisma/prisma.config.ts
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/standalone ./
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/static ./apps/${SCOPE}/.next/static
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/public ./apps/${SCOPE}/public
