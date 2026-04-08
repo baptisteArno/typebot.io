@@ -1,1 +1,1 @@
-export const typebotCloudLibraryVersion = "0.3";
+export const typebotCloudLibraryVersion = "0.x";
