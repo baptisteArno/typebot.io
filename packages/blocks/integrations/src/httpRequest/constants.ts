@@ -19,6 +19,7 @@ export const defaultHttpRequestAttributes = {
 export const defaultHttpRequestBlockOptions = {
   isCustomBody: false,
   isExecutedOnClient: false,
+  withCredentials: false,
 } as const satisfies HttpRequestBlockV6["options"];
 
 export const defaultTimeout = 10;

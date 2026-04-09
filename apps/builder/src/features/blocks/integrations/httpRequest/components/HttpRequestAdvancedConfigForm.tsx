@@ -113,6 +113,9 @@ export const HttpRequestAdvancedConfigForm = ({
   const updateIsExecutedOnClient = (isExecutedOnClient: boolean) =>
     onOptionsChange({ ...options, isExecutedOnClient });
 
+  const updateWithCredentials = (withCredentials: boolean) =>
+    onOptionsChange({ ...options, withCredentials });
+
   const ResponseMappingInputs = useMemo(
     () =>
       function Component(props: TableListItemProps<ResponseVariableMapping>) {
@@ -150,6 +153,25 @@ export const HttpRequestAdvancedConfigForm = ({
                 </MoreInfoTooltip>
               </Field.Label>
             </Field.Root>
+            {options?.isExecutedOnClient && (
+              <Field.Root className="flex-row items-center">
+                <Switch
+                  checked={
+                    options?.withCredentials ??
+                    defaultHttpRequestBlockOptions.withCredentials
+                  }
+                  onCheckedChange={updateWithCredentials}
+                />
+                <Field.Label>
+                  Include cookies{" "}
+                  <MoreInfoTooltip>
+                    If enabled, cookies and credentials will be sent with
+                    cross-origin requests. Only enable this if the target API
+                    requires authentication via cookies.
+                  </MoreInfoTooltip>
+                </Field.Label>
+              </Field.Root>
+            )}
             <div className="flex items-center gap-2 justify-between">
               <p>Method:</p>
               <BasicSelect
