@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Row as RowProps } from '@tanstack/react-table'
 import Cell from './Cell'
 import { TableData } from '@typebot.io/schemas'
+import { chakra, useColorModeValue } from '@chakra-ui/react'
 
 type Props = {
   row: RowProps<TableData>
@@ -17,20 +18,24 @@ export const Row = ({
   isSelected,
 }: Props) => {
   const [isExpandButtonVisible, setIsExpandButtonVisible] = useState(false)
+  const hoverBg = useColorModeValue('gray.50', 'gray.800')
 
   const showExpandButton = () => setIsExpandButtonVisible(true)
   const hideExpandButton = () => setIsExpandButtonVisible(false)
   return (
-    <tr
+    <chakra.tr
       key={row.id}
       data-rowid={row.id}
-      ref={(ref) => {
+      role="group"
+      ref={(ref: HTMLTableRowElement | null) => {
         if (bottomElement && bottomElement.current?.dataset.rowid !== row.id)
           bottomElement.current = ref
       }}
       onMouseEnter={showExpandButton}
       onClick={showExpandButton}
       onMouseLeave={hideExpandButton}
+      transition="background 0.1s"
+      _hover={{ bg: hoverBg }}
     >
       {row.getVisibleCells().map((cell, cellIndex) => (
         <Cell
@@ -44,6 +49,6 @@ export const Row = ({
           isSelected={isSelected}
         />
       ))}
-    </tr>
+    </chakra.tr>
   )
 }

@@ -22,15 +22,20 @@ const Cell = ({
   cellIndex,
   onExpandButtonClick,
 }: Props) => {
+  const borderColor = useColorModeValue('gray.100', 'gray.700')
+  const textColor = useColorModeValue('gray.700', 'gray.200')
+
   return (
     <chakra.td
       key={cell.id}
       px="4"
-      py="2"
-      borderWidth={rowIndex === 0 ? '0 1px 1px 1px' : '1px'}
-      borderColor={useColorModeValue('gray.200', 'gray.700')}
+      py="2.5"
+      borderBottom="1px solid"
+      borderColor={borderColor}
       whiteSpace="pre-wrap"
       pos="relative"
+      fontSize="sm"
+      color={textColor}
       style={{
         minWidth: size,
         maxWidth: size,
@@ -48,11 +53,14 @@ const Cell = ({
         <Fade unmountOnExit in={isExpandButtonVisible && cellIndex === 1}>
           <Button
             leftIcon={<ExpandIcon />}
-            shadow="lg"
+            shadow="md"
             size="xs"
+            rounded="full"
+            colorScheme="blue"
+            variant="solid"
             onClick={onExpandButtonClick}
           >
-            Open
+            Abrir
           </Button>
         </Fade>
       </chakra.span>

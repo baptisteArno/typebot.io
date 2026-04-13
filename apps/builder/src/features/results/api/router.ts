@@ -3,10 +3,12 @@ import { deleteResults } from './deleteResults'
 import { getResultLogs } from './getResultLogs'
 import { getResults } from './getResults'
 import { getResult } from './getResult'
+import { getSessionTypebot } from './getSessionTypebot'
 
 export const resultsRouter = router({
   getResults,
   getResult,
   deleteResults,
   getResultLogs,
+  getSessionTypebot,
 })

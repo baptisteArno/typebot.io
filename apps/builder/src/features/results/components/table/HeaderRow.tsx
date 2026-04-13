@@ -11,7 +11,7 @@ type Props = {
 
 export const HeaderRow = ({ headerGroup, isTableScrolled }: Props) => {
   const borderColor = useColorModeValue(colors.gray[200], colors.gray[700])
-  const backgroundColor = useColorModeValue('white', colors.gray[900])
+  const backgroundColor = useColorModeValue(colors.gray[50], colors.gray[800])
 
   return (
     <tr key={headerGroup.id}>
@@ -21,17 +21,17 @@ export const HeaderRow = ({ headerGroup, isTableScrolled }: Props) => {
             key={header.id}
             px="4"
             py="3"
-            borderX="1px"
+            borderBottom="1px solid"
             borderColor={borderColor}
-            backgroundColor={isTableScrolled ? backgroundColor : undefined}
+            backgroundColor={backgroundColor}
             zIndex={10}
             pos="sticky"
             top="0"
             fontWeight="normal"
             whiteSpace="nowrap"
             wordBreak="normal"
+            textAlign="left"
             colSpan={header.colSpan}
-            shadow={`inset 0 1px 0 ${borderColor}, inset 0 -1px 0 ${borderColor}; `}
             style={{
               minWidth: header.getSize(),
               maxWidth: header.getSize(),

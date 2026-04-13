@@ -1,17 +1,26 @@
 import {
+  Badge,
   Box,
   Button,
   chakra,
+  Flex,
   HStack,
+  IconButton,
+  Input,
+  InputGroup,
+  InputLeftElement,
   Stack,
   Text,
+  TextProps,
+  Tooltip,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { AlignLeftTextIcon } from '@/components/icons'
+import { AlignLeftTextIcon, SearchIcon, CopyIcon, EyeIcon } from '@/components/icons'
 import {
   CellValueType,
   ResultHeaderCell,
   ResultsTablePreferences,
+  ResultWithAnswers,
   TableData,
 } from '@typebot.io/schemas'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
@@ -34,9 +43,47 @@ import { parseColumnsOrder } from '@typebot.io/results/parseColumnsOrder'
 import { TimeFilterDropdown } from '@/features/analytics/components/TimeFilterDropdown'
 import { timeFilterValues } from '@/features/analytics/constants'
 
+const columnHeaderProps: TextProps = {
+  fontWeight: 'semibold',
+  fontSize: 'xs',
+  textTransform: 'uppercase',
+  letterSpacing: 'wider',
+  color: 'gray.500',
+}
+
+const statusConfig: Record<
+  string,
+  { label: string; bg: string; color: string; dot: string }
+> = {
+  completed: {
+    label: 'Completo',
+    bg: 'green.50',
+    color: 'green.700',
+    dot: 'green.400',
+  },
+  error: {
+    label: 'Erro',
+    bg: 'red.50',
+    color: 'red.700',
+    dot: 'red.400',
+  },
+  abandoned: {
+    label: 'Abandonado',
+    bg: 'purple.50',
+    color: 'purple.700',
+    dot: 'purple.400',
+  },
+}
+
+const resolveDisplayStatus = (status: string): string => {
+  if (status === 'completed' || status === 'error') return status
+  return 'abandoned'
+}
+
 type ResultsTableProps = {
   resultHeader: ResultHeaderCell[]
   data: TableData[]
+  results: ResultWithAnswers[]
   hasMore?: boolean
   preferences?: ResultsTablePreferences
   timeFilter: (typeof timeFilterValues)[number]
@@ -44,11 +91,15 @@ type ResultsTableProps = {
   onScrollToBottom: () => void
   onLogOpenIndex: (index: number) => () => void
   onResultExpandIndex: (index: number) => () => void
+  onFlowReplayIndex: (index: number) => () => void
+  helpdeskIdFilter: string
+  onHelpdeskIdFilterChange: (value: string) => void
 }
 
 export const ResultsTable = ({
   resultHeader,
   data,
+  results,
   hasMore,
   preferences,
   timeFilter,
@@ -56,8 +107,14 @@ export const ResultsTable = ({
   onScrollToBottom,
   onLogOpenIndex,
   onResultExpandIndex,
+  onFlowReplayIndex,
+  helpdeskIdFilter,
+  onHelpdeskIdFilterChange,
 }: ResultsTableProps) => {
   const background = useColorModeValue('white', colors.gray[900])
+  const inputBg = useColorModeValue('white', 'gray.800')
+  const inputBorder = useColorModeValue('gray.200', 'gray.600')
+  const tableBorder = useColorModeValue('gray.200', 'gray.700')
   const { updateTypebot, currentUserMode } = useTypebot()
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({})
   const [isTableScrolled, setIsTableScrolled] = useState(false)
@@ -143,6 +200,35 @@ export const ResultsTable = ({
           </div>
         ),
       },
+      {
+        id: '__helpdeskId',
+        enableResizing: false,
+        maxSize: 220,
+        header: () => <Text {...columnHeaderProps}>Helpdesk ID</Text>,
+        cell: ({ row }) => {
+          const result = results[row.index]
+          const helpdeskId = result?.helpdeskId
+          if (!helpdeskId) return <Text color="gray.300">—</Text>
+          return (
+            <HStack spacing="1">
+              <Text fontSize="sm" fontWeight="medium" fontFamily="mono" color="gray.700" isTruncated maxW="160px">
+                {helpdeskId}
+              </Text>
+              <Tooltip label="Copiar" hasArrow placement="top">
+                <IconButton
+                  aria-label="Copiar helpdesk ID"
+                  icon={<CopyIcon />}
+                  size="xs"
+                  variant="ghost"
+                  color="gray.400"
+                  _hover={{ color: 'blue.500' }}
+                  onClick={() => navigator.clipboard.writeText(helpdeskId)}
+                />
+              </Tooltip>
+            </HStack>
+          )
+        },
+      },
       ...resultHeader.map<ColumnDef<TableData>>((header) => ({
         id: header.id,
         accessorKey: header.id,
@@ -150,7 +236,7 @@ export const ResultsTable = ({
         header: () => (
           <HStack overflow="hidden" data-testid={`${header.label} header`}>
             <HeaderIcon header={header} />
-            <Text>{header.label}</Text>
+            <Text {...columnHeaderProps}>{header.label}</Text>
           </HStack>
         ),
         cell: (info) => {
@@ -160,23 +246,95 @@ export const ResultsTable = ({
         },
       })),
       {
+        id: '__visitedBlocksCount',
+        enableResizing: false,
+        maxSize: 120,
+        header: () => <Text {...columnHeaderProps}>Caminho</Text>,
+        cell: ({ row }) => {
+          const result = results[row.index]
+          const blocks = Array.isArray(result?.visitedBlocks)
+            ? result.visitedBlocks
+            : []
+          return (
+            <HStack spacing="1">
+              <Box w="6px" h="6px" rounded="full" bg="blue.300" />
+              <Text fontSize="sm" color="gray.600">
+                {blocks.length} bloco{blocks.length !== 1 ? 's' : ''}
+              </Text>
+            </HStack>
+          )
+        },
+      },
+      {
+        id: '__status',
+        enableResizing: false,
+        maxSize: 140,
+        header: () => <Text {...columnHeaderProps}>Status</Text>,
+        cell: ({ row }) => {
+          const result = results[row.index]
+          const rawStatus = result?.status ?? 'abandoned'
+          const displayStatus = resolveDisplayStatus(rawStatus)
+          const cfg = statusConfig[displayStatus] ?? statusConfig.abandoned
+          return (
+            <Badge
+              bg={cfg.bg}
+              color={cfg.color}
+              px="2.5"
+              py="1"
+              rounded="full"
+              fontSize="xs"
+              fontWeight="semibold"
+              display="flex"
+              alignItems="center"
+              gap="1.5"
+              w="fit-content"
+            >
+              <Box w="6px" h="6px" rounded="full" bg={cfg.dot} />
+              {cfg.label}
+            </Badge>
+          )
+        },
+      },
+      {
         id: 'logs',
         enableResizing: false,
         maxSize: 110,
-        header: () => (
-          <HStack>
-            <AlignLeftTextIcon />
-            <Text>Logs</Text>
-          </HStack>
-        ),
+        header: () => <Text {...columnHeaderProps}>Logs</Text>,
         cell: ({ row }) => (
-          <Button size="sm" onClick={onLogOpenIndex(row.index)}>
-            See logs
+          <Button
+            size="xs"
+            variant="ghost"
+            color="gray.500"
+            fontWeight="medium"
+            leftIcon={<AlignLeftTextIcon />}
+            _hover={{ bg: 'gray.100', color: 'gray.700' }}
+            onClick={onLogOpenIndex(row.index)}
+          >
+            Ver logs
+          </Button>
+        ),
+      },
+      {
+        id: '__flowReplay',
+        enableResizing: false,
+        maxSize: 130,
+        header: () => <Text {...columnHeaderProps}>Fluxo</Text>,
+        cell: ({ row }) => (
+          <Button
+            size="xs"
+            variant="outline"
+            colorScheme="blue"
+            fontWeight="medium"
+            leftIcon={<EyeIcon />}
+            rounded="full"
+            onClick={onFlowReplayIndex(row.index)}
+          >
+            Ver fluxo
           </Button>
         ),
       },
     ],
-    [onLogOpenIndex, resultHeader]
+    [onLogOpenIndex, onFlowReplayIndex, resultHeader, results]
   )
 
   const instance = useReactTable({
@@ -215,47 +373,72 @@ export const ResultsTable = ({
     return () => {
       observer.disconnect()
     }
-    // We need to rerun this effect when the bottomElement changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleObserver, bottomElement.current])
 
   return (
-    <Stack maxW="1600px" px="4" overflowY="hidden" spacing={6}>
-      <HStack w="full" justifyContent="flex-end">
-        {currentUserMode === 'write' && (
-          <SelectionToolbar
-            selectedResultsId={Object.keys(rowSelection)}
-            onClearSelection={() => setRowSelection({})}
+    <Stack maxW="1600px" px="4" overflowY="hidden" spacing={4}>
+      <Flex
+        w="full"
+        justify="space-between"
+        align="center"
+        py="2"
+        gap="3"
+        flexWrap="wrap"
+      >
+        <HStack spacing="3" flex="1" minW="0">
+          <InputGroup size="sm" maxW="280px">
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color="gray.400" boxSize="3.5" />
+            </InputLeftElement>
+            <Input
+              placeholder="Buscar por helpdeskId..."
+              value={helpdeskIdFilter}
+              onChange={(e) => onHelpdeskIdFilterChange(e.target.value)}
+              rounded="lg"
+              bg={inputBg}
+              borderColor={inputBorder}
+              fontSize="sm"
+              _placeholder={{ color: 'gray.400' }}
+              _focus={{ borderColor: 'blue.400', boxShadow: '0 0 0 1px var(--chakra-colors-blue-400)' }}
+            />
+          </InputGroup>
+          {currentUserMode === 'write' && (
+            <SelectionToolbar
+              selectedResultsId={Object.keys(rowSelection)}
+              onClearSelection={() => setRowSelection({})}
+            />
+          )}
+        </HStack>
+        <HStack spacing="2">
+          <TimeFilterDropdown
+            timeFilter={timeFilter}
+            onTimeFilterChange={onTimeFilterChange}
+            size="sm"
           />
-        )}
-        <TimeFilterDropdown
-          timeFilter={timeFilter}
-          onTimeFilterChange={onTimeFilterChange}
-          size="sm"
-        />
-        <TableSettingsButton
-          resultHeader={resultHeader}
-          columnVisibility={columnsVisibility}
-          setColumnVisibility={changeColumnVisibility}
-          columnOrder={columnsOrder}
-          onColumnOrderChange={changeColumnOrder}
-        />
-      </HStack>
+          <TableSettingsButton
+            resultHeader={resultHeader}
+            columnVisibility={columnsVisibility}
+            setColumnVisibility={changeColumnVisibility}
+            columnOrder={columnsOrder}
+            onColumnOrderChange={changeColumnOrder}
+          />
+        </HStack>
+      </Flex>
+
       <Box
         ref={tableWrapper}
         overflow="auto"
-        rounded="md"
+        rounded="xl"
+        border="1px solid"
+        borderColor={tableBorder}
         data-testid="results-table"
-        backgroundImage={`linear-gradient(to right, ${background}, ${background}), linear-gradient(to right, ${background}, ${background}),linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0)),linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0));`}
-        backgroundPosition="left center, right center, left center, right center"
-        backgroundRepeat="no-repeat"
-        backgroundSize="30px 100%, 30px 100%, 15px 100%, 15px 100%"
-        backgroundAttachment="local, local, scroll, scroll"
+        bg={background}
         onScroll={(e) =>
           setIsTableScrolled((e.target as HTMLElement).scrollTop > 0)
         }
       >
-        <chakra.table rounded="md">
+        <chakra.table w="full">
           <thead>
             {instance.getHeaderGroups().map((headerGroup) => (
               <HeaderRow
