@@ -28,6 +28,7 @@ export class S3UploadClient extends ServiceMap.Service<
     uploadObject: (params: {
       key: string;
       body: UploadBody;
+      metadata?: Record<string, string>;
     }) => Effect.Effect<void, S3ClientUploadError>;
   }
 >()("@typebot/S3UploadClient") {
@@ -59,14 +60,17 @@ export class S3UploadClient extends ServiceMap.Service<
       const uploadObject = Effect.fn("S3UploadClient.uploadObject")(function* ({
         key,
         body,
+        metadata,
       }: {
         key: string;
         body: UploadBody;
+        metadata?: Record<string, string>;
       }) {
         const readableBody = yield* toReadable(body);
 
         yield* Effect.tryPromise({
-          try: () => client.putObject(bucket, key, readableBody),
+          try: () =>
+            client.putObject(bucket, key, readableBody, undefined, metadata),
           catch: (error) =>
             new S3ClientUploadError({
               message: formatUnknownError(error),

@@ -23,6 +23,7 @@ import {
   ExportResultsWorkflow,
   SendExportToEmailWorkflow,
 } from "./exportResultsWorkflow";
+import type { TimeFilter } from "../timeFilter";
 
 const ExportResultsWorkflowStatusChunk = Schema.Union([
   Schema.Struct({
@@ -67,6 +68,8 @@ export const executeExportResultsWorkflowHandler = (payload: {
   readonly id: string;
   readonly typebotId: string;
   readonly includeDeletedBlocks?: boolean;
+  readonly timeFilter?: TimeFilter;
+  readonly timeZone?: string;
 }) =>
   Effect.gen(function* () {
     const redis = yield* RedisClient;

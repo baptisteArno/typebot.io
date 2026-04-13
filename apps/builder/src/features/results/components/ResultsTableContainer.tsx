@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
+import type { TimeFilter } from "@typebot.io/results/timeFilter";
 import { useEffect, useState } from "react";
-import type { timeFilterValues } from "@/features/analytics/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useResults } from "../ResultsProvider";
 import { LogsDialog } from "./LogsDialog";
@@ -8,8 +8,8 @@ import { ResultDialog } from "./ResultDialog";
 import { ResultsTable } from "./table/ResultsTable";
 
 type Props = {
-  timeFilter: (typeof timeFilterValues)[number];
-  onTimeFilterChange: (timeFilter: (typeof timeFilterValues)[number]) => void;
+  timeFilter: TimeFilter;
+  onTimeFilterChange: (timeFilter: TimeFilter) => void;
 };
 export const ResultsTableContainer = ({
   timeFilter,

@@ -1,10 +1,14 @@
+import {
+  type TimeFilter,
+  timeFilterLabels,
+  timeFilterValues,
+} from "@typebot.io/results/timeFilter";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
-import { timeFilterLabels, type timeFilterValues } from "../constants";
 
 type Props = {
-  timeFilter: (typeof timeFilterValues)[number];
+  timeFilter: TimeFilter;
   className?: string;
-  onTimeFilterChange: (timeFilter: (typeof timeFilterValues)[number]) => void;
+  onTimeFilterChange: (timeFilter: TimeFilter) => void;
 };
 
 export const TimeFilterSelect = ({
@@ -13,9 +17,9 @@ export const TimeFilterSelect = ({
   onTimeFilterChange,
 }: Props) => (
   <BasicSelect
-    items={Object.entries(timeFilterLabels).map(([value, label]) => ({
-      label,
-      value: value as (typeof timeFilterValues)[number],
+    items={timeFilterValues.map((value) => ({
+      label: timeFilterLabels[value],
+      value,
     }))}
     value={timeFilter}
     onChange={onTimeFilterChange}

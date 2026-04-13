@@ -7,10 +7,33 @@ import {
   subMonths,
 } from "date-fns";
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
-import type { timeFilterValues } from "../constants";
+
+export const timeFilterValues = [
+  "today",
+  "last7Days",
+  "last30Days",
+  "monthToDate",
+  "lastMonth",
+  "yearToDate",
+  "allTime",
+] as const;
+
+export type TimeFilter = (typeof timeFilterValues)[number];
+
+export const timeFilterLabels: Record<TimeFilter, string> = {
+  today: "Today",
+  last7Days: "Last 7 days",
+  last30Days: "Last 30 days",
+  monthToDate: "Month to date",
+  lastMonth: "Last month",
+  yearToDate: "Year to date",
+  allTime: "All time",
+};
+
+export const defaultTimeFilter = "last7Days" as const;
 
 export const parseFromDateFromTimeFilter = (
-  timeFilter: (typeof timeFilterValues)[number],
+  timeFilter: TimeFilter,
   userTimezone = "UTC",
 ): Date | null => {
   const nowInUserTimezone = utcToZonedTime(new Date(), userTimezone);
@@ -49,7 +72,7 @@ export const parseFromDateFromTimeFilter = (
 };
 
 export const parseToDateFromTimeFilter = (
-  timeFilter: (typeof timeFilterValues)[number],
+  timeFilter: TimeFilter,
   userTimezone = "UTC",
 ): Date | null => {
   const nowInUserTimezone = utcToZonedTime(new Date(), userTimezone);
@@ -68,5 +91,25 @@ export const parseToDateFromTimeFilter = (
     case "yearToDate":
     case "allTime":
       return null;
+  }
+};
+
+export const getTimeFilterFileNameSuffix = (timeFilter?: TimeFilter) => {
+  switch (timeFilter) {
+    case "today":
+      return "today";
+    case "last7Days":
+      return "last-7-days";
+    case "last30Days":
+      return "last-30-days";
+    case "monthToDate":
+      return "month-to-date";
+    case "lastMonth":
+      return "last-month";
+    case "yearToDate":
+      return "year-to-date";
+    case "allTime":
+    case undefined:
+      return;
   }
 };

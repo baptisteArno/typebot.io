@@ -1,8 +1,8 @@
 import { useTranslate } from "@tolgee/react";
 import type { Stats } from "@typebot.io/results/schemas/answers";
+import type { TimeFilter } from "@typebot.io/results/timeFilter";
 import { Skeleton } from "@typebot.io/ui/components/Skeleton";
 import { cn } from "@typebot.io/ui/lib/cn";
-import type { timeFilterValues } from "../constants";
 import { TimeFilterSelect } from "./TimeFilterSelect";
 
 const computeCompletionRate =
@@ -19,8 +19,8 @@ export const StatsCards = ({
   className,
 }: {
   stats?: Stats;
-  timeFilter: (typeof timeFilterValues)[number];
-  onTimeFilterChange: (timeFilter: (typeof timeFilterValues)[number]) => void;
+  timeFilter: TimeFilter;
+  onTimeFilterChange: (timeFilter: TimeFilter) => void;
   className?: string;
 }) => {
   const { t } = useTranslate();

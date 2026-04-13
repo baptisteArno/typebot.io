@@ -1,4 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import {
+  defaultTimeFilter,
+  timeFilterValues,
+  type TimeFilter,
+} from "@typebot.io/results/timeFilter";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { useRouter } from "next/router";
 import { useQueryState } from "nuqs";
@@ -6,10 +11,6 @@ import { useMemo } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
 import { Seo } from "@/components/Seo";
 import { AnalyticsGraphContainer } from "@/features/analytics/components/AnalyticsGraphContainer";
-import {
-  defaultTimeFilter,
-  timeFilterValues,
-} from "@/features/analytics/constants";
 import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useWorkspace } from "@/features/workspace/WorkspaceProvider";
@@ -27,13 +28,13 @@ export const ResultsPage = () => {
     () => router.pathname.endsWith("analytics"),
     [router.pathname],
   );
-  const [timeFilter, setTimeFilter] = useQueryState<
-    (typeof timeFilterValues)[number]
-  >("timeFilter", {
+  const [timeFilter, setTimeFilter] = useQueryState<TimeFilter>("timeFilter", {
     defaultValue: defaultTimeFilter,
     parse: (val) => {
-      if (timeFilterValues.includes(val as (typeof timeFilterValues)[number]))
-        return val as (typeof timeFilterValues)[number];
+      const matchingTimeFilter = timeFilterValues.find(
+        (timeFilter) => timeFilter === val,
+      );
+      if (matchingTimeFilter) return matchingTimeFilter;
       return null;
     },
   });

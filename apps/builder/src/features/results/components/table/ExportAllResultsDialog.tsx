@@ -7,6 +7,10 @@ import { getExportFileName } from "@typebot.io/results/getExportFileName";
 import { parseBlockIdVariableIdMap } from "@typebot.io/results/parseBlockIdVariableIdMap";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
 import { parseResultHeader } from "@typebot.io/results/parseResultHeader";
+import {
+  timeFilterLabels,
+  type TimeFilter,
+} from "@typebot.io/results/timeFilter";
 import type { ExportResultsWorkflowStatusChunk } from "@typebot.io/results/workflows/rpc";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { Button } from "@typebot.io/ui/components/Button";
@@ -17,6 +21,7 @@ import { Progress } from "@typebot.io/ui/components/Progress";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { unparse } from "papaparse";
 import { useRef, useState } from "react";
+import { TimeFilterSelect } from "@/features/analytics/components/TimeFilterSelect";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { orpc, orpcClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
@@ -24,13 +29,15 @@ import { useResults } from "../../ResultsProvider";
 import { ExportJobProgress } from "./ExportJobProgress";
 
 const TOTAL_RESULTS_THRESHOLD_FOR_BACKGROUND_EXPORT = 10000;
+const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  timeFilter: TimeFilter;
 };
 
-export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
+export const ExportAllResultsDialog = ({ isOpen, onClose, timeFilter }: Props) => {
   const { typebot, publishedTypebot } = useTypebot();
   const workspaceId = typebot?.workspaceId;
   const typebotId = typebot?.id;
@@ -45,6 +52,7 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
 
   const [areDeletedBlocksIncluded, setAreDeletedBlocksIncluded] =
     useState(false);
+  const [timeFilterOverride, setTimeFilterOverride] = useState<TimeFilter>();
   const exportIteratorRef =
     useRef<AsyncIterator<ExportResultsWorkflowStatusChunk> | null>(null);
   const typebotIdRef = useRef<string | undefined>(typebotId);
@@ -52,6 +60,7 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
 
   typebotIdRef.current = typebotId;
   exportWorkflowIdRef.current = exportWorkflowId;
+  const selectedTimeFilter = timeFilterOverride ?? timeFilter;
 
   const { data: linkedTypebotsData } = useQuery(
     orpc.getLinkedTypebots.queryOptions({
@@ -74,7 +83,8 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
           typebotId,
           limit: 500,
           cursor,
-          timeFilter: "allTime",
+          timeFilter: selectedTimeFilter,
+          timeZone,
         });
         allResults.push(...results);
         setExportProgressValue((allResults.length / totalStarts) * 100);
@@ -98,7 +108,8 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
       stats: { totalStarts },
     } = await orpcClient.analytics.getStats({
       typebotId,
-      timeFilter: "allTime",
+      timeFilter: selectedTimeFilter,
+      timeZone,
     });
 
     if (totalStarts > TOTAL_RESULTS_THRESHOLD_FOR_BACKGROUND_EXPORT) {
@@ -157,7 +168,7 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
     const csvData = new Blob([unparse(data)], {
       type: "text/csv;charset=utf-8;",
     });
-    const fileName = getExportFileName(typebot);
+    const fileName = getExportFileName(typebot, selectedTimeFilter);
     const tempLink = document.createElement("a");
     tempLink.href = window.URL.createObjectURL(csvData);
     tempLink.setAttribute("download", fileName);
@@ -173,6 +184,8 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
       const iterator = await orpcClient.results.streamExportJob({
         typebotId,
         includeDeletedBlocks,
+        timeFilter: selectedTimeFilter,
+        timeZone,
       });
       exportIteratorRef.current = iterator;
       for await (const chunk of iterator) {
@@ -196,6 +209,11 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
     onClose();
   };
 
+  const exportTitle =
+    selectedTimeFilter === "allTime"
+      ? "Export all results"
+      : `Export results from ${timeFilterLabels[selectedTimeFilter].toLowerCase()}`;
+
   return (
     <Dialog.Root
       isOpen={isOpen}
@@ -207,11 +225,12 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
             lastExportWorkflowChunk?.status === "in_progress") &&
           !isSchedulingEmail &&
           !exportWorkflowError;
+        setTimeFilterOverride(undefined);
         if (shouldSendEmail) sendExportedResultsToEmail();
       }}
     >
       <Dialog.Popup className="max-w-md">
-        <Dialog.Title>Export all results</Dialog.Title>
+        <Dialog.Title>{exportTitle}</Dialog.Title>
         <Dialog.CloseButton />
         {lastExportWorkflowChunk ? (
           <ExportJobProgress
@@ -224,18 +243,28 @@ export const ExportAllResultsDialog = ({ isOpen, onClose }: Props) => {
             <Progress.Root value={exportProgressValue} />
           </div>
         ) : (
-          <Field.Root className="flex-row items-center">
-            <Switch
-              checked={areDeletedBlocksIncluded}
-              onCheckedChange={setAreDeletedBlocksIncluded}
-            />
-            <Field.Label>
-              Include deleted blocks{" "}
-              <MoreInfoTooltip>
-                Blocks from previous bot version that have been deleted
-              </MoreInfoTooltip>
-            </Field.Label>
-          </Field.Root>
+          <div className="flex flex-col gap-4">
+            <Field.Root>
+              <Field.Label>Time period</Field.Label>
+              <TimeFilterSelect
+                timeFilter={selectedTimeFilter}
+                onTimeFilterChange={setTimeFilterOverride}
+                className="w-full"
+              />
+            </Field.Root>
+            <Field.Root className="flex-row items-center">
+              <Switch
+                checked={areDeletedBlocksIncluded}
+                onCheckedChange={setAreDeletedBlocksIncluded}
+              />
+              <Field.Label>
+                Include deleted blocks{" "}
+                <MoreInfoTooltip>
+                  Blocks from previous bot version that have been deleted
+                </MoreInfoTooltip>
+              </Field.Label>
+            </Field.Root>
+          </div>
         )}
         {!lastExportWorkflowChunk && (
           <Dialog.Footer>
