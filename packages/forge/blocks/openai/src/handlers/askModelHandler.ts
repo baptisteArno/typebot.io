@@ -15,7 +15,9 @@ import OpenAI from "openai";
 import type { ResponseStreamEvent } from "openai/resources/responses/responses";
 import { askModel } from "../actions/askModel";
 import { maxToolCalls } from "../constants";
+import { isModelCompatibleWithVision } from "../helpers/isModelCompatibleWithVision";
 import { parseToolsForResponsesApi } from "../helpers/parseToolsForResponsesApi";
+import { splitMessageIntoResponsesApiInputItems } from "../helpers/splitMessageIntoResponsesApiInputItems";
 
 export const askModelHandler = createActionHandler(askModel, {
   stream: {
@@ -179,10 +181,18 @@ const createResponseStream = async ({
       : temperature;
 
   try {
+    const messageContent = isModelCompatibleWithVision(model)
+      ? await splitMessageIntoResponsesApiInputItems(message)
+      : message;
+    const parsedInput =
+      typeof messageContent === "string"
+        ? messageContent
+        : [{ role: "user" as const, content: messageContent }];
+
     return createResponseFoundationalStream(async ({ forwardStream }) => {
       const stream = openai.responses.stream({
         model,
-        input: message,
+        input: parsedInput,
         instructions: instructions || undefined,
         tools: tools.length > 0 ? tools : undefined,
         previous_response_id: previousResponseId,
@@ -214,7 +224,19 @@ const createResponseStream = async ({
                   }),
                 };
 
-              const args = JSON.parse(fnCall.arguments);
+              let args: Record<string, unknown>;
+              try {
+                args = JSON.parse(fnCall.arguments);
+              } catch {
+                return {
+                  type: "function_call_output" as const,
+                  call_id: fnCall.call_id,
+                  output: JSON.stringify({
+                    error: `Failed to parse arguments for "${fnCall.name}"`,
+                  }),
+                };
+              }
+
               const { output, newVariables } = await executeFunction({
                 variables: variables.list(),
                 body: functionDef.code,
