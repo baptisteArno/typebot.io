@@ -16,9 +16,10 @@ import { useShallow } from 'zustand/react/shallow'
 type Props = {
   edge: EdgeProps
   fromGroupId: string | undefined
+  highlightColor?: string
 }
 
-export const Edge = ({ edge, fromGroupId }: Props) => {
+export const Edge = ({ edge, fromGroupId, highlightColor }: Props) => {
   const isDark = useColorMode().colorMode === 'dark'
   const { deleteEdge } = useTypebot()
   const { previewingEdge, graphPosition, isReadOnly, setPreviewingEdge } =
@@ -129,16 +130,25 @@ export const Edge = ({ edge, fromGroupId }: Props) => {
       />
       <path
         data-testid="edge"
+        data-edge-id={edge.id}
         d={path}
         stroke={
-          isPreviewing
+          highlightColor
+            ? highlightColor
+            : isPreviewing
             ? colors.blue[400]
             : isDark
             ? colors.gray[700]
             : colors.gray[400]
         }
-        strokeWidth="2px"
-        markerEnd={isPreviewing ? 'url(#blue-arrow)' : 'url(#arrow)'}
+        strokeWidth={highlightColor ? '3px' : '2px'}
+        markerEnd={
+          highlightColor
+            ? `url(#arrow-${highlightColor})`
+            : isPreviewing
+            ? 'url(#blue-arrow)'
+            : 'url(#arrow)'
+        }
         fill="none"
         pointerEvents="none"
       />

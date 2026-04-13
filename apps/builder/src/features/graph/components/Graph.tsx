@@ -12,10 +12,7 @@ import { graphPositionDefaultValue } from '../constants'
 import { useBlockDnd } from '../providers/GraphDndProvider'
 import { useGraph } from '../providers/GraphProvider'
 import { Coordinates } from '../types'
-import {
-  TotalAnswers,
-  TotalVisitedEdges,
-} from '@typebot.io/schemas/features/analytics'
+import type { GroupAnalytics, BlockIssue } from '@/features/analytics/components/AnalyticsGraphContainer'
 import { SelectBox } from './SelectBox'
 import { computeSelectBoxDimensions } from '../helpers/computeSelectBoxDimensions'
 import { GroupSelectionMenu } from './GroupSelectionMenu'
@@ -50,15 +47,17 @@ const getZoomStepForScale = (scale: number) => {
 
 export const Graph = ({
   typebot,
-  totalAnswers,
-  totalVisitedEdges,
+  groupAnalyticsMap,
+  blockIssues,
   onUnlockProPlanClick,
+  highlightedEdges,
   ...props
 }: {
   typebot: TypebotV6 | PublicTypebotV6
-  totalVisitedEdges?: TotalVisitedEdges[]
-  totalAnswers?: TotalAnswers[]
+  groupAnalyticsMap?: Map<string, GroupAnalytics>
+  blockIssues?: BlockIssue[]
   onUnlockProPlanClick?: () => void
+  highlightedEdges?: Map<string, string>
 } & FlexProps) => {
   const {
     draggedBlockType,
@@ -403,7 +402,11 @@ export const Graph = ({
         </>
       )}
 
-      <ZoomButtons onZoomInClick={zoomIn} onZoomOutClick={zoomOut} />
+      <ZoomButtons
+        onZoomInClick={zoomIn}
+        onZoomOutClick={zoomOut}
+        isInsideModal={!!highlightedEdges}
+      />
       <Flex
         flex="1"
         w="full"
@@ -423,9 +426,10 @@ export const Graph = ({
           edges={typebot.edges}
           groups={typebot.groups}
           events={typebot.events}
-          totalAnswers={totalAnswers}
-          totalVisitedEdges={totalVisitedEdges}
+          groupAnalyticsMap={groupAnalyticsMap}
+          blockIssues={blockIssues}
           onUnlockProPlanClick={onUnlockProPlanClick}
+          highlightedEdges={highlightedEdges}
         />
       </Flex>
     </Flex>

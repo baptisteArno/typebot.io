@@ -6,6 +6,7 @@ import {
   InputBlock,
   SessionState,
   SetVariableHistoryItem,
+  VisitedBlockEntry,
 } from '@typebot.io/schemas'
 import { byId } from '@typebot.io/lib'
 import { isInputBlock } from '@typebot.io/schemas/helpers'
@@ -80,19 +81,19 @@ export const continueBotFlow = async (
   ContinueChatResponse & {
     newSessionState: SessionState
     visitedEdges: VisitedEdge[]
+    visitedBlocks: VisitedBlockEntry[]
     setVariableHistory: SetVariableHistoryItem[]
   }
 > => {
-  logger.info('continueBotFlow executing', {
+  logger.debug('continueBotFlow executing', {
     sessionId,
     currentBlockId: state.currentBlockId,
-    reply: typeof reply === 'string' ? reply.slice(0, 50) : 'object',
-    version,
   })
 
   let firstBubbleWasStreamed = false
   let newSessionState = { ...state }
   const visitedEdges: VisitedEdge[] = []
+  const visitedBlocks: VisitedBlockEntry[] = []
   const setVariableHistory: SetVariableHistoryItem[] = []
 
   if (!newSessionState.currentBlockId)
@@ -231,6 +232,7 @@ export const continueBotFlow = async (
         )),
         newSessionState,
         visitedEdges: [],
+        visitedBlocks: [],
         setVariableHistory: [],
       }
 
@@ -239,6 +241,13 @@ export const continueBotFlow = async (
     newSessionState = await processAndSaveAnswer(state, block)(formattedReply)
   }
 
+  visitedBlocks.push({
+    blockId: block.id,
+    groupId: group.id,
+    timestamp: new Date().toISOString(),
+    status: 'ok',
+  })
+
   const groupHasMoreBlocks = blockIndex < group.blocks.length - 1
 
   // Special handling for Declare Variables block - re-execute it to check for more inputs
@@ -246,12 +255,13 @@ export const continueBotFlow = async (
     const chatReply = await executeGroup(
       {
         ...group,
-        blocks: group.blocks.slice(blockIndex), // Start from current block (re-execute)
+        blocks: group.blocks.slice(blockIndex),
       } as Group,
       {
         version,
         state: newSessionState,
         visitedEdges,
+        visitedBlocks,
         setVariableHistory,
         firstBubbleWasStreamed,
         startTime,
@@ -280,6 +290,7 @@ export const continueBotFlow = async (
         version,
         state: newSessionState,
         visitedEdges,
+        visitedBlocks,
         setVariableHistory,
         firstBubbleWasStreamed,
         startTime,
@@ -294,15 +305,24 @@ export const continueBotFlow = async (
     }
   }
 
-  if (!nextEdgeId && state.typebotsQueue.length === 1)
+  if (!nextEdgeId && state.typebotsQueue.length === 1) {
+    const isClaudiaBlock = block.type === 'claudia'
+    visitedBlocks.push({
+      blockId: block.id,
+      groupId: group.id,
+      timestamp: new Date().toISOString(),
+      status: isClaudiaBlock ? 'ok' : 'dead_end',
+    })
     return {
       messages: [],
       newSessionState,
       lastMessageNewFormat:
         formattedReply !== reply ? formattedReply : undefined,
       visitedEdges,
+      visitedBlocks,
       setVariableHistory,
     }
+  }
 
   const nextGroup = await getNextGroup({
     state: newSessionState,
@@ -314,28 +334,38 @@ export const continueBotFlow = async (
 
   newSessionState = nextGroup.newSessionState
 
-  if (!nextGroup.group)
+  if (!nextGroup.group) {
+    const isClaudiaBlock = block.type === 'claudia'
+    visitedBlocks.push({
+      blockId: block.id,
+      groupId: group.id,
+      timestamp: new Date().toISOString(),
+      status: isClaudiaBlock ? 'ok' : 'dead_end',
+    })
     return {
       messages: [],
       newSessionState,
       lastMessageNewFormat:
         formattedReply !== reply ? formattedReply : undefined,
       visitedEdges,
+      visitedBlocks,
       setVariableHistory,
     }
+  }
 
   const chatReply = await executeGroup(nextGroup.group, {
     version,
     state: newSessionState,
     firstBubbleWasStreamed,
     visitedEdges,
+    visitedBlocks,
     setVariableHistory,
     startTime,
     textBubbleContentFormat,
     sessionId,
   })
 
-  logger.info('continueBotFlow finishing', {
+  logger.debug('continueBotFlow finishing', {
     nextBlockId: newSessionState.currentBlockId,
     messagesCount: chatReply.messages.length,
   })

@@ -2,6 +2,7 @@ import {
   ContinueChatResponse,
   ChatSession,
   SetVariableHistoryItem,
+  VisitedBlockEntry,
 } from '@typebot.io/schemas'
 import { upsertResult } from './queries/upsertResult'
 import { updateSession } from './queries/updateSession'
@@ -17,6 +18,7 @@ type Props = {
   logs: ContinueChatResponse['logs']
   clientSideActions: ContinueChatResponse['clientSideActions']
   visitedEdges: VisitedEdge[]
+  visitedBlocks?: VisitedBlockEntry[]
   setVariableHistory: SetVariableHistoryItem[]
   hasCustomEmbedBubble?: boolean
   initialSessionId?: string
@@ -28,23 +30,11 @@ export const saveStateToDatabase = async ({
   logs,
   clientSideActions,
   visitedEdges,
+  visitedBlocks,
   setVariableHistory,
   hasCustomEmbedBubble,
   initialSessionId,
 }: Props) => {
-  logger.info('saveStateToDatabase called', {
-    sessionId: id,
-    hasExistingSessionId: !!id,
-    existingSessionId: id,
-    initialSessionId,
-    resultId: state.typebotsQueue[0]?.resultId,
-    typebotId: state.typebotsQueue[0]?.typebot?.id,
-    hasInput: !!input,
-    inputId: input?.id,
-    hasCustomEmbedBubble,
-    answersCount: state.typebotsQueue[0]?.answers?.length || 0,
-  })
-
   const containsSetVariableClientSideAction = clientSideActions?.some(
     (action) => action.expectsDedicatedReply
   )
@@ -57,28 +47,6 @@ export const saveStateToDatabase = async ({
 
   const resultId = state.typebotsQueue[0].resultId
 
-  logger.info('saveStateToDatabase session handling', {
-    sessionId: id,
-    hasExistingSessionId: !!id,
-    existingSessionId: id,
-    initialSessionId,
-    resultId,
-    isCompleted,
-    isCompletedConditions: {
-      hasNoInput: !input,
-      hasNoSetVariableClientSideAction: !containsSetVariableClientSideAction,
-      hasNoCustomEmbedBubble: !hasCustomEmbedBubble,
-    },
-    willDeleteSession: !!(id && isCompleted && resultId),
-    willDeleteSessionConditions: {
-      hasSessionId: !!id,
-      isCompleted,
-      hasResultId: !!resultId,
-    },
-    willUpdateSession: !!(id && !(isCompleted && resultId)),
-    willCreateSession: !id,
-  })
-
   if (id) {
     if (isCompleted && resultId) queries.push(deleteSession(id))
     else queries.push(updateSession({ id, state, isReplying: false }))
@@ -88,14 +56,6 @@ export const saveStateToDatabase = async ({
     ? { state, id }
     : await createSession({ id: initialSessionId, state, isReplying: false })
 
-  logger.info('saveStateToDatabase session result', {
-    sessionId: session.id,
-    resultId,
-    isCompleted,
-    hasQueries: queries.length > 0,
-    sessionIdMatches: initialSessionId ? session.id === initialSessionId : 'N/A',
-  })
-
   if (!resultId) {
     if (queries.length > 0) await prisma.$transaction(queries)
     return session
@@ -103,32 +63,52 @@ export const saveStateToDatabase = async ({
 
   const answers = state.typebotsQueue[0].answers
 
+  const resultIsCompleted = Boolean(
+    !input && !containsSetVariableClientSideAction && answers.length > 0
+  )
+
+  const hasDeadEnd = visitedBlocks?.some((b) => b.status === 'dead_end')
+  const hasErrorBlock = visitedBlocks?.some((b) => b.status === 'error')
+  const derivedStatus = hasDeadEnd
+    ? 'error'
+    : resultIsCompleted
+    ? 'completed'
+    : hasErrorBlock
+    ? 'error'
+    : 'abandoned'
+
   queries.push(
     upsertResult({
       resultId,
       typebot: state.typebotsQueue[0].typebot,
-      isCompleted: Boolean(
-        !input && !containsSetVariableClientSideAction && answers.length > 0
-      ),
+      isCompleted: resultIsCompleted,
       hasStarted: answers.length > 0,
       lastChatSessionId: session.id,
       logs,
       visitedEdges,
       setVariableHistory,
+      status: derivedStatus,
     })
   )
 
+  // Atomic append to avoid read-then-write race condition on concurrent requests
+  if (visitedBlocks && visitedBlocks.length > 0) {
+    const blocksJson = JSON.stringify(visitedBlocks)
+    queries.push(
+      prisma.$queryRaw`
+        UPDATE "Result"
+        SET "visitedBlocks" = COALESCE("visitedBlocks", '[]'::jsonb) || ${blocksJson}::jsonb
+        WHERE id = ${resultId}
+      `
+    )
+  }
+
   await prisma.$transaction(queries)
 
-  logger.info('saveStateToDatabase completed successfully', {
+  logger.debug('saveStateToDatabase completed', {
     sessionId: session.id,
     resultId,
-    typebotId: state.typebotsQueue[0]?.typebot?.id,
-    isCompleted: Boolean(
-      !input && !containsSetVariableClientSideAction && answers.length > 0
-    ),
-    hasStarted: answers.length > 0,
-    queriesExecuted: queries.length,
+    isCompleted: resultIsCompleted,
   })
 
   return session

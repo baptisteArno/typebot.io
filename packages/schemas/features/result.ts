@@ -6,6 +6,7 @@ import {
   Log as LogPrisma,
   SetVariableHistoryItem as SetVariableHistoryItemPrisma,
   VisitedEdge,
+  Prisma,
 } from '@typebot.io/prisma'
 import { InputBlockType } from './blocks/inputs/constants'
 
@@ -18,6 +19,9 @@ export const resultSchema = z.object({
   hasStarted: z.boolean().nullable(),
   isArchived: z.boolean().nullable(),
   lastChatSessionId: z.string().nullable(),
+  helpdeskId: z.string().nullable(),
+  status: z.string(),
+  visitedBlocks: z.custom<Prisma.JsonValue>(),
 }) satisfies z.ZodType<ResultPrisma>
 
 export const resultWithAnswersSchema = resultSchema.merge(

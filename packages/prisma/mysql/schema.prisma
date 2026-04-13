@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["metrics"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -263,6 +262,9 @@ model Result {
   hasStarted         Boolean?
   isArchived         Boolean?                 @default(false)
   lastChatSessionId  String?
+  helpdeskId         String?
+  status             String                   @default("abandoned")
+  visitedBlocks      Json?
   typebot            Typebot                  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
   answers            Answer[]
   logs               Log[]
@@ -272,6 +274,9 @@ model Result {
 
   @@index([typebotId, isArchived, hasStarted, createdAt(sort: Desc)])
   @@index([typebotId, isArchived, isCompleted])
+  @@index([helpdeskId])
+  @@index([createdAt])
+  @@index([status])
 }
 
 model SetVariableHistoryItem {

@@ -35,11 +35,15 @@ export const ResultsPage = () => {
     [router.pathname]
   )
   const bgColor = useColorModeValue(
-    router.pathname.endsWith('analytics') ? '#f4f5f8' : 'white',
-    router.pathname.endsWith('analytics') ? 'gray.850' : 'gray.900'
+    isAnalytics ? '#f4f5f8' : 'white',
+    isAnalytics ? 'gray.850' : 'gray.900'
   )
+  const navBorderColor = useColorModeValue('gray.200', 'gray.700')
+  const navBg = useColorModeValue('white', 'gray.900')
+
   const [timeFilter, setTimeFilter] =
     useState<(typeof timeFilterValues)[number]>(defaultTimeFilter)
+  const [helpdeskIdFilter, setHelpdeskIdFilter] = useState('')
 
   const { showToast } = useToast()
 
@@ -60,12 +64,17 @@ export const ResultsPage = () => {
     refetch()
   }
 
+  const activeColor = 'blue.600'
+  const activeBg = 'blue.50'
+  const inactiveColor = 'gray.500'
+  const inactiveHoverBg = 'gray.100'
+
   if (is404) return <TypebotNotFoundPage />
   return (
     <Flex overflow="hidden" h="100vh" flexDir="column">
       <Seo
         title={
-          router.pathname.endsWith('analytics')
+          isAnalytics
             ? typebot?.name
               ? `${typebot.name} | Analytics`
               : 'Analytics'
@@ -75,42 +84,74 @@ export const ResultsPage = () => {
         }
       />
       <TypebotHeader />
-      <Flex h="full" w="full" bgColor={bgColor}>
+      <Flex
+        h="full"
+        w="full"
+        bgColor={bgColor}
+        direction="column"
+        overflow="hidden"
+      >
         <Flex
           pos="absolute"
           zIndex={2}
           w="full"
           justifyContent="center"
-          h="60px"
+          h="52px"
           display={['none', 'flex']}
+          borderBottomWidth="1px"
+          borderColor={navBorderColor}
+          bg={navBg}
         >
-          <HStack maxW="1600px" w="full" px="4">
+          <HStack maxW="1600px" w="full" px="4" spacing="1">
             <Button
               as={Link}
-              colorScheme={!isAnalytics ? 'blue' : 'gray'}
-              variant={!isAnalytics ? 'outline' : 'ghost'}
+              variant="ghost"
               size="sm"
               href={`/typebots/${typebot?.id}/results`}
+              rounded="lg"
+              fontWeight={!isAnalytics ? 'semibold' : 'normal'}
+              color={!isAnalytics ? activeColor : inactiveColor}
+              bg={!isAnalytics ? activeBg : 'transparent'}
+              _hover={{ bg: !isAnalytics ? activeBg : inactiveHoverBg }}
             >
               <Text>Submissions</Text>
               {(stats?.totalStarts ?? 0) > 0 && (
-                <Tag size="sm" colorScheme="blue" ml="1">
+                <Tag
+                  size="sm"
+                  bg={!isAnalytics ? 'blue.100' : 'gray.100'}
+                  color={!isAnalytics ? 'blue.700' : 'gray.600'}
+                  ml="1.5"
+                  rounded="full"
+                  fontWeight="bold"
+                  fontSize="2xs"
+                >
                   {stats?.totalStarts}
                 </Tag>
               )}
             </Button>
             <Button
               as={Link}
-              colorScheme={isAnalytics ? 'blue' : 'gray'}
-              variant={isAnalytics ? 'outline' : 'ghost'}
-              href={`/typebots/${typebot?.id}/results/analytics`}
+              variant="ghost"
               size="sm"
+              href={`/typebots/${typebot?.id}/results/analytics`}
+              rounded="lg"
+              fontWeight={isAnalytics ? 'semibold' : 'normal'}
+              color={isAnalytics ? activeColor : inactiveColor}
+              bg={isAnalytics ? activeBg : 'transparent'}
+              _hover={{ bg: isAnalytics ? activeBg : inactiveHoverBg }}
             >
               Analytics
             </Button>
           </HStack>
         </Flex>
-        <Flex pt={['10px', '60px']} w="full" justify="center">
+        <Flex
+          pt={['10px', '52px']}
+          w="full"
+          justify="center"
+          overflow="hidden"
+          flex="1"
+          minH="0"
+        >
           {workspace &&
             publishedTypebot &&
             (isAnalytics ? (
@@ -125,10 +166,13 @@ export const ResultsPage = () => {
                 typebotId={publishedTypebot.typebotId}
                 totalResults={stats?.totalStarts ?? 0}
                 onDeleteResults={handleDeletedResults}
+                helpdeskId={helpdeskIdFilter || undefined}
               >
                 <ResultsTableContainer
                   timeFilter={timeFilter}
                   onTimeFilterChange={setTimeFilter}
+                  helpdeskIdFilter={helpdeskIdFilter}
+                  onHelpdeskIdFilterChange={setHelpdeskIdFilter}
                 />
               </ResultsProvider>
             ))}

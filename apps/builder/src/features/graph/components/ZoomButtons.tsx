@@ -5,18 +5,20 @@ import { headerHeight } from '@/features/editor/constants'
 type Props = {
   onZoomInClick: () => void
   onZoomOutClick: () => void
+  isInsideModal?: boolean
 }
 export const ZoomButtons = ({
   onZoomInClick: onZoomIn,
   onZoomOutClick: onZoomOut,
+  isInsideModal,
 }: Props) => (
   <Stack
-    pos="fixed"
-    top={`calc(${headerHeight}px + 70px)`}
-    right="40px"
+    pos={isInsideModal ? 'absolute' : 'fixed'}
+    top={isInsideModal ? '16px' : `calc(${headerHeight}px + 70px)`}
+    right={isInsideModal ? '16px' : '40px'}
     bgColor={useColorModeValue('white', 'gray.900')}
     rounded="md"
-    zIndex={1}
+    zIndex={10}
     spacing="0"
     shadow="lg"
   >

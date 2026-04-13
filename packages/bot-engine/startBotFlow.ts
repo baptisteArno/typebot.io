@@ -4,6 +4,7 @@ import {
   SessionState,
   SetVariableHistoryItem,
   StartFrom,
+  VisitedBlockEntry,
 } from '@typebot.io/schemas'
 import { executeGroup } from './executeGroup'
 import { getNextGroup } from './getNextGroup'
@@ -30,11 +31,13 @@ export const startBotFlow = async ({
   ContinueChatResponse & {
     newSessionState: SessionState
     visitedEdges: VisitedEdge[]
+    visitedBlocks: VisitedBlockEntry[]
     setVariableHistory: SetVariableHistoryItem[]
   }
 > => {
   let newSessionState = state
   const visitedEdges: VisitedEdge[] = []
+  const visitedBlocks: VisitedBlockEntry[] = []
   const setVariableHistory: SetVariableHistoryItem[] = []
   if (startFrom?.type === 'group') {
     const group = state.typebotsQueue[0].typebot.groups.find(
@@ -49,6 +52,7 @@ export const startBotFlow = async ({
       version,
       state: newSessionState,
       visitedEdges,
+      visitedBlocks,
       setVariableHistory,
       startTime,
       textBubbleContentFormat,
@@ -65,6 +69,7 @@ export const startBotFlow = async ({
       newSessionState,
       setVariableHistory: [],
       visitedEdges: [],
+      visitedBlocks: [],
     }
   const nextGroup = await getNextGroup({
     state: newSessionState,
@@ -73,11 +78,12 @@ export const startBotFlow = async ({
   })
   newSessionState = nextGroup.newSessionState
   if (!nextGroup.group)
-    return { messages: [], newSessionState, visitedEdges, setVariableHistory }
+    return { messages: [], newSessionState, visitedEdges, visitedBlocks, setVariableHistory }
   return executeGroup(nextGroup.group, {
     version,
     state: newSessionState,
     visitedEdges,
+    visitedBlocks,
     setVariableHistory,
     startTime,
     textBubbleContentFormat,

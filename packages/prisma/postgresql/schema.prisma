@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["metrics"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -289,19 +288,19 @@ model CollaboratorsOnTypebots {
 }
 
 model PublicTypebot {
-  id        String   @id @default(cuid())
-  version   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  typebotId String   @unique
-  groups    Json
-  events    Json?
-  variables Json
-  edges     Json
-  theme     Json
-  settings  Json
-  isSecondaryFlow  Boolean  @default(false)
-  typebot   Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
+  id              String   @id @default(cuid())
+  version         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+  typebotId       String   @unique
+  groups          Json
+  events          Json?
+  variables       Json
+  edges           Json
+  theme           Json
+  settings        Json
+  isSecondaryFlow Boolean  @default(false)
+  typebot         Typebot  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
 }
 
 model Result {
@@ -313,6 +312,9 @@ model Result {
   hasStarted         Boolean?
   isArchived         Boolean?                 @default(false)
   lastChatSessionId  String?
+  helpdeskId         String?
+  status             String                   @default("abandoned")
+  visitedBlocks      Json?
   typebot            Typebot                  @relation(fields: [typebotId], references: [id], onDelete: Cascade)
   answers            Answer[]
   answersV2          AnswerV2[]
@@ -322,6 +324,9 @@ model Result {
 
   @@index([typebotId, hasStarted, createdAt(sort: Desc)])
   @@index([typebotId, isCompleted])
+  @@index([helpdeskId])
+  @@index([createdAt])
+  @@index([status])
 }
 
 model SetVariableHistoryItem {

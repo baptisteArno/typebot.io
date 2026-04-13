@@ -38,6 +38,7 @@ export const startChatPreview = async ({
     clientSideActions,
     newSessionState,
     visitedEdges,
+    visitedBlocks,
     setVariableHistory,
   } = await startSession({
     version: 2,
@@ -68,6 +69,7 @@ export const startChatPreview = async ({
         logs,
         clientSideActions,
         visitedEdges,
+        visitedBlocks,
         setVariableHistory,
         hasCustomEmbedBubble: messages.some(
           (message) => message.type === 'custom-embed'

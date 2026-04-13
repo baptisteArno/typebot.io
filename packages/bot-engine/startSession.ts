@@ -12,6 +12,7 @@ import {
   TypebotInSession,
   Block,
   SetVariableHistoryItem,
+  VisitedBlockEntry,
 } from '@typebot.io/schemas'
 import {
   StartChatInput,
@@ -76,6 +77,7 @@ export const startSession = async ({
   Omit<StartChatResponse, 'resultId' | 'isStreamEnabled' | 'sessionId'> & {
     newSessionState: SessionState
     visitedEdges: VisitedEdge[]
+    visitedBlocks: VisitedBlockEntry[]
     setVariableHistory: SetVariableHistoryItem[]
     resultId?: string
   }
@@ -184,6 +186,7 @@ export const startSession = async ({
       dynamicTheme: parseDynamicTheme(initialState),
       messages: [],
       visitedEdges: [],
+      visitedBlocks: [],
       setVariableHistory: [],
     }
   }
@@ -242,6 +245,7 @@ export const startSession = async ({
     newSessionState,
     logs,
     visitedEdges,
+    visitedBlocks,
     setVariableHistory,
   } = chatReply
 
@@ -297,6 +301,7 @@ export const startSession = async ({
       dynamicTheme: parseDynamicTheme(newSessionState),
       logs: startLogs.length > 0 ? startLogs : undefined,
       visitedEdges,
+      visitedBlocks,
       setVariableHistory,
     }
 
@@ -320,6 +325,7 @@ export const startSession = async ({
     dynamicTheme: parseDynamicTheme(newSessionState),
     logs: startLogs.length > 0 ? startLogs : undefined,
     visitedEdges,
+    visitedBlocks,
     setVariableHistory,
   }
 }
