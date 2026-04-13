@@ -16,6 +16,7 @@ export const askAssistant = createAction({
   auth,
   baseOptions,
   name: "Ask Assistant",
+  isHidden: true,
   options: option
     .object({
       assistantId: option.string.meta({

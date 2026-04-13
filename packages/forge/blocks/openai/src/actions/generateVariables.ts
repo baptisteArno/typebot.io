@@ -4,17 +4,17 @@ import { createAction } from "@typebot.io/forge";
 import { isDefined } from "@typebot.io/lib/utils";
 import { auth } from "../auth";
 import { baseOptions } from "../baseOptions";
-import { chatModels, reasoningModels } from "../constants";
+import { models } from "../constants";
 
 export const generateVariables = createAction({
   name: "Generate variables",
   auth,
   baseOptions,
   options: parseGenerateVariablesOptions({
-    models: { type: "static", models: chatModels.concat(reasoningModels) },
+    models: { type: "static", models },
   }),
   aiGenerate: {
-    models: { type: "static", items: chatModels.concat(reasoningModels) },
+    models: { type: "static", items: models },
     getModel: ({ credentials, model }) =>
       createOpenAI({
         apiKey: credentials.apiKey,

@@ -15,10 +15,13 @@ export const openAIVoices = [
   "shimmer",
 ] as const;
 
-export const chatModels = [
-  "gpt-5.4-nano",
+export const models = [
+  "gpt-5.4",
+  "gpt-5.4-pro",
   "gpt-5.4-mini",
+  "gpt-5.4-nano",
   "gpt-5.3-chat",
+  "gpt-5.2-pro",
   "gpt-5.2",
   "gpt-5.1-chat",
   "gpt-5",
@@ -29,12 +32,6 @@ export const chatModels = [
   "gpt-4.1-nano",
   "gpt-4o",
   "gpt-4o-mini",
-];
-
-export const reasoningModels = [
-  "gpt-5.4",
-  "gpt-5.4-pro",
-  "gpt-5.2-pro",
   "o3",
   "o4-mini",
   "o3-mini",

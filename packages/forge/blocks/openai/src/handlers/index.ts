@@ -3,6 +3,7 @@ import {
   fetchAssistantFunctionsHandler,
   fetchAssistantsHandler,
 } from "./askAssistantHandler";
+import { askModelHandler } from "./askModelHandler";
 import { createChatCompletionHandler } from "./createChatCompletionHandler";
 import {
   createSpeechHandler,
@@ -15,6 +16,7 @@ export default [
   askAssistantHandler,
   fetchAssistantsHandler,
   fetchAssistantFunctionsHandler,
+  askModelHandler,
   createChatCompletionHandler,
   createSpeechHandler,
   fetchSpeechModelsHandler,

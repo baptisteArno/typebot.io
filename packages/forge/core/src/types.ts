@@ -129,6 +129,7 @@ export type ActionDefinition<
   >,
 > = {
   name: string;
+  isHidden?: boolean;
   parseBlockNodeLabel?: BivariantCallback<
     WithoutVariables<z.infer<BaseOptions> & z.infer<Options>>,
     string
