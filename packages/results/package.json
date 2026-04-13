@@ -15,6 +15,8 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0",
     "effect": "4.0.0-beta.38",
     "papaparse": "^5.4.1",
     "@typebot.io/blocks-core": "workspace:*",
