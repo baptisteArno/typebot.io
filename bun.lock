@@ -845,6 +845,7 @@
       "dependencies": {
         "@ai-sdk/openai": "^1.3.24",
         "@ai-sdk/ui-utils": "^1.2.11",
+        "@sentry/nextjs": "^10.43.0",
         "@typebot.io/ai": "workspace:*",
         "@typebot.io/forge": "workspace:*",
         "@typebot.io/lib": "workspace:*",
