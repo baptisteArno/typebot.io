@@ -28,7 +28,7 @@ import { toast } from "@/lib/toast";
 import { useResults } from "../../ResultsProvider";
 import { ExportJobProgress } from "./ExportJobProgress";
 
-const TOTAL_RESULTS_THRESHOLD_FOR_BACKGROUND_EXPORT = 50;
+const TOTAL_RESULTS_THRESHOLD_FOR_BACKGROUND_EXPORT = 10000;
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 type Props = {
