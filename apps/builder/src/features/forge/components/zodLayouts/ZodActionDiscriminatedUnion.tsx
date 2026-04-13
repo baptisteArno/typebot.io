@@ -41,7 +41,12 @@ export const ZodActionDiscriminatedUnion = ({
         className="w-full"
         value={blockOptions?.action}
         onChange={(item) => onDataChange({ ...blockOptions, action: item })}
-        items={[...optionsMap.keys()].filter(isDefined)}
+        items={[...optionsMap.keys()].filter(
+          (key) =>
+            isDefined(key) &&
+            (!isActionHidden(blockDef, key) ||
+              key === blockOptions?.action),
+        )}
         placeholder="Select an action"
       />
       {currentOptions && (
@@ -57,6 +62,11 @@ export const ZodActionDiscriminatedUnion = ({
     </>
   );
 };
+
+const isActionHidden = (
+  blockDef: ForgedBlockDefinition | undefined,
+  actionName: string,
+) => blockDef?.actions.find((a) => a.name === actionName)?.isHidden === true;
 
 const isZodDiscriminatedUnion = (
   schema: z.ZodTypeAny,
