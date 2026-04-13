@@ -6,6 +6,7 @@ import { ArrowRight01Icon } from "@typebot.io/ui/icons/ArrowRight01Icon";
 import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
 import { LeftToRightListBulletIcon } from "@typebot.io/ui/icons/LeftToRightListBulletIcon";
 import { MoreHorizontalIcon } from "@typebot.io/ui/icons/MoreHorizontalIcon";
+import type { TimeFilter } from "@typebot.io/results/timeFilter";
 import { useState } from "react";
 import { ColumnSettings } from "./ColumnSettings";
 import { ExportAllResultsDialog } from "./ExportAllResultsDialog";
@@ -16,6 +17,7 @@ type Props = {
   columnOrder: string[];
   onColumnOrderChange: (columnOrder: string[]) => void;
   setColumnVisibility: (columnVisibility: { [key: string]: boolean }) => void;
+  timeFilter: TimeFilter;
 };
 
 export const TableSettingsButton = (props: Props) => {
@@ -43,6 +45,7 @@ export const TableSettingsButton = (props: Props) => {
       <ExportAllResultsDialog
         onClose={exportAllDialogControls.onClose}
         isOpen={exportAllDialogControls.isOpen}
+        timeFilter={props.timeFilter}
       />
     </>
   );

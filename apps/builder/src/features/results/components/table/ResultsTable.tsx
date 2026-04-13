@@ -10,13 +10,13 @@ import type {
   ResultHeaderCell,
   TableData,
 } from "@typebot.io/results/schemas/results";
+import type { TimeFilter } from "@typebot.io/results/timeFilter";
 import type { ResultsTablePreferences } from "@typebot.io/typebot/schemas/typebot";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Checkbox } from "@typebot.io/ui/components/Checkbox";
 import { TextAlignLeftIcon } from "@typebot.io/ui/icons/TextAlignLeftIcon";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { TimeFilterSelect } from "@/features/analytics/components/TimeFilterSelect";
-import type { timeFilterValues } from "@/features/analytics/constants";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { HeaderIcon } from "../HeaderIcon";
 import { HeaderRow } from "./HeaderRow";
@@ -30,8 +30,8 @@ type ResultsTableProps = {
   data: TableData[];
   hasMore?: boolean;
   preferences?: ResultsTablePreferences;
-  timeFilter: (typeof timeFilterValues)[number];
-  onTimeFilterChange: (timeFilter: (typeof timeFilterValues)[number]) => void;
+  timeFilter: TimeFilter;
+  onTimeFilterChange: (timeFilter: TimeFilter) => void;
   onScrollToBottom: () => void;
   onLogOpenIndex: (index: number) => () => void;
   onResultExpandIndex: (index: number) => () => void;
@@ -230,6 +230,7 @@ export const ResultsTable = ({
           setColumnVisibility={changeColumnVisibility}
           columnOrder={columnsOrder}
           onColumnOrderChange={changeColumnOrder}
+          timeFilter={timeFilter}
         />
       </div>
       <div

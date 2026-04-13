@@ -2,16 +2,17 @@ import { ORPCError } from "@orpc/server";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
+import {
+  defaultTimeFilter,
+  parseFromDateFromTimeFilter,
+  parseToDateFromTimeFilter,
+  timeFilterValues,
+} from "@typebot.io/results/timeFilter";
 import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
 import { canReadTypebots } from "@/helpers/databaseRules";
-import { defaultTimeFilter, timeFilterValues } from "../constants";
 import { getVisitedEdgeToPropFromId } from "../helpers/getVisitedEdgeToPropFromId";
-import {
-  parseFromDateFromTimeFilter,
-  parseToDateFromTimeFilter,
-} from "../helpers/parseDateFromTimeFilter";
 
 export const getInDepthAnalyticsDataInputSchema = z.object({
   typebotId: z.string(),

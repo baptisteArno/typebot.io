@@ -2,17 +2,15 @@ import { ORPCError } from "@orpc/server";
 import { isDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import { resultWithAnswersSchema } from "@typebot.io/results/schemas/results";
+import {
+  defaultTimeFilter,
+  parseFromDateFromTimeFilter,
+  parseToDateFromTimeFilter,
+  timeFilterValues,
+} from "@typebot.io/results/timeFilter";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
-import {
-  defaultTimeFilter,
-  timeFilterValues,
-} from "@/features/analytics/constants";
-import {
-  parseFromDateFromTimeFilter,
-  parseToDateFromTimeFilter,
-} from "@/features/analytics/helpers/parseDateFromTimeFilter";
 
 const MAX_LIMIT = 500;
 

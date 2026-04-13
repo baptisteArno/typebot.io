@@ -9,11 +9,11 @@ import type {
   ResultWithAnswers,
   TableData,
 } from "@typebot.io/results/schemas/results";
+import type { TimeFilter } from "@typebot.io/results/timeFilter";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import type { ReactNode } from "react";
 import { createContext, useContext, useMemo } from "react";
 import { orpc } from "@/lib/queryClient";
-import type { timeFilterValues } from "../analytics/constants";
 import { useTypebot } from "../editor/providers/TypebotProvider";
 import { parseCellContent } from "./helpers/parseCellContent";
 
@@ -39,7 +39,7 @@ export const ResultsProvider = ({
   totalResults,
   onDeleteResults,
 }: {
-  timeFilter: (typeof timeFilterValues)[number];
+  timeFilter: TimeFilter;
   children: ReactNode;
   typebotId: string;
   totalResults: number;
