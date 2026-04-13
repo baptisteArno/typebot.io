@@ -7,6 +7,7 @@ RUN apt-get -qy update \
     && apt-get -qy --no-install-recommends install \
     openssl \
     curl \
+    python3 make g++ \
     && apt-get autoremove -yq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -20,7 +21,7 @@ RUN turbo prune --scope=${SCOPE} --docker
 
 FROM base AS builder
 RUN apt-get -qy update \
-    && apt-get -qy --no-install-recommends install git \
+    && apt-get -qy --no-install-recommends install git python3 make g++ \
     && apt-get autoremove -yq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*

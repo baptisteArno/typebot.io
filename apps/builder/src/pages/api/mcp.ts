@@ -38,6 +38,24 @@ export default async function handler(
     req.headers['tenant'] ||
     req.query.tenant) as string | undefined
 
+  logger.info('MCP request received', {
+    method: req.method,
+    tenant,
+    headers: Object.fromEntries(
+      Object.entries(req.headers).filter(([k]) =>
+        [
+          'x-tenant',
+          'tenant',
+          'content-type',
+          'accept',
+          'authorization',
+          'host',
+        ].includes(k)
+      )
+    ),
+    body: req.method === 'POST' ? req.body?.method : undefined,
+  })
+
   if (req.method === 'GET') {
     // SSE endpoint for server-to-client messages
     res.setHeader('Content-Type', 'text/event-stream')
