@@ -14,7 +14,6 @@ export const DashboardHeader = () => {
   const { t } = useTranslate()
   const { user, logOut } = useUser()
   const { workspace, switchWorkspace, createWorkspace } = useWorkspace()
-
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const handleCreateNewWorkspace = () =>

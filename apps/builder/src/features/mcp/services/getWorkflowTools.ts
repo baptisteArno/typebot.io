@@ -7,22 +7,42 @@ type JsonValue = any
 
 interface GetWorkflowToolsParams {
   tenant: string
+  /**
+   * When true, include draft (unpublished) typebots in the result set.
+   * Each tool's `isPublished` field still reflects its true state so the
+   * caller can mark drafts in the UI. Defaults to false so agents keep
+   * receiving only published tools — drafts would fail at runtime anyway
+   * because `executeWorkflow` requires a public flow.
+   *
+   * The claudia-app Tools page sets this to true so users can see the
+   * tools they've created but haven't published yet, with a warning
+   * badge. The agents path (claudia supervisor → MCP) leaves it false.
+   */
+  includeDrafts?: boolean
 }
 
 /**
- * Retrieve all published TOOL-type typebots for a given tenant.
+ * Retrieve all TOOL-type typebots for a given tenant.
  * Extracts variable definitions from Declare Variables blocks.
+ *
+ * By default only published typebots are returned. Pass `includeDrafts:
+ * true` to include drafts as well — useful for UIs that want to show
+ * unpublished work-in-progress tools.
  */
 export async function getWorkflowTools({
   tenant,
+  includeDrafts = false,
 }: GetWorkflowToolsParams): Promise<GetWorkflowToolsResult> {
-  logger.debug('getWorkflowTools: querying typebots', { tenant })
+  logger.debug('getWorkflowTools: querying typebots', { tenant, includeDrafts })
   const typebots = await prisma.typebot.findMany({
     where: {
       tenant,
       isArchived: { not: true },
       toolDescription: { not: null },
-      publishedTypebot: { isNot: null },
+      // Filter out drafts by default. The `isPublished` field on each
+      // returned tool always reflects reality, so opting into drafts is
+      // a one-line flag flip on the caller's side.
+      ...(includeDrafts ? {} : { publishedTypebot: { isNot: null } }),
     },
     select: {
       id: true,

@@ -3,6 +3,12 @@ import type { WorkflowTool } from '../types'
 
 /**
  * Transform a Typebot workflow tool to MCP tool format.
+ *
+ * The `_meta.isPublished` field is exposed so UI layers can render a
+ * "not yet published" warning next to tools that were created but
+ * haven't been published in the flow editor. Agents ignore this field
+ * (and by default only receive published tools; see
+ * `getWorkflowTools({ includeDrafts })`).
  */
 export function transformToMCPTool(tool: WorkflowTool) {
   const properties: Record<string, { type: string; description: string }> = {}
@@ -29,6 +35,7 @@ export function transformToMCPTool(tool: WorkflowTool) {
     annotations: {},
     _meta: {
       workflowId: tool.id,
+      isPublished: tool.isPublished,
     },
   }
 }

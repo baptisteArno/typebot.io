@@ -5,6 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 import { env } from '@typebot.io/env'
 import { mockedUser } from '@typebot.io/lib/mockedUser'
+import { emailIsCloudhumans } from '@typebot.io/lib'
 import { DatabaseUserWithCognito } from '../types/cognito'
 import { verifyCognitoToken } from './verifyCognitoToken'
 import logger from '@/helpers/logger'
@@ -67,6 +68,16 @@ const authenticateByToken = async (
   })) as DatabaseUserWithCognito | null
   if (!user) return
   Sentry.setUser({ id: user.id })
+
+  // Populate cognitoClaims for admin users so that API token auth
+  // gets the same workspace access as session-based auth.
+  if (emailIsCloudhumans(user.email)) {
+    user.cognitoClaims = {
+      'custom:hub_role': 'ADMIN',
+      'custom:eddie_workspaces': '',
+    }
+  }
+
   return user
 }
 

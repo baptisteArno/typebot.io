@@ -26,7 +26,7 @@ export default async function handler(
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS')
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'Content-Type, x-tenant, tenant, mcp-session-id, Authorization, X-MCP-Access-Token'
+    'Content-Type, x-tenant, tenant, mcp-session-id, Authorization, X-MCP-Access-Token, x-include-drafts'
   )
 
   if (req.method === 'OPTIONS') {
@@ -96,12 +96,19 @@ export default async function handler(
           })
         }
 
-        logger.info('MCP tools/list', { tenant, requestId: id })
-        const { tools } = await getWorkflowTools({ tenant })
+        // `includeDrafts` opts the caller into receiving unpublished
+        // tools too. Only honoured via the `x-include-drafts` header
+        // (set by claudia web-api when proxying from the Tools page).
+        // Agents never set this header so they only see published tools.
+        const includeDrafts = req.headers['x-include-drafts'] === 'true'
+
+        logger.info('MCP tools/list', { tenant, includeDrafts, requestId: id })
+        const { tools } = await getWorkflowTools({ tenant, includeDrafts })
 
         const mcpTools = tools.map(transformToMCPTool)
         logger.info('MCP tools/list completed', {
           tenant,
+          includeDrafts,
           toolCount: mcpTools.length,
           requestId: id,
         })

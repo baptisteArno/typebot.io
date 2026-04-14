@@ -414,4 +414,15 @@ describe('getCognitoAccessibleWorkspaceIds', () => {
       ids: ['ws-123'],
     })
   })
+
+  it('should return { type: "admin" } when cognitoClaims is populated with ADMIN role (API token auth for admin)', () => {
+    const user = {
+      cognitoClaims: {
+        'custom:hub_role': 'ADMIN' as const,
+        'custom:eddie_workspaces': '',
+      },
+    }
+
+    expect(getCognitoAccessibleWorkspaceIds(user)).toEqual({ type: 'admin' })
+  })
 })
