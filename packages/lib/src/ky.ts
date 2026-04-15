@@ -1,5 +1,6 @@
 import kyOriginal from "ky";
 import type { ProxyAgent } from "undici";
+import { getSafeDispatcher } from "./ssrf/createSafeDispatcher";
 import { validateHttpReqUrl } from "./ssrf/validateHttpReqUrl";
 
 type ExtendedRequestInit = RequestInit & {
@@ -77,9 +78,11 @@ const safeFetchWithoutChunkedEncoding = async (
       ? input.toString()
       : input.url;
   await validateHttpReqUrl(url);
+  const dispatcher = getSafeDispatcher();
   let response = await rebuildFetchWithoutChunkedEncoding(input, {
     ...init,
     redirect: "manual",
+    dispatcher,
   });
   let redirectCount = 0;
   while (
@@ -97,6 +100,7 @@ const safeFetchWithoutChunkedEncoding = async (
     response = await rebuildFetchWithoutChunkedEncoding(location, {
       ...init,
       redirect: "manual",
+      dispatcher,
     });
     redirectCount++;
   }
