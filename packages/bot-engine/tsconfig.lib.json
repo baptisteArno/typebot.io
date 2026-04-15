@@ -11,6 +11,9 @@
       "path": "../variables/tsconfig.lib.json"
     },
     {
+      "path": "../workspace-secrets/tsconfig.lib.json"
+    },
+    {
       "path": "../typebot/tsconfig.lib.json"
     },
     {

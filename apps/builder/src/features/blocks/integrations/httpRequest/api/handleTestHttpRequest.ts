@@ -127,6 +127,7 @@ export const handleTestHttpRequest = async ({
     variables: mergedVariables,
     sessionStore,
     answers,
+    workspaceId: typebot.workspaceId ?? undefined,
     proxy: block.options?.proxyCredentialsId
       ? {
           credentialsId: block.options.proxyCredentialsId,
