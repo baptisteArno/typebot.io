@@ -4,7 +4,8 @@
     "rootDir": "src",
     "outDir": "dist",
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
-    "lib": ["dom", "ESNext"]
+    "lib": ["dom", "ESNext"],
+    "types": ["@types/bun"]
   },
   "include": ["src/**/*.ts"],
   "references": [
