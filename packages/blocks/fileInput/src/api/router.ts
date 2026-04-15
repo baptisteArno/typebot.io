@@ -13,10 +13,6 @@ import {
   handleGenerateUploadUrlV2,
 } from "./deprecated/handleGenerateUploadUrlV2";
 import {
-  getUploadUrlInputSchema,
-  handleGetUploadUrl,
-} from "./deprecated/handleGetUploadUrl";
-import {
   generateUploadUrlInputSchema,
   handleGenerateUploadUrl,
 } from "./handleGenerateUploadUrl";
@@ -119,21 +115,4 @@ export const fileUploadViewerRouter = {
       }),
     )
     .handler(handleGenerateUploadUrlV2),
-  getUploadUrlProcedure: publicProcedure
-    .route({
-      method: "GET",
-      path: "/v1/typebots/{typebotId}/blocks/{blockId}/storage/upload-url",
-      summary: "Get upload URL for a file",
-      description: "Used for the web client to get the bucket upload file.",
-      deprecated: true,
-      tags: ["File upload"],
-    })
-    .input(getUploadUrlInputSchema)
-    .output(
-      z.object({
-        presignedUrl: z.string(),
-        hasReachedStorageLimit: z.boolean(),
-      }),
-    )
-    .handler(handleGetUploadUrl),
 };
