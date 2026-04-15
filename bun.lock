@@ -1086,6 +1086,8 @@
         "@typebot.io/telemetry": "workspace:*",
         "@typebot.io/typebot": "workspace:*",
         "@typebot.io/variables": "workspace:*",
+        "date-fns": "^2.30.0",
+        "date-fns-tz": "^2.0.0",
         "effect": "4.0.0-beta.38",
         "papaparse": "^5.4.1",
         "zod": "^4.3.5",
