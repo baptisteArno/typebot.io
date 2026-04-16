@@ -10,6 +10,7 @@ export function createContext({
     iframeReferrerOrigin:
       req.headers.get("x-typebot-iframe-referrer-origin") ?? undefined,
     authenticate,
+    req,
   };
 }
 
