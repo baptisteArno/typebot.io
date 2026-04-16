@@ -113,6 +113,14 @@ export default async function handler(
           requestId: id,
         })
 
+        if (mcpTools.length === 0) {
+          logger.warn(`MCP tools/list returned empty for tenant=${tenant}`, {
+            tenant,
+            includeDrafts,
+            requestId: id,
+          })
+        }
+
         return res.status(200).json({
           jsonrpc: '2.0',
           result: { tools: mcpTools },
