@@ -53,6 +53,8 @@ export async function getWorkflowTools({
       variables: true,
       publicId: true,
       groups: true,
+      createdAt: true,
+      updatedAt: true,
       publishedTypebot: {
         select: {
           id: true,
@@ -122,6 +124,8 @@ export async function getWorkflowTools({
         isPublished: Boolean(typebot.publishedTypebot),
         variables,
         publicName: typebot.publicId ?? `${slug}-${typebot.id.slice(-7)}`,
+        createdAt: typebot.createdAt,
+        updatedAt: typebot.updatedAt,
       }
     })
 

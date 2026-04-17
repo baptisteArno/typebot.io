@@ -36,6 +36,8 @@ export function transformToMCPTool(tool: WorkflowTool) {
     _meta: {
       workflowId: tool.id,
       isPublished: tool.isPublished,
+      createdAt: tool.createdAt.toISOString(),
+      updatedAt: tool.updatedAt.toISOString(),
     },
   }
 }

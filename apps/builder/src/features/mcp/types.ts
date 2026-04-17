@@ -12,6 +12,8 @@ export interface WorkflowTool {
     description?: string
   }>
   publicName: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 /**
