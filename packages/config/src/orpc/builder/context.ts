@@ -9,11 +9,14 @@ export type UserInOrpcContext = {
 
 export function createContext({
   authenticate,
+  req,
 }: {
   authenticate: () => Promise<UserInOrpcContext | null>;
+  req?: Request;
 }) {
   return {
     authenticate,
+    req,
   };
 }
 
