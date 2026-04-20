@@ -1,7 +1,10 @@
 import { ORPCError } from "@orpc/server";
 import { getGoogleSpreadsheet } from "@typebot.io/credentials/getGoogleSpreadsheet";
 import { isDefined } from "@typebot.io/lib/utils";
+import prisma from "@typebot.io/prisma";
+import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
+import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
 
 export const getSheetsInputSchema = z.object({
   credentialsId: z.string(),
@@ -11,9 +14,23 @@ export const getSheetsInputSchema = z.object({
 
 export const handleGetSheets = async ({
   input: { credentialsId, workspaceId, spreadsheetId },
+  context: { user },
 }: {
   input: z.infer<typeof getSheetsInputSchema>;
+  context: { user: Pick<User, "id" | "email"> };
 }) => {
+  const workspace = await prisma.workspace.findFirst({
+    where: {
+      id: workspaceId,
+    },
+    select: {
+      id: true,
+      members: true,
+    },
+  });
+  if (!workspace || isReadWorkspaceFobidden(workspace, user))
+    throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
+
   const docResponse = await getGoogleSpreadsheet({
     credentialsId,
     spreadsheetId,
