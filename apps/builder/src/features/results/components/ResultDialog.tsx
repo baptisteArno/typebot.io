@@ -77,7 +77,12 @@ const Transcript = ({
   typebotId: string;
   resultId: string;
 }) => {
-  const { data: transcriptData, isLoading: isTranscriptLoading } = useQuery(
+  const {
+    data: transcriptData,
+    isLoading: isTranscriptLoading,
+    isError: isTranscriptError,
+    error: transcriptError,
+  } = useQuery(
     orpc.results.getResultTranscript.queryOptions({
       input: { typebotId, resultId },
     }),
@@ -88,6 +93,16 @@ const Transcript = ({
       <div className="flex flex-col gap-2 items-center py-8">
         <LoaderCircleIcon className="animate-spin" />
         <p>Loading transcript...</p>
+      </div>
+    );
+
+  if (isTranscriptError)
+    return (
+      <div className="border rounded-md p-4 bg-gray-1 text-sm text-gray-11">
+        <p>Could not load transcript.</p>
+        {transcriptError?.message && (
+          <p className="mt-1 text-xs">{transcriptError.message}</p>
+        )}
       </div>
     );
 
