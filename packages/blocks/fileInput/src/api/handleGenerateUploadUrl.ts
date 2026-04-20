@@ -10,6 +10,7 @@ import { parseAllowedFileTypesMetadata } from "@typebot.io/lib/extensionFromMime
 import { generatePresignedPutUrl } from "@typebot.io/lib/s3/generatePresignedPutUrl";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
+import { basename } from "path";
 import { z } from "zod";
 
 export const generateUploadUrlInputSchema = z.object({
@@ -102,12 +103,13 @@ export const handleGenerateUploadUrl = async ({
 
   const resultId = session.state.typebotsQueue[0].resultId;
 
+  const safeFileName = basename(fileName);
   const filePath =
     "workspaceId" in typebot && typebot.workspaceId && resultId
       ? `${visibility === "Private" ? "private" : "public"}/workspaces/${
           typebot.workspaceId
-        }/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${fileName}`
-      : `public/tmp/typebots/${typebotId}/blocks/${blockId}/${fileName}`;
+        }/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${safeFileName}`
+      : `public/tmp/typebots/${typebotId}/blocks/${blockId}/${safeFileName}`;
 
   const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType, maxFileSize: maxFileSizeMB } = await generatePresignedPutUrl({
     fileType,
@@ -121,7 +123,7 @@ export const handleGenerateUploadUrl = async ({
     maxFileSize: maxFileSizeMB,
     fileUrl:
       visibility === "Private" && !isPreview
-        ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${fileName}`
+        ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${safeFileName}`
         : defaultFileUrl,
   };
 };
