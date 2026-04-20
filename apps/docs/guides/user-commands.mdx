@@ -1,0 +1,52 @@
+---
+title: How to add user commands (restart, help...)
+---
+
+A common pattern is letting the user type keywords like `restart`, `help`, or `menu` at any point in the conversation to trigger a specific behavior. Typebot does not ship a dedicated block for this, but you can build it with a [Reply event](/editor/events/reply) combined with [Jump](/editor/blocks/logic/jump) and [Return](/editor/blocks/logic/return) blocks.
+
+## Reply event vs Command event
+
+These two events are easy to confuse:
+
+- **[Reply event](/editor/events/reply)** fires on every user reply (text, button click, etc.). Use it when the trigger is something the user types or selects inside the chat. This is what you want for `restart` or `help` keywords.
+- **[Command event](/editor/events/command)** fires only when a command is sent programmatically via [`Typebot.sendCommand`](/deploy/web/html-javascript#commands) or the [continueChat API](/api-reference/chat/continue-chat). Use it to trigger flows from outside the conversation (a button on your page, an external webhook, etc.).
+
+If you want the user to type a keyword to trigger behavior, use the Reply event.
+
+## Implement a `restart` command
+
+The goal: whenever the user replies with `restart`, the conversation jumps back to the very first block of the flow.
+
+<Steps>
+  <Step title="Add a Reply event">
+    From the events sidebar, drag a Reply event onto the graph.
+  </Step>
+  <Step title="Filter the reply content">
+    Inside the event subflow, add a [Condition block](/editor/blocks/logic/condition) that checks if the reply content equals `restart` (case-insensitive if you prefer).
+  </Step>
+  <Step title="Jump to the first block">
+    On the `true` branch of the condition, add a [Jump block](/editor/blocks/logic/jump) pointing to the first block of your main flow.
+  </Step>
+  <Step title="Return on the false branch">
+    On the `false` branch, add a [Return block](/editor/blocks/logic/return) so the conversation resumes normally when the user types anything else.
+  </Step>
+</Steps>
+
+<Note>
+  The Reply event fires **before** the reply is validated against the current input. This means the keyword works even if the user is currently on a number or email input.
+</Note>
+
+## Implement a `help` command
+
+Same pattern, but instead of jumping to the start of the flow, jump to a dedicated "Help" group that sends a few text bubbles explaining what the bot can do. End that group with a Return block so the user comes back to where they were.
+
+## Handling multiple commands
+
+You can chain several conditions inside a single Reply event subflow:
+
+- `restart` → Jump to start
+- `help` → Jump to help group
+- `agent` → Jump to human handoff group
+- anything else → Return
+
+Keeping all your command routing inside one Reply event makes it easier to maintain than duplicating logic in every group.

@@ -37,3 +37,12 @@ Typebot doesn't store any password. Its login works with Github, Google, Faceboo
 ## Can I set a variable with the Script block?
 
 No, the script block is only meant to execute a script. You can't set a variable with/in it. If you need to set a variable with some code, you can use the [Set variable block](/editor/blocks/logic/set-variable).
+
+## Can I have a persistent text input always visible at the bottom of the chat?
+
+No. Typebot is a flow-driven conversation engine: the input shown at any moment is the one defined by the current block. There is no native way to display a persistent free-text input that stays visible outside of an input block.
+
+If you need that kind of UX, you have two options:
+
+- **Accept user keywords at any input.** Add a [Reply event](/editor/events/reply) that reacts to specific keywords (see the [user commands guide](/guides/user-commands)). The input still belongs to the current block, but the user can type commands like `help` or `restart` from anywhere.
+- **Build a custom UI.** Use the [continueChat HTTP API](/api-reference/chat/continue-chat) to drive the conversation yourself and render whatever chat interface you want, including a persistent input. This is significantly more work than using the official embeds.

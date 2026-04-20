@@ -5,6 +5,10 @@ sidebarTitle: Command
 
 This event allows you to trigger a specifc flow when a command is sent to the bot. This command can be sent with an [continueChat HTTP request](/api-reference/chat/continue-chat) with a `command` message type or with the [Typebot.sendCommand](/deploy/web/html-javascript#commands) function if your bot is embedded on a website.
 
+<Note>
+  Looking to trigger behavior when the user **types** a keyword like `restart` or `help`? Use a [Reply event](./reply) instead — the Command event is only for triggers sent programmatically from outside the chat. See the [user commands guide](/guides/user-commands) for a concrete example.
+</Note>
+
 You assign a unique command name for each node and you can optionally resume the flow after the command is sent.
 
 <Frame>
