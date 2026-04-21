@@ -235,7 +235,8 @@
         "guides/utm-in-results",
         "guides/how-to-create-loops",
         "guides/how-to-split-ai-messages-in-multi-blocks",
-        "guides/user-commands"
+        "guides/user-commands",
+        "guides/external-messaging-apps"
       ]
     },
     {

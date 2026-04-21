@@ -1,0 +1,60 @@
+---
+title: Integrate with external messaging apps via HTTP API
+sidebarTitle: External messaging apps
+---
+
+Typebot ships native integrations for the web and WhatsApp. For messaging platforms that don't have a dedicated integration (KakaoTalk, LINE, WeChat, Telegram, Viber, or any proprietary chat app), you can still drive a Typebot conversation by calling the HTTP API yourself.
+
+The integration sits between the messaging app and Typebot: it receives each incoming message from the platform, forwards it to Typebot, and relays the bot reply back to the user.
+
+<Frame>
+  <img src="/images/api/publicId.png" alt="Find your typebot public ID" />
+</Frame>
+
+## How it works
+
+For each user, you need to persist one Typebot `sessionId` so the conversation stays stateful across messages.
+
+<Steps>
+  <Step title="Receive a webhook from the messaging app">
+    Most messaging platforms (KakaoTalk, LINE, Telegram, etc.) let you register a webhook URL that is called whenever a user sends a message. Create an HTTP endpoint on your server to handle those calls.
+  </Step>
+  <Step title="Start a chat on the first message">
+    If you don't have a `sessionId` for this user yet, call the [start chat endpoint](/api-reference/chat/start-chat):
+
+    ```sh
+    curl -X POST https://typebot.co/api/v1/typebots/<publicId>/startChat \
+      -H "Content-Type: application/json" \
+      -d '{}'
+    ```
+
+    Store the returned `sessionId` next to the user's platform ID in your database.
+  </Step>
+  <Step title="Forward subsequent messages">
+    For every following message from the same user, call [continueChat](/api-reference/chat/continue-chat) with the stored session:
+
+    ```sh
+    curl -X POST https://typebot.co/api/v1/sessions/<sessionId>/continueChat \
+      -H "Content-Type: application/json" \
+      -d '{"message": "user reply here"}'
+    ```
+  </Step>
+  <Step title="Render the bot response on the messaging app">
+    Both endpoints return a `messages` array describing what the bot wants to say (text bubbles, images, buttons, etc.). Map each message to the equivalent primitive on the target platform — for example a KakaoTalk text bubble, a LINE template message, or a Telegram inline keyboard.
+
+    If the response contains an `input`, present it to the user (buttons become quick replies, a text input just waits for the next message, etc.). When the user answers, loop back to the previous step.
+  </Step>
+</Steps>
+
+## Things to keep in mind
+
+- **Authentication.** Public endpoints (`/api/v1/typebots/<publicId>/startChat`) don't require a token. If you want to use the preview endpoint or any authenticated route, [generate an API token](/api-reference/authentication).
+- **Session lifetime.** Sessions expire after a period of inactivity. Handle 404 errors from `continueChat` by starting a new session transparently.
+- **Block compatibility.** Blocks that rely on the web embed (file upload UI, payment form, embedded videos...) don't have a 1:1 equivalent on most messaging apps. Keep the flow text-first when you target external platforms.
+- **Rate limits.** Messaging platforms usually enforce strict rate limits. Queue outgoing messages if the bot sends several bubbles in a row.
+
+## Related
+
+- [Chat API reference](/api-reference/chat/start-chat)
+- [continueChat reference](/api-reference/chat/continue-chat)
+- [API authentication](/api-reference/authentication)
