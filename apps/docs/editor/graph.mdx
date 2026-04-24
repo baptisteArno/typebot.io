@@ -24,3 +24,16 @@ In the user preferences, under the `Graph Gestures` section, you can choose betw
 **Zoom**: Pinch
 
 **Pan**: Use two finger
+
+## Common pitfalls
+
+### A block without an outgoing edge stops the flow
+
+Every block (except the final one of a conversation) needs an outgoing edge connected to the next block or group. If a block has no outgoing edge, the conversation will stop right there, even if other groups exist below.
+
+<Warning>
+  This is the most common cause of "my bot stops in the middle of the flow". The
+  editor does not display a visual warning when a non-terminal block has no
+  outgoing edge, so double-check that every block you expect to continue has a
+  connection.
+</Warning>
