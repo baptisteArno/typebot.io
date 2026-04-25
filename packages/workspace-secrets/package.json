@@ -1,0 +1,19 @@
+{
+  "name": "@typebot.io/workspace-secrets",
+  "type": "module",
+  "private": true,
+  "exports": {
+    "./*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@typebot.io/credentials": "workspace:*",
+    "@typebot.io/env": "workspace:*",
+    "@typebot.io/prisma": "workspace:*",
+    "zod": "^4.3.5"
+  }
+}

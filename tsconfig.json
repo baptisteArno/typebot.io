@@ -230,6 +230,9 @@
     },
     {
       "path": "./packages/spaces"
+    },
+    {
+      "path": "./packages/workspace-secrets"
     }
   ]
 }

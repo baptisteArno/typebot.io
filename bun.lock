@@ -78,6 +78,7 @@
         "@typebot.io/ui": "workspace:*",
         "@typebot.io/user": "workspace:*",
         "@typebot.io/whatsapp": "workspace:*",
+        "@typebot.io/workspace-secrets": "workspace:*",
         "@typebot.io/workspaces": "workspace:*",
         "@uiw/codemirror-extensions-langs": "^4.25.8",
         "@uiw/codemirror-theme-github": "^4.25.8",
@@ -482,6 +483,7 @@
         "@typebot.io/theme": "workspace:*",
         "@typebot.io/typebot": "workspace:*",
         "@typebot.io/variables": "workspace:*",
+        "@typebot.io/workspace-secrets": "workspace:*",
         "chrono-node": "2.7.6",
         "date-fns": "^2.30.0",
         "date-fns-tz": "^2.0.0",
@@ -1350,6 +1352,15 @@
       "devDependencies": {
         "vite-tsconfig-paths": "^6.1.1",
         "vitest": "^4.0.18",
+      },
+    },
+    "packages/workspace-secrets": {
+      "name": "@typebot.io/workspace-secrets",
+      "dependencies": {
+        "@typebot.io/credentials": "workspace:*",
+        "@typebot.io/env": "workspace:*",
+        "@typebot.io/prisma": "workspace:*",
+        "zod": "^4.3.5",
       },
     },
     "packages/workspaces": {
@@ -3420,6 +3431,8 @@
     "@typebot.io/whatsapp": ["@typebot.io/whatsapp@workspace:packages/whatsapp"],
 
     "@typebot.io/wordpress": ["@typebot.io/wordpress@workspace:packages/embeds/wordpress"],
+
+    "@typebot.io/workspace-secrets": ["@typebot.io/workspace-secrets@workspace:packages/workspace-secrets"],
 
     "@typebot.io/workspaces": ["@typebot.io/workspaces@workspace:packages/workspaces"],
 
