@@ -1,18 +1,39 @@
 import {
   CollaborationType,
-  Plan,
   Prisma,
   User,
   WorkspaceRole,
 } from '@typebot.io/prisma'
-import prisma from '@typebot.io/lib/prisma'
-import { NextApiResponse } from 'next'
-import { forbidden } from '@typebot.io/lib/api'
 import { env } from '@typebot.io/env'
+import {
+  getCognitoAccessibleWorkspaceIds,
+  type CognitoUserClaims,
+} from '@/features/workspace/helpers/cognitoUtils'
+
+const workspaceMemberFilter = (
+  user: Pick<User, 'email' | 'id'> & { cognitoClaims?: CognitoUserClaims },
+  roleFilter?: Prisma.MemberInWorkspaceWhereInput
+): Prisma.WorkspaceWhereInput => {
+  const cognitoAccess = getCognitoAccessibleWorkspaceIds(user)
+
+  switch (cognitoAccess.type) {
+    case 'admin':
+      return {}
+    case 'restricted':
+      return {
+        OR: [
+          { members: { some: { userId: user.id, ...roleFilter } } },
+          { id: { in: cognitoAccess.ids } },
+        ],
+      }
+    case 'none':
+      return { members: { some: { userId: user.id, ...roleFilter } } }
+  }
+}
 
 export const canWriteTypebots = (
   typebotIds: string[] | string,
-  user: Pick<User, 'email' | 'id'>
+  user: Pick<User, 'email' | 'id'> & { cognitoClaims?: CognitoUserClaims }
 ): Prisma.TypebotWhereInput =>
   env.NEXT_PUBLIC_E2E_TEST
     ? { id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds } }
@@ -20,11 +41,9 @@ export const canWriteTypebots = (
         id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
         OR: [
           {
-            workspace: {
-              members: {
-                some: { userId: user.id, role: { not: WorkspaceRole.GUEST } },
-              },
-            },
+            workspace: workspaceMemberFilter(user, {
+              role: { not: WorkspaceRole.GUEST },
+            }),
           },
           {
             collaborators: {
@@ -36,18 +55,14 @@ export const canWriteTypebots = (
 
 export const canReadTypebots = (
   typebotIds: string | string[],
-  user: Pick<User, 'email' | 'id'>
+  user: Pick<User, 'email' | 'id'> & { cognitoClaims?: CognitoUserClaims }
 ) => ({
   id: typeof typebotIds === 'string' ? typebotIds : { in: typebotIds },
   workspace:
     env.ADMIN_EMAIL?.some((email) => email === user.email) ||
     env.NEXT_PUBLIC_E2E_TEST
       ? undefined
-      : {
-          members: {
-            some: { userId: user.id },
-          },
-        },
+      : workspaceMemberFilter(user),
 })
 
 export const canEditGuests = (user: User, typebotId: string) => ({
@@ -58,30 +73,6 @@ export const canEditGuests = (user: User, typebotId: string) => ({
     },
   },
 })
-
-export const canPublishFileInput = async ({
-  userId,
-  workspaceId,
-  res,
-}: {
-  userId: string
-  workspaceId: string
-  res: NextApiResponse
-}) => {
-  const workspace = await prisma.workspace.findFirst({
-    where: { id: workspaceId, members: { some: { userId } } },
-    select: { plan: true },
-  })
-  if (!workspace) {
-    forbidden(res, 'workspace not found')
-    return false
-  }
-  if (workspace?.plan === Plan.FREE) {
-    forbidden(res, 'You need to upgrade your plan to use file input blocks')
-    return false
-  }
-  return true
-}
 
 export const isUniqueConstraintError = (error: unknown) =>
   typeof error === 'object' &&

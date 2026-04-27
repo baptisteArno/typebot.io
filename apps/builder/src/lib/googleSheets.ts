@@ -1,4 +1,4 @@
-import { Credentials as CredentialsFromDb } from '@typebot.io/prisma'
+import { Credentials as CredentialsFromDb, User } from '@typebot.io/prisma'
 import { OAuth2Client, Credentials } from 'google-auth-library'
 import { GoogleSheetsCredentials } from '@typebot.io/schemas'
 import { isDefined } from '@typebot.io/lib'
@@ -6,9 +6,10 @@ import { env } from '@typebot.io/env'
 import prisma from '@typebot.io/lib/prisma'
 import { decrypt } from '@typebot.io/lib/api/encryption/decrypt'
 import { encrypt } from '@typebot.io/lib/api/encryption/encrypt'
+import { isReadWorkspaceFobidden } from '@/features/workspace/helpers/isReadWorkspaceFobidden'
 
 export const getAuthenticatedGoogleClient = async (
-  userId: string,
+  user: Pick<User, 'email' | 'id'> & { cognitoClaims?: unknown },
   credentialsId: string
 ): Promise<
   { client: OAuth2Client; credentials: CredentialsFromDb } | undefined
@@ -18,10 +19,19 @@ export const getAuthenticatedGoogleClient = async (
     env.GOOGLE_CLIENT_SECRET,
     `${env.NEXTAUTH_URL}/api/credentials/google-sheets/callback`
   )
-  const credentials = (await prisma.credentials.findFirst({
-    where: { id: credentialsId, workspace: { members: { some: { userId } } } },
-  })) as CredentialsFromDb | undefined
-  if (!credentials) return
+  const credentials = await prisma.credentials.findFirst({
+    where: { id: credentialsId },
+    include: {
+      workspace: {
+        select: {
+          id: true,
+          members: { select: { userId: true } },
+        },
+      },
+    },
+  })
+  if (!credentials || isReadWorkspaceFobidden(credentials.workspace, user))
+    return
   const data = (await decrypt(
     credentials.data,
     credentials.iv

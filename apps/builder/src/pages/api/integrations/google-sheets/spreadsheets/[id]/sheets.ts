@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const credentialsId = req.query.credentialsId as string | undefined
     if (!credentialsId) return badRequest(res)
     const spreadsheetId = req.query.id as string
-    const auth = await getAuthenticatedGoogleClient(user.id, credentialsId)
+    const auth = await getAuthenticatedGoogleClient(user, credentialsId)
     if (!auth)
       return res
         .status(404)
