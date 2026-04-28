@@ -24,6 +24,7 @@ export const fetchSelectItems = authenticatedProcedure
       const workspace = await prisma.workspace.findFirst({
         where: { id: workspaceId },
         select: {
+          id: true,
           members: {
             select: {
               userId: true,
