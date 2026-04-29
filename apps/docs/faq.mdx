@@ -37,3 +37,24 @@ Typebot doesn't store any password. Its login works with Github, Google, Faceboo
 ## Can I set a variable with the Script block?
 
 No, the script block is only meant to execute a script. You can't set a variable with/in it. If you need to set a variable with some code, you can use the [Set variable block](/editor/blocks/logic/set-variable).
+
+## I don't see my bots after login, where did they go?
+
+Typebots live inside a workspace, and each account can belong to several workspaces. A common case is having a personal Free workspace and being invited to a team workspace: after login you land on one of them, and your bots may actually be in the other.
+
+Open the workspace dropdown at the top-left of the dashboard and switch to the workspace that contains your bots.
+
+<Frame>
+  <img src="/images/workspace/workspaces-dropdown.png" alt="Workspaces dropdown" />
+</Frame>
+
+If the expected workspace is missing from the dropdown, make sure you are logged in with the same email that was invited to the team workspace. See [workspace overview](/workspace) for more details.
+
+## Can I have a persistent text input always visible at the bottom of the chat?
+
+No. Typebot is a flow-driven conversation engine: the input shown at any moment is the one defined by the current block. There is no native way to display a persistent free-text input that stays visible outside of an input block.
+
+If you need that kind of UX, you have two options:
+
+- **Accept user keywords at any input.** Add a [Reply event](/editor/events/reply) that reacts to specific keywords (see the [user commands guide](/guides/user-commands)). The input still belongs to the current block, but the user can type commands like `help` or `restart` from anywhere.
+- **Build a custom UI.** Use the [continueChat HTTP API](/api-reference/chat/continue-chat) to drive the conversation yourself and render whatever chat interface you want, including a persistent input. This is significantly more work than using the official embeds.

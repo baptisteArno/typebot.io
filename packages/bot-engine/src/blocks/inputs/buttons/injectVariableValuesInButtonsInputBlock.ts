@@ -14,7 +14,12 @@ export const injectVariableValuesInButtonsInputBlock = (
   {
     sessionStore,
     variables,
-  }: { sessionStore: SessionStore; variables: Variable[] },
+    skipDisplayConditionCheck,
+  }: {
+    sessionStore: SessionStore;
+    variables: Variable[];
+    skipDisplayConditionCheck?: boolean;
+  },
 ): ChoiceInputBlock => {
   if (block.options?.dynamicVariableId) {
     const variable = variables.find(
@@ -38,7 +43,9 @@ export const injectVariableValuesInButtonsInputBlock = (
     };
   }
   return deepParseVariables(
-    filterChoiceItems(block, { sessionStore, variables }),
+    skipDisplayConditionCheck
+      ? block
+      : filterChoiceItems(block, { sessionStore, variables }),
     {
       variables,
       sessionStore,

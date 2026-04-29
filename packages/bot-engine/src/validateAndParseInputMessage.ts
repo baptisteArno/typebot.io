@@ -67,6 +67,7 @@ export const validateAndParseInputMessage = (
       const displayedItems = injectVariableValuesInButtonsInputBlock(block, {
         variables,
         sessionStore,
+        skipDisplayConditionCheck: skipValidation,
       }).items;
       if (block.options?.isMultipleChoice)
         return parseMultipleChoiceReply(message.text, {
@@ -169,6 +170,7 @@ export const validateAndParseInputMessage = (
       const displayedItems = injectVariableValuesInPictureChoiceBlock(block, {
         variables,
         sessionStore,
+        skipDisplayConditionCheck: skipValidation,
       }).items;
       if (block.options?.isMultipleChoice)
         return parseMultipleChoiceReply(message.text, {
