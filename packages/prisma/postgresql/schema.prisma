@@ -113,6 +113,7 @@ model Workspace {
   inactiveFirstEmailSentAt      DateTime?
   inactiveSecondEmailSentAt     DateTime?
   spaces                        Space[]
+  secrets                       WorkspaceSecret[]
 }
 
 model Space {
@@ -178,6 +179,20 @@ model UserCredentials {
   type      String
   iv        String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model WorkspaceSecret {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+  workspaceId String
+  name        String
+  data        String
+  iv          String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, name])
+  @@index([workspaceId])
 }
 
 model VerificationToken {

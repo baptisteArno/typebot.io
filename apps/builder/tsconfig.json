@@ -111,6 +111,9 @@
       "path": "../../packages/credentials"
     },
     {
+      "path": "../../packages/workspace-secrets"
+    },
+    {
       "path": "../../packages/config"
     },
     {

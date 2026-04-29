@@ -37,6 +37,7 @@ import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { resolveSecretReferences } from "@typebot.io/workspace-secrets/resolveSecretReferences";
 import { HTTPError, type Options, TimeoutError } from "ky";
 import { stringify } from "qs";
 import { ProxyAgent } from "undici";
@@ -88,6 +89,7 @@ export const executeHttpRequestBlock = async (
     variables: state.typebotsQueue[0].typebot.variables,
     answers: state.typebotsQueue[0].answers,
     sessionStore,
+    workspaceId: state.workspaceId,
     proxy: block.options?.proxyCredentialsId
       ? {
           credentialsId: block.options.proxyCredentialsId,
@@ -146,6 +148,7 @@ export const parseHttpRequestAttributes = async ({
   variables,
   answers,
   sessionStore,
+  workspaceId,
   proxy,
 }: {
   httpRequest: HttpRequest;
@@ -153,6 +156,7 @@ export const parseHttpRequestAttributes = async ({
   variables: TypebotInSession["variables"];
   answers: AnswerInSessionState[];
   sessionStore: SessionStore;
+  workspaceId: string | undefined;
   proxy?: {
     credentialsId: string;
     workspaceId: string;
@@ -217,18 +221,83 @@ export const parseHttpRequestAttributes = async ({
         await decrypt(proxyCredentials.data, proxyCredentials.iv),
       ).url
     : undefined;
+  const parsedUrl = parseVariables(
+    httpRequest.url + (queryParams !== "" ? `?${queryParams}` : ""),
+    { variables, sessionStore },
+  );
+  const [resolvedUrl, resolvedHeaders, resolvedBody, resolvedBasicAuth] =
+    await Promise.all([
+      resolveStringSecrets(parsedUrl, workspaceId),
+      resolveHeaderSecrets(headers, workspaceId),
+      resolveBodySecrets(body, workspaceId),
+      resolveBasicAuthSecrets(basicAuth, workspaceId),
+    ]);
   return {
-    url: parseVariables(
-      httpRequest.url + (queryParams !== "" ? `?${queryParams}` : ""),
-      { variables, sessionStore },
-    ),
-    basicAuth,
+    url: resolvedUrl,
+    basicAuth: resolvedBasicAuth,
     method,
-    headers,
-    body,
+    headers: resolvedHeaders,
+    body: resolvedBody,
     isJson,
     proxyUrl,
   };
+};
+
+const resolveStringSecrets = async (
+  input: string,
+  workspaceId: string | undefined,
+): Promise<string> => {
+  if (!workspaceId) return input;
+  return resolveSecretReferences({ input, workspaceId });
+};
+
+const resolveHeaderSecrets = async (
+  headers: ExecutableHttpRequest["headers"] | undefined,
+  workspaceId: string | undefined,
+): Promise<ExecutableHttpRequest["headers"] | undefined> => {
+  if (!headers || !workspaceId) return headers;
+  const resolvedEntries = await Promise.all(
+    Object.entries(headers).map(async ([key, value]) => {
+      if (typeof value !== "string") return [key, value] as const;
+      const resolved = await resolveSecretReferences({
+        input: value,
+        workspaceId,
+      });
+      return [key, resolved] as const;
+    }),
+  );
+  return Object.fromEntries(resolvedEntries);
+};
+
+const resolveBodySecrets = async (
+  body: unknown,
+  workspaceId: string | undefined,
+): Promise<unknown> => {
+  if (body === undefined || !workspaceId) return body;
+  if (typeof body !== "string") return body;
+  return resolveSecretReferences({ input: body, workspaceId });
+};
+
+const resolveBasicAuthSecrets = async (
+  basicAuth: { username?: string; password?: string },
+  workspaceId: string | undefined,
+): Promise<{ username?: string; password?: string }> => {
+  if (!workspaceId) return basicAuth;
+  const [username, password] = await Promise.all([
+    basicAuth.username
+      ? resolveSecretReferences({
+          input: basicAuth.username,
+          workspaceId,
+        })
+      : undefined,
+    basicAuth.password
+      ? resolveSecretReferences({
+          input: basicAuth.password,
+          workspaceId,
+        })
+      : undefined,
+  ]);
+  return { username, password };
 };
 
 export const executeHttpRequest = async (
