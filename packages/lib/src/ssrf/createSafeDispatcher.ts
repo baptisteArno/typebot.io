@@ -17,32 +17,36 @@ export const validatingLookup: LookupFunction = (
   options,
   callback,
 ) => {
-  dnsLookup(hostname, options, (err: unknown, address: unknown, family: unknown) => {
-    if (err) return (callback as Function)(err, address, family);
-    if (env.NODE_ENV === "development" && hostname === "localhost") {
-      return (callback as Function)(null, address, family);
-    }
-    try {
-      if (Array.isArray(address)) {
-        for (const entry of address) {
-          const parsed = parseIPAddress(entry.address);
+  dnsLookup(
+    hostname,
+    options,
+    (err: unknown, address: unknown, family: unknown) => {
+      if (err) return (callback as Function)(err, address, family);
+      if (env.NODE_ENV === "development" && hostname === "localhost") {
+        return (callback as Function)(null, address, family);
+      }
+      try {
+        if (Array.isArray(address)) {
+          for (const entry of address) {
+            const parsed = parseIPAddress(entry.address);
+            if (parsed) validateIPAddress(parsed);
+          }
+        } else {
+          const parsed = parseIPAddress(address as string);
           if (parsed) validateIPAddress(parsed);
         }
-      } else {
-        const parsed = parseIPAddress(address as string);
-        if (parsed) validateIPAddress(parsed);
+      } catch (validationError) {
+        return (callback as Function)(
+          validationError instanceof Error
+            ? validationError
+            : new Error(String(validationError)),
+          address,
+          family,
+        );
       }
-    } catch (validationError) {
-      return (callback as Function)(
-        validationError instanceof Error
-          ? validationError
-          : new Error(String(validationError)),
-        address,
-        family,
-      );
-    }
-    (callback as Function)(null, address, family);
-  });
+      (callback as Function)(null, address, family);
+    },
+  );
 };
 
 /**

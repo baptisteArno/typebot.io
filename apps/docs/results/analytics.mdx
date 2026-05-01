@@ -8,3 +8,18 @@ import { LoomVideo } from '/snippets/loom-video.mdx'
 <LoomVideo id="324114378c2043ed801508b68a15287c" />
 
 The in-depth analytics help you identify user drop-off points and gain insights into user behavior so that you can incrementally improve your chat conversion rate.
+
+## Definitions
+
+The overview shows three top-level metrics:
+
+- **Views**: every time a typebot is loaded by a visitor, even if they never interact with it.
+- **Starts**: a result is counted as started as soon as the visitor submits at least one answer.
+- **Completions**: a result is counted as completed when **all** of the following are true:
+  - The flow has reached an end (there is no further input waiting to be displayed).
+  - The visitor has submitted at least one answer (a session that ends before any input is answered is never counted as completed).
+  - There is no pending client-side Set Variable block whose code still needs to run in the browser and return a value to the engine.
+
+  Note that some other "waiting" states (a Custom embed message, or an Embed bubble with *Wait for event* enabled) do **not** prevent a result from being marked as completed: the result is closed as soon as the flow reaches an end with at least one answer, even if the embed has not yet emitted the awaited event.
+
+The drop-off rate displayed next to each input block is the percentage of users who reached the block but never submitted an answer to it. It is only revealed on the Pro plan.

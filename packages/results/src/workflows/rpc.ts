@@ -18,12 +18,12 @@ import {
   type RpcClientError,
   RpcGroup,
 } from "effect/unstable/rpc";
+import type { TimeFilter } from "../timeFilter";
 import {
   EXPORT_PROGRESS_CHANNEL_PREFIX,
   ExportResultsWorkflow,
   SendExportToEmailWorkflow,
 } from "./exportResultsWorkflow";
-import type { TimeFilter } from "../timeFilter";
 
 const ExportResultsWorkflowStatusChunk = Schema.Union([
   Schema.Struct({

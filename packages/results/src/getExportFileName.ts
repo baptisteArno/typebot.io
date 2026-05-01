@@ -10,7 +10,5 @@ export const getExportFileName = (
 
   return `typebot-${getPublicId(typebot)}${
     timeFilterSuffix ? `-${timeFilterSuffix}` : ""
-  }-${new Date()
-    .toISOString()
-    .slice(0, 10)}.csv`;
+  }-${new Date().toISOString().slice(0, 10)}.csv`;
 };

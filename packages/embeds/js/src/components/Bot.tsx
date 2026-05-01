@@ -24,6 +24,7 @@ import { HTTPError } from "ky";
 import { createEffect, createSignal, onCleanup, Show } from "solid-js";
 import { Portal } from "solid-js/web";
 import { BotContainerContext } from "../contexts/BotContainerContext";
+import { sanitizeUrl } from "../lib/sanitizeUrl";
 import { startChatQuery } from "../queries/startChatQuery";
 import type { BotContext } from "../types";
 import { CorsError } from "../utils/CorsError";
@@ -41,7 +42,6 @@ import {
 import { toaster } from "../utils/toaster";
 import { buttonVariants } from "./Button";
 import { ChatContainer } from "./ConversationContainer/ChatContainer";
-import { sanitizeUrl } from "../lib/sanitizeUrl";
 import { ErrorMessage } from "./ErrorMessage";
 import { CloseIcon } from "./icons/CloseIcon";
 import { LiteBadge } from "./LiteBadge";

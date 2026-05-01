@@ -15,9 +15,7 @@ describe("safeKy", () => {
     expect(safeKy.get("http://10.0.0.1/internal")).rejects.toThrow(
       "10.0.0.0/8",
     );
-    expect(safeKy.get("http://192.168.1.1")).rejects.toThrow(
-      "192.168.0.0/16",
-    );
+    expect(safeKy.get("http://192.168.1.1")).rejects.toThrow("192.168.0.0/16");
   });
 
   it("should block requests to cloud metadata endpoints", async () => {
