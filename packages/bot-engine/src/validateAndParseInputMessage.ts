@@ -111,16 +111,18 @@ export const validateAndParseInputMessage = (
             new URL(env.S3_PUBLIC_CUSTOM_DOMAIN).hostname === hostname
           )
             return true;
-          if (env.NEXTAUTH_URL && new URL(env.NEXTAUTH_URL).hostname === hostname)
+          if (
+            env.NEXTAUTH_URL &&
+            new URL(env.NEXTAUTH_URL).hostname === hostname
+          )
             return true;
           return false;
         } catch {
           return false;
         }
       };
-      const hasValidUrls = urls.some(
-        (url) =>
-          isURL(url, { require_tld: !isTrustedHost(url) }),
+      const hasValidUrls = urls.some((url) =>
+        isURL(url, { require_tld: !isTrustedHost(url) }),
       );
 
       const allowedFileTypesMetadata =

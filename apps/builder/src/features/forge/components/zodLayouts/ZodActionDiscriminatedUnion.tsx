@@ -44,8 +44,7 @@ export const ZodActionDiscriminatedUnion = ({
         items={[...optionsMap.keys()].filter(
           (key) =>
             isDefined(key) &&
-            (!isActionHidden(blockDef, key) ||
-              key === blockOptions?.action),
+            (!isActionHidden(blockDef, key) || key === blockOptions?.action),
         )}
         placeholder="Select an action"
       />

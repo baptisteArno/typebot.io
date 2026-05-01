@@ -132,7 +132,12 @@ const SpaceIconPopover = ({
             <Tabs.Tab value="upload">Upload</Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="icon">
-            <IconPicker.Root onIconSelected={(icon) => { onValueCommit(icon); popoverControls.onClose(); }}>
+            <IconPicker.Root
+              onIconSelected={(icon) => {
+                onValueCommit(icon);
+                popoverControls.onClose();
+              }}
+            >
               <div className="flex items-center gap-2">
                 <IconPicker.SearchInput />
                 <IconPicker.ColorPicker />
@@ -141,7 +146,12 @@ const SpaceIconPopover = ({
             </IconPicker.Root>
           </Tabs.Panel>
           <Tabs.Panel value="emoji">
-            <EmojiPicker.Root onEmojiSelected={(emoji) => { onValueCommit(emoji); popoverControls.onClose(); }}>
+            <EmojiPicker.Root
+              onEmojiSelected={(emoji) => {
+                onValueCommit(emoji);
+                popoverControls.onClose();
+              }}
+            >
               <EmojiPicker.SearchInput />
               <EmojiPicker.List />
             </EmojiPicker.Root>
@@ -156,7 +166,10 @@ const SpaceIconPopover = ({
             <UploadButton
               accept="image/avif, image/png, image/jpeg, image/gif, image/webp, image/bmp, image/tiff"
               onFileUploadRequest={onFileUploadRequest}
-              onValueCommit={(icon) => { onValueCommit(icon); popoverControls.onClose(); }}
+              onValueCommit={(icon) => {
+                onValueCommit(icon);
+                popoverControls.onClose();
+              }}
             />
           </Tabs.Panel>
         </Tabs.Root>
