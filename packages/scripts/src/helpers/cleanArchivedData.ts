@@ -119,10 +119,16 @@ const deleteResultsFromArchivedTypebotsIfAny = async (
         typebotId: archivedTypebot.id,
       },
     });
-    await prisma.result.deleteMany({
-      where: {
-        typebotId: archivedTypebot.id,
-      },
-    });
+    while (true) {
+      const batch = await prisma.$primary().result.findMany({
+        where: { typebotId: archivedTypebot.id },
+        select: { id: true },
+        take: 500,
+      });
+      if (batch.length === 0) break;
+      await prisma.result.deleteMany({
+        where: { id: { in: batch.map((r) => r.id) } },
+      });
+    }
   }
 };
