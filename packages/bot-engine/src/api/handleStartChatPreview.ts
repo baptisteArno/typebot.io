@@ -6,11 +6,14 @@ import {
 } from "@typebot.io/chat-api/schemas";
 import { restartSession } from "@typebot.io/chat-session/queries/restartSession";
 import { createId } from "@typebot.io/lib/createId";
+import { getIp } from "@typebot.io/lib/getIp";
 import { withSessionStore } from "@typebot.io/runtime-session-store";
+import { ORPCError } from "@orpc/server";
 import { z } from "zod";
 import { computeCurrentProgress } from "../computeCurrentProgress";
 import { saveStateToDatabase } from "../saveStateToDatabase";
 import { startSession } from "../startSession";
+import { startPreviewRateLimiter } from "../lib/rateLimiter";
 
 export const startPreviewChatInputSchema = z.object({
   typebotId: z
@@ -60,6 +63,7 @@ export const startPreviewChatInputSchema = z.object({
 
 type Context = {
   user: { id: string } | null;
+  req?: any;
 };
 
 export const handleStartChatPreview = async ({
@@ -74,11 +78,22 @@ export const handleStartChatPreview = async ({
     sessionId: sessionIdProp,
     textBubbleContentFormat,
   },
-  context: { user },
+  context: { user, req },
 }: {
   input: z.infer<typeof startPreviewChatInputSchema>;
   context: Context;
 }) => {
+  if (startPreviewRateLimiter) {
+    const ip = req ? getIp(req) : undefined;
+    const id = user?.id ?? ip ?? "unknown";
+    const { success } = await startPreviewRateLimiter.limit(id);
+    if (!success) {
+      throw new ORPCError("TOO_MANY_REQUESTS", {
+        message: "Rate limit exceeded. Please try again later.",
+      });
+    }
+  }
+
   const sessionId = sessionIdProp ?? createId();
   return withSessionStore(sessionId, async (sessionStore) => {
     const {
