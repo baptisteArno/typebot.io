@@ -87,7 +87,12 @@ export const handleGenerateUploadUrlV2 = async ({
         }/typebots/${typebotId}/results/${resultId}/${fileName}`
       : `public/tmp/${typebotId}/${fileName}`;
 
-  const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType, maxFileSize: maxFileSizeMB } = await generatePresignedPutUrl({
+  const {
+    presignedUrl,
+    fileUrl: defaultFileUrl,
+    fileType: resolvedFileType,
+    maxFileSize: maxFileSizeMB,
+  } = await generatePresignedPutUrl({
     fileType,
     filePath,
     maxFileSize,

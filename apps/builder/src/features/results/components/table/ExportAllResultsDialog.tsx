@@ -8,8 +8,8 @@ import { parseBlockIdVariableIdMap } from "@typebot.io/results/parseBlockIdVaria
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
 import { parseResultHeader } from "@typebot.io/results/parseResultHeader";
 import {
-  timeFilterLabels,
   type TimeFilter,
+  timeFilterLabels,
 } from "@typebot.io/results/timeFilter";
 import type { ExportResultsWorkflowStatusChunk } from "@typebot.io/results/workflows/rpc";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
@@ -37,7 +37,11 @@ type Props = {
   timeFilter: TimeFilter;
 };
 
-export const ExportAllResultsDialog = ({ isOpen, onClose, timeFilter }: Props) => {
+export const ExportAllResultsDialog = ({
+  isOpen,
+  onClose,
+  timeFilter,
+}: Props) => {
   const { typebot, publishedTypebot } = useTypebot();
   const workspaceId = typebot?.workspaceId;
   const typebotId = typebot?.id;

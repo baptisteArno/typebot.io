@@ -1,4 +1,5 @@
 import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
+import type { TimeFilter } from "@typebot.io/results/timeFilter";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
@@ -6,7 +7,6 @@ import { ArrowRight01Icon } from "@typebot.io/ui/icons/ArrowRight01Icon";
 import { Download01Icon } from "@typebot.io/ui/icons/Download01Icon";
 import { LeftToRightListBulletIcon } from "@typebot.io/ui/icons/LeftToRightListBulletIcon";
 import { MoreHorizontalIcon } from "@typebot.io/ui/icons/MoreHorizontalIcon";
-import type { TimeFilter } from "@typebot.io/results/timeFilter";
 import { useState } from "react";
 import { ColumnSettings } from "./ColumnSettings";
 import { ExportAllResultsDialog } from "./ExportAllResultsDialog";

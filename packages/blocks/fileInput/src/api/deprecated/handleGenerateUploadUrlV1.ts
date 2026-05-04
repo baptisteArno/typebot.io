@@ -155,7 +155,12 @@ export const handleGenerateUploadUrlV1 = async ({
       message: `File size exceeds the ${maxFileSize}MB limit`,
     });
 
-  const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType, maxFileSize: maxFileSizeMB } = await generatePresignedPutUrl({
+  const {
+    presignedUrl,
+    fileUrl: defaultFileUrl,
+    fileType: resolvedFileType,
+    maxFileSize: maxFileSizeMB,
+  } = await generatePresignedPutUrl({
     fileType,
     filePath,
     maxFileSize,

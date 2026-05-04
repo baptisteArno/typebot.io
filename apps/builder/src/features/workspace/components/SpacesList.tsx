@@ -62,9 +62,7 @@ export const SpacesList = ({
         queryClient.cancelQueries({ queryKey });
         queryClient.setQueryData<typeof spacesData>(queryKey, (cache) => ({
           spaces: (cache?.spaces ?? []).map((space) =>
-            space.id === data.spaceId
-              ? { ...space, ...patch }
-              : space,
+            space.id === data.spaceId ? { ...space, ...patch } : space,
           ),
         }));
         return { previousCacheData: cacheData, key: queryKey };

@@ -268,8 +268,7 @@ const createResponseStream = async ({
               : undefined,
         });
 
-        ({ response, functionCalls } =
-          await forwardStream(continuationStream));
+        ({ response, functionCalls } = await forwardStream(continuationStream));
       }
 
       const responseIdMapping = responseMapping?.find(
@@ -280,9 +279,7 @@ const createResponseStream = async ({
           { id: responseIdMapping.variableId, value: response.id },
         ]);
       else if (responseIdVariableId)
-        await variables.set([
-          { id: responseIdVariableId, value: response.id },
-        ]);
+        await variables.set([{ id: responseIdVariableId, value: response.id }]);
     });
   } catch (error) {
     logs?.add(await parseUnknownError({ err: error }));

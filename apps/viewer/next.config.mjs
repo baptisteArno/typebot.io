@@ -67,8 +67,7 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
-          source:
-            "/api/typebots/:typebotId/blocks/:blockId/storage/upload-url",
+          source: "/api/typebots/:typebotId/blocks/:blockId/storage/upload-url",
           destination:
             "/api/v1/typebots/:typebotId/blocks/:blockId/storage/upload-url",
         },
@@ -85,8 +84,7 @@ const nextConfig = {
                 destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/getResultExample`,
               },
               {
-                source:
-                  "/api/typebots/:typebotId/blocks/:blockId/sampleResult",
+                source: "/api/typebots/:typebotId/blocks/:blockId/sampleResult",
                 destination: `${process.env.NEXTAUTH_URL}/api/v1/typebots/:typebotId/webhookBlocks/:blockId/getResultExample`,
               },
               {
