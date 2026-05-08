@@ -18,11 +18,15 @@ type FunctionDef = {
 export const parseToolsForResponsesApi = ({
   functions,
   fileSearchVectorStoreIds,
+  fileSearchMaxNumResults,
+  fileSearchScoreThreshold,
   webSearchEnabled,
   codeInterpreterEnabled,
 }: {
   functions?: FunctionDef[];
   fileSearchVectorStoreIds?: string[];
+  fileSearchMaxNumResults?: number;
+  fileSearchScoreThreshold?: number;
   webSearchEnabled?: boolean;
   codeInterpreterEnabled?: boolean;
 }): Responses.Tool[] => {
@@ -31,7 +35,12 @@ export const parseToolsForResponsesApi = ({
   if (fileSearchVectorStoreIds) {
     const ids = fileSearchVectorStoreIds.filter(isNotEmpty);
     if (ids.length > 0)
-      tools.push({ type: "file_search", vector_store_ids: ids });
+      tools.push({
+        type: "file_search",
+        vector_store_ids: ids,
+        max_num_results: parseFileSearchMaxNumResults(fileSearchMaxNumResults),
+        ranking_options: parseFileSearchRankingOptions(fileSearchScoreThreshold),
+      });
   }
 
   if (webSearchEnabled) tools.push({ type: "web_search" });
@@ -53,6 +62,29 @@ export const parseToolsForResponsesApi = ({
   }
 
   return tools;
+};
+
+const parseFileSearchMaxNumResults = (
+  fileSearchMaxNumResults?: number,
+): number | undefined => {
+  if (typeof fileSearchMaxNumResults !== "number") return;
+  if (Number.isNaN(fileSearchMaxNumResults)) return;
+  if (fileSearchMaxNumResults < 1 || fileSearchMaxNumResults > 50) return;
+
+  return fileSearchMaxNumResults;
+};
+
+const parseFileSearchRankingOptions = (
+  fileSearchScoreThreshold?: number,
+): Responses.FileSearchTool.RankingOptions | undefined => {
+  if (typeof fileSearchScoreThreshold !== "number") return;
+  if (Number.isNaN(fileSearchScoreThreshold)) return;
+  if (fileSearchScoreThreshold < 0 || fileSearchScoreThreshold > 1) return;
+
+  return {
+    ranker: "auto",
+    score_threshold: fileSearchScoreThreshold,
+  };
 };
 
 const parseParametersToJsonSchema = (

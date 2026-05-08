@@ -47,6 +47,26 @@ export const askModel = createAction({
         accordion: "Built-in tools",
       },
     }),
+    fileSearchMaxNumResults: option.number.meta({
+      layout: {
+        label: "Number of retrieved chunks",
+        moreInfoTooltip:
+          "Maximum number of chunks to retrieve from the vector store. Applied only when Vector store IDs are set.",
+        accordion: "Built-in tools",
+      },
+    }),
+    fileSearchScoreThreshold: option.number.meta({
+      layout: {
+        label: "Score threshold",
+        moreInfoTooltip:
+          "Minimum relevance score between 0 and 1 for retrieved chunks. Applied only when Vector store IDs are set.",
+        accordion: "Built-in tools",
+        min: 0,
+        max: 1,
+        step: 0.1,
+        placeholder: "0.5",
+      },
+    }),
     webSearchEnabled: option.boolean.meta({
       layout: {
         label: "Web Search",

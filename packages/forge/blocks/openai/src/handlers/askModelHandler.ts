@@ -33,6 +33,8 @@ export const askModelHandler = createActionHandler(askModel, {
         functions: options.functions,
         fileSearchVectorStoreIds:
           options.fileSearchVectorStoreIds?.filter(isDefined),
+        fileSearchMaxNumResults: options.fileSearchMaxNumResults,
+        fileSearchScoreThreshold: options.fileSearchScoreThreshold,
         webSearchEnabled: options.webSearchEnabled,
         codeInterpreterEnabled: options.codeInterpreterEnabled,
         temperature: options.temperature,
@@ -60,6 +62,8 @@ export const askModelHandler = createActionHandler(askModel, {
       functions: options.functions,
       fileSearchVectorStoreIds:
         options.fileSearchVectorStoreIds?.filter(isDefined),
+      fileSearchMaxNumResults: options.fileSearchMaxNumResults,
+      fileSearchScoreThreshold: options.fileSearchScoreThreshold,
       webSearchEnabled: options.webSearchEnabled,
       codeInterpreterEnabled: options.codeInterpreterEnabled,
       temperature: options.temperature,
@@ -104,6 +108,8 @@ const createResponseStream = async ({
   responseIdVariableId,
   functions,
   fileSearchVectorStoreIds,
+  fileSearchMaxNumResults,
+  fileSearchScoreThreshold,
   webSearchEnabled,
   codeInterpreterEnabled,
   temperature,
@@ -132,6 +138,8 @@ const createResponseStream = async ({
     code?: string;
   }[];
   fileSearchVectorStoreIds?: string[];
+  fileSearchMaxNumResults?: number;
+  fileSearchScoreThreshold?: number;
   webSearchEnabled?: boolean;
   codeInterpreterEnabled?: boolean;
   temperature?: number;
@@ -171,6 +179,8 @@ const createResponseStream = async ({
   const tools = parseToolsForResponsesApi({
     functions,
     fileSearchVectorStoreIds,
+    fileSearchMaxNumResults,
+    fileSearchScoreThreshold,
     webSearchEnabled,
     codeInterpreterEnabled,
   });
