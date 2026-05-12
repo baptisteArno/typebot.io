@@ -21,6 +21,7 @@ const posts = defineCollection({
   name: "posts",
   directory: "content",
   include: "**/*.mdx",
+  exclude: "faq/**",
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
@@ -45,8 +46,35 @@ const posts = defineCollection({
     };
   },
 });
+
+const faqs = defineCollection({
+  name: "faqs",
+  directory: "content/faq",
+  include: "*.mdx",
+  schema: z.object({
+    question: z.string(),
+    postedAt: z.string().date().optional(),
+    updatedAt: z.string().date().optional(),
+    content: z.string(),
+  }),
+  transform: async (document, context) => {
+    const mdx = await compileMDX(context, document, {
+      remarkPlugins: [remarkGfm, remarkRemoveMdxExtension],
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypePrettyCode, rehypePrettyCodeSettings],
+        [rehypeAutolinkHeadings, rehypeAutolinkHeadingsSettings],
+      ],
+    });
+    return {
+      ...document,
+      mdx,
+    };
+  },
+});
+
 const contentCollectionsConfig: AnyConfiguration = defineConfig({
-  content: [posts],
+  content: [posts, faqs],
 });
 
 export default contentCollectionsConfig;

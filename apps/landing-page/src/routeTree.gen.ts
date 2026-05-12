@@ -18,8 +18,10 @@ import { Route as LayoutOssFriendsRouteImport } from './routes/_layout/oss-frien
 import { Route as LayoutAboutRouteImport } from './routes/_layout/about'
 import { Route as LayoutSlugRouteImport } from './routes/_layout/$slug'
 import { Route as LayoutTemplatesIndexRouteImport } from './routes/_layout/templates/index'
+import { Route as LayoutFaqIndexRouteImport } from './routes/_layout/faq/index'
 import { Route as LayoutBlogIndexRouteImport } from './routes/_layout/blog/index'
 import { Route as LayoutTemplatesSlugRouteImport } from './routes/_layout/templates/$slug'
+import { Route as LayoutFaqSlugRouteImport } from './routes/_layout/faq/$slug'
 import { Route as LayoutBlogSlugRouteImport } from './routes/_layout/blog/$slug'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -66,6 +68,11 @@ const LayoutTemplatesIndexRoute = LayoutTemplatesIndexRouteImport.update({
   path: '/templates/',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutFaqIndexRoute = LayoutFaqIndexRouteImport.update({
+  id: '/faq/',
+  path: '/faq/',
+  getParentRoute: () => LayoutRoute,
+} as any)
 const LayoutBlogIndexRoute = LayoutBlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
@@ -74,6 +81,11 @@ const LayoutBlogIndexRoute = LayoutBlogIndexRouteImport.update({
 const LayoutTemplatesSlugRoute = LayoutTemplatesSlugRouteImport.update({
   id: '/templates/$slug',
   path: '/templates/$slug',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutFaqSlugRoute = LayoutFaqSlugRouteImport.update({
+  id: '/faq/$slug',
+  path: '/faq/$slug',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutBlogSlugRoute = LayoutBlogSlugRouteImport.update({
@@ -91,8 +103,10 @@ export interface FileRoutesByFullPath {
   '/oss-friends': typeof LayoutOssFriendsRoute
   '/pricing': typeof LayoutPricingRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
+  '/faq/$slug': typeof LayoutFaqSlugRoute
   '/templates/$slug': typeof LayoutTemplatesSlugRoute
   '/blog/': typeof LayoutBlogIndexRoute
+  '/faq/': typeof LayoutFaqIndexRoute
   '/templates/': typeof LayoutTemplatesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -104,8 +118,10 @@ export interface FileRoutesByTo {
   '/oss-friends': typeof LayoutOssFriendsRoute
   '/pricing': typeof LayoutPricingRoute
   '/blog/$slug': typeof LayoutBlogSlugRoute
+  '/faq/$slug': typeof LayoutFaqSlugRoute
   '/templates/$slug': typeof LayoutTemplatesSlugRoute
   '/blog': typeof LayoutBlogIndexRoute
+  '/faq': typeof LayoutFaqIndexRoute
   '/templates': typeof LayoutTemplatesIndexRoute
 }
 export interface FileRoutesById {
@@ -119,8 +135,10 @@ export interface FileRoutesById {
   '/_layout/oss-friends': typeof LayoutOssFriendsRoute
   '/_layout/pricing': typeof LayoutPricingRoute
   '/_layout/blog/$slug': typeof LayoutBlogSlugRoute
+  '/_layout/faq/$slug': typeof LayoutFaqSlugRoute
   '/_layout/templates/$slug': typeof LayoutTemplatesSlugRoute
   '/_layout/blog/': typeof LayoutBlogIndexRoute
+  '/_layout/faq/': typeof LayoutFaqIndexRoute
   '/_layout/templates/': typeof LayoutTemplatesIndexRoute
 }
 export interface FileRouteTypes {
@@ -134,8 +152,10 @@ export interface FileRouteTypes {
     | '/oss-friends'
     | '/pricing'
     | '/blog/$slug'
+    | '/faq/$slug'
     | '/templates/$slug'
     | '/blog/'
+    | '/faq/'
     | '/templates/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -147,8 +167,10 @@ export interface FileRouteTypes {
     | '/oss-friends'
     | '/pricing'
     | '/blog/$slug'
+    | '/faq/$slug'
     | '/templates/$slug'
     | '/blog'
+    | '/faq'
     | '/templates'
   id:
     | '__root__'
@@ -161,8 +183,10 @@ export interface FileRouteTypes {
     | '/_layout/oss-friends'
     | '/_layout/pricing'
     | '/_layout/blog/$slug'
+    | '/_layout/faq/$slug'
     | '/_layout/templates/$slug'
     | '/_layout/blog/'
+    | '/_layout/faq/'
     | '/_layout/templates/'
   fileRoutesById: FileRoutesById
 }
@@ -238,6 +262,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutTemplatesIndexRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/faq/': {
+      id: '/_layout/faq/'
+      path: '/faq'
+      fullPath: '/faq/'
+      preLoaderRoute: typeof LayoutFaqIndexRouteImport
+      parentRoute: typeof LayoutRoute
+    }
     '/_layout/blog/': {
       id: '/_layout/blog/'
       path: '/blog'
@@ -250,6 +281,13 @@ declare module '@tanstack/react-router' {
       path: '/templates/$slug'
       fullPath: '/templates/$slug'
       preLoaderRoute: typeof LayoutTemplatesSlugRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/faq/$slug': {
+      id: '/_layout/faq/$slug'
+      path: '/faq/$slug'
+      fullPath: '/faq/$slug'
+      preLoaderRoute: typeof LayoutFaqSlugRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/blog/$slug': {
@@ -268,8 +306,10 @@ interface LayoutRouteChildren {
   LayoutOssFriendsRoute: typeof LayoutOssFriendsRoute
   LayoutPricingRoute: typeof LayoutPricingRoute
   LayoutBlogSlugRoute: typeof LayoutBlogSlugRoute
+  LayoutFaqSlugRoute: typeof LayoutFaqSlugRoute
   LayoutTemplatesSlugRoute: typeof LayoutTemplatesSlugRoute
   LayoutBlogIndexRoute: typeof LayoutBlogIndexRoute
+  LayoutFaqIndexRoute: typeof LayoutFaqIndexRoute
   LayoutTemplatesIndexRoute: typeof LayoutTemplatesIndexRoute
 }
 
@@ -279,8 +319,10 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutOssFriendsRoute: LayoutOssFriendsRoute,
   LayoutPricingRoute: LayoutPricingRoute,
   LayoutBlogSlugRoute: LayoutBlogSlugRoute,
+  LayoutFaqSlugRoute: LayoutFaqSlugRoute,
   LayoutTemplatesSlugRoute: LayoutTemplatesSlugRoute,
   LayoutBlogIndexRoute: LayoutBlogIndexRoute,
+  LayoutFaqIndexRoute: LayoutFaqIndexRoute,
   LayoutTemplatesIndexRoute: LayoutTemplatesIndexRoute,
 }
 

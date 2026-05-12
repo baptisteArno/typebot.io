@@ -82,6 +82,13 @@ function RouteComponent() {
                 Updated on {formatDate(post.updatedAt)}
               </span>
             )}
+            {post.cover && (
+              <img
+                src={post.cover}
+                alt={post.title}
+                className="w-full rounded-xl object-cover max-h-[50vh]"
+              />
+            )}
           </div>
           <Mdx code={post.mdx} />
         </article>
