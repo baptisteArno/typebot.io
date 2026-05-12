@@ -29,6 +29,7 @@ export const handleGetConsentUrl = async ({
     access_type: "offline",
     scope: googleSheetsScopes,
     prompt: "consent",
+    trigger_onepick: "true",
     state: Buffer.from(JSON.stringify(input)).toString("base64"),
   });
   return {
