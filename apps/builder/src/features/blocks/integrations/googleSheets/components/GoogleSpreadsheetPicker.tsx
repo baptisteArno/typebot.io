@@ -76,7 +76,7 @@ export const GoogleSpreadsheetPicker = ({
     if (!accessToken) return;
     if (!isPickerInitialized) throw new Error("Google Picker not inited");
 
-    const picker = new window.google.picker.PickerBuilder()
+    const pickerBuilder = new window.google.picker.PickerBuilder()
       .addView(
         new window.google.picker.View(
           window.google.picker.ViewId.SPREADSHEETS,
@@ -84,8 +84,12 @@ export const GoogleSpreadsheetPicker = ({
       )
       .setOAuthToken(accessToken)
       .setDeveloperKey(env.NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY)
-      .setCallback(pickerCallback)
-      .build();
+      .setCallback(pickerCallback);
+
+    if (env.NEXT_PUBLIC_GOOGLE_SHEETS_APP_ID)
+      pickerBuilder.setAppId(env.NEXT_PUBLIC_GOOGLE_SHEETS_APP_ID);
+
+    const picker = pickerBuilder.build();
 
     picker.setVisible(true);
   };

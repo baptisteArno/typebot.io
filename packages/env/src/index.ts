@@ -249,10 +249,14 @@ const googleSheetsEnv = {
   },
   client: {
     NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY: z.string().min(1).optional(),
+    NEXT_PUBLIC_GOOGLE_SHEETS_APP_ID: z.string().min(1).optional(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY: getRuntimeVariable(
       "NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY",
+    ),
+    NEXT_PUBLIC_GOOGLE_SHEETS_APP_ID: getRuntimeVariable(
+      "NEXT_PUBLIC_GOOGLE_SHEETS_APP_ID",
     ),
   },
 };

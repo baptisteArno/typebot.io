@@ -78,7 +78,9 @@ Used for sending email notifications and authentication
 
 3. Create an API key. This will be your `NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY`
 
-4. Create a OAuth client ID. This will be your `GOOGLE_SHEETS_CLIENT_ID` and `GOOGLE_SHEETS_CLIENT_SECRET`
+4. The Cloud Project number (visible in the Cloud Console dashboard) will be your `NEXT_PUBLIC_GOOGLE_SHEETS_APP_ID`. It is required by the Google Picker when using the `drive.file` scope.
+
+5. Create a OAuth client ID. This will be your `GOOGLE_SHEETS_CLIENT_ID` and `GOOGLE_SHEETS_CLIENT_SECRET`
 
    Make sure to set the following scopes located in your OAuth Consent Screen: `spreadsheets`, `drive.file`
    https://developers.google.com/identity/protocols/oauth2/scopes
@@ -90,15 +92,16 @@ Used for sending email notifications and authentication
    - For development:
      - http://localhost:3000/api/credentials/google-sheets/callback
 
-5. To avoid having to always reconnect a Google Sheets credentials every 7 days, you need to promote your OAuth client to production (https://developers.google.com/nest/device-access/reference/errors/authorization#refresh_token_keeps_expiring)
+6. To avoid having to always reconnect a Google Sheets credentials every 7 days, you need to promote your OAuth client to production (https://developers.google.com/nest/device-access/reference/errors/authorization#refresh_token_keeps_expiring)
 
 </Accordion>
 
-| Parameter                         | Default | Description                                   |
-| --------------------------------- | ------- | --------------------------------------------- |
-| GOOGLE_SHEETS_CLIENT_ID           |         | The Client ID from the Google API Console     |
-| GOOGLE_SHEETS_CLIENT_SECRET       |         | The Client secret from the Google API Console |
-| NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY |         | The API Key from the Google API Console       |
+| Parameter                         | Default | Description                                       |
+| --------------------------------- | ------- | ------------------------------------------------- |
+| GOOGLE_SHEETS_CLIENT_ID           |         | The Client ID from the Google API Console         |
+| GOOGLE_SHEETS_CLIENT_SECRET       |         | The Client secret from the Google API Console     |
+| NEXT_PUBLIC_GOOGLE_SHEETS_API_KEY |         | The API Key from the Google API Console           |
+| NEXT_PUBLIC_GOOGLE_SHEETS_APP_ID  |         | The Cloud Project number from the Cloud Console   |
 
 ## Gmail
 
