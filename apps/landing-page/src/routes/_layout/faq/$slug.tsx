@@ -9,7 +9,7 @@ import { createMetaTags } from "@/lib/createMetaTags";
 const extractDescription = (content: string) => {
   const plainText = content
     .replace(/^---[\s\S]*?---/, "")
-    .replace(/<[^>]+>/g, "")
+    .replace(/[<>]/g, "")
     .replace(/[#*`_[\]]/g, "")
     .replace(/\n+/g, " ")
     .trim();
