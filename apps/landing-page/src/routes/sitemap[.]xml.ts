@@ -25,25 +25,32 @@ function generateSitemapXml(entries: SitemapUrlEntry[]) {
 
 function transformPathToSitemapUrlEntry(
   path: string,
-  allPosts: Array<{
+  contentEntries: Array<{
     _meta: { path: string };
     updatedAt?: string;
     postedAt?: string;
     title?: string;
+    question?: string;
   }>,
+  basePath = "",
 ) {
-  const post = allPosts.find((p) => p._meta.path === path);
-  const lastmod = post?.updatedAt
-    ? new Date(post.updatedAt).toISOString().split("T")[0]
-    : post?.postedAt
-      ? new Date(post.postedAt).toISOString().split("T")[0]
+  const contentEntry = contentEntries.find(
+    (entry) => entry._meta.path === path,
+  );
+  const lastmod = contentEntry?.updatedAt
+    ? new Date(contentEntry.updatedAt).toISOString().split("T")[0]
+    : contentEntry?.postedAt
+      ? new Date(contentEntry.postedAt).toISOString().split("T")[0]
       : undefined;
   if (!lastmod)
     throw new Error(
-      `Content file ${post?.title} needs either postedAt or updatedAt to generate coherent sitemap`,
+      `Content file ${contentEntry?.title ?? contentEntry?.question} needs either postedAt or updatedAt to generate coherent sitemap`,
     );
   return {
-    loc: `${currentBaseUrl}/${path}`.replace(/\/+$|(?<!:)\/\//g, "/"),
+    loc: `${currentBaseUrl}/${basePath}/${path}`.replace(
+      /\/+$|(?<!:)\/\//g,
+      "/",
+    ),
     lastmod,
   } satisfies SitemapUrlEntry;
 }
@@ -52,7 +59,17 @@ export const Route = createFileRoute("/sitemap.xml")({
   server: {
     handlers: {
       GET: async () => {
-        const { allPosts } = await import("@/content-collections");
+        const { allFaqs, allPosts } = await import("@/content-collections");
+        const faqPaths = Array.from(
+          new Set(allFaqs.map((faq) => faq._meta.path)),
+        );
+        const faqEntries: SitemapUrlEntry[] = faqPaths.map((path) =>
+          transformPathToSitemapUrlEntry(path, allFaqs, "faq"),
+        );
+        const faqIndexLastmod = faqEntries.reduce(
+          (latest, entry) => (entry.lastmod > latest ? entry.lastmod : latest),
+          "2025-07-05",
+        );
 
         const staticEntries = [
           { loc: `${currentBaseUrl}/`, lastmod: "2025-07-05" },
@@ -60,6 +77,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           { loc: `${currentBaseUrl}/about`, lastmod: "2025-07-05" },
           { loc: `${currentBaseUrl}/oss-friends`, lastmod: "2025-07-05" },
           { loc: `${currentBaseUrl}/blog`, lastmod: "2025-07-05" },
+          { loc: `${currentBaseUrl}/faq`, lastmod: faqIndexLastmod },
           {
             loc: `${currentBaseUrl}/templates`,
             lastmod: templatesIndexLastmod,
@@ -103,6 +121,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...templateEntries,
           ...contentEntries,
           ...blogContentEntries,
+          ...faqEntries,
         ]);
 
         return new Response(xml, {
