@@ -27,14 +27,13 @@ export const UploadButton = ({
       filePathProps,
       fileType: file.type,
     });
-    const formData = new FormData();
-    Object.entries(data.formData).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
-    formData.append("file", file);
     const upload = await fetch(data.presignedUrl, {
-      method: "POST",
-      body: formData,
+      method: "PUT",
+      body: file,
+      headers: {
+        "Content-Type": file.type,
+        "Cache-Control": "public, max-age=86400",
+      },
     });
     if (!upload.ok) {
       toast({
@@ -47,7 +46,11 @@ export const UploadButton = ({
 
   return (
     <UploadButtonPrimitive
-      accept={fileType === "image" ? "image/avif, image/*" : "audio/*"}
+      accept={
+        fileType === "image"
+          ? "image/avif, image/png, image/jpeg, image/gif, image/webp, image/bmp, image/tiff"
+          : "audio/*"
+      }
       variant={variant}
       size={size}
       onFileUploadRequest={handleFileUploadRequest}

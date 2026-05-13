@@ -101,6 +101,7 @@ export const startSession = async ({
 
   const result = await getOrInitResult({
     resultId: startParams.type === "live" ? startParams.resultId : undefined,
+    typebotId: typebot.id,
     isPreview: startParams.type === "preview",
     isRememberUserEnabled:
       typebot.settings.general?.rememberUser?.isEnabled ??
@@ -401,16 +402,18 @@ const getTypebot = async (startParams: StartParams) => {
 const getOrInitResult = async ({
   isPreview,
   resultId,
+  typebotId,
   isRememberUserEnabled,
 }: {
   resultId: string | undefined;
+  typebotId: string;
   isPreview: boolean;
   isRememberUserEnabled: boolean;
 }) => {
   if (isPreview) return;
   const existingResult =
     resultId && isRememberUserEnabled
-      ? await findResult({ id: resultId })
+      ? await findResult({ id: resultId, typebotId })
       : undefined;
 
   return {

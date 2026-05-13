@@ -1,7 +1,7 @@
 import { parseVideoUrl } from "@typebot.io/blocks-bubbles/video/helpers";
 import { createActionHandler } from "@typebot.io/forge";
 import { extensionFromMimeType } from "@typebot.io/lib/extensionFromMimeType";
-import { ky } from "@typebot.io/lib/ky";
+import { ky, safeKy } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isDefined } from "@typebot.io/lib/utils";
 import { HTTPError } from "ky";
@@ -106,7 +106,7 @@ export const sendFeedEventHandler = createActionHandler(sendFeedEvent, {
 
             case "Attachment": {
               if (!section.url) return;
-              const { headers } = await ky.head(section.url);
+              const { headers } = await safeKy.head(section.url);
               const extension =
                 extensionFromMimeType[headers.get("content-type") ?? ""];
               const fileName =

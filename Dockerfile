@@ -26,7 +26,7 @@ FROM base AS builder
 ARG SCOPE
 COPY . .
 RUN SENTRYCLI_SKIP_DOWNLOAD=1 bun install --frozen-lockfile
-RUN SKIP_ENV_CHECK=true NEXT_PUBLIC_VIEWER_URL=http://localhost bunx nx build ${SCOPE}
+RUN SKIP_ENV_CHECK=true DATABASE_URL=postgresql:// NEXT_PUBLIC_VIEWER_URL=http://localhost bunx nx build ${SCOPE}
 RUN DATABASE_URL=postgresql:// bunx nx db:generate prisma
 
 # ================== RELEASE ======================
@@ -36,6 +36,7 @@ ARG SCOPE
 ENV SCOPE=${SCOPE}
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/packages/prisma/postgresql ./packages/prisma/postgresql
+COPY --from=builder /app/packages/prisma/prisma.config.ts ./packages/prisma/prisma.config.ts
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/standalone ./
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/static ./apps/${SCOPE}/.next/static
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/public ./apps/${SCOPE}/public

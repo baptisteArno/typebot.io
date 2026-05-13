@@ -123,8 +123,14 @@ const additionalFocusHeight = 20;
 type EditableTextareaProps = Omit<TextareaProps, "value">;
 
 const EditableTextarea = ({ className, ...props }: EditableTextareaProps) => {
-  const { isEditing, isMultilineRef, value, setValue, commitValue, setIsEditing } =
-    useEditable();
+  const {
+    isEditing,
+    isMultilineRef,
+    value,
+    setValue,
+    commitValue,
+    setIsEditing,
+  } = useEditable();
 
   isMultilineRef.current = true;
 

@@ -7,7 +7,7 @@ import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
 import { type ClientOptions, OpenAI } from "openai";
 import { z } from "zod";
-import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
+import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
 
 export const listModelsInputSchema = z.object({
   credentialsId: z.string(),
@@ -30,6 +30,7 @@ export const handleListModels = async ({
       members: {
         select: {
           userId: true,
+          role: true,
         },
       },
       credentials: {
@@ -45,7 +46,7 @@ export const handleListModels = async ({
     },
   });
 
-  if (!workspace || isReadWorkspaceFobidden(workspace, user))
+  if (!workspace || isWriteWorkspaceForbidden(workspace, user))
     throw new ORPCError("NOT_FOUND", { message: "No workspace found" });
 
   const credentials = workspace.credentials.at(0);

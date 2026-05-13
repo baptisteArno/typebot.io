@@ -2,6 +2,7 @@ import { ORPCError } from "@orpc/server";
 import { WorkflowsRpcClientConfig } from "@typebot.io/config";
 import { createId } from "@typebot.io/lib/createId";
 import prisma from "@typebot.io/prisma";
+import { timeFilterValues } from "@typebot.io/results/timeFilter";
 import type { ExportResultsWorkflowStatusChunk } from "@typebot.io/results/workflows/rpc";
 import { ResultsWorkflowsRpcClient } from "@typebot.io/results/workflows/rpc";
 import { createGlobalTelemetryLayer } from "@typebot.io/telemetry/createGlobalTelemetryLayer";
@@ -21,6 +22,8 @@ const MainLayer = Layer.provideMerge(
 export const streamExportJobInputSchema = z.object({
   typebotId: z.string(),
   includeDeletedBlocks: z.boolean().optional(),
+  timeFilter: z.enum(timeFilterValues).default("allTime"),
+  timeZone: z.string().optional(),
 });
 
 export const exportResultsWorkflowStatusChunkSchema = z.discriminatedUnion(
@@ -34,7 +37,7 @@ export const exportResultsWorkflowStatusChunkSchema = z.discriminatedUnion(
 );
 
 export async function* handleStreamExportJob({
-  input: { typebotId, includeDeletedBlocks },
+  input: { typebotId, includeDeletedBlocks, timeFilter, timeZone },
   context: { user },
 }: {
   input: z.infer<typeof streamExportJobInputSchema>;
@@ -81,6 +84,8 @@ export async function* handleStreamExportJob({
       id: createId(),
       typebotId,
       includeDeletedBlocks,
+      timeFilter,
+      timeZone,
     });
 
     yield* stream.pipe(

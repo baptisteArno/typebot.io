@@ -96,40 +96,48 @@ export const getLinkedTypebots = authenticatedProcedure
 
     if (!linkedTypebotIds.length) return { typebots: [] };
 
-    const typebots = (
-      await prisma.typebot.findMany({
-        where: {
-          isArchived: { not: true },
-          id: { in: linkedTypebotIds },
-        },
-        select: {
-          id: true,
-          version: true,
-          groups: true,
-          variables: true,
-          name: true,
-          createdAt: true,
-          workspace: {
-            select: {
-              isSuspended: true,
-              isPastDue: true,
-              members: {
-                select: {
-                  userId: true,
-                },
+    const fetchedTypebots = await prisma.typebot.findMany({
+      where: {
+        isArchived: { not: true },
+        id: { in: linkedTypebotIds },
+      },
+      select: {
+        id: true,
+        version: true,
+        groups: true,
+        variables: true,
+        name: true,
+        createdAt: true,
+        workspace: {
+          select: {
+            isSuspended: true,
+            isPastDue: true,
+            members: {
+              select: {
+                userId: true,
               },
             },
           },
-          collaborators: {
-            select: {
-              type: true,
-              userId: true,
-            },
+        },
+        collaborators: {
+          select: {
+            type: true,
+            userId: true,
           },
         },
-      })
-    )
-      .filter(async (typebot) => !(await isReadTypebotForbidden(typebot, user)))
+      },
+    });
+
+    const accessChecks = await Promise.all(
+      fetchedTypebots.map(async (typebot) => ({
+        typebot,
+        forbidden: await isReadTypebotForbidden(typebot, user),
+      })),
+    );
+
+    const typebots = accessChecks
+      .filter(({ forbidden }) => !forbidden)
+      .map(({ typebot }) => typebot)
       // To avoid the out of sort memory error, we sort the typebots manually
       .sort((a, b) => {
         return b.createdAt.getTime() - a.createdAt.getTime();

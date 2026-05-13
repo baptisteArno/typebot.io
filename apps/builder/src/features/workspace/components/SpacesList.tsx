@@ -62,9 +62,7 @@ export const SpacesList = ({
         queryClient.cancelQueries({ queryKey });
         queryClient.setQueryData<typeof spacesData>(queryKey, (cache) => ({
           spaces: (cache?.spaces ?? []).map((space) =>
-            space.id === data.spaceId
-              ? { ...space, ...patch }
-              : space,
+            space.id === data.spaceId ? { ...space, ...patch } : space,
           ),
         }));
         return { previousCacheData: cacheData, key: queryKey };
@@ -164,14 +162,13 @@ export const SpacesList = ({
             },
             fileType: file.type,
           });
-          const formData = new FormData();
-          Object.entries(data.formData).forEach(([key, value]) => {
-            formData.append(key, value);
-          });
-          formData.append("file", file);
           const upload = await fetch(data.presignedUrl, {
-            method: "POST",
-            body: formData,
+            method: "PUT",
+            body: file,
+            headers: {
+              "Content-Type": file.type,
+              "Cache-Control": "public, max-age=86400",
+            },
           });
           if (!upload.ok) {
             toast({

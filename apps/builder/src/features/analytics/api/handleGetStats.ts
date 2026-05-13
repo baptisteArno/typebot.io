@@ -1,14 +1,15 @@
 import { ORPCError } from "@orpc/server";
 import prisma from "@typebot.io/prisma";
 import type { Stats } from "@typebot.io/results/schemas/answers";
+import {
+  defaultTimeFilter,
+  parseFromDateFromTimeFilter,
+  parseToDateFromTimeFilter,
+  timeFilterValues,
+} from "@typebot.io/results/timeFilter";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
 import { canReadTypebots } from "@/helpers/databaseRules";
-import { defaultTimeFilter, timeFilterValues } from "../constants";
-import {
-  parseFromDateFromTimeFilter,
-  parseToDateFromTimeFilter,
-} from "../helpers/parseDateFromTimeFilter";
 
 export const getStatsInputSchema = z.object({
   typebotId: z.string(),

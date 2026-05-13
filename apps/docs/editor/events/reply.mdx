@@ -5,6 +5,10 @@ sidebarTitle: Reply
 
 This event will trigger everytime a reply is received, meaning whenever a user replies to any input in the flow. This is triggered even before the reply is processed and validated. This is useful when you need to execute a specific flow / automation whenever the user replies to the bot.
 
+<Note>
+  Not sure whether to use a Reply event or a [Command event](./command)? Use **Reply** when the trigger comes from inside the chat (the user types or clicks something). Use **Command** when the trigger comes from outside the chat (a button on your website, an external webhook, etc.).
+</Note>
+
 <Frame>
 	<img src="/images/events/reply-event.avif" alt="On New Message event in Typebot editor" />
 </Frame>
@@ -25,3 +29,4 @@ By default, when an event is executed, the session will end and not return to th
 
 - Automatically end the session if the user replies with "end", "exit", "quit".
 - Automatically trigger a feedback collection flow whenever a user replies with specific keywords like "feedback" "suggestion" or "comment".
+- Implement user commands like `restart` or `help`. See the [user commands guide](/guides/user-commands) for a step-by-step recipe.

@@ -6,7 +6,7 @@ import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
 import { OAuth2Client } from "google-auth-library";
 import { z } from "zod";
-import { isReadWorkspaceFobidden } from "@/features/workspace/helpers/isReadWorkspaceFobidden";
+import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
 
 export const getAccessTokenInputSchema = z.object({
   workspaceId: z.string(),
@@ -26,7 +26,7 @@ export const handleGetAccessToken = async ({
     },
     select: {
       id: true,
-      members: true,
+      members: { select: { userId: true, role: true } },
       credentials: {
         where: {
           id: credentialsId,
@@ -38,7 +38,7 @@ export const handleGetAccessToken = async ({
       },
     },
   });
-  if (!workspace || isReadWorkspaceFobidden(workspace, user))
+  if (!workspace || isWriteWorkspaceForbidden(workspace, user))
     throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
   const credentials = workspace.credentials[0];

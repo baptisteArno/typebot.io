@@ -14,6 +14,11 @@ import { parseColumnsOrder } from "./parseColumnsOrder";
 import { parseResultHeader } from "./parseResultHeader";
 import { resultWithAnswersSchema } from "./schemas/results";
 import { ResultsService } from "./services/ResultsService";
+import {
+  parseFromDateFromTimeFilter,
+  parseToDateFromTimeFilter,
+  type TimeFilter,
+} from "./timeFilter";
 
 export class ProgressReporterError extends Schema.TaggedErrorClass<ProgressReporterError>()(
   "@typebot/ProgressReporterError",
@@ -39,7 +44,15 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
       TypebotV6,
       "id" | "groups" | "variables" | "resultsTablePreferences"
     >,
-    { includeDeletedBlocks }: { includeDeletedBlocks?: boolean },
+    {
+      includeDeletedBlocks,
+      timeFilter,
+      timeZone,
+    }: {
+      includeDeletedBlocks?: boolean;
+      timeFilter?: TimeFilter;
+      timeZone?: string;
+    },
   ) {
     const progressReporter = yield* ProgressReporter;
     const resultsService = yield* ResultsService;
@@ -52,12 +65,21 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
       linkedTypebots: [],
     });
 
+    const fromDate = timeFilter
+      ? parseFromDateFromTimeFilter(timeFilter, timeZone)
+      : null;
+    const toDate = timeFilter
+      ? parseToDateFromTimeFilter(timeFilter, timeZone)
+      : null;
+
     const deletedBlockHeaders = includeDeletedBlocks
       ? yield* getDeletedBlockHeaders({
           typebotId: typebot.id,
           existingHeaderIds: baseResultHeader.map((h) => h.id),
           groups: typebot.groups,
           resultsService,
+          fromDate,
+          toDate,
         })
       : [];
 
@@ -97,6 +119,10 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
         typebotId: typebot.id,
         hasStarted: true,
         isArchived: false,
+        createdAt: createCreatedAtFilter({
+          fromDate,
+          toDate,
+        }),
       },
     });
 
@@ -123,9 +149,11 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
                   typebotId: typebot.id,
                   hasStarted: true,
                   isArchived: false,
-                  ...(state.lastCreatedAt
-                    ? { createdAt: { lte: state.lastCreatedAt } }
-                    : {}),
+                  createdAt: createCreatedAtFilter({
+                    fromDate,
+                    toDate,
+                    lastCreatedAt: state.lastCreatedAt,
+                  }),
                 },
                 orderBy: {
                   createdAt: "desc",
@@ -219,14 +247,23 @@ const getDeletedBlockHeaders = Effect.fn("getDeletedBlockHeaders")(function* ({
   existingHeaderIds,
   groups,
   resultsService,
+  fromDate,
+  toDate,
 }: {
   typebotId: string;
   existingHeaderIds: string[];
   groups: TypebotV6["groups"];
   resultsService: ResultsService["Service"];
+  fromDate: Date | null;
+  toDate: Date | null;
 }) {
-  const allAnswerBlockIds =
-    yield* resultsService.findDistinctAnswerBlockIds(typebotId);
+  const allAnswerBlockIds = yield* resultsService.findDistinctAnswerBlockIds({
+    typebotId,
+    createdAt: createCreatedAtFilter({
+      fromDate,
+      toDate,
+    }),
+  });
 
   const existingBlockIds = new Set(
     groups.flatMap((group) => group.blocks.map((block) => block.id)),
@@ -245,3 +282,20 @@ const getDeletedBlockHeaders = Effect.fn("getDeletedBlockHeaders")(function* ({
     blockType: InputBlockType.TEXT,
   }));
 });
+
+const createCreatedAtFilter = ({
+  fromDate,
+  toDate,
+  lastCreatedAt,
+}: {
+  fromDate?: Date | null;
+  toDate?: Date | null;
+  lastCreatedAt?: Date | null;
+}) => {
+  if (!fromDate && !toDate && !lastCreatedAt) return;
+
+  return {
+    gte: fromDate ?? undefined,
+    lte: lastCreatedAt ?? toDate ?? undefined,
+  };
+};

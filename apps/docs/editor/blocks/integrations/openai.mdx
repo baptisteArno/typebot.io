@@ -52,17 +52,42 @@ If you'd like to set variables directly in this code block, you can use the [`se
   here](../logic/script#limitations-on-scripts-executed-on-server).
 </Warning>
 
-## Ask assistant
+## Ask Model
 
-This action allows you to talk with your [OpenAI assistant](https://platform.openai.com/assistants). All you have to do is to provide its ID.
+This action uses OpenAI's [Responses API](https://platform.openai.com/docs/api-reference/responses) to generate model responses with optional built-in tools and multi-turn conversation support.
 
-In order for your block to remember the conversation history, you need to provide a `Thread ID` variable. If the variable is empty, it will create a new thread and automatically save the new thread ID in the variable.
+### Basic setup
 
-<LoomVideo id="daa20fcc5984472a875a3ad4d3fc2a3a" />
+Select a **Model** (e.g. `gpt-5.4`), write a **Message** (typically the user's input), and optionally provide **Instructions** (system-level prompt for the model).
+
+### Multi-turn conversations
+
+To remember conversation history across messages, assign a variable to the **Response ID** field. If the variable is empty, a new conversation is started. On each response, the variable is automatically updated so the next invocation continues the same conversation.
+
+### Built-in tools
+
+You can enable the following OpenAI built-in tools in the **Built-in tools** section:
+
+- **File Search** — select one or more vector stores from your OpenAI account. The model will search them for relevant content when answering.
+- **Web Search** — let the model search the web for up-to-date information.
+- **Code Interpreter** — let the model write and execute Python code.
 
 ### Functions
 
-If you defined functions in your assistant, you can define the function to execute in the `Functions` section.
+The **Functions** section lets you define custom functions the model can call. Each function has a name, description, typed parameters, and a JavaScript code block that returns a value.
+
+The code block expects the body of a Javascript function. Use the `return` keyword to return a value back to the model.
+
+If you'd like to set variables directly in this code block, you can use the [`setVariable` function](../logic/script#setvariable-function).
+
+<Warning>
+  A function is executed on the server so it comes with [some limitations listed
+  here](../logic/script#limitations-on-scripts-executed-on-server).
+</Warning>
+
+:::note
+**Migrating from Ask Assistant?** The Ask Assistant action (based on the deprecated OpenAI Assistants API) will be removed in August 2026. To migrate, create a new Ask Model block and configure the model, instructions, and tools directly — the Responses API no longer requires an assistant ID.
+:::
 
 ## Create speech
 
@@ -108,7 +133,7 @@ I also demonstrate how formatting can be affected by the presence of text before
 
 ## Vision support
 
-`Create Chat Message` and `Ask Assistant` blocks support vision. This means that Typebot automatically detects images URL in any user message provided to OpenAI and parse it. The URL needs to be isolated from the rest of the text message to be properly detected. Here is an example of a message with an image URL:
+`Create Chat Message` and `Ask Model` blocks support vision. This means that Typebot automatically detects images URL in any user message provided to OpenAI and parse it. The URL needs to be isolated from the rest of the text message to be properly detected. Here is an example of a message with an image URL:
 
 If the selected model is [not compatible with vision](https://platform.openai.com/docs/models), the image URL will be parsed as a plain text message.
 

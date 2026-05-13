@@ -24,18 +24,20 @@ export const injectFakeResults = async ({
   isChronological,
 }: CreateFakeResultsProps) => {
   const resultIdPrefix = customResultIdPrefix ?? createId();
+  const currentTime = Date.now();
   await prisma.result.createMany({
     data: [
       ...Array.from(Array(count)).map((_, idx) => {
-        const today = new Date();
         const rand = Math.random();
         return {
           id: `${resultIdPrefix}-result${idx}`,
           typebotId,
           createdAt: isChronological
-            ? new Date(
-                today.setTime(today.getTime() + 1000 * 60 * 60 * 24 * idx),
-              )
+            ? createChronologicalResultDate({
+                count,
+                currentTime,
+                index: idx,
+              })
             : new Date(),
           isCompleted: rand > 0.5,
           hasStarted: true,
@@ -45,6 +47,20 @@ export const injectFakeResults = async ({
     ],
   });
   return createAnswers({ resultIdPrefix, count });
+};
+
+const createChronologicalResultDate = ({
+  count,
+  currentTime,
+  index,
+}: {
+  count: number;
+  currentTime: number;
+  index: number;
+}) => {
+  const daysFromToday = count - index - 1;
+
+  return new Date(currentTime - 1000 * 60 * 60 * 24 * daysFromToday);
 };
 
 const createAnswers = ({

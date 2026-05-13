@@ -1,0 +1,167 @@
+{
+  "version": "6.1",
+  "id": "ssrf-test-bot",
+  "name": "SSRF Test Bot",
+  "events": [
+    {
+      "id": "evt-start",
+      "outgoingEdgeId": "edge-start-to-input",
+      "graphCoordinates": { "x": 0, "y": 0 },
+      "type": "start"
+    }
+  ],
+  "groups": [
+    {
+      "id": "grp-url-input",
+      "title": "URL Input",
+      "graphCoordinates": { "x": 340, "y": 100 },
+      "blocks": [
+        {
+          "id": "blk-text-prompt",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "Enter a URL to fetch (testing SSRF protection):"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "blk-url-input",
+          "outgoingEdgeId": "edge-input-to-fetch",
+          "type": "text input",
+          "options": {
+            "labels": {
+              "placeholder": "https://example.com",
+              "button": "Fetch"
+            },
+            "variableId": "var-url",
+            "isLong": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "grp-fetch",
+      "title": "Fetch URL",
+      "graphCoordinates": { "x": 780, "y": 100 },
+      "blocks": [
+        {
+          "id": "blk-http-request",
+          "type": "Webhook",
+          "options": {
+            "variablesForTest": [
+              {
+                "id": "vft-url",
+                "variableId": "var-url",
+                "value": "https://httpbin.org/get"
+              }
+            ],
+            "responseVariableMapping": [
+              {
+                "id": "mapping-data",
+                "variableId": "var-response",
+                "bodyPath": "data"
+              }
+            ],
+            "isAdvancedConfig": false,
+            "isCustomBody": false,
+            "webhook": {
+              "url": "{{URL}}",
+              "method": "GET"
+            }
+          }
+        },
+        {
+          "id": "blk-show-response",
+          "outgoingEdgeId": "edge-response-to-input",
+          "type": "text",
+          "content": {
+            "richText": [
+              {
+                "type": "p",
+                "children": [{ "text": "Response: {{Response}}" }]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-start-to-input",
+      "from": { "eventId": "evt-start" },
+      "to": { "groupId": "grp-url-input" }
+    },
+    {
+      "id": "edge-input-to-fetch",
+      "from": { "blockId": "blk-url-input" },
+      "to": { "groupId": "grp-fetch" }
+    },
+    {
+      "id": "edge-response-to-input",
+      "from": { "blockId": "blk-show-response" },
+      "to": { "groupId": "grp-url-input" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "var-url",
+      "name": "URL",
+      "isSessionVariable": true
+    },
+    {
+      "id": "var-response",
+      "name": "Response"
+    }
+  ],
+  "theme": {
+    "general": { "font": "Open Sans", "background": { "type": "None" } },
+    "chat": {
+      "hostAvatar": {
+        "isEnabled": true,
+        "url": "https://avatars.githubusercontent.com/u/16015833?v=4"
+      },
+      "hostBubbles": { "backgroundColor": "#F7F8FF", "color": "#303235" },
+      "guestBubbles": { "backgroundColor": "#FF8E21", "color": "#FFFFFF" },
+      "buttons": { "backgroundColor": "#0042DA", "color": "#FFFFFF" },
+      "inputs": {
+        "backgroundColor": "#FFFFFF",
+        "color": "#303235",
+        "placeholderColor": "#9095A0"
+      }
+    }
+  },
+  "selectedThemeTemplateId": null,
+  "settings": {
+    "general": {
+      "isBrandingEnabled": false,
+      "isInputPrefillEnabled": true,
+      "isHideQueryParamsEnabled": true,
+      "isNewResultOnRefreshEnabled": false
+    },
+    "typingEmulation": { "enabled": false, "speed": 300, "maxDelay": 1.5 },
+    "metadata": {
+      "description": "SSRF protection test bot"
+    }
+  },
+  "createdAt": "2024-07-16T12:45:19.954Z",
+  "updatedAt": "2024-07-16T12:46:27.462Z",
+  "icon": null,
+  "folderId": null,
+  "publicId": null,
+  "customDomain": null,
+  "workspaceId": "proWorkspace",
+  "resultsTablePreferences": null,
+  "isArchived": false,
+  "isClosed": false,
+  "whatsAppCredentialsId": null,
+  "riskLevel": null
+}

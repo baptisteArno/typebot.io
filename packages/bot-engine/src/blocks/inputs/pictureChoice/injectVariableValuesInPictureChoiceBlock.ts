@@ -13,7 +13,12 @@ export const injectVariableValuesInPictureChoiceBlock = (
   {
     sessionStore,
     variables,
-  }: { sessionStore: SessionStore; variables: Variable[] },
+    skipDisplayConditionCheck,
+  }: {
+    sessionStore: SessionStore;
+    variables: Variable[];
+    skipDisplayConditionCheck?: boolean;
+  },
 ): PictureChoiceBlock => {
   if (
     block.options?.dynamicItems?.isEnabled &&
@@ -68,7 +73,9 @@ export const injectVariableValuesInPictureChoiceBlock = (
     };
   }
   return deepParseVariables(
-    filterPictureChoiceItems(block, { variables, sessionStore }),
+    skipDisplayConditionCheck
+      ? block
+      : filterPictureChoiceItems(block, { variables, sessionStore }),
     {
       variables,
       sessionStore,

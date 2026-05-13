@@ -64,14 +64,27 @@ export const handleUpdateOAuthCredentials = async ({
     ...tokens,
     client: input.customClient,
   });
+  const existingCredentials = await prisma.credentials.findUnique({
+    where: {
+      id: input.credentialsId,
+      workspaceId: input.workspaceId,
+    },
+    select: { id: true },
+  });
+
+  if (!existingCredentials)
+    throw new ORPCError("NOT_FOUND", {
+      message: "Credentials not found in this workspace",
+    });
+
   const updatedCredentials = await prisma.credentials.update({
     where: {
       id: input.credentialsId,
+      workspaceId: input.workspaceId,
     },
     data: {
       name: input.name,
       type: input.blockType,
-      workspaceId: input.workspaceId,
       data: encryptedData,
       iv,
     },

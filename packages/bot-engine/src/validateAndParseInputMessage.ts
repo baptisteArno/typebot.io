@@ -67,6 +67,7 @@ export const validateAndParseInputMessage = (
       const displayedItems = injectVariableValuesInButtonsInputBlock(block, {
         variables,
         sessionStore,
+        skipDisplayConditionCheck: skipValidation,
       }).items;
       if (block.options?.isMultipleChoice)
         return parseMultipleChoiceReply(message.text, {
@@ -101,8 +102,27 @@ export const validateAndParseInputMessage = (
 
       const replyValue = message.type === "audio" ? message.url : message.text;
       const urls = replyValue.split(", ");
+      const isTrustedHost = (url: string) => {
+        try {
+          const { hostname } = new URL(url);
+          if (hostname === "localhost") return true;
+          if (
+            env.S3_PUBLIC_CUSTOM_DOMAIN &&
+            new URL(env.S3_PUBLIC_CUSTOM_DOMAIN).hostname === hostname
+          )
+            return true;
+          if (
+            env.NEXTAUTH_URL &&
+            new URL(env.NEXTAUTH_URL).hostname === hostname
+          )
+            return true;
+          return false;
+        } catch {
+          return false;
+        }
+      };
       const hasValidUrls = urls.some((url) =>
-        isURL(url, { require_tld: env.S3_ENDPOINT !== "localhost" }),
+        isURL(url, { require_tld: !isTrustedHost(url) }),
       );
 
       const allowedFileTypesMetadata =
@@ -152,6 +172,7 @@ export const validateAndParseInputMessage = (
       const displayedItems = injectVariableValuesInPictureChoiceBlock(block, {
         variables,
         sessionStore,
+        skipDisplayConditionCheck: skipValidation,
       }).items;
       if (block.options?.isMultipleChoice)
         return parseMultipleChoiceReply(message.text, {

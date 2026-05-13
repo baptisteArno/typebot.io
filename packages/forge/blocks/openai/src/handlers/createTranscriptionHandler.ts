@@ -1,4 +1,5 @@
 import { createActionHandler } from "@typebot.io/forge";
+import { safeKy } from "@typebot.io/lib/ky";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { ClientOptions } from "openai";
 import OpenAI from "openai";
@@ -28,7 +29,7 @@ export const createTranscriptionHandler = createActionHandler(
       const openai = new OpenAI(config);
 
       const result = await openai.audio.transcriptions.create({
-        file: await fetch(options.url),
+        file: await safeKy.get(options.url),
         model: isNotEmpty(options.model) ? options.model : "whisper-1",
         ...(isNotEmpty(options.prompt) ? { prompt: options.prompt } : {}),
       });

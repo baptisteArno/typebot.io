@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
 import { isDefined } from "@typebot.io/lib/utils";
 import type { Stats } from "@typebot.io/results/schemas/answers";
+import type { TimeFilter } from "@typebot.io/results/timeFilter";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useMemo, useRef } from "react";
@@ -11,15 +12,14 @@ import { Graph } from "@/features/graph/components/Graph";
 import { GraphProvider } from "@/features/graph/providers/GraphProvider";
 import { useThemeValue } from "@/hooks/useThemeValue";
 import { orpc } from "@/lib/queryClient";
-import type { timeFilterValues } from "../constants";
 import { populateEdgesWithTotalVisits } from "../helpers/populateEdgesWithTotalVisits";
 import { StatsCards } from "./StatsCards";
 
 const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 type Props = {
-  timeFilter: (typeof timeFilterValues)[number];
-  onTimeFilterChange: (timeFilter: (typeof timeFilterValues)[number]) => void;
+  timeFilter: TimeFilter;
+  onTimeFilterChange: (timeFilter: TimeFilter) => void;
   stats?: Stats;
 };
 

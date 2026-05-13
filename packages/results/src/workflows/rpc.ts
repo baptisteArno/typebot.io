@@ -18,6 +18,7 @@ import {
   type RpcClientError,
   RpcGroup,
 } from "effect/unstable/rpc";
+import type { TimeFilter } from "../timeFilter";
 import {
   EXPORT_PROGRESS_CHANNEL_PREFIX,
   ExportResultsWorkflow,
@@ -67,6 +68,8 @@ export const executeExportResultsWorkflowHandler = (payload: {
   readonly id: string;
   readonly typebotId: string;
   readonly includeDeletedBlocks?: boolean;
+  readonly timeFilter?: TimeFilter;
+  readonly timeZone?: string;
 }) =>
   Effect.gen(function* () {
     const redis = yield* RedisClient;

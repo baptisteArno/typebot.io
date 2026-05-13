@@ -1,4 +1,7 @@
-import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
+import {
+  authenticatedProcedure,
+  publicProcedure as builderPublicProcedure,
+} from "@typebot.io/config/orpc/builder/middlewares";
 import { publicProcedure } from "@typebot.io/config/orpc/viewer/middlewares";
 import { z } from "zod";
 import {
@@ -9,10 +12,6 @@ import {
   generateUploadUrlV2InputSchema,
   handleGenerateUploadUrlV2,
 } from "./deprecated/handleGenerateUploadUrlV2";
-import {
-  getUploadUrlInputSchema,
-  handleGetUploadUrl,
-} from "./deprecated/handleGetUploadUrl";
 import {
   generateUploadUrlInputSchema,
   handleGenerateUploadUrl,
@@ -39,6 +38,24 @@ export const fileUploadBuilderRouter = {
     )
     .input(getPrivateFileInputSchema)
     .handler(handleGetPrivateFile),
+  generateUploadUrlProcedure: builderPublicProcedure
+    .route({
+      method: "POST",
+      path: "/v3/generate-upload-url",
+      summary: "Generate upload URL",
+      description: "Used to upload anything from the client to S3 bucket",
+      tags: ["File upload"],
+    })
+    .input(generateUploadUrlInputSchema)
+    .output(
+      z.object({
+        presignedUrl: z.string(),
+        fileType: z.string().optional(),
+        maxFileSize: z.number().optional(),
+        fileUrl: z.string(),
+      }),
+    )
+    .handler(handleGenerateUploadUrl),
 };
 
 export const fileUploadViewerRouter = {
@@ -54,7 +71,8 @@ export const fileUploadViewerRouter = {
     .output(
       z.object({
         presignedUrl: z.string(),
-        formData: z.record(z.string(), z.any()),
+        fileType: z.string().optional(),
+        maxFileSize: z.number().optional(),
         fileUrl: z.string(),
       }),
     )
@@ -72,7 +90,8 @@ export const fileUploadViewerRouter = {
     .output(
       z.object({
         presignedUrl: z.string(),
-        formData: z.record(z.string(), z.any()),
+        fileType: z.string().optional(),
+        maxFileSize: z.number().optional(),
         fileUrl: z.string(),
       }),
     )
@@ -90,26 +109,10 @@ export const fileUploadViewerRouter = {
     .output(
       z.object({
         presignedUrl: z.string(),
-        formData: z.record(z.string(), z.any()),
+        fileType: z.string().optional(),
+        maxFileSize: z.number().optional(),
         fileUrl: z.string(),
       }),
     )
     .handler(handleGenerateUploadUrlV2),
-  getUploadUrlProcedure: publicProcedure
-    .route({
-      method: "GET",
-      path: "/v1/typebots/{typebotId}/blocks/{blockId}/storage/upload-url",
-      summary: "Get upload URL for a file",
-      description: "Used for the web client to get the bucket upload file.",
-      deprecated: true,
-      tags: ["File upload"],
-    })
-    .input(getUploadUrlInputSchema)
-    .output(
-      z.object({
-        presignedUrl: z.string(),
-        hasReachedStorageLimit: z.boolean(),
-      }),
-    )
-    .handler(handleGetUploadUrl),
 };

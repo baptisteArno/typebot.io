@@ -1,7 +1,7 @@
 {
   "version": "6.1",
   "id": "clvqu4l5j00015bxibaf44slo",
-  "name": "OpenAI Assistant Chat",
+  "name": "OpenAI Chat",
   "events": [
     {
       "id": "rjtz087ma51znox79ztbl24d",
@@ -26,8 +26,9 @@
           "type": "openai",
           "options": {
             "credentialsId": "clvqq3hey0007pub4almxnhk2",
-            "action": "Ask Assistant",
-            "threadVariableId": "vf5gxmpqddsy4qugev6o0qs5c",
+            "action": "Ask Model",
+            "model": "gpt-5.4",
+            "responseIdVariableId": "vf5gxmpqddsy4qugev6o0qs5c",
             "message": "{{User last message}}",
             "responseMapping": [{ "variableId": "vn8h1gigkjwv40godw2hrgclh" }]
           }
@@ -61,7 +62,7 @@
                 "type": "p",
                 "children": [
                   {
-                    "text": "You need to add your OpenAI credentials and select your Assistant to make this bot work. 🪄"
+                    "text": "You need to add your OpenAI credentials to make this bot work."
                   }
                 ]
               }
@@ -83,7 +84,7 @@
                   { "bold": true, "text": "Start" },
                   { "text": " event with " },
                   { "bold": true, "text": "AI loop" },
-                  { "text": " 🚀" }
+                  { "text": "" }
                 ]
               }
             ]
@@ -115,7 +116,7 @@
     },
     {
       "id": "vf5gxmpqddsy4qugev6o0qs5c",
-      "name": "Thread ID",
+      "name": "Response ID",
       "isSessionVariable": true
     },
     {

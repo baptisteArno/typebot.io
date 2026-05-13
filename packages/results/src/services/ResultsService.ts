@@ -1,4 +1,5 @@
 import { type PrismaFindError, PrismaService } from "@typebot.io/prisma/effect";
+import type { Prisma } from "@typebot.io/prisma/types";
 import { Effect, Layer, ServiceMap } from "effect";
 
 export class ResultsService extends ServiceMap.Service<
@@ -6,9 +7,10 @@ export class ResultsService extends ServiceMap.Service<
   {
     count: PrismaService["Service"]["result"]["count"];
     findMany: PrismaService["Service"]["result"]["findMany"];
-    findDistinctAnswerBlockIds: (
-      typebotId: string,
-    ) => Effect.Effect<string[], PrismaFindError>;
+    findDistinctAnswerBlockIds: (input: {
+      typebotId: string;
+      createdAt?: Prisma.Prisma.DateTimeFilter;
+    }) => Effect.Effect<string[], PrismaFindError>;
   }
 >()("@typebot/ResultsService") {
   static readonly layer = Layer.effect(
@@ -20,17 +22,23 @@ export class ResultsService extends ServiceMap.Service<
         count: prisma.result.count,
         findMany: prisma.result.findMany,
         findDistinctAnswerBlockIds: Effect.fn("findDistinctAnswerBlockIds")(
-          function* (typebotId: string) {
+          function* ({
+            typebotId,
+            createdAt,
+          }: {
+            typebotId: string;
+            createdAt?: Prisma.Prisma.DateTimeFilter;
+          }) {
             const answerV2BlockIds = yield* prisma.answerV2.findMany({
               where: {
-                result: { typebotId },
+                result: { typebotId, createdAt },
               },
               distinct: ["blockId"],
               select: { blockId: true },
             });
             const answerBlockIds = yield* prisma.answer.findMany({
               where: {
-                result: { typebotId },
+                result: { typebotId, createdAt },
               },
               distinct: ["blockId"],
               select: { blockId: true },

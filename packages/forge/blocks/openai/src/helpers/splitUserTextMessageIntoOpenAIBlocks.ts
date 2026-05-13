@@ -1,4 +1,4 @@
-import { ky } from "@typebot.io/lib/ky";
+import { safeKy } from "@typebot.io/lib/ky";
 import { HTTPError } from "ky";
 import type OpenAI from "openai";
 
@@ -13,7 +13,7 @@ export const splitUserTextMessageIntoOpenAIBlocks = async (
       for (const url of urls) {
         const cleanUrl = url.trim();
         try {
-          const response = await ky.get(cleanUrl);
+          const response = await safeKy.get(cleanUrl);
           if (
             !response.ok ||
             !response.headers.get("content-type")?.startsWith("image/")

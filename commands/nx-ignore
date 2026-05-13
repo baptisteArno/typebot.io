@@ -32,6 +32,11 @@ const builtInModuleNames = new Set(
   ),
 );
 
+if (process.env.VERCEL_ENV === "preview") {
+  console.log("🛑 - Build cancelled (preview deployments are disabled)");
+  process.exit(0);
+}
+
 const args = Bun.argv.slice(2);
 const isVerbose = args.includes("--verbose");
 const isHelp = args.includes("--help");

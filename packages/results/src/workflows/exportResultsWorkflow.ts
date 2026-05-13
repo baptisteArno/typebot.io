@@ -19,6 +19,7 @@ import {
   ProgressReporterError,
   streamResultsToCsvV2,
 } from "../streamAllResultsToCsvV2";
+import { timeFilterValues } from "../timeFilter";
 
 // Errors
 export class PrismaConnectionError extends Schema.TaggedErrorClass<PrismaConnectionError>()(
@@ -80,6 +81,8 @@ export const ExportResultsWorkflow = Workflow.make({
     id: Schema.String,
     typebotId: Schema.String,
     includeDeletedBlocks: Schema.Boolean.pipe(Schema.optional),
+    timeFilter: Schema.Literals(timeFilterValues).pipe(Schema.optional),
+    timeZone: Schema.String.pipe(Schema.optional),
   },
   idempotencyKey: ({ id }) => id,
 });
@@ -154,11 +157,14 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
       ),
     });
 
-    const fileName = getExportFileName({
-      id: payload.typebotId,
-      name: typebot.name,
-      publicId: typebot.publicId,
-    });
+    const fileName = getExportFileName(
+      {
+        id: payload.typebotId,
+        name: typebot.name,
+        publicId: typebot.publicId,
+      },
+      payload.timeFilter,
+    );
 
     const s3Key = `private/tmp/workspaces/${typebot.workspaceId}/typebots/${payload.typebotId}/results-exports/${fileName}`;
 
@@ -187,6 +193,8 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
           typebot,
           {
             includeDeletedBlocks: payload.includeDeletedBlocks,
+            timeFilter: payload.timeFilter,
+            timeZone: payload.timeZone,
           },
         );
 
@@ -196,6 +204,10 @@ export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
           .uploadObject({
             key: s3Key,
             body: csvStream,
+            metadata: {
+              "Content-Type": "text/csv",
+              "Content-Disposition": `attachment; filename="${fileName}"`,
+            },
           })
           .pipe(
             Effect.tapError((error) => Effect.logError(error)),

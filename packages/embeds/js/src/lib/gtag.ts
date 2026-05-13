@@ -34,6 +34,10 @@ export const initGoogleAnalytics = (id: string): Promise<void> => {
       script.onload = () => {
         resolve();
       };
+      script.onerror = () => {
+        console.error("Failed to load Google Analytics script");
+        resolve();
+      };
     }
     if (existingScript) resolve();
   });

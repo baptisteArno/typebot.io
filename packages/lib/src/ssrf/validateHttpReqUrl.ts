@@ -156,7 +156,7 @@ export const validateHttpReqHeaders = (
 /**
  * Parses an IP address from a hostname string, returns null if not a valid IP
  */
-const parseIPAddress = (hostname: string): ParsedIP | null => {
+export const parseIPAddress = (hostname: string): ParsedIP | null => {
   // Try IPv4
   const ipv4Match = hostname.match(
     /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/,
@@ -177,7 +177,7 @@ const parseIPAddress = (hostname: string): ParsedIP | null => {
   return null;
 };
 
-type ParsedIP =
+export type ParsedIP =
   | { version: 4; octets: number[] }
   | { version: 6; address: string };
 
@@ -194,7 +194,7 @@ type LookupHost = (
  *
  * @throws Error if the IP is in a blocked range
  */
-const validateIPAddress = (ip: ParsedIP) => {
+export const validateIPAddress = (ip: ParsedIP) => {
   if (ip.version === 4) {
     const [first, second] = ip.octets;
 

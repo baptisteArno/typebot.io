@@ -24,6 +24,7 @@ import { HTTPError } from "ky";
 import { createEffect, createSignal, onCleanup, Show } from "solid-js";
 import { Portal } from "solid-js/web";
 import { BotContainerContext } from "../contexts/BotContainerContext";
+import { sanitizeUrl } from "../lib/sanitizeUrl";
 import { startChatQuery } from "../queries/startChatQuery";
 import type { BotContext } from "../types";
 import { CorsError } from "../utils/CorsError";
@@ -401,7 +402,7 @@ const BotContent = (props: BotContentProps) => {
               <Show when={toast().meta?.link as string}>
                 {(link) => (
                   <a
-                    href={link()}
+                    href={sanitizeUrl(link())}
                     target="_blank"
                     class={cn(
                       buttonVariants({ variant: "primary", size: "sm" }),

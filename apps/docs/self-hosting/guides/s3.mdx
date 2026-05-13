@@ -7,6 +7,7 @@ In order for Typebot to store your uploaded files, you need to configure an S3 b
 You can use any S3-compatible storage provider. Here are some examples:
 
 - [AWS S3](https://aws.amazon.com/s3/)
+- [Cloudflare R2](https://developers.cloudflare.com/r2/)
 - [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/)
 - [Wasabi](https://wasabi.com/)
 - [MinIO](https://min.io/)
@@ -26,7 +27,7 @@ To function properly, your S3 bucket must have the following configuration:
     "CORSRules": [
       {
         "AllowedHeaders": ["*"],
-        "AllowedMethods": ["PUT", "POST"],
+        "AllowedMethods": ["PUT"],
         "AllowedOrigins": ["*"],
         "ExposeHeaders": ["ETag"]
       }
@@ -34,18 +35,18 @@ To function properly, your S3 bucket must have the following configuration:
   }
   ```
 
-If you are using the amazon console online you should paste it like this : 
+If you are using the amazon console online you should paste it like this :
 
-  ```json
-   [
-      {
-        "AllowedHeaders": ["*"],
-        "AllowedMethods": ["PUT", "POST"],
-        "AllowedOrigins": ["*"],
-        "ExposeHeaders": ["ETag"]
-      }
-    ]
-  ```
+```json
+[
+  {
+    "AllowedHeaders": ["*"],
+    "AllowedMethods": ["PUT"],
+    "AllowedOrigins": ["*"],
+    "ExposeHeaders": ["ETag"]
+  }
+]
+```
 
 - Access policy (replace `<bucket-name>` with the name of your S3 bucket):
   ```json
@@ -78,7 +79,7 @@ Some S3 providers like AWS provide a user interface that allows you to directly 
      "CORSRules": [
        {
          "AllowedHeaders": ["*"],
-         "AllowedMethods": ["PUT", "POST"],
+         "AllowedMethods": ["PUT"],
          "AllowedOrigins": ["*"],
          "ExposeHeaders": ["ETag"]
        }

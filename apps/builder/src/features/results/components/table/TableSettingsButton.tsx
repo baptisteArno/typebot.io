@@ -1,4 +1,5 @@
 import type { ResultHeaderCell } from "@typebot.io/results/schemas/results";
+import type { TimeFilter } from "@typebot.io/results/timeFilter";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Popover } from "@typebot.io/ui/components/Popover";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
@@ -16,6 +17,7 @@ type Props = {
   columnOrder: string[];
   onColumnOrderChange: (columnOrder: string[]) => void;
   setColumnVisibility: (columnVisibility: { [key: string]: boolean }) => void;
+  timeFilter: TimeFilter;
 };
 
 export const TableSettingsButton = (props: Props) => {
@@ -43,6 +45,7 @@ export const TableSettingsButton = (props: Props) => {
       <ExportAllResultsDialog
         onClose={exportAllDialogControls.onClose}
         isOpen={exportAllDialogControls.isOpen}
+        timeFilter={props.timeFilter}
       />
     </>
   );

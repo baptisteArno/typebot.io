@@ -1,5 +1,6 @@
 import { env } from "@typebot.io/env";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
+import { getSafeDispatcher } from "@typebot.io/lib/ssrf/createSafeDispatcher";
 import {
   validateHttpReqHeaders,
   validateHttpReqUrl,
@@ -70,7 +71,35 @@ export const executeFunction = async ({
         });
         await validateHttpReqUrl(request.url);
         validateHttpReqHeaders(headers);
-        const response = await fetch(...fetchArgs);
+        const dispatcher = getSafeDispatcher();
+        const maxRedirects = 10;
+        let response = await fetch(input, {
+          ...init,
+          redirect: "manual",
+          dispatcher,
+        } as RequestInit);
+        let redirectCount = 0;
+        while (
+          response.status >= 300 &&
+          response.status < 400 &&
+          response.headers.has("location")
+        ) {
+          if (redirectCount >= maxRedirects)
+            throw new Error(
+              "Too many redirects while following safe fetch chain.",
+            );
+          const location = new URL(
+            response.headers.get("location")!,
+            request.url,
+          ).toString();
+          await validateHttpReqUrl(location);
+          response = await fetch(location, {
+            ...init,
+            redirect: "manual",
+            dispatcher,
+          } as RequestInit);
+          redirectCount++;
+        }
         return response.text();
       }),
     ],

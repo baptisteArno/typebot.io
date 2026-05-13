@@ -52,8 +52,12 @@ You can see the transcript of a result by expanding the result row, clicking on 
 
 ## Logs
 
-For each result, you'll find a "See logs" button that can show you what went wrong while executing an integration such as Send email, Google Sheets, or a Webhook call:
+Typebot does not expose a global activity feed. Logs are attached to individual results, so they live inside the `Results` table.
+
+To see what happened during a conversation (including integration errors like Send email, Google Sheets, or HTTP request), open a specific result and look at the logs column. Each row has a "See logs" button:
 
 <Frame>
   <img src="/images/results/logs-button.png" alt="See logs buttons" />
 </Frame>
+
+Logs include integration outputs, errors, and warnings for that specific conversation. If an integration silently fails, this is where to look first.
