@@ -96,6 +96,7 @@
     "@typebot.io/ui": "workspace:*",
     "@typebot.io/user": "workspace:*",
     "@typebot.io/whatsapp": "workspace:*",
+    "@typebot.io/workspace-secrets": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
     "@uiw/codemirror-extensions-langs": "^4.25.8",
     "@uiw/codemirror-theme-github": "^4.25.8",

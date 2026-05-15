@@ -45,6 +45,7 @@
     "@typebot.io/theme": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/variables": "workspace:*",
+    "@typebot.io/workspace-secrets": "workspace:*",
     "chrono-node": "2.7.6",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",

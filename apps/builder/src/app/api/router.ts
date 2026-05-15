@@ -28,6 +28,7 @@ import { typebotRouter } from "@/features/typebot/api/router";
 import { generateUploadUrl } from "@/features/upload/api/generateUploadUrl";
 import { userRouter } from "@/features/user/server/routers";
 import { workspaceRouter } from "@/features/workspace/api/router";
+import { workspaceSecretsRouter } from "@/features/workspaceSecrets/api/router";
 
 const healthz = publicProcedure.handler(async () => ({
   status: "ok",
@@ -82,6 +83,7 @@ export const appRouter: AppRouter = {
   generateGroupTitle,
   chat: builderChatRouter,
   credentials: credentialsRouter,
+  workspaceSecrets: workspaceSecretsRouter,
   featureFlags: featureFlagsRouter,
   auth: authRouter,
   billing: billingRouter,
@@ -114,6 +116,7 @@ export type AppRouter = {
   generateGroupTitle: typeof generateGroupTitle;
   chat: typeof builderChatRouter;
   credentials: typeof credentialsRouter;
+  workspaceSecrets: typeof workspaceSecretsRouter;
   featureFlags: typeof featureFlagsRouter;
   auth: typeof authRouter;
   billing: typeof billingRouter;
