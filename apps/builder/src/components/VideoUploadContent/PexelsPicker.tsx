@@ -46,24 +46,24 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
       { orientation, size }: { orientation: string; size: string },
       { replace = false }: { replace?: boolean } = {},
     ) => {
-      if (!replace && isFetchingRef.current) return;
-
       const currentRequestId = ++requestId.current;
 
-      if (query === "") {
-        setVideos([]);
-        setNextPage(0);
-        setHasMoreVideos(false);
-      }
       if (query.length <= 2) {
         setVideos([]);
         setNextPage(0);
         setHasMoreVideos(false);
+        setError(null);
+        isFetchingRef.current = false;
+        setIsFetching(false);
         return;
       }
+
+      if (!replace && isFetchingRef.current) return;
+
       setError(null);
       isFetchingRef.current = true;
       setIsFetching(true);
+
       try {
         const result = await client.videos.search({
           query,
@@ -72,19 +72,23 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
           orientation,
           page,
         });
+
         if (currentRequestId !== requestId.current) return;
-        if ((result as ErrorResponse).error)
+
+        if ((result as ErrorResponse).error) {
           setError((result as ErrorResponse).error);
+          return;
+        }
+
         if (isDefined((result as Videos).videos)) {
           const videosResult = result as Videos;
           const newVideos = videosResult.videos ?? [];
 
-          if (page === FIRST_PEXELS_PAGE)
-            setVideos(deduplicateVideosById(newVideos));
-          else
-            setVideos((videos) =>
-              deduplicateVideosById([...videos, ...newVideos]),
-            );
+          setVideos((videos) =>
+            page === FIRST_PEXELS_PAGE
+              ? deduplicateVideosById(newVideos)
+              : deduplicateVideosById([...videos, ...newVideos]),
+          );
 
           const hasMore =
             newVideos.length > 0 &&
@@ -95,9 +99,12 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
         }
       } catch (err) {
         if (currentRequestId !== requestId.current) return;
-        if (err && typeof err === "object" && "message" in err)
+
+        if (err && typeof err === "object" && "message" in err) {
           setError(err.message as string);
-        setError("Something went wrong");
+        } else {
+          setError("Something went wrong");
+        }
       } finally {
         if (currentRequestId === requestId.current) {
           isFetchingRef.current = false;
@@ -276,24 +283,27 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
   const [imageIndex, setImageIndex] = useState(1);
 
   useEffect(() => {
-    let interval: NodeJS.Timer;
-
+    let interval: ReturnType<typeof setInterval>;
+  
     if (isImageHovered && video_pictures.length > 0) {
       interval = setInterval(() => {
-        setImageIndex((prevIndex) => (prevIndex + 1) % video_pictures.length);
-        setThumbnailImage(video_pictures[imageIndex].picture);
+        setImageIndex((prevIndex) => {
+          const nextIndex = (prevIndex + 1) % video_pictures.length;
+          setThumbnailImage(video_pictures[nextIndex].picture);
+          return nextIndex;
+        });
       }, 200);
     } else {
       setThumbnailImage(video_pictures[0].picture);
       setImageIndex(1);
     }
-
+  
     return () => {
       if (interval) {
         clearInterval(interval);
       }
     };
-  }, [isImageHovered, imageIndex, video_pictures]);
+  }, [isImageHovered, video_pictures]);
 
   return (
     <div className="group relative">
