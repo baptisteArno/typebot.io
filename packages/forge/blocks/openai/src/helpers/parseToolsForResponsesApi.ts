@@ -25,8 +25,8 @@ export const parseToolsForResponsesApi = ({
 }: {
   functions?: FunctionDef[];
   fileSearchVectorStoreIds?: string[];
-  fileSearchMaxNumResults?: number;
-  fileSearchScoreThreshold?: number;
+  fileSearchMaxNumResults?: number | string;
+  fileSearchScoreThreshold?: number | string;
   webSearchEnabled?: boolean;
   codeInterpreterEnabled?: boolean;
 }): Responses.Tool[] => {
@@ -65,26 +65,54 @@ export const parseToolsForResponsesApi = ({
 };
 
 const parseFileSearchMaxNumResults = (
-  fileSearchMaxNumResults?: number,
+  fileSearchMaxNumResults?: number | string,
 ): number | undefined => {
-  if (typeof fileSearchMaxNumResults !== "number") return;
-  if (Number.isNaN(fileSearchMaxNumResults)) return;
-  if (fileSearchMaxNumResults < 1 || fileSearchMaxNumResults > 50) return;
+  const parsedFileSearchMaxNumResults = parseNumberOption(
+    fileSearchMaxNumResults,
+  );
+  if (parsedFileSearchMaxNumResults == null) return;
+  if (!Number.isInteger(parsedFileSearchMaxNumResults)) return;
+  if (
+    parsedFileSearchMaxNumResults < 1 ||
+    parsedFileSearchMaxNumResults > 50
+  )
+    return;
 
-  return fileSearchMaxNumResults;
+  return parsedFileSearchMaxNumResults;
 };
 
 const parseFileSearchRankingOptions = (
-  fileSearchScoreThreshold?: number,
+  fileSearchScoreThreshold?: number | string,
 ): Responses.FileSearchTool.RankingOptions | undefined => {
-  if (typeof fileSearchScoreThreshold !== "number") return;
-  if (Number.isNaN(fileSearchScoreThreshold)) return;
-  if (fileSearchScoreThreshold < 0 || fileSearchScoreThreshold > 1) return;
+  const parsedFileSearchScoreThreshold = parseNumberOption(
+    fileSearchScoreThreshold,
+  );
+  if (parsedFileSearchScoreThreshold == null) return;
+  if (
+    parsedFileSearchScoreThreshold < 0 ||
+    parsedFileSearchScoreThreshold > 1
+  )
+    return;
 
   return {
     ranker: "auto",
-    score_threshold: fileSearchScoreThreshold,
+    score_threshold: parsedFileSearchScoreThreshold,
   };
+};
+
+const parseNumberOption = (
+  value?: number | string,
+): number | undefined => {
+  if (typeof value === "number") return Number.isFinite(value) ? value : undefined;
+  if (typeof value !== "string") return;
+
+  const trimmedValue = value.trim();
+  if (trimmedValue.length === 0) return;
+
+  const parsedValue = Number(trimmedValue);
+  if (!Number.isFinite(parsedValue)) return;
+
+  return parsedValue;
 };
 
 const parseParametersToJsonSchema = (

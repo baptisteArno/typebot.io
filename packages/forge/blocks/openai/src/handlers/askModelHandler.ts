@@ -138,8 +138,8 @@ const createResponseStream = async ({
     code?: string;
   }[];
   fileSearchVectorStoreIds?: string[];
-  fileSearchMaxNumResults?: number;
-  fileSearchScoreThreshold?: number;
+  fileSearchMaxNumResults?: number | string;
+  fileSearchScoreThreshold?: number | string;
   webSearchEnabled?: boolean;
   codeInterpreterEnabled?: boolean;
   temperature?: number;
