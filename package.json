@@ -65,6 +65,9 @@
     "typescript": "^5.9.3"
   },
   "packageManager": "bun@1.3.9",
+  "overrides": {
+    "nodemailer": "^8.0.5"
+  },
   "engines": {
     "node": "24.x"
   },

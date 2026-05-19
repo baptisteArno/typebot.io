@@ -24,7 +24,7 @@
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/ai": "workspace:*",
-    "@ai-sdk/togetherai": "^0.2.16",
+    "@ai-sdk/togetherai": "^1.0.42",
     "@types/react": "^19.2.14"
   }
 }

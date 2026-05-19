@@ -1,3 +1,4 @@
+import { formatDataStreamPart, processDataStream } from "@ai-sdk/ui-utils";
 import { createActionHandler } from "@typebot.io/forge";
 import type {
   AsyncVariableStore,
@@ -9,7 +10,6 @@ import { safeStringify } from "@typebot.io/lib/safeStringify";
 import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { executeFunction } from "@typebot.io/variables/executeFunction";
-import { formatDataStreamPart, processDataStream } from "ai";
 import type { ClientOptions } from "openai";
 import OpenAI from "openai";
 import type { ResponseStreamEvent } from "openai/resources/responses/responses";
