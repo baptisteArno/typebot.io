@@ -65,6 +65,11 @@
             ],
             "responseVariableMapping": [
               {
+                "id": "mapping-status",
+                "variableId": "var-status",
+                "bodyPath": "statusCode"
+              },
+              {
                 "id": "mapping-data",
                 "variableId": "var-response",
                 "bodyPath": "data"
@@ -86,7 +91,9 @@
             "richText": [
               {
                 "type": "p",
-                "children": [{ "text": "Response: {{Response}}" }]
+                "children": [
+                  { "text": "Status: {{Status}} — Response: {{Response}}" }
+                ]
               }
             ]
           }
@@ -120,6 +127,10 @@
     {
       "id": "var-response",
       "name": "Response"
+    },
+    {
+      "id": "var-status",
+      "name": "Status"
     }
   ],
   "theme": {

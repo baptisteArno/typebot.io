@@ -18,7 +18,6 @@ export const generateVariables = createAction({
     getModel: ({ credentials, model }) =>
       createOpenAI({
         apiKey: credentials.apiKey,
-        compatibility: "strict",
       })(model),
   },
   turnableInto: [

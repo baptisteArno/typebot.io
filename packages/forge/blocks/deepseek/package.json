@@ -22,7 +22,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@ai-sdk/deepseek": "^0.2.16",
+    "@ai-sdk/deepseek": "^1.0.40",
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/forge": "workspace:*"
   },

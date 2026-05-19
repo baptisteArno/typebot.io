@@ -24,7 +24,6 @@ export const createChatCompletionHandler = createActionHandler(
         model: createOpenAI({
           baseURL: baseUrl ?? options.baseUrl,
           apiKey,
-          compatibility: "strict",
         })(modelName),
         variables,
         messages: options.messages,
@@ -71,7 +70,6 @@ export const createChatCompletionHandler = createActionHandler(
           model: createOpenAI({
             baseURL: baseUrl ?? options.baseUrl,
             apiKey,
-            compatibility: "strict",
           })(modelName),
           variables,
           messages: options.messages,

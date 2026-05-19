@@ -4,11 +4,18 @@ import {
   parseUnknownErrorSync,
 } from "@typebot.io/lib/parseUnknownError";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
-import { type LanguageModel, type StepResult, streamText, type Tool } from "ai";
+import {
+  type LanguageModel,
+  type StreamTextOnFinishCallback,
+  stepCountIs,
+  streamText,
+  type Tool,
+} from "ai";
 import { maxSteps } from "./constants";
 import { parseChatCompletionMessages } from "./parseChatCompletionMessages";
 import { parseTools } from "./parseTools";
 import type { Tools } from "./schemas";
+import { toLegacyDataStream } from "./toLegacyDataStream";
 import type { MessageInput } from "./types";
 
 type Props = {
@@ -24,14 +31,7 @@ type Props = {
         variableId?: string;
       }[]
     | undefined;
-  onFinish?: (
-    response: Omit<
-      StepResult<Record<string, Tool>>,
-      "stepType" | "isContinued"
-    > & {
-      readonly steps: StepResult<Record<string, Tool>>[];
-    },
-  ) => void;
+  onFinish?: StreamTextOnFinishCallback<Record<string, Tool>>;
   sessionStore: SessionStore;
   headers?: Record<string, string | undefined>;
 };
@@ -60,24 +60,30 @@ export const runChatCompletionStream = async ({
       messages: parsedMessages,
       temperature,
       tools: parseTools({ tools, variables, sessionStore }),
-      maxSteps,
+      stopWhen: stepCountIs(maxSteps),
       headers,
       onFinish: (response) => {
         responseMapping?.forEach((mapping) => {
           if (!mapping.variableId) return;
           if (mapping.item === "Total tokens")
             variables.set([
-              { id: mapping.variableId, value: response.usage.totalTokens },
+              {
+                id: mapping.variableId,
+                value: response.totalUsage.totalTokens,
+              },
             ]);
           if (mapping.item === "Prompt tokens")
             variables.set([
-              { id: mapping.variableId, value: response.usage.promptTokens },
+              {
+                id: mapping.variableId,
+                value: response.totalUsage.inputTokens,
+              },
             ]);
           if (mapping.item === "Completion tokens")
             variables.set([
               {
                 id: mapping.variableId,
-                value: response.usage.completionTokens,
+                value: response.totalUsage.outputTokens,
               },
             ]);
         });
@@ -86,13 +92,13 @@ export const runChatCompletionStream = async ({
     });
 
     return {
-      stream: response.toDataStream({
+      stream: toLegacyDataStream({
+        stream: response.fullStream,
         getErrorMessage: (err) => {
           return JSON.stringify(
             parseUnknownErrorSync({ err, context: "While streaming AI" }),
           );
         },
-        sendUsage: false,
       }),
     };
   } catch (err) {
