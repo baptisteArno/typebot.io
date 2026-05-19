@@ -12,6 +12,7 @@ import { convertResultsToTableData } from "./convertResultsToTableData";
 import { parseBlockIdVariableIdMap } from "./parseBlockIdVariableIdMap";
 import { parseColumnsOrder } from "./parseColumnsOrder";
 import { parseResultHeader } from "./parseResultHeader";
+import { sanitizeCsvCell } from "./sanitizeCsvCell";
 import { resultWithAnswersSchema } from "./schemas/results";
 
 const BATCH_SIZE = 500;
@@ -106,7 +107,7 @@ export const streamAllResultsToCsv = async (
 
   const csvHeaders = headerIds.map((headerId) => {
     const headerLabel = resultHeader.find(byId(headerId))?.label;
-    return headerLabel ?? headerId;
+    return sanitizeCsvCell(headerLabel ?? headerId);
   });
 
   const csvStream = writableStream ?? createWriteStream(writeStreamPath!);
@@ -180,7 +181,7 @@ export const streamAllResultsToCsv = async (
             const headerLabel = resultHeader.find(byId(headerId))?.label;
             if (!headerLabel) return;
             const newKey = parseUniqueKey(headerLabel, Object.keys(newObject));
-            newObject[newKey] = data[headerId]?.plainText;
+            newObject[newKey] = sanitizeCsvCell(data[headerId]?.plainText);
           });
           return newObject;
         });

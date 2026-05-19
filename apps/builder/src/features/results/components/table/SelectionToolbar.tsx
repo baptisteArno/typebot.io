@@ -3,6 +3,7 @@ import { useTranslate } from "@tolgee/react";
 import { parseUniqueKey } from "@typebot.io/lib/parseUniqueKey";
 import { byId } from "@typebot.io/lib/utils";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
+import { sanitizeCsvCell } from "@typebot.io/results/sanitizeCsvCell";
 import { AlertDialog } from "@typebot.io/ui/components/AlertDialog";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
@@ -107,8 +108,11 @@ export const SelectionToolbar = ({
       headerIds?.forEach((headerId) => {
         const headerLabel = resultHeader.find(byId(headerId))?.label;
         if (!headerLabel) return;
-        const newKey = parseUniqueKey(headerLabel, Object.keys(newObject));
-        newObject[newKey] = data[headerId]?.plainText;
+        const newKey = parseUniqueKey(
+          sanitizeCsvCell(headerLabel),
+          Object.keys(newObject),
+        );
+        newObject[newKey] = sanitizeCsvCell(data[headerId]?.plainText);
       });
       return newObject;
     });
