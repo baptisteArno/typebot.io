@@ -8,16 +8,22 @@ export const authenticateWithBearerToken = async (
   const apiToken = extractBearerToken(req);
   if (!apiToken) return null;
   const hashedApiToken = hashApiToken(apiToken);
+  const hashedApiTokenRecord = await prisma.apiToken.findFirst({
+    where: { token: hashedApiToken },
+    include: { owner: true },
+  });
+  if (hashedApiTokenRecord)
+    return clientUserSchema.parse(hashedApiTokenRecord.owner);
   const apiTokenRecord = await prisma.apiToken.findFirst({
-    where: { token: { in: [hashedApiToken, apiToken] } },
+    where: { token: apiToken },
     include: { owner: true },
   });
   if (!apiTokenRecord) return null;
-  if (!isHashedApiToken(apiTokenRecord.token))
-    await prisma.apiToken.update({
-      where: { id: apiTokenRecord.id },
-      data: { token: hashedApiToken },
-    });
+  if (isHashedApiToken(apiTokenRecord.token)) return null;
+  await prisma.apiToken.update({
+    where: { id: apiTokenRecord.id },
+    data: { token: hashedApiToken },
+  });
   return clientUserSchema.parse(apiTokenRecord.owner);
 };
 

@@ -13,16 +13,21 @@ const authenticateByToken = async (
 ): Promise<Prisma.User | undefined> => {
   if (!apiToken) return;
   const hashedApiToken = hashApiToken(apiToken);
+  const hashedApiTokenRecord = await prisma.apiToken.findFirst({
+    where: { token: hashedApiToken },
+    include: { owner: true },
+  });
+  if (hashedApiTokenRecord) return hashedApiTokenRecord.owner as Prisma.User;
   const apiTokenRecord = await prisma.apiToken.findFirst({
-    where: { token: { in: [hashedApiToken, apiToken] } },
+    where: { token: apiToken },
     include: { owner: true },
   });
   if (!apiTokenRecord) return;
-  if (!isHashedApiToken(apiTokenRecord.token))
-    await prisma.apiToken.update({
-      where: { id: apiTokenRecord.id },
-      data: { token: hashedApiToken },
-    });
+  if (isHashedApiToken(apiTokenRecord.token)) return;
+  await prisma.apiToken.update({
+    where: { id: apiTokenRecord.id },
+    data: { token: hashedApiToken },
+  });
   return apiTokenRecord.owner as Prisma.User;
 };
 
