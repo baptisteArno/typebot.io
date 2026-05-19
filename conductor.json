@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "setup": ": \"${CONDUCTOR_ROOT_PATH:?Missing CONDUCTOR_ROOT_PATH}\" && : \"${CONDUCTOR_WORKSPACE_PATH:?Missing CONDUCTOR_WORKSPACE_PATH}\" && cd \"$CONDUCTOR_WORKSPACE_PATH\" && cp \"$CONDUCTOR_ROOT_PATH/.env\" . && cp \"$CONDUCTOR_ROOT_PATH/packages/scripts/.env.production\" ./packages/scripts && cp -r \"$CONDUCTOR_ROOT_PATH/apps/viewer/src/test/.auth\" apps/viewer/src/test/.auth && bun install && bunx nx build @typebot.io/react",
+    "run": "bun run dev"
+  },
+  "runScriptMode": "sequential"
+}
