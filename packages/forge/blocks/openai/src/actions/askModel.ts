@@ -53,6 +53,9 @@ export const askModel = createAction({
         moreInfoTooltip:
           "Maximum number of chunks to retrieve from the vector store. Applied only when Vector store IDs are set.",
         accordion: "Built-in tools",
+        min: 1,
+        max: 50,
+        step: 1,
       },
     }),
     fileSearchScoreThreshold: option.number.meta({
