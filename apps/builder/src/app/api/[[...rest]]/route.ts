@@ -120,6 +120,7 @@ async function handleRequest(
     const { response } = await handler.handle(resolvedRequest, {
       prefix: "/api",
       context: createContext({
+        req: resolvedRequest,
         authenticate: async () => {
           const user =
             (await auth())?.user ||

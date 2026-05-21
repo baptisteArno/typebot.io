@@ -8,11 +8,14 @@ export type UserInOrpcContext = {
 };
 
 export function createContext({
+  req,
   authenticate,
 }: {
+  req?: Request;
   authenticate: () => Promise<UserInOrpcContext | null>;
 }) {
   return {
+    apiOrigin: req ? new URL(req.url).origin : undefined,
     authenticate,
   };
 }

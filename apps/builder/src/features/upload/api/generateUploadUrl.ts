@@ -1,7 +1,13 @@
 import { ORPCError } from "@orpc/server";
 import { authenticatedProcedure } from "@typebot.io/config/orpc/builder/middlewares";
 import { env } from "@typebot.io/env";
-import { generatePresignedPutUrl } from "@typebot.io/lib/s3/generatePresignedPutUrl";
+import {
+  createUploadSlotFilePath,
+  isUnsafeUploadFileType,
+  parseUploadPathSegment,
+  resolveUploadFileType,
+} from "@typebot.io/lib/s3/createUploadFilePath";
+import { generateSignedUploadProxyUrl } from "@typebot.io/lib/s3/signedUploadProxy";
 import prisma from "@typebot.io/prisma";
 import { z } from "zod";
 import { isWriteTypebotForbidden } from "@/features/typebot/helpers/isWriteTypebotForbidden";
@@ -38,18 +44,6 @@ const inputSchema = z.object({
   fileType: z.string().optional(),
 });
 
-const dangerousContentTypes = new Set([
-  "image/svg+xml",
-  "text/html",
-  "text/xml",
-  "application/xml",
-  "application/xhtml+xml",
-  "application/javascript",
-  "application/ecmascript",
-  "text/javascript",
-  "text/ecmascript",
-]);
-
 export type FilePathUploadProps = z.infer<
   typeof inputSchema.shape.filePathProps
 >;
@@ -57,18 +51,21 @@ export type FilePathUploadProps = z.infer<
 export const generateUploadUrl = authenticatedProcedure
   .input(inputSchema)
   .handler(
-    async ({ input: { filePathProps, fileType }, context: { user } }) => {
+    async ({
+      input: { filePathProps, fileType },
+      context: { apiOrigin, user },
+    }) => {
       if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
         throw new ORPCError("INTERNAL_SERVER_ERROR", {
           message:
             "S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY",
         });
 
-      const normalizedFileType = fileType?.toLowerCase().split(";")[0]?.trim();
-      if (!normalizedFileType || dangerousContentTypes.has(normalizedFileType))
+      const resolvedFileType = resolveUploadFileType(fileType);
+      if (isUnsafeUploadFileType(resolvedFileType))
         throw new ORPCError("BAD_REQUEST", {
           message:
-            "File type not allowed. SVG, HTML, and XML files cannot be uploaded.",
+            "File type not allowed. SVG, HTML, XML, and JavaScript files cannot be uploaded.",
         });
 
       if ("resultId" in filePathProps && !user)
@@ -81,8 +78,9 @@ export const generateUploadUrl = authenticatedProcedure
         uploadProps: filePathProps,
       });
 
-      return generatePresignedPutUrl({
-        fileType,
+      return generateSignedUploadProxyUrl({
+        baseUrl: apiOrigin ?? env.NEXTAUTH_URL,
+        fileType: resolvedFileType,
         filePath,
       });
     },
@@ -106,7 +104,10 @@ const parseFilePath = async ({
       throw new ORPCError("UNAUTHORIZED", {
         message: "You are not authorized to upload a file for this user",
       });
-    return `public/users/${input.userId}/${input.fileName}`;
+    return createUploadSlotFilePath({
+      prefix: `public/users/${input.userId}`,
+      fileName: parsePathSegment(input.fileName),
+    });
   }
   if (!("workspaceId" in input))
     throw new ORPCError("BAD_REQUEST", { message: "workspaceId is missing" });
@@ -129,10 +130,16 @@ const parseFilePath = async ({
       isWriteWorkspaceForbidden(workspace, { id: authenticatedUserId })
     )
       throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
-    if ("spaceId" in input) {
-      return `public/workspaces/${input.workspaceId}/spaces/${input.spaceId}/${input.fileName}`;
+    if (input.spaceId) {
+      return createUploadSlotFilePath({
+        prefix: `public/workspaces/${input.workspaceId}/spaces/${parsePathSegment(input.spaceId)}`,
+        fileName: parsePathSegment(input.fileName),
+      });
     }
-    return `public/workspaces/${input.workspaceId}/${input.fileName}`;
+    return createUploadSlotFilePath({
+      prefix: `public/workspaces/${input.workspaceId}`,
+      fileName: parsePathSegment(input.fileName),
+    });
   }
   const typebot = await prisma.typebot.findUnique({
     where: {
@@ -158,6 +165,7 @@ const parseFilePath = async ({
           type: true,
         },
       },
+      workspaceId: true,
     },
   });
   if (
@@ -168,9 +176,24 @@ const parseFilePath = async ({
   )
     throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
   if (!("blockId" in input)) {
-    return `public/workspaces/${input.workspaceId}/typebots/${input.typebotId}/${input.fileName}`;
+    return createUploadSlotFilePath({
+      prefix: `public/workspaces/${typebot.workspaceId}/typebots/${input.typebotId}`,
+      fileName: parsePathSegment(input.fileName),
+    });
   }
-  return `public/workspaces/${input.workspaceId}/typebots/${
+  return `public/workspaces/${typebot.workspaceId}/typebots/${
     input.typebotId
-  }/blocks/${input.blockId}${input.itemId ? `/items/${input.itemId}` : ""}`;
+  }/blocks/${parsePathSegment(input.blockId)}${
+    input.itemId ? `/items/${parsePathSegment(input.itemId)}` : ""
+  }`;
+};
+
+const parsePathSegment = (pathSegment: string) => {
+  try {
+    return parseUploadPathSegment(pathSegment);
+  } catch {
+    throw new ORPCError("BAD_REQUEST", {
+      message: "Invalid upload path segment",
+    });
+  }
 };
