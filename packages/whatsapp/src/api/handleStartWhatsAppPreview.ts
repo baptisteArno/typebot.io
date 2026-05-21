@@ -13,14 +13,11 @@ import type { User } from "@typebot.io/user/schemas";
 import { sendChatReplyToWhatsApp } from "@typebot.io/whatsapp/sendChatReplyToWhatsApp";
 import { sendWhatsAppMessage } from "@typebot.io/whatsapp/sendWhatsAppMessage";
 import { z } from "zod";
+import { WHATSAPP_PREVIEW_SESSION_ID_PREFIX } from "../constants";
+import { normalizeWhatsAppPreviewPhoneNumber } from "../normalizeWhatsAppPreviewPhoneNumber";
 
 export const startWhatsAppPreviewInputSchema = z.object({
-  to: z
-    .string()
-    .min(1)
-    .transform((value) =>
-      value.replace(/\s/g, "").replace(/\+/g, "").replace(/-/g, ""),
-    ),
+  to: z.string().min(1).transform(normalizeWhatsAppPreviewPhoneNumber),
   typebotId: z.string(),
   startFrom: startFromSchema.optional(),
 });
@@ -72,7 +69,7 @@ export const handleStartWhatsAppPreview = async ({
   )
     throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
-  const sessionId = `wa-preview-${to}`;
+  const sessionId = `${WHATSAPP_PREVIEW_SESSION_ID_PREFIX}${to}`;
 
   const existingSession = await prisma.chatSession.findFirst({
     where: {
