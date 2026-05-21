@@ -39,7 +39,9 @@ export const parseToolsForResponsesApi = ({
         type: "file_search",
         vector_store_ids: ids,
         max_num_results: parseFileSearchMaxNumResults(fileSearchMaxNumResults),
-        ranking_options: parseFileSearchRankingOptions(fileSearchScoreThreshold),
+        ranking_options: parseFileSearchRankingOptions(
+          fileSearchScoreThreshold,
+        ),
       });
   }
 
@@ -72,10 +74,7 @@ const parseFileSearchMaxNumResults = (
   );
   if (parsedFileSearchMaxNumResults == null) return;
   if (!Number.isInteger(parsedFileSearchMaxNumResults)) return;
-  if (
-    parsedFileSearchMaxNumResults < 1 ||
-    parsedFileSearchMaxNumResults > 50
-  )
+  if (parsedFileSearchMaxNumResults < 1 || parsedFileSearchMaxNumResults > 50)
     return;
 
   return parsedFileSearchMaxNumResults;
@@ -88,10 +87,7 @@ const parseFileSearchRankingOptions = (
     fileSearchScoreThreshold,
   );
   if (parsedFileSearchScoreThreshold == null) return;
-  if (
-    parsedFileSearchScoreThreshold < 0 ||
-    parsedFileSearchScoreThreshold > 1
-  )
+  if (parsedFileSearchScoreThreshold < 0 || parsedFileSearchScoreThreshold > 1)
     return;
 
   return {
@@ -100,10 +96,9 @@ const parseFileSearchRankingOptions = (
   };
 };
 
-const parseNumberOption = (
-  value?: number | string,
-): number | undefined => {
-  if (typeof value === "number") return Number.isFinite(value) ? value : undefined;
+const parseNumberOption = (value?: number | string): number | undefined => {
+  if (typeof value === "number")
+    return Number.isFinite(value) ? value : undefined;
   if (typeof value !== "string") return;
 
   const trimmedValue = value.trim();

@@ -379,6 +379,7 @@ const whatsAppEnv = {
   server: {
     META_SYSTEM_USER_TOKEN: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID: z.string().min(1).optional(),
+    WHATSAPP_PREVIEW_APP_SECRET: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_TEMPLATE_NAME: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_TEMPLATE_LANG: z
       .string()

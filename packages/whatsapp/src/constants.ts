@@ -10,3 +10,4 @@ export const incomingWebhookErrorCodes = {
 
 export const dialog360BaseUrl = "https://waba-v2.360dialog.io";
 export const dialog360AuthHeaderName = "D360-API-KEY";
+export const dialog360WebhookSecretHeaderName = "x-typebot-webhook-secret";

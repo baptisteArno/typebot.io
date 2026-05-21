@@ -4,6 +4,8 @@ import { env } from "@typebot.io/env";
 import { Agent } from "undici";
 import { parseIPAddress, validateIPAddress } from "./validateHttpReqUrl";
 
+type LookupCallback = Parameters<LookupFunction>[2];
+
 /**
  * A DNS lookup function that validates resolved IPs against SSRF blocklists.
  * Used as the `connect.lookup` in an undici Agent to ensure IP validation
@@ -17,36 +19,42 @@ export const validatingLookup: LookupFunction = (
   options,
   callback,
 ) => {
-  dnsLookup(
-    hostname,
-    options,
-    (err: unknown, address: unknown, family: unknown) => {
-      if (err) return (callback as Function)(err, address, family);
-      if (env.NODE_ENV === "development" && hostname === "localhost") {
-        return (callback as Function)(null, address, family);
-      }
-      try {
-        if (Array.isArray(address)) {
-          for (const entry of address) {
-            const parsed = parseIPAddress(entry.address);
-            if (parsed) validateIPAddress(parsed);
-          }
-        } else {
-          const parsed = parseIPAddress(address as string);
+  dnsLookup(hostname, options, (err, address, family) => {
+    if (err) return callLookupCallback(callback, err, address, family);
+    if (env.NODE_ENV === "development" && hostname === "localhost") {
+      return callLookupCallback(callback, null, address, family);
+    }
+    try {
+      if (Array.isArray(address)) {
+        for (const entry of address) {
+          const parsed = parseIPAddress(entry.address);
           if (parsed) validateIPAddress(parsed);
         }
-      } catch (validationError) {
-        return (callback as Function)(
-          validationError instanceof Error
-            ? validationError
-            : new Error(String(validationError)),
-          address,
-          family,
-        );
+      } else if (typeof address === "string") {
+        const parsed = parseIPAddress(address);
+        if (parsed) validateIPAddress(parsed);
       }
-      (callback as Function)(null, address, family);
-    },
-  );
+    } catch (validationError) {
+      return callLookupCallback(
+        callback,
+        validationError instanceof Error
+          ? validationError
+          : new Error(String(validationError)),
+        address,
+        family,
+      );
+    }
+    callLookupCallback(callback, null, address, family);
+  });
+};
+
+const callLookupCallback = (
+  callback: LookupCallback,
+  error: Error | null,
+  address: Parameters<LookupCallback>[1],
+  family: Parameters<LookupCallback>[2],
+) => {
+  callback(error, address, family);
 };
 
 /**

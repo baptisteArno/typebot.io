@@ -1,16 +1,16 @@
 import { ORPCError } from "@orpc/server";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
-import { env } from "@typebot.io/env";
 import { createToastORPCError } from "@typebot.io/lib/createToastORPCError";
-import { ky } from "@typebot.io/lib/ky";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
+import { getMetaSystemTokenInfo } from "./getMetaSystemTokenInfo";
 
 export const getSystemTokenInfoInputSchema = z.object({
   token: z.string().optional(),
   credentialsId: z.string().optional(),
+  appSecret: z.string().trim().optional(),
 });
 
 export const handleGetSystemTokenInfo = async ({
@@ -31,23 +31,10 @@ export const handleGetSystemTokenInfo = async ({
   try {
     const {
       data: { expires_at, scopes, app_id, application },
-    } = await ky
-      .get(
-        `${env.WHATSAPP_CLOUD_API_URL}/v17.0/debug_token?input_token=${credentials.systemUserAccessToken}`,
-        {
-          headers: {
-            Authorization: `Bearer ${credentials.systemUserAccessToken}`,
-          },
-        },
-      )
-      .json<{
-        data: {
-          app_id: string;
-          application: string;
-          expires_at: number;
-          scopes: string[];
-        };
-      }>();
+    } = await getMetaSystemTokenInfo({
+      systemUserAccessToken: credentials.systemUserAccessToken,
+      appSecret: input.appSecret,
+    });
 
     return {
       appId: app_id,
@@ -56,6 +43,14 @@ export const handleGetSystemTokenInfo = async ({
       scopes,
     };
   } catch (err) {
+    if (err instanceof ORPCError) throw err;
+
+    if (input.appSecret)
+      throw new ORPCError("BAD_REQUEST", {
+        message:
+          "Could not validate the app secret with this System User Token. Make sure the app secret belongs to the Meta app used to generate the token.",
+      });
+
     throw await createToastORPCError(err);
   }
 };

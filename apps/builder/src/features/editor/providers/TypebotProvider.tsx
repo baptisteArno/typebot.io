@@ -114,15 +114,16 @@ export const TypebotProvider = ({
     }),
   );
 
-  const { data: publishedTypebotData } = useQuery(
-    orpc.typebot.getPublishedTypebot.queryOptions({
-      input: { typebotId: typebotId as string, migrateToLatestVersion: true },
-      enabled:
-        isDefined(typebotId) &&
-        (typebotData?.currentUserMode === "read" ||
-          typebotData?.currentUserMode === "write"),
-    }),
-  );
+  const { data: publishedTypebotData, refetch: refetchPublishedTypebot } =
+    useQuery(
+      orpc.typebot.getPublishedTypebot.queryOptions({
+        input: { typebotId: typebotId as string, migrateToLatestVersion: true },
+        enabled:
+          isDefined(typebotId) &&
+          (typebotData?.currentUserMode === "read" ||
+            typebotData?.currentUserMode === "write"),
+      }),
+    );
 
   const { mutateAsync: updateTypebot, status: updateTypebotStatus } =
     useMutation(
@@ -148,9 +149,11 @@ export const TypebotProvider = ({
             description: error.message,
           });
         },
-        onSuccess: () => {
+        onSuccess: (_data, variables) => {
           if (!typebotId) return;
           refetchTypebot();
+          if (variables.typebot.whatsAppCredentialsId === null)
+            refetchPublishedTypebot();
         },
       }),
     );

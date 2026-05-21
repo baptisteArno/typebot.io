@@ -242,12 +242,7 @@ export const validateIPAddress = (
     }
 
     // Block 172.16.0.0/12 (private)
-    if (
-      first === 172 &&
-      second >= 16 &&
-      second <= 31 &&
-      !allowPrivateRanges
-    ) {
+    if (first === 172 && second >= 16 && second <= 31 && !allowPrivateRanges) {
       throw new Error(
         "Access to private network range (172.16.0.0/12) is not allowed for security reasons.",
       );
