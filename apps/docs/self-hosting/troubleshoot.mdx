@@ -15,8 +15,8 @@ You need to add an [S3 configuration](./guides/s3#s3-storage-media-uploads) to y
 
 When the login page only shows "Check server logs to see relevant error message", the cause is usually one of:
 
-- **`NEXTAUTH_SECRET` or `ENCRYPTION_SECRET` was rotated.** Existing sessions and encrypted credentials become unreadable. Restore the previous values, or accept that users will need to sign in again and credentials (Google Sheets, OpenAI, SMTP…) re-created.
-- **Builder and viewer have different secrets.** `ENCRYPTION_SECRET` (and `NEXTAUTH_SECRET` when set) must be identical on both services.
+- **`ENCRYPTION_SECRET` was rotated.** Existing sessions and encrypted credentials become unreadable. Restore the previous value, or accept that users will need to sign in again and credentials (Google Sheets, OpenAI, SMTP…) re-created.
+- **Builder and viewer have different secrets.** `ENCRYPTION_SECRET` must be identical on both services.
 - **`NEXTAUTH_URL` doesn't match the URL users hit.** It must be the public builder URL with the correct scheme. Behind a reverse proxy, forward `Host` and `X-Forwarded-Proto`.
 - **Database unreachable or reset.** Check `DATABASE_URL` and that the `User`, `Account` and `Session` tables are populated.
 
