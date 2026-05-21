@@ -31,7 +31,7 @@ export const googleSheetsRouter = {
     .route({
       method: "GET",
       path: "/credentials/google-sheets/consent-url",
-      successStatus: 301,
+      successStatus: 302,
       outputStructure: "detailed",
     })
     .input(getConsentUrlInputSchema)
@@ -39,6 +39,7 @@ export const googleSheetsRouter = {
       z.object({
         headers: z.object({
           location: z.string(),
+          "set-cookie": z.string(),
         }),
       }),
     )
@@ -56,6 +57,7 @@ export const googleSheetsRouter = {
       z.object({
         headers: z.object({
           location: z.string(),
+          "set-cookie": z.string(),
         }),
       }),
     )

@@ -3,13 +3,13 @@ import { encrypt } from "@typebot.io/credentials/encrypt";
 import { env } from "@typebot.io/env";
 import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
 import type { OAuthDefinition } from "@typebot.io/forge/types";
-import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { ky } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
 import { isWriteWorkspaceForbidden } from "@/features/workspace/helpers/isWriteWorkspaceForbidden";
+import { getOAuthBlockDefinition } from "./getOAuthBlockDefinition";
 
 const commonInput = z.object({
   name: z.string(),
@@ -44,11 +44,7 @@ export const handleCreateOAuthCredentials = async ({
   input: z.infer<typeof createOAuthCredentialsInputSchema>;
   context: { user: Pick<User, "id"> };
 }) => {
-  const blockDef = forgedBlocks[input.blockType as keyof typeof forgedBlocks];
-  if (!blockDef || blockDef.auth?.type !== "oauth")
-    throw new ORPCError("BAD_REQUEST", {
-      message: "Block is not an OAuth block",
-    });
+  const blockDef = getOAuthBlockDefinition(input.blockType);
 
   const client = getClient(input.customClient, blockDef.auth);
 
