@@ -280,24 +280,22 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
   const [thumbnailImage, setThumbnailImage] = useState(
     video_pictures[0].picture,
   );
-  const [imageIndex, setImageIndex] = useState(1);
+  const imageIndexRef = useRef(1);
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval>;
-  
+
     if (isImageHovered && video_pictures.length > 0) {
       interval = setInterval(() => {
-        setImageIndex((prevIndex) => {
-          const nextIndex = (prevIndex + 1) % video_pictures.length;
-          setThumbnailImage(video_pictures[nextIndex].picture);
-          return nextIndex;
-        });
+        const nextIndex = (imageIndexRef.current + 1) % video_pictures.length;
+        imageIndexRef.current = nextIndex;
+        setThumbnailImage(video_pictures[nextIndex].picture);
       }, 200);
     } else {
       setThumbnailImage(video_pictures[0].picture);
-      setImageIndex(1);
+      imageIndexRef.current = 1;
     }
-  
+
     return () => {
       if (interval) {
         clearInterval(interval);
