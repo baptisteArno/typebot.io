@@ -15,6 +15,7 @@ async function handleRequest(request: Request) {
     const { response } = await handler.handle(request, {
       prefix: "/api/orpc",
       context: createContext({
+        req: request,
         authenticate: async () => {
           const session = await auth();
           if (!session?.user) return null;

@@ -21,7 +21,7 @@ All scripts must be ran with `bunx nx`:
   - typecheck a particular package: `bunx nx typecheck package_name`.
   - test a package: `bunx nx test package_name`
   - typecheck all afffected packages: `bunx nx affected -t typecheck` (**IMPORTANT**: Rely first on IDE's TS server diagnostics first for faster feedback loop)
-- To check format and lint, run: `bunx nx format-and-lint` (with `--fix` to run autofix)
+- To check format and lint, run: `bunx nx format-and-lint` (with `--write --unsafe` to run autofix)
 - Never run plain `bunx tsc`, use `bunx nx`
 - Avoid running multiple Vitest test targets in a single Nx command such as `bunx nx run-many -t test` or `bunx nx affected -t test`. Each Nx test target starts its own Vitest process and its own global setup.
 - When multiple Vitest projects need to share the same global setup and database container, run the root workspace test target instead: `bunx nx test`.

@@ -1,3 +1,4 @@
+import { uploadFileWithPresignedPostData } from "@typebot.io/lib/s3/uploadFileWithPresignedPostData";
 import type { ButtonProps } from "@typebot.io/ui/components/Button";
 import { UploadButton as UploadButtonPrimitive } from "@typebot.io/ui/components/UploadButton";
 import type { FilePathUploadProps } from "@/features/upload/api/generateUploadUrl";
@@ -27,13 +28,10 @@ export const UploadButton = ({
       filePathProps,
       fileType: file.type,
     });
-    const upload = await fetch(data.presignedUrl, {
-      method: "PUT",
-      body: file,
-      headers: {
-        "Content-Type": file.type,
-        "Cache-Control": "public, max-age=86400",
-      },
+    const upload = await uploadFileWithPresignedPostData({
+      presignedUrl: data.presignedUrl,
+      formData: data.formData,
+      file,
     });
     if (!upload.ok) {
       toast({
