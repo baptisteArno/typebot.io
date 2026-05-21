@@ -19,9 +19,6 @@ export const OPTIONS = (request: Request) =>
 export const PUT = async (request: Request, context: RouteContext) =>
   handleUploadRequest(request, context);
 
-export const POST = async (request: Request, context: RouteContext) =>
-  handleUploadRequest(request, context);
-
 const handleUploadRequest = async (request: Request, context: RouteContext) => {
   try {
     const { token } = await context.params;
