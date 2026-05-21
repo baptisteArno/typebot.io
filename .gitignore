@@ -86,3 +86,6 @@ content-collections.d.ts
 **/next-env.d.ts
 
 .pi
+
+.agents/skills/typebot-prod-db
+.claude/skills/typebot-prod-db

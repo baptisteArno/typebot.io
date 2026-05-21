@@ -25,6 +25,7 @@
     "redeemCoupon": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/redeemCoupon.ts",
     "exportResults": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/exportResults.ts",
     "updateUserEmail": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/updateUserEmail.ts",
+    "updateWhatsAppStatusForwardUrl": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/updateWhatsAppStatusForwardUrl.ts",
     "inspectChatSession": "tsx --tsconfig ./tsconfig.json src/inspectChatSession.ts",
     "searchResult": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/searchResult.ts",
     "inspectResult": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/inspectResult.ts",
