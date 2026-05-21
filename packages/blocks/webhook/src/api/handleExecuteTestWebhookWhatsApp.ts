@@ -8,6 +8,8 @@ import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
+import { WHATSAPP_PREVIEW_SESSION_ID_PREFIX } from "@typebot.io/whatsapp/constants";
+import { normalizeWhatsAppPreviewPhoneNumber } from "@typebot.io/whatsapp/normalizeWhatsAppPreviewPhoneNumber";
 import { resumeWhatsAppFlow } from "@typebot.io/whatsapp/resumeWhatsAppFlow";
 import { z } from "zod";
 
@@ -15,7 +17,7 @@ export const executeTestWebhookWhatsAppInputSchema = z.object({
   params: z.object({
     typebotId: z.string(),
     blockId: z.string(),
-    phone: z.string(),
+    phone: z.string().transform(normalizeWhatsAppPreviewPhoneNumber),
   }),
   body: z.unknown(),
 });
@@ -84,9 +86,15 @@ export const handleExecuteTestWebhookWhatsApp = async ({
       message: "Webhook block not found",
     });
 
-  const chatSession = await getSession(`wa-preview-${phone}`);
+  const chatSession = await getSession(
+    `${WHATSAPP_PREVIEW_SESSION_ID_PREFIX}${phone}`,
+  );
 
-  if (!chatSession?.state?.whatsApp)
+  if (
+    !chatSession?.state?.whatsApp ||
+    chatSession.state.typebotsQueue[0]?.typebot.id !== typebotId ||
+    chatSession.state.currentBlockId !== blockId
+  )
     throw new ORPCError("BAD_REQUEST", {
       message: "Expected whatsapp chat session",
     });
@@ -94,7 +102,7 @@ export const handleExecuteTestWebhookWhatsApp = async ({
   await resumeWhatsAppFlow({
     receivedMessages: [
       {
-        from: chatSession.id.split("-").at(-1)!,
+        from: phone,
         timestamp: new Date().toISOString(),
         type: "webhook",
         webhook: {
