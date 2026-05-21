@@ -8,20 +8,25 @@ export const credentialsBaseSchema = z.object({
   iv: z.string(),
 });
 
+export const whatsAppCredentialsDataSchema = z.union([
+  z.object({
+    provider: z.literal("meta").optional(),
+    systemUserAccessToken: z.string(),
+    wabaId: z.string().optional(),
+    phoneNumberId: z.string(),
+    appSecret: z.string().optional(),
+  }),
+  z.object({
+    provider: z.literal("360dialog"),
+    apiKey: z.string(),
+    webhookSecret: z.string().optional(),
+  }),
+]);
+
 export const whatsAppCredentialsSchema = z
   .object({
     type: z.literal("whatsApp"),
-    data: z.union([
-      z.object({
-        provider: z.literal("meta").optional(),
-        systemUserAccessToken: z.string(),
-        phoneNumberId: z.string(),
-      }),
-      z.object({
-        provider: z.literal("360dialog"),
-        apiKey: z.string(),
-      }),
-    ]),
+    data: whatsAppCredentialsDataSchema,
   })
   .merge(credentialsBaseSchema);
 export type WhatsAppCredentials = z.infer<typeof whatsAppCredentialsSchema>;

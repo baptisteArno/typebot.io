@@ -1,6 +1,7 @@
 import { ORPCError } from "@orpc/server";
 import prisma from "@typebot.io/prisma";
 import { DbNull } from "@typebot.io/prisma/enum";
+import { settingsSchema } from "@typebot.io/settings/schemas";
 import { migrateTypebot } from "@typebot.io/typebot/migrations/migrateTypebot";
 import {
   typebotSchema,
@@ -194,10 +195,34 @@ export const handleUpdateTypebot = async ({
         workspaceId: existingTypebot.workspace.id,
       }),
       isClosed: typebot.isClosed,
-      whatsAppCredentialsId: typebot.whatsAppCredentialsId ?? undefined,
+      whatsAppCredentialsId:
+        "whatsAppCredentialsId" in typebot
+          ? typebot.whatsAppCredentialsId
+          : undefined,
       spaceId: typebot.spaceId,
     },
   });
+
+  if (
+    "whatsAppCredentialsId" in typebot &&
+    typebot.whatsAppCredentialsId === null
+  ) {
+    const publicTypebot = await prisma.publicTypebot.findUnique({
+      where: { typebotId: existingTypebot.id },
+      select: {
+        id: true,
+        settings: true,
+      },
+    });
+
+    if (publicTypebot)
+      await prisma.publicTypebot.update({
+        where: { id: publicTypebot.id },
+        data: {
+          settings: disableWhatsAppSettings(publicTypebot.settings),
+        },
+      });
+  }
 
   const { typebot: migratedTypebot } = await migrateTypebot(
     typebotSchema.parse(newTypebot),
@@ -208,3 +233,14 @@ export const handleUpdateTypebot = async ({
 
 const isPublicIdValid = (str: string) =>
   /^([a-z0-9]+-[a-z0-9]*)*$/.test(str) || /^[a-z0-9]*$/.test(str);
+
+const disableWhatsAppSettings = (settings: unknown) => {
+  const parsedSettings = settingsSchema.parse(settings);
+  return {
+    ...parsedSettings,
+    whatsApp: {
+      ...parsedSettings.whatsApp,
+      isEnabled: false,
+    },
+  };
+};

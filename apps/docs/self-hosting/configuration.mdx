@@ -294,15 +294,17 @@ In order to be able to test your bot on WhatsApp from the Preview drawer, you ne
 
 ## 1. [Create a WhatsApp Meta app](../deploy/whatsapp/create-meta-app)
 
-## 2. Get the System User token
+## 2. Get the App Secret and System User token
 
-1. Go to your [System users page](https://business.facebook.com/settings/system-users) and create a new system user that has access to the related.
+1. Go to your app's `App settings > Basic` page and copy the App Secret. This will be used as `WHATSAPP_PREVIEW_APP_SECRET` in your builder configuration.
+
+2. Go to your [System users page](https://business.facebook.com/settings/system-users) and create a new system user that has access to the related.
 
 - Token expiration: `Never`
 - Available Permissions: `whatsapp_business_messaging`, `whatsapp_business_management`
 
-2. The generated token will be used as `META_SYSTEM_USER_TOKEN` in your viewer configuration.
-3. Click on `Add assets`. Under `Apps`, look for your app, select it and check `Manage app`
+3. The generated token will be used as `META_SYSTEM_USER_TOKEN` in your viewer configuration.
+4. Click on `Add assets`. Under `Apps`, look for your app, select it and check `Manage app`
 
 ## 3. Get the phone number ID
 
@@ -334,6 +336,7 @@ In order to be able to test your bot on WhatsApp from the Preview drawer, you ne
 | ------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | META_SYSTEM_USER_TOKEN                |                            | The system user token used to send WhatsApp messages                                                                                         |
 | WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID |                            | The phone number ID from which the message will be sent                                                                                      |
+| WHATSAPP_PREVIEW_APP_SECRET           |                            | The Meta app secret used to verify preview webhook signatures                                                                                |
 | WHATSAPP_PREVIEW_TEMPLATE_NAME        |                            | The preview start template message name                                                                                                      |
 | WHATSAPP_PREVIEW_TEMPLATE_LANG        | en_US                      | The preview start template message name                                                                                                      |
 | WHATSAPP_CLOUD_API_URL                | https://graph.facebook.com | The WhatsApp Cloud API base URL                                                                                                              |

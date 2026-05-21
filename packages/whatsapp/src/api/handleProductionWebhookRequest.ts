@@ -1,7 +1,13 @@
+import { ORPCError } from "@orpc/server";
 import * as Sentry from "@sentry/nextjs";
+import { decrypt } from "@typebot.io/credentials/decrypt";
+import { getCredentials } from "@typebot.io/credentials/getCredentials";
+import { whatsAppCredentialsDataSchema } from "@typebot.io/credentials/schemas";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { after } from "next/server";
+import { z } from "zod";
 import {
+  dialog360WebhookSecretHeaderName,
   WEBHOOK_SUCCESS_MESSAGE,
   WHATSAPP_SESSION_ID_PREFIX,
 } from "../constants";
@@ -9,17 +15,62 @@ import { extractErrorsFromEntry } from "../extractErrorsFromEntry";
 import { forwardStatusWebhooks } from "../forwardStatusWebhooks";
 import { groupIncomingWebhookEntriesPerUser } from "../groupIncomingWebhookEntriesPerUser";
 import { resumeWhatsAppFlow } from "../resumeWhatsAppFlow";
-import type { WhatsAppWebhookRequestBody } from "../schemas";
+import { whatsAppWebhookRequestBodySchema } from "../schemas";
+import { verifyWhatsAppWebhookSecret } from "../verifyWhatsAppWebhookSecret";
+import { verifyWhatsAppWebhookSignature } from "../verifyWhatsAppWebhookSignature";
 import { WhatsAppError } from "../WhatsAppError";
 
+export const productionWebhookRequestInputSchema = z.object({
+  params: z.object({
+    workspaceId: z.string(),
+    credentialsId: z.string(),
+  }),
+  headers: z.object({
+    [dialog360WebhookSecretHeaderName]: z.string().optional(),
+    "x-hub-signature-256": z.string().optional(),
+  }),
+  body: z.string(),
+});
+
 export const handleProductionWebhookRequest = async ({
-  input: { entry, workspaceId, credentialsId },
+  input: {
+    params: { workspaceId, credentialsId },
+    headers,
+    body,
+  },
 }: {
-  input: WhatsAppWebhookRequestBody & {
-    workspaceId: string;
-    credentialsId: string;
-  };
+  input: z.infer<typeof productionWebhookRequestInputSchema>;
 }) => {
+  const credentialsData = await getWhatsAppCredentialsData({
+    credentialsId,
+    workspaceId,
+  });
+
+  if (credentialsData?.provider === "360dialog") {
+    if (
+      credentialsData.webhookSecret &&
+      !verifyWhatsAppWebhookSecret({
+        expectedSecret: credentialsData.webhookSecret,
+        receivedSecret: headers[dialog360WebhookSecretHeaderName],
+      })
+    )
+      throw new ORPCError("UNAUTHORIZED", {
+        message: "Invalid WhatsApp webhook secret",
+      });
+  } else if (
+    credentialsData?.appSecret &&
+    !verifyWhatsAppWebhookSignature({
+      appSecret: credentialsData.appSecret,
+      rawBody: body,
+      signature: headers["x-hub-signature-256"],
+    })
+  )
+    throw new ORPCError("UNAUTHORIZED", {
+      message: "Invalid WhatsApp webhook signature",
+    });
+
+  const { entry } = parseWebhookBody(body);
+
   if (!entry) return WEBHOOK_SUCCESS_MESSAGE;
 
   const errors = extractErrorsFromEntry(entry);
@@ -53,6 +104,7 @@ export const handleProductionWebhookRequest = async ({
                 sessionId: `${WHATSAPP_SESSION_ID_PREFIX}${phoneNumberId}-${from}`,
                 phoneNumberId,
                 credentialsId,
+                credentialsData,
                 workspaceId,
                 contact: {
                   name: parsedEntries[0].contactName,
@@ -93,6 +145,34 @@ export const handleProductionWebhookRequest = async ({
   });
 
   return WEBHOOK_SUCCESS_MESSAGE;
+};
+
+const getWhatsAppCredentialsData = async ({
+  credentialsId,
+  workspaceId,
+}: {
+  credentialsId: string;
+  workspaceId: string;
+}) => {
+  const credentials = await getCredentials(credentialsId, workspaceId);
+  if (!credentials) return;
+
+  const parsedData = whatsAppCredentialsDataSchema.safeParse(
+    await decrypt(credentials.data, credentials.iv),
+  );
+  if (!parsedData.success) return;
+
+  return parsedData.data;
+};
+
+const parseWebhookBody = (body: string) => {
+  try {
+    return whatsAppWebhookRequestBodySchema.parse(JSON.parse(body));
+  } catch {
+    throw new ORPCError("BAD_REQUEST", {
+      message: "Invalid WhatsApp webhook payload",
+    });
+  }
 };
 
 const safeJsonParse = (value: string | undefined): unknown => {

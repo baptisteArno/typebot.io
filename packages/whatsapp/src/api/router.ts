@@ -5,7 +5,6 @@ import {
 import { publicProcedure as chatPublicProcedure } from "@typebot.io/config/orpc/viewer/middlewares";
 import { z } from "zod";
 import { WEBHOOK_SUCCESS_MESSAGE } from "../constants";
-import { whatsAppWebhookRequestBodySchema } from "../schemas";
 import { handleGenerateVerificationToken } from "./handleGenerateVerificationToken";
 import {
   getPhoneNumberInputSchema,
@@ -23,8 +22,18 @@ import {
   getWhatsAppMediaPreviewInputSchema,
   handleGetWhatsAppMediaPreview,
 } from "./handleGetWhatsAppMediaPreview";
-import { handlePreviewWebhookRequest } from "./handlePreviewWebhookRequest";
-import { handleProductionWebhookRequest } from "./handleProductionWebhookRequest";
+import {
+  handlePreviewWebhookRequest,
+  previewWebhookRequestInputSchema,
+} from "./handlePreviewWebhookRequest";
+import {
+  handleProductionWebhookRequest,
+  productionWebhookRequestInputSchema,
+} from "./handleProductionWebhookRequest";
+import {
+  handleSetupMetaWebhook,
+  setupMetaWebhookInputSchema,
+} from "./handleSetupMetaWebhook";
 import {
   handleStartWhatsAppPreview,
   startWhatsAppPreviewInputSchema,
@@ -58,13 +67,9 @@ export const chatWhatsAppRouter = {
       method: "POST",
       path: "/v1/workspaces/{workspaceId}/whatsapp/{credentialsId}/webhook",
       tags: ["WhatsApp"],
+      inputStructure: "detailed",
     })
-    .input(
-      whatsAppWebhookRequestBodySchema.extend({
-        workspaceId: z.string(),
-        credentialsId: z.string(),
-      }),
-    )
+    .input(productionWebhookRequestInputSchema)
     .output(z.literal(WEBHOOK_SUCCESS_MESSAGE))
     .handler(handleProductionWebhookRequest),
 };
@@ -75,8 +80,9 @@ export const builderWhatsAppRouter = {
       method: "POST",
       path: "/v1/whatsapp/preview/webhook",
       tags: ["WhatsApp"],
+      inputStructure: "detailed",
     })
-    .input(whatsAppWebhookRequestBodySchema)
+    .input(previewWebhookRequestInputSchema)
     .output(z.literal(WEBHOOK_SUCCESS_MESSAGE))
     .handler(handlePreviewWebhookRequest),
   startWhatsAppPreview: authenticatedProcedure
@@ -112,6 +118,10 @@ export const builderWhatsAppRouter = {
   getSystemTokenInfo: authenticatedProcedure
     .input(getSystemTokenInfoInputSchema)
     .handler(handleGetSystemTokenInfo),
+
+  setupMetaWebhook: authenticatedProcedure
+    .input(setupMetaWebhookInputSchema)
+    .handler(handleSetupMetaWebhook),
 
   verifyIfPhoneNumberAvailable: authenticatedProcedure
     .input(verifyIfPhoneNumberAvailableInputSchema)

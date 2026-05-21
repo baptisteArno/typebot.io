@@ -47,13 +47,14 @@ export const WhatsAppDeployDialog = ({
   } = useOpenControls();
 
   const whatsAppSettings = typebot?.settings.whatsApp;
+  const whatsAppCredentialsId = typebot?.whatsAppCredentialsId;
 
   const { data: phoneNumberData } = useQuery(
     orpc.whatsApp.getPhoneNumber.queryOptions({
       input: {
-        credentialsId: typebot?.whatsAppCredentialsId as string,
+        credentialsId: whatsAppCredentialsId ?? "",
       },
-      enabled: !!typebot?.whatsAppCredentialsId,
+      enabled: isDefined(whatsAppCredentialsId),
     }),
   );
 
@@ -74,10 +75,26 @@ export const WhatsAppDeployDialog = ({
 
   const updateCredentialsId = (credentialsId: string | undefined) => {
     if (!typebot) return;
+    if (credentialsId) {
+      updateTypebot({
+        updates: {
+          whatsAppCredentialsId: credentialsId,
+        },
+      });
+      return;
+    }
     updateTypebot({
       updates: {
-        whatsAppCredentialsId: credentialsId,
+        whatsAppCredentialsId: null,
+        settings: {
+          ...typebot.settings,
+          whatsApp: {
+            ...typebot.settings.whatsApp,
+            isEnabled: false,
+          },
+        },
       },
+      save: true,
     });
   };
 
@@ -208,9 +225,7 @@ export const WhatsAppDeployDialog = ({
                   <CredentialsDropdown
                     type="whatsApp"
                     scope={{ type: "workspace", workspaceId: workspace.id }}
-                    currentCredentialsId={
-                      typebot?.whatsAppCredentialsId ?? undefined
-                    }
+                    currentCredentialsId={whatsAppCredentialsId ?? undefined}
                     onCredentialsSelect={updateCredentialsId}
                     onCreateNewClick={onOpen}
                     credentialsName="WA phone number"
@@ -220,7 +235,7 @@ export const WhatsAppDeployDialog = ({
               )}
             </div>
           </li>
-          {typebot?.whatsAppCredentialsId && phoneNumberData && (
+          {whatsAppCredentialsId && phoneNumberData && (
             <>
               <li>
                 <Accordion.Root>

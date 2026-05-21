@@ -65,9 +65,6 @@ snapshots
 **/test/.auth
 **/out-tsc
 
-opensrc/repos
-opensrc/sources.json
-
 .effect
 .workflow
 
