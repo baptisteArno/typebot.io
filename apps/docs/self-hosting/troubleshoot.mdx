@@ -10,3 +10,14 @@ You most likely forgot to set up an `ADMIN_EMAIL` variable or did not sign up us
 ## I can't upload files
 
 You need to add an [S3 configuration](./guides/s3#s3-storage-media-uploads) to your project. If you are self-hosting with Docker, you can [add a S3 service to your docker-compose file](./deploy/docker#s3-storage).
+
+## Authentication fails or users are randomly logged out
+
+When the login page only shows "Check server logs to see relevant error message", the cause is usually one of:
+
+- **`NEXTAUTH_SECRET` or `ENCRYPTION_SECRET` was rotated.** Existing sessions and encrypted credentials become unreadable. Restore the previous values, or accept that users will need to sign in again and credentials (Google Sheets, OpenAI, SMTP…) re-created.
+- **Builder and viewer have different secrets.** `ENCRYPTION_SECRET` (and `NEXTAUTH_SECRET` when set) must be identical on both services.
+- **`NEXTAUTH_URL` doesn't match the URL users hit.** It must be the public builder URL with the correct scheme. Behind a reverse proxy, forward `Host` and `X-Forwarded-Proto`.
+- **Database unreachable or reset.** Check `DATABASE_URL` and that the `User`, `Account` and `Session` tables are populated.
+
+Tail the builder logs while reproducing the sign-in to surface the actual NextAuth / Prisma error.
