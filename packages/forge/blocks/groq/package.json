@@ -25,7 +25,7 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/lib": "workspace:*",
-    "@ai-sdk/groq": "^1.2.9",
+    "@ai-sdk/groq": "^2.0.40",
     "@types/react": "^19.2.14"
   },
   "dependencies": {

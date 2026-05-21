@@ -85,6 +85,16 @@ const baseEnv = {
       )
       .default("FREE"),
     TYPEBOT_DEBUG: boolean.optional().default(false),
+    SSRF_ALLOWED_HOSTS: z
+      .string()
+      .min(1)
+      .transform((val) =>
+        val
+          .split(",")
+          .map((s) => s.trim().toLowerCase())
+          .filter(Boolean),
+      )
+      .optional(),
     CHAT_API_TIMEOUT: z.coerce.number().optional(),
     RADAR_HIGH_RISK_KEYWORDS: z
       .string()

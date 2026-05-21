@@ -22,7 +22,7 @@ Step by step, you’ll learn how to craft an interactive experience that guides 
 
 1. Start with a warm welcome.
 
-<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/product-recommendation-quiz-ui.avif" alt="product recommendation quiz ui" width="712px" height="704px"  />
+<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/product-recommendation-quiz-ui.avif" alt="product recommendation quiz ui" width={712} height={704}  />
 
 
 Use a Text block in Typebot to say: “👋 Welcome to our Product Recommendation Quiz!”
@@ -43,7 +43,7 @@ Save the choice in a variable (`product_type`) to tailor recommendations.
 
 3. Then ask about their price range with options like `$500-$1000`, `$1000-$1500`, and `$2000+`. This shows you respect their preferences and helps filter options.
 
-<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/product-type-and-budget.avif" alt="product type and budget" width="1200px" height="649px"  />
+<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/product-type-and-budget.avif" alt="product type and budget" width={1200} height={649}  />
 
 
 ### Real-time product fetching: connecting to Shopify’s heartbeat
@@ -52,7 +52,7 @@ Instead of using outdated lists, connect your quiz directly to your Shopify stor
 
 A **HTTP request** block in Typebot calls Shopify’s Admin GraphQL API to pull current product details such as titles, images, prices, and stock levels. This is like checking the back room for the latest arrivals before suggesting products.
 
-<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/graphql-api-configuration-panel.avif" alt="graphql api configuration panel" width="878px" height="1200px"  />
+<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/graphql-api-configuration-panel.avif" alt="graphql api configuration panel" width={878} height={1200}  />
 
 
 The API retrieves products and stores them in a `products` variable. This ensures every recommendation reflects what’s actually available.
@@ -67,7 +67,7 @@ Send the user’s preferences and product list to OpenAI using Typebot’s **Ope
 
 The prompt says: *“Based on the user's answers and the list of products, recommend the best product. Please return one object in JSON format with title, image url, price, and stock.”*
 
-<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/openai-chat-completion-settings.avif" alt="openai chat completion settings" width="908px" height="1200px"  />
+<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/openai-chat-completion-settings.avif" alt="openai chat completion settings" width={908} height={1200}  />
 
 
 You can adjust the prompt to include more details or request multiple options. The AI’s response saves in a variable (`llm_recommendation`), ready to share with the user.
@@ -80,7 +80,7 @@ Building an AI chatbot with a custom knowledge base can significantly enhance yo
 
 The final reveal is as important as the process. Use **Set Variable** blocks in Typebot to extract the AI’s recommendation—title, image, price, and stock—and present it visually.
 
-<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/ai-recommendation-settings-page.avif" alt="ai recommendation settings page" width="581px" height="1200px"  />
+<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/ai-recommendation-settings-page.avif" alt="ai recommendation settings page" width={581} height={1200}  />
 
 
 Show a product card featuring:
@@ -90,7 +90,7 @@ Show a product card featuring:
 - The price
 - Stock availability
 
-<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/group-6-recommendation-details.avif" alt="group 6 recommendation details" width="694px" height="652px"  />
+<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/group-6-recommendation-details.avif" alt="group 6 recommendation details" width={694} height={652}  />
 
 
 This creates a conversational, friendly flow where the user feels guided and understood, not just processed through a form.
@@ -99,7 +99,7 @@ This creates a conversational, friendly flow where the user feels guided and und
 
 Each step here is a starting point, not a strict formula. Adjust questions, add variables, or tweak logic to fit your brand’s personality. **Typebot’s strength lies in its flexibility, letting you build a digital concierge that grows with your business.**
 
-By following these steps, you turn a blank canvas into an interactive quiz that feels like a real conversation. Next, connect this experience to your Shopify storefront and [marketing tools](./marketing-automation-chatbot.mdx) to make every interaction valuable and data-driven.
+By following these steps, you turn a blank canvas into an interactive quiz that feels like a real conversation. Next, connect this experience to your Shopify storefront and marketing tools to make every interaction valuable and data-driven.
 
 <Info>
 Want to learn more about engaging users and capturing leads effectively? Check out these practical [lead generation form examples](./lead-generation-form-examples.mdx) to get inspiration.
@@ -113,27 +113,27 @@ Imagine a customer named Alex browsing your Shopify store late at night, unsure 
 
 The integration process is straightforward, but attention to detail makes it feel native. After creating your quiz in Typebot, Go on the 'Share' tab and select Shopify. In our case, we want to use the Standard integration.
 
-<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/shopify-standard-instructions-code.avif" alt="shopify standard instructions code" width="937px" height="1200px"  />
+<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/shopify-standard-instructions-code.avif" alt="shopify standard instructions code" width={937} height={1200}  />
 
 
 Add the two code snippets:
 
 - One snippet goes into your Shopify theme’s `layout.liquid` file to load the Typebot library. Go to Online store → Themes → And then 'Edit code' of your active them
 
-<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/shopify-themes-edit-code.avif" alt="shopify themes edit code" width="1200px" height="913px"  />
+<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/shopify-themes-edit-code.avif" alt="shopify themes edit code" width={1200} height={913}  />
 
 
 Spot the `theme.liquid` file and add the code at just before the `</head>` tag
 
-<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/code-editor-theme-liquid.avif" alt="code editor theme liquid" width="1200px" height="673px"  />
+<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/code-editor-theme-liquid.avif" alt="code editor theme liquid" width={1200} height={673}  />
 
 
 - The other embeds the quiz interface on the desired page. Go to 'Online store', then 'Pages' and create or access the page you want to put the quiz on. Then update the content of the page, using the HTML view:
 
-<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/quiz-editor-interface.avif" alt="quiz editor interface" width="1200px" height="442px"  />
+<Image src="/blog-assets/how-to-create-a-product-recommendation-quiz-shopify/quiz-editor-interface.avif" alt="quiz editor interface" width={1200} height={442}  />
 
 
-This setup ensures the chatbot loads quickly and looks polished, whether it appears on a dedicated quiz page or within a landing page.
+This setup ensures the [Shopify chatbot](./best-shopify-chatbot.mdx) loads quickly and looks polished, whether it appears on a dedicated quiz page or within a landing page.
 
 **This method guarantees a smooth, professional quiz experience that fits perfectly with your store’s design.**
 
@@ -162,11 +162,6 @@ For example, every quiz result can be sent to your CRM to trigger personalized f
 Consider a small outdoor gear shop using Typebot to collect quiz data and sync it with their email platform. They find that customers selecting “Accessories” and a lower price range respond better to bundle offers. By integrating quiz results with marketing tools, they automate targeted campaigns without manual data handling.
 
 **Integrating your quiz with other tools helps you act on customer insights quickly and efficiently.**
-
-<Success>
-Want to see how this quiz strategy works in practice? Check out our comprehensive guide on [choosing the best Shopify chatbot](./best-shopify-chatbot.mdx) to see Typebot in action with real merchant examples and advanced implementation strategies.
-</Success>
-
 
 ### The subtle art of seamless integration
 
@@ -243,3 +238,4 @@ Creating a product recommendation quiz for Shopify using Typebot offers endless 
 By following this tutorial as a foundation, you can customize the flow, questions, and integrations to match your unique brand voice and product catalog, ultimately driving more conversions through interactive, personalized shopping experiences.
 
 <Cta buttonLabel="Start Building">Create, customize, and deploy your first Typebot today. No coding required.</Cta>
+

@@ -7,6 +7,7 @@ import { getExportFileName } from "@typebot.io/results/getExportFileName";
 import { parseBlockIdVariableIdMap } from "@typebot.io/results/parseBlockIdVariableIdMap";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
 import { parseResultHeader } from "@typebot.io/results/parseResultHeader";
+import { sanitizeCsvCell } from "@typebot.io/results/sanitizeCsvCell";
 import {
   type TimeFilter,
   timeFilterLabels,
@@ -163,8 +164,11 @@ export const ExportAllResultsDialog = ({
       headerIds?.forEach((headerId) => {
         const headerLabel = resultHeader.find(byId(headerId))?.label;
         if (!headerLabel) return;
-        const newKey = parseUniqueKey(headerLabel, Object.keys(newObject));
-        newObject[newKey] = data[headerId]?.plainText;
+        const newKey = parseUniqueKey(
+          sanitizeCsvCell(headerLabel),
+          Object.keys(newObject),
+        );
+        newObject[newKey] = sanitizeCsvCell(data[headerId]?.plainText);
       });
       return newObject;
     });

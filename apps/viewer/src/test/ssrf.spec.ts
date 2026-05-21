@@ -45,7 +45,7 @@ test.describe("SSRF protection", () => {
     await page.goto(`http://localhost:3000/typebots/${typebotId}/results`);
     await page.click('text="See logs"');
     await expect(
-      page.locator('text="Webhook returned an error."').first(),
+      page.getByText(/Security validation failed/).first(),
     ).toBeVisible();
   });
 

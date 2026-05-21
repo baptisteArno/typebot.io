@@ -15,6 +15,9 @@ export type ZodLayoutMetadata<TDefaultValue = unknown> = {
   itemLabel?: string;
   isOrdered?: boolean;
   moreInfoTooltip?: string;
+  min?: number;
+  max?: number;
+  step?: number;
   isHidden?: boolean | ((currentObj: Record<string, unknown>) => boolean);
   isDebounceDisabled?: boolean;
   hiddenItems?: string[] | readonly string[];

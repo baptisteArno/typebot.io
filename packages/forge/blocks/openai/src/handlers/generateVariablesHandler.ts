@@ -14,7 +14,6 @@ export const generateVariablesHandler = createActionHandler(generateVariables, {
       model: createOpenAI({
         apiKey: credentials.apiKey,
         baseURL: credentials.baseUrl ?? options.baseUrl,
-        compatibility: "strict",
       })(options.model),
       prompt: options.prompt,
       variablesToExtract: options.variablesToExtract,

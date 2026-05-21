@@ -149,6 +149,9 @@ export const ZodFieldLayout = ({
             defaultValue={data ?? layout?.defaultValue}
             onValueChange={onDataChange}
             placeholder={layout?.placeholder}
+            min={layout?.min}
+            max={layout?.max}
+            step={layout?.step}
           />
           {layout?.helperText && (
             <Field.Description>
@@ -216,6 +219,9 @@ export const ZodFieldLayout = ({
             defaultValue={data ?? layout?.defaultValue}
             onValueChange={onDataChange}
             placeholder={layout?.placeholder}
+            min={layout?.min}
+            max={layout?.max}
+            step={layout?.step}
           />
           {layout?.helperText && (
             <Field.Description>
