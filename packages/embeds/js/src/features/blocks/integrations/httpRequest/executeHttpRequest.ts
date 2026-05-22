@@ -10,7 +10,7 @@ export const executeHttpRequest = async (
       method,
       body: method !== "GET" && body ? JSON.stringify(body) : undefined,
       headers,
-      credentials: isPreview ? "omit" : undefined,
+      credentials: isPreview ? "omit" : "include",
     });
     const statusCode = response.status;
     const data = await response.json();
