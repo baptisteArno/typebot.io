@@ -1,5 +1,16 @@
 # Changelog
 
+<a name="3.17.1"></a>
+## 3.17.1 (2026-05-22)
+
+### Fixed
+
+- 🐛 Fix upload proxy public URL (#2508) [[9d6708b](https://github.com/baptisteArno/typebot.io/commit/9d6708bbeebc97dc9d933650ad4a8de725179b4f)]
+
+### Content
+
+- 📝 Update manual deploy docs for Nx (#2507) [[5f01ecf](https://github.com/baptisteArno/typebot.io/commit/5f01ecff64667f9ded0c88bdb835158fe4bf3b2e)]
+
 <a name="3.17.0"></a>
 ## 3.17.0 (2026-05-21)
 
