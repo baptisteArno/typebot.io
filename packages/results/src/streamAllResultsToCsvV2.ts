@@ -12,6 +12,7 @@ import { convertResultsToTableData } from "./convertResultsToTableData";
 import { parseBlockIdVariableIdMap } from "./parseBlockIdVariableIdMap";
 import { parseColumnsOrder } from "./parseColumnsOrder";
 import { parseResultHeader } from "./parseResultHeader";
+import { sanitizeCsvCell } from "./sanitizeCsvCell";
 import { resultWithAnswersSchema } from "./schemas/results";
 import { ResultsService } from "./services/ResultsService";
 import {
@@ -111,7 +112,7 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
 
     const csvHeaders = headerIds.map((headerId) => {
       const headerLabel = resultHeader.find(byId(headerId))?.label;
-      return headerLabel ?? headerId;
+      return sanitizeCsvCell(headerLabel ?? headerId);
     });
 
     const totalResultsToExport = yield* resultsService.count({
@@ -202,7 +203,9 @@ export const streamResultsToCsvV2 = Effect.fn("streamResultsToCsvV2")(
                     headerLabel,
                     Object.keys(newObject),
                   );
-                  newObject[newKey] = data[headerId]?.plainText;
+                  newObject[newKey] = sanitizeCsvCell(
+                    data[headerId]?.plainText,
+                  );
                 });
                 return newObject;
               },

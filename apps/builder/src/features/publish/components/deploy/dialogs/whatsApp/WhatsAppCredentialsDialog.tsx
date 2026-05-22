@@ -1,6 +1,7 @@
 import { ORPCError } from "@orpc/client";
 import { createId } from "@paralleldrive/cuid2";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { whatsAppCredentialsDataSchema } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError";
 import { isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
@@ -13,9 +14,11 @@ import { ArrowLeft01Icon } from "@typebot.io/ui/icons/ArrowLeft01Icon";
 import { ArrowUpRight01Icon } from "@typebot.io/ui/icons/ArrowUpRight01Icon";
 import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 import { cx } from "@typebot.io/ui/lib/cva";
+import { dialog360WebhookSecretHeaderName } from "@typebot.io/whatsapp/constants";
 import { formatPhoneNumberDisplayName } from "@typebot.io/whatsapp/formatPhoneNumberDisplayName";
 import { Fragment, useState } from "react";
 import { ButtonLink } from "@/components/ButtonLink";
+import { CopyButton } from "@/components/CopyButton";
 import { CopyInput } from "@/components/inputs/CopyInput";
 import { Dialog360Logo } from "@/components/logos/Dialog360Logo";
 import { MetaLogo } from "@/components/logos/MetaLogo";
@@ -26,7 +29,7 @@ import { toast } from "@/lib/toast";
 
 const metaSteps = [
   { title: "Requirements" },
-  { title: "User Token" },
+  { title: "App Credentials" },
   { title: "Phone Number" },
   { title: "Webhook" },
 ];
@@ -77,7 +80,10 @@ export const WhatsAppCreateDialogBody = ({
   const steps = provider === "meta" ? metaSteps : dialog360Steps;
   const { activeStep, goToNext, goToPrevious, setActiveStep } = useSteps();
   const [systemUserAccessToken, setSystemUserAccessToken] = useState("");
+  const [appSecret, setAppSecret] = useState("");
   const [apiKey, setApiKey] = useState("");
+  const [webhookSecret, setWebhookSecret] = useState(createId);
+  const [wabaId, setWabaId] = useState("");
   const [phoneNumberId, setPhoneNumberId] = useState("");
   const [phoneNumberName, setPhoneNumberName] = useState("");
   const [verificationToken, setVerificationToken] = useState("");
@@ -108,6 +114,7 @@ export const WhatsAppCreateDialogBody = ({
     orpc.whatsApp.getSystemTokenInfo.queryOptions({
       input: {
         token: systemUserAccessToken,
+        appSecret: appSecret || undefined,
       },
       enabled: isNotEmpty(systemUserAccessToken) && activeStep > 1,
     }),
@@ -116,6 +123,9 @@ export const WhatsAppCreateDialogBody = ({
   const resetForm = () => {
     setActiveStep(0);
     setSystemUserAccessToken("");
+    setAppSecret("");
+    setWebhookSecret(createId());
+    setWabaId("");
     setPhoneNumberId("");
   };
 
@@ -123,6 +133,22 @@ export const WhatsAppCreateDialogBody = ({
     if (!workspace || !provider) return;
 
     if (provider === "meta") {
+      setIsVerifying(true);
+      try {
+        await orpcClient.whatsApp.setupMetaWebhook({
+          systemToken: systemUserAccessToken,
+          appSecret: appSecret || undefined,
+          wabaId,
+          phoneNumberId,
+          subscribe: true,
+        });
+      } catch (err) {
+        toast(await parseUnknownClientError({ err }));
+        return;
+      } finally {
+        setIsVerifying(false);
+      }
+
       mutate({
         scope: "workspace",
         workspaceId: workspace.id,
@@ -133,7 +159,9 @@ export const WhatsAppCreateDialogBody = ({
           data: {
             provider: "meta",
             systemUserAccessToken,
+            wabaId,
             phoneNumberId,
+            appSecret: appSecret || undefined,
           },
         },
       });
@@ -148,6 +176,7 @@ export const WhatsAppCreateDialogBody = ({
           data: {
             provider: "360dialog",
             apiKey,
+            webhookSecret: webhookSecret || undefined,
           },
         },
       });
@@ -160,6 +189,7 @@ export const WhatsAppCreateDialogBody = ({
       const { expiresAt, scopes } =
         await orpcClient.whatsApp.getSystemTokenInfo({
           token: systemUserAccessToken,
+          appSecret: appSecret || undefined,
         });
       if (expiresAt !== 0) {
         toast({
@@ -179,7 +209,6 @@ export const WhatsAppCreateDialogBody = ({
         return false;
       }
     } catch (err) {
-      setIsVerifying(false);
       if (err instanceof ORPCError) {
         if (err.data?.logError) {
           toast(err.data.logError);
@@ -188,17 +217,21 @@ export const WhatsAppCreateDialogBody = ({
       }
       toast(await parseUnknownClientError({ err }));
       return false;
+    } finally {
+      setIsVerifying(false);
     }
-    setIsVerifying(false);
     return true;
   };
 
   const isPhoneNumberAvailable = async () => {
     setIsVerifying(true);
     try {
-      const { name } = await orpcClient.whatsApp.getPhoneNumber({
+      const { name } = await orpcClient.whatsApp.setupMetaWebhook({
         systemToken: systemUserAccessToken,
+        appSecret: appSecret || undefined,
+        wabaId,
         phoneNumberId,
+        subscribe: false,
       });
       setPhoneNumberName(name);
       try {
@@ -314,13 +347,17 @@ export const WhatsAppCreateDialogBody = ({
               {activeStep === 1 && (
                 <SystemUserToken
                   initialToken={systemUserAccessToken}
+                  initialAppSecret={appSecret}
+                  setAppSecret={setAppSecret}
                   setToken={setSystemUserAccessToken}
                 />
               )}
               {activeStep === 2 && (
                 <PhoneNumber
                   appId={tokenInfoData?.appId}
+                  initialWabaId={wabaId}
                   initialPhoneNumberId={phoneNumberId}
+                  setWabaId={setWabaId}
                   setPhoneNumberId={setPhoneNumberId}
                 />
               )}
@@ -338,13 +375,18 @@ export const WhatsAppCreateDialogBody = ({
               {activeStep === 0 && (
                 <Dialog360PhoneNumber
                   initialApiKey={apiKey}
+                  initialWebhookSecret={webhookSecret}
                   setApiKey={setApiKey}
+                  setWebhookSecret={setWebhookSecret}
                   initialPhoneNumber={phoneNumberName}
                   setPhoneNumber={setPhoneNumberName}
                 />
               )}
               {activeStep === 1 && (
-                <Dialog360Webhook credentialsId={credentialsId} />
+                <Dialog360Webhook
+                  credentialsId={credentialsId}
+                  webhookSecret={webhookSecret}
+                />
               )}
             </>
           )}
@@ -362,7 +404,7 @@ export const WhatsAppCreateDialogBody = ({
                 isEmpty(systemUserAccessToken)) ||
               (provider === "meta" &&
                 activeStep === 2 &&
-                isEmpty(phoneNumberId)) ||
+                (isEmpty(wabaId) || isEmpty(phoneNumberId))) ||
               (provider === "360dialog" && activeStep === 0 && isEmpty(apiKey))
             }
           >
@@ -395,13 +437,29 @@ const Requirements = () => (
 );
 
 const SystemUserToken = ({
+  initialAppSecret,
   initialToken,
+  setAppSecret,
   setToken,
 }: {
+  initialAppSecret: string;
   initialToken: string;
+  setAppSecret: (id: string) => void;
   setToken: (id: string) => void;
 }) => (
   <ol>
+    <li>
+      In your Meta app dashboard, go to <code>App settings → Basic</code> and
+      copy your app secret.
+    </li>
+    <Field.Root>
+      <Field.Label>App secret</Field.Label>
+      <Input
+        type="password"
+        defaultValue={initialAppSecret}
+        onValueChange={(val) => setAppSecret(val.trim())}
+      />
+    </Field.Root>
     <li>
       Go to your{" "}
       <ButtonLink
@@ -425,7 +483,8 @@ const SystemUserToken = ({
         <p>
           Click on <code>Add assets</code>. Under <code>Apps</code>, look for
           your previously created app, select it and check{" "}
-          <code>Manage app</code>
+          <code>Manage app</code>. Under <code>WhatsApp Accounts</code>, select
+          your account and allow management access.
         </p>
         <img
           className="rounded-md"
@@ -464,11 +523,15 @@ const SystemUserToken = ({
 
 const PhoneNumber = ({
   appId,
+  initialWabaId,
   initialPhoneNumberId,
+  setWabaId,
   setPhoneNumberId,
 }: {
   appId?: string;
+  initialWabaId: string;
   initialPhoneNumberId: string;
+  setWabaId: (id: string) => void;
   setPhoneNumberId: (id: string) => void;
 }) => (
   <ol>
@@ -495,9 +558,17 @@ const PhoneNumber = ({
       <div className="flex flex-col gap-2">
         <p>
           Select a phone number and paste the associated{" "}
+          <code>WhatsApp Business Account ID</code> and{" "}
           <code>Phone number ID</code>
         </p>
         <div className="flex items-center gap-2">
+          <Field.Root>
+            <Field.Label>WhatsApp Business Account ID</Field.Label>
+            <Input
+              defaultValue={initialWabaId}
+              onValueChange={(value) => setWabaId(value.trim())}
+            />
+          </Field.Root>
           <Field.Root>
             <Field.Label>Phone number ID</Field.Label>
             <Input
@@ -566,9 +637,243 @@ const Webhook = ({
           </div>
         </li>
       </ul>
+      <p>
+        After saving these settings in Meta, click Submit. Typebot will
+        subscribe this app to the WhatsApp Business Account automatically.
+      </p>
     </div>
   );
 };
+
+export const WhatsAppUpdateDialogBody = ({
+  credentialsId,
+  scope,
+  onUpdate,
+}: {
+  credentialsId: string;
+  scope: "workspace" | "user";
+  onUpdate: () => void;
+}) => {
+  const { workspace } = useWorkspace();
+  const [appSecret, setAppSecret] = useState<string>();
+  const [webhookSecret, setWebhookSecret] = useState<string>();
+  const [wabaId, setWabaId] = useState<string>();
+  const [isValidatingCredentials, setIsValidatingCredentials] = useState(false);
+
+  const { data: existingCredentials } = useQuery(
+    orpc.credentials.getCredentials.queryOptions({
+      input:
+        scope === "workspace"
+          ? {
+              scope: "workspace",
+              workspaceId: workspace?.id ?? "",
+              credentialsId,
+            }
+          : {
+              scope: "user",
+              credentialsId,
+            },
+      enabled: scope === "user" || !!workspace?.id,
+    }),
+  );
+
+  const { mutate: updateCredentials, isPending } = useMutation(
+    orpc.credentials.updateCredentials.mutationOptions({
+      onError: (err) => {
+        toast({
+          description: err.message,
+        });
+      },
+      onSuccess: () => {
+        onUpdate();
+      },
+    }),
+  );
+
+  const parsedCredentialsData = whatsAppCredentialsDataSchema.safeParse(
+    existingCredentials?.data,
+  );
+  const whatsAppCredentialsData = parsedCredentialsData.success
+    ? parsedCredentialsData.data
+    : undefined;
+  const isMetaCredentials =
+    whatsAppCredentialsData && whatsAppCredentialsData.provider !== "360dialog";
+  const isDialog360Credentials =
+    whatsAppCredentialsData?.provider === "360dialog";
+  const wabaIdValue =
+    wabaId ?? (isMetaCredentials ? (whatsAppCredentialsData.wabaId ?? "") : "");
+  const appSecretValue =
+    appSecret ??
+    (isMetaCredentials ? (whatsAppCredentialsData.appSecret ?? "") : "");
+  const webhookSecretValue =
+    webhookSecret ??
+    (isDialog360Credentials
+      ? (whatsAppCredentialsData.webhookSecret ?? "")
+      : "");
+
+  const updateWhatsAppCredentials = async () => {
+    if (!existingCredentials || !whatsAppCredentialsData) return;
+    const nextCredentialsData =
+      whatsAppCredentialsData.provider === "360dialog"
+        ? {
+            ...whatsAppCredentialsData,
+            webhookSecret:
+              (webhookSecret === undefined
+                ? whatsAppCredentialsData.webhookSecret
+                : webhookSecret) || undefined,
+          }
+        : {
+            ...whatsAppCredentialsData,
+            wabaId:
+              (wabaId === undefined
+                ? whatsAppCredentialsData.wabaId
+                : wabaId) || undefined,
+            appSecret:
+              (appSecret === undefined
+                ? whatsAppCredentialsData.appSecret
+                : appSecret) || undefined,
+          };
+
+    if (
+      nextCredentialsData.provider !== "360dialog" &&
+      (nextCredentialsData.appSecret || nextCredentialsData.wabaId)
+    ) {
+      setIsValidatingCredentials(true);
+      try {
+        if (nextCredentialsData.wabaId)
+          await orpcClient.whatsApp.setupMetaWebhook({
+            systemToken: nextCredentialsData.systemUserAccessToken,
+            appSecret: nextCredentialsData.appSecret,
+            wabaId: nextCredentialsData.wabaId,
+            phoneNumberId: nextCredentialsData.phoneNumberId,
+            subscribe: true,
+          });
+        else
+          await orpcClient.whatsApp.getSystemTokenInfo({
+            token: nextCredentialsData.systemUserAccessToken,
+            appSecret: nextCredentialsData.appSecret,
+          });
+      } catch (err) {
+        toast(await parseUnknownClientError({ err }));
+        return;
+      } finally {
+        setIsValidatingCredentials(false);
+      }
+    }
+
+    if (scope === "workspace") {
+      if (!workspace?.id) return;
+      updateCredentials({
+        scope: "workspace",
+        workspaceId: workspace.id,
+        credentialsId,
+        credentials: {
+          type: "whatsApp",
+          name: existingCredentials.name,
+          data: nextCredentialsData,
+        },
+      });
+      return;
+    }
+
+    updateCredentials({
+      scope: "user",
+      credentialsId,
+      credentials: {
+        type: "whatsApp",
+        name: existingCredentials.name,
+        data: nextCredentialsData,
+      },
+    });
+  };
+
+  return (
+    <Dialog.Popup className="max-w-xl">
+      <Dialog.Title>Update WhatsApp credentials</Dialog.Title>
+      {isDialog360Credentials ? (
+        <Field.Root>
+          <Field.Label>Webhook secret</Field.Label>
+          <SecretInput
+            value={webhookSecretValue}
+            onValueChange={(value) => setWebhookSecret(value.trim())}
+          />
+          <Field.Description>
+            <p>
+              When set, incoming 360Dialog webhook payloads must include the{" "}
+              <code>{dialog360WebhookSecretHeaderName}</code> header with this
+              value.
+            </p>
+          </Field.Description>
+        </Field.Root>
+      ) : (
+        <div className="flex flex-col gap-4">
+          <Field.Root>
+            <Field.Label>WhatsApp Business Account ID</Field.Label>
+            <Input
+              value={wabaIdValue}
+              onValueChange={(value) => setWabaId(value.trim())}
+            />
+            <Field.Description>
+              <p>
+                When set, Typebot verifies that this WABA contains the phone
+                number and subscribes the Meta app to its webhooks.
+              </p>
+            </Field.Description>
+          </Field.Root>
+          <Field.Root>
+            <Field.Label>App secret</Field.Label>
+            <Input
+              type="password"
+              value={appSecretValue}
+              onValueChange={(value) => setAppSecret(value.trim())}
+            />
+            <Field.Description>
+              <p>
+                When set, incoming Meta webhook payloads are verified with the{" "}
+                <code>x-hub-signature-256</code> header.
+              </p>
+            </Field.Description>
+          </Field.Root>
+        </div>
+      )}
+      <Dialog.Footer>
+        <Button
+          type="button"
+          disabled={
+            (!isMetaCredentials && !isDialog360Credentials) ||
+            isPending ||
+            isValidatingCredentials
+          }
+          onClick={updateWhatsAppCredentials}
+        >
+          {isValidatingCredentials ? "Validating..." : "Update"}
+        </Button>
+      </Dialog.Footer>
+    </Dialog.Popup>
+  );
+};
+
+const SecretInput = ({
+  value,
+  onValueChange,
+}: {
+  value: string;
+  onValueChange: (value: string) => void;
+}) => (
+  <div className="relative">
+    <Input
+      type="password"
+      value={value}
+      className="pr-14"
+      onValueChange={onValueChange}
+    />
+    <CopyButton
+      size="xs"
+      textToCopy={value}
+      className="absolute right-2 top-1/2 -translate-y-1/2"
+    />
+  </div>
+);
 
 const ProviderSelection = ({
   onProviderSelect,
@@ -617,13 +922,17 @@ const ProviderSelection = ({
 const Dialog360PhoneNumber = ({
   initialPhoneNumber,
   initialApiKey,
+  initialWebhookSecret,
   setPhoneNumber,
   setApiKey,
+  setWebhookSecret,
 }: {
   initialPhoneNumber: string;
   initialApiKey: string;
+  initialWebhookSecret: string;
   setPhoneNumber: (phoneNumber: string) => void;
   setApiKey: (apiKey: string) => void;
+  setWebhookSecret: (webhookSecret: string) => void;
 }) => (
   <div className="flex flex-col gap-4">
     <Field.Root>
@@ -651,10 +960,29 @@ const Dialog360PhoneNumber = ({
         </p>
       </Field.Description>
     </Field.Root>
+    <Field.Root>
+      <Field.Label>Webhook secret</Field.Label>
+      <SecretInput
+        value={initialWebhookSecret}
+        onValueChange={(value) => setWebhookSecret(value.trim())}
+      />
+      <Field.Description>
+        <p>
+          This secret will be required in the{" "}
+          <code>{dialog360WebhookSecretHeaderName}</code> custom header.
+        </p>
+      </Field.Description>
+    </Field.Root>
   </div>
 );
 
-const Dialog360Webhook = ({ credentialsId }: { credentialsId: string }) => {
+const Dialog360Webhook = ({
+  credentialsId,
+  webhookSecret,
+}: {
+  credentialsId: string;
+  webhookSecret: string;
+}) => {
   const { workspace } = useWorkspace();
   const webhookUrl = `${
     env.NEXT_PUBLIC_VIEWER_URL?.at(1) ?? env.NEXT_PUBLIC_VIEWER_URL?.[0]
@@ -676,6 +1004,14 @@ const Dialog360Webhook = ({ credentialsId }: { credentialsId: string }) => {
           Make sure to enable webhooks for message events in your 360Dialog
           configuration.
         </p>
+      </div>
+      <div className="flex flex-col gap-2">
+        <p>Custom header name:</p>
+        <CopyInput value={dialog360WebhookSecretHeaderName} />
+      </div>
+      <div className="flex flex-col gap-2">
+        <p>Custom header value:</p>
+        <CopyInput value={webhookSecret} />
       </div>
     </div>
   );

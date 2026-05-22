@@ -25,8 +25,9 @@ import { orpc } from "@/lib/queryClient";
 import { CredentialsCreateDialog } from "./CredentialsCreateDialog";
 import { CredentialsUpdateDialog } from "./CredentialsUpdateDialog";
 
-const hiddenTypes = ["http proxy"] as const;
-const nonEditableTypes = ["whatsApp", "google sheets"] as const;
+const isHiddenType = (type: Credentials["type"]) => type === "http proxy";
+const isNonEditableType = (type: Credentials["type"]) =>
+  type === "google sheets";
 
 type CredentialsInfo = Pick<Credentials, "id" | "type" | "name">;
 
@@ -101,10 +102,7 @@ export const CredentialsSettingsForm = () => {
           </Menu.TriggerButton>
           <Menu.Popup>
             {credentialsTypes
-              .filter(
-                (type) =>
-                  !hiddenTypes.includes(type as (typeof hiddenTypes)[number]),
-              )
+              .filter((type) => !isHiddenType(type))
               .map((type) => (
                 <Menu.Item
                   key={type}
@@ -139,12 +137,7 @@ export const CredentialsSettingsForm = () => {
                     name={cred.name}
                     isDeleting={deletingCredentialsId === cred.id}
                     onEditClick={
-                      nonEditableTypes.includes(
-                        cred.type as (typeof nonEditableTypes)[number],
-                      ) ||
-                      hiddenTypes.includes(
-                        cred.type as (typeof hiddenTypes)[number],
-                      )
+                      isNonEditableType(cred.type) || isHiddenType(cred.type)
                         ? undefined
                         : () => {
                             setEditingCredentials({

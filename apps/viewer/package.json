@@ -72,7 +72,7 @@
     "google-spreadsheet": "^4.1.4",
     "next": "^16.1.6",
     "nextjs-cors": "^2.1.2",
-    "nodemailer": "^7.0.6",
+    "nodemailer": "^8.0.5",
     "openai": "^6.9.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

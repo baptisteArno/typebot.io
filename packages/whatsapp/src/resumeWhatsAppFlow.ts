@@ -37,6 +37,7 @@ type Props = {
   receivedMessages: WhatsAppIncomingMessage[];
   sessionId: string;
   credentialsId?: string;
+  credentialsData?: WhatsAppCredentials["data"];
   phoneNumberId?: string;
   workspaceId?: string;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
@@ -58,6 +59,7 @@ export const resumeWhatsAppFlow = async ({
   sessionId,
   workspaceId,
   credentialsId,
+  credentialsData,
   phoneNumberId,
   contact,
   callFrom,
@@ -71,11 +73,13 @@ export const resumeWhatsAppFlow = async ({
 
   const isPreview = workspaceId === undefined || credentialsId === undefined;
 
-  const credentials = await getWhatsAppCredentials({
-    credentialsId,
-    workspaceId,
-    isPreview,
-  });
+  const credentials =
+    credentialsData ??
+    (await getWhatsAppCredentials({
+      credentialsId,
+      workspaceId,
+      isPreview,
+    }));
   if (!credentials) throw new WhatsAppError("Could not find credentials");
 
   if (

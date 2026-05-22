@@ -88,9 +88,10 @@ export const handleExecuteWebhook = async ({
       message: "Webhook block not found",
     });
 
-  const result = await prisma.result.findUnique({
+  const result = await prisma.result.findFirst({
     where: {
       id: resultId,
+      typebotId,
     },
     select: {
       lastChatSessionId: true,

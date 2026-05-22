@@ -56,6 +56,7 @@ export const useOAuthPopup = ({
     null,
   );
   const popupCheckIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const oauthStateRef = useRef<string | null>(null);
   const isAuthorizingRef = useRef(false);
 
   const setIsAuthorizing = (value: boolean) => {
@@ -87,6 +88,7 @@ export const useOAuthPopup = ({
       oauthWindowRef.current.close();
     }
     oauthWindowRef.current = null;
+    oauthStateRef.current = null;
 
     setIsAuthorizing(false);
   };
@@ -114,8 +116,11 @@ export const useOAuthPopup = ({
     setIsAuthorizing(true);
 
     try {
+      const state = crypto.randomUUID();
+      oauthStateRef.current = state;
       const popupUrl = `/api/${blockId}/oauth/authorize?${stringify({
         clientId: clientId,
+        state,
       })}`;
 
       const popup = window.open(popupUrl, "oauthPopup", popupFeatures);
@@ -153,12 +158,14 @@ export const useOAuthPopup = ({
         }
 
         try {
-          cleanup();
-
-          const { code, error } = event.data;
+          const { code, error, state } = event.data;
 
           if (error) {
             throw new Error(`OAuth failed: ${error}`);
+          }
+
+          if (state !== oauthStateRef.current) {
+            throw new Error("Invalid OAuth state");
           }
 
           if (!code) {
@@ -167,8 +174,10 @@ export const useOAuthPopup = ({
             );
           }
 
+          cleanup();
           onSuccess(code);
         } catch (err) {
+          cleanup();
           const errorMessage =
             err instanceof Error ? err.message : "OAuth authentication failed";
           toast({

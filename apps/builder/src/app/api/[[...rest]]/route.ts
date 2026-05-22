@@ -20,7 +20,7 @@ type RouteContext<_T> = {
   params: Promise<{ rest?: string[] }>;
 };
 
-const RAW_REQUEST_CONTEXT = Symbol("RAW_REQUEST_CONTEXT");
+const RAW_REQUEST_CONTEXT = "RAW_REQUEST_CONTEXT";
 
 const handler = new OpenAPIHandler(appRouter, {
   interceptors: [
@@ -32,26 +32,23 @@ const handler = new OpenAPIHandler(appRouter, {
     (options) =>
       options.next({
         ...options,
-        context: {
-          ...options.context,
-          [RAW_REQUEST_CONTEXT as unknown as string]: {
+        context: Object.assign({}, options.context, {
+          [RAW_REQUEST_CONTEXT]: {
             fetchRequest: options.request,
           },
-        },
+        }),
       }),
   ],
   rootInterceptors: [
     (options) => {
       const needsRawBody =
         options.request.url.pathname.includes("/stripe/webhook") ||
-        options.request.url.pathname.includes("/resend/webhook");
+        options.request.url.pathname.includes("/resend/webhook") ||
+        options.request.url.pathname.includes("/whatsapp/preview/webhook");
       if (!needsRawBody) return options.next();
 
-      const rawContext = (options.context as Record<symbol, unknown>)[
-        RAW_REQUEST_CONTEXT
-      ] as { fetchRequest: Request } | undefined;
-
-      if (!rawContext?.fetchRequest) return options.next();
+      const rawContext = Reflect.get(options.context, RAW_REQUEST_CONTEXT);
+      if (!isRawRequestContext(rawContext)) return options.next();
 
       return options.next({
         ...options,
@@ -98,6 +95,14 @@ const handler = new OpenAPIHandler(appRouter, {
   ],
 });
 
+const isRawRequestContext = (
+  value: unknown,
+): value is { fetchRequest: Request } =>
+  typeof value === "object" &&
+  value !== null &&
+  "fetchRequest" in value &&
+  Reflect.get(value, "fetchRequest") instanceof Request;
+
 async function handleRequest(
   request: NextRequest,
   routeContext: RouteContext<"/api/[[...rest]]">,
@@ -115,6 +120,7 @@ async function handleRequest(
     const { response } = await handler.handle(resolvedRequest, {
       prefix: "/api",
       context: createContext({
+        req: resolvedRequest,
         authenticate: async () => {
           const user =
             (await auth())?.user ||

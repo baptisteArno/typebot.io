@@ -24,7 +24,7 @@ export const parseTools = ({
     if (!tool.code || !tool.name) return acc;
     acc[tool.name] = {
       description: tool.description,
-      parameters: parseParameters(tool.parameters),
+      inputSchema: parseParameters(tool.parameters),
       execute: async (args) => {
         const { output, newVariables } = await executeFunction({
           sessionStore,

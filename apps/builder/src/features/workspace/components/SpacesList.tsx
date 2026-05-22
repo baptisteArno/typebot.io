@@ -1,5 +1,6 @@
 import { ORPCError } from "@orpc/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { uploadFileWithPresignedPostData } from "@typebot.io/lib/s3/uploadFileWithPresignedPostData";
 import { SpaceIcon, SpaceName } from "@typebot.io/spaces/domain";
 import { EmptySpaceState } from "@typebot.io/spaces/react/EmptySpaceState";
 import { SpacesTable } from "@typebot.io/spaces/react/SpacesTable";
@@ -162,13 +163,10 @@ export const SpacesList = ({
             },
             fileType: file.type,
           });
-          const upload = await fetch(data.presignedUrl, {
-            method: "PUT",
-            body: file,
-            headers: {
-              "Content-Type": file.type,
-              "Cache-Control": "public, max-age=86400",
-            },
+          const upload = await uploadFileWithPresignedPostData({
+            presignedUrl: data.presignedUrl,
+            formData: data.formData,
+            file,
           });
           if (!upload.ok) {
             toast({

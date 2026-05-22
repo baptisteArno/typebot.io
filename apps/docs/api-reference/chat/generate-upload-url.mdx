@@ -8,13 +8,26 @@ The `presignedUrl` and `formData` fields can be then used to upload the file to 
 ```js
 // data contains the presignedUrl and formData fields from the response
 
-const formData = new FormData()
-Object.entries(data.formData).forEach(([key, value]) => {
-  formData.append(key, value)
-})
-formData.append('file', file)
-const upload = await fetch(data.presignedUrl, {
-  method: 'POST',
-  body: formData,
-})
+let upload
+
+if (data.formData && Object.keys(data.formData).length > 0) {
+  const formData = new FormData()
+  Object.entries(data.formData).forEach(([key, value]) => {
+    formData.append(key, value)
+  })
+  formData.append('file', file)
+
+  upload = await fetch(data.presignedUrl, {
+    method: 'POST',
+    body: formData,
+  })
+} else {
+  upload = await fetch(data.presignedUrl, {
+    method: 'PUT',
+    body: file,
+    headers: {
+      'Content-Type': file.type,
+    },
+  })
+}
 ```

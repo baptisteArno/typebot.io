@@ -1,8 +1,10 @@
+import { ORPCError } from "@orpc/server";
 import * as Sentry from "@sentry/nextjs";
 import { deleteSession } from "@typebot.io/chat-session/queries/deleteSession";
 import { env } from "@typebot.io/env";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { after } from "next/server";
+import { z } from "zod";
 import {
   incomingWebhookErrorCodes,
   WEBHOOK_SUCCESS_MESSAGE,
@@ -11,14 +13,36 @@ import {
 import { extractErrorsFromEntry } from "../extractErrorsFromEntry";
 import { groupIncomingWebhookEntriesPerUser } from "../groupIncomingWebhookEntriesPerUser";
 import { resumeWhatsAppFlow } from "../resumeWhatsAppFlow";
-import type { WhatsAppWebhookRequestBody } from "../schemas";
+import { whatsAppWebhookRequestBodySchema } from "../schemas";
+import { verifyWhatsAppWebhookSignature } from "../verifyWhatsAppWebhookSignature";
 import { WhatsAppError } from "../WhatsAppError";
 
+export const previewWebhookRequestInputSchema = z.object({
+  headers: z.object({
+    "x-hub-signature-256": z.string().optional(),
+  }),
+  body: z.string(),
+});
+
 export const handlePreviewWebhookRequest = async ({
-  input: { entry },
+  input: { headers, body },
 }: {
-  input: WhatsAppWebhookRequestBody;
+  input: z.infer<typeof previewWebhookRequestInputSchema>;
 }) => {
+  if (
+    env.WHATSAPP_PREVIEW_APP_SECRET &&
+    !verifyWhatsAppWebhookSignature({
+      appSecret: env.WHATSAPP_PREVIEW_APP_SECRET,
+      rawBody: body,
+      signature: headers["x-hub-signature-256"],
+    })
+  )
+    throw new ORPCError("UNAUTHORIZED", {
+      message: "Invalid WhatsApp webhook signature",
+    });
+
+  const { entry } = parseWebhookBody(body);
+
   if (!env.WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID) {
     console.error("WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID is not defined");
     return WEBHOOK_SUCCESS_MESSAGE;
@@ -72,6 +96,16 @@ export const handlePreviewWebhookRequest = async ({
     }
   });
   return WEBHOOK_SUCCESS_MESSAGE;
+};
+
+const parseWebhookBody = (body: string) => {
+  try {
+    return whatsAppWebhookRequestBodySchema.parse(JSON.parse(body));
+  } catch {
+    throw new ORPCError("BAD_REQUEST", {
+      message: "Invalid WhatsApp webhook payload",
+    });
+  }
 };
 
 const handleUnknownError = async (err: unknown) => {

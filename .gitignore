@@ -65,9 +65,6 @@ snapshots
 **/test/.auth
 **/out-tsc
 
-opensrc/repos
-opensrc/sources.json
-
 .effect
 .workflow
 
@@ -84,3 +81,8 @@ vitest.config.*.timestamp*
 content-collections.d.ts.map
 content-collections.d.ts
 **/next-env.d.ts
+
+.pi
+
+.agents/skills/typebot-prod-db
+.claude/skills/typebot-prod-db

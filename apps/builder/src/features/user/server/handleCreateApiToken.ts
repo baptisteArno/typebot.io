@@ -1,4 +1,4 @@
-import { generateId } from "@typebot.io/lib/utils";
+import { generateApiToken, hashApiToken } from "@typebot.io/lib/apiToken";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
@@ -21,15 +21,16 @@ export const handleCreateApiToken = async ({
   context: { user: Pick<User, "id"> };
   input: z.infer<typeof createApiTokenInputSchema>;
 }) => {
+  const token = generateApiToken();
   const apiToken = await prisma.apiToken.create({
-    data: { name, ownerId: user.id, token: generateId(24) },
+    data: { name, ownerId: user.id, token: hashApiToken(token) },
   });
   return {
     apiToken: {
       id: apiToken.id,
       name: apiToken.name,
       createdAt: apiToken.createdAt,
-      token: apiToken.token,
+      token,
     },
   };
 };
