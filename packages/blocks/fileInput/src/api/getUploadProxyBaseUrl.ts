@@ -1,4 +1,9 @@
 import { env } from "@typebot.io/env";
+import { resolveUploadProxyBaseUrl } from "@typebot.io/lib/s3/resolveUploadProxyBaseUrl";
 
 export const getUploadProxyBaseUrl = (apiOrigin: string | undefined) =>
-  apiOrigin ?? env.NEXT_PUBLIC_VIEWER_URL[0] ?? env.NEXTAUTH_URL;
+  resolveUploadProxyBaseUrl({
+    publicBaseUrls: env.NEXT_PUBLIC_VIEWER_URL,
+    fallbackBaseUrl: env.NEXTAUTH_URL,
+    requestOrigin: apiOrigin,
+  });
