@@ -22,7 +22,7 @@ title: Manual
 ## Requirements
 
 - A PostgresDB database hosted somewhere. [Supabase](https://supabase.com/) offer great free options. But you can also setup your own database on your server.
-- A server with Node.js 20+, [bun](https://bun.sh/docs/installation), Nginx, and PM2 installed.
+- A server with Node.js 24.x, [bun](https://bun.sh/docs/installation), Nginx, and PM2 installed.
 - Experience in deploying Next.js applications with PM2. Check out [this guide](https://www.coderrocketfuel.com/article/how-to-deploy-a-next-js-website-to-a-digital-ocean-server/) for more information.
 
 ## Getting Started
@@ -43,7 +43,7 @@ cp .env.example .env
 
 <Note>
   The database user should have the `SUPERUSER` role. You can setup and migrate
-  the database with the `bun db:migrate` command.
+  the database with the `bunx nx db:migrate prisma` command.
 </Note>
 
 3. Install dependencies
@@ -76,44 +76,72 @@ bunx nx run-many -t build -p builder,viewer
 
 ### Deploy the builder
 
-Go into the builder directory and deploy the start script with PM2
+From the repository root, start the builder with PM2:
 
 ```sh
-cd apps/builder
-pm2 start --name=typebot bun -- start
-# or select a different port
-pm2 start --name=typebot bun -- start -p 3001
+pm2 start bunx --name=typebot-builder -- nx start builder -- -p 3000
 ```
 
 ### Deploy the viewer
 
-Go into the builder directory and deploy the start script with PM2
+From the repository root, start the viewer with PM2:
 
 ```sh
-cd apps/viewer
-pm2 start --name=typebot bun -- start
-# or select a different port
-pm2 start --name=typebot bun -- start -p 3002
+pm2 start bunx --name=typebot-viewer -- nx start viewer -- -p 3001
 ```
+
+<Note>
+  You can change the ports passed after `-p`. The PM2 commands must be run from
+  the repository root so Nx can resolve the workspace.
+</Note>
 
 ## Nginx configuration
 
-You can use the following configuration to serve the builder and viewer with Nginx. Make sure to replace the `server_name` with the respective domain name for your Typebot instance. Check out [this guide](https://www.coderrocketfuel.com/article/how-to-deploy-a-next-js-website-to-a-digital-ocean-server/) for a step-by-step guide on how to setup Nginx and PM2.
+You can use the following configuration to serve the builder and viewer with Nginx. Make sure to replace the `server_name` values with the respective domain names for your Typebot instance. They should match `NEXTAUTH_URL` and `NEXT_PUBLIC_VIEWER_URL`. Check out [this guide](https://www.coderrocketfuel.com/article/how-to-deploy-a-next-js-website-to-a-digital-ocean-server/) for a step-by-step guide on how to setup Nginx and PM2.
 
 ```nginx
 server {
      listen 80;
-     server_name typebot.example.com www.typebot.example.com;
+     server_name typebot.example.com;
      return 301 https://typebot.example.com$request_uri;
 }
 
 server {
     listen 443 ssl;
-    server_name typebot.example.com www.typebot.example.com;
+    server_name typebot.example.com;
 
     # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem; # ma>
-    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem; # >
+    ssl_certificate /etc/letsencrypt/live/typebot.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/typebot.example.com/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+    location ^~ / {
+         proxy_pass http://localhost:3000;
+         proxy_http_version 1.1;
+         proxy_set_header Upgrade $http_upgrade;
+         proxy_set_header Connection 'upgrade';
+         proxy_set_header Host $host;
+         proxy_set_header X-Real-IP $remote_addr;
+         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+         proxy_set_header X-Forwarded-Proto $scheme;
+         proxy_cache_bypass $http_upgrade;
+    }
+}
+
+server {
+     listen 80;
+     server_name bot.example.com;
+     return 301 https://bot.example.com$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name bot.example.com;
+
+    # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/bot.example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/bot.example.com/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 
@@ -127,6 +155,9 @@ server {
          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
          proxy_set_header X-Forwarded-Proto $scheme;
          proxy_cache_bypass $http_upgrade;
+
+         # Necessary to enable message streaming
+         proxy_buffering off;
     }
 }
 ```
