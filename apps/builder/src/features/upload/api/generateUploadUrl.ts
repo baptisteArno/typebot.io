@@ -7,6 +7,7 @@ import {
   parseUploadPathSegment,
   resolveUploadFileType,
 } from "@typebot.io/lib/s3/createUploadFilePath";
+import { resolveUploadProxyBaseUrl } from "@typebot.io/lib/s3/resolveUploadProxyBaseUrl";
 import { generateSignedUploadProxyUrl } from "@typebot.io/lib/s3/signedUploadProxy";
 import prisma from "@typebot.io/prisma";
 import { z } from "zod";
@@ -79,7 +80,11 @@ export const generateUploadUrl = authenticatedProcedure
       });
 
       return generateSignedUploadProxyUrl({
-        baseUrl: apiOrigin ?? env.NEXTAUTH_URL,
+        baseUrl: resolveUploadProxyBaseUrl({
+          publicBaseUrls: [env.NEXTAUTH_URL],
+          fallbackBaseUrl: env.NEXTAUTH_URL,
+          requestOrigin: apiOrigin,
+        }),
         fileType: resolvedFileType,
         filePath,
       });
