@@ -3,21 +3,17 @@ import { getChatCompletionStreamVarId } from "@typebot.io/ai/getChatCompletionSt
 import { parseChatCompletionOptions } from "@typebot.io/ai/parseChatCompletionOptions";
 import { createAction } from "@typebot.io/forge";
 import { auth } from "../auth";
-
-export const modelsFetcher = {
-  id: "fetchModels",
-} as const;
+import { groqModels } from "../constants";
 
 export const createChatCompletion = createAction({
   name: "Create chat completion",
   auth,
   options: parseChatCompletionOptions({
     models: {
-      type: "fetcher",
-      id: modelsFetcher.id,
+      type: "static",
+      models: groqModels,
     },
   }),
-  fetchers: [modelsFetcher],
   turnableInto: [
     {
       blockId: "openai",

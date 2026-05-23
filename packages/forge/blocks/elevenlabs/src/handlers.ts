@@ -3,13 +3,9 @@ import { createId } from "@typebot.io/lib/createId";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import got from "ky";
-import {
-  convertTextToSpeech,
-  modelsFetcher,
-  voicesFetcher,
-} from "./actions/convertTextToSpeech";
+import { convertTextToSpeech, voicesFetcher } from "./actions/convertTextToSpeech";
 import { baseUrl } from "./constants";
-import type { ModelsResponse, VoicesResponse } from "./type";
+import type { VoicesResponse } from "./type";
 
 export default [
   createActionHandler(convertTextToSpeech, {
@@ -74,39 +70,6 @@ export default [
             value: voice.voice_id,
             label: voice.name,
           })),
-        };
-      } catch (err) {
-        return {
-          error: await parseUnknownError({ err }),
-        };
-      }
-    },
-  ),
-  createFetcherHandler(
-    convertTextToSpeech,
-    modelsFetcher.id,
-    async ({ credentials }) => {
-      if (!credentials?.apiKey)
-        return {
-          data: [],
-        };
-
-      try {
-        const response = await got
-          .get(`${baseUrl}/v1/models`, {
-            headers: {
-              "xi-api-key": credentials.apiKey,
-            },
-          })
-          .json<ModelsResponse>();
-
-        return {
-          data: response
-            .filter((model) => model.can_do_text_to_speech)
-            .map((model) => ({
-              value: model.model_id,
-              label: model.name,
-            })),
         };
       } catch (err) {
         return {

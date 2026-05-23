@@ -3,10 +3,6 @@ import { auth } from "../auth";
 import { baseOptions } from "../baseOptions";
 import { openAIVoices, ttsModels } from "../constants";
 
-export const speechModelsFetcher = {
-  id: "fetchSpeechModels",
-} as const;
-
 export const createSpeech = createAction({
   name: "Create speech",
   auth,
@@ -14,7 +10,6 @@ export const createSpeech = createAction({
   options: option.object({
     model: option.string.meta({
       layout: {
-        fetcher: speechModelsFetcher.id,
         autoCompleteItems: ttsModels,
         placeholder: "Select a model",
       },
@@ -46,7 +41,6 @@ export const createSpeech = createAction({
       },
     }),
   }),
-  fetchers: [speechModelsFetcher],
   getSetVariableIds: (options) =>
     options.saveUrlInVariableId ? [options.saveUrlInVariableId] : [],
 });

@@ -1,12 +1,9 @@
 import { createAction, option } from "@typebot.io/forge";
 import { auth } from "../auth";
+import { elevenLabsModels } from "../constants";
 
 export const voicesFetcher = {
   id: "fetchVoices",
-} as const;
-
-export const modelsFetcher = {
-  id: "fetchModels",
 } as const;
 
 export const convertTextToSpeech = createAction({
@@ -29,7 +26,7 @@ export const convertTextToSpeech = createAction({
     }),
     modelId: option.string.meta({
       layout: {
-        fetcher: modelsFetcher.id,
+        autoCompleteItems: elevenLabsModels,
         label: "Model",
         placeholder: "Select a model",
       },
@@ -42,7 +39,7 @@ export const convertTextToSpeech = createAction({
       },
     }),
   }),
-  fetchers: [voicesFetcher, modelsFetcher],
+  fetchers: [voicesFetcher],
   getSetVariableIds: ({ saveUrlInVariableId }) =>
     saveUrlInVariableId ? [saveUrlInVariableId] : [],
 });
