@@ -2,6 +2,7 @@ import { describe, expect, it } from "bun:test";
 import {
   validateHttpReqHeaders,
   validateHttpReqUrl,
+  validateIPAddress,
 } from "./validateHttpReqUrl";
 
 const lookupHost = async (
@@ -166,6 +167,29 @@ describe("validateHttpReqUrl", () => {
 
     it("should block 0.0.0.0", async () => {
       await expectUrlToThrow("http://0.0.0.0", "0.0.0.0/8");
+    });
+
+    it("should block IPv6 unspecified addresses", async () => {
+      await expectUrlToThrow("http://[::]", "IPv6 unspecified address");
+      await expectUrlToThrow(
+        "http://[0:0:0:0:0:0:0:0]",
+        "IPv6 unspecified address",
+      );
+    });
+
+    it("should block direct IPv6 unspecified address variants", () => {
+      expect(() =>
+        validateIPAddress({ version: 6, address: "0:0:0:0:0:0:0:0" }),
+      ).toThrow("IPv6 unspecified address");
+      expect(() =>
+        validateIPAddress({
+          version: 6,
+          address: "0000:0000:0000:0000:0000:0000:0000:0000",
+        }),
+      ).toThrow("IPv6 unspecified address");
+      expect(() => validateIPAddress({ version: 6, address: "0::0" })).toThrow(
+        "IPv6 unspecified address",
+      );
     });
 
     it("should block IPv6 loopback ::1", async () => {
