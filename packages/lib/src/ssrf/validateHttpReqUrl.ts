@@ -14,6 +14,7 @@ const BLOCKED_HEADERS = [
  * - AWS/Cloud metadata services (169.254.169.254, metadata.google.internal, etc.)
  * - Private IP ranges (RFC1918: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)
  * - Localhost and loopback addresses (127.0.0.0/8, ::1)
+ * - Unspecified addresses (0.0.0.0/8, ::/128)
  * - Link-local addresses (169.254.0.0/16, fe80::/10)
  * - Various IP encoding bypass attempts (decimal, hex, octal)
  * - Hostnames that resolve to blocked IP ranges
@@ -207,9 +208,10 @@ type LookupHost = (
  *
  * When `allowPrivateRanges` is true (set by the caller for hostnames in
  * SSRF_ALLOWED_HOSTS), RFC1918 private ranges are skipped — but link-local,
- * loopback, 0.0.0.0/8 and IPv6 unique local ranges remain blocked. This
- * preserves protection against the metadata-service vector (169.254.169.254)
- * even for allowlisted hostnames whose DNS could be hijacked.
+ * loopback, 0.0.0.0/8, IPv6 unspecified, and IPv6 unique local ranges remain
+ * blocked. This preserves protection against the metadata-service vector
+ * (169.254.169.254) even for allowlisted hostnames whose DNS could be
+ * hijacked.
  *
  * @throws Error if the IP is in a blocked range
  */
@@ -302,6 +304,13 @@ export const validateIPAddress = (
       }
     }
 
+    // Block ::/128 (unspecified)
+    if (isIPv6UnspecifiedAddress(addr)) {
+      throw new Error(
+        "Access to IPv6 unspecified address (::/128) is not allowed for security reasons.",
+      );
+    }
+
     // Block ::1 (loopback)
     if (
       addr === "::1" ||
@@ -333,3 +342,26 @@ export const validateIPAddress = (
     }
   }
 };
+
+const isIPv6UnspecifiedAddress = (address: string) => {
+  const compressionIndex = address.indexOf("::");
+  const hasCompression = compressionIndex !== -1;
+
+  if (hasCompression && compressionIndex !== address.lastIndexOf("::")) {
+    return false;
+  }
+
+  const groups = address.split(":").filter((group) => group.length > 0);
+
+  if (!groups.every(isIPv6ZeroGroup)) {
+    return false;
+  }
+
+  if (!hasCompression) {
+    return groups.length === 8;
+  }
+
+  return groups.length < 8;
+};
+
+const isIPv6ZeroGroup = (group: string) => /^0{1,4}$/.test(group);
