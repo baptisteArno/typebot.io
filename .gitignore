@@ -84,5 +84,17 @@ content-collections.d.ts
 
 .pi
 
+.agents/skills/typebot-customer-support
+.agents/skills/typebot-discord-bot
+.agents/skills/typebot-posthog
 .agents/skills/typebot-prod-db
+.agents/skills/typebot-sentry
+.agents/skills/typebot-stripe
+.agents/skills/vercel
+.claude/skills/typebot-customer-support
+.claude/skills/typebot-discord-bot
+.claude/skills/typebot-posthog
 .claude/skills/typebot-prod-db
+.claude/skills/typebot-sentry
+.claude/skills/typebot-stripe
+.claude/skills/vercel
