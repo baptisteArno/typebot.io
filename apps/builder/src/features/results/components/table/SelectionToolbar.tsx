@@ -76,32 +76,18 @@ export const SelectionToolbar = ({
     const headerIds = parseColumnsOrder(
       typebot?.resultsTablePreferences?.columnsOrder,
       resultHeader,
-    )
-      .reduce<string[]>((currentHeaderIds, columnId) => {
-        if (
-          typebot?.resultsTablePreferences?.columnsVisibility[columnId] ===
-          false
-        )
-          return currentHeaderIds;
-        const columnLabel = resultHeader.find(
-          (headerCell) => headerCell.id === columnId,
-        )?.id;
-        if (!columnLabel) return currentHeaderIds;
-        currentHeaderIds.push(columnLabel);
+    ).reduce<string[]>((currentHeaderIds, columnId) => {
+      if (
+        typebot?.resultsTablePreferences?.columnsVisibility[columnId] === false
+      )
         return currentHeaderIds;
-      }, [])
-      .concat(
-        typebot?.resultsTablePreferences?.columnsOrder
-          ? resultHeader
-              .filter(
-                (headerCell) =>
-                  !typebot?.resultsTablePreferences?.columnsOrder.includes(
-                    headerCell.id,
-                  ),
-              )
-              .map((headerCell) => headerCell.id)
-          : [],
-      );
+      const columnLabel = resultHeader.find(
+        (headerCell) => headerCell.id === columnId,
+      )?.id;
+      if (!columnLabel) return currentHeaderIds;
+      currentHeaderIds.push(columnLabel);
+      return currentHeaderIds;
+    }, []);
 
     const data = dataToUnparse.map<{ [key: string]: string }>((data) => {
       const newObject: { [key: string]: string } = {};
