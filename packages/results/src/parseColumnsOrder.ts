@@ -4,8 +4,16 @@ export const parseColumnsOrder = (
   existingOrder: string[] | undefined,
   resultHeader: ResultHeaderCell[],
 ) => {
-  return existingOrder?.at(0) === "select"
-    ? // Old format potentially broken, reset to default
-      ["select", ...resultHeader.map((h) => h.id), "logs"]
-    : ["select", ...(existingOrder ?? resultHeader.map((h) => h.id)), "logs"];
+  const resultHeaderIds = resultHeader.map((header) => header.id);
+
+  if (existingOrder?.at(0) === "select")
+    // Old format potentially broken, reset to default
+    return ["select", ...resultHeaderIds, "logs"];
+
+  const orderedHeaderIds = existingOrder ?? resultHeaderIds;
+  const missingHeaderIds = resultHeaderIds.filter(
+    (headerId) => !orderedHeaderIds.includes(headerId),
+  );
+
+  return ["select", ...orderedHeaderIds, ...missingHeaderIds, "logs"];
 };
