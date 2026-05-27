@@ -8,6 +8,9 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
+      "path": "../settings/tsconfig.lib.json"
+    },
+    {
       "path": "../embeds/react/tsconfig.lib.json"
     },
     {

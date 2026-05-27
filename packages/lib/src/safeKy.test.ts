@@ -15,9 +15,23 @@ describe("safeKy", () => {
     expect(safeKy.get("http://10.0.0.1/internal")).rejects.toThrow(
       "10.0.0.0/8",
     );
-    expect(safeKy.get("http://192.168.1.1")).rejects.toThrow(
-      "192.168.0.0/16",
-    );
+    expect(safeKy.get("http://192.168.1.1")).rejects.toThrow("192.168.0.0/16");
+  });
+
+  it("should block requests to IPv6 unspecified addresses", async () => {
+    const server = Bun.serve({
+      hostname: "::",
+      port: 0,
+      fetch: () => new Response("LOCAL-SSRF-MARKER"),
+    });
+
+    try {
+      await expect(
+        safeKy.get(`http://[::]:${server.port}/probe`),
+      ).rejects.toThrow("IPv6 unspecified address");
+    } finally {
+      server.stop();
+    }
   });
 
   it("should block requests to cloud metadata endpoints", async () => {

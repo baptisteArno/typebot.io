@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import { env } from "@typebot.io/env";
+import { parseS3PublicBaseUrl } from "@typebot.io/lib/s3/parseS3PublicBaseUrl";
 import { isDefined } from "@typebot.io/lib/utils";
 import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions";
 import { parse } from "papaparse";
@@ -48,7 +49,7 @@ test("should work as expected", async ({ page, browser }) => {
   const file = readFileSync(downloadPath as string).toString();
   const { data } = parse(file);
   expect(data).toHaveLength(2);
-  expect((data[1] as unknown[])[1]).toContain(env.S3_ENDPOINT);
+  expect((data[1] as unknown[])[1]).toContain(parseS3PublicBaseUrl());
 
   const urls = (
     await Promise.all(
@@ -64,10 +65,19 @@ test("should work as expected", async ({ page, browser }) => {
   await page2.goto(urls[0]);
   await expect(page2.locator("pre")).toBeVisible();
 
-  page.getByRole("button", { name: "Delete" }).click();
+  await page.getByRole("button", { name: "Delete" }).click();
   await page.locator('button >> text="Delete"').click();
   await expect(page.locator('text="api.json"')).toBeHidden();
-  const page3 = await browser.newPage();
-  await page3.goto(urls[0]);
-  await expect(page3.locator("pre")).toBeHidden();
+
+  await expect
+    .poll(
+      async () => {
+        const res = await page.request.get(`${urls[0]}?_cb=${Date.now()}`, {
+          headers: { "Cache-Control": "no-cache", Pragma: "no-cache" },
+        });
+        return res.status();
+      },
+      { timeout: 15_000, intervals: [500, 1000, 2000] },
+    )
+    .not.toBe(200);
 });

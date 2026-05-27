@@ -20,11 +20,43 @@ type RouteContext<_T> = {
   params: Promise<{ rest?: string[] }>;
 };
 
+const RAW_REQUEST_CONTEXT = "RAW_REQUEST_CONTEXT";
+
 const handler = new OpenAPIHandler(appRouter, {
   interceptors: [
     onError((error) => {
       console.error(error);
     }),
+  ],
+  adapterInterceptors: [
+    (options) =>
+      options.next({
+        ...options,
+        context: Object.assign({}, options.context, {
+          [RAW_REQUEST_CONTEXT]: {
+            fetchRequest: options.request,
+          },
+        }),
+      }),
+  ],
+  rootInterceptors: [
+    (options) => {
+      const needsRawBody =
+        options.request.url.pathname.includes("/whatsapp/") &&
+        options.request.url.pathname.endsWith("/webhook");
+      if (!needsRawBody) return options.next();
+
+      const rawContext = Reflect.get(options.context, RAW_REQUEST_CONTEXT);
+      if (!isRawRequestContext(rawContext)) return options.next();
+
+      return options.next({
+        ...options,
+        request: {
+          ...options.request,
+          body: () => rawContext.fetchRequest.text(),
+        },
+      });
+    },
   ],
   plugins: [
     new CORSPlugin(),
@@ -74,6 +106,14 @@ const handler = new OpenAPIHandler(appRouter, {
     }),
   ],
 });
+
+const isRawRequestContext = (
+  value: unknown,
+): value is { fetchRequest: Request } =>
+  typeof value === "object" &&
+  value !== null &&
+  "fetchRequest" in value &&
+  Reflect.get(value, "fetchRequest") instanceof Request;
 
 async function handleRequest(
   request: NextRequest,

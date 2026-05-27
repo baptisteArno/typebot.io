@@ -85,6 +85,16 @@ const baseEnv = {
       )
       .default("FREE"),
     TYPEBOT_DEBUG: boolean.optional().default(false),
+    SSRF_ALLOWED_HOSTS: z
+      .string()
+      .min(1)
+      .transform((val) =>
+        val
+          .split(",")
+          .map((s) => s.trim().toLowerCase())
+          .filter(Boolean),
+      )
+      .optional(),
     CHAT_API_TIMEOUT: z.coerce.number().optional(),
     RADAR_HIGH_RISK_KEYWORDS: z
       .string()
@@ -369,6 +379,7 @@ const whatsAppEnv = {
   server: {
     META_SYSTEM_USER_TOKEN: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID: z.string().min(1).optional(),
+    WHATSAPP_PREVIEW_APP_SECRET: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_TEMPLATE_NAME: z.string().min(1).optional(),
     WHATSAPP_PREVIEW_TEMPLATE_LANG: z
       .string()

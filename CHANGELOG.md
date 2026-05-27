@@ -1,5 +1,81 @@
 # Changelog
 
+<a name="3.17.1"></a>
+## 3.17.1 (2026-05-22)
+
+### Fixed
+
+- 🐛 Fix upload proxy public URL (#2508) [[9d6708b](https://github.com/baptisteArno/typebot.io/commit/9d6708bbeebc97dc9d933650ad4a8de725179b4f)]
+
+### Content
+
+- 📝 Update manual deploy docs for Nx (#2507) [[5f01ecf](https://github.com/baptisteArno/typebot.io/commit/5f01ecff64667f9ded0c88bdb835158fe4bf3b2e)]
+
+<a name="3.17.0"></a>
+## 3.17.0 (2026-05-21)
+
+### New features
+
+- ✨ Add Ask Model action using OpenAI Responses API (#2455) [[20d11a5](https://github.com/baptisteArno/typebot.io/commit/20d11a5678addfe98831d3526c05f00b5fb49563)]
+- 👌 Add time filter to results export and fix CSV download on R2 (#2449) [[90bc7a9](https://github.com/baptisteArno/typebot.io/commit/90bc7a94efd1c6eb9bc639f9276526a16413490b)]
+- 👌 (openai) Add Ask Model file search controls (#2483) [[fa7cc8c](https://github.com/baptisteArno/typebot.io/commit/fa7cc8c3f239cc2c0041b971095a6e28019f86c0)]
+
+### UI/UX Improvements
+
+- 💅 Fix close button position in modal (#2476) [[53e90c4](https://github.com/baptisteArno/typebot.io/commit/53e90c497d70125c11f5158332aaecbca3d46dd4)]
+
+### Fixed
+
+- 🐛 Handle GA script load failure to prevent bot from hanging (#2446) [[d3c15f3](https://github.com/baptisteArno/typebot.io/commit/d3c15f32c88ce685abde336debff67dbae50289a)]
+- 🐛 Fix PostHog tracking by updating cookie domain to typebot.com (#2447) [[55b2900](https://github.com/baptisteArno/typebot.io/commit/55b290043b48e12445ee93785dc3ca999910dbb1)]
+- 🐛 Add missing date-fns dependencies to @typebot.io/results [[e1530b6](https://github.com/baptisteArno/typebot.io/commit/e1530b6f905a5d43553646d0e61ef01a86fda813)]
+- 🐛 Fix transcript compute crash on choice items with session-var display condition (#2468) [[050f906](https://github.com/baptisteArno/typebot.io/commit/050f9061d36df99b08b53ce82eebe8c4564da73e)]
+- 🐛 Fix monthly cron tx timeout when deleting archived typebots (#2481) [[85eb843](https://github.com/baptisteArno/typebot.io/commit/85eb843c420e2a3d4f1e4a3ed6f1b71bd6d3bea9)]
+- 🐛 Fix Pexels video picker infinite loading loop (#2479) [[b72a374](https://github.com/baptisteArno/typebot.io/commit/b72a37438fe88fd94e91accc54c718f8e469b129)]
+- 🐛 Fix WhatsApp webhook verification (#2498) [[e296c87](https://github.com/baptisteArno/typebot.io/commit/e296c870bc361369c3cd902d9100190b6b900701)]
+- 🐛 Fix PartyKit deploy workflow gate (#2500) [[c549cec](https://github.com/baptisteArno/typebot.io/commit/c549cec6518232e2d4b735d0cdf7af2937bb7234)]
+
+### Security
+
+- 🐛 Fix credential access control and remove vulnerable S3 upload endpoint (#2459) [[7ae4c00](https://github.com/baptisteArno/typebot.io/commit/7ae4c007d0987d2ca907b47e1b7418db62b8a157)]
+- 🐛 Fix SSRF bypass via DNS rebinding in HTTP request and script fetch flows (#2461) [[b25c41b](https://github.com/baptisteArno/typebot.io/commit/b25c41b02b1aab093b9d4b3b4ad1ce6d85556816)]
+- 🐛 Fix SSRF safe dispatcher DNS lookup handling (#2462) [[892870f](https://github.com/baptisteArno/typebot.io/commit/892870ff862463d204ecbd9699f68b420bda7d4e)]
+- 🔒️ Add SSRF_ALLOWED_HOSTS env for self-hosted internal APIs (#2474) [[5b5f82d](https://github.com/baptisteArno/typebot.io/commit/5b5f82d6c0913b95a7d4517a5c5d2582c9e7e255)]
+- 🔒️ Upgrade vulnerable deps (ai v5, nodemailer v8, otel sdk-node 0.217) (#2491) [[6f289f6](https://github.com/baptisteArno/typebot.io/commit/6f289f647fc09f4724a98185f44177376b9b8876)]
+- 🔧 Hash API tokens (#2492) [[fdcc178](https://github.com/baptisteArno/typebot.io/commit/fdcc1784c9318904c180703e1ef4f1e06e6dd50e)]
+- 🐛 Sanitize CSV exports against formula injection (#2493) [[89682dd](https://github.com/baptisteArno/typebot.io/commit/89682dd4ad56f33263332fa377beb01ad616c27c)]
+- 🐛 Prevent cross-typebot webhook resume IDOR (#2494) [[6f915c3](https://github.com/baptisteArno/typebot.io/commit/6f915c3096bd43d4a913f0f2c7a92e8463f81a86)]
+- 🐛 Fix WhatsApp status forwarding SSRF protection (#2497) [[30cbc61](https://github.com/baptisteArno/typebot.io/commit/30cbc616e00efabb193c3221b36a0d417152592c)]
+- 🐛 Fix WhatsApp preview webhook authorization (#2499) [[36a6186](https://github.com/baptisteArno/typebot.io/commit/36a618610174fd168fb255d9c8ecc0d2cf61a192)]
+- 🐛 Fix Google Sheets OAuth callback authorization (#2501) [[c0ffd82](https://github.com/baptisteArno/typebot.io/commit/c0ffd825e2f4ee2256a157fd085fb624dcede625)]
+- 🐛 Fix unsafe upload URL generation (#2502) [[a64e82b](https://github.com/baptisteArno/typebot.io/commit/a64e82b612aa83dee99a4b96a685c18ee312a3b0)]
+
+### Content
+
+- 📝 Add chatbot automation blog post (#2443) [[0969c4e](https://github.com/baptisteArno/typebot.io/commit/0969c4e5256fb14ed12cf7ae4964a39bb64bb695)]
+- 📝 Add "Whatsapp Automation Chatbot" blog post (#2444) [[b145784](https://github.com/baptisteArno/typebot.io/commit/b1457842e13418030a2b14bab905cd86794a5408)]
+- 📝 Update blog posts links (#2445) [[f9d2a75](https://github.com/baptisteArno/typebot.io/commit/f9d2a75127286dd36883254a79b9331e4cb8dbac)]
+- 📝 Remove urgent support section from help docs (#2464) [[da165df](https://github.com/baptisteArno/typebot.io/commit/da165dfebc26101b3abb07c209e27a833e99ea7c)]
+- 📝 Fill common docs gaps (logs, user commands, downgrade, persistent input) (#2466) [[70b7fdf](https://github.com/baptisteArno/typebot.io/commit/70b7fdfe79410e0982606c59642d7b91a10e38a7)]
+- 📝 Add Pro-only callout, workspace switcher doc, external messaging guide (#2470) [[b9002d8](https://github.com/baptisteArno/typebot.io/commit/b9002d8bc111243e7a2b838ce399ff0ba3f4a2a0)]
+- 📝 Document graph edge pitfall and theme republish requirement (#2471) [[60a77f0](https://github.com/baptisteArno/typebot.io/commit/60a77f0296fe4a3f3b21691f152c0734e3ae2b93)]
+- 📝 Document VAT ID for B2B reverse charge (#2473) [[3e98f92](https://github.com/baptisteArno/typebot.io/commit/3e98f921d677c21492f6990d6cd0cff4cff84454)]
+- 📝 Document status page and analytics completion criteria (#2480) [[30682a2](https://github.com/baptisteArno/typebot.io/commit/30682a258ac1f14f3ac6f7801fa6b8c0982f16d6)]
+- 📝 Add new blog posts batch (#2484) [[85a1c37](https://github.com/baptisteArno/typebot.io/commit/85a1c37ba74ad41407e8efc326f24fbd9ccce607)]
+- 📝 Added faq dir + cover image to articles (#2485) [[367de01](https://github.com/baptisteArno/typebot.io/commit/367de01a5dc993f17ef055286acf044b8b22be72)]
+- 📝 Update blog content (#2489) [[77fd228](https://github.com/baptisteArno/typebot.io/commit/77fd228c9612359af36d9cb12bd923bb463cc627)]
+- 📝 Add auth failure troubleshooting section to self-hosting docs (#2495) [[091db9e](https://github.com/baptisteArno/typebot.io/commit/091db9e06f3830b90c3f71e6abf4f1e97a3cf125)]
+
+### Internal
+
+- 🔧 Upgrade Claude Code GitHub Actions workflows (#2460) [[6b30ff3](https://github.com/baptisteArno/typebot.io/commit/6b30ff38fe98618e5b4dfb07ba31629099cfb3b6)]
+- 🐛 Fix missing workspace membership check in getSheets endpoint (#2467) [[91d2a98](https://github.com/baptisteArno/typebot.io/commit/91d2a986d942232b98c066fc460d7c48c04a464b)]
+- 🐛 Fix Google Sheets picker 401 by setting Cloud Project AppId (#2486) [[8e67415](https://github.com/baptisteArno/typebot.io/commit/8e674157661beab5704df3a2c79faed6a7fe0e88)]
+- 🐛 Add trigger_onepick OAuth param for Google Sheets picker (#2487) [[babe333](https://github.com/baptisteArno/typebot.io/commit/babe333c0ea4faa884bcf6fddc0bda556c626c84)]
+- ⏪ Revert Google Sheets picker fixes (#2486, #2487) (#2488) [[67c7c86](https://github.com/baptisteArno/typebot.io/commit/67c7c86b1a9cb255260d562446ba5010327382b7)]
+- 📝 Update commit skill and ignore .pi [[060033b](https://github.com/baptisteArno/typebot.io/commit/060033b8cf029b0a124f00d77d5d52b1a52c3dfd)]
+- 🔧 Add WhatsApp status forward URL update script (#2496) [[5861031](https://github.com/baptisteArno/typebot.io/commit/5861031f72c0d6738dd6c60c68dc522984457a64)]
+
 <a name="3.16.0"></a>
 ## 3.16.0 (2026-04-08)
 
@@ -5286,5 +5362,4 @@ Before upgrading, please make sure to read all the [associated breaking changes]
 -  Add authentication [[5e14a94](https://github.com/baptisteArno/typebot.io/commit/5e14a94dea907712b6bb43ec963e04355f4a3cb5)]
 -  Set node-linker to node_modules [[68dd491](https://github.com/baptisteArno/typebot.io/commit/68dd491eca6f812c60383c49ae2ad376513d4264)]
 -  Init project [[6fe9807](https://github.com/baptisteArno/typebot.io/commit/6fe9807fbe460efe673ad19b0518faca546dcbff)]
-
 

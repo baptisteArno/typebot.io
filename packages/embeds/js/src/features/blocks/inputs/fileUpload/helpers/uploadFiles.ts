@@ -1,3 +1,4 @@
+import { uploadFileWithPresignedPostData } from "@typebot.io/lib/s3/uploadFileWithPresignedPostData";
 import { sendRequest } from "@typebot.io/lib/utils";
 
 type UploadFileProps = {
@@ -33,6 +34,7 @@ export const uploadFiles = async ({
     i += 1;
     const { data, error } = await sendRequest<{
       presignedUrl: string;
+      formData?: Record<string, string>;
       fileUrl: string;
       fileType?: string;
       maxFileSize?: number;
@@ -55,13 +57,10 @@ export const uploadFiles = async ({
 
     if (!data?.presignedUrl) continue;
 
-    const upload = await fetch(data.presignedUrl, {
-      method: "PUT",
-      body: file,
-      headers: {
-        "Content-Type": file.type,
-        "Cache-Control": "public, max-age=86400",
-      },
+    const upload = await uploadFileWithPresignedPostData({
+      presignedUrl: data.presignedUrl,
+      formData: data.formData,
+      file,
     });
 
     if (!upload.ok) continue;

@@ -25,11 +25,11 @@
     "@googleapis/gmail": "^14.0.1",
     "google-auth-library": "^10.1.0",
     "@typebot.io/lib": "workspace:*",
-    "nodemailer": "^7.0.6",
+    "nodemailer": "^8.0.5",
     "ky": "^1.2.4"
   },
   "devDependencies": {
-    "@types/nodemailer": "^7.0.1",
+    "@types/nodemailer": "^8.0.0",
     "@types/react": "^19.2.14"
   }
 }

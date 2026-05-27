@@ -97,7 +97,7 @@ export const handleGetTypebot = async ({
           publicId: typebot.publicId === null ? null : typebot.publicId,
           customDomain: typebot.customDomain,
           isClosed: typebot.isClosed,
-          whatsAppCredentialsId: typebot.whatsAppCredentialsId ?? undefined,
+          whatsAppCredentialsId: typebot.whatsAppCredentialsId,
         },
       });
 

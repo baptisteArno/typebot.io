@@ -12,7 +12,6 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "ai": "3.3.15",
     "openai": "4.81.0"
   },
   "scripts": {}

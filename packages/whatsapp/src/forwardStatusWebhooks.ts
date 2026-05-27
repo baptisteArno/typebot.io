@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
-import { ky } from "@typebot.io/lib/ky";
+import { safeKy } from "@typebot.io/lib/ky";
 import prisma from "@typebot.io/prisma";
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import type { WhatsAppWebhookRequestBody } from "./schemas";
@@ -65,7 +65,7 @@ export const forwardStatusWebhooks = async ({
 
     for (const url of forwardingUrls) {
       try {
-        await ky.post(url, {
+        await safeKy.post(url, {
           json: payload,
         });
         console.log(`Forwarded status to ${url}`);

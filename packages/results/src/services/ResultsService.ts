@@ -7,12 +7,10 @@ export class ResultsService extends ServiceMap.Service<
   {
     count: PrismaService["Service"]["result"]["count"];
     findMany: PrismaService["Service"]["result"]["findMany"];
-    findDistinctAnswerBlockIds: (
-      input: {
-        typebotId: string;
-        createdAt?: Prisma.Prisma.DateTimeFilter;
-      },
-    ) => Effect.Effect<string[], PrismaFindError>;
+    findDistinctAnswerBlockIds: (input: {
+      typebotId: string;
+      createdAt?: Prisma.Prisma.DateTimeFilter;
+    }) => Effect.Effect<string[], PrismaFindError>;
   }
 >()("@typebot/ResultsService") {
   static readonly layer = Layer.effect(

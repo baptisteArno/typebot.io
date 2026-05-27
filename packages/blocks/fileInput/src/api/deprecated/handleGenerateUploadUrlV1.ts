@@ -4,9 +4,16 @@ import { getSession } from "@typebot.io/chat-session/queries/getSession";
 import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
-import { generatePresignedPutUrl } from "@typebot.io/lib/s3/generatePresignedPutUrl";
+import {
+  createUploadFileName,
+  resolveStoredUploadFileType,
+  resolveUploadContentDisposition,
+  resolveUploadFileType,
+} from "@typebot.io/lib/s3/createUploadFilePath";
+import { generateSignedUploadProxyUrl } from "@typebot.io/lib/s3/signedUploadProxy";
 import prisma from "@typebot.io/prisma";
 import { z } from "zod";
+import { getUploadProxyBaseUrl } from "../getUploadProxyBaseUrl";
 
 export const generateUploadUrlV1InputSchema = z.object({
   filePathProps: z
@@ -28,14 +35,20 @@ export const generateUploadUrlV1InputSchema = z.object({
 
 export const handleGenerateUploadUrlV1 = async ({
   input: { filePathProps, fileType, fileSize },
+  context,
 }: {
   input: z.infer<typeof generateUploadUrlV1InputSchema>;
+  context?: { apiOrigin?: string };
 }) => {
   if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
     throw new ORPCError("INTERNAL_SERVER_ERROR", {
       message:
         "S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY",
     });
+
+  const resolvedFileType = resolveUploadFileType(fileType);
+
+  const uploadFileName = createUploadFileName(resolvedFileType);
 
   if ("typebotId" in filePathProps) {
     const publicTypebot = await prisma.publicTypebot.findFirst({
@@ -60,8 +73,6 @@ export const handleGenerateUploadUrlV1 = async ({
         message: "Can't find workspaceId",
       });
 
-    const filePath = `public/workspaces/${workspaceId}/typebots/${filePathProps.typebotId}/results/${filePathProps.resultId}/${filePathProps.fileName}`;
-
     const fileUploadBlock = parseGroups(publicTypebot.groups, {
       typebotVersion: publicTypebot.version,
     })
@@ -82,11 +93,16 @@ export const handleGenerateUploadUrlV1 = async ({
         message: `File size exceeds the ${maxFileSize}MB limit`,
       });
 
-    return generatePresignedPutUrl({
-      fileType,
-      filePath,
-      maxFileSize,
-    });
+    return {
+      ...generateSignedUploadProxyUrl({
+        baseUrl: getUploadProxyBaseUrl(context?.apiOrigin),
+        fileType: resolveStoredUploadFileType(resolvedFileType),
+        contentDisposition: resolveUploadContentDisposition(resolvedFileType),
+        filePath: `public/workspaces/${workspaceId}/typebots/${filePathProps.typebotId}/results/${filePathProps.resultId}/${uploadFileName}`,
+        maxFileSize,
+      }),
+      fileType: resolvedFileType,
+    };
   }
 
   const session = await getSession(filePathProps.sessionId);
@@ -138,16 +154,16 @@ export const handleGenerateUploadUrlV1 = async ({
     });
 
   const resultId = session.state.typebotsQueue[0].resultId;
+  const visibility =
+    fileUploadBlock.options?.visibility === "Private" ? "private" : "public";
 
-  const filePath = `${
-    fileUploadBlock.options?.visibility === "Private" ? "private" : "public"
-  }/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${
-    filePathProps.fileName
-  }`;
+  const filePath = resultId
+    ? `${visibility}/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${uploadFileName}`
+    : `public/tmp/${typebotId}/${uploadFileName}`;
 
   const maxFileSize =
     fileUploadBlock.options && "sizeLimit" in fileUploadBlock.options
-      ? (fileUploadBlock.options.sizeLimit as number)
+      ? fileUploadBlock.options.sizeLimit
       : env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE;
 
   if (maxFileSize && fileSize && fileSize > maxFileSize * 1024 * 1024)
@@ -155,19 +171,27 @@ export const handleGenerateUploadUrlV1 = async ({
       message: `File size exceeds the ${maxFileSize}MB limit`,
     });
 
-  const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType, maxFileSize: maxFileSizeMB } = await generatePresignedPutUrl({
-    fileType,
+  const {
+    presignedUrl,
+    fileUrl: defaultFileUrl,
+    formData,
+    maxFileSize: maxFileSizeMB,
+  } = generateSignedUploadProxyUrl({
+    baseUrl: getUploadProxyBaseUrl(context?.apiOrigin),
+    fileType: resolveStoredUploadFileType(resolvedFileType),
+    contentDisposition: resolveUploadContentDisposition(resolvedFileType),
     filePath,
     maxFileSize,
   });
 
   return {
     presignedUrl,
+    formData,
     fileType: resolvedFileType,
     maxFileSize: maxFileSizeMB,
     fileUrl:
-      fileUploadBlock.options?.visibility === "Private"
-        ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${filePathProps.fileName}`
+      fileUploadBlock.options?.visibility === "Private" && resultId
+        ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/${uploadFileName}`
         : defaultFileUrl,
   };
 };

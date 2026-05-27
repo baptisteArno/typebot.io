@@ -5,8 +5,15 @@ export default function Page() {
   const { query } = useRouter();
 
   useEffect(() => {
-    if (!query.code) return;
-    window.opener.postMessage({ type: "oauth", code: query.code }, "*");
+    const code = typeof query.code === "string" ? query.code : undefined;
+    const error = typeof query.error === "string" ? query.error : undefined;
+    const state = typeof query.state === "string" ? query.state : undefined;
+
+    if (!code && !error) return;
+    window.opener?.postMessage(
+      { type: "oauth", code, error, state },
+      window.location.origin,
+    );
     window.close();
   }, [query]);
 

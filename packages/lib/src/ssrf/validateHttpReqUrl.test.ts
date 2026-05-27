@@ -2,6 +2,7 @@ import { describe, expect, it } from "bun:test";
 import {
   validateHttpReqHeaders,
   validateHttpReqUrl,
+  validateIPAddress,
 } from "./validateHttpReqUrl";
 
 const lookupHost = async (
@@ -25,6 +26,26 @@ const lookupHost = async (
 
   if (hostname === "internal.example") {
     return [{ address: "10.0.0.5", family: 4 }];
+  }
+
+  if (hostname === "internal.corp.example") {
+    return [{ address: "10.5.5.5", family: 4 }];
+  }
+
+  if (hostname === "172.corp.example") {
+    return [{ address: "172.20.10.5", family: 4 }];
+  }
+
+  if (hostname === "192.corp.example") {
+    return [{ address: "192.168.1.10", family: 4 }];
+  }
+
+  if (hostname === "hijacked.allowlisted.example") {
+    return [{ address: "169.254.169.254", family: 4 }];
+  }
+
+  if (hostname === "hijacked-loopback.example") {
+    return [{ address: "127.0.0.1", family: 4 }];
   }
 
   throw new Error(`Unexpected hostname lookup: ${hostname}`);
@@ -146,6 +167,29 @@ describe("validateHttpReqUrl", () => {
 
     it("should block 0.0.0.0", async () => {
       await expectUrlToThrow("http://0.0.0.0", "0.0.0.0/8");
+    });
+
+    it("should block IPv6 unspecified addresses", async () => {
+      await expectUrlToThrow("http://[::]", "IPv6 unspecified address");
+      await expectUrlToThrow(
+        "http://[0:0:0:0:0:0:0:0]",
+        "IPv6 unspecified address",
+      );
+    });
+
+    it("should block direct IPv6 unspecified address variants", () => {
+      expect(() =>
+        validateIPAddress({ version: 6, address: "0:0:0:0:0:0:0:0" }),
+      ).toThrow("IPv6 unspecified address");
+      expect(() =>
+        validateIPAddress({
+          version: 6,
+          address: "0000:0000:0000:0000:0000:0000:0000:0000",
+        }),
+      ).toThrow("IPv6 unspecified address");
+      expect(() => validateIPAddress({ version: 6, address: "0::0" })).toThrow(
+        "IPv6 unspecified address",
+      );
     });
 
     it("should block IPv6 loopback ::1", async () => {
@@ -370,5 +414,156 @@ describe("validateHttpReqUrl - IPv6-mapped IPv4", () => {
       "http://[0:0:0:0:0:ffff:169.254.169.254]",
       "link-local addresses",
     );
+  });
+});
+
+describe("validateHttpReqUrl - SSRF_ALLOWED_HOSTS allowlist", () => {
+  const allowedHosts = [
+    "internal.corp.example",
+    "172.corp.example",
+    "192.corp.example",
+    "hijacked.allowlisted.example",
+    "hijacked-loopback.example",
+    "10.0.0.5",
+  ];
+
+  describe("allows RFC1918 ranges for allowlisted hostnames", () => {
+    it("should allow hostname resolving to 10.0.0.0/8 when listed", async () => {
+      await expect(
+        validateHttpReqUrl("http://internal.corp.example/api", {
+          lookupHost,
+          allowedHosts,
+        }),
+      ).resolves.toBeUndefined();
+    });
+
+    it("should allow hostname resolving to 172.16.0.0/12 when listed", async () => {
+      await expect(
+        validateHttpReqUrl("http://172.corp.example/api", {
+          lookupHost,
+          allowedHosts,
+        }),
+      ).resolves.toBeUndefined();
+    });
+
+    it("should allow hostname resolving to 192.168.0.0/16 when listed", async () => {
+      await expect(
+        validateHttpReqUrl("http://192.corp.example/api", {
+          lookupHost,
+          allowedHosts,
+        }),
+      ).resolves.toBeUndefined();
+    });
+
+    it("should allow direct RFC1918 IP literal when the IP itself is listed", async () => {
+      await expect(
+        validateHttpReqUrl("http://10.0.0.5/api", {
+          lookupHost,
+          allowedHosts,
+        }),
+      ).resolves.toBeUndefined();
+    });
+  });
+
+  describe("preserves protections that cannot be opted out of", () => {
+    it("should still block link-local 169.254.0.0/16 even for allowlisted host (CVE vector)", async () => {
+      // Defense against DNS hijacking: even if an attacker controls DNS for
+      // an allowlisted hostname and points it to the metadata service IP,
+      // the link-local check still fires.
+      await expect(
+        validateHttpReqUrl("http://hijacked.allowlisted.example/api", {
+          lookupHost,
+          allowedHosts,
+        }),
+      ).rejects.toThrow("link-local addresses");
+    });
+
+    it("should still block loopback 127.0.0.0/8 for allowlisted host", async () => {
+      await expect(
+        validateHttpReqUrl("http://hijacked-loopback.example/api", {
+          lookupHost,
+          allowedHosts,
+        }),
+      ).rejects.toThrow("loopback addresses");
+    });
+
+    it("should still block direct 169.254.169.254 even if listed as IP", async () => {
+      await expect(
+        validateHttpReqUrl("http://169.254.169.254/", {
+          lookupHost,
+          allowedHosts: ["169.254.169.254"],
+        }),
+      ).rejects.toThrow("link-local addresses");
+    });
+
+    it("should still block metadata.google.internal even when allowlisted", async () => {
+      await expect(
+        validateHttpReqUrl("http://metadata.google.internal/", {
+          lookupHost,
+          allowedHosts: ["metadata.google.internal"],
+        }),
+      ).rejects.toThrow("cloud metadata services");
+    });
+
+    it("should still block decimal-encoded metadata IP even when listed", async () => {
+      // URL parser converts 2852039166 to 169.254.169.254; the link-local
+      // check fires before any allowlist branch.
+      await expect(
+        validateHttpReqUrl("http://2852039166/", {
+          lookupHost,
+          allowedHosts: ["2852039166"],
+        }),
+      ).rejects.toThrow();
+    });
+  });
+
+  describe("preserves default behavior when no allowlist is configured", () => {
+    it("should block 10.x.x.x when allowedHosts is undefined", async () => {
+      await expect(
+        validateHttpReqUrl("http://internal.corp.example/api", {
+          lookupHost,
+        }),
+      ).rejects.toThrow("10.0.0.0/8");
+    });
+
+    it("should block 10.x.x.x when allowedHosts is empty", async () => {
+      await expect(
+        validateHttpReqUrl("http://internal.corp.example/api", {
+          lookupHost,
+          allowedHosts: [],
+        }),
+      ).rejects.toThrow("10.0.0.0/8");
+    });
+
+    it("should block hostname not present in allowlist", async () => {
+      await expect(
+        validateHttpReqUrl("http://internal.example/api", {
+          lookupHost,
+          allowedHosts: ["different-host.example"],
+        }),
+      ).rejects.toThrow("10.0.0.0/8");
+    });
+  });
+
+  describe("hostname matching semantics", () => {
+    it("should match hostnames case-insensitively (URL parser normalizes hostname to lowercase)", async () => {
+      await expect(
+        validateHttpReqUrl("http://INTERNAL.CORP.EXAMPLE/api", {
+          lookupHost,
+          allowedHosts: ["internal.corp.example"],
+        }),
+      ).resolves.toBeUndefined();
+    });
+
+    it("should not match a subdomain of an allowlisted host", async () => {
+      // "sub.internal.corp.example" is not equal to "internal.corp.example"
+      // so the allowlist does not apply. This is intentional — exact match only.
+      await expect(
+        validateHttpReqUrl("http://internal.example/api", {
+          lookupHost,
+          allowedHosts: ["example", "corp.example"],
+        }),
+      ).rejects.toThrow("10.0.0.0/8");
+    });
   });
 });

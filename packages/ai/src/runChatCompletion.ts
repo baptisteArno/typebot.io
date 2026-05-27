@@ -1,7 +1,7 @@
 import type { LogsStore, VariableStore } from "@typebot.io/forge/types";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
-import { generateText, type LanguageModel } from "ai";
+import { generateText, type LanguageModel, stepCountIs } from "ai";
 import { maxSteps } from "./constants";
 import { parseChatCompletionMessages } from "./parseChatCompletionMessages";
 import { parseTools } from "./parseTools";
@@ -50,7 +50,7 @@ export const runChatCompletion = async ({
       temperature,
       messages: parsedMessages,
       tools: parseTools({ tools, variables, sessionStore }),
-      maxSteps,
+      stopWhen: stepCountIs(maxSteps),
       headers,
     });
 
@@ -60,15 +60,15 @@ export const runChatCompletion = async ({
         variables.set([{ id: mapping.variableId, value: response.text }]);
       if (mapping.item === "Total tokens")
         variables.set([
-          { id: mapping.variableId, value: response.usage.totalTokens },
+          { id: mapping.variableId, value: response.totalUsage.totalTokens },
         ]);
       if (mapping.item === "Prompt tokens")
         variables.set([
-          { id: mapping.variableId, value: response.usage.promptTokens },
+          { id: mapping.variableId, value: response.totalUsage.inputTokens },
         ]);
       if (mapping.item === "Completion tokens")
         variables.set([
-          { id: mapping.variableId, value: response.usage.completionTokens },
+          { id: mapping.variableId, value: response.totalUsage.outputTokens },
         ]);
     });
 

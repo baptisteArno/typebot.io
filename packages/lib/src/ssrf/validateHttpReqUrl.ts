@@ -14,9 +14,17 @@ const BLOCKED_HEADERS = [
  * - AWS/Cloud metadata services (169.254.169.254, metadata.google.internal, etc.)
  * - Private IP ranges (RFC1918: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)
  * - Localhost and loopback addresses (127.0.0.0/8, ::1)
+ * - Unspecified addresses (0.0.0.0/8, ::/128)
  * - Link-local addresses (169.254.0.0/16, fe80::/10)
  * - Various IP encoding bypass attempts (decimal, hex, octal)
  * - Hostnames that resolve to blocked IP ranges
+ *
+ * Hostnames listed in the SSRF_ALLOWED_HOSTS env var skip the RFC1918
+ * private-range checks (10/8, 172.16/12, 192.168/16) so self-hosters can
+ * reach internal corporate APIs. All other protections remain active —
+ * including link-local (169.254/16, the actual CVE-2025-64709 vector),
+ * loopback, cloud metadata hostnames, encoded-IP detection, and IMDS
+ * bypass header blocks.
  *
  * @throws Error if the URL is blocked or invalid
  */
@@ -24,8 +32,10 @@ export const validateHttpReqUrl = async (
   urlString: string,
   {
     lookupHost = lookup,
+    allowedHosts = env.SSRF_ALLOWED_HOSTS,
   }: {
     lookupHost?: LookupHost;
+    allowedHosts?: readonly string[];
   } = {},
 ) => {
   if (!urlString?.trim()) {
@@ -91,10 +101,12 @@ export const validateHttpReqUrl = async (
     );
   }
 
+  const isAllowlisted = allowedHosts?.includes(hostname) ?? false;
+
   // Parse IP address if it's in standard format
   const ip = parseIPAddress(hostname);
   if (ip) {
-    validateIPAddress(ip);
+    validateIPAddress(ip, { allowPrivateRanges: isAllowlisted });
     return;
   }
 
@@ -116,7 +128,9 @@ export const validateHttpReqUrl = async (
       );
     }
 
-    validateIPAddress(parsedResolvedAddress);
+    validateIPAddress(parsedResolvedAddress, {
+      allowPrivateRanges: isAllowlisted,
+    });
   });
 };
 
@@ -190,11 +204,21 @@ type LookupHost = (
 ) => Promise<Array<{ address: string; family: number }>>;
 
 /**
- * Validates that an IP address is not in a blocked range
+ * Validates that an IP address is not in a blocked range.
+ *
+ * When `allowPrivateRanges` is true (set by the caller for hostnames in
+ * SSRF_ALLOWED_HOSTS), RFC1918 private ranges are skipped — but link-local,
+ * loopback, 0.0.0.0/8, IPv6 unspecified, and IPv6 unique local ranges remain
+ * blocked. This preserves protection against the metadata-service vector
+ * (169.254.169.254) even for allowlisted hostnames whose DNS could be
+ * hijacked.
  *
  * @throws Error if the IP is in a blocked range
  */
-export const validateIPAddress = (ip: ParsedIP) => {
+export const validateIPAddress = (
+  ip: ParsedIP,
+  { allowPrivateRanges = false }: { allowPrivateRanges?: boolean } = {},
+) => {
   if (ip.version === 4) {
     const [first, second] = ip.octets;
 
@@ -213,21 +237,21 @@ export const validateIPAddress = (ip: ParsedIP) => {
     }
 
     // Block 10.0.0.0/8 (private)
-    if (first === 10) {
+    if (first === 10 && !allowPrivateRanges) {
       throw new Error(
         "Access to private network range (10.0.0.0/8) is not allowed for security reasons.",
       );
     }
 
     // Block 172.16.0.0/12 (private)
-    if (first === 172 && second >= 16 && second <= 31) {
+    if (first === 172 && second >= 16 && second <= 31 && !allowPrivateRanges) {
       throw new Error(
         "Access to private network range (172.16.0.0/12) is not allowed for security reasons.",
       );
     }
 
     // Block 192.168.0.0/16 (private)
-    if (first === 192 && second === 168) {
+    if (first === 192 && second === 168 && !allowPrivateRanges) {
       throw new Error(
         "Access to private network range (192.168.0.0/16) is not allowed for security reasons.",
       );
@@ -256,7 +280,7 @@ export const validateIPAddress = (ip: ParsedIP) => {
           octets.length === 4 &&
           octets.every((o) => !Number.isNaN(o) && o >= 0 && o <= 255)
         ) {
-          validateIPAddress({ version: 4, octets });
+          validateIPAddress({ version: 4, octets }, { allowPrivateRanges });
           return;
         }
       }
@@ -274,10 +298,17 @@ export const validateIPAddress = (ip: ParsedIP) => {
             (group2 >> 8) & 0xff,
             group2 & 0xff,
           ];
-          validateIPAddress({ version: 4, octets });
+          validateIPAddress({ version: 4, octets }, { allowPrivateRanges });
           return;
         }
       }
+    }
+
+    // Block ::/128 (unspecified)
+    if (isIPv6UnspecifiedAddress(addr)) {
+      throw new Error(
+        "Access to IPv6 unspecified address (::/128) is not allowed for security reasons.",
+      );
     }
 
     // Block ::1 (loopback)
@@ -311,3 +342,26 @@ export const validateIPAddress = (ip: ParsedIP) => {
     }
   }
 };
+
+const isIPv6UnspecifiedAddress = (address: string) => {
+  const compressionIndex = address.indexOf("::");
+  const hasCompression = compressionIndex !== -1;
+
+  if (hasCompression && compressionIndex !== address.lastIndexOf("::")) {
+    return false;
+  }
+
+  const groups = address.split(":").filter((group) => group.length > 0);
+
+  if (!groups.every(isIPv6ZeroGroup)) {
+    return false;
+  }
+
+  if (!hasCompression) {
+    return groups.length === 8;
+  }
+
+  return groups.length < 8;
+};
+
+const isIPv6ZeroGroup = (group: string) => /^0{1,4}$/.test(group);

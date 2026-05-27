@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   defaultTimeFilter,
-  timeFilterValues,
   type TimeFilter,
+  timeFilterValues,
 } from "@typebot.io/results/timeFilter";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { useRouter } from "next/router";

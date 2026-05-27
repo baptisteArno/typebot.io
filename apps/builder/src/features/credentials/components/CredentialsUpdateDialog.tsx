@@ -5,6 +5,7 @@ import { UpdateStripeCredentialsDialogBody } from "@/features/blocks/inputs/paym
 import { SmtpCredentialsUpdateDialogBody } from "@/features/blocks/integrations/sendEmail/components/SmtpCredentialsUpdateDialogBody";
 import { ForgedCredentialsUpdateDialogContent } from "@/features/forge/components/credentials/ForgedCredentialsUpdateDialogContent";
 import { ForgedOAuthCredentialsUpdateDialogBody } from "@/features/forge/components/credentials/ForgedOAuthCredentialsUpdateDialogBody";
+import { WhatsAppUpdateDialogBody } from "@/features/publish/components/deploy/dialogs/whatsApp/WhatsAppCredentialsDialog";
 
 export const CredentialsUpdateDialog = ({
   editingCredentials,
@@ -65,11 +66,16 @@ const CredentialsUpdateDialogPopup = ({
       />
     );
 
-  if (
-    editingCredentials.type === "whatsApp" ||
-    editingCredentials.type === "http proxy"
-  )
-    return null;
+  if (editingCredentials.type === "whatsApp")
+    return (
+      <WhatsAppUpdateDialogBody
+        credentialsId={editingCredentials.id}
+        scope={scope}
+        onUpdate={onSubmit}
+      />
+    );
+
+  if (editingCredentials.type === "http proxy") return null;
 
   if (forgedBlocks[editingCredentials.type].auth?.type === "oauth")
     return (

@@ -7,9 +7,10 @@ import { getExportFileName } from "@typebot.io/results/getExportFileName";
 import { parseBlockIdVariableIdMap } from "@typebot.io/results/parseBlockIdVariableIdMap";
 import { parseColumnsOrder } from "@typebot.io/results/parseColumnsOrder";
 import { parseResultHeader } from "@typebot.io/results/parseResultHeader";
+import { sanitizeCsvCell } from "@typebot.io/results/sanitizeCsvCell";
 import {
-  timeFilterLabels,
   type TimeFilter,
+  timeFilterLabels,
 } from "@typebot.io/results/timeFilter";
 import type { ExportResultsWorkflowStatusChunk } from "@typebot.io/results/workflows/rpc";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
@@ -37,7 +38,11 @@ type Props = {
   timeFilter: TimeFilter;
 };
 
-export const ExportAllResultsDialog = ({ isOpen, onClose, timeFilter }: Props) => {
+export const ExportAllResultsDialog = ({
+  isOpen,
+  onClose,
+  timeFilter,
+}: Props) => {
   const { typebot, publishedTypebot } = useTypebot();
   const workspaceId = typebot?.workspaceId;
   const typebotId = typebot?.id;
@@ -159,8 +164,11 @@ export const ExportAllResultsDialog = ({ isOpen, onClose, timeFilter }: Props) =
       headerIds?.forEach((headerId) => {
         const headerLabel = resultHeader.find(byId(headerId))?.label;
         if (!headerLabel) return;
-        const newKey = parseUniqueKey(headerLabel, Object.keys(newObject));
-        newObject[newKey] = data[headerId]?.plainText;
+        const newKey = parseUniqueKey(
+          sanitizeCsvCell(headerLabel),
+          Object.keys(newObject),
+        );
+        newObject[newKey] = sanitizeCsvCell(data[headerId]?.plainText);
       });
       return newObject;
     });

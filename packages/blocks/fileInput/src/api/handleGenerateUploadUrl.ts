@@ -7,10 +7,16 @@ import { env } from "@typebot.io/env";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import { parseAllowedFileTypesMetadata } from "@typebot.io/lib/extensionFromMimeType";
-import { generatePresignedPutUrl } from "@typebot.io/lib/s3/generatePresignedPutUrl";
+import {
+  createUploadFileName,
+  resolveStoredUploadFileType,
+  resolveUploadContentDisposition,
+  resolveUploadFileType,
+} from "@typebot.io/lib/s3/createUploadFilePath";
+import { generateSignedUploadProxyUrl } from "@typebot.io/lib/s3/signedUploadProxy";
 import prisma from "@typebot.io/prisma";
-import type { Prisma } from "@typebot.io/prisma/types";
 import { z } from "zod";
+import { getUploadProxyBaseUrl } from "./getUploadProxyBaseUrl";
 
 export const generateUploadUrlInputSchema = z.object({
   sessionId: z.string(),
@@ -21,9 +27,11 @@ export const generateUploadUrlInputSchema = z.object({
 });
 
 export const handleGenerateUploadUrl = async ({
-  input: { fileName, sessionId, fileType, blockId, fileSize },
+  input: { sessionId, fileType, fileSize },
+  context,
 }: {
   input: z.infer<typeof generateUploadUrlInputSchema>;
+  context?: { apiOrigin?: string };
 }) => {
   if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
     throw new ORPCError("INTERNAL_SERVER_ERROR", {
@@ -56,22 +64,28 @@ export const handleGenerateUploadUrl = async ({
       message: "Can't find currentBlockId in session state",
     });
 
+  const currentBlockId = session.state.currentBlockId;
+
   const { block } = getBlockById(
-    session.state.currentBlockId,
+    currentBlockId,
     parseGroups(typebot.groups, {
       typebotVersion: typebot.version,
     }),
   );
 
   if (
-    block?.type !== InputBlockType.FILE &&
-    (block.type !== InputBlockType.TEXT ||
-      !block.options?.attachments?.isEnabled) &&
-    (block.type !== InputBlockType.TEXT || !block.options?.audioClip?.isEnabled)
+    !block ||
+    (block.type !== InputBlockType.FILE &&
+      (block.type !== InputBlockType.TEXT ||
+        !block.options?.attachments?.isEnabled) &&
+      (block.type !== InputBlockType.TEXT ||
+        !block.options?.audioClip?.isEnabled))
   )
     throw new ORPCError("BAD_REQUEST", {
       message: "Current block does not expect file upload",
     });
+
+  const resolvedFileType = resolveUploadFileType(fileType);
 
   const allowedFileTypesMetadata =
     block.type === InputBlockType.FILE &&
@@ -86,11 +100,11 @@ export const handleGenerateUploadUrl = async ({
     allowedFileTypesMetadata?.length &&
     (!fileType ||
       !allowedFileTypesMetadata.some(
-        (metadata) => metadata.mimeType === fileType,
+        (metadata) => metadata.mimeType === resolvedFileType,
       ))
   )
     throw new ORPCError("BAD_REQUEST", {
-      message: `File type ${fileType} not allowed`,
+      message: `File type ${resolvedFileType} not allowed`,
     });
 
   const { visibility, maxFileSize } = parseFileUploadParams(block);
@@ -101,33 +115,42 @@ export const handleGenerateUploadUrl = async ({
     });
 
   const resultId = session.state.typebotsQueue[0].resultId;
+  const uploadFileName = createUploadFileName(resolvedFileType);
 
   const filePath =
     "workspaceId" in typebot && typebot.workspaceId && resultId
       ? `${visibility === "Private" ? "private" : "public"}/workspaces/${
           typebot.workspaceId
-        }/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${fileName}`
-      : `public/tmp/typebots/${typebotId}/blocks/${blockId}/${fileName}`;
+        }/typebots/${typebotId}/results/${resultId}/blocks/${currentBlockId}/${uploadFileName}`
+      : `public/tmp/typebots/${typebotId}/blocks/${currentBlockId}/${uploadFileName}`;
 
-  const { presignedUrl, fileUrl: defaultFileUrl, fileType: resolvedFileType, maxFileSize: maxFileSizeMB } = await generatePresignedPutUrl({
-    fileType,
+  const {
+    presignedUrl,
+    fileUrl: defaultFileUrl,
+    formData,
+    maxFileSize: maxFileSizeMB,
+  } = generateSignedUploadProxyUrl({
+    baseUrl: getUploadProxyBaseUrl(context?.apiOrigin),
+    fileType: resolveStoredUploadFileType(resolvedFileType),
+    contentDisposition: resolveUploadContentDisposition(resolvedFileType),
     filePath,
     maxFileSize,
   });
 
   return {
     presignedUrl,
+    formData,
     fileType: resolvedFileType,
     maxFileSize: maxFileSizeMB,
     fileUrl:
       visibility === "Private" && !isPreview
-        ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${fileName}`
+        ? `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/blocks/${currentBlockId}/${uploadFileName}`
         : defaultFileUrl,
   };
 };
 
 const getAndParsePublicTypebot = async (typebotId: string) => {
-  const publicTypebot = (await prisma.publicTypebot.findFirst({
+  const publicTypebot = await prisma.publicTypebot.findFirst({
     where: {
       typebotId,
     },
@@ -140,12 +163,11 @@ const getAndParsePublicTypebot = async (typebotId: string) => {
         },
       },
     },
-  })) as (Prisma.PublicTypebot & { typebot: { workspaceId: string } }) | null;
+  });
 
-  return {
-    ...publicTypebot,
-    workspaceId: publicTypebot?.typebot.workspaceId,
-  };
+  if (!publicTypebot) return null;
+
+  return { ...publicTypebot, workspaceId: publicTypebot.typebot.workspaceId };
 };
 
 const parseFileUploadParams = (
@@ -157,7 +179,7 @@ const parseFileUploadParams = (
         block.options?.visibility === "Private" ? "Private" : "Public",
       maxFileSize:
         block.options && "sizeLimit" in block.options
-          ? (block.options.sizeLimit as number)
+          ? block.options.sizeLimit
           : env.NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE,
     };
   }

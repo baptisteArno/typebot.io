@@ -17,6 +17,8 @@ import { PexelsLogo } from "../logos/PexelsLogo";
 import { TextLink } from "../TextLink";
 
 const client = createClient(env.NEXT_PUBLIC_PEXELS_API_KEY ?? "dummy");
+const FIRST_PEXELS_PAGE = 1;
+const PEXELS_PAGE_SIZE = 24;
 
 type Props = {
   onVideoSelect: (videoUrl: string) => void;
@@ -29,50 +31,86 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
   const scrollContainer = useRef<HTMLDivElement>(null);
   const bottomAnchor = useRef<HTMLDivElement>(null);
+  const requestId = useRef(0);
+  const isFetchingRef = useRef(false);
   const [orientation, setOrientation] = useState("landscape");
   const [size, setSize] = useState("medium");
 
   const [nextPage, setNextPage] = useState(0);
+  const [hasMoreVideos, setHasMoreVideos] = useState(false);
 
   const fetchNewVideos = useCallback(
     async (
       query: string,
       page: number,
       { orientation, size }: { orientation: string; size: string },
+      { replace = false }: { replace?: boolean } = {},
     ) => {
-      if (query === "") setVideos([]);
+      const currentRequestId = ++requestId.current;
+
       if (query.length <= 2) {
+        setVideos([]);
         setNextPage(0);
+        setHasMoreVideos(false);
+        setError(null);
+        isFetchingRef.current = false;
+        setIsFetching(false);
         return;
       }
+
+      if (!replace && isFetchingRef.current) return;
+
       setError(null);
+      isFetchingRef.current = true;
       setIsFetching(true);
+
       try {
         const result = await client.videos.search({
           query,
-          per_page: 24,
+          per_page: PEXELS_PAGE_SIZE,
           size,
           orientation,
           page,
         });
-        if ((result as ErrorResponse).error)
-          setError((result as ErrorResponse).error);
-        if (isDefined((result as Videos).videos)) {
-          if (page === 0) setVideos((result as Videos).videos);
-          else
-            setVideos((videos) => [
-              ...videos,
-              ...((result as Videos)?.videos ?? []),
-            ]);
 
-          setNextPage((page) => page + 1);
+        if (currentRequestId !== requestId.current) return;
+
+        if ((result as ErrorResponse).error) {
+          setError((result as ErrorResponse).error);
+          return;
+        }
+
+        if (isDefined((result as Videos).videos)) {
+          const videosResult = result as Videos;
+          const newVideos = videosResult.videos ?? [];
+
+          setVideos((videos) =>
+            page === FIRST_PEXELS_PAGE
+              ? deduplicateVideosById(newVideos)
+              : deduplicateVideosById([...videos, ...newVideos]),
+          );
+
+          const hasMore =
+            newVideos.length > 0 &&
+            page * PEXELS_PAGE_SIZE < videosResult.total_results;
+
+          setHasMoreVideos(hasMore);
+          setNextPage(hasMore ? page + 1 : 0);
         }
       } catch (err) {
-        if (err && typeof err === "object" && "message" in err)
+        if (currentRequestId !== requestId.current) return;
+
+        if (err && typeof err === "object" && "message" in err) {
           setError(err.message as string);
-        setError("Something went wrong");
+        } else {
+          setError("Something went wrong");
+        }
+      } finally {
+        if (currentRequestId === requestId.current) {
+          isFetchingRef.current = false;
+          setIsFetching(false);
+        }
       }
-      setIsFetching(false);
     },
     [],
   );
@@ -82,8 +120,13 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
     const observer = new IntersectionObserver(
       (entities: IntersectionObserverEntry[]) => {
         const target = entities[0];
-        if (target.isIntersecting)
-          fetchNewVideos(searchQuery, nextPage + 1, {
+        if (
+          target.isIntersecting &&
+          hasMoreVideos &&
+          nextPage > 0 &&
+          !isFetchingRef.current
+        )
+          fetchNewVideos(searchQuery, nextPage, {
             orientation,
             size,
           });
@@ -92,12 +135,20 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
         root: scrollContainer.current,
       },
     );
-    if (bottomAnchor.current && nextPage > 0)
+    if (bottomAnchor.current && hasMoreVideos && nextPage > 0 && !isFetching)
       observer.observe(bottomAnchor.current);
     return () => {
       observer.disconnect();
     };
-  }, [fetchNewVideos, nextPage, searchQuery, orientation, size]);
+  }, [
+    fetchNewVideos,
+    hasMoreVideos,
+    isFetching,
+    nextPage,
+    searchQuery,
+    orientation,
+    size,
+  ]);
 
   const selectVideo = (video: Video) => {
     const videoUrl = video.video_files[0].link;
@@ -106,12 +157,28 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
 
   const updateOrientation = (orientation: string) => {
     setOrientation(orientation);
-    fetchNewVideos(searchQuery, 0, { orientation, size });
+    setVideos([]);
+    setNextPage(0);
+    setHasMoreVideos(false);
+    fetchNewVideos(
+      searchQuery,
+      FIRST_PEXELS_PAGE,
+      { orientation, size },
+      { replace: true },
+    );
   };
 
   const updateSize = (size: string) => {
     setSize(size);
-    fetchNewVideos(searchQuery, 0, { orientation, size });
+    setVideos([]);
+    setNextPage(0);
+    setHasMoreVideos(false);
+    fetchNewVideos(
+      searchQuery,
+      FIRST_PEXELS_PAGE,
+      { orientation, size },
+      { replace: true },
+    );
   };
 
   if (!env.NEXT_PUBLIC_PEXELS_API_KEY)
@@ -127,7 +194,15 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
               placeholder="Search..."
               onValueChange={(query) => {
                 setSearchQuery(query);
-                fetchNewVideos(query, 0, { orientation, size });
+                setVideos([]);
+                setNextPage(0);
+                setHasMoreVideos(false);
+                fetchNewVideos(
+                  query,
+                  FIRST_PEXELS_PAGE,
+                  { orientation, size },
+                  { replace: true },
+                );
               }}
               debounceTimeout={500}
             />
@@ -190,6 +265,10 @@ export const PexelsPicker = ({ onVideoSelect }: Props) => {
   );
 };
 
+const deduplicateVideosById = (videos: Video[]) => [
+  ...new Map(videos.map((video) => [video.id, video])).values(),
+];
+
 type PexelsVideoProps = {
   video: Video;
   onClick: () => void;
@@ -201,19 +280,20 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
   const [thumbnailImage, setThumbnailImage] = useState(
     video_pictures[0].picture,
   );
-  const [imageIndex, setImageIndex] = useState(1);
+  const imageIndexRef = useRef(1);
 
   useEffect(() => {
-    let interval: NodeJS.Timer;
+    let interval: ReturnType<typeof setInterval>;
 
     if (isImageHovered && video_pictures.length > 0) {
       interval = setInterval(() => {
-        setImageIndex((prevIndex) => (prevIndex + 1) % video_pictures.length);
-        setThumbnailImage(video_pictures[imageIndex].picture);
+        const nextIndex = (imageIndexRef.current + 1) % video_pictures.length;
+        imageIndexRef.current = nextIndex;
+        setThumbnailImage(video_pictures[nextIndex].picture);
       }, 200);
     } else {
       setThumbnailImage(video_pictures[0].picture);
-      setImageIndex(1);
+      imageIndexRef.current = 1;
     }
 
     return () => {
@@ -221,7 +301,7 @@ const PexelsVideo = ({ video, onClick }: PexelsVideoProps) => {
         clearInterval(interval);
       }
     };
-  }, [isImageHovered, imageIndex, video_pictures]);
+  }, [isImageHovered, video_pictures]);
 
   return (
     <div className="group relative">

@@ -18,11 +18,15 @@ type FunctionDef = {
 export const parseToolsForResponsesApi = ({
   functions,
   fileSearchVectorStoreIds,
+  fileSearchMaxNumResults,
+  fileSearchScoreThreshold,
   webSearchEnabled,
   codeInterpreterEnabled,
 }: {
   functions?: FunctionDef[];
   fileSearchVectorStoreIds?: string[];
+  fileSearchMaxNumResults?: number | string;
+  fileSearchScoreThreshold?: number | string;
   webSearchEnabled?: boolean;
   codeInterpreterEnabled?: boolean;
 }): Responses.Tool[] => {
@@ -31,7 +35,14 @@ export const parseToolsForResponsesApi = ({
   if (fileSearchVectorStoreIds) {
     const ids = fileSearchVectorStoreIds.filter(isNotEmpty);
     if (ids.length > 0)
-      tools.push({ type: "file_search", vector_store_ids: ids });
+      tools.push({
+        type: "file_search",
+        vector_store_ids: ids,
+        max_num_results: parseFileSearchMaxNumResults(fileSearchMaxNumResults),
+        ranking_options: parseFileSearchRankingOptions(
+          fileSearchScoreThreshold,
+        ),
+      });
   }
 
   if (webSearchEnabled) tools.push({ type: "web_search" });
@@ -53,6 +64,50 @@ export const parseToolsForResponsesApi = ({
   }
 
   return tools;
+};
+
+const parseFileSearchMaxNumResults = (
+  fileSearchMaxNumResults?: number | string,
+): number | undefined => {
+  const parsedFileSearchMaxNumResults = parseNumberOption(
+    fileSearchMaxNumResults,
+  );
+  if (parsedFileSearchMaxNumResults == null) return;
+  if (!Number.isInteger(parsedFileSearchMaxNumResults)) return;
+  if (parsedFileSearchMaxNumResults < 1 || parsedFileSearchMaxNumResults > 50)
+    return;
+
+  return parsedFileSearchMaxNumResults;
+};
+
+const parseFileSearchRankingOptions = (
+  fileSearchScoreThreshold?: number | string,
+): Responses.FileSearchTool.RankingOptions | undefined => {
+  const parsedFileSearchScoreThreshold = parseNumberOption(
+    fileSearchScoreThreshold,
+  );
+  if (parsedFileSearchScoreThreshold == null) return;
+  if (parsedFileSearchScoreThreshold < 0 || parsedFileSearchScoreThreshold > 1)
+    return;
+
+  return {
+    ranker: "auto",
+    score_threshold: parsedFileSearchScoreThreshold,
+  };
+};
+
+const parseNumberOption = (value?: number | string): number | undefined => {
+  if (typeof value === "number")
+    return Number.isFinite(value) ? value : undefined;
+  if (typeof value !== "string") return;
+
+  const trimmedValue = value.trim();
+  if (trimmedValue.length === 0) return;
+
+  const parsedValue = Number(trimmedValue);
+  if (!Number.isFinite(parsedValue)) return;
+
+  return parsedValue;
 };
 
 const parseParametersToJsonSchema = (

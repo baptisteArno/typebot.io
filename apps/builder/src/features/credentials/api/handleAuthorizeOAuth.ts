@@ -1,24 +1,21 @@
 import { ORPCError } from "@orpc/server";
 import { env } from "@typebot.io/env";
 import { getRuntimeVariable } from "@typebot.io/env/getRuntimeVariable";
-import type { AuthDefinition, OAuthDefinition } from "@typebot.io/forge/types";
-import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { z } from "zod";
+import { getOAuthBlockDefinition } from "./getOAuthBlockDefinition";
 
 export const authorizeOAuthInputSchema = z.object({
   blockType: z.string(),
   clientId: z.string().optional(),
+  state: z.string().optional(),
 });
 
 export const handleAuthorizeOAuth = async ({
-  input: { blockType, clientId },
+  input: { blockType, clientId, state },
 }: {
   input: z.infer<typeof authorizeOAuthInputSchema>;
 }) => {
-  const authConfig = forgedBlocks[blockType as keyof typeof forgedBlocks]?.auth;
-
-  if (!isOAuthDefinition(authConfig))
-    throw new ORPCError("BAD_REQUEST", { message: "Invalid block type" });
+  const authConfig = getOAuthBlockDefinition(blockType).auth;
 
   const resolvedClientId =
     clientId ||
@@ -36,9 +33,11 @@ export const handleAuthorizeOAuth = async ({
     redirect_uri: `${env.NEXTAUTH_URL}/oauth/redirect`,
     scope: authConfig.scopes.join(" "),
     ...authConfig.extraAuthParams,
+    ...(state ? { state } : {}),
   };
 
   Object.entries(urlParams).forEach(([k, v]) => {
+    if (!v) return;
     url.searchParams.append(k, v);
   });
 
@@ -47,10 +46,4 @@ export const handleAuthorizeOAuth = async ({
       location: url.toString(),
     },
   };
-};
-
-const isOAuthDefinition = (
-  authConfig: AuthDefinition<any> | undefined,
-): authConfig is OAuthDefinition => {
-  return !!authConfig && authConfig.type === "oauth";
 };

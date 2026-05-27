@@ -21,7 +21,7 @@ All scripts must be ran with `bunx nx`:
   - typecheck a particular package: `bunx nx typecheck package_name`.
   - test a package: `bunx nx test package_name`
   - typecheck all afffected packages: `bunx nx affected -t typecheck` (**IMPORTANT**: Rely first on IDE's TS server diagnostics first for faster feedback loop)
-- To check format and lint, run: `bunx nx format-and-lint` (with `--fix` to run autofix)
+- To check format and lint, run: `bunx nx format-and-lint` (with `--write --unsafe` to run autofix)
 - Never run plain `bunx tsc`, use `bunx nx`
 - Avoid running multiple Vitest test targets in a single Nx command such as `bunx nx run-many -t test` or `bunx nx affected -t test`. Each Nx test target starts its own Vitest process and its own global setup.
 - When multiple Vitest projects need to share the same global setup and database container, run the root workspace test target instead: `bunx nx test`.
@@ -29,7 +29,7 @@ All scripts must be ran with `bunx nx`:
 
 ## Coding style
 
-- Write Effect code whenever possible. We use Effect V4 Beta. **IMPORTANT** Always read through `opensrc/repos/github.com/Effect-TS/effect-smol/LLMS.md` and useful linked docs before writing Effect code. Never guess at Effect patterns - check the guide first and follow it religiously.
+- Write Effect code whenever possible. We use Effect V4 Beta. **IMPORTANT** Always inspect the Effect source through `opensrc` first (see "Source Code Reference" below) — start from `LLMS.md` at the source tree root and follow the linked docs. Never guess at Effect patterns.
 - Never use `as`. You should always narrow / parse the value to get the right type.
 - Rely heavily on type inference, we tend not to declare types.
 - Prefer files exporting a single primary function and the file name should match the exported function name. On that file, the main exported function is at the top while local helpers are at the bottom.
@@ -39,11 +39,11 @@ All scripts must be ran with `bunx nx`:
 
 ## Source Code Reference
 
-Source code for dependencies is available in `opensrc/` for deeper understanding of implementation details.
+To check the source code and documentation of a dependency, run `bunx opensrc path <package-name>` (e.g. `bunx opensrc path lexical`) to get the local path to its cached source, then read or grep files under that path (e.g. `cat $(bunx opensrc path lexical)/README.md`). For beta / pre-release versions, always pin the exact version with `<package>@<version>` (e.g. `bunx opensrc path effect@<exact-beta-version>`).
 
-See `opensrc/sources.json` for the list of available packages and their versions.
+`opensrc path` returns the package directory. Repo-level docs like `LLMS.md` live at the source tree root, so go up from the package path to find them (e.g. `cat $(bunx opensrc path effect@...)/../LLMS.md`).
 
-**IMPORTANT** Do not use `node_modules/` as your primary source for understanding dependency internals. When investigating third-party package behavior, first look in `opensrc/` for the matching dependency and version listed in `opensrc/sources.json`. Use `node_modules/` only when you specifically need the installed runtime/distribution output rather than the original source implementation.
+**IMPORTANT** Do not use `node_modules/` as your primary source for understanding dependency internals. Always prefer `opensrc` for the original source implementation. Use `node_modules/` only when you specifically need the installed runtime/distribution output.
 
 ## Workflow
 

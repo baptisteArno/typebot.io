@@ -60,6 +60,10 @@ const data = [
     title: "Blog",
     links: [
       {
+        label: "FAQ",
+        to: "/faq",
+      },
+      {
         label: "Lead Generation Chatbot",
         to: "/blog/$slug",
         params: {

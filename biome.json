@@ -12,6 +12,7 @@
       "!**/i18n-ally-custom-framework.yml",
       "!**/.claude",
       "!**/emojiList.json",
+      "!apps/builder/public/icons-bundle.json",
       "!**/iconNames.ts",
       "!**/.last-run.json",
       "!**/test/assets/**/*.json",
