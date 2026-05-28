@@ -16,6 +16,7 @@
       "!**/iconNames.ts",
       "!**/.last-run.json",
       "!**/test/assets/**/*.json",
+      "!.context",
       "!.opencode",
       "!.codex",
       "!.cursor",
