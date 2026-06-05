@@ -29,7 +29,7 @@
   "scripts": {
     "postinstall": "cd packages/env && bun run compile && nx db:generate prisma && cd ../.. && bun run copy-builder-public-assets",
     "prepare": "husky && effect-language-service patch",
-    "copy-builder-public-assets": "mkdir -p public/images public/templates && cp apps/builder/public/images/system-mode.png public/images/system-mode.png && cp apps/builder/public/images/dark-mode.png public/images/dark-mode.png && cp apps/builder/public/images/light-mode.png public/images/light-mode.png && cp apps/builder/public/templates/lead-gen.json public/templates/lead-gen.json && cp apps/builder/public/templates/customer-support.json public/templates/customer-support.json",
+    "copy-builder-public-assets": "mkdir -p public/images public/templates && cp apps/builder/public/images/system-mode.png public/images/system-mode.png && cp apps/builder/public/images/dark-mode.png public/images/dark-mode.png && cp apps/builder/public/images/light-mode.png public/images/light-mode.png && cp apps/builder/public/templates/lead-gen.json public/templates/lead-gen.json && cp apps/builder/public/templates/customer-support.json public/templates/customer-support.json && cp apps/builder/public/templates/openai-assistant-chat.json public/templates/openai-assistant-chat.json",
     "pre-commit": "nx affected -t format-and-lint,lint-repo,check-broken-links,test --parallel=4",
     "dev": "nx run-many --configuration=development -t dev,watch-deps -p builder,viewer,workflows,@typebot.io/partykit",
     "format-and-lint": "biome check .",
