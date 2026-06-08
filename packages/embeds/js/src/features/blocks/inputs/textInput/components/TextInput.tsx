@@ -46,6 +46,7 @@ export const TextInput = (props: Props) => {
   const [uploadProgress, setUploadProgress] = createSignal<
     { fileIndex: number; progress: number } | undefined
   >(undefined);
+  const [isUploading, setIsUploading] = createSignal(false);
   const [isDraggingOver, setIsDraggingOver] = createSignal(false);
   const [recordingStatus, setRecordingStatus] = createSignal<
     "started" | "asking" | "stopped"
@@ -60,6 +61,7 @@ export const TextInput = (props: Props) => {
     inputRef?.value !== "" && inputRef?.reportValidity();
 
   const submit = async () => {
+    if (isUploading()) return;
     if (recordingStatus() === "started" && mediaRecorder) {
       if (mediaRecorder.state !== "inactive") mediaRecorder.stop();
       return;
@@ -67,37 +69,49 @@ export const TextInput = (props: Props) => {
     if (checkIfInputIsValid()) {
       let attachments: Attachment[] | undefined;
       if (selectedFiles().length > 0) {
-        setUploadProgress(undefined);
-        const result = await uploadFiles({
-          apiHost:
-            props.context.apiHost ?? guessApiHost({ ignoreChatApiUrl: true }),
-          files: selectedFiles().map((file) => ({
-            file: file,
-            input: {
-              blockId: props.block.id,
-              sessionId: props.context.sessionId,
-              fileName: file.name,
-            },
-          })),
-          onUploadProgress: setUploadProgress,
-        });
-        setUploadProgress(undefined);
-        if (result.type === "error") {
+        try {
+          setIsUploading(true);
+          setUploadProgress(undefined);
+          const result = await uploadFiles({
+            apiHost:
+              props.context.apiHost ?? guessApiHost({ ignoreChatApiUrl: true }),
+            files: selectedFiles().map((file) => ({
+              file: file,
+              input: {
+                blockId: props.block.id,
+                sessionId: props.context.sessionId,
+                fileName: file.name,
+              },
+            })),
+            onUploadProgress: setUploadProgress,
+          }).finally(() => {
+            setIsUploading(false);
+            setUploadProgress(undefined);
+          });
+
+          if (result.type === "error") {
+            toaster.create({
+              description: result.error,
+            });
+            return;
+          }
+          attachments = result.urls
+            ?.map((urls, index) =>
+              urls
+                ? {
+                    ...urls,
+                    blobUrl: URL.createObjectURL(selectedFiles()[index]),
+                  }
+                : null,
+            )
+            .filter(isDefined);
+        } catch (error) {
           toaster.create({
-            description: result.error,
+            description:
+              error instanceof Error ? error.message : "Could not upload file",
           });
           return;
         }
-        attachments = result.urls
-          ?.map((urls, index) =>
-            urls
-              ? {
-                  ...urls,
-                  blobUrl: URL.createObjectURL(selectedFiles()[index]),
-                }
-              : null,
-          )
-          .filter(isDefined);
       }
       props.onSubmit({
         type: "text",
@@ -226,6 +240,7 @@ export const TextInput = (props: Props) => {
           },
         );
 
+        setIsUploading(true);
         setUploadProgress(undefined);
         const result = await uploadFiles({
           apiHost:
@@ -241,8 +256,10 @@ export const TextInput = (props: Props) => {
             },
           ],
           onUploadProgress: setUploadProgress,
+        }).finally(() => {
+          setIsUploading(false);
+          setUploadProgress(undefined);
         });
-        setUploadProgress(undefined);
         if (result.type === "error") {
           setRecordingStatus("stopped");
           toaster.create({
@@ -400,7 +417,7 @@ export const TextInput = (props: Props) => {
         <Match when={true}>
           <SendButton
             type="button"
-            isDisabled={Boolean(uploadProgress())}
+            isDisabled={isUploading()}
             class="h-14"
             on:click={submit}
           >
