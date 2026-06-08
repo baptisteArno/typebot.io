@@ -53,7 +53,6 @@ export const TextInput = (props: Props) => {
   >("stopped");
   let inputRef: HTMLInputElement | HTMLTextAreaElement | undefined;
   let mediaRecorder: MediaRecorder | undefined;
-  let currentRecordingId = 0;
   let recordedChunks: Blob[] = [];
 
   const handleInput = (inputValue: string) => setInputValue(inputValue);
@@ -207,8 +206,6 @@ export const TextInput = (props: Props) => {
   };
 
   const handleRecordingConfirmed = (stream: MediaStream) => {
-    const recordingId = currentRecordingId + 1;
-    currentRecordingId = recordingId;
     let startTime: number;
     const mimeType = MediaRecorder.isTypeSupported("audio/webm")
       ? "audio/webm"
@@ -244,12 +241,6 @@ export const TextInput = (props: Props) => {
           },
         );
 
-        if (
-          recordingId !== currentRecordingId ||
-          recordingStatus() !== "started"
-        )
-          return;
-
         setIsUploading(true);
         setUploadProgress(undefined);
         const result = await uploadFiles({
@@ -270,11 +261,6 @@ export const TextInput = (props: Props) => {
           setIsUploading(false);
           setUploadProgress(undefined);
         });
-        if (
-          recordingId !== currentRecordingId ||
-          recordingStatus() !== "started"
-        )
-          return;
 
         if (result.type === "error") {
           setRecordingStatus("stopped");
@@ -297,12 +283,6 @@ export const TextInput = (props: Props) => {
           blobUrl: URL.createObjectURL(audioFile),
         });
       } catch (error) {
-        if (
-          recordingId !== currentRecordingId ||
-          recordingStatus() !== "started"
-        )
-          return;
-
         setUploadProgress(undefined);
         setRecordingStatus("stopped");
         toaster.create({
@@ -316,7 +296,6 @@ export const TextInput = (props: Props) => {
   };
 
   const handleRecordingAbort = () => {
-    currentRecordingId += 1;
     if (mediaRecorder && mediaRecorder.state !== "inactive")
       mediaRecorder.stop();
     setRecordingStatus("stopped");
@@ -347,6 +326,7 @@ export const TextInput = (props: Props) => {
           recordingStatus={recordingStatus()}
           buttonsTheme={props.context.typebot.theme.chat?.buttons}
           context={props.context}
+          isAbortDisabled={isUploading()}
           onRecordingConfirmed={handleRecordingConfirmed}
           onAbortRecording={handleRecordingAbort}
         />
