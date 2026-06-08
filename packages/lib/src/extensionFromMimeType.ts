@@ -6,7 +6,7 @@ export const extensionFromMimeType: { [key: string]: string } = {
   "audio/ogg": "ogg",
   "audio/wav": "wav",
   "audio/wave": "wav",
-  "audio/webm": "weba",
+  "audio/webm": "webm",
   "image/avif": "avif",
   "image/bmp": "bmp",
   "image/gif": "gif",

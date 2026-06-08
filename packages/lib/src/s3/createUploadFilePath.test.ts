@@ -20,6 +20,12 @@ describe("createUploadFilePath", () => {
     expect(fileName).not.toContain("payload");
   });
 
+  it("uses the WebM extension for audio/webm uploads", () => {
+    const fileName = createUploadFileName("audio/webm");
+
+    expect(fileName.endsWith(".webm")).toBe(true);
+  });
+
   it("creates a path under the provided server prefix", () => {
     const filePath = createUploadFilePath({
       prefix: "public/tmp/typebots/typebot-id/blocks/block-id",

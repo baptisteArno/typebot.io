@@ -26,6 +26,9 @@
     },
     "./package.json": "./package.json"
   },
+  "scripts": {
+    "test": "bun test"
+  },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.106",
     "@sentry/nextjs": "^10.43.0",
