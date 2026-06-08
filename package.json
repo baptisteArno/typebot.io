@@ -27,8 +27,9 @@
     }
   },
   "scripts": {
-    "postinstall": "cd packages/env && bun run compile && nx db:generate prisma",
+    "postinstall": "cd packages/env && bun run compile && nx db:generate prisma && cd ../.. && bun run copy-builder-public-assets",
     "prepare": "husky && effect-language-service patch",
+    "copy-builder-public-assets": "mkdir -p public/images public/templates && cp apps/builder/public/images/*.png public/images/ && cp apps/builder/public/templates/*.json public/templates/",
     "pre-commit": "nx affected -t format-and-lint,lint-repo,check-broken-links,test --parallel=4",
     "dev": "nx run-many --configuration=development -t dev,watch-deps -p builder,viewer,workflows,@typebot.io/partykit",
     "format-and-lint": "biome check .",
@@ -58,7 +59,7 @@
     "@tolgee/cli": "^2.16.1",
     "@types/node": "^24.10.13",
     "esbuild": "^0.27.4",
-    "husky": "^9.1.7",
+    "husky": "9.1.7",
     "jiti": "2.6.1",
     "nx": "22.5.4",
     "rimraf": "^6.1.3",
@@ -78,11 +79,6 @@
     "@prisma/client",
     "@prisma/engines",
     "@sentry/cli",
-    "core-js",
-    "esbuild",
-    "isolated-vm",
-    "prisma",
-    "sharp",
-    "inngest-cli"
+    "sharp"
   ]
 }
