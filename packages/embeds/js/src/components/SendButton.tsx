@@ -26,7 +26,7 @@ export const SendButton = (props: SendButtonProps) => {
   return (
     <Button
       {...buttonProps}
-      type="submit"
+      type={buttonProps.type ?? "submit"}
       class={cx(buttonProps.class, "flex items-center")}
       aria-label={showIcon ? "Send" : undefined}
     >

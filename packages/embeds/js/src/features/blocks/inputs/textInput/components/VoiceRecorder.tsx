@@ -19,6 +19,7 @@ type Props = {
   recordingStatus: "asking" | "started" | "stopped";
   buttonsTheme: NonNullable<Theme["chat"]>["buttons"];
   context: BotContext;
+  isAbortDisabled?: boolean;
   onAbortRecording: () => void;
   onRecordingConfirmed: (stream: MediaStream) => void;
 };
@@ -168,7 +169,8 @@ export const VoiceRecorder = (props: Props) => {
     >
       <button
         type="button"
-        class="p-0.5 rounded-full"
+        class="p-0.5 rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={props.isAbortDisabled}
         on:click={stopRecording}
         aria-label="Stop recording"
       >
