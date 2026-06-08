@@ -35,6 +35,10 @@ const handleUploadRequest = async (request: Request, context: RouteContext) => {
         headers: createUploadProxyCorsHeaders(request),
       });
 
-    throw error;
+    console.error(error);
+    return new Response("Could not upload file", {
+      status: 500,
+      headers: createUploadProxyCorsHeaders(request),
+    });
   }
 };

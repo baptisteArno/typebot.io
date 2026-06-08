@@ -61,9 +61,17 @@ export const uploadFiles = async ({
       presignedUrl: data.presignedUrl,
       formData: data.formData,
       file,
+    }).catch((error) => {
+      errors.push(parseUploadError(error));
+      return;
     });
 
-    if (!upload.ok) continue;
+    if (!upload) continue;
+
+    if (!upload.ok) {
+      errors.push(await parseUploadResponseError(upload));
+      continue;
+    }
 
     urls.push({ url: data.fileUrl, type: file.type });
   }
@@ -71,3 +79,16 @@ export const uploadFiles = async ({
     ? { type: "error", error: errors.join(", ") }
     : { type: "success", urls };
 };
+
+const parseUploadResponseError = async (response: Response) => {
+  const body = await response.text().catch(() => undefined);
+
+  return (
+    body ||
+    response.statusText ||
+    `Upload failed with status ${response.status}`
+  );
+};
+
+const parseUploadError = (error: unknown) =>
+  error instanceof Error ? error.message : "Could not upload file";
