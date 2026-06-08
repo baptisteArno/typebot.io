@@ -1,9 +1,9 @@
-import { createOpenAI } from "@ai-sdk/openai";
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createActionHandler } from "@typebot.io/forge";
 import { createChatCompletion } from "../actions/createChatCompletion";
 import { isModelCompatibleWithVision } from "../helpers/isModelCompatibleWithVision";
+import { createOpenAIChatLanguageModel } from "./createOpenAIChatLanguageModel";
 
 export const createChatCompletionHandler = createActionHandler(
   createChatCompletion,
@@ -21,10 +21,11 @@ export const createChatCompletionHandler = createActionHandler(
       if (!options.messages) return logs.add("No messages provided");
 
       await runChatCompletion({
-        model: createOpenAI({
-          baseURL: baseUrl ?? options.baseUrl,
+        model: createOpenAIChatLanguageModel({
           apiKey,
-        })(modelName),
+          baseUrl: baseUrl ?? options.baseUrl,
+          modelName,
+        }),
         variables,
         messages: options.messages,
         tools: options.tools,
@@ -67,10 +68,11 @@ export const createChatCompletionHandler = createActionHandler(
           };
 
         return runChatCompletionStream({
-          model: createOpenAI({
-            baseURL: baseUrl ?? options.baseUrl,
+          model: createOpenAIChatLanguageModel({
             apiKey,
-          })(modelName),
+            baseUrl: baseUrl ?? options.baseUrl,
+            modelName,
+          }),
           variables,
           messages: options.messages,
           isVisionEnabled: isModelCompatibleWithVision(modelName),
