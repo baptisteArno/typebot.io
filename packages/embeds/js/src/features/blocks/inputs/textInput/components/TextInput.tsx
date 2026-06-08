@@ -224,6 +224,8 @@ export const TextInput = (props: Props) => {
         return;
 
       try {
+        setIsUploading(true);
+        setUploadProgress(undefined);
         const duration = Date.now() - startTime;
 
         const blob = await fixWebmDuration(
@@ -241,8 +243,6 @@ export const TextInput = (props: Props) => {
           },
         );
 
-        setIsUploading(true);
-        setUploadProgress(undefined);
         const result = await uploadFiles({
           apiHost:
             props.context.apiHost ?? guessApiHost({ ignoreChatApiUrl: true }),
@@ -283,6 +283,7 @@ export const TextInput = (props: Props) => {
           blobUrl: URL.createObjectURL(audioFile),
         });
       } catch (error) {
+        setIsUploading(false);
         setUploadProgress(undefined);
         setRecordingStatus("stopped");
         toaster.create({
