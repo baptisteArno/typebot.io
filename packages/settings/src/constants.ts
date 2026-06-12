@@ -1,5 +1,14 @@
 import type { Settings } from "./schemas";
 
+export enum WhatsAppWebhookForwardingScope {
+  ERROR_AND_MARKETING_STATUSES = "errorAndMarketingStatuses",
+  ALL_STATUSES = "allStatuses",
+  ALL_EVENTS = "allEvents",
+}
+
+export const defaultWhatsAppWebhookForwardingScope =
+  WhatsAppWebhookForwardingScope.ERROR_AND_MARKETING_STATUSES;
+
 export const defaultSettings = {
   general: {
     isInputPrefillEnabled: false,

@@ -69,7 +69,10 @@ export const handleProductionWebhookRequest = async ({
       message: "Invalid WhatsApp webhook signature",
     });
 
-  const { entry } = parseWebhookBody(body);
+  const {
+    parsedBody: { entry },
+    webhookRequestBody,
+  } = parseWebhookBody(body);
 
   if (!entry) return WEBHOOK_SUCCESS_MESSAGE;
 
@@ -87,6 +90,7 @@ export const handleProductionWebhookRequest = async ({
     const [forwardingResult, resumingResult] = await Promise.allSettled([
       forwardStatusWebhooks({
         entry,
+        webhookRequestBody,
         workspaceId,
         credentialsId,
       }),
@@ -167,13 +171,24 @@ const getWhatsAppCredentialsData = async ({
 
 const parseWebhookBody = (body: string) => {
   try {
-    return whatsAppWebhookRequestBodySchema.parse(JSON.parse(body));
+    const rawBody: unknown = JSON.parse(body);
+    const parsedBody = whatsAppWebhookRequestBodySchema.parse(rawBody);
+
+    return {
+      parsedBody,
+      webhookRequestBody: isRecord(rawBody)
+        ? rawBody
+        : { entry: parsedBody.entry },
+    };
   } catch {
     throw new ORPCError("BAD_REQUEST", {
       message: "Invalid WhatsApp webhook payload",
     });
   }
 };
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
 
 const safeJsonParse = (value: string | undefined): unknown => {
   if (!value) return value;

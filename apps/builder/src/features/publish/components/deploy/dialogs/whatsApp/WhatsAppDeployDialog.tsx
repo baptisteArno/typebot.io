@@ -2,17 +2,22 @@ import { useQuery } from "@tanstack/react-query";
 import { LogicalOperator } from "@typebot.io/conditions/constants";
 import type { Comparison } from "@typebot.io/conditions/schemas";
 import { isDefined } from "@typebot.io/lib/utils";
-import { defaultSessionExpiryTimeout } from "@typebot.io/settings/constants";
+import {
+  defaultSessionExpiryTimeout,
+  defaultWhatsAppWebhookForwardingScope,
+  WhatsAppWebhookForwardingScope,
+} from "@typebot.io/settings/constants";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
+import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
-import type { JSX } from "react";
+import { type JSX, useRef } from "react";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { TableList } from "@/components/TableList";
@@ -34,6 +39,8 @@ export const WhatsAppDeployDialog = ({
   onClose,
 }: DialogProps): JSX.Element => {
   const { typebot, updateTypebot, isPublished } = useTypebot();
+  const latestTypebotRef = useRef(typebot);
+  latestTypebotRef.current = typebot;
   const { workspace } = useWorkspace();
   const {
     isOpen: isCredentialsDialogOpen,
@@ -48,6 +55,29 @@ export const WhatsAppDeployDialog = ({
 
   const whatsAppSettings = typebot?.settings.whatsApp;
   const whatsAppCredentialsId = typebot?.whatsAppCredentialsId;
+
+  const updateWhatsAppSettings = (
+    whatsApp: NonNullable<typeof typebot>["settings"]["whatsApp"],
+  ) => {
+    const currentTypebot = latestTypebotRef.current;
+    if (!currentTypebot) return;
+
+    const settings = {
+      ...currentTypebot.settings,
+      whatsApp,
+    };
+
+    latestTypebotRef.current = {
+      ...currentTypebot,
+      settings,
+    };
+
+    updateTypebot({
+      updates: {
+        settings,
+      },
+    });
+  };
 
   const { data: phoneNumberData } = useQuery(
     orpc.whatsApp.getPhoneNumber.queryOptions({
@@ -179,6 +209,80 @@ export const WhatsAppDeployDialog = ({
     });
   };
 
+  const updateIsWebhookForwardingEnabled = (isEnabled: boolean) => {
+    const currentTypebot = latestTypebotRef.current;
+    if (!currentTypebot) return;
+    updateWhatsAppSettings({
+      ...currentTypebot.settings.whatsApp,
+      errorAndMarketingStatusWebhookForwardUrl: undefined,
+      webhookForwarding: !isEnabled
+        ? undefined
+        : {
+            ...currentTypebot.settings.whatsApp?.webhookForwarding,
+            url:
+              currentTypebot.settings.whatsApp?.webhookForwarding?.url ??
+              currentTypebot.settings.whatsApp
+                ?.errorAndMarketingStatusWebhookForwardUrl,
+            scope:
+              currentTypebot.settings.whatsApp?.webhookForwarding?.scope ??
+              defaultWhatsAppWebhookForwardingScope,
+          },
+    });
+  };
+
+  const updateWebhookForwardingUrl = (url: string) => {
+    const currentTypebot = latestTypebotRef.current;
+    if (!currentTypebot) return;
+    const isForwardingEnabled =
+      isDefined(currentTypebot.settings.whatsApp?.webhookForwarding) ||
+      isDefined(
+        currentTypebot.settings.whatsApp
+          ?.errorAndMarketingStatusWebhookForwardUrl,
+      );
+    if (!isForwardingEnabled) return;
+    updateWhatsAppSettings({
+      ...currentTypebot.settings.whatsApp,
+      errorAndMarketingStatusWebhookForwardUrl: undefined,
+      webhookForwarding: {
+        ...currentTypebot.settings.whatsApp?.webhookForwarding,
+        url: url || undefined,
+        scope:
+          currentTypebot.settings.whatsApp?.webhookForwarding?.scope ??
+          defaultWhatsAppWebhookForwardingScope,
+      },
+    });
+  };
+
+  const updateWebhookForwardingScope = (
+    scope: WhatsAppWebhookForwardingScope | undefined,
+  ) => {
+    const currentTypebot = latestTypebotRef.current;
+    if (!currentTypebot) return;
+    updateWhatsAppSettings({
+      ...currentTypebot.settings.whatsApp,
+      errorAndMarketingStatusWebhookForwardUrl: undefined,
+      webhookForwarding: {
+        ...currentTypebot.settings.whatsApp?.webhookForwarding,
+        url:
+          currentTypebot.settings.whatsApp?.webhookForwarding?.url ??
+          currentTypebot.settings.whatsApp
+            ?.errorAndMarketingStatusWebhookForwardUrl,
+        scope: scope ?? defaultWhatsAppWebhookForwardingScope,
+      },
+    });
+  };
+
+  const webhookForwardingUrl =
+    whatsAppSettings?.webhookForwarding?.url ??
+    whatsAppSettings?.errorAndMarketingStatusWebhookForwardUrl ??
+    "";
+  const webhookForwardingScope =
+    whatsAppSettings?.webhookForwarding?.scope ??
+    defaultWhatsAppWebhookForwardingScope;
+  const isWebhookForwardingEnabled =
+    isDefined(whatsAppSettings?.webhookForwarding) ||
+    isDefined(whatsAppSettings?.errorAndMarketingStatusWebhookForwardUrl);
+
   return (
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
       <Dialog.Popup className="max-w-xl">
@@ -266,6 +370,47 @@ export const WhatsAppDeployDialog = ({
                       <Field.Container>
                         <Field.Root className="flex-row items-center">
                           <Switch
+                            checked={isWebhookForwardingEnabled}
+                            onCheckedChange={updateIsWebhookForwardingEnabled}
+                          />
+                          <Field.Label>Webhook forwarding</Field.Label>
+                        </Field.Root>
+                        {isWebhookForwardingEnabled && (
+                          <>
+                            <Field.Root>
+                              <Field.Label>
+                                Forwarding URL
+                                <MoreInfoTooltip>
+                                  Forward incoming Meta WhatsApp webhook
+                                  payloads to this URL.
+                                </MoreInfoTooltip>
+                              </Field.Label>
+                              <DebouncedTextInput
+                                defaultValue={webhookForwardingUrl}
+                                onValueChange={updateWebhookForwardingUrl}
+                                placeholder="https://example.com/webhook"
+                              />
+                            </Field.Root>
+                            <Field.Root>
+                              <Field.Label>Events to forward</Field.Label>
+                              <BasicSelect
+                                className="w-full"
+                                value={webhookForwardingScope}
+                                onChange={updateWebhookForwardingScope}
+                                items={webhookForwardingScopeItems}
+                              />
+                              <Field.Description>
+                                The default keeps the current behavior and only
+                                forwards marketing conversation statuses and
+                                failed statuses.
+                              </Field.Description>
+                            </Field.Root>
+                          </>
+                        )}
+                      </Field.Container>
+                      <Field.Container>
+                        <Field.Root className="flex-row items-center">
+                          <Switch
                             checked={isDefined(
                               whatsAppSettings?.startCondition,
                             )}
@@ -337,3 +482,18 @@ export const WhatsAppDeployDialog = ({
     </Dialog.Root>
   );
 };
+
+const webhookForwardingScopeItems = [
+  {
+    label: "Marketing and failed statuses",
+    value: WhatsAppWebhookForwardingScope.ERROR_AND_MARKETING_STATUSES,
+  },
+  {
+    label: "All message statuses",
+    value: WhatsAppWebhookForwardingScope.ALL_STATUSES,
+  },
+  {
+    label: "Full Meta webhook payload",
+    value: WhatsAppWebhookForwardingScope.ALL_EVENTS,
+  },
+];

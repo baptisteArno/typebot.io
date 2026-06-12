@@ -1,5 +1,6 @@
 import * as p from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
+import { defaultWhatsAppWebhookForwardingScope } from "@typebot.io/settings/constants";
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import { promptAndSetEnvironment } from "./utils";
 
@@ -44,8 +45,10 @@ const updateWhatsAppStatusForwardUrl = async () => {
   console.log({
     name: typebot.name,
     currentDraftUrl:
+      draftSettings.whatsApp?.webhookForwarding?.url ??
       draftSettings.whatsApp?.errorAndMarketingStatusWebhookForwardUrl,
     currentPublishedUrl:
+      publishedSettings?.whatsApp?.webhookForwarding?.url ??
       publishedSettings?.whatsApp?.errorAndMarketingStatusWebhookForwardUrl,
     newUrl,
   });
@@ -60,7 +63,14 @@ const updateWhatsAppStatusForwardUrl = async () => {
         ...draftSettings,
         whatsApp: {
           ...draftSettings.whatsApp,
-          errorAndMarketingStatusWebhookForwardUrl: newUrl,
+          errorAndMarketingStatusWebhookForwardUrl: undefined,
+          webhookForwarding: {
+            ...draftSettings.whatsApp?.webhookForwarding,
+            url: newUrl,
+            scope:
+              draftSettings.whatsApp?.webhookForwarding?.scope ??
+              defaultWhatsAppWebhookForwardingScope,
+          },
         },
       },
     },
@@ -74,7 +84,14 @@ const updateWhatsAppStatusForwardUrl = async () => {
           ...publishedSettings,
           whatsApp: {
             ...publishedSettings.whatsApp,
-            errorAndMarketingStatusWebhookForwardUrl: newUrl,
+            errorAndMarketingStatusWebhookForwardUrl: undefined,
+            webhookForwarding: {
+              ...publishedSettings.whatsApp?.webhookForwarding,
+              url: newUrl,
+              scope:
+                publishedSettings.whatsApp?.webhookForwarding?.scope ??
+                defaultWhatsAppWebhookForwardingScope,
+            },
           },
         },
       },
