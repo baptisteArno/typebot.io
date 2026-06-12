@@ -17,7 +17,7 @@ import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { InformationSquareIcon } from "@typebot.io/ui/icons/InformationSquareIcon";
-import type { JSX } from "react";
+import { type JSX, useRef } from "react";
 import { BasicNumberInput } from "@/components/inputs/BasicNumberInput";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { TableList } from "@/components/TableList";
@@ -39,6 +39,8 @@ export const WhatsAppDeployDialog = ({
   onClose,
 }: DialogProps): JSX.Element => {
   const { typebot, updateTypebot, isPublished } = useTypebot();
+  const latestTypebotRef = useRef(typebot);
+  latestTypebotRef.current = typebot;
   const { workspace } = useWorkspace();
   const {
     isOpen: isCredentialsDialogOpen,
@@ -53,6 +55,29 @@ export const WhatsAppDeployDialog = ({
 
   const whatsAppSettings = typebot?.settings.whatsApp;
   const whatsAppCredentialsId = typebot?.whatsAppCredentialsId;
+
+  const updateWhatsAppSettings = (
+    whatsApp: NonNullable<typeof typebot>["settings"]["whatsApp"],
+  ) => {
+    const currentTypebot = latestTypebotRef.current;
+    if (!currentTypebot) return;
+
+    const settings = {
+      ...currentTypebot.settings,
+      whatsApp,
+    };
+
+    latestTypebotRef.current = {
+      ...currentTypebot,
+      settings,
+    };
+
+    updateTypebot({
+      updates: {
+        settings,
+      },
+    });
+  };
 
   const { data: phoneNumberData } = useQuery(
     orpc.whatsApp.getPhoneNumber.queryOptions({
@@ -185,50 +210,45 @@ export const WhatsAppDeployDialog = ({
   };
 
   const updateIsWebhookForwardingEnabled = (isEnabled: boolean) => {
-    if (!typebot) return;
-    updateTypebot({
-      updates: {
-        settings: {
-          ...typebot.settings,
-          whatsApp: {
-            ...typebot.settings.whatsApp,
-            errorAndMarketingStatusWebhookForwardUrl: undefined,
-            webhookForwarding: !isEnabled
-              ? undefined
-              : {
-                  ...typebot.settings.whatsApp?.webhookForwarding,
-                  url:
-                    typebot.settings.whatsApp?.webhookForwarding?.url ??
-                    typebot.settings.whatsApp
-                      ?.errorAndMarketingStatusWebhookForwardUrl,
-                  scope:
-                    typebot.settings.whatsApp?.webhookForwarding?.scope ??
-                    defaultWhatsAppWebhookForwardingScope,
-                },
+    const currentTypebot = latestTypebotRef.current;
+    if (!currentTypebot) return;
+    updateWhatsAppSettings({
+      ...currentTypebot.settings.whatsApp,
+      errorAndMarketingStatusWebhookForwardUrl: undefined,
+      webhookForwarding: !isEnabled
+        ? undefined
+        : {
+            ...currentTypebot.settings.whatsApp?.webhookForwarding,
+            url:
+              currentTypebot.settings.whatsApp?.webhookForwarding?.url ??
+              currentTypebot.settings.whatsApp
+                ?.errorAndMarketingStatusWebhookForwardUrl,
+            scope:
+              currentTypebot.settings.whatsApp?.webhookForwarding?.scope ??
+              defaultWhatsAppWebhookForwardingScope,
           },
-        },
-      },
     });
   };
 
   const updateWebhookForwardingUrl = (url: string) => {
-    if (!typebot) return;
-    updateTypebot({
-      updates: {
-        settings: {
-          ...typebot.settings,
-          whatsApp: {
-            ...typebot.settings.whatsApp,
-            errorAndMarketingStatusWebhookForwardUrl: undefined,
-            webhookForwarding: {
-              ...typebot.settings.whatsApp?.webhookForwarding,
-              url: url || undefined,
-              scope:
-                typebot.settings.whatsApp?.webhookForwarding?.scope ??
-                defaultWhatsAppWebhookForwardingScope,
-            },
-          },
-        },
+    const currentTypebot = latestTypebotRef.current;
+    if (!currentTypebot) return;
+    const isForwardingEnabled =
+      isDefined(currentTypebot.settings.whatsApp?.webhookForwarding) ||
+      isDefined(
+        currentTypebot.settings.whatsApp
+          ?.errorAndMarketingStatusWebhookForwardUrl,
+      );
+    if (!isForwardingEnabled) return;
+    updateWhatsAppSettings({
+      ...currentTypebot.settings.whatsApp,
+      errorAndMarketingStatusWebhookForwardUrl: undefined,
+      webhookForwarding: {
+        ...currentTypebot.settings.whatsApp?.webhookForwarding,
+        url: url || undefined,
+        scope:
+          currentTypebot.settings.whatsApp?.webhookForwarding?.scope ??
+          defaultWhatsAppWebhookForwardingScope,
       },
     });
   };
@@ -236,24 +256,18 @@ export const WhatsAppDeployDialog = ({
   const updateWebhookForwardingScope = (
     scope: WhatsAppWebhookForwardingScope | undefined,
   ) => {
-    if (!typebot) return;
-    updateTypebot({
-      updates: {
-        settings: {
-          ...typebot.settings,
-          whatsApp: {
-            ...typebot.settings.whatsApp,
-            errorAndMarketingStatusWebhookForwardUrl: undefined,
-            webhookForwarding: {
-              ...typebot.settings.whatsApp?.webhookForwarding,
-              url:
-                typebot.settings.whatsApp?.webhookForwarding?.url ??
-                typebot.settings.whatsApp
-                  ?.errorAndMarketingStatusWebhookForwardUrl,
-              scope: scope ?? defaultWhatsAppWebhookForwardingScope,
-            },
-          },
-        },
+    const currentTypebot = latestTypebotRef.current;
+    if (!currentTypebot) return;
+    updateWhatsAppSettings({
+      ...currentTypebot.settings.whatsApp,
+      errorAndMarketingStatusWebhookForwardUrl: undefined,
+      webhookForwarding: {
+        ...currentTypebot.settings.whatsApp?.webhookForwarding,
+        url:
+          currentTypebot.settings.whatsApp?.webhookForwarding?.url ??
+          currentTypebot.settings.whatsApp
+            ?.errorAndMarketingStatusWebhookForwardUrl,
+        scope: scope ?? defaultWhatsAppWebhookForwardingScope,
       },
     });
   };
