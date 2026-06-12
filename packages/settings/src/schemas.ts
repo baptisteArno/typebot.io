@@ -3,7 +3,11 @@ import {
   LogicalOperator,
 } from "@typebot.io/conditions/constants";
 import { z } from "zod";
-import { maxTypingEmulationMaxDelay, rememberUserStorages } from "./constants";
+import {
+  maxTypingEmulationMaxDelay,
+  rememberUserStorages,
+  WhatsAppWebhookForwardingScope,
+} from "./constants";
 
 export const systemMessagesSchema = z.object({
   invalidMessage: z.string().optional(),
@@ -77,6 +81,12 @@ export const whatsAppSettingsSchema = z.object({
     .optional()
     .describe("Expiration delay in hours after latest interaction"),
   errorAndMarketingStatusWebhookForwardUrl: z.string().url().optional(),
+  webhookForwarding: z
+    .object({
+      url: z.string().url().optional(),
+      scope: z.enum(WhatsAppWebhookForwardingScope).optional(),
+    })
+    .optional(),
 });
 
 export const settingsSchema = z.object({
