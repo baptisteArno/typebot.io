@@ -27,6 +27,10 @@ export const DebouncedTextInput = ({
       onValueChange={(value, eventDetails) => {
         commitValue(value, eventDetails);
       }}
+      onBlur={(event) => {
+        props.onBlur?.(event);
+        commitValue.flush();
+      }}
     />
   );
 };
