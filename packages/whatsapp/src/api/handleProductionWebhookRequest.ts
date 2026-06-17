@@ -12,7 +12,7 @@ import {
   WHATSAPP_SESSION_ID_PREFIX,
 } from "../constants";
 import { extractErrorsFromEntry } from "../extractErrorsFromEntry";
-import { forwardStatusWebhooks } from "../forwardStatusWebhooks";
+import { forwardWhatsAppWebhooks } from "../forwardWhatsAppWebhooks";
 import { groupIncomingWebhookEntriesPerUser } from "../groupIncomingWebhookEntriesPerUser";
 import { resumeWhatsAppFlow } from "../resumeWhatsAppFlow";
 import { whatsAppWebhookRequestBodySchema } from "../schemas";
@@ -69,7 +69,7 @@ export const handleProductionWebhookRequest = async ({
       message: "Invalid WhatsApp webhook signature",
     });
 
-  const { entry } = parseWebhookBody(body);
+  const { entry, rawPayload } = parseWebhookBody(body);
 
   if (!entry) return WEBHOOK_SUCCESS_MESSAGE;
 
@@ -85,8 +85,9 @@ export const handleProductionWebhookRequest = async ({
   // because WhatsApp expects a response in less than 3 seconds
   after(async () => {
     const [forwardingResult, resumingResult] = await Promise.allSettled([
-      forwardStatusWebhooks({
+      forwardWhatsAppWebhooks({
         entry,
+        rawPayload,
         workspaceId,
         credentialsId,
       }),
@@ -167,7 +168,11 @@ const getWhatsAppCredentialsData = async ({
 
 const parseWebhookBody = (body: string) => {
   try {
-    return whatsAppWebhookRequestBodySchema.parse(JSON.parse(body));
+    const rawPayload = z
+      .record(z.string(), z.unknown())
+      .parse(JSON.parse(body));
+    const { entry } = whatsAppWebhookRequestBodySchema.parse(rawPayload);
+    return { entry, rawPayload };
   } catch {
     throw new ORPCError("BAD_REQUEST", {
       message: "Invalid WhatsApp webhook payload",
