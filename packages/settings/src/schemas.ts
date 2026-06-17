@@ -67,6 +67,15 @@ const startConditionSchema = z.object({
   ),
 });
 
+export const whatsAppWebhookForwardingEventTypeSchema = z.enum([
+  "all",
+  "errorStatuses",
+  "marketingStatuses",
+]);
+export type WhatsAppWebhookForwardingEventType = z.infer<
+  typeof whatsAppWebhookForwardingEventTypeSchema
+>;
+
 export const whatsAppSettingsSchema = z.object({
   isEnabled: z.boolean().optional(),
   startCondition: startConditionSchema.optional(),
@@ -77,6 +86,10 @@ export const whatsAppSettingsSchema = z.object({
     .optional()
     .describe("Expiration delay in hours after latest interaction"),
   errorAndMarketingStatusWebhookForwardUrl: z.string().url().optional(),
+  isWebhookForwardingEnabled: z.boolean().optional(),
+  webhookForwardingEventTypes: z
+    .array(whatsAppWebhookForwardingEventTypeSchema)
+    .optional(),
 });
 
 export const settingsSchema = z.object({
