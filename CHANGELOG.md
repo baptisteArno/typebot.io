@@ -1,5 +1,37 @@
 # Changelog
 
+<a name="3.17.2"></a>
+## 3.17.2 (2026-06-17)
+
+### New features
+
+- 👌 Configure WhatsApp forwarded events (#2528) [[c5516cd](https://github.com/baptisteArno/typebot.io/commit/c5516cd24c49b0060331a4ec5204f8007ea9daf1)]
+- 👌 Configure WhatsApp webhook forwarding URL (#2529) [[3db24c4](https://github.com/baptisteArno/typebot.io/commit/3db24c49bdcde093a9d1e4d0ba3440cdb795ea5f)]
+
+### Fixed
+
+- 🐛 Fix landing page Discord URL (#2512) [[b4a7aab](https://github.com/baptisteArno/typebot.io/commit/b4a7aab16d5c0c6c396834cd76ef2a4e30f26772)]
+- 🐛 Fix missing result columns in CSV export (#2513) [[08cb6ea](https://github.com/baptisteArno/typebot.io/commit/08cb6ea10f4371e7cd425b5337d21cd9778e3d9b)]
+- 🐛 Fix OpenAI audio transcription uploads (#2521) [[2fd5510](https://github.com/baptisteArno/typebot.io/commit/2fd5510641c85c9c4c7fccb111c2d8a84f0c86be)]
+- 🐛 Fix OpenAI chat completions endpoint (#2522) [[b252a9c](https://github.com/baptisteArno/typebot.io/commit/b252a9c9963dbcd468186911b9e8cc5cba2981da)]
+- 🐛 Fix embedded audio uploads (#2523) [[c82ac43](https://github.com/baptisteArno/typebot.io/commit/c82ac4324a61376b3de3c8b75ccfad7c03f59e7a)]
+- 🐛 Ignore expected WhatsApp webhook errors (#2527) [[3b321f4](https://github.com/baptisteArno/typebot.io/commit/3b321f4ba12579ee95635565f1aac6fab2f3e3ee)]
+
+### Security
+
+- 🐛 Block IPv6 unspecified SSRF targets (#2511) [[f56c3c3](https://github.com/baptisteArno/typebot.io/commit/f56c3c3f771df13a8c11e88f500dfdd78981bed1)]
+
+### Content
+
+- 📝 Add WhatsApp chatbot blog posts (#2505) [[8433793](https://github.com/baptisteArno/typebot.io/commit/8433793edde5a9ddfc037713cf1c5e2eb03889f1)]
+- 📝 Add blog partner links (#2506) [[f420be5](https://github.com/baptisteArno/typebot.io/commit/f420be516632334cdc9afd3dd50a17b9bea8598e)]
+- 📝 Recommend Neon in self-hosting docs (#2515) [[f170033](https://github.com/baptisteArno/typebot.io/commit/f170033be0358661a190aba1881f1ee849fe2270)]
+- 📝 Move database recommendation in self-hosting docs (#2516) [[382a13c](https://github.com/baptisteArno/typebot.io/commit/382a13c2fa404c030927af69ec5b4b0053a249a5)]
+
+### Internal
+
+- 🔧 Copy skills during Conductor setup (#2514) [[a9eac50](https://github.com/baptisteArno/typebot.io/commit/a9eac5045ee17d07e0b29c5b4c0a9e31c5eedc44)]
+
 <a name="3.17.1"></a>
 ## 3.17.1 (2026-05-22)
 
@@ -5362,4 +5394,3 @@ Before upgrading, please make sure to read all the [associated breaking changes]
 -  Add authentication [[5e14a94](https://github.com/baptisteArno/typebot.io/commit/5e14a94dea907712b6bb43ec963e04355f4a3cb5)]
 -  Set node-linker to node_modules [[68dd491](https://github.com/baptisteArno/typebot.io/commit/68dd491eca6f812c60383c49ae2ad376513d4264)]
 -  Init project [[6fe9807](https://github.com/baptisteArno/typebot.io/commit/6fe9807fbe460efe673ad19b0518faca546dcbff)]
-

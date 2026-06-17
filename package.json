@@ -1,6 +1,6 @@
 {
   "name": "@typebot.io/root",
-  "version": "3.17.1",
+  "version": "3.17.2",
   "private": true,
   "workspaces": [
     "packages/*",
