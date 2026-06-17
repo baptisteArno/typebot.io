@@ -18,10 +18,7 @@ type IncomingChange =
   WhatsAppWebhookRequestBody["entry"][number]["changes"][number];
 type IncomingStatus = NonNullable<IncomingChange["value"]["statuses"]>[number];
 type StatusWebhookPayload = Pick<WhatsAppWebhookRequestBody, "entry">;
-type LegacyWebhookForwardingEventType = "failedAndMarketingStatuses";
-type WebhookForwardingEventType =
-  | WhatsAppWebhookForwardingEventType
-  | LegacyWebhookForwardingEventType;
+type WebhookForwardingEventType = WhatsAppWebhookForwardingEventType;
 
 type StatusRouteMatch = {
   entryIndex: number;
@@ -29,8 +26,6 @@ type StatusRouteMatch = {
   status: IncomingStatus;
 };
 
-const legacyWebhookForwardingEventType: LegacyWebhookForwardingEventType =
-  "failedAndMarketingStatuses";
 const defaultWebhookForwardingEventTypes = [
   "errorStatuses",
   "marketingStatuses",
@@ -120,14 +115,12 @@ const getForwardingConfigs = async ({
     const forwardingUrl =
       parsedSettings.data.whatsApp.errorAndMarketingStatusWebhookForwardUrl;
     if (!forwardingUrl) continue;
-    if (parsedSettings.data.whatsApp.isWebhookForwardingEnabled === false)
+    if (parsedSettings.data.whatsApp.isWebhookForwardingEnabled !== true)
       continue;
 
     const webhookForwardingEventTypes =
-      parsedSettings.data.whatsApp.isWebhookForwardingEnabled === true
-        ? (parsedSettings.data.whatsApp.webhookForwardingEventTypes ??
-          defaultWebhookForwardingEventTypes)
-        : [legacyWebhookForwardingEventType];
+      parsedSettings.data.whatsApp.webhookForwardingEventTypes ??
+      defaultWebhookForwardingEventTypes;
 
     const existingEventTypes = forwardingEventTypesByUrl.get(forwardingUrl);
     if (existingEventTypes) {
@@ -253,18 +246,9 @@ const shouldForwardStatus = ({
   status: IncomingStatus;
   eventTypes: WebhookForwardingEventType[];
 }) => {
-  const includesLegacyEventType = eventTypes.includes(
-    legacyWebhookForwardingEventType,
-  );
-  if (
-    (includesLegacyEventType || eventTypes.includes("errorStatuses")) &&
-    isFailedStatus(status)
-  )
+  if (eventTypes.includes("errorStatuses") && isFailedStatus(status))
     return true;
-  if (
-    (includesLegacyEventType || eventTypes.includes("marketingStatuses")) &&
-    isMarketingStatus(status)
-  )
+  if (eventTypes.includes("marketingStatuses") && isMarketingStatus(status))
     return true;
   return false;
 };

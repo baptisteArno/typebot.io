@@ -1,3 +1,4 @@
+import { settingsSchema } from "@typebot.io/settings/schemas";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   buildWhatsAppWebhookForwardingPayload,
@@ -179,22 +180,45 @@ describe("buildWhatsAppWebhookForwardingPayload", () => {
       "marketing-lite-status",
     ]);
   });
+});
 
-  it("keeps failure and marketing statuses for legacy forward URLs", () => {
+describe("settingsSchema", () => {
+  it("enables webhook forwarding for legacy URL-only configs", () => {
     expect(
-      getForwardedStatusIds(
-        buildWhatsAppWebhookForwardingPayload({
-          entry: rawPayload.entry,
-          rawPayload,
-          eventTypes: ["failedAndMarketingStatuses"],
-        }),
-      ),
-    ).toEqual([
-      "failed-status",
-      "errored-status",
-      "marketing-status",
-      "marketing-lite-status",
-    ]);
+      settingsSchema.parse({
+        whatsApp: {
+          errorAndMarketingStatusWebhookForwardUrl: "https://example.com",
+        },
+      }).whatsApp?.isWebhookForwardingEnabled,
+    ).toBe(true);
+  });
+
+  it("keeps webhook forwarding disabled when explicitly disabled", () => {
+    expect(
+      settingsSchema.parse({
+        whatsApp: {
+          errorAndMarketingStatusWebhookForwardUrl: "https://example.com",
+          isWebhookForwardingEnabled: false,
+        },
+      }).whatsApp?.isWebhookForwardingEnabled,
+    ).toBe(false);
+  });
+
+  it("rejects non HTTP(S) webhook forwarding URLs", () => {
+    expect(
+      settingsSchema.safeParse({
+        whatsApp: {
+          errorAndMarketingStatusWebhookForwardUrl: "ftp://example.com",
+        },
+      }).success,
+    ).toBe(false);
+    expect(
+      settingsSchema.safeParse({
+        whatsApp: {
+          errorAndMarketingStatusWebhookForwardUrl: "javascript:alert(1)",
+        },
+      }).success,
+    ).toBe(false);
   });
 });
 
@@ -296,6 +320,30 @@ describe("forwardWhatsAppWebhooks", () => {
     expect(mocks.safeKyPost).toHaveBeenCalledWith("https://example.com", {
       json: rawPayload,
     });
+  });
+
+  it("does not forward when webhook forwarding is enabled with no selected events", async () => {
+    mocks.publicTypebotFindMany.mockResolvedValue([
+      {
+        settings: {
+          whatsApp: {
+            isEnabled: true,
+            errorAndMarketingStatusWebhookForwardUrl: "https://example.com",
+            isWebhookForwardingEnabled: true,
+            webhookForwardingEventTypes: [],
+          },
+        },
+      },
+    ]);
+
+    await forwardWhatsAppWebhooks({
+      credentialsId: "credentials-id",
+      entry: rawPayload.entry,
+      rawPayload,
+      workspaceId: "workspace-id",
+    });
+
+    expect(mocks.safeKyPost).not.toHaveBeenCalled();
   });
 });
 

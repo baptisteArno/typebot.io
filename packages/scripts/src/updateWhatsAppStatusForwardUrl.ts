@@ -1,6 +1,9 @@
 import * as p from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
-import { settingsSchema } from "@typebot.io/settings/schemas";
+import {
+  settingsSchema,
+  whatsAppWebhookForwardingUrlSchema,
+} from "@typebot.io/settings/schemas";
 import { promptAndSetEnvironment } from "./utils";
 
 const updateWhatsAppStatusForwardUrl = async () => {
@@ -12,11 +15,8 @@ const updateWhatsAppStatusForwardUrl = async () => {
   const newUrl = await p.text({
     message: "New forward URL?",
     validate: (value) => {
-      try {
-        new URL(value);
-      } catch {
+      if (!whatsAppWebhookForwardingUrlSchema.safeParse(value).success)
         return "Invalid URL";
-      }
     },
   });
   if (!newUrl || p.isCancel(newUrl)) process.exit();
