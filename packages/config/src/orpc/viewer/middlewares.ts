@@ -11,6 +11,21 @@ const webhookUrlPaths = [
   "billingRouter/webhook",
 ];
 
+const expectedWhatsAppWebhookValidationErrors = [
+  {
+    code: "UNAUTHORIZED",
+    message: "Invalid WhatsApp webhook secret",
+  },
+  {
+    code: "UNAUTHORIZED",
+    message: "Invalid WhatsApp webhook signature",
+  },
+  {
+    code: "BAD_REQUEST",
+    message: "Invalid WhatsApp webhook payload",
+  },
+];
+
 const sentryMiddleware = os.middleware(async ({ next, path }) => {
   try {
     return await next();
@@ -34,6 +49,8 @@ const sentryMiddleware = os.middleware(async ({ next, path }) => {
 });
 
 const isUnknownError = (error: unknown, path: string) => {
+  if (isExpectedWhatsAppWebhookValidationError(error, path)) return false;
+
   if (
     error instanceof ORPCError &&
     !error.code?.includes("INTERNAL_SERVER_ERROR") &&
@@ -43,6 +60,18 @@ const isUnknownError = (error: unknown, path: string) => {
   }
   return true;
 };
+
+const isExpectedWhatsAppWebhookValidationError = (
+  error: unknown,
+  path: string,
+) =>
+  path === "chatWhatsAppRouter/productionWebhookProcedure" &&
+  error instanceof ORPCError &&
+  expectedWhatsAppWebhookValidationErrors.some(
+    (expectedError) =>
+      error.code === expectedError.code &&
+      error.message === expectedError.message,
+  );
 
 const requireAuth = oo.spec(
   os.middleware(async ({ next, context }) => {
