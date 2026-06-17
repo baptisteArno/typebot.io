@@ -1,6 +1,6 @@
 import { ORPCError } from "@orpc/server";
 import { decrypt } from "@typebot.io/credentials/decrypt";
-import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
+import { whatsAppCredentialsDataSchema } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
 import { createToastORPCError } from "@typebot.io/lib/createToastORPCError";
 import { ky } from "@typebot.io/lib/ky";
@@ -46,6 +46,10 @@ export const handleGetPhoneNumber = async ({
       name: formattedPhoneNumber,
     };
   } catch (err) {
+    if (credentials.type === "storedMeta")
+      return {
+        name: credentials.phoneNumber,
+      };
     throw await createToastORPCError(err);
   }
 };
@@ -55,6 +59,12 @@ const getCredentials = async (
   input: z.infer<typeof getPhoneNumberInputSchema>,
 ): Promise<
   | { type: "meta"; systemUserAccessToken: string; phoneNumberId: string }
+  | {
+      type: "storedMeta";
+      systemUserAccessToken: string;
+      phoneNumberId: string;
+      phoneNumber: string;
+    }
   | { type: "360dialog"; phoneNumber: string }
   | undefined
 > => {
@@ -68,26 +78,28 @@ const getCredentials = async (
   const credentials = await prisma.credentials.findFirst({
     where: {
       id: input.credentialsId,
+      type: "whatsApp",
       workspace: env.ADMIN_EMAIL?.includes(user.email)
         ? undefined
         : { members: { some: { userId: user.id } } },
     },
   });
   if (!credentials) return;
-  const decryptedData = (await decrypt(
-    credentials.data,
-    credentials.iv,
-  )) as WhatsAppCredentials["data"];
+  const parsedData = whatsAppCredentialsDataSchema.safeParse(
+    await decrypt(credentials.data, credentials.iv),
+  );
+  if (!parsedData.success) return;
 
-  if (!decryptedData.provider || decryptedData.provider === "meta") {
+  if (!parsedData.data.provider || parsedData.data.provider === "meta") {
     return {
-      type: "meta",
-      systemUserAccessToken: decryptedData.systemUserAccessToken,
-      phoneNumberId: decryptedData.phoneNumberId,
+      type: "storedMeta",
+      systemUserAccessToken: parsedData.data.systemUserAccessToken,
+      phoneNumberId: parsedData.data.phoneNumberId,
+      phoneNumber: credentials.name,
     };
   }
 
-  if (decryptedData.provider === "360dialog") {
+  if (parsedData.data.provider === "360dialog") {
     return {
       type: "360dialog",
       phoneNumber: credentials.name,
