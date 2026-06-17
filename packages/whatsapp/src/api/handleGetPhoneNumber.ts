@@ -46,6 +46,10 @@ export const handleGetPhoneNumber = async ({
       name: formattedPhoneNumber,
     };
   } catch (err) {
+    if (credentials.type === "storedMeta")
+      return {
+        name: credentials.phoneNumber,
+      };
     throw await createToastORPCError(err);
   }
 };
@@ -55,6 +59,12 @@ const getCredentials = async (
   input: z.infer<typeof getPhoneNumberInputSchema>,
 ): Promise<
   | { type: "meta"; systemUserAccessToken: string; phoneNumberId: string }
+  | {
+      type: "storedMeta";
+      systemUserAccessToken: string;
+      phoneNumberId: string;
+      phoneNumber: string;
+    }
   | { type: "360dialog"; phoneNumber: string }
   | undefined
 > => {
@@ -81,9 +91,10 @@ const getCredentials = async (
 
   if (!decryptedData.provider || decryptedData.provider === "meta") {
     return {
-      type: "meta",
+      type: "storedMeta",
       systemUserAccessToken: decryptedData.systemUserAccessToken,
       phoneNumberId: decryptedData.phoneNumberId,
+      phoneNumber: credentials.name,
     };
   }
 
