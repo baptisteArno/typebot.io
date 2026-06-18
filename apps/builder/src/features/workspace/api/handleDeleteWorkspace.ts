@@ -35,7 +35,7 @@ export const handleDeleteWorkspace = async ({
     where: { id: workspaceId },
   });
 
-  if (env.S3_BUCKET) await removeObjectsFromWorkspace(workspaceId);
+  await removeObjectsFromWorkspace(workspaceId);
 
   if (isNotEmpty(workspace.stripeId) && env.STRIPE_SECRET_KEY) {
     const stripe = new Stripe(env.STRIPE_SECRET_KEY, {

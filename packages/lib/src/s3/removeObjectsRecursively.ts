@@ -1,7 +1,10 @@
 import { env } from "@typebot.io/env";
 import { initClient } from "./initClient";
+import { isS3Configured } from "./isS3Configured";
 
 const removeObjectsRecursively = async (prefix: string) => {
+  if (!isS3Configured()) return;
+
   const minioClient = initClient();
 
   const bucketName = env.S3_BUCKET;

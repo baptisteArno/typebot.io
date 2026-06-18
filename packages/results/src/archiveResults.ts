@@ -1,4 +1,3 @@
-import { env } from "@typebot.io/env";
 import type { Group } from "@typebot.io/groups/schemas";
 import {
   removeAllObjectsFromResult,
@@ -104,7 +103,7 @@ export const archiveResults =
           },
         }),
       ]);
-      if (!isDeletingAllResults && env.S3_BUCKET) {
+      if (!isDeletingAllResults) {
         await removeObjectsFromResult({
           workspaceId: typebot.workspaceId,
           resultIds: resultIds,
@@ -113,7 +112,7 @@ export const archiveResults =
       }
     } while (currentTotalResults >= batchSize);
 
-    if (isDeletingAllResults && env.S3_BUCKET) {
+    if (isDeletingAllResults) {
       await removeAllObjectsFromResult({
         workspaceId: typebot.workspaceId,
         typebotId: typebot.id,
