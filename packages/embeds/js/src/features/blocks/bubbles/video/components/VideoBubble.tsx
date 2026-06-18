@@ -88,7 +88,7 @@ export const VideoBubble = (props: Props) => {
                   defaultVideoBubbleContent.areControlsDisplayed
                 }
                 class={cx(
-                  "p-4 focus:outline-none w-full z-10 text-fade-in rounded-md",
+                  "p-4 focus:outline-none w-full relative z-20 text-fade-in rounded-md",
                   isTyping() ? "opacity-0 h-8 @xs:h-9" : "opacity-100 h-auto",
                 )}
                 style={{
@@ -109,7 +109,7 @@ export const VideoBubble = (props: Props) => {
             >
               <div
                 class={cx(
-                  "p-4 z-10 text-fade-in w-full aspect-(--aspect-ratio)",
+                  "p-4 relative z-20 text-fade-in w-full aspect-(--aspect-ratio)",
                   isTyping() ? "opacity-0 h-8 @xs:h-9" : "opacity-100",
                   !props.content?.aspectRatio && "h-(--height)",
                 )}
