@@ -1,11 +1,13 @@
 import { env } from "@typebot.io/env";
 import { CopyConditions } from "minio";
 import { initClient } from "./initClient";
+import { isS3Configured } from "./isS3Configured";
 
 export const copyObjects = async (
   filesToCopy: { oldName: string; newName: string }[],
 ) => {
-  if (filesToCopy.length === 0) return;
+  if (filesToCopy.length === 0 || !isS3Configured()) return;
+
   const minioClient = initClient();
 
   const conds = new CopyConditions();

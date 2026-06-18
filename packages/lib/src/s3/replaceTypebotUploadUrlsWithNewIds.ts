@@ -1,5 +1,6 @@
 import { env } from "@typebot.io/env";
 import { initClient } from "./initClient";
+import { isS3Configured } from "./isS3Configured";
 
 export const replaceTypebotUploadUrlsWithNewIds = async <
   T extends Partial<{
@@ -18,7 +19,7 @@ export const replaceTypebotUploadUrlsWithNewIds = async <
   typebot: T;
   filesToCopy: { oldName: string; newName: string }[];
 }> => {
-  if (!typebot.id || !typebot.workspaceId || !env.S3_ENDPOINT)
+  if (!typebot.id || !typebot.workspaceId || !isS3Configured())
     return {
       typebot,
       filesToCopy: [],

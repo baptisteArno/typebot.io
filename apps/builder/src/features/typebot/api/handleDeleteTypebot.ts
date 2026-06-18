@@ -1,5 +1,4 @@
 import { ORPCError } from "@orpc/server";
-import { env } from "@typebot.io/env";
 import { removeObjectsFromTypebot } from "@typebot.io/lib/s3/removeObjectsRecursively";
 import prisma from "@typebot.io/prisma";
 import { archiveResults } from "@typebot.io/results/archiveResults";
@@ -76,11 +75,10 @@ export const handleDeleteTypebot = async ({
     where: { id: typebotId },
     data: { isArchived: true, publicId: null, customDomain: null },
   });
-  if (env.S3_BUCKET)
-    await removeObjectsFromTypebot({
-      workspaceId: existingTypebot.workspace.id,
-      typebotId,
-    });
+  await removeObjectsFromTypebot({
+    workspaceId: existingTypebot.workspace.id,
+    typebotId,
+  });
   return {
     message: "success" as const,
   };
