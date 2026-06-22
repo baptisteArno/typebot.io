@@ -1,24 +1,39 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
 import codeSnippetsCssUrl from "@/assets/code-snippet.css?url";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
+import { currentBaseUrl } from "@/constants";
 import { Mdx } from "@/features/blog/components/mdx";
 import { createMetaTags } from "@/lib/createMetaTags";
 
 export const Route = createFileRoute("/_layout/$slug")({
   loader: async ({ params }) => {
     const { allPosts } = await import("@/content-collections");
-    const post = allPosts.find((post) => post._meta.path.endsWith(params.slug));
+    const post = allPosts.find((post) => post._meta.path === params.slug);
 
-    if (!post) {
+    if (post) return { post };
+
+    if (
+      allPosts.some((post) => post._meta.path === `blog/${params.slug}`)
+    ) {
       throw redirect({
-        to: "/",
+        to: "/blog/$slug",
+        params: { slug: params.slug },
+        statusCode: 301,
       });
     }
 
-    return { post };
+    throw notFound();
   },
   head: ({ loaderData }) => ({
-    links: [{ rel: "stylesheet", href: codeSnippetsCssUrl }],
+    links: loaderData
+      ? [
+          { rel: "stylesheet", href: codeSnippetsCssUrl },
+          {
+            rel: "canonical",
+            href: `${currentBaseUrl}/${loaderData.post._meta.path}`,
+          },
+        ]
+      : [],
     meta: loaderData
       ? [
           ...createMetaTags({

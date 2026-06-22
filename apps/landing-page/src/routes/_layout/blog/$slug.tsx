@@ -1,8 +1,9 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, notFound } from "@tanstack/react-router";
 import { cx } from "@typebot.io/ui/lib/cva";
 import codeSnippetsCssUrl from "@/assets/code-snippet.css?url";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
 import { TextLink } from "@/components/link";
+import { currentBaseUrl } from "@/constants";
 import { Mdx } from "@/features/blog/components/mdx";
 import { authors } from "@/features/blog/data/authors";
 import { formatDate } from "@/features/blog/helpers";
@@ -11,18 +12,26 @@ import { createMetaTags } from "@/lib/createMetaTags";
 export const Route = createFileRoute("/_layout/blog/$slug")({
   loader: async ({ params }) => {
     const { allPosts } = await import("@/content-collections");
-    const post = allPosts.find((post) => post._meta.path.endsWith(params.slug));
+    const post = allPosts.find(
+      (post) => post._meta.path === `blog/${params.slug}`,
+    );
 
     if (!post) {
-      throw redirect({
-        to: "/blog",
-      });
+      throw notFound();
     }
 
     return { post, author: authors[post.author as keyof typeof authors] };
   },
   head: ({ loaderData }) => ({
-    links: [{ rel: "stylesheet", href: codeSnippetsCssUrl }],
+    links: loaderData
+      ? [
+          { rel: "stylesheet", href: codeSnippetsCssUrl },
+          {
+            rel: "canonical",
+            href: `${currentBaseUrl}/${loaderData.post._meta.path}`,
+          },
+        ]
+      : [],
     meta: loaderData
       ? [
           ...createMetaTags({
