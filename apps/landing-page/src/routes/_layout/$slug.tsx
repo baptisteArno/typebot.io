@@ -12,9 +12,7 @@ export const Route = createFileRoute("/_layout/$slug")({
 
     if (post) return { post };
 
-    if (
-      allPosts.some((post) => post._meta.path === `blog/${params.slug}`)
-    ) {
+    if (allPosts.some((post) => post._meta.path === `blog/${params.slug}`)) {
       throw redirect({
         to: "/blog/$slug",
         params: { slug: params.slug },

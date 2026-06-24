@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { isDefined } from "@typebot.io/lib/utils";
 import { Card } from "@/components/Card";
 import { ContentPageWrapper } from "@/components/ContentPageWrapper";
+import { currentBaseUrl } from "@/constants";
 import { formatDate } from "@/features/blog/helpers";
 import { createMetaTags } from "@/lib/createMetaTags";
 
@@ -18,6 +19,7 @@ export const Route = createFileRoute("/_layout/blog/")({
     };
   },
   head: () => ({
+    links: [{ rel: "canonical", href: `${currentBaseUrl}/blog` }],
     meta: createMetaTags({
       title: "Typebot Blog",
       description:
