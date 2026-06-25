@@ -1,5 +1,6 @@
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
+import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
 import { continueBotFlow } from "@typebot.io/bot-engine/continueBotFlow";
 import { saveStateToDatabase } from "@typebot.io/bot-engine/saveStateToDatabase";
 import type { Message } from "@typebot.io/chat-api/schemas";
@@ -44,6 +45,23 @@ type Props = {
   referral?: WhatsAppMessageReferral;
   callFrom?: "webhook";
 };
+
+type IncomingMediaMessage = Extract<
+  WhatsAppIncomingMessage,
+  { type: "audio" | "document" | "image" | "sticker" | "video" }
+>;
+
+type IncomingMediaType = IncomingMediaMessage["type"];
+
+type FileVisibility = NonNullable<
+  NonNullable<FileInputBlock["options"]>["visibility"]
+>;
+
+type IncomingMediaReplyTarget =
+  | { kind: "audioClip"; visibility?: FileVisibility }
+  | { kind: "fileInput"; visibility?: FileVisibility }
+  | { kind: "ignored"; visibility?: undefined }
+  | { kind: "textAttachment"; visibility?: FileVisibility };
 
 const areMessagesTooOld = (receivedMessages: WhatsAppIncomingMessage[]) => {
   return receivedMessages.every(
@@ -108,19 +126,28 @@ export const resumeWhatsAppFlow = async ({
     }
   }
 
-  const aggregationResponse =
-    await aggregateParallelMediaMessagesIfRedisEnabled({
-      receivedMessages,
-      sessionId,
-    });
-
-  if (aggregationResponse.status === "found newer message")
-    throw new WhatsAppError("Found newer message, skipping this one");
-
   const isSessionExpired =
     isDefined(session?.state) &&
     isDefined(session.state.expiryTimeout) &&
     session?.updatedAt.getTime() + session.state.expiryTimeout < Date.now();
+
+  const currentTypebot = !isSessionExpired
+    ? session?.state?.typebotsQueue[0].typebot
+    : undefined;
+  const { block } =
+    (currentTypebot && session?.state?.currentBlockId
+      ? getBlockById(session.state.currentBlockId, currentTypebot.groups)
+      : undefined) ?? {};
+
+  const aggregationResponse =
+    await aggregateParallelMediaMessagesIfRedisEnabled({
+      receivedMessages,
+      sessionId,
+      block,
+    });
+
+  if (aggregationResponse.status === "found newer message")
+    throw new WhatsAppError("Found newer message, skipping this one");
 
   if (!isSessionExpired && session?.isReplying && callFrom !== "webhook")
     throw new WhatsAppError("Is in reply state");
@@ -130,11 +157,6 @@ export const resumeWhatsAppFlow = async ({
     });
   }
 
-  const currentTypebot = session?.state?.typebotsQueue[0].typebot;
-  const { block } =
-    (currentTypebot && session?.state?.currentBlockId
-      ? getBlockById(session.state.currentBlockId, currentTypebot.groups)
-      : undefined) ?? {};
   const reply = await convertWhatsAppMessageToTypebotMessage({
     messages: aggregationResponse.incomingMessages,
     workspaceId,
@@ -190,7 +212,7 @@ export const resumeWhatsAppFlow = async ({
   });
 };
 
-const convertWhatsAppMessageToTypebotMessage = async ({
+export const convertWhatsAppMessageToTypebotMessage = async ({
   messages,
   workspaceId,
   credentials,
@@ -265,18 +287,12 @@ const convertWhatsAppMessageToTypebotMessage = async ({
         }
         if (!mediaId) continue;
 
-        const fileVisibility =
-          block?.type === InputBlockType.TEXT &&
-          block.options?.audioClip?.isEnabled &&
-          message.type === "audio"
-            ? block.options?.audioClip.visibility
-            : block?.type === InputBlockType.FILE
-              ? block.options?.visibility
-              : block?.type === InputBlockType.TEXT
-                ? block.options?.attachments?.visibility
-                : undefined;
+        const mediaReplyTarget = getIncomingMediaReplyTarget({
+          block,
+          messageType: message.type,
+        });
         let fileUrl: string;
-        if (fileVisibility !== "Public") {
+        if (mediaReplyTarget.visibility !== "Public") {
           const extension = mimeType
             ? extensionFromMimeType[mimeType]
             : undefined;
@@ -301,14 +317,15 @@ const convertWhatsAppMessageToTypebotMessage = async ({
           });
           fileUrl = url;
         }
-        if (message.type === "audio")
+
+        if (mediaReplyTarget.kind === "audioClip")
           return {
             type: "audio",
             url: fileUrl,
           };
-        if (block?.type === InputBlockType.FILE) {
-          append(fileUrl);
-        } else if (block?.type === InputBlockType.TEXT) {
+        if (mediaReplyTarget.kind === "fileInput") {
+          attachedFileUrls.push(fileUrl);
+        } else if (mediaReplyTarget.kind === "textAttachment") {
           let caption: string | undefined;
           if (message.type === "document" && message.document.caption) {
             const looksLikeFilename = /^[\w,\s-]+\.[A-Za-z0-9]{1,10}$/;
@@ -340,6 +357,36 @@ const convertWhatsAppMessageToTypebotMessage = async ({
     text,
     attachedFileUrls,
     metadata: { replyId },
+  };
+};
+
+export const getIncomingMediaReplyTarget = ({
+  block,
+  messageType,
+}: {
+  block?: Block;
+  messageType: IncomingMediaType;
+}): IncomingMediaReplyTarget => {
+  if (block?.type === InputBlockType.FILE)
+    return { kind: "fileInput", visibility: block.options?.visibility };
+
+  if (block?.type !== InputBlockType.TEXT)
+    return messageType === "audio"
+      ? { kind: "audioClip" }
+      : { kind: "ignored" };
+
+  if (messageType === "audio" && block.options?.audioClip?.isEnabled === true)
+    return {
+      kind: "audioClip",
+      visibility: block.options.audioClip.visibility,
+    };
+
+  if (messageType === "audio" && block.options?.attachments?.isEnabled !== true)
+    return { kind: "audioClip" };
+
+  return {
+    kind: "textAttachment",
+    visibility: block.options?.attachments?.visibility,
   };
 };
 
@@ -383,9 +430,11 @@ const getWhatsAppCredentials = async ({
 const aggregateParallelMediaMessagesIfRedisEnabled = async ({
   receivedMessages,
   sessionId,
+  block,
 }: {
   receivedMessages: WhatsAppIncomingMessage[];
   sessionId: string;
+  block?: Block;
 }): Promise<
   | {
       status: "treat as unique message";
@@ -401,7 +450,10 @@ const aggregateParallelMediaMessagesIfRedisEnabled = async ({
 > => {
   if (
     redis &&
-    ["document", "video", "image"].includes(receivedMessages[0].type)
+    shouldAggregateIncomingMediaMessages({
+      block,
+      messageType: receivedMessages[0].type,
+    })
   ) {
     const redisKey = `wasession:${sessionId}`;
     try {
@@ -447,6 +499,30 @@ const aggregateParallelMediaMessagesIfRedisEnabled = async ({
     incomingMessages: receivedMessages,
   };
 };
+
+export const shouldAggregateIncomingMediaMessages = ({
+  block,
+  messageType,
+}: {
+  block?: Block;
+  messageType: WhatsAppIncomingMessage["type"];
+}) => {
+  if (!isIncomingMediaType(messageType)) return false;
+  if (messageType !== "audio") return true;
+
+  return (
+    getIncomingMediaReplyTarget({ block, messageType }).kind !== "audioClip"
+  );
+};
+
+const isIncomingMediaType = (
+  messageType: WhatsAppIncomingMessage["type"],
+): messageType is IncomingMediaType =>
+  messageType === "audio" ||
+  messageType === "document" ||
+  messageType === "image" ||
+  messageType === "sticker" ||
+  messageType === "video";
 
 const resumeFlowAndSendWhatsAppMessages = async (props: {
   to: string;

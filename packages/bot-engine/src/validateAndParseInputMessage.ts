@@ -100,8 +100,16 @@ export const validateAndParseInputMessage = (
           ? { status: "fail" }
           : { status: "skip" };
 
-      const replyValue = message.type === "audio" ? message.url : message.text;
-      const urls = replyValue.split(", ");
+      const urls =
+        message.type === "text" &&
+        message.attachedFileUrls &&
+        message.attachedFileUrls.length > 0
+          ? message.attachedFileUrls
+          : (message.type === "audio" ? message.url : message.text)
+              .split(/,\s*|\n+/)
+              .map((url) => url.trim())
+              .filter((url) => url !== "");
+      const replyValue = urls.join(", ");
       const isTrustedHost = (url: string) => {
         try {
           const { hostname } = new URL(url);
@@ -144,7 +152,7 @@ export const validateAndParseInputMessage = (
 
       const status = hasValidUrls && allFilesAreAllowed ? "success" : "fail";
       if (!block.options?.isMultipleAllowed && urls.length > 1)
-        return { status, content: replyValue.split(",")[0] };
+        return { status, content: urls[0] };
       return { status, content: replyValue };
     }
     case InputBlockType.PAYMENT: {

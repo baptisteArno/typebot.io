@@ -38,7 +38,7 @@ export const textMessageSchema = z.object({
     .array(z.string())
     .optional()
     .describe(
-      "Can only be provided if current input block is a text input block that allows attachments",
+      "Can only be provided if current input block is a file input block or a text input block that allows attachments",
     ),
 });
 
