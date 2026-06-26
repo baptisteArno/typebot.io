@@ -27,7 +27,7 @@ import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
 import { getBlockById } from "@typebot.io/groups/helpers/getBlockById";
 import type { Group } from "@typebot.io/groups/schemas";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
-import { byId, isDefined, isNotDefined } from "@typebot.io/lib/utils";
+import { byId, isNotDefined } from "@typebot.io/lib/utils";
 import type { AnswerInSessionState } from "@typebot.io/results/schemas/answers";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
@@ -198,16 +198,17 @@ export const continueBotFlow = async (
 
     const formattedReply =
       "content" in parsedReplyResult && reply?.type === "text"
-        ? parsedReplyResult.content
+        ? {
+            ...reply,
+            text: parsedReplyResult.content,
+            attachedFileUrls:
+              parsedReplyResult.attachedFileUrls ?? reply.attachedFileUrls,
+          }
         : undefined;
     newSessionState = await processAndSaveAnswer(
       newSessionState,
       block,
-    )(
-      isDefined(formattedReply)
-        ? { ...reply, type: "text", text: formattedReply }
-        : reply,
-    );
+    )(formattedReply ?? reply);
     continueReply = parsedReplyResult;
   }
 

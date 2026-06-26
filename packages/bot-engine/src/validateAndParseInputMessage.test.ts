@@ -34,6 +34,63 @@ describe("validateAndParseInputMessage", () => {
       status: "success",
       content:
         "https://files.example.com/audio-media-id.ogg, https://files.example.com/second-audio-media-id.ogg",
+      attachedFileUrls: [
+        "https://files.example.com/audio-media-id.ogg",
+        "https://files.example.com/second-audio-media-id.ogg",
+      ],
+    });
+  });
+
+  it("preserves commas inside file input text URLs", () => {
+    const block = {
+      id: "file-input",
+      type: InputBlockType.FILE,
+    } satisfies InputBlock;
+
+    const result = validateAndParseInputMessage(
+      {
+        type: "text",
+        text: "https://files.example.com/a,b.pdf",
+      },
+      {
+        block,
+        sessionStore: new SessionStore(),
+        variables: [],
+      },
+    );
+
+    expect(result).toEqual({
+      status: "success",
+      content: "https://files.example.com/a,b.pdf",
+    });
+  });
+
+  it("only keeps the first structured attachment for single file inputs", () => {
+    const block = {
+      id: "file-input",
+      type: InputBlockType.FILE,
+    } satisfies InputBlock;
+
+    const result = validateAndParseInputMessage(
+      {
+        type: "text",
+        text: "",
+        attachedFileUrls: [
+          "https://files.example.com/audio-media-id.ogg",
+          "https://files.example.com/second-audio-media-id.ogg",
+        ],
+      },
+      {
+        block,
+        sessionStore: new SessionStore(),
+        variables: [],
+      },
+    );
+
+    expect(result).toEqual({
+      status: "success",
+      content: "https://files.example.com/audio-media-id.ogg",
+      attachedFileUrls: ["https://files.example.com/audio-media-id.ogg"],
     });
   });
 });

@@ -68,6 +68,16 @@ const textInputWithAudioClipBlock = {
   },
 } satisfies Block;
 
+const textInputWithPrivateAudioClipBlock = {
+  id: "text-input",
+  type: InputBlockType.TEXT,
+  options: {
+    audioClip: {
+      isEnabled: true,
+    },
+  },
+} satisfies Block;
+
 const textInputWithAttachmentsBlock = {
   id: "text-input",
   type: InputBlockType.TEXT,
@@ -230,6 +240,50 @@ describe("convertWhatsAppMessageToTypebotMessage", () => {
     expect(result).toEqual({
       type: "audio",
       url: "https://files.example.com/audio-media-id.ogg",
+    });
+  });
+
+  it("builds private WhatsApp audio clip URLs with the provided typebot id", async () => {
+    const result = await convertWhatsAppMessageToTypebotMessage({
+      messages: [audioMessage],
+      credentials,
+      workspaceId: "workspace-id",
+      typebotId: "typebot-id",
+      resultId: "result-id",
+      block: textInputWithPrivateAudioClipBlock,
+    });
+
+    expect(result).toEqual({
+      type: "audio",
+      url: expect.stringContaining(
+        "/api/typebots/typebot-id/whatsapp/media/audio-media-id.ogg",
+      ),
+    });
+    expect(mocks.downloadMedia).not.toHaveBeenCalled();
+    expect(mocks.uploadFileToBucket).not.toHaveBeenCalled();
+  });
+
+  it("uploads private WhatsApp audio clips when no typebot id is available", async () => {
+    mocks.uploadFileToBucket.mockResolvedValue(
+      "https://app.example.com/api/s3/private/tmp/whatsapp/media/audio-media-id.ogg",
+    );
+
+    const result = await convertWhatsAppMessageToTypebotMessage({
+      messages: [audioMessage],
+      credentials,
+      workspaceId: "workspace-id",
+      block: textInputWithPrivateAudioClipBlock,
+    });
+
+    expect(result).toEqual({
+      type: "audio",
+      url: "https://app.example.com/api/s3/private/tmp/whatsapp/media/audio-media-id.ogg",
+    });
+    expect(mocks.uploadFileToBucket).toHaveBeenCalledWith({
+      file: Buffer.from("audio"),
+      key: "tmp/whatsapp/media/audio-media-id.ogg",
+      mimeType: "audio/ogg",
+      visibility: "private",
     });
   });
 

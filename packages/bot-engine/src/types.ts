@@ -26,6 +26,7 @@ export type ExecuteIntegrationResponse = {
 export type SuccessReply = {
   status: "success";
   content: string;
+  attachedFileUrls?: string[];
   outgoingEdgeId?: string;
   variablesToUpdate?: VariableWithUnknowValue[];
 };

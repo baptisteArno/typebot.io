@@ -100,16 +100,21 @@ export const validateAndParseInputMessage = (
           ? { status: "fail" }
           : { status: "skip" };
 
+      const hasStructuredAttachedFileUrls =
+        message.type === "text" && (message.attachedFileUrls?.length ?? 0) > 0;
       const urls =
         message.type === "text" &&
         message.attachedFileUrls &&
         message.attachedFileUrls.length > 0
           ? message.attachedFileUrls
           : (message.type === "audio" ? message.url : message.text)
-              .split(/,\s*|\n+/)
+              .split(/,\s+|\n+/)
               .map((url) => url.trim())
               .filter((url) => url !== "");
-      const replyValue = urls.join(", ");
+      const acceptedUrls = block.options?.isMultipleAllowed
+        ? urls
+        : urls.slice(0, 1);
+      const replyValue = acceptedUrls.join(", ");
       const isTrustedHost = (url: string) => {
         try {
           const { hostname } = new URL(url);
@@ -129,7 +134,7 @@ export const validateAndParseInputMessage = (
           return false;
         }
       };
-      const hasValidUrls = urls.some((url) =>
+      const hasValidUrls = acceptedUrls.some((url) =>
         isURL(url, { require_tld: !isTrustedHost(url) }),
       );
 
@@ -140,7 +145,7 @@ export const validateAndParseInputMessage = (
           ? parseAllowedFileTypesMetadata(block.options.allowedFileTypes.types)
           : undefined;
       const allFilesAreAllowed = allowedFileTypesMetadata
-        ? urls.every((url) => {
+        ? acceptedUrls.every((url) => {
             const extension = url.split(".").pop();
             if (!extension) return false;
             return allowedFileTypesMetadata.some(
@@ -151,9 +156,16 @@ export const validateAndParseInputMessage = (
         : true;
 
       const status = hasValidUrls && allFilesAreAllowed ? "success" : "fail";
-      if (!block.options?.isMultipleAllowed && urls.length > 1)
-        return { status, content: urls[0] };
-      return { status, content: replyValue };
+      if (!hasStructuredAttachedFileUrls)
+        return {
+          status,
+          content: replyValue,
+        };
+      return {
+        status,
+        content: replyValue,
+        attachedFileUrls: acceptedUrls,
+      };
     }
     case InputBlockType.PAYMENT: {
       if (!message || message.type !== "text") return { status: "fail" };

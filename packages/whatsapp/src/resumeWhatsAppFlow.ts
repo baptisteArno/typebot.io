@@ -131,8 +131,10 @@ export const resumeWhatsAppFlow = async ({
     isDefined(session.state.expiryTimeout) &&
     session?.updatedAt.getTime() + session.state.expiryTimeout < Date.now();
 
-  const currentTypebot = !isSessionExpired
-    ? session?.state?.typebotsQueue[0].typebot
+  const sessionTypebot = session?.state?.typebotsQueue[0].typebot;
+  const currentTypebot = !isSessionExpired ? sessionTypebot : undefined;
+  const currentResultId = !isSessionExpired
+    ? session?.state?.typebotsQueue[0].resultId
     : undefined;
   const { block } =
     (currentTypebot && session?.state?.currentBlockId
@@ -161,8 +163,8 @@ export const resumeWhatsAppFlow = async ({
     messages: aggregationResponse.incomingMessages,
     workspaceId,
     credentials,
-    typebotId: currentTypebot?.id,
-    resultId: session?.state?.typebotsQueue[0].resultId,
+    typebotId: sessionTypebot?.id,
+    resultId: currentResultId,
     block,
   });
 
@@ -291,8 +293,9 @@ export const convertWhatsAppMessageToTypebotMessage = async ({
           block,
           messageType: message.type,
         });
+        if (mediaReplyTarget.kind === "ignored") break;
         let fileUrl: string;
-        if (mediaReplyTarget.visibility !== "Public") {
+        if (mediaReplyTarget.visibility !== "Public" && typebotId) {
           const extension = mimeType
             ? extensionFromMimeType[mimeType]
             : undefined;
@@ -307,14 +310,23 @@ export const convertWhatsAppMessageToTypebotMessage = async ({
             credentials,
           });
           const extension = extensionFromMimeType[mimeType];
-          const url = await uploadFileToBucket({
-            file,
-            key:
-              resultId && workspaceId && typebotId
-                ? `public/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${mediaId}${extension ? `.${extension}` : ""}`
-                : `tmp/whatsapp/media/${mediaId}${extension ? `.${extension}` : ""}`,
-            mimeType,
-          });
+          const key =
+            resultId && workspaceId && typebotId
+              ? `public/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${mediaId}${extension ? `.${extension}` : ""}`
+              : `tmp/whatsapp/media/${mediaId}${extension ? `.${extension}` : ""}`;
+          const url =
+            mediaReplyTarget.visibility === "Public"
+              ? await uploadFileToBucket({
+                  file,
+                  key,
+                  mimeType,
+                })
+              : await uploadFileToBucket({
+                  file,
+                  key,
+                  mimeType,
+                  visibility: "private",
+                });
           fileUrl = url;
         }
 
