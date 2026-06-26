@@ -126,7 +126,9 @@ export const resumeWhatsAppFlow = async ({
     });
   }
 
-  const currentTypebot = session?.state?.typebotsQueue[0].typebot;
+  const currentTypebot = isSessionExpired
+    ? undefined
+    : session?.state?.typebotsQueue[0].typebot;
   const { block } =
     (currentTypebot && session?.state?.currentBlockId
       ? getBlockById(session.state.currentBlockId, currentTypebot.groups)

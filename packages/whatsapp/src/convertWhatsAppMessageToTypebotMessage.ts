@@ -96,9 +96,7 @@ export const convertWhatsAppMessageToTypebotMessage = async ({
               : undefined;
         let fileUrl: string;
         if (fileVisibility !== "Public") {
-          const extension = mimeType
-            ? extensionFromMimeType[mimeType]
-            : undefined;
+          const extension = getExtensionFromMimeType(mimeType);
           fileUrl =
             env.NEXTAUTH_URL +
             `/api/typebots/${typebotId}/whatsapp/media/${
@@ -109,7 +107,7 @@ export const convertWhatsAppMessageToTypebotMessage = async ({
             mediaId,
             credentials,
           });
-          const extension = extensionFromMimeType[mimeType];
+          const extension = getExtensionFromMimeType(mimeType);
           const url = await uploadFileToBucket({
             file,
             key:
@@ -160,4 +158,9 @@ export const convertWhatsAppMessageToTypebotMessage = async ({
     attachedFileUrls,
     metadata: { replyId },
   };
+};
+
+const getExtensionFromMimeType = (mimeType: string | undefined) => {
+  if (!mimeType) return;
+  return extensionFromMimeType[mimeType.split(";")[0].trim().toLowerCase()];
 };

@@ -89,9 +89,38 @@ describe("convertWhatsAppMessageToTypebotMessage", () => {
       url: "http://localhost:3000/api/typebots/typebot-id/whatsapp/media/audio-media-id.ogg",
     });
   });
+
+  it("uses the base MIME type to derive the proxied audio extension", async () => {
+    const block = {
+      id: "file-input",
+      type: InputBlockType.FILE,
+      options: {
+        variableId: "file-variable",
+        visibility: "Auto",
+      },
+    } satisfies FileInputBlock;
+
+    const result = await convertWhatsAppMessageToTypebotMessage({
+      messages: [
+        createAudioMessage("audio-media-id", "audio/ogg; codecs=opus"),
+      ],
+      workspaceId: "workspace-id",
+      credentials,
+      typebotId: "typebot-id",
+      resultId: "result-id",
+      block,
+    });
+
+    expect(result).toEqual({
+      type: "text",
+      text: "http://localhost:3000/api/typebots/typebot-id/whatsapp/media/audio-media-id.ogg",
+      attachedFileUrls: [],
+      metadata: { replyId: undefined },
+    });
+  });
 });
 
-const createAudioMessage = (mediaId: string) =>
+const createAudioMessage = (mediaId: string, mimeType = "audio/ogg") =>
   ({
     id: "message-id",
     from: "33612345678",
@@ -99,6 +128,6 @@ const createAudioMessage = (mediaId: string) =>
     type: "audio",
     audio: {
       id: mediaId,
-      mime_type: "audio/ogg",
+      mime_type: mimeType,
     },
   }) satisfies WhatsAppIncomingMessage;
