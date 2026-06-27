@@ -165,6 +165,16 @@ describe("Choice input", async () => {
     expect(secondMessage.interactive.body?.text).toBe("―");
   });
 
+  it("should truncate long interactive button body text", async () => {
+    const input = createMockButtonsInput([{ id: "choice1", content: "Yes" }]);
+    const lastMessage = createMockTextMessage("a".repeat(1025));
+
+    const result = await convertInputToWhatsAppMessages({ input, lastMessage });
+
+    const interactiveMessage = expectInteractiveMessage(result[0]);
+    expect(interactiveMessage.interactive.body?.text).toHaveLength(1024);
+  });
+
   it("should filter out items with no content", async () => {
     const input = createMockButtonsInput([
       { id: "choice1", content: "Option 1" },
@@ -324,6 +334,24 @@ describe("Picture choice input", async () => {
     const interactiveMessage = expectInteractiveMessage(result[0]);
     expect(interactiveMessage.interactive.body).toBeUndefined();
   });
+
+  it("should truncate long interactive picture choice body text", async () => {
+    const input = createMockPictureChoiceInput([
+      {
+        id: "pic1",
+        title: "Picture 1",
+        description: "a".repeat(1025),
+      },
+    ]);
+
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
+
+    const interactiveMessage = expectInteractiveMessage(result[0]);
+    expect(interactiveMessage.interactive.body?.text).toHaveLength(1024);
+  });
 });
 
 describe("Cards input", async () => {
@@ -423,6 +451,25 @@ describe("Cards input", async () => {
 
     const interactiveMessage = expectInteractiveMessage(result[0]);
     expect(interactiveMessage.interactive.header).toBeUndefined();
+  });
+
+  it("should truncate long interactive card body text", async () => {
+    const input = createMockCardsInput([
+      {
+        id: "card1",
+        title: "Card 1",
+        description: "a".repeat(1025),
+        paths: [{ id: "path1", text: "Action 1" }],
+      },
+    ]);
+
+    const result = await convertInputToWhatsAppMessages({
+      input,
+      lastMessage: undefined,
+    });
+
+    const interactiveMessage = expectInteractiveMessage(result[0]);
+    expect(interactiveMessage.interactive.body?.text).toHaveLength(1024);
   });
 
   it("should handle empty paths array", async () => {

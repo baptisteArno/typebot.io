@@ -79,7 +79,19 @@ const migrateImportingTypebot = async (
     riskLevel: null,
     spaceId: null,
   } satisfies Partial<Typebot>;
-  return (await migrateTypebot(fullTypebot)).typebot;
+  try {
+    return (await migrateTypebot(fullTypebot)).typebot;
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      (error.message === "Start group not found" ||
+        error.message === "Start block not found")
+    )
+      throw new ORPCError("BAD_REQUEST", {
+        message: "Invalid typebot file: start event is missing",
+      });
+    throw error;
+  }
 };
 
 export const importTypebotInputSchema = z.object({

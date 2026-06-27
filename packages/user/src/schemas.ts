@@ -3,6 +3,7 @@ import type { Prisma } from "@typebot.io/prisma/types";
 import { z } from "zod";
 
 const displayedInAppNotificationsSchema = z.record(z.string(), z.boolean());
+const defaultMySqlStringMaxLength = 191;
 
 export const groupTitlesAutoGenerationSchema = z.object({
   isEnabled: z.boolean().optional(),
@@ -20,18 +21,21 @@ export const userSchema = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   lastActivityAt: z.date(),
-  name: z.string().nullable(),
+  name: z.string().max(255).nullable(),
   email: z.string(),
   emailVerified: z.date().nullable(),
-  image: z.string().nullable(),
-  company: z.string().nullable(),
+  image: z.string().max(1000).nullable(),
+  company: z.string().max(defaultMySqlStringMaxLength).nullable(),
   onboardingCategories: z.array(z.string()),
-  referral: z.string().nullable(),
+  referral: z.string().max(defaultMySqlStringMaxLength).nullable(),
   graphNavigation: z.nativeEnum(GraphNavigation).nullable(),
-  preferredAppAppearance: z.string().nullable(),
+  preferredAppAppearance: z
+    .string()
+    .max(defaultMySqlStringMaxLength)
+    .nullable(),
   displayedInAppNotifications: displayedInAppNotificationsSchema.nullable(),
   groupTitlesAutoGeneration: groupTitlesAutoGenerationSchema.nullable(),
-  preferredLanguage: z.string().nullable(),
+  preferredLanguage: z.string().max(10).nullable(),
   termsAcceptedAt: z.date().nullable(),
 }) satisfies z.ZodType<Prisma.User>;
 export type User = z.infer<typeof userSchema>;
