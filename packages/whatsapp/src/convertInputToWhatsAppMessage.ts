@@ -262,10 +262,12 @@ export const convertInputToWhatsAppMessages = async ({
   }
 };
 
-const truncateWhatsAppInteractiveBody = (text: string) =>
-  text.length > whatsAppInteractiveBodyMaxLength
-    ? text.slice(0, whatsAppInteractiveBodyMaxLength)
+const truncateWhatsAppInteractiveBody = (text: string) => {
+  const characters = Array.from(text);
+  return characters.length > whatsAppInteractiveBodyMaxLength
+    ? characters.slice(0, whatsAppInteractiveBodyMaxLength).join("")
     : text;
+};
 
 const trimTextTo20Chars = (
   text: string,

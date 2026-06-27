@@ -14,7 +14,10 @@ export const saveAnswer = async ({ answer, state }: Props) => {
   const textEncoder = new TextEncoder();
   let content = answer.content;
 
-  if (textEncoder.encode(content).length > maxAnswerContentByteLength) {
+  if (
+    process.env.DATABASE_URL?.startsWith("mysql://") &&
+    textEncoder.encode(content).length > maxAnswerContentByteLength
+  ) {
     let byteLength = 0;
     let contentEndIndex = 0;
 

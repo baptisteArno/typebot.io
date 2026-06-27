@@ -175,6 +175,19 @@ describe("Choice input", async () => {
     expect(interactiveMessage.interactive.body?.text).toHaveLength(1024);
   });
 
+  it("should not split emoji when truncating long interactive button body text", async () => {
+    const input = createMockButtonsInput([{ id: "choice1", content: "Yes" }]);
+    const lastMessage = createMockTextMessage(`${"a".repeat(1023)}😀b`);
+
+    const result = await convertInputToWhatsAppMessages({ input, lastMessage });
+
+    const interactiveMessage = expectInteractiveMessage(result[0]);
+    expect(
+      Array.from(interactiveMessage.interactive.body?.text ?? ""),
+    ).toHaveLength(1024);
+    expect(interactiveMessage.interactive.body?.text.endsWith("😀")).toBe(true);
+  });
+
   it("should filter out items with no content", async () => {
     const input = createMockButtonsInput([
       { id: "choice1", content: "Option 1" },
