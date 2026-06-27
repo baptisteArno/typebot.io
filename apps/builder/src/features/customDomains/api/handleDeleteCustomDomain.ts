@@ -34,8 +34,21 @@ export const handleDeleteCustomDomain = async ({
   if (!workspace || isWriteWorkspaceForbidden(workspace, user))
     throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
+  const customDomain = await prisma.customDomain.findFirst({
+    where: {
+      name,
+      workspaceId,
+    },
+    select: {
+      name: true,
+    },
+  });
+
+  if (!customDomain)
+    throw new ORPCError("NOT_FOUND", { message: "Custom domain not found" });
+
   try {
-    await deleteDomainOnVercel(name);
+    await deleteDomainOnVercel(customDomain.name);
   } catch (error) {
     console.error(error);
     if (error instanceof HTTPError)
@@ -50,7 +63,7 @@ export const handleDeleteCustomDomain = async ({
   }
   await prisma.customDomain.deleteMany({
     where: {
-      name,
+      name: customDomain.name,
       workspaceId,
     },
   });
