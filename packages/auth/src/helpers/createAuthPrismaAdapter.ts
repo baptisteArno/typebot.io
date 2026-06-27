@@ -24,6 +24,10 @@ import { Effect, Layer } from "effect";
 import { convertInvitationsToCollaborations } from "./convertInvitationsToCollaborations";
 import { getNewUserInvitations } from "./getNewUserInvitations";
 import { joinWorkspaces } from "./joinWorkspaces";
+import {
+  EMAIL_SIGN_IN_VERIFICATION_TOKEN_VALUE,
+  recordFailedEmailSignInAttempt,
+} from "./recordFailedEmailSignInAttempt";
 
 const MainLayer = Layer.provideMerge(
   Layer.provide(UsersWorkflowsRpcClient.layer, WorkflowsRpcClientConfig.layer),
@@ -173,9 +177,12 @@ export const createAuthPrismaAdapter = (p: Prisma.PrismaClient): Adapter => ({
   deleteSession: (sessionToken) =>
     p.session.delete({ where: { sessionToken } }),
   async createVerificationToken(data) {
-    const verificationToken = await p.verificationToken.create(
-      stripUndefined(data),
-    );
+    const verificationToken = await p.verificationToken.create({
+      data: {
+        ...stripUndefined(data).data,
+        value: EMAIL_SIGN_IN_VERIFICATION_TOKEN_VALUE,
+      },
+    });
     if ("id" in verificationToken && verificationToken.id) {
       return omit(verificationToken, "id");
     }
@@ -195,8 +202,12 @@ export const createAuthPrismaAdapter = (p: Prisma.PrismaClient): Adapter => ({
       if (
         error instanceof PrismaClientKnownRequestError &&
         error.code === "P2025"
-      )
+      ) {
+        await p.$transaction((tx) =>
+          recordFailedEmailSignInAttempt(tx, identifier_token.identifier),
+        );
         return null;
+      }
       throw error;
     }
   },

@@ -1,3 +1,4 @@
+import { randomInt } from "node:crypto";
 import { env } from "@typebot.io/env";
 import { getAtPath } from "@typebot.io/lib/utils";
 import { userSchema } from "@typebot.io/user/schemas";
@@ -40,8 +41,7 @@ if (env.NEXT_PUBLIC_SMTP_FROM && !env.SMTP_AUTH_DISABLED)
       },
       maxAge: 10 * 60,
       from: env.NEXT_PUBLIC_SMTP_FROM,
-      generateVerificationToken: () =>
-        Math.floor(100000 + Math.random() * 900000).toString(),
+      generateVerificationToken: () => randomInt(100000, 1000000).toString(),
       sendVerificationRequest,
     }),
   );
