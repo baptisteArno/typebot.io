@@ -120,6 +120,7 @@ export const executeSendEmailBlock = async ({
       isCustomBody: options.isCustomBody,
       isBodyCode: options.isBodyCode,
       workspaceId: state.workspaceId,
+      resultId,
       sessionStore,
     });
     if (sendEmailLogs) logs.push(...sendEmailLogs);
@@ -146,6 +147,7 @@ const sendEmail = async ({
   isCustomBody,
   fileUrls,
   workspaceId,
+  resultId,
   sessionStore,
 }: {
   credentialsId: string;
@@ -161,6 +163,7 @@ const sendEmail = async ({
   answers: AnswerInSessionState[];
   fileUrls?: string | string[];
   workspaceId: string;
+  resultId: string;
   sessionStore: SessionStore;
 }): Promise<LogInSession[] | undefined> => {
   const logs: LogInSession[] = [];
@@ -216,6 +219,7 @@ const sendEmail = async ({
     attachments: await parseEmailAttachments({
       fileUrls,
       typebotId: typebot.id,
+      resultId,
     }),
     disableFileAccess: true,
     ...emailBody,

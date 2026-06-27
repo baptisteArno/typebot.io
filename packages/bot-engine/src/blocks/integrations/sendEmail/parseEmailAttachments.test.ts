@@ -37,6 +37,7 @@ describe("parseEmailAttachments", () => {
       parseEmailAttachments({
         fileUrls: "local-attachment.txt",
         typebotId,
+        resultId,
         dependencies: createDependencies().dependencies,
       }),
     ).rejects.toThrow(invalidAttachmentUrlErrorMessage);
@@ -58,6 +59,7 @@ describe("parseEmailAttachments", () => {
         parseEmailAttachments({
           fileUrls: `http://localhost:${server.port}/attachment.txt`,
           typebotId,
+          resultId,
           dependencies: createDependencies().dependencies,
         }),
       ).rejects.toThrow(invalidAttachmentUrlErrorMessage);
@@ -75,9 +77,23 @@ describe("parseEmailAttachments", () => {
       parseEmailAttachments({
         fileUrls: publicFileUrl,
         typebotId,
+        resultId,
         dependencies: createDependencies().dependencies,
       }),
     ).resolves.toEqual([{ path: publicFileUrl }]);
+  });
+
+  it("accepts legacy WhatsApp public Typebot upload attachments", async () => {
+    const legacyPublicFileUrl = `${parseS3PublicBaseUrl()}/public/public/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${fileName}`;
+
+    await expect(
+      parseEmailAttachments({
+        fileUrls: legacyPublicFileUrl,
+        typebotId,
+        resultId,
+        dependencies: createDependencies().dependencies,
+      }),
+    ).resolves.toEqual([{ path: legacyPublicFileUrl }]);
   });
 
   it("rejects public Typebot upload URLs from another typebot", async () => {
@@ -87,6 +103,18 @@ describe("parseEmailAttachments", () => {
       parseEmailAttachments({
         fileUrls: publicFileUrl,
         typebotId,
+        resultId,
+        dependencies: createDependencies().dependencies,
+      }),
+    ).rejects.toThrow(invalidAttachmentUrlErrorMessage);
+  });
+
+  it("rejects private Typebot upload attachments from another result", async () => {
+    await expect(
+      parseEmailAttachments({
+        fileUrls: `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/other-result/${fileName}`,
+        typebotId,
+        resultId,
         dependencies: createDependencies().dependencies,
       }),
     ).rejects.toThrow(invalidAttachmentUrlErrorMessage);
@@ -103,6 +131,7 @@ describe("parseEmailAttachments", () => {
         `${env.NEXTAUTH_URL}/api/typebots/${typebotId}/results/${resultId}/blocks/${blockId}/${fileName}`,
       ],
       typebotId,
+      resultId,
       dependencies,
     });
 

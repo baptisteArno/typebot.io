@@ -19,33 +19,40 @@ const invalidAttachmentUrlErrorMessage = "Invalid email attachment URL";
 export const parseEmailAttachments = async ({
   fileUrls,
   typebotId,
+  resultId,
   dependencies = defaultDependencies,
 }: {
   fileUrls: string | string[] | undefined;
   typebotId: string;
+  resultId: string;
   dependencies?: ParseEmailAttachmentsDependencies;
 }): Promise<Mail.Attachment[] | undefined> => {
   const urls = parseAttachmentUrls(fileUrls);
   if (urls.length === 0) return;
 
   return Promise.all(
-    urls.map((url) => parseEmailAttachment({ url, typebotId, dependencies })),
+    urls.map((url) =>
+      parseEmailAttachment({ url, typebotId, resultId, dependencies }),
+    ),
   );
 };
 
 const parseEmailAttachment = async ({
   url,
   typebotId,
+  resultId,
   dependencies,
 }: {
   url: string;
   typebotId: string;
+  resultId: string;
   dependencies: ParseEmailAttachmentsDependencies;
 }): Promise<Mail.Attachment> => {
   const parsedUrl = parseHttpUrl(url);
   const privateUpload = parsePrivateTypebotUploadUrl({
     url: parsedUrl,
     typebotId,
+    resultId,
   });
 
   if (privateUpload) {
@@ -88,9 +95,11 @@ const parseHttpUrl = (url: string): URL => {
 const parsePrivateTypebotUploadUrl = ({
   url,
   typebotId,
+  resultId: currentResultId,
 }: {
   url: URL;
   typebotId: string;
+  resultId: string;
 }): { resultId: string; blockId?: string; fileName: string } | undefined => {
   if (url.origin !== new URL(env.NEXTAUTH_URL).origin) return;
 
@@ -103,6 +112,7 @@ const parsePrivateTypebotUploadUrl = ({
     typebots !== "typebots" ||
     urlTypebotId !== typebotId ||
     results !== "results" ||
+    resultId !== currentResultId ||
     !resultId ||
     !nextSegment
   )
@@ -148,7 +158,9 @@ const isPublicTypebotUploadUrl = ({
   if (!startsWithSegments(urlPathSegments, publicBasePathSegments))
     return false;
 
-  const uploadSegments = urlPathSegments.slice(publicBasePathSegments.length);
+  const uploadSegments = normalizePublicUploadSegments(
+    urlPathSegments.slice(publicBasePathSegments.length),
+  );
   const [
     visibility,
     workspaces,
@@ -204,6 +216,11 @@ const parsePublicBaseUrl = (): URL | undefined => {
     return;
   }
 };
+
+const normalizePublicUploadSegments = (uploadSegments: string[]): string[] =>
+  uploadSegments[0] === "public" && uploadSegments[1] === "public"
+    ? uploadSegments.slice(1)
+    : uploadSegments;
 
 const getPathSegments = (url: URL): string[] =>
   url.pathname.split("/").filter((segment) => segment.length > 0);
