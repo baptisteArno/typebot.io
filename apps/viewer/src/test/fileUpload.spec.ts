@@ -25,19 +25,8 @@ test("should work as expected", async ({ page, browser }) => {
   await page.locator('text="Upload 3 files"').click();
   await expect(page.locator(`text="3 files uploaded"`)).toBeVisible();
   await page.goto(`${env.NEXTAUTH_URL}/typebots/${typebotId}/results`);
-  await expect(page.getByRole("link", { name: "api.json" })).toHaveAttribute(
-    "href",
-    /.+\/api\.json/,
-    {
-      timeout: 10000,
-    },
-  );
-  await expect(
-    page.getByRole("link", { name: "fileUpload.json" }),
-  ).toHaveAttribute("href", /.+\/fileUpload\.json/);
-  await expect(
-    page.getByRole("link", { name: "hugeGroup.json" }),
-  ).toHaveAttribute("href", /.+\/hugeGroup\.json/);
+  const fileLinks = page.getByRole("link", { name: /\.json/ });
+  await expect(fileLinks).toHaveCount(3, { timeout: 10000 });
 
   await page.click('[data-slot="checkbox"] >> nth=0');
   const [download] = await Promise.all([
@@ -45,21 +34,20 @@ test("should work as expected", async ({ page, browser }) => {
     page.getByRole("button", { name: "Export" }).click(),
   ]);
   const downloadPath = await download.path();
-  expect(downloadPath).toBeDefined();
-  const file = readFileSync(downloadPath as string).toString();
+  if (!downloadPath) throw new Error("Download path not found");
+  const file = readFileSync(downloadPath).toString();
   const { data } = parse(file);
   expect(data).toHaveLength(2);
-  expect((data[1] as unknown[])[1]).toContain(parseS3PublicBaseUrl());
+  const exportedRow = data[1];
+  if (!Array.isArray(exportedRow)) throw new Error("Exported row not found");
+  expect(exportedRow[1]).toContain(parseS3PublicBaseUrl());
 
   const urls = (
-    await Promise.all(
-      [
-        page.getByRole("link", { name: "api.json" }),
-        page.getByRole("link", { name: "fileUpload.json" }),
-        page.getByRole("link", { name: "hugeGroup.json" }),
-      ].map((elem) => elem.getAttribute("href")),
+    await fileLinks.evaluateAll((links) =>
+      links.map((link) => link.getAttribute("href")),
     )
   ).filter(isDefined);
+  expect(urls).toHaveLength(3);
 
   const page2 = await browser.newPage();
   await page2.goto(urls[0]);
@@ -67,7 +55,7 @@ test("should work as expected", async ({ page, browser }) => {
 
   await page.getByRole("button", { name: "Delete" }).click();
   await page.locator('button >> text="Delete"').click();
-  await expect(page.locator('text="api.json"')).toBeHidden();
+  await expect(fileLinks).toHaveCount(0);
 
   await expect
     .poll(

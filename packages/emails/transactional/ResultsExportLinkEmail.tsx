@@ -26,7 +26,7 @@ export const ResultsExportLinkEmail = ({ typebotName, fileUrl }: Props) => {
             . It was processed and is now ready.
             <br />
             <br />
-            You can download it <a href={fileUrl}>here</a>.
+            You can <a href={fileUrl}>download your results export</a>.
           </Text>
           <Hr style={hr} />
           <Text style={footerText}>Typebot - Build faster, Chat smarter</Text>

@@ -1,9 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import {
-  getCookies,
-  getRequestHeaders,
-  setResponseHeaders,
-} from "@tanstack/react-start/server";
+import { getCookies, getRequestHeaders } from "@tanstack/react-start/server";
 import { env } from "@typebot.io/env";
 import {
   getTypebotCookie,
@@ -81,9 +77,10 @@ export const trackPageView = createServerFn({
       },
     ]);
 
-    setResponseHeaders({
-      "Set-Cookie": serializeTypebotCookie(typebotCookie),
+    return new Response("OK", {
+      status: 200,
+      headers: {
+        "Set-Cookie": serializeTypebotCookie(typebotCookie),
+      },
     });
-
-    return new Response("OK", { status: 200 });
   });

@@ -15,6 +15,6 @@
     "@typebot.io/blocks-base": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/rich-text": "workspace:*",
-    "zod": "^4.3.5"
+    "zod": "4.3.5"
   }
 }

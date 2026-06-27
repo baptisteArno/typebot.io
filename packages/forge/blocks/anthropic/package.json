@@ -26,7 +26,7 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@ai-sdk/anthropic": "^2.0.79",
-    "zod": "^4.3.5"
+    "zod": "4.3.5"
   },
   "devDependencies": {
     "@types/react": "^19.2.14"

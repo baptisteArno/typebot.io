@@ -40,7 +40,7 @@
     "@typebot.io/ui": "workspace:*",
     "@typebot.io/zendesk-block": "workspace:*",
     "@types/dompurify": "^3.2.0",
-    "dompurify": "^3.3.3",
+    "dompurify": "^3.4.11",
     "esbuild-plugin-solid": "^0.6.0",
     "ky": "^1.2.4",
     "marked": "^9.0.3",

@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^2.0.106",
-    "@sentry/nextjs": "^10.43.0",
+    "@sentry/nextjs": "^10.62.0",
     "@typebot.io/ai": "workspace:*",
     "@ai-sdk/ui-utils": "^1.2.11",
     "openai": "^6.9.1",

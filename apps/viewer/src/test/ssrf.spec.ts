@@ -59,7 +59,7 @@ test.describe("SSRF protection", () => {
 
     await page
       .locator('[placeholder="https://example.com"]')
-      .fill("https://httpbin.org/get");
+      .fill("https://example.com");
     await page.locator('text="Fetch"').click();
     await expect(page.getByText("Status: 200")).toBeVisible({
       timeout: 15000,

@@ -30,6 +30,6 @@
     "@typebot.io/telemetry": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "zod": "^4.3.5"
+    "zod": "4.3.5"
   }
 }

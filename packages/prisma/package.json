@@ -30,15 +30,15 @@
     "db:reset": "prisma migrate reset --config prisma.config.ts --schema postgresql/schema.prisma --force"
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.4.0",
-    "@prisma/adapter-planetscale": "^7.4.0",
-    "@prisma/client": "^7.4.0",
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/adapter-planetscale": "^7.8.0",
+    "@prisma/client": "^7.8.0",
     "@prisma/extension-read-replicas": "^0.5.0",
     "effect": "4.0.0-beta.38",
-    "prisma": "^7.4.0"
+    "prisma": "^7.8.0"
   },
   "devDependencies": {
-    "@prisma/generator-helper": "^7.4.0",
+    "@prisma/generator-helper": "^7.8.0",
     "dotenv-cli": "^8.0.0",
     "tsx": "^4.19.1"
   }

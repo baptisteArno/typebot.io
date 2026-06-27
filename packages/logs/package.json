@@ -15,6 +15,6 @@
     "@typebot.io/prisma": "workspace:*"
   },
   "dependencies": {
-    "zod": "^4.3.5"
+    "zod": "4.3.5"
   }
 }

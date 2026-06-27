@@ -15,6 +15,6 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/runtime-session-store": "workspace:*",
-    "zod": "^4.3.5"
+    "zod": "4.3.5"
   }
 }

@@ -20,6 +20,6 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/ui": "workspace:*",
-    "zod": "^4.3.5"
+    "zod": "4.3.5"
   }
 }

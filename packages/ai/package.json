@@ -17,6 +17,6 @@
     "ai": "^5.0.52",
     "ky": "^1.2.4",
     "@typebot.io/runtime-session-store": "workspace:*",
-    "zod": "^4.3.5"
+    "zod": "4.3.5"
   }
 }

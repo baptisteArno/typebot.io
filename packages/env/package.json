@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.13.10",
-    "zod": "^4.3.5"
+    "zod": "4.3.5"
   },
   "scripts": {
     "compile": "esbuild src/index.ts --bundle --minify --outfile=dist/index.js"

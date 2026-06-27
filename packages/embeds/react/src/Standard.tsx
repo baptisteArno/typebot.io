@@ -25,11 +25,21 @@ export const Standard = ({ style, className, ...assignableProps }: Props) => {
   const ref = useRef<StandardElement | null>(null);
 
   useEffect(() => {
-    void ensureWebComponentsLoaded();
-    if (!ref.current) return;
-    const { typebot, ...rest } = assignableProps;
-    // We assign typebot last to ensure initializeBot is triggered with all the initial values
-    Object.assign(ref.current, rest, { typebot });
+    let isMounted = true;
+
+    const loadWebComponents = async () => {
+      await ensureWebComponentsLoaded();
+      if (!isMounted || !ref.current) return;
+      const { typebot, ...rest } = assignableProps;
+      // We assign typebot last to ensure initializeBot is triggered with all the initial values
+      Object.assign(ref.current, rest, { typebot });
+    };
+
+    void loadWebComponents();
+
+    return () => {
+      isMounted = false;
+    };
   }, [assignableProps]);
 
   return <typebot-standard ref={ref} style={style} class={className} />;

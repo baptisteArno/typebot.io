@@ -17,10 +17,10 @@
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/user": "workspace:*",
     "effect": "4.0.0-beta.38",
-    "zod": "^4.3.5"
+    "zod": "4.3.5"
   },
   "devDependencies": {
     "@effect/vitest": "4.0.0-beta.38",
-    "vitest": "^4.0.18"
+    "vitest": "^4.1.9"
   }
 }

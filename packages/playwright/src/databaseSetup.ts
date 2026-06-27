@@ -1,3 +1,5 @@
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { encrypt } from "@typebot.io/credentials/encrypt";
 import type { StripeCredentials } from "@typebot.io/credentials/schemas";
 import { env } from "@typebot.io/env";
@@ -60,6 +62,7 @@ export const setupUsers = async () => {
   if (!authenticatedUser) {
     throw new Error("Authenticated user not found");
   }
+  await setupAuthenticatedUserSession(authenticatedUser.id);
   await prisma.apiToken.createMany({
     data: [
       {
@@ -112,6 +115,49 @@ export const setupUsers = async () => {
     ],
   });
 };
+
+const setupAuthenticatedUserSession = async (userId: string) => {
+  const sessionToken = getPlaywrightAuthSessionToken();
+  if (!sessionToken) return;
+  await prisma.session.upsert({
+    where: {
+      sessionToken,
+    },
+    create: {
+      sessionToken,
+      userId,
+      expires: createSessionExpiryDate(),
+    },
+    update: {
+      userId,
+      expires: createSessionExpiryDate(),
+    },
+  });
+};
+
+const getPlaywrightAuthSessionToken = () => {
+  const authStatePath = join(process.cwd(), "src/test/.auth/user.json");
+  if (!existsSync(authStatePath)) return;
+  const authState = JSON.parse(readFileSync(authStatePath, "utf8"));
+  if (typeof authState !== "object" || authState === null) return;
+  const cookies = Reflect.get(authState, "cookies");
+  if (!Array.isArray(cookies)) return;
+
+  for (const cookie of cookies) {
+    if (typeof cookie !== "object" || cookie === null) continue;
+    const cookieName = Reflect.get(cookie, "name");
+    const cookieValue = Reflect.get(cookie, "value");
+    if (
+      (cookieName === "authjs.session-token" ||
+        cookieName === "__Secure-authjs.session-token") &&
+      typeof cookieValue === "string"
+    )
+      return cookieValue;
+  }
+};
+
+const createSessionExpiryDate = () =>
+  new Date(Date.now() + 1000 * 60 * 60 * 24 * 30);
 
 const setupCredentials = async () => {
   const { encryptedData, iv } = await encrypt({

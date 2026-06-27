@@ -17,6 +17,6 @@
     "@typebot.io/prisma": "workspace:*",
     "@typebot.io/env": "workspace:*",
     "@typebot.io/runtime-session-store": "workspace:*",
-    "zod": "^4.3.5"
+    "zod": "4.3.5"
   }
 }
