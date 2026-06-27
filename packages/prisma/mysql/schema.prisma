@@ -197,10 +197,11 @@ model UserCredentials {
 }
 
 model VerificationToken {
-  identifier String
-  token      String   @unique
-  value      String?  @db.Text
-  expires    DateTime
+  identifier     String
+  token          String   @unique
+  value          String?  @db.Text
+  failedAttempts Int      @default(0)
+  expires        DateTime
 
   @@unique([identifier, token])
 }
