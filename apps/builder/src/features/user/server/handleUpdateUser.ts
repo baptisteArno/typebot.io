@@ -8,7 +8,7 @@ import { z } from "zod";
 
 const defaultMySqlStringMaxLength = 191;
 
-const updateUserInputFieldsSchema = updateUserSchema.extend({
+const mysqlUpdateUserInputFieldsSchema = updateUserSchema.extend({
   name: z.string().max(255).nullable(),
   image: z.string().max(1000).nullable(),
   company: z.string().max(defaultMySqlStringMaxLength).nullable(),
@@ -21,7 +21,10 @@ const updateUserInputFieldsSchema = updateUserSchema.extend({
 });
 
 export const updateUserInputSchema = z.object({
-  updates: updateUserInputFieldsSchema.partial(),
+  updates: (process.env.DATABASE_URL?.startsWith("mysql://")
+    ? mysqlUpdateUserInputFieldsSchema
+    : updateUserSchema
+  ).partial(),
 });
 
 export const handleUpdateUser = async ({
