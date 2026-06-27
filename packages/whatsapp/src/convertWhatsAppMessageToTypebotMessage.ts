@@ -112,7 +112,7 @@ export const convertWhatsAppMessageToTypebotMessage = async ({
             file,
             key:
               resultId && workspaceId && typebotId
-                ? `public/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${mediaId}${extension ? `.${extension}` : ""}`
+                ? `workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${mediaId}${extension ? `.${extension}` : ""}`
                 : `tmp/whatsapp/media/${mediaId}${extension ? `.${extension}` : ""}`,
             mimeType,
           });

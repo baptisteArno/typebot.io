@@ -10,7 +10,6 @@ import type { SmtpCredentials } from "@typebot.io/credentials/schemas";
 import { renderDefaultBotNotificationEmail } from "@typebot.io/emails/transactional/DefaultBotNotificationEmail";
 import { env } from "@typebot.io/env";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
-import { getFileTempUrl } from "@typebot.io/lib/s3/getFileTempUrl";
 import {
   byId,
   isDefined,
@@ -27,9 +26,9 @@ import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { createTransport } from "nodemailer";
 import type Mail from "nodemailer/lib/mailer/index";
-import { getTypebotWorkspaceId } from "../../../queries/getTypebotWorkspaceId";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { defaultFrom, defaultTransportOptions } from "./constants";
+import { parseEmailAttachments } from "./parseEmailAttachments";
 
 export const sendEmailSuccessDescription = "Email successfully sent";
 export const sendEmailErrorDescription = "Email not sent";
@@ -214,7 +213,11 @@ const sendEmail = async ({
     to: recipients,
     replyTo,
     subject,
-    attachments: await parseAttachments(fileUrls, typebot.id),
+    attachments: await parseEmailAttachments({
+      fileUrls,
+      typebotId: typebot.id,
+    }),
+    disableFileAccess: true,
     ...emailBody,
   };
 
@@ -344,40 +347,4 @@ const stringifyUniqueVariableValueAsHtml = (
   if (!value) return "";
   if (typeof value === "string") return value.replace(/\n/g, "<br />");
   return value.map(stringifyUniqueVariableValueAsHtml).join("<br />");
-};
-
-const parseAttachments = (
-  fileUrls: string | string[] | undefined,
-  typebotId: string,
-): Promise<{ path: string }[]> | undefined => {
-  if (!fileUrls) return;
-  const urls = Array.isArray(fileUrls) ? fileUrls : fileUrls.split(", ");
-  return Promise.all(
-    urls.map(async (url) => {
-      if (!url.startsWith(env.NEXTAUTH_URL)) return { path: url };
-      const {
-        typebotId: urlTypebotId,
-        resultId,
-        fileName,
-      } = extractDataFromPrivateUrl(url);
-      if (typebotId !== urlTypebotId) return { path: url };
-      const workspaceId = await getTypebotWorkspaceId(typebotId);
-      return {
-        path: await getFileTempUrl({
-          key: `private/workspaces/${workspaceId}/typebots/${typebotId}/results/${resultId}/${fileName}`,
-          expires: 600,
-        }),
-      };
-    }),
-  );
-};
-
-const extractDataFromPrivateUrl = (url: string) => {
-  const pathSegments = url.split("/").filter((segment) => segment !== "");
-
-  const typebotId = pathSegments[4];
-  const resultId = pathSegments[6];
-  const fileName = pathSegments[7];
-
-  return { typebotId, resultId, fileName };
 };
