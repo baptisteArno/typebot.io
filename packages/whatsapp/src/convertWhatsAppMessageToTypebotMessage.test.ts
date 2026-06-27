@@ -90,6 +90,21 @@ describe("convertWhatsAppMessageToTypebotMessage", () => {
     });
   });
 
+  it("keeps usable audio URLs when no current block is provided", async () => {
+    const result = await convertWhatsAppMessageToTypebotMessage({
+      messages: [createAudioMessage("audio-media-id")],
+      workspaceId: "workspace-id",
+      credentials,
+      typebotId: "typebot-id",
+      resultId: "result-id",
+    });
+
+    expect(result).toEqual({
+      type: "audio",
+      url: "http://localhost:3000/api/typebots/typebot-id/whatsapp/media/audio-media-id.ogg",
+    });
+  });
+
   it("uses the base MIME type to derive the proxied audio extension", async () => {
     const block = {
       id: "file-input",

@@ -126,11 +126,9 @@ export const resumeWhatsAppFlow = async ({
     });
   }
 
-  const currentTypebot = isSessionExpired
-    ? undefined
-    : session?.state?.typebotsQueue[0].typebot;
+  const currentTypebot = session?.state?.typebotsQueue[0].typebot;
   const { block } =
-    (currentTypebot && session?.state?.currentBlockId
+    (!isSessionExpired && currentTypebot && session?.state?.currentBlockId
       ? getBlockById(session.state.currentBlockId, currentTypebot.groups)
       : undefined) ?? {};
   const reply = await convertWhatsAppMessageToTypebotMessage({
