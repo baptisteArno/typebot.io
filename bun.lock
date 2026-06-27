@@ -402,6 +402,9 @@
         "@typebot.io/typebot": "workspace:*",
         "zod": "^4.3.5",
       },
+      "devDependencies": {
+        "@types/bun": "^1.3.9",
+      },
     },
     "packages/blocks/inputs": {
       "name": "@typebot.io/blocks-inputs",
