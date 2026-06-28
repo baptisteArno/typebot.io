@@ -11,8 +11,11 @@
     },
     "./package.json": "./package.json"
   },
+  "scripts": {
+    "test": "bun test"
+  },
   "dependencies": {
-    "@orpc/server": "^1.14.6",
+    "@orpc/server": "1.13.9",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/lib": "workspace:*",
@@ -24,5 +27,8 @@
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "zod": "4.3.5"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.9"
   }
 }

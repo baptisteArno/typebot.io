@@ -63,7 +63,7 @@
     "@typebot.io/prisma": "workspace:*",
     "posthog-node": "^5.8.2",
     "prompts": "^2.4.2",
-    "stripe": "22.3.0",
+    "stripe": "17.1.0",
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/emails": "workspace:*",

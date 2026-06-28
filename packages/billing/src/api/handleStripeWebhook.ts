@@ -153,7 +153,8 @@ export const handleStripeWebhook = async ({
           },
         },
       });
-      if (!existingWorkspace) throw new Error("Workspace not found");
+      if (!existingWorkspace)
+        return { message: "Workspace not found, skipping..." };
 
       if (
         subscription.cancel_at_period_end &&

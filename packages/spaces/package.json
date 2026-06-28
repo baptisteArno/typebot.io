@@ -10,7 +10,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@orpc/server": "^1.14.6",
+    "@orpc/server": "1.13.9",
     "effect": "4.0.0-beta.38",
     "@typebot.io/config": "workspace:*",
     "@typebot.io/feature-flags": "workspace:*",

@@ -6,8 +6,25 @@ import {
 } from "@typebot.io/user/schemas";
 import { z } from "zod";
 
+const defaultMySqlStringMaxLength = 191;
+
+const mysqlUpdateUserInputFieldsSchema = updateUserSchema.extend({
+  name: z.string().max(255).nullable(),
+  image: z.string().max(1000).nullable(),
+  company: z.string().max(defaultMySqlStringMaxLength).nullable(),
+  referral: z.string().max(defaultMySqlStringMaxLength).nullable(),
+  preferredAppAppearance: z
+    .string()
+    .max(defaultMySqlStringMaxLength)
+    .nullable(),
+  preferredLanguage: z.string().max(10).nullable(),
+});
+
 export const updateUserInputSchema = z.object({
-  updates: updateUserSchema.partial(),
+  updates: (process.env.DATABASE_URL?.startsWith("mysql://")
+    ? mysqlUpdateUserInputFieldsSchema
+    : updateUserSchema
+  ).partial(),
 });
 
 export const handleUpdateUser = async ({

@@ -15,7 +15,7 @@
     "test": "bun test .test.ts"
   },
   "dependencies": {
-    "@orpc/server": "^1.14.6",
+    "@orpc/server": "1.13.9",
     "@paralleldrive/cuid2": "^2.2.1",
     "@planetscale/database": "^1.8.0",
     "@sentry/nextjs": "^10.62.0",
@@ -55,7 +55,7 @@
     "nodemailer": "^9.0.1",
     "openai": "^6.9.1",
     "qs": "^6.15.3",
-    "stripe": "22.3.0",
+    "stripe": "17.1.0",
     "undici": "8.5.0",
     "zod": "4.3.5"
   },
