@@ -785,7 +785,6 @@
         "@googleapis/gmail": "^17.0.0",
         "@typebot.io/forge": "workspace:*",
         "@typebot.io/lib": "workspace:*",
-        "google-auth-library": "^10.1.0",
         "ky": "^1.2.4",
         "nodemailer": "^9.0.1",
       },

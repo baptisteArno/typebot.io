@@ -1,8 +1,7 @@
-import { gmail } from "@googleapis/gmail";
-import { OAuth2Client } from "google-auth-library";
+import { auth, gmail } from "@googleapis/gmail";
 
 export const createGmailClient = (accessToken: string) => {
-  const oauthClient = new OAuth2Client({
+  const oauthClient = new auth.OAuth2({
     credentials: {
       access_token: accessToken,
     },
