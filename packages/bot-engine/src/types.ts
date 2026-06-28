@@ -9,11 +9,16 @@ import type {
   VariableWithUnknowValue,
 } from "@typebot.io/variables/schemas";
 
+type ExecutionSideEffects = {
+  clientSideActions?: ContinueChatResponse["clientSideActions"];
+  logs?: ContinueChatResponse["logs"];
+};
+
 export type ExecuteLogicResponse = {
   outgoingEdgeId: string | undefined | null;
   newSessionState?: SessionState;
   newSetVariableHistory?: SetVariableHistoryItem[];
-} & Pick<ContinueChatResponse, "clientSideActions" | "logs">;
+} & ExecutionSideEffects;
 
 export type ExecuteIntegrationResponse = {
   outgoingEdgeId: string | undefined | null;
@@ -21,7 +26,7 @@ export type ExecuteIntegrationResponse = {
   startTimeShouldBeUpdated?: boolean;
   customEmbedBubble?: CustomEmbedBubble;
   newSetVariableHistory?: SetVariableHistoryItem[];
-} & Pick<ContinueChatResponse, "clientSideActions" | "logs">;
+} & ExecutionSideEffects;
 
 export type SuccessReply = {
   status: "success";
