@@ -10,6 +10,17 @@
           "{projectRoot}/.vercel",
           "{projectRoot}/.output"
         ]
+      },
+      "typecheck": {
+        "dependsOn": [
+          "^typecheck",
+          {
+            "projects": [
+              "@typebot.io/react"
+            ],
+            "target": "build"
+          }
+        ]
       }
     }
   },

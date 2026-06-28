@@ -15,6 +15,7 @@
   "nx": {
     "targets": {
       "typecheck": {
+        "parallelism": false,
         "dependsOn": [
           {
             "projects": [

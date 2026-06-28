@@ -23,7 +23,13 @@
           "^default"
         ],
         "dependsOn": [
-          "^typecheck"
+          "^typecheck",
+          {
+            "projects": [
+              "@typebot.io/react"
+            ],
+            "target": "build"
+          }
         ],
         "options": {
           "cwd": "apps/builder",
