@@ -5,8 +5,8 @@ import {
 } from "@typebot.io/lib/parseUnknownError";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import {
+  type GenerateTextOnEndCallback,
   type LanguageModel,
-  type StreamTextOnFinishCallback,
   stepCountIs,
   streamText,
   type Tool,
@@ -31,7 +31,7 @@ type Props = {
         variableId?: string;
       }[]
     | undefined;
-  onFinish?: StreamTextOnFinishCallback<Record<string, Tool>>;
+  onFinish?: GenerateTextOnEndCallback<Record<string, Tool>>;
   sessionStore: SessionStore;
   headers?: Record<string, string | undefined>;
 };
@@ -62,7 +62,7 @@ export const runChatCompletionStream = async ({
       tools: parseTools({ tools, variables, sessionStore }),
       stopWhen: stepCountIs(maxSteps),
       headers,
-      onFinish: (response) => {
+      onEnd: (response) => {
         responseMapping?.forEach((mapping) => {
           if (!mapping.variableId) return;
           if (mapping.item === "Total tokens")

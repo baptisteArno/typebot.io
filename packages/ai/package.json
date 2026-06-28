@@ -14,7 +14,7 @@
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/variables": "workspace:*",
-    "ai": "^5.0.52",
+    "ai": "^7.0.4",
     "ky": "^1.2.4",
     "@typebot.io/runtime-session-store": "workspace:*",
     "zod": "4.3.5"

@@ -22,7 +22,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@ai-sdk/perplexity": "^2.0.30",
+    "@ai-sdk/perplexity": "^4.0.1",
     "@typebot.io/ai": "workspace:*",
     "@typebot.io/forge": "workspace:*",
     "@typebot.io/lib": "workspace:*"

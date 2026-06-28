@@ -18,10 +18,16 @@ export const uploadFileToBucket = async ({
 }: Props): Promise<string> => {
   const minioClient = initClient();
 
-  await minioClient.putObject(env.S3_BUCKET, `${visibility}/${key}`, file, {
-    "Content-Type": mimeType,
-    "Cache-Control": "public, max-age=86400",
-  });
+  await minioClient.putObject(
+    env.S3_BUCKET,
+    `${visibility}/${key}`,
+    file,
+    undefined,
+    {
+      "Content-Type": mimeType,
+      "Cache-Control": "public, max-age=86400",
+    },
+  );
 
   if (visibility === "public") return `${parseS3PublicBaseUrl()}/public/${key}`;
   return `${env.NEXTAUTH_URL}/api/s3/private/${key}`;

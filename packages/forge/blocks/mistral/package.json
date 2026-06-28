@@ -27,7 +27,7 @@
     "@types/react": "^19.2.14"
   },
   "dependencies": {
-    "@ai-sdk/mistral": "^2.0.33",
+    "@ai-sdk/mistral": "^4.0.1",
     "@typebot.io/ai": "workspace:*"
   }
 }

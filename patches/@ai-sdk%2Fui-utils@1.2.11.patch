@@ -1,0 +1,91 @@
+diff --git a/dist/index.d.mts b/dist/index.d.mts
+index 771e4c28eb03c3797747fa125994038fc2792fc3..654cad1cab7a3a139492b4c6b93d9d6a364f3d78 100644
+--- a/dist/index.d.mts
++++ b/dist/index.d.mts
+@@ -1,9 +1,22 @@
+ import { LanguageModelV1Source, LanguageModelV1FinishReason, JSONValue as JSONValue$1 } from '@ai-sdk/provider';
+-import { FetchFunction, ToolCall, ToolResult, Validator } from '@ai-sdk/provider-utils';
++import { FetchFunction, ToolCall, ToolResult } from '@ai-sdk/provider-utils';
+ export { generateId } from '@ai-sdk/provider-utils';
+ import { z } from 'zod';
+ import { JSONSchema7 } from 'json-schema';
+ 
++declare const validatorSymbol: unique symbol;
++type ValidationResult<OBJECT> = {
++    success: true;
++    value: OBJECT;
++} | {
++    success: false;
++    error: Error;
++};
++type Validator<OBJECT = unknown> = {
++    [validatorSymbol]: true;
++    readonly validate?: (value: unknown) => ValidationResult<OBJECT>;
++};
++
+ /**
+ Represents the number of tokens used in a prompt and completion.
+  */
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index 771e4c28eb03c3797747fa125994038fc2792fc3..654cad1cab7a3a139492b4c6b93d9d6a364f3d78 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -1,9 +1,22 @@
+ import { LanguageModelV1Source, LanguageModelV1FinishReason, JSONValue as JSONValue$1 } from '@ai-sdk/provider';
+-import { FetchFunction, ToolCall, ToolResult, Validator } from '@ai-sdk/provider-utils';
++import { FetchFunction, ToolCall, ToolResult } from '@ai-sdk/provider-utils';
+ export { generateId } from '@ai-sdk/provider-utils';
+ import { z } from 'zod';
+ import { JSONSchema7 } from 'json-schema';
+ 
++declare const validatorSymbol: unique symbol;
++type ValidationResult<OBJECT> = {
++    success: true;
++    value: OBJECT;
++} | {
++    success: false;
++    error: Error;
++};
++type Validator<OBJECT = unknown> = {
++    [validatorSymbol]: true;
++    readonly validate?: (value: unknown) => ValidationResult<OBJECT>;
++};
++
+ /**
+ Represents the number of tokens used in a prompt and completion.
+  */
+diff --git a/dist/index.js b/dist/index.js
+index f07b8b773278f296fd00123b5e8aa3fd61f4182b..34727efa9868285aae0d2b3161a431688d1898ff 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -1620,7 +1620,7 @@ async function processAssistantStream({
+ }
+ 
+ // src/schema.ts
+-var import_provider_utils4 = require("@ai-sdk/provider-utils");
++var validatorSymbol = Symbol.for("vercel.ai.validator");
+ 
+ // src/zod-schema.ts
+ var import_zod_to_json_schema = __toESM(require("zod-to-json-schema"));
+@@ -1651,7 +1651,7 @@ function jsonSchema(jsonSchema2, {
+     [schemaSymbol]: true,
+     _type: void 0,
+     // should never be used directly
+-    [import_provider_utils4.validatorSymbol]: true,
++    [validatorSymbol]: true,
+     jsonSchema: jsonSchema2,
+     validate
+   };
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 1ac6e38284f63c9d8b6f2df68ee53c9c3445ee05..ef410d3aed514b916b80d137962157214001b910 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1564,7 +1564,7 @@ async function processAssistantStream({
+ }
+ 
+ // src/schema.ts
+-import { validatorSymbol } from "@ai-sdk/provider-utils";
++var validatorSymbol = Symbol.for("vercel.ai.validator");
+ 
+ // src/zod-schema.ts
+ import zodToJsonSchema from "zod-to-json-schema";

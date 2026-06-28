@@ -18,8 +18,10 @@ const errors = new Set();
 const contentDirectory = process.argv[2] ?? ".";
 const basePath = process.argv[3] ?? ".";
 const ignorePattern = process.argv[4];
+const absoluteContentDirectory = path.resolve(contentDirectory);
+const absoluteBasePath = path.resolve(basePath);
 
-for (const markdownFilePath of findMarkdownFiles(contentDirectory)) {
+for (const markdownFilePath of findMarkdownFiles(absoluteContentDirectory)) {
   cacheMarkdownFile(markdownFilePath);
 }
 
@@ -33,10 +35,6 @@ for (const { internalLinks } of processedFiles.values()) {
       resolveExistingTargetFilePath(targetFilePath);
 
     if (!resolvedTargetFilePath) {
-      if (!path.extname(targetFilePath)) {
-        continue;
-      }
-
       errors.add(
         `Link is broken: '${link.absolute}' in file ${link.sourceFilePath}`,
       );
@@ -186,13 +184,34 @@ function resolveExistingTargetFilePath(targetFilePath) {
     return;
   }
 
+  const markdownFilePath = resolveExistingMarkdownFilePath(targetFilePath);
+  if (markdownFilePath) return markdownFilePath;
+
+  const contentRouteFilePath = resolveContentRouteFilePath(targetFilePath);
+  if (contentRouteFilePath)
+    return resolveExistingMarkdownFilePath(contentRouteFilePath);
+}
+
+function resolveExistingMarkdownFilePath(filePath) {
   for (const extension of markdownExtensions) {
-    const markdownFilePath = `${targetFilePath}${extension}`;
+    const markdownFilePath = `${filePath}${extension}`;
 
     if (existsSync(markdownFilePath)) {
       return markdownFilePath;
     }
   }
+}
+
+function resolveContentRouteFilePath(targetFilePath) {
+  const relativeTargetPath = path.relative(absoluteBasePath, targetFilePath);
+
+  if (
+    relativeTargetPath.startsWith("..") ||
+    path.isAbsolute(relativeTargetPath)
+  )
+    return;
+
+  return path.join(absoluteContentDirectory, relativeTargetPath);
 }
 
 function normalizeLocalLink(link) {
@@ -227,7 +246,7 @@ function resolveLocalLink(link, sourceFilePath) {
   }
 
   if (link.startsWith("/")) {
-    return path.resolve(path.join(basePath, link));
+    return path.resolve(path.join(absoluteBasePath, link));
   }
 
   return path.resolve(path.dirname(sourceFilePath), link);

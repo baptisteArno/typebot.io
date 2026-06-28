@@ -11,7 +11,8 @@
       "plugin": "@nx/next/plugin"
     },
     {
-      "plugin": "@nx/vite/plugin"
+      "plugin": "@nx/vite/plugin",
+      "exclude": ["apps/landing-page/vite.config.ts"]
     }
   ],
   "targetDefaults": {

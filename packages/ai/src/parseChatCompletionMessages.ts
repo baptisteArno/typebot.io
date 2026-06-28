@@ -1,6 +1,6 @@
 import type { VariableStore } from "@typebot.io/forge/types";
 import { isDefined, isEmpty } from "@typebot.io/lib/utils";
-import type { CoreAssistantMessage, CoreMessage, CoreUserMessage } from "ai";
+import type { AssistantModelMessage, ModelMessage, UserModelMessage } from "ai";
 import { splitUserTextMessageIntoBlocks } from "./splitUserTextMessageIntoBlocks";
 import type { DialogueMessage, MessageInput, StandardMessage } from "./types";
 
@@ -16,9 +16,9 @@ export const parseChatCompletionMessages = async ({
   isVisionEnabled,
   shouldDownloadImages,
   variables,
-}: Props): Promise<CoreMessage[]> => {
+}: Props): Promise<ModelMessage[]> => {
   if (!messages) return [];
-  const parsedMessages: CoreMessage[] = (
+  const parsedMessages: ModelMessage[] = (
     await Promise.all(
       messages.map(async (message) => {
         if (!message.role) return;
@@ -60,7 +60,7 @@ const parseDialogueMessage = async ({
 
   return Promise.all(
     dialogueArr.map<
-      Promise<CoreUserMessage | CoreAssistantMessage | undefined>
+      Promise<UserModelMessage | AssistantModelMessage | undefined>
     >(async (dialogueItem, index) => {
       if (!dialogueItem) return;
       if (index === 0 && message.startsBy === "assistant")

@@ -5,13 +5,13 @@ import { isS3Configured } from "./isS3Configured";
 
 export const copyObjects = async (
   filesToCopy: { oldName: string; newName: string }[],
-) => {
+): Promise<void> => {
   if (filesToCopy.length === 0 || !isS3Configured()) return;
 
   const minioClient = initClient();
 
   const conds = new CopyConditions();
-  return Promise.all(
+  await Promise.all(
     filesToCopy.map((fileToCopy) =>
       minioClient.copyObject(
         env.S3_BUCKET,

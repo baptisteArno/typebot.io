@@ -50,7 +50,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@ai-sdk/openai": "^2.0.106",
+    "@ai-sdk/openai": "^4.0.2",
     "ky": "^1.2.4",
     "@clack/prompts": "^0.11.0",
     "@paralleldrive/cuid2": "^2.2.1",
@@ -72,7 +72,7 @@
     "@typebot.io/blocks-core": "workspace:*",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/rich-text": "workspace:*",
-    "ai": "^5.0.52",
+    "ai": "^7.0.4",
     "p-limit": "^7.2.0",
     "zod": "4.3.5"
   },

@@ -26,6 +26,8 @@ type Props = {
   headers?: Record<string, string | undefined>;
 };
 
+type ChatCompletionResponse = Awaited<ReturnType<typeof generateText>>;
+
 export const runChatCompletion = async ({
   variables,
   messages,
@@ -37,7 +39,7 @@ export const runChatCompletion = async ({
   logs,
   sessionStore,
   headers,
-}: Props) => {
+}: Props): Promise<ChatCompletionResponse | undefined> => {
   try {
     const parsedMessages = await parseChatCompletionMessages({
       messages,

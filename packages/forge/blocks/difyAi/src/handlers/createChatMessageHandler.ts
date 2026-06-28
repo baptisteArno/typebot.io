@@ -1,11 +1,14 @@
 import { processDataStream } from "@ai-sdk/ui-utils";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createActionHandler } from "@typebot.io/forge";
+import type { GenerateTextEndEvent, ProviderMetadata, Tool } from "ai";
 import { createDifyProvider } from "dify-ai-provider";
 import { createChatMessage } from "../actions/createChatMessage";
 import { defaultAppId, defaultUserId } from "../constants";
 import { transformKeyValueListToObject } from "../helpers/transformKeyValueListToObject";
 import { validateCredentials } from "../helpers/validateCredentials";
+
+type ChatCompletionStreamResponse = GenerateTextEndEvent<Record<string, Tool>>;
 
 export const createChatMessageHandler = createActionHandler(createChatMessage, {
   server: async ({
@@ -40,13 +43,17 @@ export const createChatMessageHandler = createActionHandler(createChatMessage, {
           ? variables.get(options.conversationVariableId)?.toString()
           : undefined,
       },
-      onFinish: (response) => {
+      onFinish: (response: ChatCompletionStreamResponse) => {
         if (!options.conversationVariableId) return;
+        const conversationId = parseDifyConversationId(
+          response.providerMetadata,
+        );
+        if (!conversationId) return;
+
         variables.set([
           {
             id: options.conversationVariableId,
-            value: response.providerMetadata?.difyWorkflowData
-              .conversationId as string,
+            value: conversationId,
           },
         ]);
       },
@@ -117,13 +124,17 @@ export const createChatMessageHandler = createActionHandler(createChatMessage, {
             content: options.query,
           },
         ],
-        onFinish: (response) => {
+        onFinish: (response: ChatCompletionStreamResponse) => {
           if (!options.conversationVariableId) return;
+          const conversationId = parseDifyConversationId(
+            response.providerMetadata,
+          );
+          if (!conversationId) return;
+
           variables.set([
             {
               id: options.conversationVariableId,
-              value: response.providerMetadata?.difyWorkflowData
-                .conversationId as string,
+              value: conversationId,
             },
           ]);
         },
@@ -131,3 +142,11 @@ export const createChatMessageHandler = createActionHandler(createChatMessage, {
     },
   },
 });
+
+const parseDifyConversationId = (
+  providerMetadata: ProviderMetadata | undefined,
+) => {
+  const conversationId = providerMetadata?.difyWorkflowData?.conversationId;
+
+  return typeof conversationId === "string" ? conversationId : undefined;
+};

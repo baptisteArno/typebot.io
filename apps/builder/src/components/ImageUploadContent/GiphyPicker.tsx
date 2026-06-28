@@ -1,7 +1,7 @@
 import { type GifsResult, GiphyFetch } from "@giphy/js-fetch-api";
 import { env } from "@typebot.io/env";
 import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GiphyLogo } from "../logos/GiphyLogo";
 
 type GiphySearchFormProps = {
@@ -19,6 +19,7 @@ export const GiphyPicker = ({ onSubmit }: GiphySearchFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
+  const latestRequestId = useRef(0);
 
   const fetchGifs = (offset: number) =>
     inputValue === ""
@@ -27,24 +28,28 @@ export const GiphyPicker = ({ onSubmit }: GiphySearchFormProps) => {
 
   useEffect(() => {
     let isMounted = true;
+    const requestId = latestRequestId.current + 1;
+    latestRequestId.current = requestId;
 
     const fetchInitialGifs = async () => {
       setIsLoading(true);
+      setIsLoadingMore(false);
       setErrorMessage(undefined);
 
       try {
         const { data, pagination } = await fetchGifs(0);
 
-        if (!isMounted) return;
+        if (!isMounted || latestRequestId.current !== requestId) return;
 
         setGifs(data);
         setOffset(pagination.offset + pagination.count);
       } catch {
-        if (!isMounted) return;
+        if (!isMounted || latestRequestId.current !== requestId) return;
 
         setErrorMessage("Could not load GIFs");
       } finally {
-        if (isMounted) setIsLoading(false);
+        if (isMounted && latestRequestId.current === requestId)
+          setIsLoading(false);
       }
     };
 
@@ -56,18 +61,25 @@ export const GiphyPicker = ({ onSubmit }: GiphySearchFormProps) => {
   }, [inputValue]);
 
   const loadMoreGifs = async () => {
+    const requestId = latestRequestId.current + 1;
+    latestRequestId.current = requestId;
+
     setIsLoadingMore(true);
     setErrorMessage(undefined);
 
     try {
       const { data, pagination } = await fetchGifs(offset);
 
+      if (latestRequestId.current !== requestId) return;
+
       setGifs((gifs) => [...gifs, ...data]);
       setOffset(pagination.offset + pagination.count);
     } catch {
+      if (latestRequestId.current !== requestId) return;
+
       setErrorMessage("Could not load GIFs");
     } finally {
-      setIsLoadingMore(false);
+      if (latestRequestId.current === requestId) setIsLoadingMore(false);
     }
   };
 

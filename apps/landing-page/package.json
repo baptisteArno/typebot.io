@@ -6,9 +6,74 @@
   "nx": {
     "targets": {
       "build": {
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "executor": "nx:run-commands",
+        "inputs": [
+          "default",
+          "^default",
+          {
+            "externalDependencies": [
+              "vite"
+            ]
+          }
+        ],
+        "options": {
+          "cwd": "apps/landing-page",
+          "command": "vite build"
+        },
         "outputs": [
           "{projectRoot}/.vercel",
           "{projectRoot}/.output"
+        ],
+        "syncGenerators": [
+          "@nx/js:typescript-sync"
+        ]
+      },
+      "serve": {
+        "continuous": true,
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "apps/landing-page",
+          "command": "vite"
+        },
+        "syncGenerators": [
+          "@nx/js:typescript-sync"
+        ]
+      },
+      "dev": {
+        "continuous": true,
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "apps/landing-page",
+          "command": "vite"
+        },
+        "syncGenerators": [
+          "@nx/js:typescript-sync"
+        ]
+      },
+      "preview": {
+        "continuous": true,
+        "dependsOn": [
+          "build"
+        ],
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "apps/landing-page",
+          "command": "vite preview"
+        }
+      },
+      "serve-static": {
+        "continuous": true,
+        "executor": "@nx/web:file-server",
+        "options": {
+          "buildTarget": "build",
+          "spa": true
+        },
+        "syncGenerators": [
+          "@nx/js:typescript-sync"
         ]
       },
       "typecheck": {
@@ -25,7 +90,7 @@
     }
   },
   "scripts": {
-    "content-collections:build": "bunx @content-collections/cli build --config content-collections.ts",
+    "content-collections:build": "bunx --bun --no-install -p @content-collections/cli content-collections build --config content-collections.ts",
     "check-broken-links": "bun scripts/checkBrokenLinks.mjs content public '*/(index.mdx|blog|about|pricing?isTiersModalOpened=true)'"
   },
   "dependencies": {
@@ -45,6 +110,7 @@
     "zod": "4.3.5"
   },
   "devDependencies": {
+    "@content-collections/cli": "0.1.9",
     "@content-collections/core": "0.15.2",
     "@content-collections/integrations": "0.5.0",
     "@content-collections/mdx": "0.2.2",

@@ -18,15 +18,18 @@ export default defineConfig({
         "../../node_modules/.prisma/client/index-browser.js",
     },
   },
-  plugins: [
-    tailwindcss(),
-    // Still using vite-tsconfig-paths because we want to point to tsconfig.app.json, `tsconfigPaths` doesn't support it.
-    viteTsConfigPaths({
-      projects: ["tsconfig.app.json"],
-    }),
-    contentCollections(),
-    tanstackStart(),
-    nitro(),
-    viteReact(),
-  ],
+  plugins:
+    "NX_GRAPH_CREATION" in globalThis
+      ? []
+      : [
+          tailwindcss(),
+          // Still using vite-tsconfig-paths because we want to point to tsconfig.app.json, `tsconfigPaths` doesn't support it.
+          viteTsConfigPaths({
+            projects: ["tsconfig.app.json"],
+          }),
+          contentCollections(),
+          tanstackStart(),
+          nitro(),
+          viteReact(),
+        ],
 });
