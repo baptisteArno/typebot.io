@@ -52,11 +52,11 @@
     "ky": "^1.2.4",
     "libphonenumber-js": "1.10.37",
     "node-html-parser": "6.1.5",
-    "nodemailer": "^8.0.5",
+    "nodemailer": "^9.0.1",
     "openai": "^6.9.1",
     "qs": "^6.11.2",
     "stripe": "17.1.0",
-    "undici": "7.24.4",
+    "undici": "7.28.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {
