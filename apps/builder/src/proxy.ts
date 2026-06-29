@@ -9,11 +9,6 @@ export function proxy(req: NextRequest) {
       status: 405,
       headers: {
         Allow: "GET, HEAD",
-        "Cache-Control":
-          "private, no-cache, no-store, max-age=0, must-revalidate",
-        Expires: "0",
-        Pragma: "no-cache",
-        "X-Content-Type-Options": "nosniff",
       },
     });
 
