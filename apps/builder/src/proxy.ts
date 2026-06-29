@@ -1,7 +1,22 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+const disallowedMethods = new Set(["OPTIONS", "TRACE", "TRACK"]);
+
 export function proxy(req: NextRequest) {
+  if (disallowedMethods.has(req.method))
+    return new NextResponse(null, {
+      status: 405,
+      headers: {
+        Allow: "GET, HEAD",
+        "Cache-Control":
+          "private, no-cache, no-store, max-age=0, must-revalidate",
+        Expires: "0",
+        Pragma: "no-cache",
+        "X-Content-Type-Options": "nosniff",
+      },
+    });
+
   const { pathname, locale, defaultLocale, searchParams } = req.nextUrl;
 
   const isMostLikelySignedIn = Boolean(
@@ -57,5 +72,14 @@ function sanitizeRedirectPath(
 }
 
 export const config = {
-  matcher: ["/", "/typebots"],
+  matcher: [
+    "/",
+    "/typebots",
+    "/signin",
+    "/register",
+    "/__ENV.js",
+    "/favicon.svg",
+    "/robots.txt",
+    "/sitemap.xml",
+  ],
 };

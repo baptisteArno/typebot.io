@@ -70,7 +70,7 @@
     "@typebot.io/user": "workspace:*",
     "cors": "^2.8.5",
     "google-spreadsheet": "^4.1.4",
-    "next": "^16.1.6",
+    "next": "^16.2.9",
     "nextjs-cors": "^2.1.2",
     "nodemailer": "^9.0.1",
     "openai": "^6.9.1",
