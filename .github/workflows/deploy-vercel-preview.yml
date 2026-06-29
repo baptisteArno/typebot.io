@@ -1,0 +1,79 @@
+name: Deploy Vercel Preview
+
+on:
+  workflow_dispatch:
+    inputs:
+      project:
+        description: "Vercel project to deploy"
+        required: true
+        default: "both"
+        type: choice
+        options:
+          - both
+          - builder
+          - viewer
+      ref:
+        description: "Git ref to deploy. Leave empty to use the selected workflow branch."
+        required: false
+        type: string
+      alias:
+        description: "Branch name used for preview aliases. Leave empty to use the deployed ref."
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ inputs.alias || inputs.ref || github.ref_name }}-${{ inputs.project }}
+  cancel-in-progress: false
+
+env:
+  BUILDER_PROJECT_ID: prj_wrL6oQ73LsDKbNSq2ZxgnaYKlCHf
+  BUILDER_PROJECT_NAME: builder-v2
+  VIEWER_PROJECT_ID: prj_LPsimKxRQU4ek8KPaqyMEGCiaeOR
+  VIEWER_PROJECT_NAME: viewer-v2
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_TEAM_ID }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_CLI_VERSION: 54.18.2
+
+jobs:
+  deploy-builder:
+    if: ${{ inputs.project == 'both' || inputs.project == 'builder' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+          fetch-depth: 1
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: "package.json"
+      - name: Deploy builder preview
+        run: |
+          set -euo pipefail
+          source .github/workflows/scripts/deploy-vercel-preview.sh
+          deploy_vercel_preview builder "${BUILDER_PROJECT_ID}" "${BUILDER_PROJECT_NAME}"
+        env:
+          PREVIEW_ALIAS_INPUT: ${{ inputs.alias }}
+          PREVIEW_REF_INPUT: ${{ inputs.ref }}
+
+  deploy-viewer:
+    if: ${{ inputs.project == 'both' || inputs.project == 'viewer' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+          fetch-depth: 1
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: "package.json"
+      - name: Deploy viewer preview
+        run: |
+          set -euo pipefail
+          source .github/workflows/scripts/deploy-vercel-preview.sh
+          deploy_vercel_preview viewer "${VIEWER_PROJECT_ID}" "${VIEWER_PROJECT_NAME}"
+        env:
+          PREVIEW_ALIAS_INPUT: ${{ inputs.alias }}
+          PREVIEW_REF_INPUT: ${{ inputs.ref }}
