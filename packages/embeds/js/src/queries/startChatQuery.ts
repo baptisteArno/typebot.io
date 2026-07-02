@@ -60,7 +60,6 @@ export async function startChatQuery({
       apiHost,
       typebotId,
       startFrom,
-      typebot,
       prefilledVariables,
       sessionId,
     });
@@ -141,14 +140,12 @@ const startPreviewChat = async ({
   apiHost,
   typebotId,
   startFrom,
-  typebot,
   prefilledVariables,
   sessionId,
 }: {
   apiHost?: string;
   typebotId: string;
   startFrom?: StartFrom;
-  typebot: StartPreviewChatInput["typebot"];
   prefilledVariables?: Record<string, unknown>;
   sessionId?: string;
 }) => {
@@ -160,7 +157,6 @@ const startPreviewChat = async ({
           json: {
             isStreamEnabled: true,
             startFrom,
-            typebot,
             prefilledVariables,
             sessionId,
           } satisfies Omit<

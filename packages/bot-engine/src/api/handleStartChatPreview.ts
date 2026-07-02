@@ -1,9 +1,5 @@
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
-import {
-  messageSchema,
-  startFromSchema,
-  startTypebotSchema,
-} from "@typebot.io/chat-api/schemas";
+import { messageSchema, startFromSchema } from "@typebot.io/chat-api/schemas";
 import { restartSession } from "@typebot.io/chat-session/queries/restartSession";
 import { createId } from "@typebot.io/lib/createId";
 import { withSessionStore } from "@typebot.io/runtime-session-store";
@@ -17,11 +13,6 @@ export const startPreviewChatInputSchema = z.object({
     .string()
     .describe(
       "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
-    ),
-  typebot: startTypebotSchema
-    .optional()
-    .describe(
-      "If set, it will override the typebot that is used to start the chat.",
     ),
   sessionId: z
     .string()
@@ -69,7 +60,6 @@ export const handleStartChatPreview = async ({
     isStreamEnabled,
     startFrom,
     typebotId,
-    typebot: startTypebot,
     prefilledVariables,
     sessionId: sessionIdProp,
     textBubbleContentFormat,
@@ -100,7 +90,6 @@ export const handleStartChatPreview = async ({
         isStreamEnabled,
         startFrom,
         typebotId,
-        typebot: startTypebot,
         userId: user?.id,
         prefilledVariables,
         textBubbleContentFormat,

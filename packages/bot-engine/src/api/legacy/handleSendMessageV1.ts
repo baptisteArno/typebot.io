@@ -59,49 +59,41 @@ export const handleSendMessageV1 = async ({
       } = await startSession({
         sessionStore,
         version: 1,
-        startParams:
-          startParams.isPreview || typeof startParams.typebot !== "string"
-            ? {
-                type: "preview",
-                isOnlyRegistering: startParams.isOnlyRegistering ?? false,
-                isStreamEnabled: startParams.isStreamEnabled ?? false,
-                startFrom:
-                  "startGroupId" in startParams && startParams.startGroupId
+        startParams: startParams.isPreview
+          ? {
+              type: "preview",
+              isOnlyRegistering: startParams.isOnlyRegistering ?? false,
+              isStreamEnabled: startParams.isStreamEnabled ?? false,
+              startFrom:
+                "startGroupId" in startParams && startParams.startGroupId
+                  ? {
+                      type: "group",
+                      groupId: startParams.startGroupId,
+                    }
+                  : "startEventId" in startParams && startParams.startEventId
                     ? {
-                        type: "group",
-                        groupId: startParams.startGroupId,
+                        type: "event",
+                        eventId: startParams.startEventId,
                       }
-                    : "startEventId" in startParams && startParams.startEventId
-                      ? {
-                          type: "event",
-                          eventId: startParams.startEventId,
-                        }
-                      : undefined,
-                typebotId:
-                  typeof startParams.typebot === "string"
-                    ? startParams.typebot
-                    : startParams.typebot.id,
-                typebot:
-                  typeof startParams.typebot === "string"
-                    ? undefined
-                    : startParams.typebot,
-                message: message ? { type: "text", text: message } : undefined,
-                userId: user?.id,
-                textBubbleContentFormat: "richText",
-              }
-            : {
-                type: "live",
-                isOnlyRegistering: startParams.isOnlyRegistering ?? false,
-                isStreamEnabled: startParams.isStreamEnabled ?? false,
-                publicId: startParams.typebot,
-                prefilledVariables: startParams.prefilledVariables,
-                resultId: startParams.resultId,
-                message: message ? { type: "text", text: message } : undefined,
-                textBubbleContentFormat: "richText",
-              },
+                    : undefined,
+              typebotId: startParams.typebot,
+              message: message ? { type: "text", text: message } : undefined,
+              userId: user?.id,
+              textBubbleContentFormat: "richText",
+            }
+          : {
+              type: "live",
+              isOnlyRegistering: startParams.isOnlyRegistering ?? false,
+              isStreamEnabled: startParams.isStreamEnabled ?? false,
+              publicId: startParams.typebot,
+              prefilledVariables: startParams.prefilledVariables,
+              resultId: startParams.resultId,
+              message: message ? { type: "text", text: message } : undefined,
+              textBubbleContentFormat: "richText",
+            },
       });
 
-      if (startParams.isPreview || typeof startParams.typebot !== "string") {
+      if (startParams.isPreview) {
         assertOriginIsAllowed(origin, {
           allowedOrigins: newSessionState.allowedOrigins,
           iframeReferrerOrigin,

@@ -2,12 +2,18 @@ import prisma from "@typebot.io/prisma";
 
 type Props = {
   id: string;
-  userId?: string;
+  userId: string;
 };
 
 export const findTypebot = ({ id, userId }: Props) =>
   prisma.typebot.findFirst({
-    where: { id, workspace: { members: { some: { userId } } } },
+    where: {
+      id,
+      OR: [
+        { workspace: { members: { some: { userId } } } },
+        { collaborators: { some: { userId } } },
+      ],
+    },
     select: {
       version: true,
       id: true,

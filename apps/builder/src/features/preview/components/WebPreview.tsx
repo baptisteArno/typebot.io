@@ -1,6 +1,7 @@
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
 import { Standard } from "@typebot.io/react";
 import { defaultBackgroundColor } from "@typebot.io/theme/constants";
+import { useEffect, useRef, useState } from "react";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
@@ -9,9 +10,31 @@ import { toast } from "@/lib/toast";
 
 export const WebPreview = () => {
   const { user } = useUser();
-  const { typebot } = useTypebot();
+  const { typebot, save } = useTypebot();
   const { startPreviewFrom } = useEditor();
   const { setPreviewingBlock } = useGraph();
+  const [isSavingBeforePreview, setIsSavingBeforePreview] = useState(true);
+  const savedPreviewKey = useRef<string | undefined>(undefined);
+
+  const previewKey = `${typebot?.id ?? ""}-${startPreviewFrom?.type ?? ""}-${
+    startPreviewFrom?.id ?? ""
+  }`;
+
+  useEffect(() => {
+    if (!typebot || savedPreviewKey.current === previewKey) return;
+
+    savedPreviewKey.current = previewKey;
+    setIsSavingBeforePreview(true);
+    let isMounted = true;
+
+    save().finally(() => {
+      if (isMounted) setIsSavingBeforePreview(false);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [previewKey, save, typebot]);
 
   const handleNewLogs = (logs: ContinueChatResponse["logs"]) => {
     logs?.forEach((log) => {
@@ -25,12 +48,13 @@ export const WebPreview = () => {
     });
   };
 
-  if (!typebot) return null;
+  if (!typebot || isSavingBeforePreview) return null;
 
   return (
     <Standard
       key={`web-preview-${startPreviewFrom?.id ?? ""}`}
-      typebot={typebot}
+      typebot={typebot.id}
+      isPreview
       apiHost={window.location.origin}
       sessionId={user ? `${typebot.id}-${user.id}` : undefined}
       startFrom={

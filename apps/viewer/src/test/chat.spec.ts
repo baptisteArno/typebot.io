@@ -1,9 +1,14 @@
+import { createServer } from "node:http";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
 import type {
   StartChatInput,
   StartPreviewChatInput,
+  StartTypebot,
 } from "@typebot.io/chat-api/schemas";
+import { sessionStateSchema } from "@typebot.io/chat-session/schemas";
+import { encrypt } from "@typebot.io/credentials/encrypt";
+import { EventType } from "@typebot.io/events/constants";
 import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions";
 import { apiToken } from "@typebot.io/playwright/databaseSetup";
 import prisma from "@typebot.io/prisma";
@@ -84,6 +89,103 @@ test("API chat execution should work on preview bot", async ({ request }) => {
     ]);
     expect(input.type).toBe("number input");
   });
+});
+
+test("API preview chat should not resolve credentials from a client-supplied workspace", async ({
+  request,
+}) => {
+  const typebotId = createId();
+  const publicId = `${typebotId}-public`;
+  const victimCredentialsId = createId();
+  const victimWorkspaceId = createId();
+  const credentialSinkServer = await createCredentialSinkServer();
+
+  try {
+    await importTypebotInDatabase(getTestAsset("typebots/chat/main.json"), {
+      id: typebotId,
+      publicId,
+    });
+
+    const { encryptedData, iv } = await encrypt({
+      apiKey: "sk-victim-api-key",
+    });
+
+    await prisma.workspace.create({
+      data: {
+        id: victimWorkspaceId,
+        name: "Victim workspace",
+      },
+    });
+
+    await prisma.credentials.create({
+      data: {
+        id: victimCredentialsId,
+        name: "Victim OpenAI",
+        type: "openai",
+        data: encryptedData,
+        iv,
+        workspaceId: victimWorkspaceId,
+      },
+    });
+
+    const response = await request.post(
+      `/api/v1/typebots/${typebotId}/preview/startChat`,
+      {
+        data: {
+          typebot: buildPreviewTypebot({
+            id: "client-supplied-typebot",
+            publicTypebotId: "client-supplied-public-typebot",
+            workspaceId: victimWorkspaceId,
+            blocks: [
+              {
+                id: "openai-block",
+                type: "openai",
+                options: {
+                  credentialsId: victimCredentialsId,
+                  action: "Create chat completion",
+                  baseUrl: credentialSinkServer.baseUrl,
+                  model: "gpt-4o-mini",
+                  messages: [
+                    {
+                      role: "user",
+                      content: "Say hello",
+                    },
+                  ],
+                },
+              },
+            ],
+          }),
+          isOnlyRegistering: false,
+          isStreamEnabled: false,
+          textBubbleContentFormat: "richText",
+        },
+        headers: {
+          Authorization: `Bearer ${apiToken}`,
+        },
+      },
+    );
+
+    expect(response.ok()).toBe(true);
+
+    const responseBody = await response.json();
+    const session = await prisma.chatSession.findUnique({
+      where: { id: responseBody.sessionId },
+      select: { state: true },
+    });
+
+    expect(responseBody.messages[0].content.richText).toStrictEqual([
+      { children: [{ text: "Hi there! 👋" }], type: "p" },
+    ]);
+    expect(sessionStateSchema.parse(session?.state).workspaceId).not.toBe(
+      victimWorkspaceId,
+    );
+    expect(credentialSinkServer.requestCount()).toBe(0);
+  } finally {
+    await credentialSinkServer.close();
+    await prisma.workspace.deleteMany({
+      where: { id: victimWorkspaceId },
+    });
+  }
 });
 
 test("API chat execution should work on published bot", async ({ request }) => {
@@ -300,3 +402,86 @@ test("API chat execution should work on published bot", async ({ request }) => {
     );
   });
 });
+
+type PreviewTypebot = StartTypebot;
+
+const buildPreviewTypebot = ({
+  id,
+  publicTypebotId,
+  workspaceId,
+  blocks,
+}: {
+  id: string;
+  publicTypebotId: string;
+  workspaceId: string;
+  blocks: PreviewTypebot["groups"][number]["blocks"];
+}): PreviewTypebot => ({
+  version: "6.1",
+  id,
+  publicTypebotId,
+  workspaceId,
+  updatedAt: new Date("2026-01-01T00:00:00.000Z"),
+  settings: {},
+  theme: {},
+  variables: [],
+  events: [
+    {
+      id: "start-event",
+      type: EventType.START,
+      graphCoordinates: { x: 0, y: 0 },
+      outgoingEdgeId: "start-edge",
+    },
+  ],
+  groups: [
+    {
+      id: "group",
+      title: "Group",
+      graphCoordinates: { x: 0, y: 0 },
+      blocks,
+    },
+  ],
+  edges: [
+    {
+      id: "start-edge",
+      from: { eventId: "start-event" },
+      to: { groupId: "group" },
+    },
+  ],
+});
+
+const createCredentialSinkServer = async () => {
+  let requestCount = 0;
+
+  const server = createServer((_request, response) => {
+    requestCount += 1;
+    response.writeHead(200, { "content-type": "application/json" });
+    response.end(JSON.stringify({ choices: [] }));
+  });
+
+  await new Promise<void>((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", () => {
+      server.off("error", reject);
+      resolve();
+    });
+  });
+
+  const address = server.address();
+  if (!address || typeof address === "string")
+    throw new Error("Could not start credential sink server");
+
+  return {
+    baseUrl: `http://127.0.0.1:${address.port}/v1`,
+    requestCount: () => requestCount,
+    close: () =>
+      new Promise<void>((resolve, reject) => {
+        server.close((error) => {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve();
+        });
+      }),
+  };
+};

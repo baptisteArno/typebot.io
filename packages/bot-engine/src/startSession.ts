@@ -170,11 +170,16 @@ export const startSession = async ({
       : typebot.theme.general?.progressBar?.isEnabled
         ? { totalAnswers: 0 }
         : undefined,
+    ...(initialSessionState?.whatsApp
+      ? { whatsApp: initialSessionState.whatsApp }
+      : {}),
+    ...(isDefined(initialSessionState?.expiryTimeout)
+      ? { expiryTimeout: initialSessionState.expiryTimeout }
+      : {}),
     setVariableIdsForHistory: extractVariableIdsUsedForTranscript(
       typebotInSession,
       { sessionStore },
     ),
-    ...initialSessionState,
   };
 
   const setVariableHistory: SetVariableHistoryItem[] = [];
@@ -333,21 +338,23 @@ export const startSession = async ({
 };
 
 const getTypebot = async (startParams: StartParams) => {
-  if (startParams.type === "preview" && !startParams.userId)
-    throw new ORPCError("UNAUTHORIZED", {
-      message: "You need to be authenticated to perform this action",
+  let typebotQuery:
+    | Awaited<ReturnType<typeof findTypebot>>
+    | Awaited<ReturnType<typeof findPublicTypebot>>;
+
+  if (startParams.type === "preview") {
+    if (!startParams.userId)
+      throw new ORPCError("UNAUTHORIZED", {
+        message: "You need to be authenticated to perform this action",
+      });
+
+    typebotQuery = await findTypebot({
+      id: startParams.typebotId,
+      userId: startParams.userId,
     });
-
-  if (startParams.type === "preview" && startParams.typebot)
-    return startParams.typebot;
-
-  const typebotQuery =
-    startParams.type === "preview"
-      ? await findTypebot({
-          id: startParams.typebotId,
-          userId: startParams.userId,
-        })
-      : await findPublicTypebot({ publicId: startParams.publicId });
+  } else {
+    typebotQuery = await findPublicTypebot({ publicId: startParams.publicId });
+  }
 
   if (
     typebotQuery &&
