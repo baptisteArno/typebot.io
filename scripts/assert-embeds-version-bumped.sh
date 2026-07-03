@@ -9,7 +9,7 @@
 # rejected too.
 set -euo pipefail
 
-base_ref="${VERSION_BUMP_BASE_REF:-origin/main}"
+base_ref="${VERSION_BUMP_BASE_REF:-$(git rev-parse --verify -q origin/main >/dev/null && echo origin/main || echo main)}"
 merge_base=$(git merge-base HEAD "$base_ref")
 
 changed() {
