@@ -56,6 +56,7 @@ export const chatWhatsAppRouter = {
     .route({
       method: "GET",
       path: "/v1/workspaces/{workspaceId}/whatsapp/{credentialsId}/webhook",
+      operationId: "whatsAppRouter-subscribeWebhook",
       summary: "Subscribe webhook",
       tags: ["WhatsApp"],
     })

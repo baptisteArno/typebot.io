@@ -4,7 +4,12 @@ import * as Sentry from "@sentry/nextjs";
 import { env } from "@typebot.io/env";
 import type { Context } from "./context";
 
-export const os = baseOs.$context<Context>();
+export const os = baseOs.$context<Context>().errors({
+  BAD_REQUEST: {},
+  UNAUTHORIZED: {},
+  FORBIDDEN: {},
+  INTERNAL_SERVER_ERROR: {},
+});
 
 const webhookUrlPaths = [
   "builderWhatsAppRouter/previewWebhookProcedure",

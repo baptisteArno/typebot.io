@@ -13,7 +13,14 @@ changed() {
 }
 
 bumped() {
-  git diff "$base" -- "packages/embeds/$1/package.json" | grep -q '^+.*"version":'
+  local base_version current_version
+  base_version=$(git show "$base:packages/embeds/$1/package.json" | extract_version)
+  current_version=$(extract_version <"packages/embeds/$1/package.json")
+  [ "$base_version" != "$current_version" ]
+}
+
+extract_version() {
+  node -e "let s='';process.stdin.on('data',(c)=>{s+=c}).on('end',()=>{console.log(JSON.parse(s).version)})"
 }
 
 require_bump() {

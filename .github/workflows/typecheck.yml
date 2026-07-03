@@ -31,7 +31,7 @@ jobs:
       - run: bunx nx affected -t typecheck --base=${{ github.event.pull_request.base.sha }}
       - name: Check OpenAPI docs are up to date
         run: |
-          bunx nx affected -t generate-openapi --base=${{ github.event.pull_request.base.sha }}
+          bunx nx run-many -t generate-openapi
           git diff --exit-code apps/docs/openapi || {
             echo "::error::OpenAPI docs are stale. Run 'bunx nx run-many -t generate-openapi' and commit the result."
             exit 1

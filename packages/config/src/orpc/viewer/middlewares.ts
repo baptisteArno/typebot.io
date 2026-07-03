@@ -3,7 +3,12 @@ import { os as baseOs, ORPCError } from "@orpc/server";
 import * as Sentry from "@sentry/nextjs";
 import type { Context } from "./context";
 
-export const os = baseOs.$context<Context>();
+export const os = baseOs.$context<Context>().errors({
+  BAD_REQUEST: {},
+  UNAUTHORIZED: {},
+  FORBIDDEN: {},
+  INTERNAL_SERVER_ERROR: {},
+});
 
 const webhookUrlPaths = [
   "chatWhatsAppRouter/productionWebhookProcedure",
