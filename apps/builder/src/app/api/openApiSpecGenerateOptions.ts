@@ -36,7 +36,7 @@ export const openApiSpecGenerateOptions: OpenAPIGeneratorGenerateOptions = {
   },
   commonSchemas: {
     ...convertSchemasListToCommonSchemas(typebotSchema),
-    "Public Typebot V5": { schema: publicTypebotSchemaV5 },
-    "Public Typebot V6": { schema: publicTypebotSchemaV6 },
+    PublicTypebotV5: { schema: publicTypebotSchemaV5 },
+    PublicTypebotV6: { schema: publicTypebotSchemaV6 },
   },
 };

@@ -19417,7 +19417,7 @@
           "spaceId"
         ]
       },
-      "Public Typebot V5": {
+      "PublicTypebotV5": {
         "type": "object",
         "properties": {
           "id": {
@@ -21546,7 +21546,7 @@
           "settings"
         ]
       },
-      "Public Typebot V6": {
+      "PublicTypebotV6": {
         "type": "object",
         "properties": {
           "id": {
