@@ -21,6 +21,7 @@ export const folderRouter = {
     .route({
       method: "GET",
       path: "/v1/folders/{folderId}",
+      operationId: "folders-getFolder",
       summary: "Get folder",
       tags: ["Folder"],
     })
@@ -36,6 +37,7 @@ export const folderRouter = {
     .route({
       method: "POST",
       path: "/v1/folders",
+      operationId: "folders-createFolder",
       summary: "Create a folder",
       tags: ["Folder"],
     })
@@ -51,6 +53,7 @@ export const folderRouter = {
     .route({
       method: "PATCH",
       path: "/v1/folders/{folderId}",
+      operationId: "folders-updateFolder",
       summary: "Update a folder",
       tags: ["Folder"],
     })
@@ -66,6 +69,7 @@ export const folderRouter = {
     .route({
       method: "DELETE",
       path: "/v1/folders/{folderId}",
+      operationId: "folders-deleteFolder",
       summary: "Delete a folder",
       tags: ["Folder"],
     })
@@ -81,6 +85,7 @@ export const folderRouter = {
     .route({
       method: "GET",
       path: "/v1/folders",
+      operationId: "folders-listFolders",
       summary: "List folders",
       tags: ["Folder"],
     })

@@ -7,6 +7,7 @@ export const os = baseOs.$context<Context>().errors({
   BAD_REQUEST: {},
   UNAUTHORIZED: {},
   FORBIDDEN: {},
+  NOT_FOUND: {},
   INTERNAL_SERVER_ERROR: {},
 });
 
@@ -95,7 +96,7 @@ const requireAuth = oo.spec(
     });
   }),
   {
-    security: [{ bearerAuth: [] }],
+    security: [{ Authorization: [] }],
   },
 );
 

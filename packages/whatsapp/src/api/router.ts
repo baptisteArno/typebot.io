@@ -90,6 +90,7 @@ export const builderWhatsAppRouter = {
     .route({
       method: "POST",
       path: "/v1/typebots/{typebotId}/whatsapp/start-preview",
+      operationId: "whatsApp-startWhatsAppPreview",
       summary: "Start preview",
       tags: ["WhatsApp"],
     })
@@ -105,6 +106,7 @@ export const builderWhatsAppRouter = {
     .route({
       method: "GET",
       path: "/v1/whatsapp/preview/webhook",
+      operationId: "whatsApp-subscribePreviewWebhook",
       summary: "Subscribe webhook",
       tags: ["WhatsApp"],
     })

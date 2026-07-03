@@ -28,7 +28,7 @@ export const openApiSpecGenerateOptions: OpenAPIGeneratorGenerateOptions = {
   },
   components: {
     securitySchemes: {
-      bearerAuth: {
+      Authorization: {
         type: "http",
         scheme: "bearer",
       },

@@ -16,7 +16,11 @@ bumped() {
   local base_version current_version
   base_version=$(git show "$base:packages/embeds/$1/package.json" | extract_version)
   current_version=$(extract_version <"packages/embeds/$1/package.json")
-  [ "$base_version" != "$current_version" ]
+  node -e "
+    const [base, current] = process.argv.slice(1).map((v) => v.split('.').map(Number));
+    const isGreater = current[0] !== base[0] ? current[0] > base[0] : current[1] !== base[1] ? current[1] > base[1] : current[2] > base[2];
+    process.exit(isGreater ? 0 : 1);
+  " "$base_version" "$current_version"
 }
 
 extract_version() {

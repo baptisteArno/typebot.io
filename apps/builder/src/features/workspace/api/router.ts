@@ -57,6 +57,7 @@ export const workspaceRouter = {
     .route({
       method: "GET",
       path: "/v1/workspaces",
+      operationId: "workspace-listWorkspaces",
       summary: "List workspaces",
       tags: ["Workspace"],
     })
@@ -78,6 +79,7 @@ export const workspaceRouter = {
     .route({
       method: "GET",
       path: "/v1/workspaces/{workspaceId}",
+      operationId: "workspace-getWorkspace",
       summary: "Get workspace",
       tags: ["Workspace"],
     })
@@ -94,6 +96,7 @@ export const workspaceRouter = {
     .route({
       method: "POST",
       path: "/v1/workspaces",
+      operationId: "workspace-createWorkspace",
       summary: "Create workspace",
       tags: ["Workspace"],
     })
@@ -120,6 +123,7 @@ export const workspaceRouter = {
     .route({
       method: "PATCH",
       path: "/v1/workspaces/{workspaceId}",
+      operationId: "workspace-updateWorkspace",
       summary: "Update workspace",
       tags: ["Workspace"],
     })
@@ -135,6 +139,7 @@ export const workspaceRouter = {
     .route({
       method: "DELETE",
       path: "/v1/workspaces/{workspaceId}",
+      operationId: "workspace-deleteWorkspace",
       summary: "Delete workspace",
       tags: ["Workspace"],
     })
@@ -146,6 +151,7 @@ export const workspaceRouter = {
     .route({
       method: "GET",
       path: "/v1/workspaces/{workspaceId}/members",
+      operationId: "workspace-listMembersInWorkspace",
       summary: "List members in workspace",
       tags: ["Workspace"],
     })
