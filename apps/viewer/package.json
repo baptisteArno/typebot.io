@@ -43,6 +43,21 @@
           "cwd": "apps/viewer",
           "command": "playwright test"
         }
+      },
+      "generate-openapi": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "apps/viewer",
+          "command": "SKIP_ENV_CHECK=true bun --preload ./src/scripts/preloadOpenApiGenerationStubs.ts src/scripts/generateOpenApiSpec.ts"
+        },
+        "cache": true,
+        "inputs": [
+          "default",
+          "^default"
+        ],
+        "outputs": [
+          "{workspaceRoot}/apps/docs/openapi/viewer.json"
+        ]
       }
     }
   },

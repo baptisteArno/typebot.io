@@ -1,0 +1,22 @@
+name: Check embeds version bump
+
+on:
+  pull_request:
+    paths:
+      - "packages/embeds/js/**"
+      - "packages/embeds/react/**"
+
+permissions:
+  contents: read
+
+jobs:
+  check-version-bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require version bump
+        env:
+          VERSION_BUMP_BASE_REF: ${{ github.event.pull_request.base.sha }}
+        run: bash scripts/assert-embeds-version-bumped.sh

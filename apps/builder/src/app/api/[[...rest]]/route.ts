@@ -1,19 +1,16 @@
 import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
-import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import { authenticateWithBearerToken } from "@typebot.io/auth/helpers/authenticateWithBearerToken";
 import { auth } from "@typebot.io/auth/lib/nextAuth";
 import { createContext } from "@typebot.io/config/orpc/builder/context";
-import { convertSchemasListToCommonSchemas } from "@typebot.io/lib/convertSchemasListToCommonSchemas";
 import { UserId } from "@typebot.io/shared-core/domain";
 import { logServerRequest } from "@typebot.io/telemetry/logServerRequest";
-import {
-  publicTypebotSchemaV5,
-  publicTypebotSchemaV6,
-} from "@typebot.io/typebot/schemas/publicTypebot";
-import { typebotSchema } from "@typebot.io/typebot/schemas/typebot";
 import { after, type NextRequest } from "next/server";
+import {
+  openApiSchemaConverters,
+  openApiSpecGenerateOptions,
+} from "../openApiSpecGenerateOptions";
 import { appRouter } from "../router";
 
 type RouteContext<_T> = {
@@ -62,35 +59,8 @@ const handler = new OpenAPIHandler(appRouter, {
   plugins: [
     new OpenAPIReferencePlugin({
       specPath: "/openapi.json",
-      schemaConverters: [new ZodToJsonSchemaConverter()],
-      specGenerateOptions: {
-        filter: ({ contract }) =>
-          Boolean(
-            contract["~orpc"].route.method &&
-              !contract["~orpc"].route.deprecated,
-          ),
-        info: {
-          title: "Builder API",
-          version: "1.0.0",
-        },
-        servers: [{ url: "https://app.typebot.com/api" }],
-        externalDocs: {
-          url: "https://docs.typebot.com/api-reference",
-        },
-        components: {
-          securitySchemes: {
-            bearerAuth: {
-              type: "http",
-              scheme: "bearer",
-            },
-          },
-        },
-        commonSchemas: {
-          ...convertSchemasListToCommonSchemas(typebotSchema),
-          "Public Typebot V5": { schema: publicTypebotSchemaV5 },
-          "Public Typebot V6": { schema: publicTypebotSchemaV6 },
-        },
-      },
+      schemaConverters: openApiSchemaConverters,
+      specGenerateOptions: openApiSpecGenerateOptions,
     }),
   ],
 });

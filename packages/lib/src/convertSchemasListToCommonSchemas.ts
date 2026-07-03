@@ -173,7 +173,9 @@ const toPascalCase = (str: string): string =>
   str
     .split(/[-_\s]/)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join("");
+    .join("")
+    // OpenAPI component keys must match ^[a-zA-Z0-9._-]+$
+    .replace(/[^a-zA-Z0-9._-]/g, "");
 
 type ZodObjectAny = z.ZodObject<z.ZodRawShape>;
 

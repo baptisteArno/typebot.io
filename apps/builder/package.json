@@ -40,6 +40,21 @@
           "cwd": "apps/builder",
           "command": "bun test"
         }
+      },
+      "generate-openapi": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "apps/builder",
+          "command": "SKIP_ENV_CHECK=true bun --preload ./src/scripts/preloadOpenApiGenerationStubs.ts src/scripts/generateOpenApiSpec.ts"
+        },
+        "cache": true,
+        "inputs": [
+          "default",
+          "^default"
+        ],
+        "outputs": [
+          "{workspaceRoot}/apps/docs/openapi/builder.json"
+        ]
       }
     }
   },

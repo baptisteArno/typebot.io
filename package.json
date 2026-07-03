@@ -29,7 +29,7 @@
   "scripts": {
     "postinstall": "cd packages/env && bun run compile && nx db:generate prisma",
     "prepare": "husky && effect-language-service patch",
-    "pre-commit": "nx affected -t format-and-lint,lint-repo,check-broken-links,test --parallel=4",
+    "pre-commit": "bash scripts/assert-embeds-version-bumped.sh && nx affected -t format-and-lint,lint-repo,check-broken-links,test,generate-openapi --parallel=4 && git add apps/docs/openapi",
     "dev": "nx run-many --configuration=development -t dev,watch-deps -p builder,viewer,workflows,@typebot.io/partykit",
     "format-and-lint": "biome check .",
     "format-and-lint:fix": "biome check . --write --unsafe",
