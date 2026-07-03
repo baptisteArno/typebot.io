@@ -53,7 +53,10 @@
         "cache": true,
         "inputs": [
           "default",
-          "^default"
+          "^default",
+          {
+            "runtime": "grep -m1 -Eo 'provider *= *\"[a-z]+\"' node_modules/.prisma/client/schema.prisma"
+          }
         ],
         "outputs": [
           "{workspaceRoot}/apps/docs/openapi/viewer.json"

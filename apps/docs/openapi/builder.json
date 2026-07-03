@@ -55618,8 +55618,7 @@
                       "name": {
                         "anyOf": [
                           {
-                            "type": "string",
-                            "maxLength": 255
+                            "type": "string"
                           },
                           {
                             "type": "null"
@@ -55629,8 +55628,7 @@
                       "image": {
                         "anyOf": [
                           {
-                            "type": "string",
-                            "maxLength": 1000
+                            "type": "string"
                           },
                           {
                             "type": "null"
@@ -55640,8 +55638,7 @@
                       "company": {
                         "anyOf": [
                           {
-                            "type": "string",
-                            "maxLength": 191
+                            "type": "string"
                           },
                           {
                             "type": "null"
@@ -55665,8 +55662,7 @@
                       "preferredAppAppearance": {
                         "anyOf": [
                           {
-                            "type": "string",
-                            "maxLength": 191
+                            "type": "string"
                           },
                           {
                             "type": "null"
@@ -55676,8 +55672,7 @@
                       "preferredLanguage": {
                         "anyOf": [
                           {
-                            "type": "string",
-                            "maxLength": 10
+                            "type": "string"
                           },
                           {
                             "type": "null"
@@ -55687,8 +55682,7 @@
                       "referral": {
                         "anyOf": [
                           {
-                            "type": "string",
-                            "maxLength": 191
+                            "type": "string"
                           },
                           {
                             "type": "null"
