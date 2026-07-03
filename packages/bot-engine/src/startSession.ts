@@ -39,6 +39,7 @@ import {
   defaultSystemMessages,
 } from "@typebot.io/settings/constants";
 import { settingsSchema } from "@typebot.io/settings/schemas";
+import { getTemplateWithTypebotBySlug } from "@typebot.io/templates/typebots";
 import {
   defaultGuestAvatarIsEnabled,
   defaultHostAvatarIsEnabled,
@@ -73,6 +74,10 @@ type StartParams =
       userId?: string;
     } & StartPreviewChatInput)
   | ({
+      type: "template";
+      templateSlug: string;
+    } & Omit<StartPreviewChatInput, "typebotId">)
+  | ({
       type: "live";
     } & StartChatInput);
 
@@ -102,7 +107,7 @@ export const startSession = async ({
   const result = await getOrInitResult({
     resultId: startParams.type === "live" ? startParams.resultId : undefined,
     typebotId: typebot.id,
-    isPreview: startParams.type === "preview",
+    isPreview: startParams.type !== "live",
     isRememberUserEnabled:
       typebot.settings.general?.rememberUser?.isEnabled ??
       (isDefined(typebot.settings.general?.isNewResultOnRefreshEnabled)
@@ -162,9 +167,9 @@ export const startSession = async ({
     isStreamEnabled: startParams.isStreamEnabled,
     typingEmulation: typebot.settings.typingEmulation,
     allowedOrigins:
-      startParams.type === "preview"
-        ? undefined
-        : typebot.settings.security?.allowedOrigins,
+      startParams.type === "live"
+        ? typebot.settings.security?.allowedOrigins
+        : undefined,
     progressMetadata: initialSessionState?.whatsApp
       ? undefined
       : typebot.theme.general?.progressBar?.isEnabled
@@ -352,6 +357,14 @@ const getTypebot = async (startParams: StartParams) => {
       id: startParams.typebotId,
       userId: startParams.userId,
     });
+  } else if (startParams.type === "template") {
+    const template = getTemplateWithTypebotBySlug(startParams.templateSlug);
+    if (!template)
+      throw new ORPCError("NOT_FOUND", {
+        message: "Template not found",
+      });
+
+    return startTypebotSchema.parse(template.typebot);
   } else {
     typebotQuery = await findPublicTypebot({ publicId: startParams.publicId });
   }

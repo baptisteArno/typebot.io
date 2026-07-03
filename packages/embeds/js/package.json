@@ -6,16 +6,16 @@
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
-  "types": "./dist/packages/embeds/js/src/index.d.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "types": "./dist/packages/embeds/js/src/index.d.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./web": {
-      "types": "./dist/packages/embeds/js/src/web.d.ts",
+      "types": "./dist/web.d.ts",
       "import": "./dist/web.js",
       "default": "./dist/web.js"
     }

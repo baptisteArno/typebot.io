@@ -49,6 +49,12 @@ export const startPreviewChatInputSchema = z.object({
   textBubbleContentFormat: z.enum(["richText", "markdown"]).default("richText"),
 });
 
+export const startTemplatePreviewChatInputSchema = startPreviewChatInputSchema
+  .omit({ typebotId: true })
+  .extend({
+    templateSlug: z.string(),
+  });
+
 type Context = {
   user: { id: string } | null;
 };
@@ -69,6 +75,61 @@ export const handleStartChatPreview = async ({
   input: z.infer<typeof startPreviewChatInputSchema>;
   context: Context;
 }) => {
+  return startPreviewSession({
+    sessionIdProp,
+    startParams: {
+      type: "preview",
+      isOnlyRegistering,
+      isStreamEnabled,
+      startFrom,
+      typebotId,
+      userId: user?.id,
+      prefilledVariables,
+      textBubbleContentFormat,
+      message,
+    },
+  });
+};
+
+export const handleStartTemplatePreviewChat = async ({
+  input: {
+    message,
+    isOnlyRegistering,
+    isStreamEnabled,
+    startFrom,
+    templateSlug,
+    prefilledVariables,
+    sessionId: sessionIdProp,
+    textBubbleContentFormat,
+  },
+}: {
+  input: z.infer<typeof startTemplatePreviewChatInputSchema>;
+}) => {
+  return startPreviewSession({
+    sessionIdProp,
+    startParams: {
+      type: "template",
+      templateSlug,
+      isOnlyRegistering,
+      isStreamEnabled,
+      startFrom,
+      prefilledVariables,
+      textBubbleContentFormat,
+      message,
+    },
+  });
+};
+
+const startPreviewSession = async ({
+  sessionIdProp,
+  startParams,
+}: {
+  sessionIdProp?: string;
+  startParams: Extract<
+    Parameters<typeof startSession>[0]["startParams"],
+    { type: "preview" | "template" }
+  >;
+}) => {
   const sessionId = sessionIdProp ?? createId();
   return withSessionStore(sessionId, async (sessionStore) => {
     const {
@@ -84,20 +145,10 @@ export const handleStartChatPreview = async ({
     } = await startSession({
       version: 2,
       sessionStore,
-      startParams: {
-        type: "preview",
-        isOnlyRegistering,
-        isStreamEnabled,
-        startFrom,
-        typebotId,
-        userId: user?.id,
-        prefilledVariables,
-        textBubbleContentFormat,
-        message,
-      },
+      startParams,
     });
 
-    const session = isOnlyRegistering
+    const session = startParams.isOnlyRegistering
       ? await restartSession({
           state: newSessionState,
         })

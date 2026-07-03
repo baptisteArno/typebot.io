@@ -5,6 +5,7 @@ import { replaceTypebotUploadUrlsWithNewIds } from "@typebot.io/lib/s3/replaceTy
 import prisma from "@typebot.io/prisma";
 import { Plan } from "@typebot.io/prisma/enum";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
+import { getTemplateWithTypebotBySlug } from "@typebot.io/templates/typebots";
 import { migrateTypebot } from "@typebot.io/typebot/migrations/migrateTypebot";
 import { preprocessTypebot } from "@typebot.io/typebot/preprocessTypebot";
 import {
@@ -94,19 +95,32 @@ const migrateImportingTypebot = async (
   }
 };
 
-export const importTypebotInputSchema = z.object({
-  workspaceId: z
-    .string()
-    .describe(
-      "[Where to find my workspace ID?](../how-to#how-to-find-my-workspaceid)",
-    ),
-  typebot: importingTypebotSchema,
-  fromTemplate: z.string().optional(),
-  enableSafetyFlags: z.boolean().optional(),
-});
+export const importTypebotInputSchema = z
+  .object({
+    workspaceId: z
+      .string()
+      .describe(
+        "[Where to find my workspace ID?](../how-to#how-to-find-my-workspaceid)",
+      ),
+    typebot: importingTypebotSchema.optional(),
+    templateSlug: z.string().optional(),
+    folderId: z.string().nullable().optional(),
+    fromTemplate: z.string().optional(),
+    enableSafetyFlags: z.boolean().optional(),
+  })
+  .refine(({ typebot, templateSlug }) => typebot || templateSlug, {
+    message: "Either typebot or templateSlug is required",
+  });
 
 export const handleImportTypebot = async ({
-  input: { typebot, workspaceId, fromTemplate, enableSafetyFlags },
+  input: {
+    typebot,
+    workspaceId,
+    templateSlug,
+    folderId,
+    fromTemplate,
+    enableSafetyFlags,
+  },
   context: { user },
 }: {
   input: z.infer<typeof importTypebotInputSchema>;
@@ -120,10 +134,25 @@ export const handleImportTypebot = async ({
   if (userRole === "guest" || !workspace)
     throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
+  const template = templateSlug
+    ? getTemplateWithTypebotBySlug(templateSlug)
+    : undefined;
+
+  if (templateSlug && !template)
+    throw new ORPCError("NOT_FOUND", { message: "Template not found" });
+
+  const typebotToImport =
+    typebot ??
+    importingTypebotSchema.parse({
+      ...template?.typebot,
+      name: template?.template.name,
+      folderId,
+    });
+
   const newBotId = createId();
 
   const newUploadUrlsResponse = await replaceTypebotUploadUrlsWithNewIds({
-    typebot,
+    typebot: typebotToImport,
     newTypebotId: newBotId,
     newWorkspaceId: workspaceId,
   });
@@ -188,7 +217,7 @@ export const handleImportTypebot = async ({
       typebotId: parsedNewTypebot.id,
       userId: user.id,
       data: {
-        template: fromTemplate,
+        template: fromTemplate ?? template?.template.name,
       },
     },
   ]);

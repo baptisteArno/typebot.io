@@ -49,7 +49,8 @@ import { ProgressBar } from "./ProgressBar";
 
 export type BotProps = {
   id?: string;
-  typebot: string | StartTypebot | undefined;
+  typebot?: string | StartTypebot;
+  templateSlug?: string;
   isPreview?: boolean;
   resultId?: string;
   prefilledVariables?: Record<string, unknown>;
@@ -90,13 +91,17 @@ export const Bot = (props: BotProps & { class?: string }) => {
     });
     const typebotIdFromProps =
       typeof props.typebot === "string" ? props.typebot : undefined;
+    const isTemplatePreview = isNotEmpty(props.templateSlug);
     const isPreview =
-      typeof props.typebot !== "string" || (props.isPreview ?? false);
+      isTemplatePreview ||
+      typeof props.typebot !== "string" ||
+      (props.isPreview ?? false);
     const resultIdInStorage =
       getExistingResultIdFromStorage(typebotIdFromProps);
     const { data, error } = await startChatQuery({
       stripeRedirectStatus: urlParams.get("redirect_status") ?? undefined,
       typebot: props.typebot,
+      templateSlug: props.templateSlug,
       apiHost: props.apiHost,
       isPreview,
       resultId: isNotEmpty(props.resultId) ? props.resultId : resultIdInStorage,
@@ -207,7 +212,11 @@ export const Bot = (props: BotProps & { class?: string }) => {
   };
 
   createEffect(() => {
-    if (isNotDefined(props.typebot) || isInitialized()) return;
+    if (
+      (isNotDefined(props.typebot) && !isNotEmpty(props.templateSlug)) ||
+      isInitialized()
+    )
+      return;
     initializeBot().then();
   });
 

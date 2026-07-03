@@ -81,6 +81,23 @@ export const CreateNewTypebotButtons = () => {
       });
   };
 
+  const handleTemplateChoose = ({
+    templateSlug,
+    fromTemplate,
+  }: {
+    templateSlug: string;
+    fromTemplate: string;
+  }) => {
+    if (!user || !workspace) return;
+    const folderId = router.query.folderId?.toString() ?? null;
+    importTypebot({
+      workspaceId: workspace.id,
+      templateSlug,
+      folderId,
+      fromTemplate,
+    });
+  };
+
   return (
     <div className="flex flex-col items-center w-full pt-20 gap-10">
       <div className="flex flex-col w-full max-w-[650px] p-10 gap-10 rounded-lg border bg-gray-1">
@@ -121,7 +138,7 @@ export const CreateNewTypebotButtons = () => {
       <TemplatesDialog
         isOpen={isOpen}
         onClose={onClose}
-        onTypebotChoose={handleCreateSubmit}
+        onTemplateChoose={handleTemplateChoose}
         isLoading={isLoading}
       />
     </div>

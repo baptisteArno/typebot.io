@@ -91,6 +91,47 @@ test("API chat execution should work on preview bot", async ({ request }) => {
   });
 });
 
+test("API template preview chat should start from a server-side template slug", async ({
+  request,
+}) => {
+  const response = await request.post(
+    "/api/v1/templates/lead-gen/preview/startChat",
+    {
+      data: {
+        isOnlyRegistering: false,
+        isStreamEnabled: false,
+        textBubbleContentFormat: "richText",
+      } satisfies Omit<StartPreviewChatInput, "typebotId">,
+      headers: {
+        Authorization: `Bearer ${apiToken}`,
+      },
+    },
+  );
+
+  expect(response.ok()).toBe(true);
+
+  const responseBody = await response.json();
+  const session = await prisma.chatSession.findUnique({
+    where: { id: responseBody.sessionId },
+    select: { state: true },
+  });
+
+  expect(responseBody.messages[0].content.richText).toStrictEqual([
+    {
+      type: "p",
+      children: [
+        { text: "Welcome to " },
+        { bold: true, text: "AA" },
+        { text: " (Awesome Agency)" },
+      ],
+    },
+  ]);
+  expect(responseBody.input.type).toBe("choice input");
+  expect(sessionStateSchema.parse(session?.state).workspaceId).toBe(
+    "proWorkspace",
+  );
+});
+
 test("API preview chat should not resolve credentials from a client-supplied workspace", async ({
   request,
 }) => {

@@ -20,6 +20,9 @@
       "path": "../settings/tsconfig.lib.json"
     },
     {
+      "path": "../templates/tsconfig.lib.json"
+    },
+    {
       "path": "../schemas/tsconfig.lib.json"
     },
     {

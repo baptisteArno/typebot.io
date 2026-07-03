@@ -4,6 +4,7 @@ import type {
   StartChatResponse,
   StartFrom,
   StartPreviewChatInput,
+  StartTypebot,
 } from "@typebot.io/chat-api/schemas";
 import { isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import ky from "ky";
@@ -16,7 +17,8 @@ import { getIframeReferrerOrigin } from "../utils/getIframeReferrerOrigin";
 import { guessApiHost } from "../utils/guessApiHost";
 
 type Props = {
-  typebot: string | any;
+  typebot?: string | StartTypebot;
+  templateSlug?: string;
   stripeRedirectStatus?: string;
   apiHost?: string;
   startFrom?: StartFrom;
@@ -28,6 +30,7 @@ type Props = {
 
 export async function startChatQuery({
   typebot,
+  templateSlug,
   isPreview,
   apiHost,
   prefilledVariables,
@@ -36,7 +39,7 @@ export async function startChatQuery({
   startFrom,
   sessionId,
 }: Props) {
-  if (isNotDefined(typebot))
+  if (isNotDefined(typebot) && !isNotEmpty(templateSlug))
     throw new Error("Typebot ID is required to get initial messages");
 
   const paymentInProgressStateStr =
@@ -54,6 +57,19 @@ export async function startChatQuery({
       paymentInProgressState,
     });
   }
+  if (isNotEmpty(templateSlug)) {
+    return startTemplatePreviewChat({
+      apiHost,
+      templateSlug,
+      startFrom,
+      prefilledVariables,
+      sessionId,
+    });
+  }
+
+  if (isNotDefined(typebot))
+    throw new Error("Typebot ID is required to get initial messages");
+
   const typebotId = typeof typebot === "string" ? typebot : typebot.id;
   if (isPreview) {
     return startPreviewChat({
@@ -153,6 +169,46 @@ const startPreviewChat = async ({
     const data = await ky
       .post(
         `${getApiHost(apiHost)}/api/v1/typebots/${typebotId}/preview/startChat`,
+        {
+          json: {
+            isStreamEnabled: true,
+            startFrom,
+            prefilledVariables,
+            sessionId,
+          } satisfies Omit<
+            StartPreviewChatInput,
+            "typebotId" | "isOnlyRegistering" | "textBubbleContentFormat"
+          >,
+          timeout: false,
+        },
+      )
+      .json<StartChatResponse>();
+
+    return { data };
+  } catch (error) {
+    return { error };
+  }
+};
+
+const startTemplatePreviewChat = async ({
+  apiHost,
+  templateSlug,
+  startFrom,
+  prefilledVariables,
+  sessionId,
+}: {
+  apiHost?: string;
+  templateSlug: string;
+  startFrom?: StartFrom;
+  prefilledVariables?: Record<string, unknown>;
+  sessionId?: string;
+}) => {
+  try {
+    const data = await ky
+      .post(
+        `${getApiHost(
+          apiHost,
+        )}/api/v1/templates/${templateSlug}/preview/startChat`,
         {
           json: {
             isStreamEnabled: true,
