@@ -17,7 +17,7 @@ COPY .gitignore .gitignore
 COPY .npmrc .pnpmfile.cjs ./
 COPY --from=pruner /app/out/json/ .
 COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm install
+RUN pnpm install --frozen-lockfile
 COPY --from=pruner /app/out/full/ .
 COPY turbo.json turbo.json
 
@@ -46,3 +46,4 @@ ENTRYPOINT ./${SCOPE}-entrypoint.sh
 
 EXPOSE 3000
 ENV PORT 3000
+
