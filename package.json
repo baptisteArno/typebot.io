@@ -4,7 +4,7 @@
   "private": true,
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "prepare": "husky install",
+    //"prepare": "husky install",
     "docker:up": "docker compose -f docker-compose.dev.yml up -d && sleep 5",
     "docker:nuke": "docker compose -f docker-compose.dev.yml down --volumes --remove-orphans",
     "lint": "turbo run lint",
