@@ -8,6 +8,8 @@
     "targets": {
       "dev": {
         "dependsOn": [
+          "^db:generate",
+          "^db:push",
           {
             "projects": [
               "@typebot.io/react"
