@@ -17,7 +17,10 @@ export const SettingsPage = () => {
         <div className="flex flex-1 h-[calc(100%-2rem)] w-full border rounded-xl mr-4 bg-gray-1">
           {typebot && (
             <Standard
-              typebot={typebot}
+              typebot={typebot.id}
+              previewSettings={typebot.settings}
+              previewTheme={typebot.theme}
+              isPreview
               apiHost={window.location.origin}
               style={{
                 borderRadius: "0.75rem",

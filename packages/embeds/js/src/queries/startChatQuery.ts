@@ -4,7 +4,6 @@ import type {
   StartChatResponse,
   StartFrom,
   StartPreviewChatInput,
-  StartTypebot,
 } from "@typebot.io/chat-api/schemas";
 import { isNotDefined, isNotEmpty } from "@typebot.io/lib/utils";
 import ky from "ky";
@@ -17,7 +16,7 @@ import { getIframeReferrerOrigin } from "../utils/getIframeReferrerOrigin";
 import { guessApiHost } from "../utils/guessApiHost";
 
 type Props = {
-  typebot?: string | StartTypebot;
+  typebot?: string;
   templateSlug?: string;
   stripeRedirectStatus?: string;
   apiHost?: string;
@@ -70,11 +69,10 @@ export async function startChatQuery({
   if (isNotDefined(typebot))
     throw new Error("Typebot ID is required to get initial messages");
 
-  const typebotId = typeof typebot === "string" ? typebot : typebot.id;
   if (isPreview) {
     return startPreviewChat({
       apiHost,
-      typebotId,
+      typebotId: typebot,
       startFrom,
       prefilledVariables,
       sessionId,
@@ -84,7 +82,7 @@ export async function startChatQuery({
   try {
     const iframeReferrerOrigin = getIframeReferrerOrigin();
     const response = await ky.post(
-      `${getApiHost(apiHost)}/api/v1/typebots/${typebotId}/startChat`,
+      `${getApiHost(apiHost)}/api/v1/typebots/${typebot}/startChat`,
       {
         headers: {
           "x-typebot-iframe-referrer-origin": iframeReferrerOrigin,

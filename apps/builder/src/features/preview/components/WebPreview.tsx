@@ -25,15 +25,11 @@ export const WebPreview = () => {
 
     savedPreviewKey.current = previewKey;
     setIsSavingBeforePreview(true);
-    let isMounted = true;
 
     save().finally(() => {
-      if (isMounted) setIsSavingBeforePreview(false);
+      if (savedPreviewKey.current === previewKey)
+        setIsSavingBeforePreview(false);
     });
-
-    return () => {
-      isMounted = false;
-    };
   }, [previewKey, save, typebot]);
 
   const handleNewLogs = (logs: ContinueChatResponse["logs"]) => {
