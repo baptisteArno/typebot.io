@@ -1,192 +1,292 @@
 import fs from "node:fs/promises";
 import { setTimeout as sleep } from "node:timers/promises";
 import { sendEmail } from "@typebot.io/emails/helpers/sendEmail";
-import { isDefined } from "@typebot.io/lib/utils";
-import prisma from "@typebot.io/prisma/withReadReplica";
 import pLimit from "p-limit";
 import Papa from "papaparse";
 import { z } from "zod";
 
-type CsvRow = { typebotId: string; total?: string };
+const DEFAULT_CSV_PATH =
+  "/Users/baptistearno/Downloads/typebot-ask-assistant-deprecation-recipients-2026-07-04.csv";
+const MIGRATION_DOC_URL =
+  "https://docs.typebot.io/editor/blocks/integrations/openai#ask-model";
 
-const CSV_SCHEMA = z.object({
-  typebotId: z.string().min(1),
-  total: z.string().optional(),
+const ENGLISH_SUBJECT = "Action needed: migrate your Ask Assistant blocks";
+const FRENCH_SUBJECT = "Action requise: migre tes blocs Ask Assistant";
+
+const SEND_EMAILS = process.env.SEND_EMAILS === "true";
+const CSV_PATH = process.env.CAMPAIGN_CSV_PATH ?? DEFAULT_CSV_PATH;
+const CONCURRENCY = getPositiveIntegerEnv("CONCURRENCY", 5);
+const MAX_RETRIES = getPositiveIntegerEnv("MAX_RETRIES", 3);
+const PREVIEW_LIMIT = getPositiveIntegerEnv("PREVIEW_LIMIT", 3);
+const SEND_LIMIT = getOptionalPositiveIntegerEnv("SEND_LIMIT");
+
+const campaignCsvRowSchema = z.object({
+  email: z.string().email(),
+  names: z.string().optional().default(""),
+  preferredLanguages: z.string().optional().default(""),
+  roles: z.string().optional().default(""),
+  workspaceNames: z.string().optional().default(""),
+  affectedTypebotIds: z.string().min(1),
+  affectedTypebotNames: z.string().optional().default(""),
+  totalWarningEvents: z.coerce.number().int().nonnegative().default(0),
+  lastWarningSeenAt: z.string().optional().default(""),
 });
 
-const SUBJECT =
-  "Action needed, Final notice: some of your bots need republishing before Nov 20";
-const DEADLINE = "November 26, 2025";
-const makeBody = (
-  workspaceName: string,
-  urls: string[],
-) => `You are receiving this email because you are an admin of the Typebot workspace "${workspaceName}".
-
-This is a final reminder: the old Typebot endpoint will be retired in **7 days, on ${DEADLINE}**. The following bots still need to be republished before then:
-
-${urls.join("\n")}
-
-All you need to do is:
-
-1️⃣ Open the bots in the editor, it will automatically migrate them to the new version  
-2️⃣ Run a quick test to make sure everything is working  
-3️⃣ Click Publish
-
-That’s it, in most cases nothing to change on your end.
-
-Please republish before ${DEADLINE} to make sure your bots keep running smoothly.
-
-Thanks for keeping your bots up to date! 🧡`;
-
-const DRY_RUN = false;
-const CONCURRENCY = Number(process.env.CONCURRENCY ?? 5); // email send concurrency
-const MAX_RETRIES = 3;
+type CampaignRecipient = z.output<typeof campaignCsvRowSchema>;
 
 export async function sendEmailCampaign() {
-  const typebotIds = await parseCsv("./inputs/deprecatedTypebots.csv");
-  if (typebotIds.length === 0) {
-    console.log("No valid typebot IDs found in CSV. Exiting.");
-    return;
-  }
-  console.log(`Extracted ${typebotIds.length} typebot IDs from CSV.`);
-
-  const deprecatedTypebots = (
-    await prisma.typebot.findMany({
-      where: { id: { in: typebotIds } },
-      select: { id: true, workspaceId: true, version: true },
-    })
-  )?.filter((typebot) => !typebot.version);
+  const recipients = await parseCsv(CSV_PATH);
+  const recipientsToProcess =
+    SEND_LIMIT === undefined ? recipients : recipients.slice(0, SEND_LIMIT);
 
   console.log(
-    `Found ${deprecatedTypebots.length} typebots that need to be republished.`,
+    `Prepared ${recipients.length} campaign recipient(s) from ${CSV_PATH}.`,
+  );
+  console.log(
+    SEND_EMAILS
+      ? `Sending ${recipientsToProcess.length} email(s) with concurrency ${CONCURRENCY}.`
+      : `DRY RUN. Set SEND_EMAILS=true to send. Previewing ${Math.min(
+          PREVIEW_LIMIT,
+          recipientsToProcess.length,
+        )} email(s).`,
   );
 
-  if (deprecatedTypebots.length === 0) {
-    throw new Error("None of the provided typebot IDs exist.");
+  if (!SEND_EMAILS) {
+    for (const recipient of recipientsToProcess.slice(0, PREVIEW_LIMIT))
+      console.log(formatPreview(recipient));
+    return;
   }
-
-  const typebotsByWorkspace = new Map<string, string[]>();
-  for (const tb of deprecatedTypebots) {
-    if (!tb.workspaceId) continue;
-    const arr = typebotsByWorkspace.get(tb.workspaceId) ?? [];
-    arr.push(tb.id);
-    typebotsByWorkspace.set(tb.workspaceId, arr);
-  }
-
-  const workspaceIds = Array.from(typebotsByWorkspace.keys());
-  const workspaces = await prisma.workspace.findMany({
-    where: { id: { in: workspaceIds } },
-    select: {
-      id: true,
-      name: true,
-      members: {
-        where: { role: { not: "GUEST" } },
-        select: { user: { select: { email: true } } },
-      },
-    },
-  });
-
-  const wsMap = new Map(workspaces.map((w) => [w.id, w]));
 
   const limit = pLimit(CONCURRENCY);
   let processed = 0;
 
-  const tasks = workspaceIds.map((workspaceId) =>
+  const tasks = recipientsToProcess.map((recipient) =>
     limit(async () => {
       processed += 1;
-      const ws = wsMap.get(workspaceId);
-      const tbIds = typebotsByWorkspace.get(workspaceId) ?? [];
-
-      if (!ws) {
-        console.warn(
-          `[WS ${workspaceId}] Workspace not found. Skipping ${tbIds.length} bots.`,
-        );
-        return;
-      }
-
-      const recipients = ws.members
-        .map((m) => m.user?.email?.trim())
-        .filter(isDefined)
-        .filter((e) => e.length > 3) as string[];
-
-      if (recipients.length === 0) {
-        console.warn(`[WS ${workspaceId}] No valid member emails. Skipping.`);
-        return;
-      }
-
-      const typebotUrls = tbIds.map(
-        (id) => `https://app.typebot.com/typebots/${id}/edit`,
-      );
-      const text = makeBody(ws.name, typebotUrls);
+      const email = makeEmail(recipient);
 
       console.log(
-        `[${processed}/${workspaceIds.length}] ${workspaceId}: sending to ${recipients.length} member(s) about ${tbIds.length} bot(s).${DRY_RUN ? " [DRY RUN]" : ""}`,
+        `[${processed}/${recipientsToProcess.length}] Sending to ${recipient.email} about ${splitList(recipient.affectedTypebotIds).length} bot(s).`,
       );
 
-      if (DRY_RUN) {
-        console.log({
-          to: recipients,
-          subject: SUBJECT,
-          previewFirstUrl: typebotUrls[0],
-        });
-        return;
-      }
-
-      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+      for (let attempt = 1; attempt <= MAX_RETRIES; attempt += 1) {
         try {
-          await sendEmail({ to: recipients, subject: SUBJECT, text });
-          break; // success
-        } catch (err) {
+          await sendEmail(email);
+          return;
+        } catch (error) {
           const delay = 250 * 2 ** (attempt - 1);
-          const msg = (err as Error)?.message ?? String(err);
           console.warn(
-            `[WS ${workspaceId}] sendEmail failed (attempt ${attempt}/${MAX_RETRIES}): ${msg}`,
+            `[${recipient.email}] sendEmail failed (attempt ${attempt}/${MAX_RETRIES}): ${getErrorMessage(error)}`,
           );
-          if (attempt === MAX_RETRIES) throw err;
+          if (attempt === MAX_RETRIES) throw error;
           await sleep(delay);
         }
       }
     }),
   );
 
-  try {
-    await Promise.all(tasks);
-    console.log("✅ Done.");
-  } catch (err) {
-    console.error("❌ Aborted due to error:", err);
-    process.exitCode = 1;
-  }
+  await Promise.all(tasks);
+  console.log("Done.");
 }
 
-async function parseCsv(filePath: string): Promise<string[]> {
+async function parseCsv(filePath: string) {
   const raw = await fs.readFile(filePath, "utf8");
-  const parsed = Papa.parse<CsvRow>(raw, {
+  const parsed = Papa.parse<CampaignRecipient>(raw, {
     header: true,
     skipEmptyLines: true,
   });
 
-  if (parsed.errors.length) {
+  if (parsed.errors.length > 0) {
     const preview = parsed.errors
       .slice(0, 3)
-      .map((e) => `${e.type}: ${e.message} @ row ${e.row}`)
+      .map((error) => `${error.type}: ${error.message} @ row ${error.row}`)
       .join(" | ");
     console.warn(
-      `[CSV] Encountered ${parsed.errors.length} parse errors. First: ${preview}`,
+      `[CSV] Encountered ${parsed.errors.length} parse error(s). First: ${preview}`,
     );
   }
 
-  const ids = new Set<string>();
+  const recipientsByEmail = new Map<string, CampaignRecipient>();
+
   for (const row of parsed.data) {
-    const safe = CSV_SCHEMA.safeParse(row);
+    const safe = campaignCsvRowSchema.safeParse(row);
     if (!safe.success) {
-      console.warn(
-        "[CSV] Skipping invalid row:",
+      console.warn("[CSV] Skipping invalid row:", {
         row,
-        safe.error.flatten().fieldErrors,
-      );
+        errors: safe.error.flatten().fieldErrors,
+      });
       continue;
     }
-    ids.add(safe.data.typebotId.trim());
+    recipientsByEmail.set(safe.data.email.toLowerCase(), safe.data);
   }
-  return Array.from(ids);
+
+  return [...recipientsByEmail.values()].sort(
+    (left, right) => right.totalWarningEvents - left.totalWarningEvents,
+  );
 }
+
+function makeEmail(recipient: CampaignRecipient) {
+  const isFrenchRecipient = isFrench(recipient);
+  return {
+    to: recipient.email,
+    subject: isFrenchRecipient ? FRENCH_SUBJECT : ENGLISH_SUBJECT,
+    text: isFrenchRecipient
+      ? makeFrenchBody(recipient)
+      : makeEnglishBody(recipient),
+  };
+}
+
+function makeEnglishBody(recipient: CampaignRecipient) {
+  const firstName = getFirstName(recipient.names);
+  const greeting = firstName ? `Hi ${firstName},` : "Hi,";
+  const workspaceLine = formatWorkspaceLine(recipient, "Affected workspace");
+  const migratedLine = recipient.lastWarningSeenAt
+    ? `\nIf you already migrated these bots after ${formatDate(
+        recipient.lastWarningSeenAt,
+        "en-US",
+      )}, you can ignore this email.\n`
+    : "";
+
+  return `${greeting}
+
+You're receiving this because one or more bots you can access still use the old Ask Assistant action.
+
+OpenAI is retiring the Assistants API. In Typebot, Ask Assistant will stop working in August 2026.
+
+${workspaceLine}
+
+Affected bots:
+${formatAffectedBots(recipient)}
+
+What to do:
+1. Open each bot.
+2. Replace Ask Assistant with Ask Model.
+3. Configure the model, instructions and tools directly in the new block.
+4. Test the flow, then publish.
+
+Migration notes:
+${MIGRATION_DOC_URL}
+${migratedLine}
+Baptiste`;
+}
+
+function makeFrenchBody(recipient: CampaignRecipient) {
+  const firstName = getFirstName(recipient.names);
+  const greeting = firstName ? `Salut ${firstName},` : "Salut,";
+  const workspaceLine = formatWorkspaceLine(recipient, "Workspace concerné");
+  const migratedLine = recipient.lastWarningSeenAt
+    ? `\nSi tu as déjà migré ces bots après le ${formatDate(
+        recipient.lastWarningSeenAt,
+        "fr-FR",
+      )}, tu peux ignorer cet email.\n`
+    : "";
+
+  return `${greeting}
+
+Tu reçois cet email parce qu'un ou plusieurs bots auxquels tu as accès utilisent encore l'ancienne action Ask Assistant.
+
+OpenAI retire l'API Assistants. Dans Typebot, Ask Assistant arrêtera de fonctionner en août 2026.
+
+${workspaceLine}
+
+Bots concernés:
+${formatAffectedBots(recipient)}
+
+À faire:
+1. Ouvre chaque bot.
+2. Remplace Ask Assistant par Ask Model.
+3. Configure le modèle, les instructions et les tools directement dans le nouveau bloc.
+4. Teste le flow, puis publie.
+
+Notes de migration:
+${MIGRATION_DOC_URL}
+${migratedLine}
+Baptiste`;
+}
+
+function formatPreview(recipient: CampaignRecipient) {
+  const email = makeEmail(recipient);
+  return [
+    "-----",
+    `To: ${email.to}`,
+    `Subject: ${email.subject}`,
+    "",
+    email.text,
+    "-----",
+  ].join("\n");
+}
+
+function formatWorkspaceLine(
+  recipient: CampaignRecipient,
+  singularLabel: string,
+) {
+  const workspaceNames = splitList(recipient.workspaceNames);
+  if (workspaceNames.length === 0) return `${singularLabel}: your workspace`;
+  if (workspaceNames.length === 1)
+    return `${singularLabel}: ${workspaceNames[0]}`;
+  return `${singularLabel}s: ${workspaceNames.join(", ")}`;
+}
+
+function formatAffectedBots(recipient: CampaignRecipient) {
+  const typebotIds = splitList(recipient.affectedTypebotIds);
+  const typebotNames = splitList(recipient.affectedTypebotNames);
+  if (typebotIds.length === 0) return "- Affected bot in your workspace";
+
+  return typebotIds
+    .map((typebotId, index) => {
+      const typebotName = typebotNames[index] ?? typebotId;
+      return `- ${typebotName}: https://app.typebot.com/typebots/${typebotId}/edit`;
+    })
+    .join("\n");
+}
+
+function splitList(value: string) {
+  return value
+    .split(" | ")
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0);
+}
+
+function getFirstName(names: string) {
+  const firstFullName = splitList(names)[0];
+  if (!firstFullName) return;
+  return firstFullName.split(" ")[0]?.trim();
+}
+
+function isFrench(recipient: CampaignRecipient) {
+  return splitList(recipient.preferredLanguages).some((language) =>
+    language.toLowerCase().startsWith("fr"),
+  );
+}
+
+function formatDate(value: string, locale: "en-US" | "fr-FR") {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(date);
+}
+
+function getPositiveIntegerEnv(name: string, fallback: number) {
+  const value = process.env[name];
+  if (!value) return fallback;
+  const parsed = Number(value);
+  if (!Number.isInteger(parsed) || parsed < 1)
+    throw new Error(`${name} must be a positive integer.`);
+  return parsed;
+}
+
+function getOptionalPositiveIntegerEnv(name: string) {
+  const value = process.env[name];
+  if (!value) return;
+  return getPositiveIntegerEnv(name, 1);
+}
+
+function getErrorMessage(error: unknown) {
+  if (error instanceof Error) return error.message;
+  return String(error);
+}
+
+if (import.meta.url === `file://${process.argv[1]}`)
+  sendEmailCampaign().catch((error) => {
+    console.error("Campaign failed:", error);
+    process.exitCode = 1;
+  });

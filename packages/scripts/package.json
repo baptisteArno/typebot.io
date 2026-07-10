@@ -31,6 +31,7 @@
     "inspectResult": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/inspectResult.ts",
     "inspectCredentials": "tsx --tsconfig ./tsconfig.json src/inspectCredentials.ts",
     "deleteChatSession": "tsx --tsconfig ./tsconfig.json src/deleteChatSession.ts",
+    "sendEmailCampaign": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/sendEmailCampaign.ts",
     "checkDependencies": "tsx --tsconfig ./tsconfig.json src/checkDependencies.ts",
     "readCsvAndDoSomething": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/readCsvAndDoSomething.ts",
     "recurringCheckInactiveUsers": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/recurringCheckInactiveUsers.ts",

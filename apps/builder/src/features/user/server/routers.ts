@@ -28,6 +28,7 @@ export const userRouter = {
     .route({
       method: "PATCH",
       path: "/v1/users/me",
+      operationId: "user-update",
       tags: ["User"],
     })
     .handler(handleUpdateUser),
@@ -36,6 +37,7 @@ export const userRouter = {
     .route({
       method: "GET",
       path: "/v1/users/me/api-tokens",
+      operationId: "user-listApiTokens",
       tags: ["User"],
     })
     .output(
@@ -49,6 +51,7 @@ export const userRouter = {
     .route({
       method: "POST",
       path: "/v1/users/me/api-tokens",
+      operationId: "user-createApiToken",
       tags: ["User"],
     })
     .input(createApiTokenInputSchema)
@@ -63,6 +66,7 @@ export const userRouter = {
     .route({
       method: "DELETE",
       path: "/v1/users/me/api-tokens/{tokenId}",
+      operationId: "user-deleteApiToken",
       tags: ["User"],
     })
     .input(deleteApiTokenInputSchema)

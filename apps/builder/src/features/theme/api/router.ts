@@ -19,6 +19,7 @@ export const themeRouter = {
     .route({
       method: "GET",
       path: "/v1/themeTemplates",
+      operationId: "theme-listThemeTemplates",
       summary: "List theme templates",
       tags: ["Theme template"],
     })
@@ -40,6 +41,7 @@ export const themeRouter = {
     .route({
       method: "PUT",
       path: "/v1/themeTemplates/{themeTemplateId}",
+      operationId: "theme-saveThemeTemplate",
       summary: "Save theme template",
       tags: ["Theme template"],
     })
@@ -55,6 +57,7 @@ export const themeRouter = {
     .route({
       method: "DELETE",
       path: "/v1/themeTemplates/{themeTemplateId}",
+      operationId: "theme-deleteThemeTemplate",
       summary: "Delete a theme template",
       tags: ["Theme template"],
     })

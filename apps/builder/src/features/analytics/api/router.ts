@@ -13,6 +13,7 @@ export const analyticsRouter = {
     .route({
       method: "GET",
       path: "/v1/typebots/{typebotId}/analytics/inDepthData",
+      operationId: "analytics-getInDepthAnalyticsData",
       summary:
         "List total answers in blocks and off-default paths visited edges",
       tags: ["Analytics"],
@@ -30,6 +31,7 @@ export const analyticsRouter = {
     .route({
       method: "GET",
       path: "/v1/typebots/{typebotId}/analytics/stats",
+      operationId: "analytics-getStats",
       summary: "Get results stats",
       tags: ["Analytics"],
     })

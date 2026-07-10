@@ -35,6 +35,7 @@ export const getLinkedTypebots = authenticatedProcedure
   .route({
     method: "GET",
     path: "/v1/typebots/{typebotId}/linkedTypebots",
+    operationId: "getLinkedTypebots",
     summary: "Get linked typebots",
     tags: ["Typebot"],
   })

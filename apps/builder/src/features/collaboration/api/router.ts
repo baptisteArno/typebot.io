@@ -43,6 +43,7 @@ export const collaboratorsRouter = {
     .route({
       method: "GET",
       path: "/v1/typebots/{typebotId}/collaborators",
+      operationId: "collaborators-getCollaborators",
       summary: "Get collaborators",
       tags: ["Collaborators"],
     })

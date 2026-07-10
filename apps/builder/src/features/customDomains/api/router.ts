@@ -27,6 +27,7 @@ export const customDomainsRouter = {
     .route({
       method: "POST",
       path: "/v1/custom-domains",
+      operationId: "customDomains-createCustomDomain",
       summary: "Create custom domain",
       tags: ["Custom domains"],
     })
@@ -45,6 +46,7 @@ export const customDomainsRouter = {
     .route({
       method: "DELETE",
       path: "/v1/custom-domains/{name}",
+      operationId: "customDomains-deleteCustomDomain",
       summary: "Delete custom domain",
       tags: ["Custom domains"],
     })
@@ -60,6 +62,7 @@ export const customDomainsRouter = {
     .route({
       method: "GET",
       path: "/v1/custom-domains",
+      operationId: "customDomains-listCustomDomains",
       summary: "List custom domains",
       tags: ["Custom domains"],
     })
@@ -80,6 +83,7 @@ export const customDomainsRouter = {
     .route({
       method: "GET",
       path: "/v1/custom-domains/{name}/verify",
+      operationId: "customDomains-verifyCustomDomain",
       summary: "Verify domain config",
       tags: ["Custom domains"],
     })

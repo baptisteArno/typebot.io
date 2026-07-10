@@ -27,6 +27,7 @@ export const httpRequestRouter = {
     .route({
       method: "GET",
       path: "/v1/typebots/{typebotId}/webhookBlocks",
+      operationId: "httpRequest-listHttpRequestBlocks",
       summary: "List HTTP request blocks",
       description:
         "Returns a list of all the HTTP request blocks that you can subscribe to.",
@@ -56,6 +57,7 @@ export const httpRequestRouter = {
     .route({
       method: "GET",
       path: "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/getResultExample",
+      operationId: "httpRequest-getResultExample",
       summary: "Get result example",
       description:
         'Returns "fake" result for http request block to help you anticipate how the webhook will behave.',
@@ -75,6 +77,7 @@ export const httpRequestRouter = {
     .route({
       method: "POST",
       path: "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/subscribe",
+      operationId: "httpRequest-subscribeHttpRequest",
       summary: "Subscribe to HTTP request block",
       tags: ["HTTP request"],
     })
@@ -91,6 +94,7 @@ export const httpRequestRouter = {
     .route({
       method: "POST",
       path: "/v1/typebots/{typebotId}/webhookBlocks/{blockId}/unsubscribe",
+      operationId: "httpRequest-unsubscribeHttpRequest",
       summary: "Unsubscribe from HTTP request block",
       tags: ["HTTP request"],
     })

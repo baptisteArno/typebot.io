@@ -2,18 +2,14 @@ import { OpenAPIHandler } from "@orpc/openapi/fetch";
 import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { onError } from "@orpc/server";
 import { CORSPlugin } from "@orpc/server/plugins";
-import { ZodToJsonSchemaConverter } from "@orpc/zod/zod4";
 import { authenticateWithBearerToken } from "@typebot.io/auth/helpers/authenticateWithBearerToken";
-import {
-  audioMessageSchema,
-  commandMessageSchema,
-  startFromEventSchema,
-  startFromGroupSchema,
-  textMessageSchema,
-} from "@typebot.io/chat-api/schemas";
 import { createContext } from "@typebot.io/config/orpc/viewer/context";
 import { logServerRequest } from "@typebot.io/telemetry/logServerRequest";
 import { after, type NextRequest } from "next/server";
+import {
+  openApiSchemaConverters,
+  openApiSpecGenerateOptions,
+} from "../openApiSpecGenerateOptions";
 import { appRouter } from "./router";
 
 type RouteContext<_T> = {
@@ -62,47 +58,8 @@ const handler = new OpenAPIHandler(appRouter, {
     new CORSPlugin(),
     new OpenAPIReferencePlugin({
       specPath: "/openapi.json",
-      schemaConverters: [new ZodToJsonSchemaConverter()],
-      specGenerateOptions: {
-        filter: ({ contract }) =>
-          Boolean(
-            contract["~orpc"].route.method &&
-              !contract["~orpc"].route.deprecated,
-          ),
-        info: {
-          title: "Chat API",
-          version: "3.0.0",
-        },
-        servers: [{ url: "https://typebot.io/api" }],
-        externalDocs: {
-          url: "https://docs.typebot.com/api-reference",
-        },
-        components: {
-          securitySchemes: {
-            bearerAuth: {
-              type: "http",
-              scheme: "bearer",
-            },
-          },
-        },
-        commonSchemas: {
-          Text: {
-            schema: textMessageSchema,
-          },
-          Audio: {
-            schema: audioMessageSchema,
-          },
-          Command: {
-            schema: commandMessageSchema,
-          },
-          Group: {
-            schema: startFromGroupSchema,
-          },
-          Event: {
-            schema: startFromEventSchema,
-          },
-        },
-      },
+      schemaConverters: openApiSchemaConverters,
+      specGenerateOptions: openApiSpecGenerateOptions,
     }),
   ],
 });

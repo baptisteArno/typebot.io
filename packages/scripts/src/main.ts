@@ -1,5 +1,5 @@
-import { exportResults } from "./exportResults";
+import { sendEmailCampaign } from "./sendEmailCampaign";
 
 (async () => {
-  await exportResults();
+  await sendEmailCampaign();
 })();

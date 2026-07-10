@@ -1,7 +1,7 @@
 
 ---
 name: commit
-description: Reviews the current git changes and creates a commit with an emoji-prefixed message that matches the dominant type of work. Also covers pull-request titles and descriptions, which follow the same emoji convention.
+description: Use when you need to create git commits or pull requests.
 allowed-tools: Bash(git:*), Bash(gh:*)
 ---
 

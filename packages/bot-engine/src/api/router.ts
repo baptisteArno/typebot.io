@@ -80,6 +80,7 @@ export const chatRouter = {
     .route({
       method: "POST",
       path: "/v1/typebots/{publicId}/startChat",
+      operationId: "startChat",
       summary: "Start chat",
       tags: ["Chat"],
     })
@@ -90,6 +91,7 @@ export const chatRouter = {
     .route({
       method: "POST",
       path: "/v1/sessions/{sessionId}/continueChat",
+      operationId: "continueChat",
       summary: "Continue chat",
       tags: ["Chat"],
     })
@@ -100,6 +102,7 @@ export const chatRouter = {
     .route({
       method: "POST",
       path: "/v2/sessions/{sessionId}/clientLogs",
+      operationId: "saveClientLogs",
       summary: "Save logs",
       tags: ["Chat"],
     })
@@ -110,6 +113,7 @@ export const chatRouter = {
     .route({
       method: "POST",
       path: "/v1/typebots/{typebotId}/preview/startChat",
+      operationId: "startChatPreview",
       summary: "Start preview chat",
       description:
         'Use this endpoint to test your bot. The answers will not be saved. And some blocks like "Send email" will be skipped.',
@@ -134,6 +138,7 @@ export const chatRouter = {
     .route({
       method: "POST",
       path: "/v1/sessions/{sessionId}/updateTypebot",
+      operationId: "updateTypebotInSession",
       summary: "Update typebot in session",
       description:
         "Update chat session with latest typebot modifications. This is useful when you want to update the typebot in an ongoing session after making changes to it.",

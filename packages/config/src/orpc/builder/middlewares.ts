@@ -4,7 +4,13 @@ import * as Sentry from "@sentry/nextjs";
 import { env } from "@typebot.io/env";
 import type { Context } from "./context";
 
-export const os = baseOs.$context<Context>();
+export const os = baseOs.$context<Context>().errors({
+  BAD_REQUEST: {},
+  UNAUTHORIZED: {},
+  FORBIDDEN: {},
+  NOT_FOUND: {},
+  INTERNAL_SERVER_ERROR: {},
+});
 
 const webhookUrlPaths = [
   "builderWhatsAppRouter/previewWebhookProcedure",
@@ -61,7 +67,7 @@ const requireAuth = oo.spec(
     });
   }),
   {
-    security: [{ bearerAuth: [] }],
+    security: [{ Authorization: [] }],
   },
 );
 

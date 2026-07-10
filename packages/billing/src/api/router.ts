@@ -57,6 +57,7 @@ export const billingRouter = {
     .route({
       method: "GET",
       path: "/v1/billing/usage",
+      operationId: "billing-getUsage",
       summary: "Get current plan usage",
       tags: ["Billing"],
     })
@@ -68,6 +69,7 @@ export const billingRouter = {
     .route({
       method: "GET",
       path: "/v1/billing/invoices",
+      operationId: "billing-listInvoices",
       summary: "List invoices",
       tags: ["Billing"],
     })

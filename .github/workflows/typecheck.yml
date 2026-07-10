@@ -29,3 +29,10 @@ jobs:
         working-directory: apps/landing-page
       - run: bunx nx build @typebot.io/react --configuration=production
       - run: bunx nx affected -t typecheck --base=${{ github.event.pull_request.base.sha }}
+      - name: Check OpenAPI docs are up to date
+        run: |
+          bunx nx run-many -t generate-openapi
+          git diff --exit-code apps/docs/openapi || {
+            echo "::error::OpenAPI docs are stale. Run 'bunx nx run-many -t generate-openapi' and commit the result."
+            exit 1
+          }

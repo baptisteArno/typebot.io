@@ -56,6 +56,7 @@ export const fileUploadViewerRouter = {
     .route({
       method: "POST",
       path: "/v3/generate-upload-url",
+      operationId: "generateUploadUrl",
       summary: "Generate upload URL",
       description: "Used to upload anything from the client to S3 bucket",
       tags: ["File upload"],

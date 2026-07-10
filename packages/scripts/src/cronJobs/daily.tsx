@@ -1,5 +1,3 @@
-import { formatChurnAgentDiscordMessages } from "../churnAgent/formatChurnAgentDiscordMessages";
-import { getYesterdayChurnSummary } from "../churnAgent/getYesterdayChurnSummary";
 import { cleanExpiredData } from "../helpers/cleanExpiredData";
 import { formatSubscriptionMessage } from "../helpers/formatSubscriptionMessage";
 import { getLandingPageVisitors } from "../helpers/getLandingPageVisitors";
@@ -32,32 +30,6 @@ ${formatSubscriptionMessage(subscriptionTransitions)}
       channelId: process.env.DISCORD_CHANNEL_ID!,
     },
   );
-
-  if (!process.env.DISCORD_CHANNEL_ID) {
-    console.log("DISCORD_CHANNEL_ID is not set, skipping churn agent");
-    return;
-  }
-
-  await getYesterdayChurnSummary({
-    onSummaryGenerated: async (churnSummary) => {
-      const totalSpent = churnSummary.workspace.totalSpent
-        ? parseFloat(
-            churnSummary.workspace.totalSpent.replace(/[^0-9.-]+/g, ""),
-          )
-        : 0;
-
-      const isLowSpender = totalSpent < 100;
-      await sendDiscordMessage(
-        formatChurnAgentDiscordMessages(churnSummary, {
-          excludeTimeline: isLowSpender,
-          excludeEmailSuggestion: isLowSpender,
-        }),
-        {
-          channelId: process.env.DISCORD_CHANNEL_ID!,
-        },
-      );
-    },
-  });
 };
 
 main().then();

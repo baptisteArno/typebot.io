@@ -38,6 +38,7 @@ export const resultsRouter = {
     .route({
       method: "GET",
       path: "/v1/typebots/{typebotId}/results",
+      operationId: "results-getResults",
       summary: "List results ordered by descending creation date",
       tags: ["Results"],
     })
@@ -54,6 +55,7 @@ export const resultsRouter = {
     .route({
       method: "GET",
       path: "/v1/typebots/{typebotId}/results/{resultId}",
+      operationId: "results-getResult",
       summary: "Get result by id",
       tags: ["Results"],
     })
@@ -69,6 +71,7 @@ export const resultsRouter = {
     .route({
       method: "GET",
       path: "/v1/typebots/{typebotId}/results/{resultId}/transcript",
+      operationId: "results-getResultTranscript",
       summary: "Get result transcript",
       tags: ["Results"],
     })
@@ -93,6 +96,7 @@ export const resultsRouter = {
     .route({
       method: "GET",
       path: "/v1/typebots/{typebotId}/results/{resultId}/logs",
+      operationId: "results-getResultLogs",
       summary: "List result logs",
       tags: ["Results"],
     })
@@ -104,6 +108,7 @@ export const resultsRouter = {
     .route({
       method: "DELETE",
       path: "/v1/typebots/{typebotId}/results",
+      operationId: "results-deleteResults",
       summary: "Delete results",
       tags: ["Results"],
     })

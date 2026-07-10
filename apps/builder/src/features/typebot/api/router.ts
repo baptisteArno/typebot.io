@@ -60,6 +60,7 @@ const createTypebot = authenticatedProcedure
   .route({
     method: "POST",
     path: "/v1/typebots",
+    operationId: "typebot-createTypebot",
     tags: ["Typebot"],
     summary: "Create a typebot",
   })
@@ -71,6 +72,7 @@ const getTypebot = publicProcedureWithOptionalUser
   .route({
     method: "GET",
     path: "/v1/typebots/{typebotId}",
+    operationId: "typebot-getTypebot",
     tags: ["Typebot"],
     summary: "Get a typebot",
   })
@@ -87,6 +89,7 @@ const updateTypebot = authenticatedProcedure
   .route({
     method: "PATCH",
     path: "/v1/typebots/{typebotId}",
+    operationId: "typebot-updateTypebot",
     tags: ["Typebot"],
     summary: "Update a typebot",
   })
@@ -98,6 +101,7 @@ const deleteTypebot = authenticatedProcedure
   .route({
     method: "DELETE",
     path: "/v1/typebots/{typebotId}",
+    operationId: "typebot-deleteTypebot",
     summary: "Delete a typebot",
     tags: ["Typebot"],
   })
@@ -109,6 +113,7 @@ const listTypebots = authenticatedProcedure
   .route({
     method: "GET",
     path: "/v1/typebots",
+    operationId: "typebot-listTypebots",
     summary: "List typebots",
     tags: ["Typebot"],
   })
@@ -139,6 +144,7 @@ const publishTypebot = authenticatedProcedure
   .route({
     method: "POST",
     path: "/v1/typebots/{typebotId}/publish",
+    operationId: "typebot-publishTypebot",
     summary: "Publish a typebot",
     tags: ["Typebot"],
   })
@@ -155,6 +161,7 @@ const unpublishTypebot = authenticatedProcedure
   .route({
     method: "POST",
     path: "/v1/typebots/{typebotId}/unpublish",
+    operationId: "typebot-unpublishTypebot",
     summary: "Unpublish a typebot",
     tags: ["Typebot"],
   })
@@ -166,6 +173,7 @@ const getPublishedTypebot = authenticatedProcedure
   .route({
     method: "GET",
     path: "/v1/typebots/{typebotId}/publishedTypebot",
+    operationId: "typebot-getPublishedTypebot",
     summary: "Get published typebot",
     tags: ["Typebot"],
   })
@@ -190,6 +198,7 @@ const importTypebot = authenticatedProcedure
   .route({
     method: "POST",
     path: "/v1/typebots/import",
+    operationId: "typebot-importTypebot",
     summary: "Import a typebot",
     tags: ["Typebot"],
   })

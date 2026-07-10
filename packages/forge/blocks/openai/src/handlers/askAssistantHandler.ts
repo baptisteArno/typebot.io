@@ -1,5 +1,4 @@
 import { formatDataStreamPart, processDataStream } from "@ai-sdk/ui-utils";
-import * as Sentry from "@sentry/nextjs";
 import { createActionHandler, createFetcherHandler } from "@typebot.io/forge";
 import type {
   AsyncVariableStore,
@@ -134,8 +133,6 @@ const createAssistantStream = async ({
   variables: AsyncVariableStore | VariableStore;
   sessionStore: SessionStore;
 }): Promise<ReadableStream<any> | undefined> => {
-  Sentry.captureMessage("Deprecated Ask Assistant action used");
-
   if (isEmpty(assistantId)) {
     logs?.add("Assistant ID is empty");
     return;
