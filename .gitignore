@@ -83,6 +83,7 @@ content-collections.d.ts
 **/next-env.d.ts
 
 .pi
+.revue/comments.json
 
 .agents/skills/typebot-customer-support
 .agents/skills/typebot-discord-bot
