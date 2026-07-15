@@ -4612,6 +4612,13 @@
                   }
                 }
               },
+              "capture": {
+                "enum": [
+                  "environment",
+                  "user"
+                ],
+                "type": "string"
+              },
               "visibility": {
                 "enum": [
                   "Auto",
@@ -12896,6 +12903,13 @@
                                       }
                                     }
                                   },
+                                  "capture": {
+                                    "enum": [
+                                      "environment",
+                                      "user"
+                                    ],
+                                    "type": "string"
+                                  },
                                   "sizeLimit": {
                                     "type": "number"
                                   },
@@ -15156,6 +15170,13 @@
                                       }
                                     }
                                   },
+                                  "capture": {
+                                    "enum": [
+                                      "environment",
+                                      "user"
+                                    ],
+                                    "type": "string"
+                                  },
                                   "sizeLimit": {
                                     "type": "number"
                                   },
@@ -17415,6 +17436,13 @@
                                         }
                                       }
                                     }
+                                  },
+                                  "capture": {
+                                    "enum": [
+                                      "environment",
+                                      "user"
+                                    ],
+                                    "type": "string"
                                   },
                                   "sizeLimit": {
                                     "type": "number"
@@ -19694,6 +19722,13 @@
                                         }
                                       }
                                     }
+                                  },
+                                  "capture": {
+                                    "enum": [
+                                      "environment",
+                                      "user"
+                                    ],
+                                    "type": "string"
                                   },
                                   "sizeLimit": {
                                     "type": "number"
@@ -23412,6 +23447,7 @@
                                                       "isMultipleAllowed": {},
                                                       "labels": {},
                                                       "allowedFileTypes": {},
+                                                      "capture": {},
                                                       "sizeLimit": {},
                                                       "visibility": {}
                                                     }
@@ -37073,6 +37109,13 @@
                                                         "types": {}
                                                       }
                                                     },
+                                                    "capture": {
+                                                      "enum": [
+                                                        "environment",
+                                                        "user"
+                                                      ],
+                                                      "type": "string"
+                                                    },
                                                     "sizeLimit": {
                                                       "type": "number"
                                                     },
@@ -40660,6 +40703,13 @@
                                                       "isEnabled": {},
                                                       "types": {}
                                                     }
+                                                  },
+                                                  "capture": {
+                                                    "enum": [
+                                                      "environment",
+                                                      "user"
+                                                    ],
+                                                    "type": "string"
                                                   },
                                                   "sizeLimit": {
                                                     "type": "number"
@@ -49094,6 +49144,13 @@
                                                             "types": {}
                                                           }
                                                         },
+                                                        "capture": {
+                                                          "enum": [
+                                                            "environment",
+                                                            "user"
+                                                          ],
+                                                          "type": "string"
+                                                        },
                                                         "sizeLimit": {
                                                           "type": "number"
                                                         },
@@ -52490,6 +52547,13 @@
                                                       "isEnabled": {},
                                                       "types": {}
                                                     }
+                                                  },
+                                                  "capture": {
+                                                    "enum": [
+                                                      "environment",
+                                                      "user"
+                                                    ],
+                                                    "type": "string"
                                                   },
                                                   "sizeLimit": {
                                                     "type": "number"
@@ -75516,6 +75580,13 @@
                                             }
                                           }
                                         },
+                                        "capture": {
+                                          "enum": [
+                                            "environment",
+                                            "user"
+                                          ],
+                                          "type": "string"
+                                        },
                                         "sizeLimit": {
                                           "type": "number"
                                         },
@@ -78216,6 +78287,7 @@
                                                       "isMultipleAllowed": {},
                                                       "labels": {},
                                                       "allowedFileTypes": {},
+                                                      "capture": {},
                                                       "sizeLimit": {},
                                                       "visibility": {}
                                                     }
@@ -80771,6 +80843,13 @@
                                               }
                                             }
                                           }
+                                        },
+                                        "capture": {
+                                          "enum": [
+                                            "environment",
+                                            "user"
+                                          ],
+                                          "type": "string"
                                         },
                                         "sizeLimit": {
                                           "type": "number"

@@ -17,7 +17,22 @@ describe("injectAndroidCameraCaptureToMimeTypes", () => {
     expect(
       injectAndroidCameraCaptureToMimeTypes([".JPG", ".jpeg", "png"]),
     ).toBe(
-      ".JPG, .jpeg, png, image/jpg, image/jpeg, image/png, capture=camera",
+      ".JPG, .jpeg, png, image/jpeg, image/jpg, image/png, capture=camera",
+    );
+  });
+
+  it("uses a clean image accept list with a standard capture attribute", () => {
+    expect(
+      injectAndroidCameraCaptureToMimeTypes(
+        [".jpg", ".png", ".jpeg", "capture=camera"],
+        "environment",
+      ),
+    ).toBe(".jpg, .png, .jpeg, image/jpeg, image/jpg, image/png");
+  });
+
+  it("recognizes equivalent image extensions", () => {
+    expect(injectAndroidCameraCaptureToMimeTypes([".tiff"])).toBe(
+      ".tiff, image/tiff, capture=camera",
     );
   });
 

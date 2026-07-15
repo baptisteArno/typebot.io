@@ -98,7 +98,7 @@ export const handleGenerateUploadUrl = async ({
       : undefined;
 
   if (
-    allowedFileTypesMetadata?.length &&
+    allowedFileTypesMetadata &&
     (!fileType ||
       !allowedFileTypesMetadata.some(
         (metadata) => metadata.mimeType === resolvedFileType,

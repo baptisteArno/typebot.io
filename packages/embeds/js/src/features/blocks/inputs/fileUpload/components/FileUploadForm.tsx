@@ -1,5 +1,6 @@
 import { defaultFileInputOptions } from "@typebot.io/blocks-inputs/file/constants";
 import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
+import { isImageFileInput } from "@typebot.io/lib/isImageFileInput";
 import { isDefined } from "@typebot.io/lib/utils";
 import { defaultSystemMessages } from "@typebot.io/settings/constants";
 import {
@@ -190,6 +191,11 @@ export const FileUploadForm = (props: Props) => {
     );
   };
 
+  const capture = () =>
+    isImageFileInput(props.block.options?.allowedFileTypes)
+      ? props.block.options?.capture
+      : undefined;
+
   const placeholderMarkup = () =>
     sanitizeHtmlFragment(props.block.options?.labels?.placeholder) ??
     defaultFileInputOptions.labels.placeholder;
@@ -255,9 +261,11 @@ export const FileUploadForm = (props: Props) => {
                 props.block.options?.allowedFileTypes?.isEnabled
                   ? injectAndroidCameraCaptureToMimeTypes(
                       props.block.options.allowedFileTypes.types,
+                      capture(),
                     )
                   : undefined
               }
+              capture={capture()}
               multiple={
                 props.block.options?.isMultipleAllowed ??
                 defaultFileInputOptions.isMultipleAllowed

@@ -1,11 +1,13 @@
-import { extensionFromMimeType } from "@typebot.io/lib/extensionFromMimeType";
+import type { FileCaptureMode } from "@typebot.io/blocks-inputs/file/constants";
+import { parseAllowedFileTypesMetadata } from "@typebot.io/lib/extensionFromMimeType";
 
 /**
- * Adds Android camera workaround to file types to ensure camera option appears on Android devices.
- * This addresses an issue in Android 14+ where the camera option doesn't appear for image accept types.
+ * Adds Android camera workaround to file types when no standard capture attribute is selected.
+ * Matching image MIME types are always added so extension allowlists can activate media capture.
  */
 export const injectAndroidCameraCaptureToMimeTypes = (
   types?: string[],
+  capture?: FileCaptureMode,
 ): string => {
   if (!types || types.length === 0) return "";
 
@@ -16,7 +18,11 @@ export const injectAndroidCameraCaptureToMimeTypes = (
     const existingFileTypeIndex =
       fileTypeIndexFromNormalizedFileType.get(normalizedFileType);
 
-    if (!normalizedFileType) return uniqueFileTypes;
+    if (
+      !normalizedFileType ||
+      (capture && normalizedFileType === "capture=camera")
+    )
+      return uniqueFileTypes;
 
     if (existingFileTypeIndex === undefined) {
       fileTypeIndexFromNormalizedFileType.set(
@@ -39,26 +45,27 @@ export const injectAndroidCameraCaptureToMimeTypes = (
     fileTypeIndexFromNormalizedFileType.keys(),
   );
 
-  const imageMimeTypesFromExtensions = uniqueFileTypes.flatMap((fileType) =>
-    Object.entries(extensionFromMimeType).flatMap(([mimeType, extension]) => {
-      const normalizedMimeType = normalizeFileType(mimeType);
+  const imageMimeTypesFromExtensions = parseAllowedFileTypesMetadata(
+    uniqueFileTypes.filter(
+      (fileType) => !normalizeFileType(fileType).includes("/"),
+    ),
+  ).flatMap(({ mimeType }) => {
+    const normalizedMimeType = normalizeFileType(mimeType);
 
-      if (
-        !normalizedMimeType.startsWith("image/") ||
-        normalizeFileType(fileType) !== normalizeFileType(extension) ||
-        normalizedFileTypes.has(normalizedMimeType)
-      )
-        return [];
+    if (
+      !normalizedMimeType.startsWith("image/") ||
+      normalizedFileTypes.has(normalizedMimeType)
+    )
+      return [];
 
-      normalizedFileTypes.add(normalizedMimeType);
-      return [mimeType];
-    }),
-  );
+    normalizedFileTypes.add(normalizedMimeType);
+    return [mimeType];
+  });
 
   if (![...normalizedFileTypes].some((type) => type.startsWith("image/")))
     return uniqueFileTypes.join(", ");
 
-  if (normalizedFileTypes.has("capture=camera"))
+  if (capture || normalizedFileTypes.has("capture=camera"))
     return [...uniqueFileTypes, ...imageMimeTypesFromExtensions].join(", ");
 
   return [

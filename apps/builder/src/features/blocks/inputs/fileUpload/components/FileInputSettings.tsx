@@ -1,9 +1,11 @@
 import { useTranslate } from "@tolgee/react";
 import {
   defaultFileInputOptions,
+  fileCaptureModeOptions,
   fileVisibilityOptions,
 } from "@typebot.io/blocks-inputs/file/constants";
 import type { FileInputBlock } from "@typebot.io/blocks-inputs/file/schema";
+import { isImageFileInput } from "@typebot.io/lib/isImageFileInput";
 import { Accordion } from "@typebot.io/ui/components/Accordion";
 import { DebouncedTextInput } from "@typebot.io/ui/components/DebouncedTextInput";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -26,17 +28,29 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
   const updateAllowedFileTypes = (allowedFileTypes: string[]) =>
     onOptionsChange({
       ...options,
+      capture: isImageFileInput({
+        ...options?.allowedFileTypes,
+        types: allowedFileTypes,
+      })
+        ? options?.capture
+        : undefined,
       allowedFileTypes: {
         ...options?.allowedFileTypes,
         types: allowedFileTypes,
       },
     });
 
-  const updateAllowedFileTypesIsEnabled = (isEnabled: boolean) =>
+  const updateAllowedFileTypesIsEnabled = (isEnabled: boolean) => {
+    const allowedFileTypes = { ...options?.allowedFileTypes, isEnabled };
+
     onOptionsChange({
       ...options,
-      allowedFileTypes: { ...options?.allowedFileTypes, isEnabled },
+      capture: isImageFileInput(allowedFileTypes)
+        ? options?.capture
+        : undefined,
+      allowedFileTypes,
     });
+  };
 
   const handleButtonLabelChange = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } });
@@ -115,6 +129,26 @@ export const FileInputSettings = ({ options, onOptionsChange }: Props) => {
           />
         )}
       </Field.Container>
+      {isImageFileInput(options?.allowedFileTypes) && (
+        <Field.Root>
+          <Field.Label>
+            {t("blocks.inputs.file.settings.capture.label")}
+          </Field.Label>
+          <BasicSelect
+            className="w-full"
+            items={fileCaptureModeOptions.map((captureMode) => ({
+              label:
+                captureMode === "environment"
+                  ? t("blocks.inputs.file.settings.capture.environment.label")
+                  : t("blocks.inputs.file.settings.capture.user.label"),
+              value: captureMode,
+            }))}
+            placeholder={t("blocks.inputs.file.settings.capture.none.label")}
+            value={options?.capture}
+            onChange={(capture) => onOptionsChange({ ...options, capture })}
+          />
+        </Field.Root>
+      )}
       <Field.Root className="flex-row items-center">
         <Switch
           checked={

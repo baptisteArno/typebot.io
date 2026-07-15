@@ -1,10 +1,14 @@
 import { readFileSync } from "node:fs";
 import { createId } from "@paralleldrive/cuid2";
 import test, { expect } from "@playwright/test";
+import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import { env } from "@typebot.io/env";
 import { parseS3PublicBaseUrl } from "@typebot.io/lib/s3/parseS3PublicBaseUrl";
 import { isDefined } from "@typebot.io/lib/utils";
-import { importTypebotInDatabase } from "@typebot.io/playwright/databaseActions";
+import {
+  createTypebots,
+  importTypebotInDatabase,
+} from "@typebot.io/playwright/databaseActions";
 import { parse } from "papaparse";
 import { getTestAsset } from "@/test/utils/playwright";
 
@@ -80,4 +84,78 @@ test("should work as expected", async ({ page, browser }) => {
       { timeout: 15_000, intervals: [500, 1000, 2000] },
     )
     .not.toBe(200);
+});
+
+test("applies the selected capture mode to image file inputs", async ({
+  page,
+}) => {
+  const typebotId = createId();
+  const typebotWithoutCaptureId = createId();
+  await createTypebots([
+    {
+      id: typebotId,
+      publicId: `${typebotId}-public`,
+      groups: [
+        {
+          id: "group1",
+          title: "Group #1",
+          graphCoordinates: { x: 0, y: 0 },
+          blocks: [
+            {
+              id: "capture-file-input",
+              type: InputBlockType.FILE,
+              options: {
+                allowedFileTypes: {
+                  isEnabled: true,
+                  types: [".jpg", ".png", ".jpeg", "capture=camera"],
+                },
+                capture: "environment",
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: typebotWithoutCaptureId,
+      publicId: `${typebotWithoutCaptureId}-public`,
+      groups: [
+        {
+          id: "group1",
+          title: "Group #1",
+          graphCoordinates: { x: 0, y: 0 },
+          blocks: [
+            {
+              id: "file-input-without-capture",
+              type: InputBlockType.FILE,
+              options: {
+                allowedFileTypes: {
+                  isEnabled: true,
+                  types: [".jpg", ".png", ".jpeg"],
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ]);
+
+  await page.goto(`/${typebotId}-public`);
+  const fileInput = page.locator(`input[type="file"]`);
+
+  await expect(fileInput).toHaveAttribute("capture", "environment");
+  await expect(fileInput).toHaveAttribute(
+    "accept",
+    ".jpg, .png, .jpeg, image/jpeg, image/jpg, image/png",
+  );
+
+  await page.goto(`/${typebotWithoutCaptureId}-public`);
+  const fileInputWithoutCapture = page.locator(`input[type="file"]`);
+
+  expect(await fileInputWithoutCapture.getAttribute("capture")).toBeNull();
+  await expect(fileInputWithoutCapture).toHaveAttribute(
+    "accept",
+    ".jpg, .png, .jpeg, image/jpeg, image/jpg, image/png, capture=camera",
+  );
 });

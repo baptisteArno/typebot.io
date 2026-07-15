@@ -58,17 +58,36 @@ export const parseAllowedFileTypesMetadata = (
   mimeType: string;
   extension: string;
 }[] => {
-  const wildcardExtensions = allowedFileTypes
-    .filter((ext) => ext.includes("*"))
-    .map((ext) => ext.split("/")[0]);
+  const normalizedAllowedFileTypes = allowedFileTypes.map((fileType) =>
+    fileType.trim().toLowerCase(),
+  );
+  const wildcardMimeTypes = new Set(
+    normalizedAllowedFileTypes
+      .filter((fileType) => fileType.endsWith("/*"))
+      .map((fileType) => fileType.slice(0, -2)),
+  );
+  const allowedExtensions = new Set(
+    normalizedAllowedFileTypes
+      .filter((fileType) => !fileType.includes("/"))
+      .map((fileType) =>
+        normalizeEquivalentExtension(fileType.replace(/^\./, "")),
+      ),
+  );
 
   return Object.entries(extensionFromMimeType)
     .filter(([mimeType, extension]) => {
       const mimeBaseType = mimeType.split("/")[0];
       return (
-        allowedFileTypes.some((fileType) => fileType.includes(extension)) ||
-        wildcardExtensions.includes(mimeBaseType)
+        normalizedAllowedFileTypes.includes(mimeType) ||
+        allowedExtensions.has(normalizeEquivalentExtension(extension)) ||
+        (mimeBaseType !== undefined && wildcardMimeTypes.has(mimeBaseType))
       );
     })
     .map(([mimeType, extension]) => ({ mimeType, extension }));
+};
+
+const normalizeEquivalentExtension = (extension: string) => {
+  if (extension === "jpg" || extension === "jpe") return "jpeg";
+  if (extension === "tiff") return "tif";
+  return extension;
 };
