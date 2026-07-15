@@ -86,11 +86,6 @@ function RouteComponent() {
             <h1 className="inline-block font-heading text-4xl not-prose text-foreground my-4 font-bold lg:text-5xl">
               {post.title}
             </h1>
-            {post.updatedAt && (
-              <span className="inline-flex gap-1 items-center not-prose text-sm italic">
-                Updated on {formatDate(post.updatedAt)}
-              </span>
-            )}
             {post.cover && (
               <img
                 src={post.cover}
