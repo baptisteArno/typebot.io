@@ -38,7 +38,7 @@ const textLinkIconVariants = cva("mt-0.5", {
 interface CustomTextLinkProps
   extends Pick<
       HTMLProps<HTMLAnchorElement>,
-      "href" | "target" | "className" | "children"
+      "href" | "target" | "rel" | "className" | "children"
     >,
     VariantProps<typeof textLinkVariants> {
   hideExternalIcon?: boolean;
@@ -71,6 +71,7 @@ export const TextLink = (
       <TextLinkComponent
         className={props.className}
         href={props.href}
+        rel={props.rel}
         target={props.target}
         size={props.size}
         hideExternalIcon={props.hideExternalIcon}
