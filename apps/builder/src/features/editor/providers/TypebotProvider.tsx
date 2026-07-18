@@ -9,6 +9,10 @@ import {
   type TypebotV6,
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
+import type {
+  TypebotVersion,
+  TypebotVersionMetadata,
+} from "@typebot.io/typebot/schemas/typebotVersion";
 import { dequal } from "dequal";
 import { Router } from "next/router";
 import {
@@ -67,6 +71,7 @@ const typebotContext = createContext<
     typebot?: TypebotV6;
     publishedTypebot?: PublicTypebotV6;
     publishedTypebotVersion?: PublicTypebot["version"];
+    activeVersion?: TypebotVersionMetadata | null;
     currentUserMode: "guest" | "read" | "write";
     isPublished: boolean;
     isSavingLoading: boolean;
@@ -81,6 +86,7 @@ const typebotContext = createContext<
       overwrite?: boolean;
     }) => Promise<TypebotV6 | undefined>;
     restorePublishedTypebot: () => void;
+    restoreTypebotVersion: (typebotVersion: TypebotVersion) => void;
   } & GroupsActions &
     BlocksActions &
     ItemsActions &
@@ -323,6 +329,24 @@ export const TypebotProvider = ({
     );
   };
 
+  const restoreTypebotVersion = (typebotVersion: TypebotVersion) => {
+    if (
+      !localTypebot ||
+      (typebotVersion.version !== "6" && typebotVersion.version !== "6.1")
+    )
+      return;
+    setLocalTypebot({
+      ...localTypebot,
+      version: typebotVersion.version,
+      groups: typebotVersion.groups,
+      edges: typebotVersion.edges,
+      settings: typebotVersion.settings,
+      theme: typebotVersion.theme,
+      variables: typebotVersion.variables,
+      events: typebotVersion.events,
+    });
+  };
+
   if (typebotError instanceof ORPCError && typebotError.code === "NOT_FOUND")
     return <NotFoundPage resourceName="Typebot" />;
   return (
@@ -331,6 +355,7 @@ export const TypebotProvider = ({
         typebot: localTypebot,
         publishedTypebot,
         publishedTypebotVersion: publishedTypebotData?.version,
+        activeVersion: publishedTypebotData?.activeVersion,
         currentUserMode: typebotData?.currentUserMode ?? "guest",
         isSavingLoading: updateTypebotStatus === "pending",
         save: saveTypebot,
@@ -341,6 +366,7 @@ export const TypebotProvider = ({
         isPublished,
         updateTypebot: updateLocalTypebot,
         restorePublishedTypebot,
+        restoreTypebotVersion,
         ...groupsActions(setLocalTypebot as SetTypebot),
         ...blocksAction(setLocalTypebot as SetTypebot),
         ...variablesAction(setLocalTypebot as SetTypebot),

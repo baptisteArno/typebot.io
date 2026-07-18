@@ -4,6 +4,7 @@ import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebo
 import { migratePublicTypebot } from "@typebot.io/typebot/migrations/migrateTypebot";
 import { publicTypebotSchema } from "@typebot.io/typebot/schemas/publicTypebot";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
+import { typebotVersionMetadataSchema } from "@typebot.io/typebot/schemas/typebotVersion";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
 
@@ -35,7 +36,20 @@ export const handleGetPublishedTypebot = async ({
     },
     include: {
       collaborators: true,
-      publishedTypebot: true,
+      publishedTypebot: {
+        include: {
+          activeVersion: {
+            select: {
+              id: true,
+              typebotId: true,
+              versionNumber: true,
+              version: true,
+              createdAt: true,
+              createdById: true,
+            },
+          },
+        },
+      },
       workspace: {
         select: {
           isSuspended: true,
@@ -69,6 +83,11 @@ export const handleGetPublishedTypebot = async ({
 
     return {
       publishedTypebot: parsedTypebot,
+      activeVersion: existingTypebot.publishedTypebot.activeVersion
+        ? typebotVersionMetadataSchema.parse(
+            existingTypebot.publishedTypebot.activeVersion,
+          )
+        : null,
       version: migrateToLatestVersion
         ? ((existingTypebot.version ?? "3") as Typebot["version"])
         : undefined,

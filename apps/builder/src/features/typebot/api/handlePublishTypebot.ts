@@ -10,20 +10,16 @@ import {
   deleteSessionStore,
   getSessionStore,
 } from "@typebot.io/runtime-session-store";
-import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { settingsSchema } from "@typebot.io/settings/schemas";
 import type { TelemetryEvent } from "@typebot.io/telemetry/schemas";
 import { sendMessage } from "@typebot.io/telemetry/sendMessage";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
-import { themeSchema } from "@typebot.io/theme/schemas";
-import { edgeSchema } from "@typebot.io/typebot/schemas/edge";
-import { publicTypebotSchemaV6 } from "@typebot.io/typebot/schemas/publicTypebot";
 import { typebotV6Schema } from "@typebot.io/typebot/schemas/typebot";
 import type { User } from "@typebot.io/user/schemas";
-import { variableSchema } from "@typebot.io/variables/schemas";
 import { z } from "zod";
 import { parseTypebotPublishEvents } from "@/features/telemetry/helpers/parseTypebotPublishEvents";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
+import { createAndActivateTypebotVersion } from "../helpers/publishTypebotSnapshot";
 
 const warningSchema = z.object({
   type: z.enum(["trademarkInfringement"]),
@@ -168,47 +164,12 @@ export const handlePublishTypebot = async ({
     hasFileUploadBlocks,
   });
 
-  if (existingTypebot.publishedTypebot)
-    await prisma.publicTypebot.updateMany({
-      where: {
-        id: existingTypebot.publishedTypebot.id,
-      },
-      data: {
-        updatedAt: new Date(),
-        version: existingTypebot.version,
-        edges: z.array(edgeSchema).parse(existingTypebot.edges),
-        groups: parseGroups(existingTypebot.groups, {
-          typebotVersion: existingTypebot.version,
-        }),
-        events:
-          (isTypebotVersionAtLeastV6(existingTypebot.version)
-            ? publicTypebotSchemaV6.shape.events
-            : z.null()
-          ).parse(existingTypebot.events) ?? undefined,
-        settings: settingsSchema.parse(existingTypebot.settings),
-        variables: z.array(variableSchema).parse(existingTypebot.variables),
-        theme: themeSchema.parse(existingTypebot.theme),
-      },
-    });
-  else {
-    await prisma.publicTypebot.createMany({
-      data: {
-        version: existingTypebot.version,
-        typebotId: existingTypebot.id,
-        edges: z.array(edgeSchema).parse(existingTypebot.edges),
-        groups: parseGroups(existingTypebot.groups, {
-          typebotVersion: existingTypebot.version,
-        }),
-        events:
-          (isTypebotVersionAtLeastV6(existingTypebot.version)
-            ? publicTypebotSchemaV6.shape.events
-            : z.null()
-          ).parse(existingTypebot.events) ?? undefined,
-        settings: settingsSchema.parse(existingTypebot.settings),
-        variables: z.array(variableSchema).parse(existingTypebot.variables),
-        theme: themeSchema.parse(existingTypebot.theme),
-      },
-    });
+  await createAndActivateTypebotVersion({
+    typebot: existingTypebot,
+    userId: user.id,
+  });
+
+  if (!existingTypebot.publishedTypebot)
     publishEvents.push({
       name: "Typebot published",
       workspaceId: existingTypebot.workspaceId,
@@ -218,7 +179,6 @@ export const handlePublishTypebot = async ({
         isFirstPublish: existingTypebot.publishedTypebot ? undefined : true,
       },
     });
-  }
 
   await trackEvents(publishEvents);
 

@@ -1,31 +1,85 @@
 import { expect, it } from "@effect/vitest";
 import type { UserInOrpcContext } from "@typebot.io/config/orpc/builder/context";
-import { PgContainerPrismaLayer } from "@typebot.io/config/tests/PgContainer";
-import {
-  proWorkspaceId,
-  userId,
-} from "@typebot.io/config/tests/seedDatabaseForTest";
 import { FeatureFlags } from "@typebot.io/feature-flags/application/FeatureFlags";
-import type { UserId } from "@typebot.io/shared-core/domain";
+import { SpaceId, UserId, WorkspaceId } from "@typebot.io/shared-core/domain";
 import { WorkspaceAccessPolicies } from "@typebot.io/workspaces/application/WorkspaceAccessPolicies";
-import { PrismaWorkspaceRepo } from "@typebot.io/workspaces/infrastructure/PrismaWorkspaceRepo";
 import { Effect, Layer, Schema } from "effect";
+import { SpacesRepo } from "../../application/SpacesRepo";
 import { SpacesUsecases } from "../../application/SpacesUsecases";
-import { type Space, SpaceName } from "../../domain/Space";
-import { PrismaSpacesRepo } from "../../infrastructure/PrismaSpacesRepo";
+import { SpaceNotFoundError } from "../../domain/errors";
+import { Space, SpaceName } from "../../domain/Space";
 import { handleCreateSpace } from "./handleCreateSpace";
 import { handleDeleteSpace } from "./handleDeleteSpace";
 import { handleListSpaces } from "./handleListSpaces";
 import { handlePatchSpace } from "./handlePatchSpace";
 
-const WorkspaceAccessPolicyLiveLayer = Layer.provide(
-  WorkspaceAccessPolicies.layer,
-  Layer.provide(PrismaWorkspaceRepo, PgContainerPrismaLayer),
+const userId = Schema.decodeSync(UserId)("seedUserId");
+const proWorkspaceId = Schema.decodeSync(WorkspaceId)("proWorkspace");
+
+const MockWorkspaceAccessPoliciesLayer = Layer.succeed(
+  WorkspaceAccessPolicies,
+  WorkspaceAccessPolicies.of({
+    canRead: () => Effect.succeed(true),
+    canWrite: () => Effect.succeed(true),
+  }),
 );
 
-const SpacesRepoLiveLayer = Layer.provide(
-  PrismaSpacesRepo,
-  PgContainerPrismaLayer,
+const spaces: Space[] = [];
+let spaceIdSequence = 0;
+
+const MockSpacesRepoLayer = Layer.succeed(
+  SpacesRepo,
+  SpacesRepo.of({
+    list: (input) =>
+      Effect.succeed(
+        spaces.filter((space) => space.workspaceId === input.workspaceId),
+      ),
+    create: (input) =>
+      Effect.sync(() => {
+        spaceIdSequence += 1;
+        const space = new Space({
+          id:
+            input.id ?? Schema.decodeSync(SpaceId)(`space-${spaceIdSequence}`),
+          name: input.name,
+          icon: input.icon ?? null,
+          workspaceId: input.workspaceId,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+        spaces.unshift(space);
+        return space;
+      }),
+    patch: (input) =>
+      Effect.gen(function* () {
+        const spaceIndex = spaces.findIndex(
+          (space) =>
+            space.id === input.spaceId &&
+            space.workspaceId === input.workspaceId,
+        );
+        if (spaceIndex === -1) return yield* new SpaceNotFoundError();
+
+        const existingSpace = spaces[spaceIndex];
+        const updatedSpace = new Space({
+          ...existingSpace,
+          name: input.name ?? existingSpace.name,
+          icon: input.icon === undefined ? existingSpace.icon : input.icon,
+          updatedAt: new Date(),
+        });
+        spaces[spaceIndex] = updatedSpace;
+        return updatedSpace;
+      }),
+    delete: (input) =>
+      Effect.gen(function* () {
+        const spaceIndex = spaces.findIndex(
+          (space) =>
+            space.id === input.spaceId &&
+            space.workspaceId === input.workspaceId,
+        );
+        if (spaceIndex === -1) return yield* new SpaceNotFoundError();
+
+        spaces.splice(spaceIndex, 1);
+      }),
+  }),
 );
 
 const MockFeatureFlagsLayer = Layer.succeed(
@@ -43,8 +97,8 @@ const MockFeatureFlagsLayer = Layer.succeed(
 export const SpacesUsecasesLiveLayer = Layer.provide(
   SpacesUsecases.layer,
   Layer.mergeAll(
-    WorkspaceAccessPolicyLiveLayer,
-    SpacesRepoLiveLayer,
+    MockWorkspaceAccessPoliciesLayer,
+    MockSpacesRepoLayer,
     MockFeatureFlagsLayer,
   ),
 );
