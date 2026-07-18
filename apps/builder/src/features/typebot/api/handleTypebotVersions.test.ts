@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, mock } from "bun:test";
 
 const typebotFindFirst = mock();
+const typebotUpdate = mock();
 const typebotVersionFindMany = mock();
 const typebotVersionFindFirst = mock();
 const publicTypebotDeleteMany = mock();
@@ -18,6 +19,7 @@ mock.module("@typebot.io/prisma", () => ({
   default: {
     typebot: {
       findFirst: typebotFindFirst,
+      update: typebotUpdate,
     },
     typebotVersion: {
       findMany: typebotVersionFindMany,
@@ -68,6 +70,7 @@ const writableTypebot = {
 describe("typebot versions handlers", () => {
   beforeEach(() => {
     typebotFindFirst.mockReset();
+    typebotUpdate.mockReset();
     typebotVersionFindMany.mockReset();
     typebotVersionFindFirst.mockReset();
     publicTypebotDeleteMany.mockReset();
@@ -208,6 +211,24 @@ describe("typebot versions handlers", () => {
         context: { user: { id: "user-id" } },
       }),
     ).resolves.toEqual({ message: "success" });
+
+    expect(typebotUpdate).toHaveBeenCalledWith({
+      where: { id: "typebot-id" },
+      data: {
+        groups: [],
+        events: [
+          {
+            id: "event-1",
+            type: "start",
+            graphCoordinates: { x: 0, y: 0 },
+          },
+        ],
+        edges: [],
+        variables: [],
+        theme: {},
+        settings: {},
+      },
+    });
 
     expect(trackEvents).toHaveBeenCalledWith([
       {

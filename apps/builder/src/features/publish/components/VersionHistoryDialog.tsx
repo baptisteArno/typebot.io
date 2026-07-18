@@ -1,11 +1,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { AlertDialog } from "@typebot.io/ui/components/AlertDialog";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
+import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { TickIcon } from "@typebot.io/ui/icons/TickIcon";
 import { Undo03Icon } from "@typebot.io/ui/icons/Undo03Icon";
 import { Upload01Icon } from "@typebot.io/ui/icons/Upload01Icon";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
   orpc,
@@ -19,11 +21,23 @@ type Props = {
 };
 
 export const VersionHistoryDialog = ({ isOpen, onClose }: Props) => {
-  const { typebot, activeVersion, restoreTypebotVersion, currentUserMode } =
-    useTypebot();
+  const {
+    typebot,
+    activeVersion,
+    restoreTypebotVersion,
+    currentUserMode,
+    isPublished,
+  } = useTypebot();
   const [loadingVersionNumber, setLoadingVersionNumber] = useState<
     number | null
   >(null);
+  const [versionToPublish, setVersionToPublish] = useState<number | null>(null);
+  const {
+    isOpen: isWarningOpen,
+    onOpen: onWarningOpen,
+    onClose: onWarningClose,
+  } = useOpenControls();
+  const warningCancelRef = useRef<HTMLButtonElement | null>(null);
 
   const { data, isLoading } = useQuery(
     orpc.typebot.listTypebotVersions.queryOptions({
@@ -44,9 +58,13 @@ export const VersionHistoryDialog = ({ isOpen, onClose }: Props) => {
             queryKey: orpc.typebot.getPublishedTypebot.key(),
           }),
           queryClient.invalidateQueries({
+            queryKey: orpc.typebot.getTypebot.key(),
+          }),
+          queryClient.invalidateQueries({
             queryKey: orpc.typebot.listTypebotVersions.key(),
           }),
         ]);
+        onWarningClose();
       },
     }),
   );
@@ -79,9 +97,22 @@ export const VersionHistoryDialog = ({ isOpen, onClose }: Props) => {
 
   const handlePublishVersion = (versionNumber: number) => {
     if (!typebot?.id) return;
+    if (!isPublished) {
+      setVersionToPublish(versionNumber);
+      onWarningOpen();
+    } else {
+      publishTypebotVersion({
+        typebotId: typebot.id,
+        versionNumber,
+      });
+    }
+  };
+
+  const confirmPublishVersion = () => {
+    if (!typebot?.id || !versionToPublish) return;
     publishTypebotVersion({
       typebotId: typebot.id,
-      versionNumber,
+      versionNumber: versionToPublish,
     });
   };
 
@@ -166,6 +197,36 @@ export const VersionHistoryDialog = ({ isOpen, onClose }: Props) => {
           </Button>
         </Dialog.Footer>
       </Dialog.Popup>
+      <AlertDialog.Root isOpen={isWarningOpen} onClose={onWarningClose}>
+        <AlertDialog.Content initialFocus={warningCancelRef}>
+          <AlertDialog.Header>
+            <AlertDialog.Title>Overwrite draft?</AlertDialog.Title>
+            <AlertDialog.Description>
+              Publishing this older version will completely overwrite your
+              current draft in the builder.
+              <strong>
+                {" "}
+                Any unpublished changes will be permanently lost.
+              </strong>
+              <br />
+              <br />
+              Do you want to proceed?
+            </AlertDialog.Description>
+          </AlertDialog.Header>
+          <AlertDialog.Footer>
+            <AlertDialog.Cancel ref={warningCancelRef}>
+              Cancel
+            </AlertDialog.Cancel>
+            <AlertDialog.Action
+              variant="default"
+              onClick={confirmPublishVersion}
+              disabled={status === "pending"}
+            >
+              Publish
+            </AlertDialog.Action>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog.Root>
     </Dialog.Root>
   );
 };

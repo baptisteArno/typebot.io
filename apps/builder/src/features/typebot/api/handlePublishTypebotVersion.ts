@@ -58,6 +58,18 @@ export const handlePublishTypebotVersion = async ({
     typebotVersion: typebotVersionSchema.parse(typebotVersion),
   });
 
+  await prisma.typebot.update({
+    where: { id: typebotId },
+    data: {
+      groups: typebotVersion.groups ?? undefined,
+      events: typebotVersion.events ?? undefined,
+      edges: typebotVersion.edges ?? undefined,
+      variables: typebotVersion.variables ?? undefined,
+      theme: typebotVersion.theme ?? undefined,
+      settings: typebotVersion.settings ?? undefined,
+    },
+  });
+
   await trackEvents([
     {
       name: "Typebot version restored",
