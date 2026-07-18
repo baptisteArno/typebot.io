@@ -80,7 +80,7 @@ describe("parseEmailAttachments", () => {
         resultId,
         dependencies: createDependencies().dependencies,
       }),
-    ).resolves.toEqual([{ path: publicFileUrl }]);
+    ).resolves.toEqual([{ path: new URL(publicFileUrl).href }]);
   });
 
   it("accepts legacy WhatsApp public Typebot upload attachments", async () => {
@@ -93,7 +93,7 @@ describe("parseEmailAttachments", () => {
         resultId,
         dependencies: createDependencies().dependencies,
       }),
-    ).resolves.toEqual([{ path: legacyPublicFileUrl }]);
+    ).resolves.toEqual([{ path: new URL(legacyPublicFileUrl).href }]);
   });
 
   it("rejects public Typebot upload URLs from another typebot", async () => {

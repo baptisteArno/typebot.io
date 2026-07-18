@@ -11,6 +11,7 @@ import { Menu } from "@typebot.io/ui/components/Menu";
 import { Tooltip } from "@typebot.io/ui/components/Tooltip";
 import { useOpenControls } from "@typebot.io/ui/hooks/useOpenControls";
 import { ArrowDown01Icon } from "@typebot.io/ui/icons/ArrowDown01Icon";
+import { Clock01Icon } from "@typebot.io/ui/icons/Clock01Icon";
 import { HotspotOfflineIcon } from "@typebot.io/ui/icons/HotspotOfflineIcon";
 import { SquareLock01Icon } from "@typebot.io/ui/icons/SquareLock01Icon";
 import { SquareUnlock01Icon } from "@typebot.io/ui/icons/SquareUnlock01Icon";
@@ -30,6 +31,7 @@ import {
   showHttpRequestErrorToast,
 } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
+import { VersionHistoryDialog } from "./VersionHistoryDialog";
 
 type Props = {
   isMoreMenuDisabled?: boolean;
@@ -53,6 +55,11 @@ export const PublishButton = ({
     isOpen: isTrademarkInfringementOpen,
     onOpen: onTrademarkInfringementOpen,
     onClose: onTrademarkInfringementClose,
+  } = useOpenControls();
+  const {
+    isOpen: isVersionHistoryOpen,
+    onOpen: onVersionHistoryOpen,
+    onClose: onVersionHistoryClose,
   } = useOpenControls();
   const [trademarkPotentialInfringement, setTrademarkPotentialInfringement] =
     useState<string | undefined>(undefined);
@@ -121,6 +128,7 @@ export const PublishButton = ({
   const hasInputFile = typebot?.groups
     .flatMap((g) => g.blocks)
     .some((b) => b.type === InputBlockType.FILE);
+  const isMenuDisplayed = !isMoreMenuDisabled && !!typebot;
 
   const handlePublishClick = async () => {
     if (!typebot?.id) return;
@@ -157,6 +165,10 @@ export const PublishButton = ({
         isOpen={isOpen}
         onClose={onClose}
         type={t("billing.limitMessage.fileInput")}
+      />
+      <VersionHistoryDialog
+        isOpen={isVersionHistoryOpen}
+        onClose={onVersionHistoryClose}
       />
       <AlertDialog.Root
         isOpen={isTrademarkInfringementOpen}
@@ -277,10 +289,7 @@ export const PublishButton = ({
                   ? onNewEngineWarningOpen()
                   : handlePublishClick();
               }}
-              className={cn(
-                publishedTypebot && !isMoreMenuDisabled && "rounded-r-none",
-                className,
-              )}
+              className={cn(isMenuDisplayed && "rounded-r-none", className)}
               {...props}
             >
               {isPublished
@@ -307,7 +316,7 @@ export const PublishButton = ({
           </div>
         </Tooltip.Popup>
       </Tooltip.Root>
-      {!isMoreMenuDisabled && publishedTypebot && (
+      {isMenuDisplayed && (
         <Menu.Root>
           <Menu.TriggerButton
             size="icon"
@@ -318,26 +327,34 @@ export const PublishButton = ({
             <ArrowDown01Icon />
           </Menu.TriggerButton>
           <Menu.Popup align="end">
-            {!isPublished && (
+            <Menu.Item onClick={onVersionHistoryOpen}>
+              <Clock01Icon />
+              Version history
+            </Menu.Item>
+            {publishedTypebot && !isPublished && (
               <Menu.Item onClick={restorePublishedTypebot}>
                 {t("publishButton.dropdown.restoreVersion.label")}
               </Menu.Item>
             )}
-            {!typebot?.isClosed ? (
-              <Menu.Item onClick={closeTypebot}>
-                <SquareLock01Icon />
-                {t("publishButton.dropdown.close.label")}
-              </Menu.Item>
-            ) : (
-              <Menu.Item onClick={openTypebot}>
-                <SquareUnlock01Icon />
-                {t("publishButton.dropdown.reopen.label")}
-              </Menu.Item>
+            {publishedTypebot && (
+              <>
+                {!typebot?.isClosed ? (
+                  <Menu.Item onClick={closeTypebot}>
+                    <SquareLock01Icon />
+                    {t("publishButton.dropdown.close.label")}
+                  </Menu.Item>
+                ) : (
+                  <Menu.Item onClick={openTypebot}>
+                    <SquareUnlock01Icon />
+                    {t("publishButton.dropdown.reopen.label")}
+                  </Menu.Item>
+                )}
+                <Menu.Item onClick={unpublishTypebot}>
+                  <HotspotOfflineIcon />
+                  {t("publishButton.dropdown.unpublish.label")}
+                </Menu.Item>
+              </>
             )}
-            <Menu.Item onClick={unpublishTypebot}>
-              <HotspotOfflineIcon />
-              {t("publishButton.dropdown.unpublish.label")}
-            </Menu.Item>
           </Menu.Popup>
         </Menu.Root>
       )}

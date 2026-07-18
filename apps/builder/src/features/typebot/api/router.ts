@@ -12,6 +12,10 @@ import {
   typebotV5Schema,
   typebotV6Schema,
 } from "@typebot.io/typebot/schemas/typebot";
+import {
+  typebotVersionMetadataSchema,
+  typebotVersionSchema,
+} from "@typebot.io/typebot/schemas/typebotVersion";
 import { z } from "zod";
 import {
   createTypebotInputSchema,
@@ -31,6 +35,10 @@ import {
   handleGetTypebotBlocks,
 } from "./handleGetTypebotBlocks";
 import {
+  getTypebotVersionInputSchema,
+  handleGetTypebotVersion,
+} from "./handleGetTypebotVersion";
+import {
   handleImportTypebot,
   importTypebotInputSchema,
 } from "./handleImportTypebot";
@@ -43,10 +51,19 @@ import {
   listTypebotsInputSchema,
 } from "./handleListTypebots";
 import {
+  handleListTypebotVersions,
+  listedTypebotVersionSchema,
+  listTypebotVersionsInputSchema,
+} from "./handleListTypebotVersions";
+import {
   handlePublishTypebot,
   publishTypebotInputSchema,
   warningSchema,
 } from "./handlePublishTypebot";
+import {
+  handlePublishTypebotVersion,
+  publishTypebotVersionInputSchema,
+} from "./handlePublishTypebotVersion";
 import {
   handleUnpublishTypebot,
   unpublishTypebotInputSchema,
@@ -169,6 +186,50 @@ const unpublishTypebot = authenticatedProcedure
   .output(z.object({ message: z.literal("success") }))
   .handler(handleUnpublishTypebot);
 
+const listTypebotVersions = authenticatedProcedure
+  .route({
+    method: "GET",
+    path: "/v1/typebots/{typebotId}/versions",
+    operationId: "typebot-listTypebotVersions",
+    summary: "List typebot versions",
+    tags: ["Typebot"],
+  })
+  .input(listTypebotVersionsInputSchema)
+  .output(
+    z.object({
+      versions: z.array(listedTypebotVersionSchema),
+    }),
+  )
+  .handler(handleListTypebotVersions);
+
+const getTypebotVersion = authenticatedProcedure
+  .route({
+    method: "GET",
+    path: "/v1/typebots/{typebotId}/versions/{versionNumber}",
+    operationId: "typebot-getTypebotVersion",
+    summary: "Get a typebot version",
+    tags: ["Typebot"],
+  })
+  .input(getTypebotVersionInputSchema)
+  .output(
+    z.object({
+      version: typebotVersionSchema,
+    }),
+  )
+  .handler(handleGetTypebotVersion);
+
+const publishTypebotVersion = authenticatedProcedure
+  .route({
+    method: "POST",
+    path: "/v1/typebots/{typebotId}/versions/{versionNumber}/publish",
+    operationId: "typebot-publishTypebotVersion",
+    summary: "Publish a typebot version",
+    tags: ["Typebot"],
+  })
+  .input(publishTypebotVersionInputSchema)
+  .output(z.object({ message: z.literal("success") }))
+  .handler(handlePublishTypebotVersion);
+
 const getPublishedTypebot = authenticatedProcedure
   .route({
     method: "GET",
@@ -181,6 +242,7 @@ const getPublishedTypebot = authenticatedProcedure
   .output(
     z.object({
       publishedTypebot: publicTypebotSchema.nullable(),
+      activeVersion: typebotVersionMetadataSchema.nullable().optional(),
       version: z
         .union([
           publicTypebotSchemaV5.shape.version,
@@ -222,6 +284,9 @@ export type TypebotRouter = {
   listTypebots: typeof listTypebots;
   publishTypebot: typeof publishTypebot;
   unpublishTypebot: typeof unpublishTypebot;
+  listTypebotVersions: typeof listTypebotVersions;
+  getTypebotVersion: typeof getTypebotVersion;
+  publishTypebotVersion: typeof publishTypebotVersion;
   getPublishedTypebot: typeof getPublishedTypebot;
   importTypebot: typeof importTypebot;
   getTypebotBlocks: typeof getTypebotBlocks;
@@ -236,6 +301,9 @@ export const typebotRouter: TypebotRouter = {
   listTypebots,
   publishTypebot,
   unpublishTypebot,
+  listTypebotVersions,
+  getTypebotVersion,
+  publishTypebotVersion,
   getPublishedTypebot,
   importTypebot,
   getTypebotBlocks,
