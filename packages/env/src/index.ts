@@ -84,6 +84,7 @@ const baseEnv = {
         ["FREE", "STARTER", "PRO", "LIFETIME", "UNLIMITED"].includes(str),
       )
       .default("FREE"),
+    PRUNE_TYPEBOT_VERSIONS_LIMIT: z.coerce.number().optional().default(5),
     TYPEBOT_DEBUG: boolean.optional().default(false),
     SSRF_ALLOWED_HOSTS: z
       .string()

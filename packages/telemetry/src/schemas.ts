@@ -67,6 +67,15 @@ const publishedTypebotEventSchema = typebotEvent.merge(
   }),
 );
 
+const typebotVersionRestoredEventSchema = typebotEvent.merge(
+  z.object({
+    name: z.literal("Typebot version restored"),
+    data: z.object({
+      versionNumber: z.number(),
+    }),
+  }),
+);
+
 const customDomainAddedEventSchema = workspaceEvent.merge(
   z.object({
     name: z.literal("Custom domain added"),
@@ -225,6 +234,7 @@ const builderEvents = [
   userLoggedOutEventSchema,
   typebotCreatedEventSchema,
   publishedTypebotEventSchema,
+  typebotVersionRestoredEventSchema,
   subscriptionUpdatedEventSchema,
   newResultsCollectedEventSchema,
   workspaceLimitReachedEventSchema,

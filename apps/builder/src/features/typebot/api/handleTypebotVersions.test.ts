@@ -6,6 +6,8 @@ const typebotVersionFindFirst = mock();
 const publicTypebotDeleteMany = mock();
 const prismaTransaction = mock();
 const isReadTypebotForbidden = mock();
+const isWriteTypebotForbidden = mock();
+const trackEvents = mock();
 
 process.env.SKIP_ENV_CHECK = "true";
 process.env.ENCRYPTION_SECRET = "12345678901234567890123456789012";
@@ -32,16 +34,25 @@ mock.module("@typebot.io/typebot/helpers/isReadTypebotForbidden", () => ({
   isReadTypebotForbidden,
 }));
 
+mock.module("@/features/typebot/helpers/isWriteTypebotForbidden", () => ({
+  isWriteTypebotForbidden,
+}));
+
 mock.module("@/features/typebot/helpers/publishTypebotSnapshot", () => ({
   createAndActivateTypebotVersion: mock(),
   activateTypebotVersion: mock(),
 }));
+
+mock.module("@typebot.io/telemetry/trackEvents", () => ({ trackEvents }));
 
 const { handleListTypebotVersions } = await import(
   "./handleListTypebotVersions"
 );
 const { handleGetTypebotVersion } = await import("./handleGetTypebotVersion");
 const { handleUnpublishTypebot } = await import("./handleUnpublishTypebot");
+const { handlePublishTypebotVersion } = await import(
+  "./handlePublishTypebotVersion"
+);
 
 const writableTypebot = {
   id: "typebot-id",
@@ -66,6 +77,8 @@ describe("typebot versions handlers", () => {
     typebotFindFirst.mockResolvedValue(writableTypebot);
     publicTypebotDeleteMany.mockResolvedValue({ count: 1 });
     isReadTypebotForbidden.mockResolvedValue(false);
+    isWriteTypebotForbidden.mockResolvedValue(false);
+    trackEvents.mockReset();
   });
 
   it("lists versions without requiring an active public deployment", async () => {
@@ -165,5 +178,47 @@ describe("typebot versions handlers", () => {
         id: "public-typebot-id",
       },
     });
+  });
+
+  it("publishes a typebot version and sends telemetry", async () => {
+    typebotVersionFindFirst.mockResolvedValue({
+      id: "version-1",
+      typebotId: "typebot-id",
+      versionNumber: 1,
+      version: "6.1",
+      createdAt: new Date("2026-07-18T09:00:00.000Z"),
+      createdById: "user-id",
+      groups: [],
+      events: [
+        {
+          id: "event-1",
+          type: "start",
+          graphCoordinates: { x: 0, y: 0 },
+        },
+      ],
+      edges: [],
+      variables: [],
+      settings: {},
+      theme: {},
+    });
+
+    await expect(
+      handlePublishTypebotVersion({
+        input: { typebotId: "typebot-id", versionNumber: 1 },
+        context: { user: { id: "user-id" } },
+      }),
+    ).resolves.toEqual({ message: "success" });
+
+    expect(trackEvents).toHaveBeenCalledWith([
+      {
+        name: "Typebot version restored",
+        workspaceId: writableTypebot.workspaceId,
+        typebotId: writableTypebot.id,
+        userId: "user-id",
+        data: {
+          versionNumber: 1,
+        },
+      },
+    ]);
   });
 });

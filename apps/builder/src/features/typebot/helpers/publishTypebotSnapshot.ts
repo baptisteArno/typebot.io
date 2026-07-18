@@ -1,3 +1,4 @@
+import { env } from "@typebot.io/env";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
@@ -40,7 +41,7 @@ export const parseTypebotSnapshotData = (typebot: SnapshotSource) => ({
   theme: themeSchema.parse(typebot.theme),
 });
 
-export const createAndActivateTypebotVersion = async ({
+const createAndActivateTypebotVersionInternal = async ({
   typebot,
   userId,
 }: {
@@ -77,6 +78,55 @@ export const createAndActivateTypebotVersion = async ({
     }
   }
   throw new Error("Unable to create typebot version");
+};
+
+export const createAndActivateTypebotVersion = async ({
+  typebot,
+  userId,
+}: {
+  typebot: SnapshotSource;
+  userId: string;
+}) => {
+  const version = await createAndActivateTypebotVersionInternal({
+    typebot,
+    userId,
+  });
+  if (env.PRUNE_TYPEBOT_VERSIONS_LIMIT > 0) {
+    // Fire and forget pruning
+    pruneTypebotVersions(typebot.id, env.PRUNE_TYPEBOT_VERSIONS_LIMIT).catch(
+      console.error,
+    );
+  }
+  return version;
+};
+
+const pruneTypebotVersions = async (typebotId: string, limit: number) => {
+  const versionsToKeep = await prisma.typebotVersion.findMany({
+    where: { typebotId },
+    orderBy: { versionNumber: "desc" },
+    take: limit,
+    select: { id: true },
+  });
+
+  const publicTypebot = await prisma.publicTypebot.findUnique({
+    where: { typebotId },
+    select: { activeVersionId: true },
+  });
+
+  const idsToKeep = versionsToKeep.map((v) => v.id);
+  if (
+    publicTypebot?.activeVersionId &&
+    !idsToKeep.includes(publicTypebot.activeVersionId)
+  ) {
+    idsToKeep.push(publicTypebot.activeVersionId);
+  }
+
+  await prisma.typebotVersion.deleteMany({
+    where: {
+      typebotId,
+      id: { notIn: idsToKeep },
+    },
+  });
 };
 
 export const activateTypebotVersion = async ({

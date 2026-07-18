@@ -1,5 +1,6 @@
 import { ORPCError } from "@orpc/server";
 import prisma from "@typebot.io/prisma";
+import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import { typebotVersionSchema } from "@typebot.io/typebot/schemas/typebotVersion";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
@@ -56,6 +57,18 @@ export const handlePublishTypebotVersion = async ({
   await activateTypebotVersion({
     typebotVersion: typebotVersionSchema.parse(typebotVersion),
   });
+
+  await trackEvents([
+    {
+      name: "Typebot version restored",
+      workspaceId: existingTypebot.workspaceId,
+      typebotId: existingTypebot.id,
+      userId: user.id,
+      data: {
+        versionNumber,
+      },
+    },
+  ]);
 
   return { message: "success" as const };
 };
