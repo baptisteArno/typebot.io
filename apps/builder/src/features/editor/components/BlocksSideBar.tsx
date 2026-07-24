@@ -64,7 +64,7 @@ export const BlocksSideBar = () => {
 
   const closeSideBar = useDebouncedCallback(() => setIsExtended(false), 200);
 
-  const handleMouseMove = (event: MouseEvent) => {
+  const handlePointerMove = (event: PointerEvent) => {
     const { clientX, clientY } = event;
     if (draggedBlockType || draggedEventType) {
       setPosition({
@@ -85,9 +85,12 @@ export const BlocksSideBar = () => {
     if (clientX < 100) return;
     closeSideBar();
   };
-  useEventListener("mousemove", handleMouseMove);
+  useEventListener("pointermove", handlePointerMove);
 
-  const initBlockDragging = (e: React.MouseEvent, type: BlockV6["type"]) => {
+  const initBlockDragging = (
+    e: React.PointerEvent,
+    type: BlockV6["type"],
+  ) => {
     const element = e.currentTarget as HTMLElement;
     const rect = element.getBoundingClientRect();
     setPosition({ x: rect.left, y: rect.top });
@@ -98,7 +101,7 @@ export const BlocksSideBar = () => {
   };
 
   const initEventDragging = (
-    e: React.MouseEvent,
+    e: React.PointerEvent,
     type: TDraggableEvent["type"],
   ) => {
     const element = e.currentTarget as HTMLElement;
@@ -110,7 +113,7 @@ export const BlocksSideBar = () => {
     setDraggedEventType(type);
   };
 
-  const handleMouseUp = () => {
+  const handlePointerUp = () => {
     if (!draggedBlockType && !draggedEventType) return;
     setDraggedBlockType(undefined);
     setDraggedEventType(undefined);
@@ -119,7 +122,7 @@ export const BlocksSideBar = () => {
       y: 0,
     });
   };
-  useEventListener("mouseup", handleMouseUp);
+  useEventListener("pointerup", handlePointerUp);
 
   const handleLockClick = () => {
     try {
@@ -235,7 +238,7 @@ export const BlocksSideBar = () => {
               <BlockCard
                 key={type}
                 type={type}
-                onMouseDown={initBlockDragging}
+                onPointerDown={initBlockDragging}
               />
             ))}
           </div>
@@ -250,7 +253,7 @@ export const BlocksSideBar = () => {
               <BlockCard
                 key={type}
                 type={type}
-                onMouseDown={initBlockDragging}
+                onPointerDown={initBlockDragging}
               />
             ))}
           </div>
@@ -265,7 +268,7 @@ export const BlocksSideBar = () => {
               <BlockCard
                 key={type}
                 type={type}
-                onMouseDown={initBlockDragging}
+                onPointerDown={initBlockDragging}
               />
             ))}
           </div>
@@ -280,7 +283,7 @@ export const BlocksSideBar = () => {
               <EventCard
                 key={type}
                 type={type}
-                onMouseDown={initEventDragging}
+                onPointerDown={initEventDragging}
               />
             ))}
           </div>
@@ -297,7 +300,7 @@ export const BlocksSideBar = () => {
                 <BlockCard
                   key={type}
                   type={type}
-                  onMouseDown={initBlockDragging}
+                  onPointerDown={initBlockDragging}
                 />
               ))}
           </div>

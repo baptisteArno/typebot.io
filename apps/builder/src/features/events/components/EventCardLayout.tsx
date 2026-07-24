@@ -9,26 +9,26 @@ type Props = {
   tooltip?: string;
   isDisabled?: boolean;
   children: React.ReactNode;
-  onMouseDown: (e: React.MouseEvent, type: TDraggableEvent["type"]) => void;
+  onPointerDown: (e: React.PointerEvent, type: TDraggableEvent["type"]) => void;
 };
 
 export const EventCardLayout = ({
   type,
-  onMouseDown,
+  onPointerDown,
   tooltip,
   isDisabled,
   children,
 }: Props) => {
   const { draggedEventType } = useBlockDnd();
-  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [isPointerDown, setIsPointerDown] = useState(false);
 
   useEffect(() => {
-    setIsMouseDown(draggedEventType === type);
+    setIsPointerDown(draggedEventType === type);
   }, [draggedEventType, type]);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handlePointerDown = (e: React.PointerEvent) => {
     if (isDisabled) return;
-    onMouseDown(e, type as TDraggableEvent["type"]);
+    onPointerDown(e, type as TDraggableEvent["type"]);
   };
 
   return (
@@ -41,15 +41,15 @@ export const EventCardLayout = ({
               disabled={isDisabled}
               className={cx(
                 "flex items-center gap-2 border rounded-lg flex-1 px-4 py-2 bg-gray-1 transition-[box-shadow,background-color]",
-                isMouseDown ? "min-h-[42px]" : undefined,
+                isPointerDown ? "min-h-[42px]" : undefined,
                 isDisabled
                   ? "cursor-not-allowed"
                   : "cursor-grab hover:shadow-md",
-                isMouseDown || isDisabled ? "opacity-40" : "opacity-100",
+                isPointerDown || isDisabled ? "opacity-40" : "opacity-100",
               )}
-              onMouseDown={handleMouseDown}
+              onPointerDown={handlePointerDown}
             >
-              {!isMouseDown ? children : null}
+              {!isPointerDown ? children : null}
             </button>
           </div>
         }

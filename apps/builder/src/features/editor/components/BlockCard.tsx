@@ -21,18 +21,18 @@ type Props = {
   tooltip?: string;
   isDisabled?: boolean;
   children: React.ReactNode;
-  onMouseDown: (e: React.MouseEvent, type: BlockV6["type"]) => void;
+  onPointerDown: (e: React.PointerEvent, type: BlockV6["type"]) => void;
 };
 
 export const BlockCard = (
-  props: Pick<Props, "type" | "onMouseDown">,
+  props: Pick<Props, "type" | "onPointerDown">,
 ): JSX.Element => {
   const { t } = useTranslate();
   const { workspace } = useWorkspace();
 
   if (isForgedBlockType(props.type)) {
     return (
-      <ForgedBlockCard type={props.type} onMouseDown={props.onMouseDown} />
+      <ForgedBlockCard type={props.type} onPointerDown={props.onPointerDown} />
     );
   }
   switch (props.type) {
