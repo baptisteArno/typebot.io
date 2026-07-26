@@ -7,14 +7,14 @@ import type {
 } from "@typebot.io/variables/schemas";
 
 type Props = {
-  state: SessionState;
   newVariables: VariableWithUnknowValue[];
+  state: SessionState;
   currentBlockId: string | undefined;
 };
-// TODO: Refacto newVariables param first, other in second
+
 export const updateVariablesInSession = ({
-  state,
   newVariables,
+  state,
   currentBlockId,
 }: Props): {
   updatedState: SessionState;
