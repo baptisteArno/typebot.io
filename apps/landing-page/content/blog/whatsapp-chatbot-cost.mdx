@@ -5,7 +5,7 @@ postedAt: "2026-07-13"
 cover: "/blog-assets/whatsapp-chatbot-cost/cover.avif"
 author: younes
 ---
-Most guides quote a single number for "WhatsApp chatbot pricing", as if every business paid the same bill. That number is misleading: a solopreneur answering FAQs can run a WhatsApp bot for $0 a month, while a retailer blasting promotional broadcasts to Brazil can rack up $600 or more, using the exact same underlying technology.
+Most guides quote a single number for "WhatsApp chatbot pricing", as if every business paid the same bill. That number is misleading: an inbound FAQ bot may only incur its platform subscription, while a retailer sending promotional broadcasts to Brazil can spend $600 or more using the same underlying technology.
 
 The real driver of your cost isn't the chatbot itself. It's how you use WhatsApp's messaging window.
 
@@ -20,6 +20,8 @@ The answer depends entirely on **how you use it**. Here's a quick overview of th
 - **Inbound-only (support, FAQs, lead capture):** Your bot replies to users within a 24-hour window. Meta charges **$0** for these conversations. You only pay your chatbot platform subscription, which ranges from **$0 (free tier) to about $90/month** for moderate volume. Total monthly cost: **$0–$90**.
 - **Hybrid (inbound + marketing broadcasts):** You send proactive template messages (promotions, updates) outside the free window. You pay both the platform fee **plus Meta's per-message fees**, which vary by region (e.g., ~$0.013 per marketing message in India, ~$0.05 in Brazil). Total monthly cost: **$30–$600+** depending on volume and region.
 - **High-volume OTPs and authentication:** Similar to marketing, but utility/authentication templates have lower Meta fees. Still, at scale, Meta fees can add up to **hundreds of dollars per month**.
+
+For Typebot Cloud specifically, production WhatsApp deployment requires the **Pro plan at $89/month**. The Free and Starter plans let you build and test flows in the browser, but they do not include WhatsApp deployment.
 
 The final bill is made up of three main parts: **Meta messaging fees**, your **chatbot platform subscription**, and the **build/setup effort**.
 
@@ -73,7 +75,7 @@ All **free-form service replies sent within the 24-hour customer service window*
 
 Meta’s per-message fees can vary quite a bit depending on the region.
 
-For the latest rates, it’s best to review the [Official Meta Rate Card](https://business.whatsapp.com/products/business-api-pricing/).
+For the latest rates, it’s best to review the [Official Meta Rate Card](https://business.whatsapp.com/products/platform-pricing).
 
 Here are some rough estimates of per-message costs:
 | Country/region    | Marketing | Utility  | Authentication |
@@ -105,7 +107,7 @@ How much you'll pay for a chatbot platform comes down to a few things: the month
 **The table below shows how popular platforms compare on the costs that actually affect your budget.**
 | Platform       | Price &amp; Tiers    | Included Volume        | Seats     | Meta Markup | Notes                                                                                            |
 | -------------- | -------------------- | ---------------------- | --------- | ----------- | ------------------------------------------------------------------------------------------------ |
-| **Typebot**    | Free / $39 / $89     | 200 / 2k / 10k chats   | 1 / 2 / 5 | No          | Flat pricing. Self-host option for unlimited chats.                                              |
+| **Typebot**    | Free / $39 / $89     | 200 / 2k / 10k chats   | 1 / 2 / 5 | No          | WhatsApp deployment requires Cloud Pro at $89. Free and Starter are for building and browser testing. |
 | **ManyChat**   | Free / Pro $15+      | 1,000 contacts         | 1+        | Sometimes   | Costs climb as your contact list grows.                                                          |
 | **Landbot**    | Free / Paid $30+     | 100+ chats             | 1+        | Yes         | WhatsApp channel costs extra each month.                                                         |
 | **Wati**       | $39 / $79 / $199     | Unlimited conv.        | Team      | Yes         | API access + team inbox with campaign tools; often includes Meta fee markups.                    |
@@ -125,13 +127,12 @@ This setup works best if you mainly want to capture leads or handle FAQs.
 The bot just responds to user questions.
 | Item                | Plan    | Platform Cost | Meta API Fee | Total Monthly Cost |
 | :------------------- | :------- | :------------- | :------------ | :------------------ |
-| **Typebot Free**    | Free    | $0            | $0           | **$0**             |
-| **Typebot Starter** | Starter | $39           | $0           | **$39**            |
+| **Typebot Pro**     | Pro     | $89           | $0           | **$89**            |
 | **ManyChat Free**   | Free    | $0            | $0           | **$0**             |
 | **Landbot Free**    | Free    | $0            | $0           | **$0**             |
 **As long as your bot stays within the 24-hour service window, Meta fees are zero.**
 
-You’ll only need to upgrade your plan if you exceed your chat platform’s monthly quota.
+Typebot Cloud requires Pro before you can deploy the bot on WhatsApp, even when your Meta messaging fees are $0.
 
 ### 2. Small team: Inbound, higher volume
 
@@ -155,11 +156,11 @@ If you send promotional broadcasts or authentication codes, you’ll pay both pl
 **Example: 10,000 marketing templates per month**
 | Platform        | Plan | Meta Fee (India) | Meta Fee (Brazil) | Total (India) | Total (Brazil) |
 | :--------------- | :---- | :---------------- | :----------------- | :------------- | :-------------- |
-| **Typebot Pro** | $89  | ~$130            | ~$500             | **~$219**     | **~$589**      |
+| **Typebot Pro + outbound service** | $89  | ~$130            | ~$500             | **~$219**     | **~$589**      |
 | **AiSensy Pro** | $99  | ~$130            | ~$500             | **~$229**     | **~$599**      |
 | **Wati Growth** | $39  | $130 + Markup    | $500 + Markup     | **&gt;$179**  | **&gt;$539**   |
 | **Freshchat**   | $46  | $130 + 20%       | $500 + 20%        | **&gt;$180**  | **&gt;$640**   |
-**Meta rates change every quarter, and outbound messages may include hidden markups.**
+**Meta rates change every quarter, and outbound messages may include hidden markups. The Typebot totals above do not include the separate outbound service's own fee.**
 
 It’s a good idea to double-check those details before you commit.
 
@@ -177,11 +178,11 @@ To figure out your own monthly costs, walk through these steps:
 
 <Cta buttonLabel="Connect to WhatsApp">Reach your audience where they are. Integrate Typebot with WhatsApp for seamless, personalized communication.</Cta>
 
-## Building a WhatsApp chatbot for free
+## Building and testing a WhatsApp chatbot for free
 
-You can automate quite a bit in WhatsApp without spending anything.
+You can build and validate much of your conversation flow before spending anything.
 
-**Typebot’s Free plan gives you a visual builder, logic tools, and integrations, like OpenAI, Google Sheets, and webhooks, for up to 200 chats per month.**
+**Typebot’s Free plan gives you a visual builder, logic tools, and integrations, like OpenAI, Google Sheets, and webhooks, for up to 200 chats per month. You can build and test the flow in the browser for free. Publishing it to WhatsApp on Typebot Cloud requires the Pro plan.**
 
 The [WhatsApp Business App does let you set up free auto-replies](./how-to-set-auto-reply-in-whatsapp.mdx). However, it really doesn’t offer advanced automation, branching flows, or analytics.
 
@@ -191,17 +192,15 @@ Other options, like ManyChat or AiSensy, have free tiers. These usually come wit
 | Platform                  | Free Offer                 | Core Limits                           | Best Use Case                        |
 | :------------------------- | :-------------------------- | :------------------------------------- | :------------------------------------ |
 | **WhatsApp Business App** | Basic auto-replies         | No AI, no logic, no data export       | Micro-businesses                     |
-| **Typebot Free**          | Full visual builder        | 200 chats/month                       | Testing &amp; early-stage automation |
+| **Typebot Free**          | Full visual builder        | 200 chats/month, no WhatsApp deployment | Building and browser testing         |
 | **ManyChat Free**         | Up to 1,000 contacts       | Restricted automation/features        | Marketing &amp; onboarding           |
 | **Landbot Free**          | Limited builder            | Feature-sharing &amp; channel caps    | Flow evaluation                      |
 | **AiSensy Free**          | Basic live chat &amp; tags | Limited automation &amp; segmentation | Team inbox                           |
-**Typebot stands out here because it is the only free option offering complex logic and deep integrations.**
+Typebot Free is especially helpful for prototyping the flow before paying to deploy it on WhatsApp.
 
-That makes it especially helpful if you are running a pilot or building solo.
+### Step-by-step: Build and test your Typebot flow for free
 
-### Step-by-step: Build your WhatsApp chatbot with Typebot (free)
-
-Here is exactly how to get a WhatsApp chatbot running with Typebot's Free plan — no code required.
+Here is how to build and validate the conversation with Typebot's Free plan, with no code required. Upgrade to Pro when you are ready to connect a production WhatsApp number.
 
 #### **1. Sign up for Typebot**
 
@@ -230,19 +229,19 @@ Use **Condition** blocks to route users differently depending on their answers. 
 
 To add AI, drop an **OpenAI** block into your flow, paste your API key, and write a system prompt. Your bot can then answer open-ended questions using ChatGPT — great for handling FAQs without writing every response manually.
 
-#### **4. Connect Typebot to WhatsApp**
+#### **4. Upgrade to Pro and connect Typebot to WhatsApp**
 
 <Image src="/blog-assets/n8n-whatsapp-bot-tutorial/whatsapp-integration-configuration-panel.avif" alt="WhatsApp Integration Configuration Panel" width={1200} height={557} caption="Typebot's WhatsApp integration panel where you paste your API token and webhook details" />
 
 
-In the **Publish** tab of your bot, select **"WhatsApp"** as the channel. Typebot walks you through the Meta setup:
+When the flow is ready, upgrade the workspace to Pro. Then open the **Publish** tab and select **"WhatsApp"** as the channel. Typebot walks you through the Meta setup:
 
 - Create or connect your **Meta Business account**
 - Create a **Meta app** in the Meta Developer Console and enable the WhatsApp product
 - Create a **System User** in Meta Business Settings and generate an access token
 - Paste the token, webhook URL, and verify token into Typebot's WhatsApp configuration screen
 
-The whole integration takes about 10–15 minutes. During development, Meta provides a **free test phone number** and up to 1,000 free conversations per month, so you can test without paying anything.
+Meta can provide a test phone number during setup, but Typebot Cloud still requires Pro to configure and deploy the WhatsApp channel.
 
 #### **5. Test, publish, and share**
 
@@ -267,28 +266,26 @@ If your volume starts to grow, there are a handful of ways to keep your costs do
 
 ## The bottom line on WhatsApp chatbot costs
 
-Your WhatsApp chatbot bill comes down to three layers: Meta's per-message fees, your platform subscription, and the effort to build and maintain your flows. Stay inside the 24-hour service window with inbound-only support, and you can run a bot for free or under $90 a month. Add marketing broadcasts or OTPs, and Meta's regional fees can push your total past $600 in markets like Brazil or Germany.
+Your WhatsApp chatbot bill comes down to three layers: Meta's per-message fees, your platform subscription, and the effort to build and maintain your flows. Stay inside the 24-hour service window with inbound-only support, and Meta fees remain $0. On Typebot Cloud, the production WhatsApp channel costs $89 a month through Pro. Add marketing broadcasts or OTPs, and Meta's regional fees can push your total past $600 in markets like Brazil or Germany.
 
-Since Meta updates its rate card every quarter, it's worth revisiting your numbers as you scale outbound campaigns. The fastest way to find your real cost is to start building: Typebot's free plan lets you test flows and connect WhatsApp before you commit to a paid tier.
+Since Meta updates its rate card every quarter, it's worth revisiting your numbers as you scale outbound campaigns. The fastest way to find your real cost is to start building: Typebot's free plan lets you design and test the flow in the browser before you commit to Pro for WhatsApp deployment.
 
 <Cta buttonLabel="Start Integrating Today">Deliver real-time responses and boost engagement with Typebot's WhatsApp integration.</Cta>
 
 ## Frequently asked questions
 
 **Is a WhatsApp chatbot free?**  
-In most cases, yes. You can [build a basic WhatsApp bot for free](./how-to-build-whatsapp-chatbot.mdx) using Typebot’s Free plan. **Meta does not charge for replies sent within the 24-hour window** after someone starts a conversation, so you can automate lead capture and FAQs without paying anything extra.
+You can [build and test a basic chatbot for free](./how-to-build-whatsapp-chatbot.mdx) using Typebot’s Free plan. Production WhatsApp deployment on Typebot Cloud requires Pro at $89/month. **Meta does not charge for service replies sent within the 24-hour window** after someone starts a conversation.
 
 The WhatsApp Business App is also free, but it lacks the advanced logic, [AI integrations](./best-whatsapp-ai-chatbot.mdx), and analytics you get with a dedicated chatbot builder.
 
 **How much does a WhatsApp chatbot cost per month?**  
-For inbound bots, your main cost is the platform subscription:
+For a Typebot Cloud WhatsApp bot, your main cost is the platform subscription:
 
-- **Free:** $0, up to 200 chats each month
-- **Starter:** $39/month, 2,000 chats, 2 seats
 - **Pro:** $89/month, 10,000 chats, 5 seats
-- **Self-host:** $0 SaaS fees, just pay for your server
+- **Self-host:** $0 SaaS fees, plus your server and maintenance costs
 
-**Meta messaging fees are $0 for these plans** if you only handle inbound messages. Outbound templates, like marketing or notifications, incur extra charges.
+The Free and Starter Cloud plans do not include production WhatsApp deployment. **Meta messaging fees are $0** if you only handle inbound service messages inside the 24-hour window. Outbound templates, like marketing or notifications, incur extra charges.
 
 **Do platforms add a markup on top of Meta fees?**  
 Most BSPs and platforms add a 10% to 20% markup or "convenience fee" to Meta’s rates. Typebot keeps pricing flat and does not add markups.
@@ -303,6 +300,6 @@ Because Typebot mostly sends inbound service replies, which are free, most users
 4. **Factor in seats:** Decide whether you need more agent access than your base plan allows.
 
 **Example calculation:**  
-Say you go with Typebot Starter ($39/month) for an inbound-only bot. You pay **$39/month**. If you send a marketing broadcast of 10,000 messages to India, you add roughly $120 in Meta fees for a total of **~$159**.
+Say you go with Typebot Pro ($89/month) for an inbound-only bot. You pay **$89/month**. If a separate outbound service sends a marketing broadcast of 10,000 messages to India, you add roughly $120 in Meta fees for a total of **~$209**, plus any fee from that outbound service.
 
-The same broadcast to Brazil would add about $630, totaling **~$669**.
+The same broadcast to Brazil would add about $630, totaling **~$719**, plus any outbound-service fee.
