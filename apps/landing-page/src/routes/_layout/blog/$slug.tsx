@@ -67,7 +67,7 @@ function RouteComponent() {
               ← All articles
             </TextLink>
 
-            <div className="gap-2">
+            <div className="flex flex-col gap-2">
               <h1 className="inline-block font-heading text-4xl not-prose text-foreground my-4 font-bold lg:text-5xl">
                 {post.title}
               </h1>

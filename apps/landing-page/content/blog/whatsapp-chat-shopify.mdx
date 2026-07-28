@@ -139,6 +139,42 @@ The catch is that there is no built-in automation or analytics. It works best fo
 4. Paste your WhatsApp button code snippet right before the closing `</body>` tag.
 5. Save your changes and preview your store to make sure it looks right.
 
+Replace `11234567890` with your WhatsApp number, including the country code. This snippet also adds the current product title to the default message when one is available:
+
+```html
+<a
+  class="whatsapp-chat-button"
+  href="https://api.whatsapp.com/send?phone=11234567890&amp;text=Hello%2C%20I%20have%20a%20question%20about%20{{ product.title | url_encode }}"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Chat with us on WhatsApp"
+>
+  Chat with us
+</a>
+
+<style>
+  .whatsapp-chat-button {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 50;
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 18px;
+    border-radius: 9999px;
+    background: #25d366;
+    color: #ffffff;
+    font: 600 16px/1.2 system-ui, sans-serif;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 20%);
+  }
+
+  .whatsapp-chat-button:hover {
+    background: #1ebe5d;
+  }
+</style>
+```
+
 ### Key customization variables
 
 As you build your code snippet, you can tweak a few things.
@@ -303,7 +339,7 @@ Tracking these KPIs helps you turn WhatsApp from just another chat tool into som
 | **WATI / Kanal** | Inbox Platform   | $49 – $249+  | Team Inbox         | Meta rates for broadcasts              |
 | **Brevo**        | Marketing        | $15 – $60+   | Outbound Campaigns | Meta rates for broadcasts              |
 | **Intercom**     | Enterprise       | $70 – $500+  | Support Routing    | Meta rates for outbound                |
-| **360dialog**    | API / BSP        | Usage-based  | Fully Custom       | Meta rates + markup                    |
+| **360dialog**    | API / BSP        | €49+ / number | Fully Custom       | Meta rates, no markup                  |
 ### Cost breakdown by use case
 
 - **Shopify Apps:** A good choice if you want a low-cost chat button. Paid versions can send abandoned cart reminders, but those usually count as outbound templates.
