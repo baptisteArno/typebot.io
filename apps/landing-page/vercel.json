@@ -2,6 +2,11 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
+      "source": "/discord",
+      "destination": "https://discord.gg/xjyQczWAXV",
+      "permanent": true
+    },
+    {
       "source": "/typebot-lib",
       "destination": "https://unpkg.com/typebot-js@2.0.21/dist/index.umd.min.js",
       "permanent": true
