@@ -47,67 +47,52 @@ export const handleGetInDepthAnalyticsData = async ({
   const fromDate = parseFromDateFromTimeFilter(timeFilter, timeZone);
   const toDate = parseToDateFromTimeFilter(timeFilter, timeZone);
 
-  const totalAnswersPerBlock = await prisma.answer.groupBy({
-    by: ["blockId"],
-    where: {
-      result: {
-        typebotId,
-        createdAt: fromDate
-          ? {
-              gte: fromDate,
-              lte: toDate ?? undefined,
-            }
-          : undefined,
-      },
-      blockId: {
-        in: parseGroups(typebot.publishedTypebot.groups, {
-          typebotVersion: typebot.publishedTypebot.version,
-        }).flatMap((group) =>
-          group.blocks.filter(isInputBlock).map((block) => block.id),
-        ),
-      },
-    },
-    _count: { resultId: true },
-  });
+  // Shared by all three aggregations, so parse the published groups once instead of
+  // rebuilding the same block id list for every query.
+  const resultFilter = {
+    typebotId,
+    createdAt: fromDate
+      ? {
+          gte: fromDate,
+          lte: toDate ?? undefined,
+        }
+      : undefined,
+  };
 
-  const totalAnswersV2PerBlock = await prisma.answerV2.groupBy({
-    by: ["blockId"],
-    where: {
-      result: {
-        typebotId,
-        createdAt: fromDate
-          ? {
-              gte: fromDate,
-              lte: toDate ?? undefined,
-            }
-          : undefined,
-      },
-      blockId: {
-        in: parseGroups(typebot.publishedTypebot.groups, {
-          typebotVersion: typebot.publishedTypebot.version,
-        }).flatMap((group) =>
-          group.blocks.filter(isInputBlock).map((block) => block.id),
-        ),
-      },
-    },
-    _count: { resultId: true },
-  });
+  const inputBlockIds = parseGroups(typebot.publishedTypebot.groups, {
+    typebotVersion: typebot.publishedTypebot.version,
+  }).flatMap((group) =>
+    group.blocks.filter(isInputBlock).map((block) => block.id),
+  );
 
-  const offDefaultPathVisitedEdges = await prisma.visitedEdge.groupBy({
-    by: ["edgeId"],
-    where: {
-      result: {
-        typebotId,
-        createdAt: fromDate
-          ? {
-              gte: fromDate,
-              lte: toDate ?? undefined,
-            }
-          : undefined,
-      },
-    },
-    _count: { resultId: true },
-  });
+  // The three aggregations are independent, so run them concurrently: the endpoint now
+  // waits for the slowest one rather than the sum of all three.
+  const [totalAnswersPerBlock, totalAnswersV2PerBlock, offDefaultPathVisitedEdges] =
+    await Promise.all([
+      prisma.answer.groupBy({
+        by: ["blockId"],
+        where: {
+          result: resultFilter,
+          blockId: { in: inputBlockIds },
+        },
+        _count: { resultId: true },
+      }),
+      prisma.answerV2.groupBy({
+        by: ["blockId"],
+        where: {
+          result: resultFilter,
+          blockId: { in: inputBlockIds },
+        },
+        _count: { resultId: true },
+      }),
+      prisma.visitedEdge.groupBy({
+        by: ["edgeId"],
+        where: {
+          result: resultFilter,
+        },
+        _count: { resultId: true },
+      }),
+    ]);
 
   const edges = z.array(edgeSchema).parse(typebot.publishedTypebot.edges);
 
