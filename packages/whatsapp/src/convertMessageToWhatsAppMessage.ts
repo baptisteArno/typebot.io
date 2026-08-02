@@ -12,6 +12,20 @@ import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichText
 import { getOrUploadMedia, type UploadMediaCache } from "./getOrUploadMedia";
 import type { WhatsAppSendingMessage } from "./schemas";
 
+// Any file extension not in this set is sent as a downloadable "document" —
+// WhatsApp's Cloud API doesn't restrict document mime types the way it does
+// image/audio/video, so we don't need to whitelist known document extensions.
+const mediaFileExtensions = new Set(
+  Object.entries(extensionFromMimeType)
+    .filter(
+      ([mimeType]) =>
+        mimeType.startsWith("audio/") ||
+        mimeType.startsWith("video/") ||
+        mimeType.startsWith("image/"),
+    )
+    .map(([, extension]) => extension),
+);
+
 type Props = {
   message: ContinueChatResponse["messages"][number];
   mediaCache?: UploadMediaCache;
@@ -132,18 +146,23 @@ export const convertMessageToWhatsAppMessage = async ({
       return null;
     case BubbleBlockType.EMBED: {
       if (!message.content.url) return null;
-      const fileExtension = message.content.url.split(".").pop();
-      const filename = message.content.url.split("/").pop();
-      if (
-        fileExtension &&
-        Object.entries(extensionFromMimeType).some(
-          ([mimeType, extension]) =>
-            !mimeType.includes("audio") &&
-            !mimeType.includes("video") &&
-            !mimeType.includes("image") &&
-            extension === fileExtension,
-        )
-      ) {
+      // Derived from the URL's pathname rather than the raw string so a
+      // bare domain (e.g. "https://example.com") isn't mistaken for a
+      // filename with a "com" extension.
+      let filename: string | undefined;
+      let fileExtension: string | undefined;
+      try {
+        const pathSegment = new URL(message.content.url).pathname
+          .split("/")
+          .pop();
+        if (pathSegment?.includes(".")) {
+          filename = pathSegment;
+          fileExtension = pathSegment.split(".").pop()?.toLowerCase();
+        }
+      } catch {
+        // Not an absolute URL, treat as a plain link below.
+      }
+      if (fileExtension && !mediaFileExtensions.has(fileExtension)) {
         if (mediaCache) {
           const mediaId = await getOrUploadMedia({
             url: message.content.url,
