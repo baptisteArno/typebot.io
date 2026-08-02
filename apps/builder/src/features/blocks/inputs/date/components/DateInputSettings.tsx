@@ -19,6 +19,8 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
     onOptionsChange({ ...options, labels: { ...options?.labels, from } });
   const updateToLabel = (to: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, to } });
+  const updateSeparatorLabel = (separator: string) =>
+    onOptionsChange({ ...options, labels: { ...options?.labels, separator } });
   const updateButtonLabel = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } });
   const updateIsRange = (isRange: boolean) =>
@@ -75,6 +77,21 @@ export const DateInputSettings = ({ options, onOptionsChange }: Props) => {
                   options?.labels?.to ?? defaultDateInputOptions.labels.to
                 }
                 onValueChange={updateToLabel}
+              />
+            </Field.Root>
+            <Field.Root>
+              <Field.Label>
+                {t("blocks.inputs.date.settings.separator.label")}
+                <MoreInfoTooltip>
+                  {t("blocks.inputs.date.settings.separator.moreInfo.label")}
+                </MoreInfoTooltip>
+              </Field.Label>
+              <DebouncedTextInputWithVariablesButton
+                defaultValue={
+                  options?.labels?.separator ??
+                  defaultDateInputOptions.labels.separator
+                }
+                onValueChange={updateSeparatorLabel}
               />
             </Field.Root>
           </>
