@@ -4,13 +4,13 @@ export const executeHttpRequest = async (
   httpRequestToExecute: ExecutableHttpRequest,
   isPreview: boolean,
 ): Promise<string> => {
-  const { url, method, body, headers } = httpRequestToExecute;
+  const { url, method, body, headers, withCredentials } = httpRequestToExecute;
   try {
     const response = await fetch(url, {
       method,
       body: method !== "GET" && body ? JSON.stringify(body) : undefined,
       headers,
-      credentials: isPreview ? "omit" : undefined,
+      credentials: isPreview ? "omit" : withCredentials ? "include" : undefined,
     });
     const statusCode = response.status;
     const data = await response.json();

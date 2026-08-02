@@ -493,6 +493,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               }
@@ -2154,6 +2158,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               }
@@ -7886,6 +7894,10 @@
               },
               "proxyCredentialsId": {
                 "type": "string"
+              },
+              "withCredentials": {
+                "type": "boolean",
+                "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
               }
             }
           }
@@ -8031,6 +8043,10 @@
               },
               "proxyCredentialsId": {
                 "type": "string"
+              },
+              "withCredentials": {
+                "type": "boolean",
+                "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
               }
             }
           }
@@ -8176,6 +8192,10 @@
               },
               "proxyCredentialsId": {
                 "type": "string"
+              },
+              "withCredentials": {
+                "type": "boolean",
+                "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
               }
             }
           }
@@ -13531,6 +13551,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -13667,6 +13691,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -13804,6 +13832,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -13940,6 +13972,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -15798,6 +15834,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -15934,6 +15974,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -16071,6 +16115,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -16207,6 +16255,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -18065,6 +18117,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -18201,6 +18257,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -18338,6 +18398,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -18474,6 +18538,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -20351,6 +20419,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -20487,6 +20559,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -20624,6 +20700,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -20760,6 +20840,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               },
@@ -21893,6 +21977,10 @@
                                   },
                                   "proxyCredentialsId": {
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean",
+                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                   }
                                 }
                               }
@@ -23739,7 +23827,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   },
                                                   "webhookId": {
@@ -23775,7 +23864,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   },
                                                   "webhookId": {
@@ -23812,7 +23902,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   },
                                                   "webhookId": {
@@ -23848,7 +23939,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   },
                                                   "webhookId": {
@@ -24321,7 +24413,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   }
                                                 },
@@ -29436,6 +29529,10 @@
                                               },
                                               "proxyCredentialsId": {
                                                 "type": "string"
+                                              },
+                                              "withCredentials": {
+                                                "type": "boolean",
+                                                "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                               }
                                             }
                                           }
@@ -31604,6 +31701,10 @@
                                                 },
                                                 "proxyCredentialsId": {
                                                   "type": "string"
+                                                },
+                                                "withCredentials": {
+                                                  "type": "boolean",
+                                                  "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                 }
                                               }
                                             }
@@ -35192,6 +35293,10 @@
                                                     },
                                                     "proxyCredentialsId": {
                                                       "type": "string"
+                                                    },
+                                                    "withCredentials": {
+                                                      "type": "boolean",
+                                                      "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                     }
                                                   }
                                                 }
@@ -37553,6 +37658,10 @@
                                                     },
                                                     "proxyCredentialsId": {
                                                       "type": "string"
+                                                    },
+                                                    "withCredentials": {
+                                                      "type": "boolean",
+                                                      "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                     }
                                                   }
                                                 },
@@ -37629,6 +37738,10 @@
                                                     },
                                                     "proxyCredentialsId": {
                                                       "type": "string"
+                                                    },
+                                                    "withCredentials": {
+                                                      "type": "boolean",
+                                                      "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                     }
                                                   }
                                                 },
@@ -37706,6 +37819,10 @@
                                                     },
                                                     "proxyCredentialsId": {
                                                       "type": "string"
+                                                    },
+                                                    "withCredentials": {
+                                                      "type": "boolean",
+                                                      "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                     }
                                                   }
                                                 },
@@ -37782,6 +37899,10 @@
                                                     },
                                                     "proxyCredentialsId": {
                                                       "type": "string"
+                                                    },
+                                                    "withCredentials": {
+                                                      "type": "boolean",
+                                                      "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                     }
                                                   }
                                                 },
@@ -39256,6 +39377,10 @@
                                                   },
                                                   "proxyCredentialsId": {
                                                     "type": "string"
+                                                  },
+                                                  "withCredentials": {
+                                                    "type": "boolean",
+                                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                   }
                                                 }
                                               }
@@ -41045,6 +41170,10 @@
                                                   },
                                                   "proxyCredentialsId": {
                                                     "type": "string"
+                                                  },
+                                                  "withCredentials": {
+                                                    "type": "boolean",
+                                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                   }
                                                 }
                                               },
@@ -41107,6 +41236,10 @@
                                                   },
                                                   "proxyCredentialsId": {
                                                     "type": "string"
+                                                  },
+                                                  "withCredentials": {
+                                                    "type": "boolean",
+                                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                   }
                                                 }
                                               },
@@ -41170,6 +41303,10 @@
                                                   },
                                                   "proxyCredentialsId": {
                                                     "type": "string"
+                                                  },
+                                                  "withCredentials": {
+                                                    "type": "boolean",
+                                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                   }
                                                 }
                                               },
@@ -41232,6 +41369,10 @@
                                                   },
                                                   "proxyCredentialsId": {
                                                     "type": "string"
+                                                  },
+                                                  "withCredentials": {
+                                                    "type": "boolean",
+                                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                   }
                                                 }
                                               },
@@ -43069,6 +43210,10 @@
                                                 },
                                                 "proxyCredentialsId": {
                                                   "type": "string"
+                                                },
+                                                "withCredentials": {
+                                                  "type": "boolean",
+                                                  "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                 }
                                               }
                                             }
@@ -47177,6 +47322,10 @@
                                                         },
                                                         "proxyCredentialsId": {
                                                           "type": "string"
+                                                        },
+                                                        "withCredentials": {
+                                                          "type": "boolean",
+                                                          "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                         }
                                                       }
                                                     }
@@ -49588,6 +49737,10 @@
                                                         },
                                                         "proxyCredentialsId": {
                                                           "type": "string"
+                                                        },
+                                                        "withCredentials": {
+                                                          "type": "boolean",
+                                                          "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                         }
                                                       }
                                                     },
@@ -49664,6 +49817,10 @@
                                                         },
                                                         "proxyCredentialsId": {
                                                           "type": "string"
+                                                        },
+                                                        "withCredentials": {
+                                                          "type": "boolean",
+                                                          "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                         }
                                                       }
                                                     },
@@ -49741,6 +49898,10 @@
                                                         },
                                                         "proxyCredentialsId": {
                                                           "type": "string"
+                                                        },
+                                                        "withCredentials": {
+                                                          "type": "boolean",
+                                                          "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                         }
                                                       }
                                                     },
@@ -49817,6 +49978,10 @@
                                                         },
                                                         "proxyCredentialsId": {
                                                           "type": "string"
+                                                        },
+                                                        "withCredentials": {
+                                                          "type": "boolean",
+                                                          "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                         }
                                                       }
                                                     },
@@ -51321,6 +51486,10 @@
                                                   },
                                                   "proxyCredentialsId": {
                                                     "type": "string"
+                                                  },
+                                                  "withCredentials": {
+                                                    "type": "boolean",
+                                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                   }
                                                 }
                                               }
@@ -52889,6 +53058,10 @@
                                                   },
                                                   "proxyCredentialsId": {
                                                     "type": "string"
+                                                  },
+                                                  "withCredentials": {
+                                                    "type": "boolean",
+                                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                   }
                                                 }
                                               },
@@ -52951,6 +53124,10 @@
                                                   },
                                                   "proxyCredentialsId": {
                                                     "type": "string"
+                                                  },
+                                                  "withCredentials": {
+                                                    "type": "boolean",
+                                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                   }
                                                 }
                                               },
@@ -53014,6 +53191,10 @@
                                                   },
                                                   "proxyCredentialsId": {
                                                     "type": "string"
+                                                  },
+                                                  "withCredentials": {
+                                                    "type": "boolean",
+                                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                   }
                                                 }
                                               },
@@ -53076,6 +53257,10 @@
                                                   },
                                                   "proxyCredentialsId": {
                                                     "type": "string"
+                                                  },
+                                                  "withCredentials": {
+                                                    "type": "boolean",
+                                                    "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                   }
                                                 }
                                               },
@@ -54893,6 +55078,10 @@
                                                 },
                                                 "proxyCredentialsId": {
                                                   "type": "string"
+                                                },
+                                                "withCredentials": {
+                                                  "type": "boolean",
+                                                  "description": "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server."
                                                 }
                                               }
                                             }
@@ -76224,6 +76413,9 @@
                                       "TRACE"
                                     ],
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean"
                                   }
                                 },
                                 "required": [
@@ -77034,7 +77226,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   }
                                                 },
@@ -78496,7 +78689,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   },
                                                   "webhookId": {
@@ -78532,7 +78726,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   },
                                                   "webhookId": {
@@ -78569,7 +78764,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   },
                                                   "webhookId": {
@@ -78605,7 +78801,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   },
                                                   "webhookId": {
@@ -81488,6 +81685,9 @@
                                       "TRACE"
                                     ],
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean"
                                   }
                                 },
                                 "required": [

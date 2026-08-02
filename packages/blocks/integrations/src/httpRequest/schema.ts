@@ -50,6 +50,12 @@ export const httpRequestOptionsV5Schema = z.object({
   webhook: httpRequestSchemas.v5.optional(),
   timeout: z.number().min(1).max(maxTimeout).optional(),
   proxyCredentialsId: z.string().optional(),
+  withCredentials: z
+    .boolean()
+    .optional()
+    .describe(
+      "Only applies when isExecutedOnClient is true. Include cookies with the client-side fetch so the response can set/read cookies on a cross-origin server.",
+    ),
 });
 
 const httpRequestOptionsSchemas = {
@@ -91,6 +97,7 @@ export const executableHttpRequestSchema = z.object({
   headers: z.record(z.string(), z.string()).optional(),
   body: z.unknown().optional(),
   method: z.nativeEnum(HttpMethod).optional(),
+  withCredentials: z.boolean().optional(),
 });
 
 export type KeyValue = { id: string; key?: string; value?: string };

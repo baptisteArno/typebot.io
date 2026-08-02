@@ -94,6 +94,7 @@ export const executeHttpRequestBlock = async (
           workspaceId: state.workspaceId,
         }
       : undefined,
+    withCredentials: block.options?.withCredentials,
   });
   if (!parsedHttpRequest) {
     logs.push({
@@ -147,6 +148,7 @@ export const parseHttpRequestAttributes = async ({
   answers,
   sessionStore,
   proxy,
+  withCredentials,
 }: {
   httpRequest: HttpRequest;
   isCustomBody?: boolean;
@@ -157,6 +159,7 @@ export const parseHttpRequestAttributes = async ({
     credentialsId: string;
     workspaceId: string;
   };
+  withCredentials?: boolean;
 }): Promise<ParsedHttpRequest | undefined> => {
   if (!httpRequest.url) return;
   const basicAuth: { username?: string; password?: string } = {};
@@ -228,6 +231,7 @@ export const parseHttpRequestAttributes = async ({
     body,
     isJson,
     proxyUrl,
+    withCredentials,
   };
 };
 

@@ -2971,6 +2971,9 @@
                                       "TRACE"
                                     ],
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean"
                                   }
                                 },
                                 "required": [
@@ -5857,6 +5860,9 @@
                                       "TRACE"
                                     ],
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean"
                                   }
                                 },
                                 "required": [
@@ -8042,7 +8048,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   }
                                                 },
@@ -8075,7 +8082,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   }
                                                 },
@@ -8109,7 +8117,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   }
                                                 },
@@ -8142,7 +8151,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   }
                                                 },
@@ -10751,7 +10761,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   },
                                                   "webhookId": {
@@ -10787,7 +10798,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   },
                                                   "webhookId": {
@@ -10824,7 +10836,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   },
                                                   "webhookId": {
@@ -10860,7 +10873,8 @@
                                                       "isExecutedOnClient": {},
                                                       "webhook": {},
                                                       "timeout": {},
-                                                      "proxyCredentialsId": {}
+                                                      "proxyCredentialsId": {},
+                                                      "withCredentials": {}
                                                     }
                                                   },
                                                   "webhookId": {
@@ -14552,6 +14566,9 @@
                                       "TRACE"
                                     ],
                                     "type": "string"
+                                  },
+                                  "withCredentials": {
+                                    "type": "boolean"
                                   }
                                 },
                                 "required": [
