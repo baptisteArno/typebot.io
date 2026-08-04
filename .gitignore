@@ -16,6 +16,7 @@ test/report
 .docusaurus
 .cache-loader
 build
+/out/
 firebaseServiceAccount.json
 
 .env.production
@@ -93,6 +94,7 @@ content-collections.d.ts
 .agents/skills/typebot-sentry
 .agents/skills/typebot-stripe
 .agents/skills/vercel
+.agents/skills/suspend-typebot
 .claude/skills/typebot-customer-support
 .claude/skills/typebot-discord-bot
 .claude/skills/typebot-posthog
@@ -100,3 +102,4 @@ content-collections.d.ts
 .claude/skills/typebot-sentry
 .claude/skills/typebot-stripe
 .claude/skills/vercel
+.claude/skills/suspend-typebot
