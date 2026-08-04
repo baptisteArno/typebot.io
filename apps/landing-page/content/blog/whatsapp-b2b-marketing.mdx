@@ -116,7 +116,7 @@ With Typebot, you can:
 
 - Attach PDFs, whitepapers, or checklists directly in the chat.  
 - Share Cards showing solutions, company logos, or product previews. WhatsApp sends each Card as a separate interactive message; carousel-style galleries are limited to web embeds.
-- Drop in quick video explainers or testimonials, all under 60 seconds, without sending the user to another site.
+- Send direct MP4 video explainers or testimonials, all under 60 seconds, so they play inside the WhatsApp thread. Videos from YouTube, Vimeo, TikTok, Gumlet, and other embedded services are sent as links instead.
 
 **The result is proof in front of prospects when they are most interested.** That means no long waits for follow-up emails.
 
@@ -145,8 +145,8 @@ Lots of site visitors or ad clickers will not convert right away. You can follow
 
 For example:
 
-- If an opted-in contact does not finish booking a demo, send an approved follow-up template offering a personalized quote or case study.
-- Use Typebot to trigger the right flow based on their latest action, captured with variables or webhook data.
+- If an opted-in contact does not finish booking a demo, have your external campaign system select and send an approved follow-up template based on that website or booking event.
+- After the contact replies, route them through the appropriate Typebot path using the context your campaign system passes into the conversation.
 
 **This kind of targeted retargeting tends to win back interested leads better than batch-and-blast reminder emails.**
 
@@ -280,7 +280,7 @@ WhatsApp automations move leads through the funnel faster than most outreach, an
 ROI = (Revenue generated − Total cost) ÷ Total cost × 100
 ```
 
-- **Costs:** For Typebot Cloud, use Pro at $89/month as the hosted baseline because the Starter plan does not include WhatsApp deployment. Self-hosted deployments replace that plan fee with their own infrastructure and maintenance costs. Add WhatsApp fees for each delivered template message by multiplying the expected marketing, utility, and authentication template volumes by the current rate for each recipient country. Non-template replies inside the 24-hour customer service window remain free. See the full [WhatsApp Business API pricing guide](./whatsapp-business-api-pricing.mdx).
+- **Costs:** For Typebot Cloud, use Pro at $89/month as the hosted baseline because the Starter plan does not include WhatsApp deployment. Self-hosted deployments replace that plan fee with their own infrastructure and maintenance costs. Before estimating WhatsApp fees, exclude utility templates delivered inside the 24-hour customer service window and every template delivered inside the 72-hour free entry window opened by a Click-to-WhatsApp ad or Page call-to-action. Multiply only the remaining marketing, utility, and authentication template volumes by the current rate for each recipient country. Non-template replies inside the 24-hour service window are also free. See the full [WhatsApp Business API pricing guide](./whatsapp-business-api-pricing.mdx).
 - **Revenue:** If your average deal is $5,000 and 20% of demos close, each qualified demo is worth about $1,000. Two extra demos a month represent $2,000 in attributed revenue; compare that with your calculated monthly Typebot, template-message, and tooling costs in the ROI formula above.
 
 **5-minute check:**
@@ -290,7 +290,7 @@ ROI = (Revenue generated − Total cost) ÷ Total cost × 100
 3. Multiply by your qualified-to-booked conversion rate → demos booked.
 4. Multiply by show-up rate → demos attended.
 5. Multiply by close rate × average deal value → attributed revenue.
-6. Estimate WhatsApp spend from the number, category, and recipient country of delivered template messages, then add your Typebot plan and other tooling costs.
+6. Exclude templates covered by the 24-hour utility or 72-hour free entry windows, estimate spend from the category and recipient country of the remaining delivered templates, then add your Typebot plan and other tooling costs.
 7. Subtract total costs, divide by total costs → ROI.
 
 **Benchmarks:** WhatsApp opens ~98% of messages (email ~20–25%), chatbots convert 45–60%, and typical ROI runs 5–6x. If you're far below that, check response time and drop-offs before adding spend, and track revenue with UTM links, promo codes, or CRM tags.
