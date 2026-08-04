@@ -13,7 +13,7 @@ WhatsApp flips those numbers. Messages see 80 to 98% open rates, usually within 
 
 ### WhatsApp beats email, forms, and cold calls for immediate B2B engagement
 
-<Image src="/blog-assets/whatsapp-b2b-marketing/WhatsApp-vs-other-B2B-channels-open-rates-1785765727820.png" alt="WhatsApp vs other B2B channels open rates" width={1545} height={1018}  />
+<Image src="/blog-assets/whatsapp-b2b-marketing/WhatsApp-vs-other-B2B-channels-open-rates-1785765727820.avif" alt="WhatsApp vs other B2B channels open rates" width={1545} height={1018}  />
 
 It’s getting harder to reach B2B buyers through the usual routes.
 
@@ -77,7 +77,7 @@ Here's how a typical Typebot feedback flow works:
 
 - On WhatsApp, the bot asks a short NPS or CSAT question with a Choice block for tappable scores. A Rating block can collect a typed score, but it does not render rating buttons there.
 - Conditional logic branches the conversation — a low score triggers "What went wrong?", while promoters are routed to a review or referral request.  
-- Every answer is logged to Google Sheets, your CRM, or a webhook, and negative feedback can alert your team on Slack in real time.  
+- Every answer is logged to Google Sheets or sent to your CRM with an HTTP Request block, and negative feedback can alert your team on Slack in real time.
 - Post-purchase or post-demo, the bot follows up in the same thread, keeping the relationship active.
 
 Conversational channels like WhatsApp see **45–60% response rates**, and completion rates jump from single digits to well above 50% when a survey is chat-based instead of a static form.
@@ -98,7 +98,7 @@ Here’s what that looks like:
 
 - The bot asks direct questions about challenges, who is involved in decisions, and when buyers plan to move forward.  
 - Every answer scores the lead in real time. If they are qualified, the flow sends them straight to demo scheduling. If not, they are added to a nurture track.  
-- All chat transcripts, scores, and lead info flow into your CRM, like HubSpot or Salesforce, via webhooks. When someone is hot, Slack notifies your reps so they can jump in.
+- All chat transcripts, scores, and lead info flow into your CRM, like HubSpot or Salesforce, through an HTTP Request block or an automation platform. When someone is hot, Slack notifies your reps so they can jump in.
 
 **Buttons and branch logic make conversations personal.** That keeps people engaged and helps you spot high-potential leads with less guesswork.
 
@@ -141,11 +141,11 @@ Let’s be honest, most email invites for events get lost or ignored. WhatsApp g
 
 ### 5. Retarget non-converters
 
-Lots of site visitors or ad clickers will not convert right away. Instead of flooding them with generic updates, you can follow up with smart, context-based conversations tied to what they did last.
+Lots of site visitors or ad clickers will not convert right away. You can follow up with smart, context-based conversations tied to what they did last only after they have explicitly opted in to receive WhatsApp messages. Record when and where each contact consented, and honor every opt-out.
 
 For example:
 
-- If someone does not finish booking a demo, send a follow-up offering a personalized quote or case study.  
+- If an opted-in contact does not finish booking a demo, send an approved follow-up template offering a personalized quote or case study.
 - Use Typebot to trigger the right flow based on their latest action, captured with variables or webhook data.
 
 **This kind of targeted retargeting tends to win back interested leads better than batch-and-blast reminder emails.**
@@ -156,7 +156,7 @@ For example:
 
 ### 6. CRM-connected personalization
 
-Typebot allows you to sync your CRM via webhooks so every reply, like company size, pain points, or timelines, lands in the right place, think HubSpot, Salesforce, or Google Sheets.
+Typebot allows you to sync your CRM with an HTTP Request block or an automation platform so every reply, like company size, pain points, or timelines, lands in the right place, think HubSpot, Salesforce, or Google Sheets.
 
 This lets you:
 
@@ -214,7 +214,7 @@ Add a Condition block to check the answers. Strong leads go straight to scheduli
 4. Book demo or nurture  
 Show clear options using Buttons blocks. If they want to book a demo, send them to a link. If not, offer case studies or queue up a polite follow-up message.
 5. Push data to CRM or Sheets  
-At the end, use an integration block, like a webhook, to send the collected data to Google Sheets, your CRM, or a team Slack channel.
+At the end, use the Google Sheets integration, an HTTP Request block, or an automation platform to send the collected data to your CRM or a team Slack channel.
 6. AI qualification (optional)  
 You can optionally drop in an OpenAI or Anthropic block if you want to assess open-ended responses or get a quick summary of what the lead wrote.
 
@@ -280,17 +280,18 @@ WhatsApp automations move leads through the funnel faster than most outreach, an
 ROI = (Revenue generated − Total cost) ÷ Total cost × 100
 ```
 
-- **Costs:** Typebot Starter $39 or Pro $89/month, plus WhatsApp fees for each delivered template message. Estimate API spend by multiplying the expected marketing, utility, and authentication template volumes by the current rate for each recipient country. Non-template replies inside the 24-hour customer service window remain free. See the full [WhatsApp Business API pricing guide](./whatsapp-business-api-pricing.mdx).
+- **Costs:** For Typebot Cloud, use Pro at $89/month as the hosted baseline because the Starter plan does not include WhatsApp deployment. Self-hosted deployments replace that plan fee with their own infrastructure and maintenance costs. Add WhatsApp fees for each delivered template message by multiplying the expected marketing, utility, and authentication template volumes by the current rate for each recipient country. Non-template replies inside the 24-hour customer service window remain free. See the full [WhatsApp Business API pricing guide](./whatsapp-business-api-pricing.mdx).
 - **Revenue:** If your average deal is $5,000 and 20% of demos close, each qualified demo is worth about $1,000. Two extra demos a month represent $2,000 in attributed revenue; compare that with your calculated monthly Typebot, template-message, and tooling costs in the ROI formula above.
 
 **5-minute check:**
 
 1. Count the conversations your flow started in Typebot analytics.
 2. Multiply by your qualified-lead rate → qualified leads.
-3. Multiply by show-up rate → demos attended.
-4. Multiply by close rate × average deal value → attributed revenue.
-5. Estimate WhatsApp spend from the number, category, and recipient country of delivered template messages, then add your Typebot plan and other tooling costs.
-6. Subtract total costs, divide by total costs → ROI.
+3. Multiply by your qualified-to-booked conversion rate → demos booked.
+4. Multiply by show-up rate → demos attended.
+5. Multiply by close rate × average deal value → attributed revenue.
+6. Estimate WhatsApp spend from the number, category, and recipient country of delivered template messages, then add your Typebot plan and other tooling costs.
+7. Subtract total costs, divide by total costs → ROI.
 
 **Benchmarks:** WhatsApp opens ~98% of messages (email ~20–25%), chatbots convert 45–60%, and typical ROI runs 5–6x. If you're far below that, check response time and drop-offs before adding spend, and track revenue with UTM links, promo codes, or CRM tags.
 

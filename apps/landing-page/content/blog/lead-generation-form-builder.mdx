@@ -94,7 +94,7 @@ Typebot changes the game by turning static forms into chat-based conversations. 
 
 - **Logic and branching:** The visual no-code builder handles variables, conditions, and score-style branching. Use it when replies should change the next question live, such as budget, company size, use case, or urgency.
 - **Deployment:** Embed on web pages, landers, popups, and chat bubbles, or connect messaging surfaces like WhatsApp. One flow can support an ads landing page and an always-on site widget without rebuilding the whole form.
-- **Integrations:** Connect Google Sheets, Slack, and Airtable, plus webhooks and Zapier or Make so completed chats create CRM records, email tags, or sales alerts automatically.
+- **Integrations:** Connect Google Sheets, Slack, and Airtable, plus HTTP requests and Zapier or Make so completed chats create CRM records, email tags, or sales alerts automatically.
 - **Distinct strengths:** Because Typebot is open-source, you can self-host for data control and GDPR-friendly setups. AI blocks (OpenAI, Mistral, and similar) can summarize answers, [qualify intent](./ai-lead-qualification.mdx), or personalize replies mid-flow. **This conversational format tends to boost completion rates compared to standard forms.**
 
 Concrete Typebot use cases that map well:
@@ -177,11 +177,11 @@ You can personalize the chat as you go. **For example, you can greet the user wi
 So you don't have to chase every lead manually, connect your bot to your favorite business tools:
 
 - **AI blocks:** Link to services like OpenAI or Mistral for scoring leads or offering custom recommendations based on what a user says.
-- **Direct sync:** Use built-in integrations for **Google Sheets** to log answers, or **Webhooks** to push data straight out to CRMs like HubSpot or Salesforce.
+- **Direct sync:** Use the built-in **Google Sheets** integration to log answers, or an **HTTP Request** block to send data to CRMs like HubSpot or Salesforce. Use a Webhook block only when the flow should pause for an authenticated inbound callback.
 - **Automation platforms:** Connect to **Zapier or Make** for things like internal notifications or adding leads directly to your email campaigns.
 - **Scheduling:** In web deployments, drop in tools like Cal.com or Calendly right inside the chat. In WhatsApp, send a booking link instead: the Cal.com block is skipped, and embedded booking tools are converted to URL messages.
 
-<Image src="/blog-assets/conversational-lead-generation/typebot-integration-screenshot.avif" alt="Typebot integration options" width={1200} height={637} caption="Connect Typebot to Google Sheets, webhooks, Zapier, and more for automated lead routing" />
+<Image src="/blog-assets/conversational-lead-generation/typebot-integration-screenshot.avif" alt="Typebot integration options" width={1200} height={637} caption="Connect Typebot to Google Sheets, HTTP requests, Zapier, and more for automated lead routing" />
 
 ### Theme, test, and publish
 
