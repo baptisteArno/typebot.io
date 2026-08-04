@@ -179,7 +179,7 @@ So you don't have to chase every lead manually, connect your bot to your favorit
 - **AI blocks:** Link to services like OpenAI or Mistral for scoring leads or offering custom recommendations based on what a user says.
 - **Direct sync:** Use built-in integrations for **Google Sheets** to log answers, or **Webhooks** to push data straight out to CRMs like HubSpot or Salesforce.
 - **Automation platforms:** Connect to **Zapier or Make** for things like internal notifications or adding leads directly to your email campaigns.
-- **Scheduling:** Drop in tools like Cal.com or Calendly right inside the chat for users who are ready to book.
+- **Scheduling:** In web deployments, drop in tools like Cal.com or Calendly right inside the chat. In WhatsApp, send a booking link instead: the Cal.com block is skipped, and embedded booking tools are converted to URL messages.
 
 <Image src="/blog-assets/conversational-lead-generation/typebot-integration-screenshot.avif" alt="Typebot integration options" width={1200} height={637} caption="Connect Typebot to Google Sheets, webhooks, Zapier, and more for automated lead routing" />
 
@@ -211,7 +211,7 @@ Conditional logic lets you steer the conversation according to what users need. 
 Pick deployment options that line up with what visitors are actually looking for:
 
 - **Landing pages:** Make the conversational flow the main feature.
-- **Popups:** Set forms to trigger when users try to leave or as they scroll, good for re-engaging folks who might otherwise slip away.
+- **Popups:** Use a supported delay or click trigger. Exit-intent and scroll-position triggers require custom JavaScript on the host page to detect the event and call `Typebot.open()`.
 - **Chat bubbles:** Offer an easy, ongoing entry point for lead capture without pressuring the visitor.
 - **WhatsApp:** Connect with people directly in their messaging app for a seamless experience.
 
