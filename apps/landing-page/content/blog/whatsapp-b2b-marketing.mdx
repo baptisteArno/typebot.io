@@ -40,7 +40,7 @@ WhatsApp’s main strength in B2B is fast feedback.
 
 Buyers don’t want to wait around. **82% expect an immediate reply to sales or marketing questions.** On WhatsApp, bots can handle [qualification questions](./lead-qualification-questions.mdx) on budget, pain points, and timeline right there in the chat.
 
-And when someone agrees to a demo, you can send an [automated reminder](./whatsapp-business-automated-messages.mdx) 30 or 5 minutes before. That noticeably boosts attendance. Some benchmarking shows that WhatsApp reminders perform up to ten times better than old-school calendar emails.
+And when someone agrees to a demo, an external scheduler or campaign tool can send an approved [automated reminder template](./whatsapp-business-automated-messages.mdx) 30 or 5 minutes before. That noticeably boosts attendance. Some benchmarking shows that WhatsApp reminders perform up to ten times better than old-school calendar emails.
 
 Here’s where WhatsApp shines for B2B teams:
 
@@ -54,15 +54,15 @@ Here’s where WhatsApp shines for B2B teams:
 
 WhatsApp gives businesses two main ways to use its platform:
 
-- The WhatsApp Business App is built for smaller teams and shops. It lets you set up basic [auto-replies](./how-to-set-auto-reply-in-whatsapp.mdx), greetings, and away messages, but you’re limited to a single device.
+- The WhatsApp Business App is built for smaller teams and shops. It lets you set up basic [auto-replies](./how-to-set-auto-reply-in-whatsapp.mdx), greetings, and away messages, with support for up to four linked devices.
 - The [WhatsApp Business API](./whatsapp-business-api-providers.mdx) opens up more automation. You can build custom bots, route messages to agents, work as a team, and plug WhatsApp into tools like Zapier, Google Sheets, or Slack.
 
 Typebot works with the WhatsApp API, so you can design and test robust automated flows, no developer needed.
 
-You can sync to your CRM and set up reminders or nurture campaigns as needed. If your contact replies to a WhatsApp message within 24 hours, you get a free **service window** to keep the conversation moving.
+You can sync to your CRM and connect an external scheduler or template sender for reminders and nurture campaigns. If your contact replies to a WhatsApp message within 24 hours, you get a free **service window** to keep the conversation moving.
 
 <Warning>
-To use WhatsApp automation at scale, you’ll typically need a business website, a Meta Business account/verification, and a phone number not already tied to an existing WhatsApp account.For scheduled broadcasts or structured templates, Meta approval is needed. Those go out through dedicated systems.
+To use WhatsApp automation at scale, you’ll typically need a business website, a Meta Business account/verification, and a phone number not already tied to an existing WhatsApp account. For scheduled broadcasts or proactive reminders, you need approved templates and an external scheduler or template sender; a Typebot WhatsApp flow does not wake itself at a scheduled time.
 </Warning>
 
 ## WhatsApp B2B Marketing Strategies That Convert
@@ -71,11 +71,11 @@ To use WhatsApp automation at scale, you’ll typically need a business website,
 
 <Image src="/blog-assets/how-to-collect-customer-feedback/customer-feedback-survey-questions-2.avif" alt="customer feedback survey questions" width={1200} height={740}  />
 
-Static feedback forms get ignored in B2B — response rates often stay in the single digits. Running the same survey inside WhatsApp changes that: one question at a time, quick taps on rating buttons, and follow-ups that adapt to the answer, all inside a thread your customers already have open.
+Static feedback forms get ignored in B2B — response rates often stay in the single digits. Running the same survey inside WhatsApp changes that: one question at a time, quick taps on score choices, and follow-ups that adapt to the answer, all inside a thread your customers already have open.
 
 Here's how a typical Typebot feedback flow works:
 
-- The bot asks a short NPS or CSAT question using a Rating block, with a simple 0–10 or smiley scale.  
+- On WhatsApp, the bot asks a short NPS or CSAT question with a Choice block for tappable scores. A Rating block can collect a typed score, but it does not render rating buttons there.
 - Conditional logic branches the conversation — a low score triggers "What went wrong?", while promoters are routed to a review or referral request.  
 - Every answer is logged to Google Sheets, your CRM, or a webhook, and negative feedback can alert your team on Slack in real time.  
 - Post-purchase or post-demo, the bot follows up in the same thread, keeping the relationship active.
@@ -86,7 +86,7 @@ Here's a live NPS survey flow built in Typebot:
 
 <Typebot typebot="nps-survey-ty0mosa" />
 
-*On WhatsApp, the same rating buttons, conditional follow-ups, and result logging work directly inside the chat thread.*
+*On WhatsApp, recreate the score step with a Choice block for tappable buttons, or ask users to type a number. Conditional follow-ups and result logging still work inside the chat thread.*
 
 Feedback collected in a conversation is more honest and more actionable — and it doubles as a re-engagement touchpoint for your best accounts. **Better insights, less survey fatigue.**
 
@@ -115,7 +115,7 @@ Sometimes prospects stall because they do not have the info they need, such as c
 With Typebot, you can:
 
 - Attach PDFs, whitepapers, or checklists directly in the chat.  
-- Share image galleries or carousel cards showing solutions, company logos, or product previews.  
+- Share Cards showing solutions, company logos, or product previews. WhatsApp sends each Card as a separate interactive message; carousel-style galleries are limited to web embeds.
 - Drop in quick video explainers or testimonials, all under 60 seconds, without sending the user to another site.
 
 **The result is proof in front of prospects when they are most interested.** That means no long waits for follow-up emails.
@@ -132,12 +132,12 @@ Let’s be honest, most email invites for events get lost or ignored. WhatsApp g
 
 - Send leads invites to webinars or live demos with RSVP buttons.  
 - Confirm details and share event info, calendar links, and access instructions.  
-- Set up reminders an hour and then 10 minutes before the event starts.  
+- Use an external scheduler or campaign tool to send approved reminder templates an hour and then 10 minutes before the event starts.
 - Follow up in the chat after the event to [collect feedback](./how-to-collect-customer-feedback.mdx) or suggest next steps.
 
 <Typebot typebot="event-registration-rsvp-bot-ylt0eau" />
 
-*It qualifies interest, recommends sessions, registers attendees, and triggers reminders. The same flow runs inside a WhatsApp Business API thread.*
+*The flow qualifies interest, recommends sessions, and registers attendees inside a WhatsApp Business API thread. To initiate proactive reminders, pass the event timing to an external scheduler or template sender.*
 
 ### 5. Retarget non-converters
 
@@ -280,8 +280,8 @@ WhatsApp automations move leads through the funnel faster than most outreach, an
 ROI = (Revenue generated − Total cost) ÷ Total cost × 100
 ```
 
-- **Costs:** Typebot Starter $39 or Pro $89/month, plus API fees of ~$0.01–$0.16 per conversation (user-initiated chats are free for a set window). Most teams land under $150/month all-in.
-- **Revenue:** If your average deal is $5,000 and 20% of demos close, each qualified demo is worth ~$1,000. Two extra demos a month = $2,000 against $89–$150 in costs — a 13–22x return.
+- **Costs:** Typebot Starter $39 or Pro $89/month, plus WhatsApp fees for each delivered template message. Estimate API spend by multiplying the expected marketing, utility, and authentication template volumes by the current rate for each recipient country. Non-template replies inside the 24-hour customer service window remain free. See the full [WhatsApp Business API pricing guide](./whatsapp-business-api-pricing.mdx).
+- **Revenue:** If your average deal is $5,000 and 20% of demos close, each qualified demo is worth about $1,000. Two extra demos a month represent $2,000 in attributed revenue; compare that with your calculated monthly Typebot, template-message, and tooling costs in the ROI formula above.
 
 **5-minute check:**
 
@@ -289,7 +289,8 @@ ROI = (Revenue generated − Total cost) ÷ Total cost × 100
 2. Multiply by your qualified-lead rate → qualified leads.
 3. Multiply by show-up rate → demos attended.
 4. Multiply by close rate × average deal value → attributed revenue.
-5. Subtract costs, divide by costs → ROI.
+5. Estimate WhatsApp spend from the number, category, and recipient country of delivered template messages, then add your Typebot plan and other tooling costs.
+6. Subtract total costs, divide by total costs → ROI.
 
 **Benchmarks:** WhatsApp opens ~98% of messages (email ~20–25%), chatbots convert 45–60%, and typical ROI runs 5–6x. If you're far below that, check response time and drop-offs before adding spend, and track revenue with UTM links, promo codes, or CRM tags.
 
@@ -304,4 +305,3 @@ Then measure response time, qualified-lead rate, demo show-up, and opt-outs to f
 WhatsApp B2B marketing is not the future. It's where your buyers already are. Build your first flow in Typebot and turn chats into pipeline.
 
 <Cta buttonLabel="Try Conversational Forms">Use Typebot's conversational forms to simplify data collection and boost engagement.</Cta>
-
