@@ -104,7 +104,8 @@ export type WhatsAppMessageReferral = z.infer<typeof incomingMessageReferral>;
 
 const sharedIncomingMessageFieldsSchema = z.object({
   id: z.string().optional(),
-  from: z.string(),
+  from: z.string().optional(),
+  from_user_id: z.string().optional(),
   timestamp: z.string(),
   referral: incomingMessageReferral.optional(),
 });
@@ -291,6 +292,8 @@ export const whatsAppWebhookRequestBodySchema = z.object({
             contacts: z
               .array(
                 z.object({
+                  wa_id: z.string().optional(),
+                  user_id: z.string().optional(),
                   profile: z
                     .object({
                       name: z.string(),

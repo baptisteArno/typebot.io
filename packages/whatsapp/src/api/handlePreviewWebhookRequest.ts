@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/nextjs";
 import { deleteSession } from "@typebot.io/chat-session/queries/deleteSession";
 import { env } from "@typebot.io/env";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
+import prisma from "@typebot.io/prisma";
 import { after } from "next/server";
 import { z } from "zod";
 import {
@@ -47,6 +48,15 @@ export const handlePreviewWebhookRequest = async ({
     console.error("WHATSAPP_PREVIEW_FROM_PHONE_NUMBER_ID is not defined");
     return WEBHOOK_SUCCESS_MESSAGE;
   }
+  for (const { changes } of entry)
+    for (const { value } of changes) {
+      const contact = value.contacts?.at(0);
+      if (!contact?.wa_id || !contact.user_id) continue;
+      await prisma.chatSession.updateMany({
+        where: { id: `${WHATSAPP_PREVIEW_SESSION_ID_PREFIX}${contact.wa_id}` },
+        data: { id: `${WHATSAPP_PREVIEW_SESSION_ID_PREFIX}${contact.user_id}` },
+      });
+    }
   const errors = extractErrorsFromEntry(entry);
 
   if (errors.length > 0) {
@@ -83,7 +93,9 @@ export const handlePreviewWebhookRequest = async ({
             receivedMessages: parsedEntries.map(
               (parsedEntry) => parsedEntry.receivedMessages,
             ),
-            sessionId: `${WHATSAPP_PREVIEW_SESSION_ID_PREFIX}${from}`,
+            sessionId: `${WHATSAPP_PREVIEW_SESSION_ID_PREFIX}${
+              parsedEntries[0].receivedMessages.from_user_id || from
+            }`,
             contact: {
               name: parsedEntries[0].contactName,
               phoneNumber: parsedEntries[0].contactPhoneNumber,

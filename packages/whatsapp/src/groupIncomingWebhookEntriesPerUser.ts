@@ -29,7 +29,7 @@ export const groupIncomingWebhookEntriesPerUser = (
         const phoneNumberId = change.value.metadata?.phone_number_id;
         if (!phoneNumberId) continue;
 
-        const from = message.from ?? "";
+        const from = message.from || message.from_user_id || "";
         if (!from) continue;
 
         if (message.type === "reaction") continue;
