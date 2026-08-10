@@ -4,6 +4,7 @@ import { decrypt } from "@typebot.io/credentials/decrypt";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { whatsAppCredentialsDataSchema } from "@typebot.io/credentials/schemas";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
+import prisma from "@typebot.io/prisma";
 import { after } from "next/server";
 import { z } from "zod";
 import {
@@ -92,6 +93,20 @@ export const handleProductionWebhookRequest = async ({
         credentialsId,
       }),
       (async () => {
+        for (const { changes } of entry)
+          for (const { value } of changes) {
+            const contact = value.contacts?.at(0);
+            const phoneNumberId = value.metadata?.phone_number_id;
+            if (!contact?.wa_id || !contact.user_id || !phoneNumberId) continue;
+            await prisma.chatSession.updateMany({
+              where: {
+                id: `${WHATSAPP_SESSION_ID_PREFIX}${phoneNumberId}-${contact.wa_id}`,
+              },
+              data: {
+                id: `${WHATSAPP_SESSION_ID_PREFIX}${phoneNumberId}-${contact.user_id}`,
+              },
+            });
+          }
         for (const [
           phoneNumberId,
           fromMap,
@@ -102,7 +117,9 @@ export const handleProductionWebhookRequest = async ({
                 receivedMessages: parsedEntries.map(
                   (parsedEntry) => parsedEntry.receivedMessages,
                 ),
-                sessionId: `${WHATSAPP_SESSION_ID_PREFIX}${phoneNumberId}-${from}`,
+                sessionId: `${WHATSAPP_SESSION_ID_PREFIX}${phoneNumberId}-${
+                  parsedEntries[0].receivedMessages.from_user_id || from
+                }`,
                 phoneNumberId,
                 credentialsId,
                 credentialsData,
