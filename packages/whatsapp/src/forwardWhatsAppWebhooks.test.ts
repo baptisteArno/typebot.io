@@ -138,7 +138,7 @@ it("accepts and groups messages with only a BSUID sender", () => {
           {
             value: {
               metadata: { phone_number_id: "phone-number-id" },
-              contacts: [{ wa_id: "33612345678", user_id: "user-id" }],
+              contacts: [{ wa_id: "", user_id: "user-id" }],
               messages: [
                 {
                   from_user_id: "user-id",
@@ -155,11 +155,11 @@ it("accepts and groups messages with only a BSUID sender", () => {
     ],
   });
 
-  expect(
-    groupIncomingWebhookEntriesPerUser(entry)
-      .get("phone-number-id")
-      ?.has("user-id"),
-  ).toBe(true);
+  const parsedEntry = groupIncomingWebhookEntriesPerUser(entry)
+    .get("phone-number-id")
+    ?.get("user-id")?.[0];
+
+  expect(parsedEntry?.contactPhoneNumber).toBe("");
 });
 
 describe("buildWhatsAppWebhookForwardingPayload", () => {

@@ -37,7 +37,7 @@ export const groupIncomingWebhookEntriesPerUser = (
         const details = {
           receivedMessages: message,
           contactName: change.value.contacts?.at(0)?.profile?.name ?? "",
-          contactPhoneNumber: from,
+          contactPhoneNumber: message.from ?? "",
           phoneNumberId,
           referral: message.referral,
         };

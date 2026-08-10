@@ -292,8 +292,6 @@ export const whatsAppWebhookRequestBodySchema = z.object({
             contacts: z
               .array(
                 z.object({
-                  wa_id: z.string().optional(),
-                  user_id: z.string().optional(),
                   profile: z
                     .object({
                       name: z.string(),
