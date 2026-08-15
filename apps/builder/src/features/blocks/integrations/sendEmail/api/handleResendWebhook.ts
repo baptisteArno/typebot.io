@@ -1,6 +1,9 @@
 import { ORPCError } from "@orpc/server";
+import { getEmailDomain } from "@typebot.io/emails/helpers/getEmailDomain";
+import { guestInvitationEmailSubject } from "@typebot.io/emails/helpers/guestInvitationEmailSubject";
 import { runRecordTransientGeneralBounces } from "@typebot.io/emails/helpers/suppressedEmails";
 import { env } from "@typebot.io/env";
+import { logGuestInvitationEvent } from "@typebot.io/telemetry/logGuestInvitationEvent";
 import { Webhook } from "svix";
 import { z } from "zod";
 
@@ -16,7 +19,9 @@ export const resendWebhookInputSchema = z.object({
 const resendBounceSchema = z.object({
   type: z.literal("email.bounced"),
   data: z.object({
-    to: z.array(z.string()).min(1),
+    email_id: z.string(),
+    subject: z.string(),
+    to: z.array(z.email()).min(1),
     bounce: z.object({
       type: z.string(),
       subType: z.string().optional(),
@@ -49,7 +54,18 @@ export const handleResendWebhook = async ({
   const parsed = resendBounceSchema.safeParse(payload);
   if (!parsed.success) return { message: "Ignored event" };
 
-  const { to, bounce } = parsed.data.data;
+  const { email_id, subject, to, bounce } = parsed.data.data;
+
+  if (subject === guestInvitationEmailSubject)
+    for (const recipient of to)
+      logGuestInvitationEvent({
+        bounceSubType: bounce.subType,
+        bounceType: bounce.type,
+        emailId: email_id,
+        name: "bounce",
+        recipientDomain: getEmailDomain(recipient),
+      });
+
   if (!isTransientGeneralBounce(bounce.type))
     return { message: "Ignored bounce type" };
 
