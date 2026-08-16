@@ -9,7 +9,6 @@ const invitationDeleteMany = mock();
 const collaboratorsOnTypebotsCreate = mock();
 const memberInWorkspaceUpsert = mock();
 const sendGuestInvitationEmail = mock();
-const logGuestInvitationEvent = mock();
 
 process.env.SKIP_ENV_CHECK = "true";
 process.env.ENCRYPTION_SECRET = "12345678901234567890123456789012";
@@ -28,10 +27,6 @@ mock.module("@typebot.io/auth/lib/dailyGuestInvitationRateLimiter", () => ({
 
 mock.module("@typebot.io/emails/transactional/GuestInvitationEmail", () => ({
   sendGuestInvitationEmail,
-}));
-
-mock.module("@typebot.io/telemetry/logGuestInvitationEvent", () => ({
-  logGuestInvitationEvent,
 }));
 
 mock.module("@typebot.io/prisma", () => ({
@@ -79,7 +74,6 @@ describe("handleCreateInvitation", () => {
     collaboratorsOnTypebotsCreate.mockReset();
     memberInWorkspaceUpsert.mockReset();
     sendGuestInvitationEmail.mockReset();
-    logGuestInvitationEvent.mockReset();
 
     gentleRateLimit.mockResolvedValue({ success: true });
     dailyGuestInvitationRateLimit.mockResolvedValue({ success: true });
@@ -106,14 +100,6 @@ describe("handleCreateInvitation", () => {
     expect(dailyGuestInvitationRateLimit).not.toHaveBeenCalled();
     expect(invitationCreate).not.toHaveBeenCalled();
     expect(sendGuestInvitationEmail).not.toHaveBeenCalled();
-    expect(logGuestInvitationEvent).toHaveBeenCalledWith({
-      name: "attempt",
-      recipientDomain: "example.com",
-      typebotId: "typebot-id",
-      userId: "user-id",
-      workspaceId: "workspace-id",
-      workspaceSuspended: true,
-    });
   });
 
   it("limits guest invitation attempts by workspace", async () => {
@@ -125,7 +111,6 @@ describe("handleCreateInvitation", () => {
     expect(userFindUnique).not.toHaveBeenCalled();
     expect(invitationCreate).not.toHaveBeenCalled();
     expect(sendGuestInvitationEmail).not.toHaveBeenCalled();
-    expect(logGuestInvitationEvent).toHaveBeenCalledTimes(1);
   });
 
   it("does not replenish the daily allowance when an invitation is deleted", async () => {
@@ -146,13 +131,5 @@ describe("handleCreateInvitation", () => {
     expect(dailyGuestInvitationRateLimit).toHaveBeenCalledTimes(2);
     expect(invitationCreate).toHaveBeenCalledTimes(1);
     expect(sendGuestInvitationEmail).toHaveBeenCalledTimes(1);
-    expect(logGuestInvitationEvent).toHaveBeenCalledWith({
-      name: "sent",
-      recipientDomain: "example.com",
-      typebotId: "typebot-id",
-      userId: "user-id",
-      workspaceId: "workspace-id",
-      workspaceSuspended: false,
-    });
   });
 });

@@ -10,7 +10,6 @@ import {
 import { render } from "@react-email/render";
 import type { ComponentProps } from "react";
 import * as React from "react";
-import { guestInvitationEmailSubject } from "../helpers/guestInvitationEmailSubject";
 import { sendEmail } from "../helpers/sendEmail";
 import { Logo } from "./components/Logo";
 import {
@@ -84,7 +83,7 @@ export const sendGuestInvitationEmail = async (
 ) =>
   sendEmail({
     to: props.guestEmail,
-    subject: guestInvitationEmailSubject,
+    subject: `You've been invited to collaborate`,
     html: await render(<GuestInvitationEmail {...props} />),
     replyTo: props.hostEmail,
   });

@@ -1,12 +1,10 @@
 import { ORPCError } from "@orpc/server";
 import dailyGuestInvitationRateLimiter from "@typebot.io/auth/lib/dailyGuestInvitationRateLimiter";
 import gentleRateLimiter from "@typebot.io/auth/lib/gentleRateLimiter";
-import { getEmailDomain } from "@typebot.io/emails/helpers/getEmailDomain";
 import { sendGuestInvitationEmail } from "@typebot.io/emails/transactional/GuestInvitationEmail";
 import { env } from "@typebot.io/env";
 import prisma from "@typebot.io/prisma";
 import { CollaborationType, WorkspaceRole } from "@typebot.io/prisma/enum";
-import { logGuestInvitationEvent } from "@typebot.io/telemetry/logGuestInvitationEvent";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
 import {
@@ -31,7 +29,6 @@ export const handleCreateInvitation = async ({
     const { success } = await gentleRateLimiter.limit(user.id);
     if (!success) throw new ORPCError("TOO_MANY_REQUESTS");
   }
-  const normalizedGuestEmail = email.toLowerCase().trim();
   const typebot = await prisma.typebot.findFirst({
     where: canWriteTypebots(typebotId, user),
     include: {
@@ -39,26 +36,7 @@ export const handleCreateInvitation = async ({
     },
   });
 
-  if (!typebot || !typebot.workspaceId)
-    throw new ORPCError("FORBIDDEN", {
-      message:
-        "You don't have permission to invite collaborators to this typebot",
-    });
-
-  const guestInvitationEventContext = {
-    recipientDomain: getEmailDomain(normalizedGuestEmail),
-    typebotId,
-    userId: user.id,
-    workspaceId: typebot.workspaceId,
-    workspaceSuspended: typebot.workspace.isSuspended,
-  };
-
-  logGuestInvitationEvent({
-    name: "attempt",
-    ...guestInvitationEventContext,
-  });
-
-  if (typebot.workspace.isSuspended)
+  if (!typebot || !typebot.workspaceId || typebot.workspace.isSuspended)
     throw new ORPCError("FORBIDDEN", {
       message:
         "You don't have permission to invite collaborators to this typebot",
@@ -75,7 +53,7 @@ export const handleCreateInvitation = async ({
   }
 
   const existingUser = await prisma.user.findUnique({
-    where: { email: normalizedGuestEmail },
+    where: { email: email.toLowerCase() },
     select: { id: true },
   });
 
@@ -113,21 +91,16 @@ export const handleCreateInvitation = async ({
     });
   } else {
     await prisma.invitation.create({
-      data: { email: normalizedGuestEmail, type, typebotId },
+      data: { email: email.toLowerCase().trim(), type, typebotId },
     });
   }
 
   await sendGuestInvitationEmail({
     hostEmail: user.email ?? "",
     url: `${env.NEXTAUTH_URL}/typebots?workspaceId=${typebot.workspaceId}`,
-    guestEmail: normalizedGuestEmail,
+    guestEmail: email.toLowerCase(),
     typebotName: typebot.name,
     workspaceName: typebot.workspace?.name ?? "",
-  });
-
-  logGuestInvitationEvent({
-    name: "sent",
-    ...guestInvitationEventContext,
   });
 
   return { message: "success" };
