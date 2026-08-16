@@ -4,7 +4,7 @@ import type { Result } from "@typebot.io/results/schemas/results";
 import { promptAndSetEnvironment } from "./utils";
 
 const bulkUpdate = async () => {
-  await promptAndSetEnvironment();
+  await promptAndSetEnvironment("production");
 
   const results = (await prisma.result.findMany({
     where: {

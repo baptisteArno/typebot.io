@@ -3,7 +3,7 @@ import { Stripe } from "stripe";
 import { promptAndSetEnvironment } from "./utils";
 
 const checkSubscriptionsStatus = async () => {
-  await promptAndSetEnvironment();
+  await promptAndSetEnvironment("production");
 
   const workspacesWithPaidPlan = await prisma.workspace.findMany({
     where: {

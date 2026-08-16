@@ -2,7 +2,7 @@ import prisma from "@typebot.io/prisma";
 import { promptAndSetEnvironment } from "./utils";
 
 const getUsage = async () => {
-  await promptAndSetEnvironment();
+  await promptAndSetEnvironment("production");
 
   const count = await prisma.result.count({
     where: {

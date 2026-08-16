@@ -5,7 +5,7 @@ import { Stripe } from "stripe";
 import { promptAndSetEnvironment } from "./utils";
 
 const migrateSubscriptionsToUsageBased = async () => {
-  await promptAndSetEnvironment();
+  await promptAndSetEnvironment("production");
 
   if (
     !process.env.STRIPE_STARTER_CHATS_PRICE_ID ||
