@@ -15,7 +15,7 @@
     "insertUsersInBrevoList": "tsx --tsconfig ./tsconfig.json src/insertUsersInBrevoList.ts",
     "getUsage": "tsx --tsconfig ./tsconfig.json src/getUsage.ts",
     "blockTypebot": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/blockTypebot.ts",
-    "suspendWorkspace": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/suspendWorkspace.ts",
+    "suspendWorkspace": "cd ../prisma && bun db:generate:mysql && cd ../scripts && SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/suspendWorkspace.ts",
     "destroyUser": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/destroyUser.ts",
     "updateTypebot": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/updateTypebot.ts",
     "updateWorkspace": "SKIP_ENV_CHECK=true dotenv -e ./.env.production -- tsx --tsconfig ./tsconfig.json src/updateWorkspace.ts",

@@ -1,10 +1,14 @@
-import { isCancel, select, text } from "@clack/prompts";
+import { confirm, isCancel, select, text } from "@clack/prompts";
 import { isEmpty } from "@typebot.io/lib/utils";
-import prisma from "@typebot.io/prisma";
 import { promptAndSetEnvironment } from "./utils";
 
 const suspendWorkspace = async () => {
   await promptAndSetEnvironment("production");
+
+  if (!process.env.DATABASE_URL?.startsWith("mysql://"))
+    throw new Error("Production DATABASE_URL must be a MySQL URL");
+
+  const { default: prisma } = await import("@typebot.io/prisma");
 
   const workspaceIdArgument = process.argv
     .find((argument) => argument.startsWith("--workspace-id="))
@@ -55,6 +59,36 @@ const suspendWorkspace = async () => {
     console.log("Workspace not found");
     return;
   }
+
+  const workspace = await prisma.workspace.findUnique({
+    where: {
+      id: workspaceId,
+    },
+    select: {
+      id: true,
+      name: true,
+      isSuspended: true,
+    },
+  });
+
+  if (!workspace) {
+    console.log("Workspace not found");
+    return;
+  }
+
+  if (workspace.isSuspended) {
+    console.log("Workspace is already suspended");
+    return;
+  }
+
+  console.log(JSON.stringify(workspace, null, 2));
+
+  const shouldSuspend = await confirm({
+    message: "Suspend this production workspace?",
+    initialValue: false,
+  });
+
+  if (!shouldSuspend || isCancel(shouldSuspend)) return;
 
   const result = await prisma.workspace.update({
     where: {
