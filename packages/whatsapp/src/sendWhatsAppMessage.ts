@@ -19,7 +19,9 @@ export const sendWhatsAppMessage = async ({
   try {
     const json = {
       messaging_product: "whatsapp",
-      to,
+      ...(/^[A-Z]{2}\.(?:ENT\.)?[a-zA-Z0-9]+$/.test(to)
+        ? { recipient: to }
+        : { to }),
       ...message,
     };
 
