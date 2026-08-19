@@ -2,6 +2,7 @@
 title: "How to Build FAQ Chatbot in Under 10 Minutes for WhatsApp and Web"
 description: "Stop losing customers to slow support. Learn how to build FAQ chatbot flows that provide instant 24/7 answers and cut costs using Typebot and AI. Read more."
 postedAt: "2026-02-11"
+updatedAt: "2026-07-15"
 cover: "/blog-assets/how-to-build-faq-chatbot/cover.avif"
 author: younes
 ---
@@ -11,7 +12,7 @@ An FAQ chatbot turns your best support knowledge into a conversation. This stops
 
 ## Let's define an FAQ chatbot first
 
-An [FAQ chatbot](./faq-chatbot.mdx) is an AI-powered assistant that answers frequently asked questions in a conversational way. Instead of scrolling through help pages or waiting for an agent, users get instant responses from a structured knowledge base. Here is an example:
+An [FAQ chatbot](./faq-chatbot.mdx) is an AI-powered assistant that answers frequently asked questions in an interactive, conversational way. Instead of scrolling through help pages or waiting for an agent, users get instant responses from a structured knowledge base. Here is an FAQ chatbot example:
 
 <Typebot typebot="support-faq-bot-xp93qk4" />
 
@@ -49,7 +50,7 @@ Research shows AI-powered enterprises respond 50% faster than others, resulting 
 
 ### Lower support costs through automation
 
-FAQ chatbots automate high-frequency queries like hours of operation, password resets, returns, and order tracking. This frees agents for complex issues requiring judgment.
+FAQ chatbots automate high-frequency queries like hours of operation, password resets, returns, and order tracking. That reduces incoming support tickets and frees agents for complex issues that need judgment.
 
 Studies report up to 40% cost savings by augmenting staff with chatbots. Every question the bot resolves means fewer interruptions, shorter queues, and fewer new hires needed. 
 
@@ -71,6 +72,62 @@ Instant answers to common questions, with smooth handoffs when needed, reduce th
 Want to ensure your FAQ bot follows industry best practices from the start? Check out [chatbot best practices](./chatbot-best-practices.mdx) to avoid common pitfalls before you begin building.
 </Info>
 
+## Which FAQ chatbot should you build?
+
+Before you open the Typebot editor, decide how your bot should reason. 
+
+FAQ bots fall into three architectures. Pick the one that matches how your customers ask questions, how tightly you need answers controlled, and how much maintenance you can own. Typebot can ship all three, which is why this choice matters more than which block you drag first.
+
+<Image src="/blog-assets/whatsapp-automation-chatbot/types-of-chatbots-chart.avif" alt="types of chatbots chart" width={1200} height={607} caption="Rule-based, AI-powered, and hybrid chatbot architectures" />
+
+
+### Rule-based and keyword FAQ bots
+
+Rule-based bots follow predetermined paths. Users tap categories or type keywords like “refund,” and Condition blocks send them to a fixed answer.
+
+**Strengths:** fast to ship, predictable every time, cheap to run, easy to audit. Ideal when the same 10–20 questions make up the bulk of tickets and answers must stay word-for-word accurate (policies, pricing, shipping rules).
+
+**Limits:** they break on paraphrases. “When do I get my money back?” may miss a branch written for “refund.” Keyword bots are a little more flexible but still miss context and can loop the same reply when users rephrase related follow-ups.
+
+**Typebot fit:** visual flows, Buttons, and Condition blocks. You can map billing, shipping, and account access in minutes without writing code.
+
+Choose this path when policy language must never drift and almost all volume is top-of-FAQ.
+
+### AI and RAG FAQ bots
+
+AI-powered FAQ bots use large language models (OpenAI, Anthropic, Mistral, and others) to read free-form questions, rephrase policy text, and keep a more natural back-and-forth. With RAG (retrieval-augmented generation), the model answers from *your* docs, Sheets, or help center instead of inventing product facts from general training data.
+
+<Image src="/blog-assets/how-to-build-a-rag-chatbot/rag-chatbot-diagram.avif" alt="rag chatbot diagram" width={1200} height={729}  />
+
+
+**Strengths:** paraphrase-friendly, scales to long-tail questions, can multi-language more easily, less branching to maintain as FAQs grow.
+
+**Limits:** needs solid prompts and sources or it drifts. Token costs add up at volume. Without a structured path, users may get soft answers when you needed a firm rule.
+
+**Typebot fit:** native AI blocks plus knowledge sources. You can ground responses in Google Sheets, a help doc, or an API instead of a pure chat model guessing.
+
+Choose pure AI when questions vary widely and you already have a clean knowledge base you trust.
+
+<Info>
+Dive deeper into building a grounded AI FAQ with a [RAG chatbot](./how-to-build-a-rag-chatbot.mdx) that retrieves answers from your own knowledge sources.
+</Info>
+
+### Hybrid: structured answers first, AI fallback second
+
+Hybrid bots combine both approaches—and they match how real support works. Start with menus, categories, or keyword routes for known FAQs. When nothing matches, route to an AI block (optionally grounded in Sheets or docs). When confidence is low or the request is sensitive, hand off to a human.
+
+**Strengths:** you get control where accuracy is non-negotiable and flexibility where language is messy. Most of your deflection stays deterministic; rarely asked questions still get a useful reply.
+
+**Typebot fit:** Condition blocks for top categories, Google Sheets as a living FAQ knowledge base, OpenAI (or another model) only for unmatched questions, plus a clear “Talk to a human” exit. That is the architecture this guide builds next.
+
+**Recommended default:** start hybrid in Typebot. Ship categories or a Sheet lookup first so common answers stay exact. Add AI only on the fallback path so paraphrases do not fall into a dead end. You can always expand AI later without rewriting the whole bot.
+| Type           | Speed to launch | Handles paraphrases   | Answer control     | Best for                          |
+| -------------- | --------------- | --------------------- | ------------------ | --------------------------------- |
+| Rule / keyword | Fastest         | Low                   | Highest            | Stable policy FAQs, simple menus  |
+| AI / RAG       | Medium          | High                  | Depends on sources | Long-tail support, messy language |
+| Hybrid         | Fast to medium  | High where it matters | High on known FAQs | Most businesses (our default)     |
+If you only need a button menu today, the next section still starts clean: a core loop with routing and fixed answers. Section after that shows how to connect Sheets and OpenAI so the same bot can grow into a smart hybrid without a rebuild.
+
 ## How to build an FAQ chatbot with Typebot
 
 If you've tried to "just add an FAQ chatbot" before, you likely ended up with a complicated flow that's hard to maintain.  Your bot should look like this: 
@@ -83,7 +140,7 @@ This section shows you how to build a bot like that:
 - Routes conversations efficiently
 - Updates easily when your FAQ changes
 
-We start with a simple core loop. Then, we add routing and fallback handling using Typebot’s visual builder and logic blocks.
+We start with a simple core loop—the simplest way to build an FAQ bot with no coding. Then, we add routing and fallback handling using Typebot’s visual builder and logic blocks.
 
 ### Create a Typebot account
 
@@ -336,7 +393,7 @@ Handle failures gracefully. Prepare fallback messages that route users to AI or 
 
 ### Deploy your FAQ chatbot
 
-Your chatbot isn't finished until it's live where customers get stuck. Typebot lets you build once and deploy across multiple platforms.
+Your automated FAQ chatbot isn't finished until it's live on your business website—and other channels—where customers get stuck. Typebot lets you build once and deploy across multiple platforms.
 
 ### Choose a format
 
@@ -345,7 +402,7 @@ In the Typebot editor, go to the **Publish** tab and choose:
 <Image src="/blog-assets/how-to-build-faq-chatbot/embed-your-typebot.avif" alt="embed your typebot" width={1200} height={556}  />
 
 
-- **Embedded container**: Inside a page layout—ideal for help centers and docs
+- **Embedded container**: Inside a page layout—ideal for help centers, FAQ pages, and docs
 - **Popup**: Appears when triggered—best for checkout or cancellation pages
 - **Bubble**: Sits in the corner, always available
 - **Full page**: A dedicated URL for campaigns or support pages
@@ -355,18 +412,19 @@ In the Typebot editor, go to the **Publish** tab and choose:
 
 Typebot supports WordPress, Shopify, Wix, Webflow, React, Next.js, and more. Check mobile views, sticky headers, and cramped layouts. Match theming to your brand, test keyboard behavior on mobile, and use hidden fields to personalize by user segment.
 
-<Image src="/blog-assets/how-to-build-faq-chatbot/meta-whatsapp-business-platform.avif" alt="meta whatsapp business platform" width={1152} height={1001}  />
+<Image src="/blog-assets/how-to-build-faq-chatbot/meta-whatsapp-business-platform.avif" alt="meta whatsapp business platform" width={800} height={600}  />
 
 
-**WhatsApp**: Connect via the Share tab. Keep messages short and offer quick category buttons plus a "talk to a human" option. 
+**WhatsApp**: Connect via the Share tab to run an FAQ agent for common package or product questions, and keep complex bookings for staff. Keep messages short and offer quick category buttons plus a “talk to a human” option.
 
 <Image src="/blog-assets/how-to-build-faq-chatbot/api-json-chatbot-code.avif" alt="api json chatbot code" width={857} height={1200}  />
 
 
 **HTTP API**: Trigger conversations programmatically from your app, internal tools, or automated workflows.   
+
 ## Wrapping it up
 
-With a clear content plan and simple flows, you can turn your FAQ into a proactive support channel in hours. Not weeks using Typebot's no‑code tools.
+With a clear content plan and simple flows, a small team can build an internal FAQ bot the simplest way—no coding required—and turn a shared FAQ into proactive support in hours, not weeks, using Typebot.
 
 Launch across web and messaging platforms. Monitor conversations in real time. Iterate based on user behavior to keep answers accurate and helpful.
 

@@ -112,7 +112,15 @@ export const computeResultTranscript = ({
   if (!firstGroup) return [];
 
   const queues = {
-    answers: iterator(answers),
+    answers: iterator(
+      answers.filter((answer) =>
+        typebot.groups.some((group) =>
+          group.blocks.some(
+            (block) => isInputBlock(block) && block.id === answer.blockId,
+          ),
+        ),
+      ),
+    ),
     setVariableHistory: iterator(setVariableHistory),
     visitedEdges: iterator(visitedEdges),
   } as const;

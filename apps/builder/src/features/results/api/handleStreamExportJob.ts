@@ -73,6 +73,7 @@ export async function* handleStreamExportJob({
   if (!typebot || (await isReadTypebotForbidden(typebot, user)))
     throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
+  const workflowId = createId();
   const queue = await Effect.runPromise(
     Queue.unbounded<ExportResultsWorkflowStatusChunk | null>(),
   );
@@ -81,7 +82,7 @@ export async function* handleStreamExportJob({
     const rpcClient = yield* ResultsWorkflowsRpcClient;
 
     const stream = rpcClient.ExecuteExportResultsWorkflow({
-      id: createId(),
+      id: workflowId,
       typebotId,
       includeDeletedBlocks,
       timeFilter,
@@ -89,6 +90,7 @@ export async function* handleStreamExportJob({
     });
 
     yield* stream.pipe(
+      Stream.filter((chunk) => chunk.status !== "starting"),
       Stream.tapError((error) =>
         Effect.logError("Export workflow failed").pipe(
           Effect.annotateLogs({
@@ -116,6 +118,8 @@ export async function* handleStreamExportJob({
   );
 
   Effect.runFork(Effect.scoped(program.pipe(Effect.provide(MainLayer))));
+
+  yield { status: "starting", workflowId };
 
   while (true) {
     const chunk: ExportResultsWorkflowStatusChunk | null =
