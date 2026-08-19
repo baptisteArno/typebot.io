@@ -44,7 +44,7 @@ const graphDndContext = createContext<{
   draggedItem?: DraggableItem;
   setDraggedItem: Dispatch<SetStateAction<DraggableItem | undefined>>;
   mouseOverGroup?: NodeElement;
-  setMouseOverGroup: (node: NodeElement | undefined) => void;
+  setMouseOverGroup: Dispatch<SetStateAction<NodeElement | undefined>>;
   mouseOverBlock?: NodeElement;
   setMouseOverBlock: (node: NodeElement | undefined) => void;
   draggedEventType?: TDraggableEvent["type"];
@@ -69,6 +69,33 @@ export const GraphDndProvider = ({ children }: { children: ReactNode }) => {
   >();
   const [mouseOverGroup, setMouseOverGroup] = useState<NodeElement>();
   const [mouseOverBlock, setMouseOverBlock] = useState<NodeElement>();
+
+  useEffect(() => {
+    if (!draggedBlock && !draggedBlockType) {
+      setMouseOverGroup(undefined);
+      return;
+    }
+
+    const handlePointerMove = (event: PointerEvent) => {
+      if (!event.isPrimary) return;
+      const groupElement = getGroupElementAtPointer(
+        event.clientX,
+        event.clientY,
+      );
+      const groupId = groupElement?.dataset.groupId;
+      setMouseOverGroup((currentGroup) => {
+        if (currentGroup?.id === groupId) return currentGroup;
+        return groupElement && groupId
+          ? { id: groupId, ref: { current: groupElement } }
+          : undefined;
+      });
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+    };
+  }, [draggedBlock, draggedBlockType]);
 
   return (
     <graphDndContext.Provider
@@ -199,5 +226,10 @@ export const computeNearestPlaceholderIndex = (
   );
   return closestIndex;
 };
+
+export const getGroupElementAtPointer = (clientX: number, clientY: number) =>
+  document
+    .elementFromPoint(clientX, clientY)
+    ?.closest<HTMLElement>("[data-group-id]");
 
 export const useBlockDnd = () => useContext(graphDndContext);

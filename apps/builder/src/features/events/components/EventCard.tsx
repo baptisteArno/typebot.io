@@ -12,11 +12,11 @@ type Props = {
   tooltip?: string;
   isDisabled?: boolean;
   children: React.ReactNode;
-  onMouseDown: (e: React.MouseEvent, type: TDraggableEvent["type"]) => void;
+  onPointerDown: (e: React.PointerEvent, type: TDraggableEvent["type"]) => void;
 };
 
 export const EventCard = (
-  props: Pick<Props, "type" | "onMouseDown">,
+  props: Pick<Props, "type" | "onPointerDown">,
 ): JSX.Element => {
   const { t } = useTranslate();
   switch (props.type) {

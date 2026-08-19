@@ -6,6 +6,7 @@ import { Portal } from "@/components/Portal";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import {
   computeNearestPlaceholderIndex,
+  getGroupElementAtPointer,
   useBlockDnd,
 } from "@/features/graph/providers/GraphDndProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
@@ -17,15 +18,15 @@ import { BlockNodeOverlay } from "./BlockNodeOverlay";
 type Props = {
   blocks: BlockV6[];
   groupIndex: number;
-  groupRef: React.MutableRefObject<HTMLDivElement | null>;
 };
-export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
+export const BlockNodesList = ({ blocks, groupIndex }: Props) => {
   const {
     draggedBlock,
     setDraggedBlock,
     draggedBlockType,
     mouseOverGroup,
     setDraggedBlockType,
+    setMouseOverGroup,
   } = useBlockDnd();
   const { typebot, createBlock, detachBlockFromGroup } = useTypebot();
   const { isReadOnly, graphPosition, setOpenedNodeId } = useGraph();
@@ -72,21 +73,21 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
       if (elem) placeholderRefs.current[idx] = elem;
     };
 
-  const onGroupMouseMove = useCallback(
-    (event: MouseEvent) => {
+  const onGlobalPointerMove = useCallback(
+    (event: PointerEvent) => {
       if (!isDraggingOnCurrentGroup) return;
       setExpandedPlaceholderIndex(
-        computeNearestPlaceholderIndex(event.pageY, placeholderRefs),
+        computeNearestPlaceholderIndex(event.clientY, placeholderRefs),
       );
     },
     [isDraggingOnCurrentGroup],
   );
   useEffect(() => {
-    groupRef.current?.addEventListener("mousemove", onGroupMouseMove);
+    window.addEventListener("pointermove", onGlobalPointerMove);
     return () => {
-      groupRef.current?.removeEventListener("mousemove", onGroupMouseMove);
+      window.removeEventListener("pointermove", onGlobalPointerMove);
     };
-  }, [onGroupMouseMove]);
+  }, [onGlobalPointerMove]);
 
   const onGlobalMouseMove = useCallback(
     (event: MouseEvent) => {
@@ -111,12 +112,20 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
     };
   }, [onGlobalMouseMove]);
 
-  const onGroupMouseUp = useCallback(
-    (e: MouseEvent) => {
+  const onGlobalPointerUp = useCallback(
+    (event: PointerEvent) => {
       setExpandedPlaceholderIndex(undefined);
-      if (!isDraggingOnCurrentGroup || !groupId) return;
+      if (
+        !event.isPrimary ||
+        (!draggedBlock && !draggedBlockType) ||
+        !groupId ||
+        getGroupElementAtPointer(event.clientX, event.clientY)?.dataset
+          .groupId !== groupId
+      )
+        return;
+      event.stopPropagation();
       const blockIndex = computeNearestPlaceholderIndex(
-        e.clientY,
+        event.clientY,
         placeholderRefs,
       );
       const blockId = createBlock(
@@ -128,27 +137,22 @@ export const BlockNodesList = ({ blocks, groupIndex, groupRef }: Props) => {
       );
       setDraggedBlock(undefined);
       setDraggedBlockType(undefined);
+      setMouseOverGroup(undefined);
       if (shouldOpenBlockSettingsOnCreation(draggedBlockType))
         setOpenedNodeId(blockId);
     },
-    [
-      isDraggingOnCurrentGroup,
-      groupId,
-      draggedBlock,
-      draggedBlockType,
-      groupIndex,
-    ],
+    [groupId, draggedBlock, draggedBlockType, groupIndex],
   );
   useEffect(() => {
-    groupRef.current?.addEventListener("mouseup", onGroupMouseUp, {
+    window.addEventListener("pointerup", onGlobalPointerUp, {
       capture: true,
     });
     return () => {
-      groupRef.current?.removeEventListener("mouseup", onGroupMouseUp, {
+      window.removeEventListener("pointerup", onGlobalPointerUp, {
         capture: true,
       });
     };
-  }, [onGroupMouseUp]);
+  }, [onGlobalPointerUp]);
 
   return (
     <div className="flex flex-col gap-0 transition-none">

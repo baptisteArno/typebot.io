@@ -7,7 +7,7 @@ import { useForgedBlock } from "./hooks/useForgedBlock";
 
 export const ForgedBlockCard = (props: {
   type: ForgedBlock["type"];
-  onMouseDown: (e: React.MouseEvent, type: BlockV6["type"]) => void;
+  onPointerDown: (e: React.PointerEvent, type: BlockV6["type"]) => void;
 }) => {
   const { blockDef } = useForgedBlock({ nodeType: props.type });
 
