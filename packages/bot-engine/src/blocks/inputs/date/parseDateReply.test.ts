@@ -1,6 +1,8 @@
 import { describe, expect, it } from "bun:test";
 import { InputBlockType } from "@typebot.io/blocks-inputs/constants";
 import type { DateInputBlock } from "@typebot.io/blocks-inputs/date/schema";
+import { SessionStore } from "@typebot.io/runtime-session-store";
+import { validateAndParseInputMessage } from "../../../validateAndParseInputMessage";
 import { parseDateReply } from "./parseDateReply";
 
 const createBlock = (options?: DateInputBlock["options"]): DateInputBlock => ({
@@ -10,31 +12,64 @@ const createBlock = (options?: DateInputBlock["options"]): DateInputBlock => ({
 });
 
 describe("parseDateReply", () => {
-  it("should join the start and end date with 'to' by default", () => {
-    const result = parseDateReply("from 01/01/2024 to 05/01/2024", {
-      ...createBlock({ isRange: true }),
+  it("joins the start and end date with 'to' by default", () => {
+    expect(
+      parseDateReply(
+        "from 01/01/2024 to 05/01/2024",
+        createBlock({ isRange: true }),
+      ),
+    ).toEqual({
+      status: "success",
+      content: "01/01/2024 to 05/01/2024",
     });
-    expect(result.status).toBe("success");
-    expect((result as { content: string }).content).toBe(
-      "01/01/2024 to 05/01/2024",
-    );
   });
 
-  it("should join the start and end date with a custom separator label", () => {
-    const result = parseDateReply("from 01/01/2024 to 05/01/2024", {
-      ...createBlock({ isRange: true, labels: { separator: "tot" } }),
+  it("joins the start and end date with a custom separator label", () => {
+    expect(
+      parseDateReply(
+        "from 01/01/2024 to 05/01/2024",
+        createBlock({ isRange: true, labels: { separator: "tot" } }),
+      ),
+    ).toEqual({
+      status: "success",
+      content: "01/01/2024 tot 05/01/2024",
     });
-    expect(result.status).toBe("success");
-    expect((result as { content: string }).content).toBe(
-      "01/01/2024 tot 05/01/2024",
-    );
   });
 
-  it("should not use the separator when isRange is false", () => {
-    const result = parseDateReply("01/01/2024", {
-      ...createBlock({ labels: { separator: "tot" } }),
+  it("does not use the separator when isRange is false", () => {
+    expect(
+      parseDateReply(
+        "01/01/2024",
+        createBlock({ labels: { separator: "tot" } }),
+      ),
+    ).toEqual({
+      status: "success",
+      content: "01/01/2024",
     });
-    expect(result.status).toBe("success");
-    expect((result as { content: string }).content).toBe("01/01/2024");
+  });
+
+  it("resolves a separator variable before formatting the reply", () => {
+    expect(
+      validateAndParseInputMessage(
+        { type: "text", text: "from 01/01/2024 to 05/01/2024" },
+        {
+          block: createBlock({
+            isRange: true,
+            labels: { separator: "{{Date separator}}" },
+          }),
+          variables: [
+            {
+              id: "date-separator",
+              name: "Date separator",
+              value: "tot",
+            },
+          ],
+          sessionStore: new SessionStore(),
+        },
+      ),
+    ).toEqual({
+      status: "success",
+      content: "01/01/2024 tot 05/01/2024",
+    });
   });
 });

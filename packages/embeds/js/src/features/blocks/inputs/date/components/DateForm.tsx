@@ -12,12 +12,8 @@ type Props = {
 };
 
 export const DateForm = (props: Props) => {
-  const separator = () =>
-    props.options?.labels?.separator ??
-    defaultDateInputOptions.labels.separator;
-
   const [inputValues, setInputValues] = createSignal(
-    parseDefaultValue(props.defaultValue ?? "", separator()),
+    parseDefaultValue(props.defaultValue ?? ""),
   );
 
   const submit = () => {
@@ -25,7 +21,7 @@ export const DateForm = (props: Props) => {
     props.onSubmit({
       type: "text",
       value: `${inputValues().from}${
-        props.options?.isRange ? ` ${separator()} ${inputValues().to}` : ""
+        props.options?.isRange ? ` to ${inputValues().to}` : ""
       }`,
     });
   };
@@ -122,8 +118,8 @@ export const DateForm = (props: Props) => {
   );
 };
 
-const parseDefaultValue = (defaultValue: string, separator: string) => {
-  if (!defaultValue.includes(separator)) return { from: defaultValue, to: "" };
-  const [from, to] = defaultValue.split(` ${separator} `);
+const parseDefaultValue = (defaultValue: string) => {
+  if (!defaultValue.includes("to")) return { from: defaultValue, to: "" };
+  const [from, to] = defaultValue.split(" to ");
   return { from, to };
 };
