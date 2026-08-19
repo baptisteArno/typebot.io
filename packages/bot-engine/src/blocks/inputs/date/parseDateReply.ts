@@ -42,16 +42,18 @@ export const parseDateReply = (
   const max = block.options?.max;
   if (
     isDefined(max) &&
-    (detectedStartDate > new Date(max) ||
-      (detectedEndDate && detectedEndDate > new Date(max)))
+    (detectedStartDate > parseDateWithNeutralTimezone(new Date(max)) ||
+      (detectedEndDate &&
+        detectedEndDate > parseDateWithNeutralTimezone(new Date(max))))
   )
     return { status: "fail" };
 
   const min = block.options?.min;
   if (
     isDefined(min) &&
-    (detectedStartDate < new Date(min) ||
-      (detectedEndDate && detectedEndDate < new Date(min)))
+    (detectedStartDate < parseDateWithNeutralTimezone(new Date(min)) ||
+      (detectedEndDate &&
+        detectedEndDate < parseDateWithNeutralTimezone(new Date(min))))
   )
     return { status: "fail" };
 
