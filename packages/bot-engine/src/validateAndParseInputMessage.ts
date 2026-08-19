@@ -88,7 +88,7 @@ export const validateAndParseInputMessage = (
     }
     case InputBlockType.DATE: {
       if (!message || message.type !== "text") return { status: "fail" };
-      return parseDateReply(message.text, block);
+      return parseDateReply(message.text, block, { variables, sessionStore });
     }
     case InputBlockType.TIME: {
       if (!message || message.type !== "text") return { status: "fail" };
