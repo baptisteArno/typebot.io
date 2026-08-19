@@ -176,6 +176,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
           )}
           ref={groupRef}
           id={`group-${group.id}`}
+          data-group-id={group.id}
           data-testid="group"
           data-selectable={group.id}
           onMouseEnter={handleMouseEnter}
@@ -197,11 +198,7 @@ export const GroupNode = ({ group, groupIndex }: Props) => {
             />
           </Editable.Root>
           {typebot && (
-            <BlockNodesList
-              blocks={group.blocks}
-              groupIndex={groupIndex}
-              groupRef={groupRef}
-            />
+            <BlockNodesList blocks={group.blocks} groupIndex={groupIndex} />
           )}
           {focusedGroups.length === 1 && isFocused && (
             <GroupFocusToolbar
