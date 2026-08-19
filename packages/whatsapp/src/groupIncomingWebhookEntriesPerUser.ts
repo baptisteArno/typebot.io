@@ -29,7 +29,7 @@ export const groupIncomingWebhookEntriesPerUser = (
         const phoneNumberId = change.value.metadata?.phone_number_id;
         if (!phoneNumberId) continue;
 
-        const from = message.from ?? "";
+        const from = message.from || message.from_user_id || "";
         if (!from) continue;
 
         if (message.type === "reaction") continue;
@@ -37,7 +37,7 @@ export const groupIncomingWebhookEntriesPerUser = (
         const details = {
           receivedMessages: message,
           contactName: change.value.contacts?.at(0)?.profile?.name ?? "",
-          contactPhoneNumber: from,
+          contactPhoneNumber: message.from ?? "",
           phoneNumberId,
           referral: message.referral,
         };

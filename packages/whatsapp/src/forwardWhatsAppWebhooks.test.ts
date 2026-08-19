@@ -4,6 +4,7 @@ import {
   buildWhatsAppWebhookForwardingPayload,
   forwardWhatsAppWebhooks,
 } from "./forwardWhatsAppWebhooks";
+import { groupIncomingWebhookEntriesPerUser } from "./groupIncomingWebhookEntriesPerUser";
 import {
   type WhatsAppWebhookRequestBody,
   whatsAppWebhookRequestBodySchema,
@@ -128,6 +129,38 @@ const rawPayload = {
   object: string;
   extra: { retained: boolean };
 };
+
+it("accepts and groups messages with only a BSUID sender", () => {
+  const { entry } = whatsAppWebhookRequestBodySchema.parse({
+    entry: [
+      {
+        changes: [
+          {
+            value: {
+              metadata: { phone_number_id: "phone-number-id" },
+              contacts: [{ wa_id: "", user_id: "user-id" }],
+              messages: [
+                {
+                  from_user_id: "user-id",
+                  id: "message-id",
+                  timestamp: "1710000000",
+                  type: "text",
+                  text: { body: "Hello" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  });
+
+  const parsedEntry = groupIncomingWebhookEntriesPerUser(entry)
+    .get("phone-number-id")
+    ?.get("user-id")?.[0];
+
+  expect(parsedEntry?.contactPhoneNumber).toBe("");
+});
 
 describe("buildWhatsAppWebhookForwardingPayload", () => {
   it("returns the raw payload when all webhook events are forwarded", () => {

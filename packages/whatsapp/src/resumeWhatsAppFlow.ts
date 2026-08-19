@@ -149,7 +149,7 @@ export const resumeWhatsAppFlow = async ({
       newSessionState,
       isWaitingForWebhook,
     } = await resumeFlowAndSendWhatsAppMessages({
-      to: receivedMessages[0].from,
+      to: receivedMessages[0].from || receivedMessages[0].from_user_id || "",
       messageId: receivedMessages[0].id,
       credentials,
       isSessionExpired,
