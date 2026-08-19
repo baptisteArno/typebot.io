@@ -3984,6 +3984,10 @@
                   },
                   "to": {
                     "type": "string"
+                  },
+                  "separator": {
+                    "type": "string",
+                    "description": "Word joining the start and end date in the submitted range value, e.g. the 'to' in '01/01/2024 to 05/01/2024'"
                   }
                 }
               },

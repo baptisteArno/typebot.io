@@ -55,9 +55,15 @@ export const parseDateReply = (
   )
     return { status: "fail" };
 
+  const separator =
+    block.options?.labels?.separator ??
+    defaultDateInputOptions.labels.separator;
+
   return {
     status: "success",
-    content: block.options?.isRange ? `${startDate} to ${endDate}` : startDate,
+    content: block.options?.isRange
+      ? `${startDate} ${separator} ${endDate}`
+      : startDate,
   };
 };
 

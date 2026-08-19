@@ -11,6 +11,7 @@ import { parseCardsReply } from "./blocks/cards/parseCardsReply";
 import { injectVariableValuesInButtonsInputBlock } from "./blocks/inputs/buttons/injectVariableValuesInButtonsInputBlock";
 import { parseMultipleChoiceReply } from "./blocks/inputs/buttons/parseMultipleChoiceReply";
 import { parseSingleChoiceReply } from "./blocks/inputs/buttons/parseSingleChoiceReply";
+import { parseDateInput } from "./blocks/inputs/date/parseDateInput";
 import { parseDateReply } from "./blocks/inputs/date/parseDateReply";
 import { formatEmail } from "./blocks/inputs/email/formatEmail";
 import { parseNumber } from "./blocks/inputs/number/parseNumber";
@@ -88,7 +89,10 @@ export const validateAndParseInputMessage = (
     }
     case InputBlockType.DATE: {
       if (!message || message.type !== "text") return { status: "fail" };
-      return parseDateReply(message.text, block);
+      return parseDateReply(
+        message.text,
+        parseDateInput(block, { variables, sessionStore }),
+      );
     }
     case InputBlockType.TIME: {
       if (!message || message.type !== "text") return { status: "fail" };

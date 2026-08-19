@@ -12,6 +12,12 @@ export const dateInputOptionsSchema = optionBaseSchema.merge(
         button: z.string().optional(),
         from: z.string().optional(),
         to: z.string().optional(),
+        separator: z
+          .string()
+          .optional()
+          .describe(
+            "Word joining the start and end date in the submitted range value, e.g. the 'to' in '01/01/2024 to 05/01/2024'",
+          ),
       })
       .optional(),
     hasTime: z.boolean().optional(),

@@ -156,6 +156,8 @@
   "blocks.inputs.date.settings.format.label": "Format:",
   "blocks.inputs.date.settings.from.label": "From label:",
   "blocks.inputs.date.settings.isRange.label": "Is range",
+  "blocks.inputs.date.settings.separator.label": "Separator label:",
+  "blocks.inputs.date.settings.separator.moreInfo.label": "The word joining the start and end date in the submitted value, e.g. the \"to\" in \"01/01/2024 to 05/01/2024\"",
   "blocks.inputs.date.settings.toInputValue.label": "To:",
   "blocks.inputs.date.settings.to.label": "To label:",
   "blocks.inputs.date.settings.withTime.label": "With time",
