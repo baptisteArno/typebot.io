@@ -65,6 +65,7 @@ export const BlocksSideBar = () => {
   const closeSideBar = useDebouncedCallback(() => setIsExtended(false), 200);
 
   const handlePointerMove = (event: PointerEvent) => {
+    if ((draggedBlockType || draggedEventType) && !event.isPrimary) return;
     const { clientX, clientY } = event;
     if (draggedBlockType || draggedEventType) {
       setPosition({
@@ -87,10 +88,8 @@ export const BlocksSideBar = () => {
   };
   useEventListener("pointermove", handlePointerMove);
 
-  const initBlockDragging = (
-    e: React.PointerEvent,
-    type: BlockV6["type"],
-  ) => {
+  const initBlockDragging = (e: React.PointerEvent, type: BlockV6["type"]) => {
+    if (!e.isPrimary || e.button !== 0) return;
     const element = e.currentTarget as HTMLElement;
     const rect = element.getBoundingClientRect();
     setPosition({ x: rect.left, y: rect.top });
@@ -104,6 +103,7 @@ export const BlocksSideBar = () => {
     e: React.PointerEvent,
     type: TDraggableEvent["type"],
   ) => {
+    if (!e.isPrimary || e.button !== 0) return;
     const element = e.currentTarget as HTMLElement;
     const rect = element.getBoundingClientRect();
     setPosition({ x: rect.left, y: rect.top });
@@ -113,7 +113,8 @@ export const BlocksSideBar = () => {
     setDraggedEventType(type);
   };
 
-  const handlePointerUp = () => {
+  const handlePointerDragEnd = (event: PointerEvent) => {
+    if (!event.isPrimary) return;
     if (!draggedBlockType && !draggedEventType) return;
     setDraggedBlockType(undefined);
     setDraggedEventType(undefined);
@@ -122,7 +123,8 @@ export const BlocksSideBar = () => {
       y: 0,
     });
   };
-  useEventListener("pointerup", handlePointerUp);
+  useEventListener("pointerup", handlePointerDragEnd);
+  useEventListener("pointercancel", handlePointerDragEnd);
 
   const handleLockClick = () => {
     try {

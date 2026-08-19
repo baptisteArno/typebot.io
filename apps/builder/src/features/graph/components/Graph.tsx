@@ -151,12 +151,34 @@ export const Graph = ({
     });
   }, []);
 
-  const handleMouseUp = (e: MouseEvent) => {
-    if (!typebot) return;
+  const handleCaptureMouseDown = (e: MouseEvent) => {
+    const isRightClick = e.button === 2;
+    if (isRightClick) e.stopPropagation();
+  };
+
+  const handlePointerUp = (event: PointerEvent) => {
+    if (!event.isPrimary || isDraggingGraph || event.button === 2) return;
+    if (
+      !selectBoxCoordinates ||
+      Math.abs(selectBoxCoordinates?.dimension.width) +
+        Math.abs(selectBoxCoordinates?.dimension.height) <
+        5
+    ) {
+      blurElements();
+    }
+    setSelectBoxCoordinates(undefined);
+    setPreviewingEdge(undefined);
+
+    if (
+      !graphContainerRef.current?.contains(
+        document.elementFromPoint(event.clientX, event.clientY),
+      )
+    )
+      return;
     if (draggedItem) setDraggedItem(undefined);
     if (!draggedBlock && !draggedBlockType && !draggedEventType) return;
     const coordinates = projectMouse(
-      { x: e.clientX, y: e.clientY },
+      { x: event.clientX, y: event.clientY },
       graphPosition,
     );
     const id = createId();
@@ -181,29 +203,10 @@ export const Graph = ({
       if (newBlockId && shouldOpenBlockSettingsOnCreation(draggedBlockType)) {
         setTimeout(() => {
           setOpenedNodeId(newBlockId);
-          // To avoid race condition with Graph mouse up event that can close the popover
+          // To avoid race condition with Graph pointer up event that can close the popover
         }, 1);
       }
     }
-  };
-
-  const handleCaptureMouseDown = (e: MouseEvent) => {
-    const isRightClick = e.button === 2;
-    if (isRightClick) e.stopPropagation();
-  };
-
-  const handlePointerUp = (e: MouseEvent) => {
-    if (isDraggingGraph || e.button === 2) return;
-    if (
-      !selectBoxCoordinates ||
-      Math.abs(selectBoxCoordinates?.dimension.width) +
-        Math.abs(selectBoxCoordinates?.dimension.height) <
-        5
-    ) {
-      blurElements();
-    }
-    setSelectBoxCoordinates(undefined);
-    setPreviewingEdge(undefined);
   };
 
   useGesture(
@@ -368,7 +371,6 @@ export const Graph = ({
   useEventListener("mousedown", handleCaptureMouseDown, undefined, {
     capture: true,
   });
-  useEventListener("mouseup", handleMouseUp, graphContainerRef);
   useEventListener("pointerup", handlePointerUp, editorContainerRef);
   useEventListener("mousemove", handleMouseMove);
 

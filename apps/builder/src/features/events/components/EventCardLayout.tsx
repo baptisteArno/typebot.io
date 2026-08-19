@@ -40,7 +40,7 @@ export const EventCardLayout = ({
               type="button"
               disabled={isDisabled}
               className={cx(
-                "flex items-center gap-2 border rounded-lg flex-1 px-4 py-2 bg-gray-1 transition-[box-shadow,background-color]",
+                "flex items-center gap-2 border rounded-lg flex-1 px-4 py-2 touch-pan-y bg-gray-1 transition-[box-shadow,background-color]",
                 isPointerDown ? "min-h-[42px]" : undefined,
                 isDisabled
                   ? "cursor-not-allowed"
