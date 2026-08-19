@@ -3,8 +3,9 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
+    "resolveJsonModule": true,
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.json"],
   "references": []
 }

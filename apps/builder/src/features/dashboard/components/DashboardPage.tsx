@@ -1,8 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useTranslate } from "@tolgee/react";
-import { sendRequest } from "@typebot.io/lib/utils";
 import type { Plan } from "@typebot.io/prisma/enum";
-import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
 import { LoaderCircleIcon } from "@typebot.io/ui/icons/LoaderCircleIcon";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
@@ -91,22 +89,10 @@ export const DashboardPage = () => {
     importTemplate(template, workspace.id);
   }, [router.query.template, workspace?.id, user]);
 
-  const importTemplate = async (templateSlug: string, workspaceId: string) => {
-    const { data, error } = await sendRequest<Typebot>(
-      `/templates/${templateSlug}.json`,
-    );
-    if (error || !data) {
-      toast({
-        title: t("errorMessage"),
-        description: error?.message ?? "Template not found",
-      });
-      setIsLoading(false);
-      isImportingTemplateRef.current = false;
-      return;
-    }
+  const importTemplate = (templateSlug: string, workspaceId: string) => {
     importTypebot({
       workspaceId,
-      typebot: data,
+      templateSlug,
       fromTemplate: templateSlug,
     });
   };

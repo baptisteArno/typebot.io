@@ -259,7 +259,7 @@ const RightElements = ({
 
   const handlePreviewClick = async () => {
     setStartPreviewFrom(undefined);
-    await save();
+    if ((await save()) === "failed") return;
     setRightPanel("preview");
   };
 

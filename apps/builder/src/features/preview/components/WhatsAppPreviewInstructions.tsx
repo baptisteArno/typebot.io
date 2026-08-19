@@ -41,7 +41,7 @@ export const WhatsAppPreviewInstructions = ({
   const sendWhatsAppPreviewStartMessage = async (e: FormEvent) => {
     e.preventDefault();
     if (!typebot) return;
-    await save();
+    if ((await save()) === "failed") return;
     mutate({
       to: phoneNumber,
       typebotId: typebot.id,

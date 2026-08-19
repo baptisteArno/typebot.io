@@ -33,7 +33,7 @@ export const PreviewDrawer = () => {
   const [, setRightPanel] = useRightPanel();
 
   const handleRestartClick = async () => {
-    await save();
+    if ((await save()) === "failed") return;
     reload();
   };
 

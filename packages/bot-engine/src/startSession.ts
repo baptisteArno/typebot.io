@@ -39,6 +39,7 @@ import {
   defaultSystemMessages,
 } from "@typebot.io/settings/constants";
 import { settingsSchema } from "@typebot.io/settings/schemas";
+import { getTemplateWithTypebotBySlug } from "@typebot.io/templates/typebots";
 import {
   defaultGuestAvatarIsEnabled,
   defaultHostAvatarIsEnabled,
@@ -73,6 +74,10 @@ type StartParams =
       userId?: string;
     } & StartPreviewChatInput)
   | ({
+      type: "template";
+      templateSlug: string;
+    } & Omit<StartPreviewChatInput, "typebotId" | "isProgressBarEnabled">)
+  | ({
       type: "live";
     } & StartChatInput);
 
@@ -102,7 +107,7 @@ export const startSession = async ({
   const result = await getOrInitResult({
     resultId: startParams.type === "live" ? startParams.resultId : undefined,
     typebotId: typebot.id,
-    isPreview: startParams.type === "preview",
+    isPreview: startParams.type !== "live",
     isRememberUserEnabled:
       typebot.settings.general?.rememberUser?.isEnabled ??
       (isDefined(typebot.settings.general?.isNewResultOnRefreshEnabled)
@@ -162,19 +167,29 @@ export const startSession = async ({
     isStreamEnabled: startParams.isStreamEnabled,
     typingEmulation: typebot.settings.typingEmulation,
     allowedOrigins:
-      startParams.type === "preview"
-        ? undefined
-        : typebot.settings.security?.allowedOrigins,
+      startParams.type === "live"
+        ? typebot.settings.security?.allowedOrigins
+        : undefined,
     progressMetadata: initialSessionState?.whatsApp
       ? undefined
-      : typebot.theme.general?.progressBar?.isEnabled
+      : (
+            startParams.type === "preview" &&
+            isDefined(startParams.isProgressBarEnabled)
+              ? startParams.isProgressBarEnabled
+              : typebot.theme.general?.progressBar?.isEnabled
+          )
         ? { totalAnswers: 0 }
         : undefined,
+    ...(initialSessionState?.whatsApp
+      ? { whatsApp: initialSessionState.whatsApp }
+      : {}),
+    ...(isDefined(initialSessionState?.expiryTimeout)
+      ? { expiryTimeout: initialSessionState.expiryTimeout }
+      : {}),
     setVariableIdsForHistory: extractVariableIdsUsedForTranscript(
       typebotInSession,
       { sessionStore },
     ),
-    ...initialSessionState,
   };
 
   const setVariableHistory: SetVariableHistoryItem[] = [];
@@ -333,21 +348,31 @@ export const startSession = async ({
 };
 
 const getTypebot = async (startParams: StartParams) => {
-  if (startParams.type === "preview" && !startParams.userId)
-    throw new ORPCError("UNAUTHORIZED", {
-      message: "You need to be authenticated to perform this action",
+  let typebotQuery:
+    | Awaited<ReturnType<typeof findTypebot>>
+    | Awaited<ReturnType<typeof findPublicTypebot>>;
+
+  if (startParams.type === "preview") {
+    if (!startParams.userId)
+      throw new ORPCError("UNAUTHORIZED", {
+        message: "You need to be authenticated to perform this action",
+      });
+
+    typebotQuery = await findTypebot({
+      id: startParams.typebotId,
+      userId: startParams.userId,
     });
+  } else if (startParams.type === "template") {
+    const template = getTemplateWithTypebotBySlug(startParams.templateSlug);
+    if (!template)
+      throw new ORPCError("NOT_FOUND", {
+        message: "Template not found",
+      });
 
-  if (startParams.type === "preview" && startParams.typebot)
-    return startParams.typebot;
-
-  const typebotQuery =
-    startParams.type === "preview"
-      ? await findTypebot({
-          id: startParams.typebotId,
-          userId: startParams.userId,
-        })
-      : await findPublicTypebot({ publicId: startParams.publicId });
+    return startTypebotSchema.parse(template.typebot);
+  } else {
+    typebotQuery = await findPublicTypebot({ publicId: startParams.publicId });
+  }
 
   if (
     typebotQuery &&

@@ -6,7 +6,6 @@ import { clientSideActionSchema } from "@typebot.io/chat-api/clientSideAction";
 import {
   chatBubbleSchema,
   runtimeOptionsSchema,
-  startTypebotSchema,
 } from "@typebot.io/chat-api/schemas";
 import { logInSessionSchema } from "@typebot.io/logs/schemas";
 import { dynamicThemeSchema } from "@typebot.io/theme/schemas";
@@ -31,10 +30,10 @@ export type StartElementId = z.infer<typeof startElementIdSchema>;
 
 const startParamsSchema = z
   .object({
-    typebot: startTypebotSchema
-      .or(z.string())
+    typebot: z
+      .string()
       .describe(
-        "Either a Typebot ID or a Typebot object. If you provide a Typebot object, it will be executed in preview mode. ([How can I find my typebot ID?](https://docs.typebot.com/api-reference#how-to-find-my-typebotid)).",
+        "Typebot ID or public ID. ([How can I find my typebot ID?](https://docs.typebot.com/api-reference#how-to-find-my-typebotid)).",
       ),
     isPreview: z
       .boolean()

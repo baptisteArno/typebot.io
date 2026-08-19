@@ -1,5 +1,4 @@
 import { open, Popup, toggle } from "@typebot.io/react";
-import { leadGenerationTypebot } from "./assets/leadGenerationTypebot";
 
 export const Default = () => {
   return (
@@ -11,13 +10,12 @@ export const Default = () => {
         Toggle modal
       </button>
       <Popup
-        typebot={leadGenerationTypebot}
+        templateSlug="lead-gen"
         apiHost="http://localhost:3001"
         autoShowDelay={3000}
         theme={{
           width: "800px",
         }}
-        isPreview
       />
     </>
   );

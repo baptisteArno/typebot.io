@@ -16,11 +16,13 @@ import { getIframeReferrerOrigin } from "../utils/getIframeReferrerOrigin";
 import { guessApiHost } from "../utils/guessApiHost";
 
 type Props = {
-  typebot: string | any;
+  typebot?: string;
+  templateSlug?: string;
   stripeRedirectStatus?: string;
   apiHost?: string;
   startFrom?: StartFrom;
   isPreview: boolean;
+  isProgressBarEnabled?: boolean;
   prefilledVariables?: Record<string, unknown>;
   resultId?: string;
   sessionId?: string;
@@ -28,7 +30,9 @@ type Props = {
 
 export async function startChatQuery({
   typebot,
+  templateSlug,
   isPreview,
+  isProgressBarEnabled,
   apiHost,
   prefilledVariables,
   resultId,
@@ -36,7 +40,7 @@ export async function startChatQuery({
   startFrom,
   sessionId,
 }: Props) {
-  if (isNotDefined(typebot))
+  if (isNotDefined(typebot) && !isNotEmpty(templateSlug))
     throw new Error("Typebot ID is required to get initial messages");
 
   const paymentInProgressStateStr =
@@ -54,22 +58,34 @@ export async function startChatQuery({
       paymentInProgressState,
     });
   }
-  const typebotId = typeof typebot === "string" ? typebot : typebot.id;
+  if (isNotEmpty(templateSlug)) {
+    return startTemplatePreviewChat({
+      apiHost,
+      templateSlug,
+      startFrom,
+      prefilledVariables,
+      sessionId,
+    });
+  }
+
+  if (isNotDefined(typebot))
+    throw new Error("Typebot ID is required to get initial messages");
+
   if (isPreview) {
     return startPreviewChat({
       apiHost,
-      typebotId,
+      typebotId: typebot,
       startFrom,
-      typebot,
       prefilledVariables,
       sessionId,
+      isProgressBarEnabled,
     });
   }
 
   try {
     const iframeReferrerOrigin = getIframeReferrerOrigin();
     const response = await ky.post(
-      `${getApiHost(apiHost)}/api/v1/typebots/${typebotId}/startChat`,
+      `${getApiHost(apiHost)}/api/v1/typebots/${typebot}/startChat`,
       {
         headers: {
           "x-typebot-iframe-referrer-origin": iframeReferrerOrigin,
@@ -141,16 +157,16 @@ const startPreviewChat = async ({
   apiHost,
   typebotId,
   startFrom,
-  typebot,
   prefilledVariables,
   sessionId,
+  isProgressBarEnabled,
 }: {
   apiHost?: string;
   typebotId: string;
   startFrom?: StartFrom;
-  typebot: StartPreviewChatInput["typebot"];
   prefilledVariables?: Record<string, unknown>;
   sessionId?: string;
+  isProgressBarEnabled?: boolean;
 }) => {
   try {
     const data = await ky
@@ -160,7 +176,47 @@ const startPreviewChat = async ({
           json: {
             isStreamEnabled: true,
             startFrom,
-            typebot,
+            prefilledVariables,
+            sessionId,
+            isProgressBarEnabled,
+          } satisfies Omit<
+            StartPreviewChatInput,
+            "typebotId" | "isOnlyRegistering" | "textBubbleContentFormat"
+          >,
+          timeout: false,
+        },
+      )
+      .json<StartChatResponse>();
+
+    return { data };
+  } catch (error) {
+    return { error };
+  }
+};
+
+const startTemplatePreviewChat = async ({
+  apiHost,
+  templateSlug,
+  startFrom,
+  prefilledVariables,
+  sessionId,
+}: {
+  apiHost?: string;
+  templateSlug: string;
+  startFrom?: StartFrom;
+  prefilledVariables?: Record<string, unknown>;
+  sessionId?: string;
+}) => {
+  try {
+    const data = await ky
+      .post(
+        `${getApiHost(
+          apiHost,
+        )}/api/v1/templates/${templateSlug}/preview/startChat`,
+        {
+          json: {
+            isStreamEnabled: true,
+            startFrom,
             prefilledVariables,
             sessionId,
           } satisfies Omit<

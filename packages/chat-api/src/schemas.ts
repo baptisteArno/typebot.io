@@ -150,7 +150,6 @@ const startTypebotPick = {
   workspaceId: true,
 } as const;
 const startTypebotV5Schema = typebotV5Schema.pick(startTypebotPick);
-type StartTypebotV5 = z.infer<typeof startTypebotV5Schema>;
 
 const startTypebotV6Schema = typebotV6Schema.pick(startTypebotPick);
 export type StartTypebotV6 = z.infer<typeof startTypebotV6Schema>;
@@ -168,7 +167,7 @@ export const startTypebotSchema = z
       publicTypebotId: z.string().optional(),
     }),
   );
-export type StartTypebot = StartTypebotV6 | StartTypebotV5;
+export type StartTypebot = z.infer<typeof startTypebotSchema>;
 
 export const startFromGroupSchema = z.object({
   type: z.literal("group"),
@@ -236,11 +235,6 @@ export const startPreviewChatInputSchema = z
       .describe(
         "[Where to find my bot's ID?](../how-to#how-to-find-my-typebotid)",
       ),
-    typebot: startTypebotSchema
-      .optional()
-      .describe(
-        "If set, it will override the typebot that is used to start the chat.",
-      ),
     sessionId: z
       .string()
       .optional()
@@ -248,6 +242,12 @@ export const startPreviewChatInputSchema = z
         "If provided, will be used as the session ID and will overwrite any existing session with the same ID.",
       ),
     startFrom: startFromSchema.optional(),
+    isProgressBarEnabled: z
+      .boolean()
+      .optional()
+      .describe(
+        "Override whether progress tracking is enabled for this preview session.",
+      ),
   })
   .merge(commonStartChatInputSchema);
 export type StartPreviewChatInput = z.infer<typeof startPreviewChatInputSchema>;
