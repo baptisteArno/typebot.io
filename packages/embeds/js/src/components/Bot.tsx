@@ -102,6 +102,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
       templateSlug: props.templateSlug,
       apiHost: props.apiHost,
       isPreview: isPreview(),
+      isProgressBarEnabled: props.previewTheme?.general?.progressBar?.isEnabled,
       resultId: isNotEmpty(props.resultId) ? props.resultId : resultIdInStorage,
       prefilledVariables: {
         ...prefilledVariables,
@@ -226,7 +227,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
     if (
       props.previewTheme.general?.progressBar?.isEnabled &&
       initialChatReply() &&
-      !initialChatReply()?.typebot.theme.general?.progressBar?.isEnabled
+      isNotDefined(initialChatReply()?.progress)
     ) {
       setIsInitialized(false);
       initializeBot().then();

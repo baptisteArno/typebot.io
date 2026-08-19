@@ -76971,6 +76971,10 @@
                     "additionalProperties": {},
                     "description": "[More info about prefilled variables.](../../editor/variables#prefilled-variables)"
                   },
+                  "isProgressBarEnabled": {
+                    "type": "boolean",
+                    "description": "Override whether progress tracking is enabled for this preview session."
+                  },
                   "textBubbleContentFormat": {
                     "enum": [
                       "richText",

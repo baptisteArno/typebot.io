@@ -70,7 +70,10 @@ const typebotContext = createContext<
     currentUserMode: "guest" | "read" | "write";
     isPublished: boolean;
     isSavingLoading: boolean;
-    save: (updates?: Partial<TypebotV6>, overwrite?: boolean) => Promise<void>;
+    save: (
+      updates?: Partial<TypebotV6>,
+      overwrite?: boolean,
+    ) => Promise<"saved" | "unchanged" | "failed">;
     undo: () => void;
     redo: () => void;
     canRedo: boolean;
@@ -221,7 +224,8 @@ export const TypebotProvider = ({
 
   const saveTypebot = useCallback(
     async (updates?: Partial<TypebotV6>, overwrite?: boolean) => {
-      if (!localTypebot || !typebot || isReadOnly) return;
+      if (!localTypebot || !typebot) return "failed";
+      if (isReadOnly) return "unchanged";
       const typebotToSave = {
         ...localTypebot,
         ...updates,
@@ -232,10 +236,10 @@ export const TypebotProvider = ({
           JSON.parse(JSON.stringify(omit(typebotToSave, "updatedAt"))),
         )
       )
-        return;
-      const newParsedTypebot = typebotV6Schema.parse({ ...typebotToSave });
-      setLocalTypebot(newParsedTypebot);
+        return "unchanged";
       try {
+        const newParsedTypebot = typebotV6Schema.parse({ ...typebotToSave });
+        setLocalTypebot(newParsedTypebot);
         const { typebot } = await updateTypebot({
           typebotId: newParsedTypebot.id,
           typebot: newParsedTypebot,
@@ -245,10 +249,12 @@ export const TypebotProvider = ({
         if (overwrite) {
           setLocalTypebot(typebot);
         }
+        return "saved";
       } catch {
         setLocalTypebot({
           ...localTypebot,
         });
+        return "failed";
       }
     },
     [

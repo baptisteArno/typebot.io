@@ -22,6 +22,7 @@ type Props = {
   apiHost?: string;
   startFrom?: StartFrom;
   isPreview: boolean;
+  isProgressBarEnabled?: boolean;
   prefilledVariables?: Record<string, unknown>;
   resultId?: string;
   sessionId?: string;
@@ -31,6 +32,7 @@ export async function startChatQuery({
   typebot,
   templateSlug,
   isPreview,
+  isProgressBarEnabled,
   apiHost,
   prefilledVariables,
   resultId,
@@ -76,6 +78,7 @@ export async function startChatQuery({
       startFrom,
       prefilledVariables,
       sessionId,
+      isProgressBarEnabled,
     });
   }
 
@@ -156,12 +159,14 @@ const startPreviewChat = async ({
   startFrom,
   prefilledVariables,
   sessionId,
+  isProgressBarEnabled,
 }: {
   apiHost?: string;
   typebotId: string;
   startFrom?: StartFrom;
   prefilledVariables?: Record<string, unknown>;
   sessionId?: string;
+  isProgressBarEnabled?: boolean;
 }) => {
   try {
     const data = await ky
@@ -173,6 +178,7 @@ const startPreviewChat = async ({
             startFrom,
             prefilledVariables,
             sessionId,
+            isProgressBarEnabled,
           } satisfies Omit<
             StartPreviewChatInput,
             "typebotId" | "isOnlyRegistering" | "textBubbleContentFormat"

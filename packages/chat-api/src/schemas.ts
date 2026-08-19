@@ -242,6 +242,12 @@ export const startPreviewChatInputSchema = z
         "If provided, will be used as the session ID and will overwrite any existing session with the same ID.",
       ),
     startFrom: startFromSchema.optional(),
+    isProgressBarEnabled: z
+      .boolean()
+      .optional()
+      .describe(
+        "Override whether progress tracking is enabled for this preview session.",
+      ),
   })
   .merge(commonStartChatInputSchema);
 export type StartPreviewChatInput = z.infer<typeof startPreviewChatInputSchema>;

@@ -91,6 +91,48 @@ test("API chat execution should work on preview bot", async ({ request }) => {
   });
 });
 
+test("API preview chat should initialize progress from a targeted override", async ({
+  request,
+}) => {
+  const typebotId = createId();
+  const publicId = `${typebotId}-public`;
+  await importTypebotInDatabase(getTestAsset("typebots/chat/main.json"), {
+    id: typebotId,
+    publicId,
+  });
+
+  const response = await request.post(
+    `/api/v1/typebots/${typebotId}/preview/startChat`,
+    {
+      data: {
+        isOnlyRegistering: false,
+        isStreamEnabled: false,
+        isProgressBarEnabled: true,
+        textBubbleContentFormat: "richText",
+      } satisfies Omit<StartPreviewChatInput, "typebotId">,
+      headers: {
+        Authorization: `Bearer ${apiToken}`,
+      },
+    },
+  );
+
+  expect(response.ok()).toBe(true);
+
+  const responseBody = await response.json();
+  const session = await prisma.chatSession.findUnique({
+    where: { id: responseBody.sessionId },
+    select: { state: true },
+  });
+
+  expect(responseBody.progress).toBeDefined();
+  expect(responseBody.typebot.theme.general?.progressBar?.isEnabled).not.toBe(
+    true,
+  );
+  expect(
+    sessionStateSchema.parse(session?.state).progressMetadata,
+  ).toBeDefined();
+});
+
 test("API template preview chat should start from a server-side template slug", async ({
   request,
 }) => {

@@ -76,7 +76,7 @@ type StartParams =
   | ({
       type: "template";
       templateSlug: string;
-    } & Omit<StartPreviewChatInput, "typebotId">)
+    } & Omit<StartPreviewChatInput, "typebotId" | "isProgressBarEnabled">)
   | ({
       type: "live";
     } & StartChatInput);
@@ -172,7 +172,12 @@ export const startSession = async ({
         : undefined,
     progressMetadata: initialSessionState?.whatsApp
       ? undefined
-      : typebot.theme.general?.progressBar?.isEnabled
+      : (
+            startParams.type === "preview" &&
+            isDefined(startParams.isProgressBarEnabled)
+              ? startParams.isProgressBarEnabled
+              : typebot.theme.general?.progressBar?.isEnabled
+          )
         ? { totalAnswers: 0 }
         : undefined,
     ...(initialSessionState?.whatsApp

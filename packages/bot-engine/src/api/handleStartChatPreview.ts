@@ -46,11 +46,17 @@ export const startPreviewChatInputSchema = z.object({
     .describe(
       "[More info about prefilled variables.](../../editor/variables#prefilled-variables)",
     ),
+  isProgressBarEnabled: z
+    .boolean()
+    .optional()
+    .describe(
+      "Override whether progress tracking is enabled for this preview session.",
+    ),
   textBubbleContentFormat: z.enum(["richText", "markdown"]).default("richText"),
 });
 
 export const startTemplatePreviewChatInputSchema = startPreviewChatInputSchema
-  .omit({ typebotId: true })
+  .omit({ typebotId: true, isProgressBarEnabled: true })
   .extend({
     templateSlug: z.string(),
   });
@@ -67,6 +73,7 @@ export const handleStartChatPreview = async ({
     startFrom,
     typebotId,
     prefilledVariables,
+    isProgressBarEnabled,
     sessionId: sessionIdProp,
     textBubbleContentFormat,
   },
@@ -85,6 +92,7 @@ export const handleStartChatPreview = async ({
       typebotId,
       userId: user?.id,
       prefilledVariables,
+      isProgressBarEnabled,
       textBubbleContentFormat,
       message,
     },
