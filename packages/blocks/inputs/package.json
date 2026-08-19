@@ -11,6 +11,9 @@
     },
     "./package.json": "./package.json"
   },
+  "scripts": {
+    "test": "bun test"
+  },
   "dependencies": {
     "@typebot.io/blocks-base": "workspace:*",
     "@typebot.io/variables": "workspace:*",

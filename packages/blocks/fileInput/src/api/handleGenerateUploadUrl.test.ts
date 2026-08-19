@@ -64,6 +64,55 @@ describe("handleGenerateUploadUrl", () => {
     );
     expect(response.maxFileSize).toBe(5);
   });
+
+  it("keeps enforcing an extension-based image allowlist for captured files", async () => {
+    publicTypebotFindFirstMock.mockResolvedValue(
+      buildPublicTypebot([".JPG", ".png", ".jpeg"]),
+    );
+
+    const response = await handleGenerateUploadUrl({
+      input: {
+        sessionId,
+        blockId: blockIdFromSession,
+        fileName: "captured-image.jpg",
+        fileType: "image/jpeg",
+      },
+      context: { apiOrigin: "http://localhost:3001" },
+    });
+
+    expect(
+      parseSignedUploadFilePath(response.presignedUrl).endsWith(".jpeg"),
+    ).toBe(true);
+    await expect(
+      handleGenerateUploadUrl({
+        input: {
+          sessionId,
+          blockId: blockIdFromSession,
+          fileName: "document.pdf",
+          fileType: "application/pdf",
+        },
+        context: { apiOrigin: "http://localhost:3001" },
+      }),
+    ).rejects.toThrow("File type application/pdf not allowed");
+  });
+
+  it("fails closed when an enabled allowlist cannot be resolved", async () => {
+    publicTypebotFindFirstMock.mockResolvedValue(
+      buildPublicTypebot(["image/x-unknown"]),
+    );
+
+    await expect(
+      handleGenerateUploadUrl({
+        input: {
+          sessionId,
+          blockId: blockIdFromSession,
+          fileName: "document.pdf",
+          fileType: "application/pdf",
+        },
+        context: { apiOrigin: "http://localhost:3001" },
+      }),
+    ).rejects.toThrow("File type application/pdf not allowed");
+  });
 });
 
 const buildSession = () => ({
@@ -80,7 +129,7 @@ const buildSession = () => ({
   },
 });
 
-const buildPublicTypebot = () => ({
+const buildPublicTypebot = (allowedFileTypes?: string[]) => ({
   version: "5",
   groups: [
     {
@@ -94,6 +143,10 @@ const buildPublicTypebot = () => ({
           options: {
             visibility: "Private",
             sizeLimit: 5,
+            capture: allowedFileTypes ? "environment" : undefined,
+            allowedFileTypes: allowedFileTypes
+              ? { isEnabled: true, types: allowedFileTypes }
+              : undefined,
           },
         },
       ],

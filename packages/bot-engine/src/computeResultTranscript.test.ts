@@ -115,4 +115,49 @@ describe("computeResultTranscript", () => {
       },
     ]);
   });
+
+  it("ignores an answer for a removed input block", () => {
+    const transcript = computeResultTranscript({
+      typebot: buildTypebotWithSessionVarDisplayCondition(),
+      answers: [
+        { blockId: "removed-block", content: "Removed answer" },
+        { blockId: "choice-block", content: "Show product page" },
+      ],
+      setVariableHistory: [],
+      visitedEdges: ["edge-start", "edge-product"],
+      sessionStore: new SessionStore(),
+    });
+
+    expect(transcript).toEqual([
+      {
+        id: "choice-block-0",
+        role: "user",
+        type: "text",
+        text: "Show product page",
+      },
+    ]);
+  });
+
+  it("ignores multiple answers for removed input blocks", () => {
+    const transcript = computeResultTranscript({
+      typebot: buildTypebotWithSessionVarDisplayCondition(),
+      answers: [
+        { blockId: "first-removed-block", content: "First removed answer" },
+        { blockId: "second-removed-block", content: "Second removed answer" },
+        { blockId: "choice-block", content: "Show product page" },
+      ],
+      setVariableHistory: [],
+      visitedEdges: ["edge-start", "edge-product"],
+      sessionStore: new SessionStore(),
+    });
+
+    expect(transcript).toEqual([
+      {
+        id: "choice-block-0",
+        role: "user",
+        type: "text",
+        text: "Show product page",
+      },
+    ]);
+  });
 });

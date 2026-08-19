@@ -1,5 +1,12 @@
 import type { FileInputBlock } from "./schema";
 
+export const fileCaptureModeOptions = [
+  "environment",
+  "user",
+] satisfies readonly ["environment", "user"];
+
+export type FileCaptureMode = (typeof fileCaptureModeOptions)[number];
+
 export const defaultFileInputOptions = {
   isRequired: true,
   isMultipleAllowed: false,

@@ -1,4 +1,5 @@
 import { ORPCError } from "@orpc/server";
+import dailyGuestInvitationRateLimiter from "@typebot.io/auth/lib/dailyGuestInvitationRateLimiter";
 import gentleRateLimiter from "@typebot.io/auth/lib/gentleRateLimiter";
 import { sendGuestInvitationEmail } from "@typebot.io/emails/transactional/GuestInvitationEmail";
 import { env } from "@typebot.io/env";
@@ -30,14 +31,26 @@ export const handleCreateInvitation = async ({
   }
   const typebot = await prisma.typebot.findFirst({
     where: canWriteTypebots(typebotId, user),
-    include: { workspace: { select: { name: true } } },
+    include: {
+      workspace: { select: { isSuspended: true, name: true } },
+    },
   });
 
-  if (!typebot || !typebot.workspaceId)
+  if (!typebot || !typebot.workspaceId || typebot.workspace.isSuspended)
     throw new ORPCError("FORBIDDEN", {
       message:
         "You don't have permission to invite collaborators to this typebot",
     });
+
+  if (dailyGuestInvitationRateLimiter) {
+    const { success } = await dailyGuestInvitationRateLimiter.limit(
+      typebot.workspaceId,
+    );
+    if (!success)
+      throw new ORPCError("TOO_MANY_REQUESTS", {
+        message: "Daily guest invitation limit reached",
+      });
+  }
 
   const existingUser = await prisma.user.findUnique({
     where: { email: email.toLowerCase() },

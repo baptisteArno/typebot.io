@@ -4,7 +4,7 @@ import {
 } from "@typebot.io/blocks-base/schemas";
 import { z } from "zod";
 import { InputBlockType } from "../constants";
-import { fileVisibilityOptions } from "./constants";
+import { fileCaptureModeOptions, fileVisibilityOptions } from "./constants";
 
 const fileInputOptionsV5Schema = optionBaseSchema.merge(
   z.object({
@@ -30,6 +30,7 @@ const fileInputOptionsV5Schema = optionBaseSchema.merge(
         types: z.array(z.string()).optional(),
       })
       .optional(),
+    capture: z.enum(fileCaptureModeOptions).optional(),
     sizeLimit: z.number().optional(),
     visibility: z.enum(fileVisibilityOptions).optional(),
   }),

@@ -13,3 +13,4 @@ const mainWorktreeRoot = (
 await $`cp ${mainWorktreeRoot}/.env ${currentWorktreeRoot}/.env`;
 await $`cp -R ${mainWorktreeRoot}/apps/viewer/src/test/.auth ${currentWorktreeRoot}/apps/viewer/src/test/.auth`;
 await $`cd ${currentWorktreeRoot} && bun install`;
+await $`cd ${currentWorktreeRoot} && bunx playwright install chromium`;

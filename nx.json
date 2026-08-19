@@ -15,6 +15,9 @@
     }
   ],
   "targetDefaults": {
+    "dev": {
+      "dependsOn": ["^db:generate", "^db:push"]
+    },
     "@nx/esbuild:esbuild": {
       "cache": true,
       "dependsOn": ["^build"],

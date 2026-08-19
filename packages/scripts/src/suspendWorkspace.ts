@@ -6,20 +6,28 @@ import { promptAndSetEnvironment } from "./utils";
 const suspendWorkspace = async () => {
   await promptAndSetEnvironment("production");
 
-  const type = await select<"id" | "publicId" | "workspaceId">({
-    message: "Select way",
-    options: [
-      { label: "Typebot ID", value: "id" },
-      { label: "Typebot public ID", value: "publicId" },
-      { label: "Workspace ID", value: "workspaceId" },
-    ],
-  });
+  const workspaceIdArgument = process.argv
+    .find((argument) => argument.startsWith("--workspace-id="))
+    ?.slice("--workspace-id=".length);
+
+  const type = workspaceIdArgument
+    ? "workspaceId"
+    : await select<"id" | "publicId" | "workspaceId">({
+        message: "Select way",
+        options: [
+          { label: "Typebot ID", value: "id" },
+          { label: "Typebot public ID", value: "publicId" },
+          { label: "Workspace ID", value: "workspaceId" },
+        ],
+      });
 
   if (!type || isCancel(type)) return;
 
-  const val = await text({
-    message: "Enter value",
-  });
+  const val = workspaceIdArgument
+    ? workspaceIdArgument
+    : await text({
+        message: "Enter value",
+      });
 
   if (!val || isCancel(val)) return;
 

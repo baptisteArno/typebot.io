@@ -1847,6 +1847,13 @@
                                             }
                                           }
                                         },
+                                        "capture": {
+                                          "enum": [
+                                            "environment",
+                                            "user"
+                                          ],
+                                          "type": "string"
+                                        },
                                         "visibility": {
                                           "enum": [
                                             "Auto",
@@ -2319,6 +2326,13 @@
                                               }
                                             }
                                           }
+                                        },
+                                        "capture": {
+                                          "enum": [
+                                            "environment",
+                                            "user"
+                                          ],
+                                          "type": "string"
                                         },
                                         "sizeLimit": {
                                           "type": "number"
@@ -4719,6 +4733,13 @@
                                             }
                                           }
                                         },
+                                        "capture": {
+                                          "enum": [
+                                            "environment",
+                                            "user"
+                                          ],
+                                          "type": "string"
+                                        },
                                         "visibility": {
                                           "enum": [
                                             "Auto",
@@ -5191,6 +5212,13 @@
                                               }
                                             }
                                           }
+                                        },
+                                        "capture": {
+                                          "enum": [
+                                            "environment",
+                                            "user"
+                                          ],
+                                          "type": "string"
                                         },
                                         "sizeLimit": {
                                           "type": "number"
@@ -8585,6 +8613,13 @@
                                             }
                                           }
                                         },
+                                        "capture": {
+                                          "enum": [
+                                            "environment",
+                                            "user"
+                                          ],
+                                          "type": "string"
+                                        },
                                         "visibility": {
                                           "enum": [
                                             "Auto",
@@ -9057,6 +9092,13 @@
                                               }
                                             }
                                           }
+                                        },
+                                        "capture": {
+                                          "enum": [
+                                            "environment",
+                                            "user"
+                                          ],
+                                          "type": "string"
                                         },
                                         "sizeLimit": {
                                           "type": "number"
@@ -12080,6 +12122,13 @@
                                             }
                                           }
                                         },
+                                        "capture": {
+                                          "enum": [
+                                            "environment",
+                                            "user"
+                                          ],
+                                          "type": "string"
+                                        },
                                         "visibility": {
                                           "enum": [
                                             "Auto",
@@ -12552,6 +12601,13 @@
                                               }
                                             }
                                           }
+                                        },
+                                        "capture": {
+                                          "enum": [
+                                            "environment",
+                                            "user"
+                                          ],
+                                          "type": "string"
                                         },
                                         "sizeLimit": {
                                           "type": "number"

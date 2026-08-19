@@ -9,23 +9,23 @@ type Props = {
   tooltip?: string;
   isDisabled?: boolean;
   children: React.ReactNode;
-  onMouseDown: (e: React.MouseEvent, type: BlockV6["type"]) => void;
+  onPointerDown: (e: React.PointerEvent, type: BlockV6["type"]) => void;
 };
 
 export const BlockCardLayout = ({
   type,
-  onMouseDown,
+  onPointerDown,
   tooltip,
   children,
 }: Props) => {
   const { draggedBlockType } = useBlockDnd();
-  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [isPointerDown, setIsPointerDown] = useState(false);
 
   useEffect(() => {
-    setIsMouseDown(draggedBlockType === type);
+    setIsPointerDown(draggedBlockType === type);
   }, [draggedBlockType, type]);
 
-  const handleMouseDown = (e: React.MouseEvent) => onMouseDown(e, type);
+  const handlePointerDown = (e: React.PointerEvent) => onPointerDown(e, type);
 
   return (
     <Tooltip.Root disabled={!tooltip}>
@@ -35,12 +35,12 @@ export const BlockCardLayout = ({
             <button
               type="button"
               className={cx(
-                "flex items-center gap-2 border dark:border-gray-3 rounded-lg flex-1 px-4 py-2 cursor-grab bg-gray-2 hover:shadow-md dark:hover:bg-gray-3 dark:hover:shadow-none transition-[box-shadow,background-color]",
-                isMouseDown ? "opacity-40 min-h-[42px]" : "opacity-100",
+                "flex items-center gap-2 border dark:border-gray-3 rounded-lg flex-1 px-4 py-2 cursor-grab touch-pan-y bg-gray-2 hover:shadow-md dark:hover:bg-gray-3 dark:hover:shadow-none transition-[box-shadow,background-color]",
+                isPointerDown ? "opacity-40 min-h-[42px]" : "opacity-100",
               )}
-              onMouseDown={handleMouseDown}
+              onPointerDown={handlePointerDown}
             >
-              {!isMouseDown ? children : null}
+              {!isPointerDown ? children : null}
             </button>
           </div>
         }
