@@ -7,11 +7,10 @@ export const updateWorkspaceInvitationInputSchema = z.object({
   id: z.string(),
   email: z.string().optional(),
   type: z.nativeEnum(WorkspaceRole).optional(),
-  workspaceId: z.string().optional(),
 });
 
 export const handleUpdateWorkspaceInvitation = async ({
-  input,
+  input: { id, email, type },
   context: { user },
 }: {
   input: z.infer<typeof updateWorkspaceInvitationInputSchema>;
@@ -19,12 +18,15 @@ export const handleUpdateWorkspaceInvitation = async ({
 }) => {
   const invitation = await prisma.workspaceInvitation.updateMany({
     where: {
-      id: input.id,
+      id,
       workspace: {
         members: { some: { userId: user.id, role: WorkspaceRole.ADMIN } },
       },
     },
-    data: input,
+    data: {
+      ...(email === undefined ? {} : { email }),
+      ...(type === undefined ? {} : { type }),
+    },
   });
   return { invitation };
 };
