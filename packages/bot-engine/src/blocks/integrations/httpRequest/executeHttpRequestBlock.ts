@@ -307,6 +307,7 @@ export const executeHttpRequest = async (
       ? { ...baseRequest, json: body }
       : { ...baseRequest, body }
     : baseRequest;
+  const requestForLogs = omit(request, "headers", "username", "password");
 
   try {
     const response = await safeKy(request.url, omit(request, "url"));
@@ -317,7 +318,7 @@ export const executeHttpRequest = async (
       details: JSON.stringify({
         statusCode: response.status,
         response: body,
-        request,
+        request: requestForLogs,
       }),
     });
     return {
@@ -339,7 +340,7 @@ export const executeHttpRequest = async (
         description: webhookErrorDescription,
         details: JSON.stringify({
           statusCode: error.response.status,
-          request,
+          request: requestForLogs,
           response,
         }),
       });
@@ -356,12 +357,10 @@ export const executeHttpRequest = async (
       };
       logs.push({
         status: "error",
-        description: `Webhook request timed out. (${
-          (request.timeout ? request.timeout : 0) / 1000
-        }s)`,
+        description: webhookErrorDescription,
         details: JSON.stringify({
           response,
-          request,
+          request: requestForLogs,
         }),
       });
       return { response, logs, startTimeShouldBeUpdated: true };
@@ -374,13 +373,12 @@ export const executeHttpRequest = async (
       statusCode: 500,
       data: parsedError,
     };
-    console.error(error);
     logs.push({
       status: "error",
-      description: "Webhook failed to execute.",
+      description: webhookErrorDescription,
       details: JSON.stringify({
         response,
-        request,
+        request: requestForLogs,
       }),
     });
     return { response, logs, startTimeShouldBeUpdated: true };
