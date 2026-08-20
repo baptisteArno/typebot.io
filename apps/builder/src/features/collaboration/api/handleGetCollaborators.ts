@@ -1,8 +1,8 @@
 import { ORPCError } from "@orpc/server";
 import prisma from "@typebot.io/prisma";
-import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
+import { canReadTypebots } from "@/helpers/databaseRules";
 
 export const getCollaboratorsInputSchema = z.object({
   typebotId: z.string(),
@@ -16,9 +16,7 @@ export const handleGetCollaborators = async ({
   context: { user: Pick<User, "id" | "email"> };
 }) => {
   const existingTypebot = await prisma.typebot.findFirst({
-    where: {
-      id: typebotId,
-    },
+    where: canReadTypebots(typebotId, user),
     include: {
       collaborators: {
         include: {
@@ -31,23 +29,9 @@ export const handleGetCollaborators = async ({
           },
         },
       },
-      workspace: {
-        select: {
-          isSuspended: true,
-          isPastDue: true,
-          members: {
-            select: {
-              userId: true,
-            },
-          },
-        },
-      },
     },
   });
-  if (
-    !existingTypebot?.id ||
-    (await isReadTypebotForbidden(existingTypebot, user))
-  )
+  if (!existingTypebot)
     throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
   return {
