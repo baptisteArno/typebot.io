@@ -67,32 +67,35 @@ export const handleGetInDepthAnalyticsData = async ({
 
   // The three aggregations are independent, so run them concurrently: the endpoint now
   // waits for the slowest one rather than the sum of all three.
-  const [totalAnswersPerBlock, totalAnswersV2PerBlock, offDefaultPathVisitedEdges] =
-    await Promise.all([
-      prisma.answer.groupBy({
-        by: ["blockId"],
-        where: {
-          result: resultFilter,
-          blockId: { in: inputBlockIds },
-        },
-        _count: { resultId: true },
-      }),
-      prisma.answerV2.groupBy({
-        by: ["blockId"],
-        where: {
-          result: resultFilter,
-          blockId: { in: inputBlockIds },
-        },
-        _count: { resultId: true },
-      }),
-      prisma.visitedEdge.groupBy({
-        by: ["edgeId"],
-        where: {
-          result: resultFilter,
-        },
-        _count: { resultId: true },
-      }),
-    ]);
+  const [
+    totalAnswersPerBlock,
+    totalAnswersV2PerBlock,
+    offDefaultPathVisitedEdges,
+  ] = await Promise.all([
+    prisma.answer.groupBy({
+      by: ["blockId"],
+      where: {
+        result: resultFilter,
+        blockId: { in: inputBlockIds },
+      },
+      _count: { resultId: true },
+    }),
+    prisma.answerV2.groupBy({
+      by: ["blockId"],
+      where: {
+        result: resultFilter,
+        blockId: { in: inputBlockIds },
+      },
+      _count: { resultId: true },
+    }),
+    prisma.visitedEdge.groupBy({
+      by: ["edgeId"],
+      where: {
+        result: resultFilter,
+      },
+      _count: { resultId: true },
+    }),
+  ]);
 
   const edges = z.array(edgeSchema).parse(typebot.publishedTypebot.edges);
 
