@@ -12,12 +12,17 @@ type Props = {
 };
 
 export const DateForm = (props: Props) => {
+  let formRef: HTMLFormElement | undefined;
   const [inputValues, setInputValues] = createSignal(
     parseDefaultValue(props.defaultValue ?? ""),
   );
 
   const submit = () => {
     if (inputValues().from === "" && inputValues().to === "") return;
+    if (formRef && !formRef.checkValidity()) {
+      formRef.reportValidity();
+      return;
+    }
     props.onSubmit({
       type: "text",
       value: `${inputValues().from}${
@@ -36,6 +41,7 @@ export const DateForm = (props: Props) => {
   return (
     <div class="typebot-input-form flex gap-2 items-end">
       <form
+        ref={formRef}
         class={cx(
           "flex typebot-input",
           props.options?.isRange ? "items-end" : "items-center",
