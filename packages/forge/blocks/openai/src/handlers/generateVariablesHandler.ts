@@ -1,6 +1,7 @@
 import { createOpenAI } from "@ai-sdk/openai";
 import { runGenerateVariables } from "@typebot.io/ai/runGenerateVariables";
 import { createActionHandler } from "@typebot.io/forge";
+import { safeFetch } from "@typebot.io/lib/safeFetch";
 import { generateVariables } from "../actions/generateVariables";
 
 export const generateVariablesHandler = createActionHandler(generateVariables, {
@@ -14,6 +15,7 @@ export const generateVariablesHandler = createActionHandler(generateVariables, {
       model: createOpenAI({
         apiKey: credentials.apiKey,
         baseURL: credentials.baseUrl ?? options.baseUrl,
+        fetch: safeFetch,
       })(options.model),
       prompt: options.prompt,
       variablesToExtract: options.variablesToExtract,

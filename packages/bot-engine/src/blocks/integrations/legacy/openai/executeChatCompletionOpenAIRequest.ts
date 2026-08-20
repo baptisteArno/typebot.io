@@ -1,5 +1,6 @@
 import type { OpenAIBlock } from "@typebot.io/blocks-integrations/openai/schema";
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
+import { safeFetch } from "@typebot.io/lib/safeFetch";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import { HTTPError } from "ky";
 import { type ClientOptions, OpenAI } from "openai";
@@ -31,6 +32,7 @@ export const executeChatCompletionOpenAIRequest = async ({
     const config = {
       apiKey,
       baseURL: baseUrl,
+      fetch: safeFetch,
       defaultHeaders: {
         "api-key": apiKey,
       },

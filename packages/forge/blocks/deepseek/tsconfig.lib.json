@@ -8,6 +8,9 @@
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
+      "path": "../../../lib/tsconfig.lib.json"
+    },
+    {
       "path": "../../core/tsconfig.lib.json"
     },
     {

@@ -21,10 +21,14 @@
     },
     "./package.json": "./package.json"
   },
+  "scripts": {
+    "test": "bun test"
+  },
   "dependencies": {
     "@ai-sdk/deepseek": "^1.0.40",
     "@typebot.io/ai": "workspace:*",
-    "@typebot.io/forge": "workspace:*"
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/lib": "workspace:*"
   },
   "devDependencies": {
     "@types/react": "^19.2.14"

@@ -6,6 +6,7 @@ import type {
 import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decryptV2 } from "@typebot.io/credentials/decryptV2";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
+import { safeFetch } from "@typebot.io/lib/safeFetch";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariableNumber } from "@typebot.io/variables/parseVariableNumber";
@@ -44,6 +45,7 @@ export const getOpenAIChatCompletionStream = async (
   const config = {
     apiKey,
     baseURL: options.baseUrl,
+    fetch: safeFetch,
     defaultHeaders: {
       "api-key": apiKey,
     },

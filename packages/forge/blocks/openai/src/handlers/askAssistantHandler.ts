@@ -11,7 +11,6 @@ import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { executeFunction } from "@typebot.io/variables/executeFunction";
 import type { ClientOptions } from "openai";
-import OpenAI from "openai";
 import {
   askAssistant,
   assistantFunctionsFetcher,
@@ -19,6 +18,7 @@ import {
 } from "../actions/askAssistant";
 import { isModelCompatibleWithVision } from "../helpers/isModelCompatibleWithVision";
 import { splitUserTextMessageIntoOpenAIBlocks } from "../helpers/splitUserTextMessageIntoOpenAIBlocks";
+import { createSafeOpenAIClient } from "./createSafeOpenAIClient";
 
 export const askAssistantHandler = createActionHandler(askAssistant, {
   stream: {
@@ -154,7 +154,7 @@ const createAssistantStream = async ({
       : undefined,
   } satisfies ClientOptions;
 
-  const openai = new OpenAI(config);
+  const openai = createSafeOpenAIClient(config);
 
   let currentThreadId: string | undefined;
 
@@ -333,7 +333,7 @@ export const fetchAssistantsHandler = createFetcherHandler(
         : undefined,
     } satisfies ClientOptions;
 
-    const openai = new OpenAI(config);
+    const openai = createSafeOpenAIClient(config);
 
     try {
       const response = await openai.beta.assistants.list({
@@ -382,7 +382,7 @@ export const fetchAssistantFunctionsHandler = createFetcherHandler(
         : undefined,
     } satisfies ClientOptions;
 
-    const openai = new OpenAI(config);
+    const openai = createSafeOpenAIClient(config);
 
     try {
       const response = await openai.beta.assistants.retrieve(

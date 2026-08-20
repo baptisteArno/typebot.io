@@ -8,6 +8,7 @@ import type { SessionState } from "@typebot.io/chat-session/schemas";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import { getCredentials } from "@typebot.io/credentials/getCredentials";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
+import { safeFetch } from "@typebot.io/lib/safeFetch";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { parseVariables } from "@typebot.io/variables/parseVariables";
@@ -68,6 +69,7 @@ export const createSpeechOpenAI = async (
   const config = {
     apiKey,
     baseURL: options.baseUrl ?? defaultOpenAIOptions.baseUrl,
+    fetch: safeFetch,
     defaultHeaders: {
       "api-key": apiKey,
     },

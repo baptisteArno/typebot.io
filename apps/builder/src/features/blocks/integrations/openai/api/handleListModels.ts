@@ -2,6 +2,7 @@ import { ORPCError } from "@orpc/server";
 import { defaultOpenAIOptions } from "@typebot.io/blocks-integrations/openai/constants";
 import type { OpenAICredentials } from "@typebot.io/blocks-integrations/openai/schema";
 import { decrypt } from "@typebot.io/credentials/decrypt";
+import { safeFetch } from "@typebot.io/lib/safeFetch";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
@@ -62,6 +63,7 @@ export const handleListModels = async ({
   const config = {
     apiKey: data.apiKey,
     baseURL: baseUrl ?? defaultOpenAIOptions.baseUrl,
+    fetch: safeFetch,
     defaultHeaders: {
       "api-key": data.apiKey,
     },

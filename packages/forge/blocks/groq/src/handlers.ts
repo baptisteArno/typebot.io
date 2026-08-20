@@ -1,19 +1,19 @@
-import { createGroq } from "@ai-sdk/groq";
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createActionHandler, createFetcherHandler } from "@typebot.io/forge";
-import { ky } from "@typebot.io/lib/ky";
+import { safeKy } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import {
   createChatCompletion,
   modelsFetcher,
 } from "./actions/createChatCompletion";
 import { defaultBaseUrl } from "./constants";
+import { createGroqChatLanguageModel } from "./createGroqChatLanguageModel";
 
 export default [
   createActionHandler(createChatCompletion, {
     server: async ({
-      credentials: { apiKey },
+      credentials: { apiKey, baseUrl },
       options,
       variables,
       logs,
@@ -25,9 +25,11 @@ export default [
       if (!options.messages) return logs.add("No messages provided");
 
       await runChatCompletion({
-        model: createGroq({
+        model: createGroqChatLanguageModel({
           apiKey,
-        })(modelName),
+          baseUrl,
+          modelName,
+        }),
         variables,
         messages: options.messages,
         tools: options.tools,
@@ -40,7 +42,7 @@ export default [
     },
     stream: {
       run: async ({
-        credentials: { apiKey },
+        credentials: { apiKey, baseUrl },
         options,
         variables,
         sessionStore,
@@ -66,9 +68,11 @@ export default [
           };
 
         return runChatCompletionStream({
-          model: createGroq({
+          model: createGroqChatLanguageModel({
             apiKey,
-          })(modelName),
+            baseUrl,
+            modelName,
+          }),
           variables,
           messages: options.messages,
           isVisionEnabled: false,
@@ -90,8 +94,9 @@ export default [
         };
 
       try {
-        const response = await ky
-          .get(`${defaultBaseUrl}/models`, {
+        const baseUrl = credentials.baseUrl ?? defaultBaseUrl;
+        const response = await safeKy
+          .get(`${baseUrl.replace(/\/$/, "")}/models`, {
             headers: {
               authorization: `Bearer ${credentials.apiKey}`,
             },

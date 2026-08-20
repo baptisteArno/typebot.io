@@ -21,6 +21,9 @@
     },
     "./package.json": "./package.json"
   },
+  "scripts": {
+    "test": "bun test"
+  },
   "dependencies": {
     "@ai-sdk/perplexity": "^2.0.30",
     "@typebot.io/ai": "workspace:*",

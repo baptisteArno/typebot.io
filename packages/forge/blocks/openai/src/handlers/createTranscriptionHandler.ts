@@ -3,8 +3,9 @@ import { safeKy } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { ClientOptions } from "openai";
-import OpenAI, { toFile } from "openai";
+import { toFile } from "openai";
 import { createTranscription } from "../actions/createTranscription";
+import { createSafeOpenAIClient } from "./createSafeOpenAIClient";
 
 export const createTranscriptionHandler = createActionHandler(
   createTranscription,
@@ -27,7 +28,7 @@ export const createTranscriptionHandler = createActionHandler(
           : undefined,
       } satisfies ClientOptions;
 
-      const openai = new OpenAI(config);
+      const openai = createSafeOpenAIClient(config);
 
       try {
         const audioResponse = await safeKy.get(options.url);

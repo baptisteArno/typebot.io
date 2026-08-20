@@ -1,8 +1,8 @@
-import { createDeepSeek } from "@ai-sdk/deepseek";
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createActionHandler } from "@typebot.io/forge";
 import { createChatCompletion } from "./actions/createChatCompletions";
+import { createDeepSeekChatLanguageModel } from "./createDeepSeekChatLanguageModel";
 
 export default [
   createActionHandler(createChatCompletion, {
@@ -19,10 +19,11 @@ export default [
       if (!options.messages) return logs.add("No messages provided");
 
       await runChatCompletion({
-        model: createDeepSeek({
+        model: createDeepSeekChatLanguageModel({
           apiKey,
-          baseURL: baseUrl ?? undefined,
-        })(modelName),
+          baseUrl,
+          modelName,
+        }),
         variables,
         messages: options.messages,
         tools: options.tools,
@@ -61,10 +62,11 @@ export default [
           };
 
         return runChatCompletionStream({
-          model: createDeepSeek({
+          model: createDeepSeekChatLanguageModel({
             apiKey,
-            baseURL: baseUrl ?? undefined,
-          })(modelName),
+            baseUrl,
+            modelName,
+          }),
           variables,
           messages: options.messages,
           isVisionEnabled: false,

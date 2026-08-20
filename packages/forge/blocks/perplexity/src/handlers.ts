@@ -1,8 +1,8 @@
-import { createPerplexity } from "@ai-sdk/perplexity";
 import { runChatCompletion } from "@typebot.io/ai/runChatCompletion";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createActionHandler } from "@typebot.io/forge";
 import { createChatCompletion } from "./actions/createChatCompletion";
+import { createPerplexityChatLanguageModel } from "./createPerplexityChatLanguageModel";
 
 export default [
   createActionHandler(createChatCompletion, {
@@ -19,10 +19,11 @@ export default [
       if (!options.messages) return logs.add("No messages provided");
 
       await runChatCompletion({
-        model: createPerplexity({
+        model: createPerplexityChatLanguageModel({
           apiKey,
-          baseURL: baseUrl ?? undefined,
-        })(modelName),
+          baseUrl,
+          modelName,
+        }),
         variables,
         messages: options.messages,
         tools: options.tools,
@@ -59,10 +60,11 @@ export default [
           };
 
         return runChatCompletionStream({
-          model: createPerplexity({
+          model: createPerplexityChatLanguageModel({
             apiKey,
-            baseURL: baseUrl ?? undefined,
-          })(modelName),
+            baseUrl,
+            modelName,
+          }),
           variables,
           messages: options.messages,
           isVisionEnabled: false,

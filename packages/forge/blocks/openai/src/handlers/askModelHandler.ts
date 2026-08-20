@@ -10,14 +10,15 @@ import { safeStringify } from "@typebot.io/lib/safeStringify";
 import { isDefined, isEmpty, isNotEmpty } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { executeFunction } from "@typebot.io/variables/executeFunction";
+import type OpenAI from "openai";
 import type { ClientOptions } from "openai";
-import OpenAI from "openai";
 import type { ResponseStreamEvent } from "openai/resources/responses/responses";
 import { askModel } from "../actions/askModel";
 import { maxToolCalls } from "../constants";
 import { isModelCompatibleWithVision } from "../helpers/isModelCompatibleWithVision";
 import { parseToolsForResponsesApi } from "../helpers/parseToolsForResponsesApi";
 import { splitMessageIntoResponsesApiInputItems } from "../helpers/splitMessageIntoResponsesApiInputItems";
+import { createSafeOpenAIClient } from "./createSafeOpenAIClient";
 
 export const askModelHandler = createActionHandler(askModel, {
   stream: {
@@ -167,7 +168,7 @@ const createResponseStream = async ({
     defaultQuery: apiVersion ? { "api-version": apiVersion } : undefined,
   } satisfies ClientOptions;
 
-  const openai = new OpenAI(config);
+  const openai = createSafeOpenAIClient(config);
 
   let previousResponseId: string | undefined;
   if (

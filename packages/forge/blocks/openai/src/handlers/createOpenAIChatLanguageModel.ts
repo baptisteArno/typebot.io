@@ -1,4 +1,5 @@
 import { createOpenAI, type OpenAIProviderSettings } from "@ai-sdk/openai";
+import { safeFetch } from "@typebot.io/lib/safeFetch";
 
 type Props = {
   apiKey: string;
@@ -16,5 +17,5 @@ export const createOpenAIChatLanguageModel = ({
   createOpenAI({
     baseURL: baseUrl,
     apiKey,
-    fetch,
+    fetch: fetch ?? safeFetch,
   }).chat(modelName);

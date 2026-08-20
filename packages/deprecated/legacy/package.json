@@ -12,6 +12,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
+    "@typebot.io/lib": "workspace:*",
     "openai": "4.81.0"
   },
   "scripts": {}

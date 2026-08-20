@@ -4,9 +4,9 @@ import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { uploadFileToBucket } from "@typebot.io/lib/s3/uploadFileToBucket";
 import { isNotEmpty } from "@typebot.io/lib/utils";
 import type { ClientOptions } from "openai";
-import OpenAI from "openai";
 import { createSpeech, speechModelsFetcher } from "../actions/createSpeech";
 import { defaultOpenAIOptions } from "../constants";
+import { createSafeOpenAIClient } from "./createSafeOpenAIClient";
 
 export const createSpeechHandler = createActionHandler(createSpeech, {
   server: async ({ credentials: { apiKey }, options, variables, logs }) => {
@@ -28,7 +28,7 @@ export const createSpeechHandler = createActionHandler(createSpeech, {
         : undefined,
     } satisfies ClientOptions;
 
-    const openai = new OpenAI(config);
+    const openai = createSafeOpenAIClient(config);
 
     const model = options.model ?? defaultOpenAIOptions.voiceModel;
 
@@ -80,7 +80,7 @@ export const fetchSpeechModelsHandler = createFetcherHandler(
         : undefined,
     } satisfies ClientOptions;
 
-    const openai = new OpenAI(config);
+    const openai = createSafeOpenAIClient(config);
 
     try {
       const models = await openai.models.list();
