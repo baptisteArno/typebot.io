@@ -4,6 +4,7 @@ import { isNotEmpty } from "@typebot.io/lib/utils";
 import { cx } from "@typebot.io/ui/lib/cva";
 import { createSignal, onCleanup, onMount } from "solid-js";
 import { TypingBubble } from "../../../../../components/TypingBubble";
+import { sanitizeUrl } from "../../../../../lib/sanitizeUrl";
 import type { InputSubmitContent } from "../../../../../types";
 
 type Props = {
@@ -91,7 +92,7 @@ export const EmbedBubble = (props: Props) => {
           >
             <iframe
               title="Embedded content"
-              src={props.content?.url}
+              src={sanitizeUrl(props.content?.url ?? "", "about:blank")}
               class="w-full h-full"
             />
           </div>

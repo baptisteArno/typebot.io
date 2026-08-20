@@ -1,11 +1,11 @@
 const allowedProtocols = ["https:", "http:", "mailto:", "tel:"];
 
-export const sanitizeUrl = (url: string): string => {
+export const sanitizeUrl = (url: string, fallback = "#"): string => {
   try {
     const parsed = new URL(url, "https://placeholder.com");
     if (allowedProtocols.includes(parsed.protocol)) return url;
-    return "#";
+    return fallback;
   } catch {
-    return "#";
+    return fallback;
   }
 };
