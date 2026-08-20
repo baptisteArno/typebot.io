@@ -81,6 +81,12 @@ describe("safeKy", () => {
               },
             });
           }
+          if (url.pathname === "/redirect-safe") {
+            return new Response(null, {
+              status: 302,
+              headers: { location: `http://localhost:${server.port}/ok` },
+            });
+          }
           if (url.pathname === "/ok") {
             return new Response(JSON.stringify({ status: "ok" }), {
               headers: { "content-type": "application/json" },
@@ -117,6 +123,24 @@ describe("safeKy", () => {
     it("should allow redirects to safe destinations", async () => {
       const response = await safeKy.get(`${serverUrl}/ok`);
       expect(response.status).toBe(200);
+    });
+
+    it("should preserve manual redirect mode", async () => {
+      const response = await safeKy.get(`${serverUrl}/redirect-safe`, {
+        redirect: "manual",
+        throwHttpErrors: false,
+      });
+
+      expect(response.status).toBe(302);
+    });
+
+    it("should preserve error redirect mode", async () => {
+      await expect(
+        safeKy.get(`${serverUrl}/redirect-safe`, {
+          redirect: "error",
+          throwHttpErrors: false,
+        }),
+      ).rejects.toThrow("redirect mode");
     });
   });
 });

@@ -30,14 +30,18 @@ const BLOCKED_HEADERS = [
  */
 export const validateHttpReqUrl = async (
   urlString: string,
+  options?: ValidateHttpReqUrlOptions,
+) => {
+  await resolveAndValidateHttpReqUrl(urlString, options);
+};
+
+export const resolveAndValidateHttpReqUrl = async (
+  urlString: string,
   {
     lookupHost = lookup,
     allowedHosts = env.SSRF_ALLOWED_HOSTS,
-  }: {
-    lookupHost?: LookupHost;
-    allowedHosts?: readonly string[];
-  } = {},
-) => {
+  }: ValidateHttpReqUrlOptions = {},
+): Promise<ValidatedHttpReqUrl> => {
   if (!urlString?.trim()) {
     throw new Error("URL is required");
   }
@@ -82,10 +86,6 @@ export const validateHttpReqUrl = async (
     throw new Error("Access to localhost is not allowed for security reasons.");
   }
 
-  if (hostname === "localhost") {
-    return;
-  }
-
   // Detect and block decimal/hex/octal encoded IPs
   // 169.254.169.254 in decimal = 2852039166
   // Common patterns: pure decimal, mixed octal (0251.0376...), hex (0xa9fe...)
@@ -107,7 +107,7 @@ export const validateHttpReqUrl = async (
   const ip = parseIPAddress(hostname);
   if (ip) {
     validateIPAddress(ip, { allowPrivateRanges: isAllowlisted });
-    return;
+    return { url, hostname, resolvedAddress: hostname };
   }
 
   const resolvedAddresses = await lookupHost(hostname, {
@@ -128,10 +128,17 @@ export const validateHttpReqUrl = async (
       );
     }
 
-    validateIPAddress(parsedResolvedAddress, {
-      allowPrivateRanges: isAllowlisted,
-    });
+    if (hostname !== "localhost")
+      validateIPAddress(parsedResolvedAddress, {
+        allowPrivateRanges: isAllowlisted,
+      });
   });
+
+  return {
+    url,
+    hostname,
+    resolvedAddress: resolvedAddresses[0].address,
+  };
 };
 
 /**
@@ -202,6 +209,17 @@ type LookupHost = (
     order: "verbatim";
   },
 ) => Promise<Array<{ address: string; family: number }>>;
+
+type ValidateHttpReqUrlOptions = {
+  lookupHost?: LookupHost;
+  allowedHosts?: readonly string[];
+};
+
+export type ValidatedHttpReqUrl = {
+  url: URL;
+  hostname: string;
+  resolvedAddress: string;
+};
 
 /**
  * Validates that an IP address is not in a blocked range.

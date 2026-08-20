@@ -26,13 +26,10 @@ export const validatingLookup: LookupFunction = (
     }
     try {
       if (Array.isArray(address)) {
-        for (const entry of address) {
-          const parsed = parseIPAddress(entry.address);
-          if (parsed) validateIPAddress(parsed);
-        }
+        for (const entry of address)
+          validateResolvedAddress(hostname, entry.address);
       } else if (typeof address === "string") {
-        const parsed = parseIPAddress(address);
-        if (parsed) validateIPAddress(parsed);
+        validateResolvedAddress(hostname, address);
       }
     } catch (validationError) {
       return callLookupCallback(
@@ -45,6 +42,21 @@ export const validatingLookup: LookupFunction = (
       );
     }
     callLookupCallback(callback, null, address, family);
+  });
+};
+
+export const validateResolvedAddress = (
+  hostname: string,
+  address: string,
+  allowedHosts = env.SSRF_ALLOWED_HOSTS,
+) => {
+  const parsedAddress = parseIPAddress(address);
+  if (!parsedAddress)
+    throw new Error(
+      `Hostname "${hostname}" resolved to an invalid IP address.`,
+    );
+  validateIPAddress(parsedAddress, {
+    allowPrivateRanges: allowedHosts?.includes(hostname.toLowerCase()) ?? false,
   });
 };
 
