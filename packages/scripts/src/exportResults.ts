@@ -1,16 +1,17 @@
-import * as p from "@clack/prompts";
 import { streamAllResultsToCsv } from "@typebot.io/results/streamAllResultsToCsv";
 import cliProgress from "cli-progress";
+import {
+  assertProductionEnvironment,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 export const exportResults = async () => {
-  const typebotId = (await p.text({
+  assertProductionEnvironment();
+  const typebotId = await getRequiredInput({
     message: "Typebot ID?",
-  })) as string;
-
-  if (!typebotId || typeof typebotId !== "string") {
-    console.log("No id provided");
-    return;
-  }
+    name: "typebot-id",
+  });
 
   const progressBar = new cliProgress.SingleBar(
     {},
@@ -34,3 +35,5 @@ export const exportResults = async () => {
   progressBar.stop();
   console.log("Results exported successfully");
 };
+
+runScript(exportResults);

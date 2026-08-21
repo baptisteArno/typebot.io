@@ -1,10 +1,10 @@
 import { writeFileSync } from "node:fs";
 import prisma from "@typebot.io/prisma";
 import Stripe from "stripe";
-import { promptAndSetEnvironment } from "./utils";
+import { assertProductionEnvironment, confirmAction, runScript } from "./cli";
 
 const migrateSubscriptionItemPriceId = async () => {
-  await promptAndSetEnvironment();
+  assertProductionEnvironment();
 
   if (
     !process.env.STRIPE_STARTER_CHATS_PRICE_ID_OLD ||
@@ -42,6 +42,13 @@ const migrateSubscriptionItemPriceId = async () => {
     "./workspacesWithPaidPlan.json",
     JSON.stringify(workspacesWithPaidPlan, null, 2),
   );
+
+  if (
+    !(await confirmAction({
+      message: `Migrate subscription item prices for ${workspacesWithPaidPlan.length} production workspaces?`,
+    }))
+  )
+    return;
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     apiVersion: "2024-09-30.acacia",
@@ -97,4 +104,4 @@ const migrateSubscriptionItemPriceId = async () => {
   }
 };
 
-migrateSubscriptionItemPriceId();
+runScript(migrateSubscriptionItemPriceId);

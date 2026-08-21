@@ -1,30 +1,25 @@
-import * as p from "@clack/prompts";
-import { confirm, isCancel } from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  getBooleanInput,
+  getIdentifierInput,
+  runScript,
+} from "./cli";
 
 const inspectUser = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const type = await p.select<"id" | "email">({
+  const { type, value } = await getIdentifierInput({
     message: "Select way",
     options: [
-      { label: "ID", value: "id" },
-      { label: "Email", value: "email" },
+      { label: "ID", name: "id" },
+      { label: "Email", name: "email" },
     ],
   });
 
-  if (!type || isCancel(type)) process.exit();
-
-  const val = await p.text({
-    message: "Enter value",
-  });
-
-  if (!val || isCancel(val)) process.exit();
-
   const user = await prisma.user.findFirst({
     where: {
-      [type]: val,
+      [type]: value,
     },
     select: {
       id: true,
@@ -85,11 +80,13 @@ const inspectUser = async () => {
 
   console.log(JSON.stringify(user, null, 2));
 
-  const computeResults = await confirm({
+  const computeResults = await getBooleanInput({
+    defaultValue: false,
+    flag: "compute-results",
     message: "Compute collected results?",
   });
 
-  if (!computeResults || isCancel(computeResults)) process.exit();
+  if (!computeResults) return;
 
   console.log("Computing collected results...");
 
@@ -112,4 +109,4 @@ const inspectUser = async () => {
   }
 };
 
-inspectUser();
+runScript(inspectUser);

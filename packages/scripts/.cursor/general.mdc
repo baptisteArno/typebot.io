@@ -1,5 +1,0 @@
----
-alwaysApply: true
----
-
-- Use `bun test:codemods` to run codemods on test input

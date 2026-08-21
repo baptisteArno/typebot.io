@@ -1,6 +1,7 @@
 import { existsSync, readdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { $ } from "bun";
+import { runScript } from "./cli";
 
 // Path to the root of your monorepo ../..
 const rootDir = resolve(__dirname, "../../..");
@@ -64,4 +65,4 @@ const main = async () => {
   }
 };
 
-main().then();
+runScript(main);

@@ -1,15 +1,25 @@
-import * as p from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  confirmAction,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const updateTypebot = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const typebotId = await p.text({
+  const typebotId = await getRequiredInput({
     message: "Typebot ID?",
+    name: "typebot-id",
   });
 
-  if (!typebotId || p.isCancel(typebotId)) process.exit();
+  if (
+    !(await confirmAction({
+      message: `Set production typebot ${typebotId} risk level to -1?`,
+    }))
+  )
+    return;
 
   const typebot = await prisma.typebot.update({
     where: {
@@ -23,4 +33,4 @@ const updateTypebot = async () => {
   console.log(typebot);
 };
 
-updateTypebot();
+runScript(updateTypebot);

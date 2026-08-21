@@ -1,16 +1,37 @@
 import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const getUsage = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
+
+  const workspaceId = await getRequiredInput({
+    message: "Workspace ID?",
+    name: "workspace-id",
+  });
+  const from = await getRequiredInput({
+    message: "Start date (ISO 8601)?",
+    name: "from",
+    validate: validateDate,
+  });
+  const to = await getRequiredInput({
+    message: "End date (ISO 8601, exclusive)?",
+    name: "to",
+    validate: validateDate,
+  });
+  if (Date.parse(from) >= Date.parse(to))
+    throw new Error("--from must be earlier than --to");
 
   const count = await prisma.result.count({
     where: {
-      typebot: { workspaceId: "" },
+      typebot: { workspaceId },
       hasStarted: true,
       createdAt: {
-        gte: "2023-09-18T00:00:00.000Z",
-        lt: "2023-10-18T00:00:00.000Z",
+        gte: from,
+        lt: to,
       },
     },
   });
@@ -18,4 +39,7 @@ const getUsage = async () => {
   console.log(count);
 };
 
-getUsage();
+const validateDate = (value: string) =>
+  Number.isNaN(Date.parse(value)) ? "Expected an ISO 8601 date" : undefined;
+
+runScript(getUsage);

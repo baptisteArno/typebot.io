@@ -1,18 +1,29 @@
-import * as p from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const searchResult = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const typebotId = await p.text({
+  const typebotId = await getRequiredInput({
     message: "Typebot ID?",
+    name: "typebot-id",
   });
-
-  if (!typebotId || typeof typebotId !== "string") {
-    console.log("No ID provided");
-    return;
-  }
+  const variableId = await getRequiredInput({
+    message: "Variable ID?",
+    name: "variable-id",
+  });
+  const variableName = await getRequiredInput({
+    message: "Variable name?",
+    name: "variable-name",
+  });
+  const variableValue = await getRequiredInput({
+    message: "Variable value?",
+    name: "variable-value",
+  });
 
   const result = await prisma.result.findFirst({
     where: {
@@ -20,9 +31,9 @@ const searchResult = async () => {
       hasStarted: true,
       variables: {
         array_contains: {
-          id: "",
-          name: "",
-          value: "",
+          id: variableId,
+          name: variableName,
+          value: variableValue,
           isSessionVariable: false,
         },
       },
@@ -40,4 +51,4 @@ const searchResult = async () => {
   console.log(result);
 };
 
-searchResult();
+runScript(searchResult);

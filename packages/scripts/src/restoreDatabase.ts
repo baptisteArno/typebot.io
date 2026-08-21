@@ -1,23 +1,26 @@
-import { exec } from "node:child_process";
-import { promptAndSetEnvironment } from "./utils";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { confirmAction, promptAndSetEnvironment, runScript } from "./cli";
 
 const restoreDatabase = async () => {
-  await promptAndSetEnvironment();
+  const environment = await promptAndSetEnvironment();
+  if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required");
 
-  exec(
-    `pg_restore -d ${process.env.DATABASE_URL} -c dump.tar`,
-    (error, stdout, stderr) => {
-      if (error) {
-        console.log(`error: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-    },
-  );
+  if (
+    !(await confirmAction({
+      message: `Replace data in the ${environment} database from dump.tar?`,
+    }))
+  )
+    return;
+
+  const { stdout, stderr } = await promisify(execFile)("pg_restore", [
+    "-d",
+    process.env.DATABASE_URL,
+    "-c",
+    "dump.tar",
+  ]);
+  if (stdout) console.log(stdout);
+  if (stderr) console.error(stderr);
 };
 
-restoreDatabase();
+runScript(restoreDatabase);

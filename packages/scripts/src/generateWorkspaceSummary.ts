@@ -1,7 +1,6 @@
 import fs, { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { openai } from "@ai-sdk/openai";
-import * as p from "@clack/prompts";
 import type { $Enums } from "@prisma/client";
 import { zodToSchema } from "@typebot.io/ai/zodToSchema";
 import { BubbleBlockType } from "@typebot.io/blocks-bubbles/constants";
@@ -17,6 +16,11 @@ import { convertRichTextToMarkdown } from "@typebot.io/rich-text/convertRichText
 import { generateObject } from "ai";
 import Stripe from "stripe";
 import { z } from "zod";
+import {
+  assertProductionEnvironment,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 import { executePostHogQuery } from "./helpers/executePostHogQuery";
 import { getTotalPaidForSubscription } from "./helpers/stripe/getTotalPaidForSubscription";
 
@@ -674,14 +678,11 @@ const getStripeSubscriptions = async (stripeId: string) => {
 };
 
 const generateWorkspaceSummary = async () => {
-  const workspaceId = await p.text({
+  assertProductionEnvironment();
+  const workspaceId = await getRequiredInput({
     message: "Enter workspace ID",
+    name: "workspace-id",
   });
-
-  if (!workspaceId || typeof workspaceId !== "string") {
-    console.error("❌ Workspace ID is required");
-    return;
-  }
 
   console.log("Generating summary for workspace:", workspaceId);
 
@@ -921,4 +922,4 @@ const generateWorkspaceSummary = async () => {
   );
 };
 
-generateWorkspaceSummary();
+runScript(generateWorkspaceSummary);

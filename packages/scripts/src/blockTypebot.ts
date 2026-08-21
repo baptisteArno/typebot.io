@@ -1,18 +1,18 @@
-import { isCancel, text } from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  confirmAction,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const blockTypebot = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const typebotIdArgument = process.argv
-    .find((argument) => argument.startsWith("--typebot-id="))
-    ?.slice("--typebot-id=".length);
-  const typebotId = typebotIdArgument
-    ? typebotIdArgument
-    : await text({ message: "Typebot ID?" });
-
-  if (!typebotId || isCancel(typebotId)) return;
+  const typebotId = await getRequiredInput({
+    message: "Typebot ID?",
+    name: "typebot-id",
+  });
 
   const typebot = await prisma.typebot.findUnique({
     where: { id: typebotId },
@@ -25,6 +25,14 @@ const blockTypebot = async () => {
   });
 
   if (!typebot) throw new Error("Typebot not found");
+
+  console.log(JSON.stringify(typebot, null, 2));
+  if (
+    !(await confirmAction({
+      message: "Block this production typebot?",
+    }))
+  )
+    return;
 
   const [removedPublicTypebots] = await prisma.$transaction([
     prisma.publicTypebot.deleteMany({ where: { typebotId } }),
@@ -41,4 +49,4 @@ const blockTypebot = async () => {
   });
 };
 
-blockTypebot();
+runScript(blockTypebot);

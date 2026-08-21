@@ -1,11 +1,18 @@
 import { proChatTiers, starterChatTiers } from "@typebot.io/billing/constants";
 import Stripe from "stripe";
-import { promptAndSetEnvironment } from "./utils";
+import { assertProductionEnvironment, confirmAction, runScript } from "./cli";
 
 const chatsProductId = "prod_MVXtq5sATQzIcM";
 
 const createChatsPrices = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
+
+  if (
+    !(await confirmAction({
+      message: `Create two production Stripe prices for ${chatsProductId}?`,
+    }))
+  )
+    return;
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: "2024-09-30.acacia",
@@ -52,4 +59,4 @@ const createChatsPrices = async () => {
   });
 };
 
-createChatsPrices();
+runScript(createChatsPrices);

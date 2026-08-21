@@ -1,15 +1,25 @@
-import * as p from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  confirmAction,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const redeemCoupon = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const code = await p.text({
+  const code = await getRequiredInput({
     message: "Coupon code?",
+    name: "code",
   });
 
-  if (!code || p.isCancel(code)) process.exit();
+  if (
+    !(await confirmAction({
+      message: `Mark coupon ${code} as redeemed in production?`,
+    }))
+  )
+    return;
 
   const coupon = await prisma.coupon.update({
     where: {
@@ -23,4 +33,4 @@ const redeemCoupon = async () => {
   console.log(coupon);
 };
 
-redeemCoupon();
+runScript(redeemCoupon);

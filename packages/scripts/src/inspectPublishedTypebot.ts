@@ -1,30 +1,24 @@
-import * as p from "@clack/prompts";
-import { isCancel } from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  getIdentifierInput,
+  runScript,
+} from "./cli";
 
 const inspectTypebot = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const type = await p.select<"id" | "publicId">({
+  const { type, value } = await getIdentifierInput({
     message: "Select way",
     options: [
-      { label: "ID", value: "id" },
-      { label: "Public ID", value: "publicId" },
+      { label: "ID", name: "id" },
+      { label: "Public ID", name: "public-id" },
     ],
   });
 
-  if (!type || isCancel(type)) process.exit();
-
-  const val = await p.text({
-    message: "Enter value",
-  });
-
-  if (!val || isCancel(val)) process.exit();
-
   const typebot = await prisma.typebot.findFirst({
     where: {
-      [type]: val,
+      [type === "public-id" ? "publicId" : type]: value,
     },
     select: {
       publishedTypebot: {
@@ -45,4 +39,4 @@ const inspectTypebot = async () => {
   console.log(JSON.stringify(typebot, null, 2));
 };
 
-inspectTypebot();
+runScript(inspectTypebot);

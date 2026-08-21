@@ -1,18 +1,17 @@
-import * as p from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const inspectCredentials = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const id = await p.text({
+  const id = await getRequiredInput({
     message: "Credentials ID?",
+    name: "credentials-id",
   });
-
-  if (!id || typeof id !== "string") {
-    console.log("No ID provided");
-    return;
-  }
 
   const credentials = await prisma.credentials.findFirst({
     where: {
@@ -29,4 +28,4 @@ const inspectCredentials = async () => {
   });
 };
 
-inspectCredentials();
+runScript(inspectCredentials);

@@ -1,26 +1,31 @@
-import { confirm, isCancel, text } from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
+import {
+  assertProductionEnvironment,
+  confirmAction,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 import { destroyUser } from "./helpers/destroyUser";
-import { promptAndSetEnvironment } from "./utils";
 
 const updateUserEmail = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const currentUserEmail = await text({
+  const currentUserEmail = await getRequiredInput({
     message: "Current email?",
+    name: "current-email",
   });
 
-  const newEmail = await text({
+  const newEmail = await getRequiredInput({
     message: "New email?",
+    name: "new-email",
   });
 
   if (
-    !currentUserEmail ||
-    !newEmail ||
-    isCancel(currentUserEmail) ||
-    isCancel(newEmail)
+    !(await confirmAction({
+      message: `Change ${currentUserEmail} to ${newEmail} in production?`,
+    }))
   )
-    throw new Error("Invalid emails");
+    return;
 
   const existingUserWithNewEmail = await prisma.user.findUnique({
     where: {
@@ -31,12 +36,6 @@ const updateUserEmail = async () => {
   if (existingUserWithNewEmail) {
     console.log(`User with email ${newEmail} already exists`);
     console.log(JSON.stringify(existingUserWithNewEmail, null, 2));
-
-    const isDestroying = await confirm({
-      message: "Would you like to destroy it and update the current user?",
-    });
-
-    if (!isDestroying || isCancel(isDestroying)) return;
 
     await destroyUser(newEmail);
   }
@@ -53,4 +52,4 @@ const updateUserEmail = async () => {
   console.log(JSON.stringify(user, null, 2));
 };
 
-updateUserEmail();
+runScript(updateUserEmail);

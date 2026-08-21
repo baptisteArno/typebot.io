@@ -1,16 +1,23 @@
-import { confirm, isCancel, text } from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
 import ky, { HTTPError } from "ky";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  confirmAction,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const insertUsersInBrevoList = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const listId = await text({
+  const listId = await getRequiredInput({
     message: "List ID?",
+    name: "list-id",
+    validate: (value) =>
+      Number.isInteger(Number(value)) && Number(value) > 0
+        ? undefined
+        : "Expected a positive integer",
   });
-  if (!listId || isCancel(listId) || Number.isNaN(listId as unknown as number))
-    process.exit();
 
   const threeMonthsAgo = new Date();
   threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 5);
@@ -34,8 +41,8 @@ const insertUsersInBrevoList = async () => {
 
   console.log("Inserting users", users.length);
 
-  const proceed = await confirm({ message: "Proceed?" });
-  if (!proceed || typeof proceed !== "boolean") {
+  const proceed = await confirmAction({ message: "Proceed?" });
+  if (!proceed) {
     console.log("Aborting");
     return;
   }
@@ -62,4 +69,4 @@ const insertUsersInBrevoList = async () => {
   }
 };
 
-insertUsersInBrevoList();
+runScript(insertUsersInBrevoList);

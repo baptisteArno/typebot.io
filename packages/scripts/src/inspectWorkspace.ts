@@ -1,18 +1,17 @@
-import * as p from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const inspectWorkspace = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const id = await p.text({
+  const id = await getRequiredInput({
     message: "Workspace ID?",
+    name: "workspace-id",
   });
-
-  if (!id || typeof id !== "string") {
-    console.log("No ID provided");
-    return;
-  }
 
   const workspace = await prisma.workspace.findFirst({
     where: {
@@ -48,4 +47,4 @@ const inspectWorkspace = async () => {
   console.log(JSON.stringify(workspace, null, 2));
 };
 
-inspectWorkspace();
+runScript(inspectWorkspace);

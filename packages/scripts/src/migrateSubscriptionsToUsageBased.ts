@@ -2,10 +2,10 @@ import { writeFileSync } from "node:fs";
 import { createId } from "@paralleldrive/cuid2";
 import prisma from "@typebot.io/prisma";
 import { Stripe } from "stripe";
-import { promptAndSetEnvironment } from "./utils";
+import { assertProductionEnvironment, confirmAction, runScript } from "./cli";
 
 const migrateSubscriptionsToUsageBased = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
   if (
     !process.env.STRIPE_STARTER_CHATS_PRICE_ID ||
@@ -61,6 +61,13 @@ const migrateSubscriptionsToUsageBased = async () => {
     "./workspacesWithPaidPlan.json",
     JSON.stringify(workspacesWithPaidPlan, null, 2),
   );
+
+  if (
+    !(await confirmAction({
+      message: `Migrate subscriptions for ${workspacesWithPaidPlan.length} production workspaces?`,
+    }))
+  )
+    return;
 
   const stripe = new Stripe(secretKey, {
     apiVersion: "2024-09-30.acacia",
@@ -282,4 +289,4 @@ const migrateSubscriptionsToUsageBased = async () => {
   }
 };
 
-migrateSubscriptionsToUsageBased();
+runScript(migrateSubscriptionsToUsageBased);

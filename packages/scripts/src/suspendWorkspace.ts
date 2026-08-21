@@ -1,46 +1,31 @@
-import { confirm, isCancel, select, text } from "@clack/prompts";
 import { isEmpty } from "@typebot.io/lib/utils";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  confirmAction,
+  getIdentifierInput,
+  runScript,
+} from "./cli";
 
 const suspendWorkspace = async () => {
-  await promptAndSetEnvironment("production");
-
-  if (!process.env.DATABASE_URL?.startsWith("mysql://"))
-    throw new Error("Production DATABASE_URL must be a MySQL URL");
+  assertProductionEnvironment();
 
   const { default: prisma } = await import("@typebot.io/prisma");
 
-  const workspaceIdArgument = process.argv
-    .find((argument) => argument.startsWith("--workspace-id="))
-    ?.slice("--workspace-id=".length);
+  const { type, value } = await getIdentifierInput({
+    message: "Select way",
+    options: [
+      { label: "Typebot ID", name: "typebot-id" },
+      { label: "Typebot public ID", name: "public-id" },
+      { label: "Workspace ID", name: "workspace-id" },
+    ],
+  });
 
-  const type = workspaceIdArgument
-    ? "workspaceId"
-    : await select<"id" | "publicId" | "workspaceId">({
-        message: "Select way",
-        options: [
-          { label: "Typebot ID", value: "id" },
-          { label: "Typebot public ID", value: "publicId" },
-          { label: "Workspace ID", value: "workspaceId" },
-        ],
-      });
-
-  if (!type || isCancel(type)) return;
-
-  const val = workspaceIdArgument
-    ? workspaceIdArgument
-    : await text({
-        message: "Enter value",
-      });
-
-  if (!val || isCancel(val)) return;
-
-  let workspaceId = type === "workspaceId" ? val : undefined;
+  let workspaceId = type === "workspace-id" ? value : undefined;
 
   if (!workspaceId) {
     const typebot = await prisma.typebot.findFirst({
       where: {
-        [type]: val,
+        [type === "typebot-id" ? "id" : "publicId"]: value,
       },
       select: {
         workspaceId: true,
@@ -83,12 +68,12 @@ const suspendWorkspace = async () => {
 
   console.log(JSON.stringify(workspace, null, 2));
 
-  const shouldSuspend = await confirm({
-    message: "Suspend this production workspace?",
-    initialValue: false,
-  });
-
-  if (!shouldSuspend || isCancel(shouldSuspend)) return;
+  if (
+    !(await confirmAction({
+      message: "Suspend this production workspace?",
+    }))
+  )
+    return;
 
   const result = await prisma.workspace.update({
     where: {
@@ -102,4 +87,4 @@ const suspendWorkspace = async () => {
   console.log(JSON.stringify(result, null, 2));
 };
 
-suspendWorkspace();
+runScript(suspendWorkspace);

@@ -1,23 +1,37 @@
-import * as p from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
+import {
+  assertProductionEnvironment,
+  confirmAction,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const deleteResultsRange = async () => {
-  const typebotId = await p.text({
+  assertProductionEnvironment();
+  const typebotId = await getRequiredInput({
     message: "Typebot ID?",
+    name: "typebot-id",
   });
-
-  if (!typebotId || typeof typebotId !== "string") {
-    console.log("No typebot ID provided");
-    return;
-  }
+  const from = await getRequiredInput({
+    message: "Start date (ISO 8601, exclusive)?",
+    name: "from",
+    validate: validateDate,
+  });
+  const to = await getRequiredInput({
+    message: "End date (ISO 8601, exclusive)?",
+    name: "to",
+    validate: validateDate,
+  });
+  if (Date.parse(from) >= Date.parse(to))
+    throw new Error("--from must be earlier than --to");
 
   const whereClause = {
     typebotId,
     hasStarted: true,
     isArchived: false,
     createdAt: {
-      lt: "2025-09-27T19:35:00.000Z",
-      gt: "2025-09-27T18:43:00.000Z",
+      lt: to,
+      gt: from,
     },
   };
 
@@ -26,6 +40,13 @@ const deleteResultsRange = async () => {
   });
 
   console.log(`Total results to delete: ${totalResultsToDelete}`);
+
+  if (
+    !(await confirmAction({
+      message: `Delete these ${totalResultsToDelete} production results?`,
+    }))
+  )
+    return;
 
   let deletedCount = 0;
 
@@ -56,4 +77,7 @@ const deleteResultsRange = async () => {
   }
 };
 
-deleteResultsRange();
+const validateDate = (value: string) =>
+  Number.isNaN(Date.parse(value)) ? "Expected an ISO 8601 date" : undefined;
+
+runScript(deleteResultsRange);

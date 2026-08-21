@@ -1,17 +1,250 @@
 {
   "name": "@typebot.io/scripts",
+  "nx": {
+    "targets": {
+      "start": {
+        "defaultConfiguration": "local",
+        "configurations": {
+          "local": {}
+        }
+      },
+      "start:prod": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "run:prod:mysql": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "db:backup": {
+        "configurations": {
+          "local": {},
+          "staging": {},
+          "production": {}
+        }
+      },
+      "db:restore": {
+        "configurations": {
+          "local": {},
+          "staging": {},
+          "production": {}
+        }
+      },
+      "db:bulkUpdate": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "inspectUser": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "checkSubscriptionsStatus": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "createChatsPrices": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "migrateSubscriptionItemPriceId": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "migrateSubscriptionsToUsageBased": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "insertUsersInBrevoList": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "getUsage": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "blockTypebot": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "suspendWorkspace": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "destroyUser": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "updateTypebot": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "updateWorkspace": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "inspectTypebot": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "inspectPublishedTypebot": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "inspectWorkspace": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "getCoupon": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "redeemCoupon": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "exportResults": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "updateUserEmail": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "updateWhatsAppStatusForwardUrl": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "inspectChatSession": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "searchResult": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "inspectResult": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "inspectCredentials": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "deleteChatSession": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "sendEmailCampaign": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "deleteResultsRange": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "readCsvAndDoSomething": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "recurringCheckInactiveUsers": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "addHttpProxyCredentials": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "deleteS3Object": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
+      "generateWorkspaceSummary": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      }
+    }
+  },
   "scripts": {
-    "start": "SKIP_ENV_CHECK=true dotenv -e ./.env.local -- tsx --tsconfig ./tsconfig.json src/main.ts",
+    "start": "SKIP_ENV_CHECK=true tsx --tsconfig ./tsconfig.json src/main.ts",
     "start:prod": "bun run run:prod:mysql src/main.ts",
-    "run:prod:mysql": "cd ../prisma && bun db:generate:mysql && cd ../scripts && SKIP_ENV_CHECK=true dotenv --override -e ./.env.production -- tsx --tsconfig ./tsconfig.json",
+    "run:prod:mysql": "bun --cwd ../prisma db:generate:mysql && SKIP_ENV_CHECK=true tsx --tsconfig ./tsconfig.json",
     "db:backup": "tsx --tsconfig ./tsconfig.json src/backupDatabase.ts",
     "db:restore": "tsx --tsconfig ./tsconfig.json src/restoreDatabase.ts",
-    "db:setCustomPlan": "bun run run:prod:mysql src/setCustomPlan.ts",
     "db:bulkUpdate": "bun run run:prod:mysql src/bulkUpdate.ts",
-    "db:fixTypebots": "bun run run:prod:mysql src/fixTypebots.ts",
     "inspectUser": "bun run run:prod:mysql src/inspectUser.ts",
     "checkSubscriptionsStatus": "bun run run:prod:mysql src/checkSubscriptionsStatus.ts",
     "createChatsPrices": "bun run run:prod:mysql src/createChatsPrices.ts",
+    "migrateSubscriptionItemPriceId": "bun run run:prod:mysql src/migrateSubscriptionItemPriceId.ts",
     "migrateSubscriptionsToUsageBased": "bun run run:prod:mysql src/migrateSubscriptionsToUsageBased.ts",
     "insertUsersInBrevoList": "bun run run:prod:mysql src/insertUsersInBrevoList.ts",
     "getUsage": "bun run run:prod:mysql src/getUsage.ts",
@@ -34,6 +267,7 @@
     "inspectCredentials": "bun run run:prod:mysql src/inspectCredentials.ts",
     "deleteChatSession": "bun run run:prod:mysql src/deleteChatSession.ts",
     "sendEmailCampaign": "bun run run:prod:mysql src/sendEmailCampaign.ts",
+    "deleteResultsRange": "bun run run:prod:mysql src/deleteResultsRange.ts",
     "checkDependencies": "tsx --tsconfig ./tsconfig.json src/checkDependencies.ts",
     "readCsvAndDoSomething": "bun run run:prod:mysql src/readCsvAndDoSomething.ts",
     "recurringCheckInactiveUsers": "bun run run:prod:mysql src/recurringCheckInactiveUsers.ts",
@@ -42,7 +276,8 @@
     "cron:hourly": "SKIP_ENV_CHECK=true tsx --tsconfig ./tsconfig.json src/cronJobs/hourly.tsx",
     "cron:daily": "SKIP_ENV_CHECK=true tsx --tsconfig ./tsconfig.json src/cronJobs/daily.tsx",
     "cron:monthly": "SKIP_ENV_CHECK=true tsx --tsconfig ./tsconfig.json src/cronJobs/monthly.tsx",
-    "generateWorkspaceSummary": "bun run run:prod:mysql src/generateWorkspaceSummary.ts"
+    "generateWorkspaceSummary": "bun run run:prod:mysql src/generateWorkspaceSummary.ts",
+    "verify:cli": "bun test src/cli.test.ts src/cliContract.test.ts src/helpers/destroyUser.test.ts"
   },
   "exports": {
     "./*": {
@@ -65,7 +300,6 @@
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
     "posthog-node": "^5.8.2",
-    "prompts": "^2.4.2",
     "stripe": "17.1.0",
     "@typebot.io/workspaces": "workspace:*",
     "@typebot.io/typebot": "workspace:*",
@@ -83,7 +317,6 @@
     "@types/bun": "^1.3.9",
     "@types/cli-progress": "^3.11.5",
     "@types/papaparse": "^5.3.7",
-    "@types/prompts": "^2.4.4",
     "tsx": "^4.19.1",
     "@typebot.io/blocks-integrations": "workspace:*",
     "dotenv": "^16.4.5"

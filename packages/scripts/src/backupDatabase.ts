@@ -1,22 +1,20 @@
-import { exec } from "node:child_process";
-import { promptAndSetEnvironment } from "./utils";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { promptAndSetEnvironment, runScript } from "./cli";
 
 const backupDatabase = async () => {
   await promptAndSetEnvironment();
-  exec(
-    `pg_dump ${process.env.DATABASE_URL} -F c > dump.tar`,
-    (error, stdout, stderr) => {
-      if (error) {
-        console.log(`error: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-    },
-  );
+  if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required");
+
+  const { stdout, stderr } = await promisify(execFile)("pg_dump", [
+    process.env.DATABASE_URL,
+    "-F",
+    "c",
+    "-f",
+    "dump.tar",
+  ]);
+  if (stdout) console.log(stdout);
+  if (stderr) console.error(stderr);
 };
 
-backupDatabase();
+runScript(backupDatabase);

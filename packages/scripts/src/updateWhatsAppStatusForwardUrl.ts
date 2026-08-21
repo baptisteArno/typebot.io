@@ -1,25 +1,31 @@
-import * as p from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
 import {
   settingsSchema,
   whatsAppWebhookForwardingUrlSchema,
 } from "@typebot.io/settings/schemas";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  confirmAction,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const updateWhatsAppStatusForwardUrl = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const typebotId = await p.text({ message: "Typebot ID?" });
-  if (!typebotId || p.isCancel(typebotId)) process.exit();
-
-  const newUrl = await p.text({
-    message: "New forward URL?",
-    validate: (value) => {
-      if (!whatsAppWebhookForwardingUrlSchema.safeParse(value).success)
-        return "Invalid URL";
-    },
+  const typebotId = await getRequiredInput({
+    message: "Typebot ID?",
+    name: "typebot-id",
   });
-  if (!newUrl || p.isCancel(newUrl)) process.exit();
+
+  const newUrl = await getRequiredInput({
+    message: "New forward URL?",
+    name: "url",
+    validate: (value) =>
+      whatsAppWebhookForwardingUrlSchema.safeParse(value).success
+        ? undefined
+        : "Invalid URL",
+  });
 
   const typebot = await prisma.typebot.findUnique({
     where: { id: typebotId },
@@ -50,8 +56,7 @@ const updateWhatsAppStatusForwardUrl = async () => {
     newUrl,
   });
 
-  const shouldProceed = await p.confirm({ message: "Apply update?" });
-  if (!shouldProceed || p.isCancel(shouldProceed)) process.exit();
+  if (!(await confirmAction({ message: "Apply update?" }))) return;
 
   await prisma.typebot.update({
     where: { id: typebotId },
@@ -84,4 +89,4 @@ const updateWhatsAppStatusForwardUrl = async () => {
   console.log("Done.");
 };
 
-updateWhatsAppStatusForwardUrl();
+runScript(updateWhatsAppStatusForwardUrl);

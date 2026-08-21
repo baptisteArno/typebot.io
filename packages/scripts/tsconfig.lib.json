@@ -17,16 +17,19 @@
       "path": "../embeds/js/tsconfig.lib.json"
     },
     {
+      "path": "../variables/tsconfig.lib.json"
+    },
+    {
       "path": "../runtime-session-store/tsconfig.lib.json"
     },
     {
       "path": "../logs/tsconfig.lib.json"
     },
     {
-      "path": "../chat-session/tsconfig.lib.json"
+      "path": "../bot-engine/tsconfig.lib.json"
     },
     {
-      "path": "../bot-engine/tsconfig.lib.json"
+      "path": "../chat-session/tsconfig.lib.json"
     },
     {
       "path": "../ai/tsconfig.lib.json"

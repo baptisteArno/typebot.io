@@ -1,9 +1,9 @@
 import prisma from "@typebot.io/prisma";
 import { Stripe } from "stripe";
-import { promptAndSetEnvironment } from "./utils";
+import { assertProductionEnvironment, runScript } from "./cli";
 
 const checkSubscriptionsStatus = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
   const workspacesWithPaidPlan = await prisma.workspace.findMany({
     where: {
@@ -42,4 +42,4 @@ const checkSubscriptionsStatus = async () => {
   console.log("Active subscriptions", totalActiveSubscriptions);
 };
 
-checkSubscriptionsStatus();
+runScript(checkSubscriptionsStatus);

@@ -1,13 +1,17 @@
-import * as p from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const getCoupon = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const val = (await p.text({
+  const val = await getRequiredInput({
     message: "Enter coupon code",
-  })) as string;
+    name: "code",
+  });
 
   const coupon = await prisma.coupon.findFirst({
     where: {
@@ -23,4 +27,4 @@ const getCoupon = async () => {
   console.log(JSON.stringify(coupon, null, 2));
 };
 
-getCoupon();
+runScript(getCoupon);

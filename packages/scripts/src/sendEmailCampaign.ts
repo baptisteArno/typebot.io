@@ -4,9 +4,12 @@ import { sendEmail } from "@typebot.io/emails/helpers/sendEmail";
 import pLimit from "p-limit";
 import Papa from "papaparse";
 import { z } from "zod";
+import {
+  assertProductionEnvironment,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
-const DEFAULT_CSV_PATH =
-  "/Users/baptistearno/Downloads/typebot-ask-assistant-deprecation-recipients-2026-07-04.csv";
 const MIGRATION_DOC_URL =
   "https://docs.typebot.io/editor/blocks/integrations/openai#ask-model";
 
@@ -14,7 +17,6 @@ const ENGLISH_SUBJECT = "Action needed: migrate your Ask Assistant blocks";
 const FRENCH_SUBJECT = "Action requise: migre tes blocs Ask Assistant";
 
 const SEND_EMAILS = process.env.SEND_EMAILS === "true";
-const CSV_PATH = process.env.CAMPAIGN_CSV_PATH ?? DEFAULT_CSV_PATH;
 const CONCURRENCY = getPositiveIntegerEnv("CONCURRENCY", 5);
 const MAX_RETRIES = getPositiveIntegerEnv("MAX_RETRIES", 3);
 const PREVIEW_LIMIT = getPositiveIntegerEnv("PREVIEW_LIMIT", 3);
@@ -35,12 +37,18 @@ const campaignCsvRowSchema = z.object({
 type CampaignRecipient = z.output<typeof campaignCsvRowSchema>;
 
 export async function sendEmailCampaign() {
-  const recipients = await parseCsv(CSV_PATH);
+  const csvPath =
+    process.env.CAMPAIGN_CSV_PATH ??
+    (await getRequiredInput({
+      message: "Campaign CSV path?",
+      name: "csv-path",
+    }));
+  const recipients = await parseCsv(csvPath);
   const recipientsToProcess =
     SEND_LIMIT === undefined ? recipients : recipients.slice(0, SEND_LIMIT);
 
   console.log(
-    `Prepared ${recipients.length} campaign recipient(s) from ${CSV_PATH}.`,
+    `Prepared ${recipients.length} campaign recipient(s) from ${csvPath}.`,
   );
   console.log(
     SEND_EMAILS
@@ -285,8 +293,7 @@ function getErrorMessage(error: unknown) {
   return String(error);
 }
 
-if (import.meta.url === `file://${process.argv[1]}`)
-  sendEmailCampaign().catch((error) => {
-    console.error("Campaign failed:", error);
-    process.exitCode = 1;
-  });
+if (import.meta.url === `file://${process.argv[1]}`) {
+  assertProductionEnvironment({ requiresDatabase: false });
+  runScript(sendEmailCampaign);
+}

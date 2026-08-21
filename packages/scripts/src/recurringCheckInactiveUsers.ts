@@ -1,7 +1,9 @@
 import prisma from "@typebot.io/prisma/withReadReplica";
 import ky from "ky";
+import { assertProductionEnvironment, runScript } from "./cli";
 
 const main = async () => {
+  assertProductionEnvironment();
   let url = `https://eu.posthog.com/api/projects/${process.env.POSTHOG_PROJECT_ID}/cohorts/${process.env.POSTHOG_INACTIVE_USERS_COHORT_ID}/persons`;
   const inactiveUserIds: string[] = [];
   do {
@@ -70,4 +72,4 @@ async function getInactiveUserIds(url: string) {
   }
 }
 
-main();
+runScript(main);

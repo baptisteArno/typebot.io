@@ -1,15 +1,25 @@
-import * as p from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  confirmAction,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const updateWorkspace = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const workspaceId = await p.text({
+  const workspaceId = await getRequiredInput({
     message: "Workspace ID?",
+    name: "workspace-id",
   });
 
-  if (!workspaceId || p.isCancel(workspaceId)) process.exit();
+  if (
+    !(await confirmAction({
+      message: `Mark production workspace ${workspaceId} as verified?`,
+    }))
+  )
+    return;
 
   const workspace = await prisma.workspace.update({
     where: {
@@ -23,4 +33,4 @@ const updateWorkspace = async () => {
   console.log(workspace);
 };
 
-updateWorkspace();
+runScript(updateWorkspace);

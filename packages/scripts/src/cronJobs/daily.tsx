@@ -1,3 +1,4 @@
+import { runScript } from "../cli";
 import { cleanExpiredData } from "../helpers/cleanExpiredData";
 import { formatSubscriptionMessage } from "../helpers/formatSubscriptionMessage";
 import { getLandingPageVisitors } from "../helpers/getLandingPageVisitors";
@@ -32,4 +33,4 @@ ${formatSubscriptionMessage(subscriptionTransitions)}
   );
 };
 
-main().then();
+runScript(main);

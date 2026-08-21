@@ -1,17 +1,22 @@
 import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
-import type { Result } from "@typebot.io/results/schemas/results";
-import { promptAndSetEnvironment } from "./utils";
+import { resultSchema } from "@typebot.io/results/schemas/results";
+import { assertProductionEnvironment, confirmAction, runScript } from "./cli";
 
 const bulkUpdate = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const results = (await prisma.result.findMany({
-    where: {
-      variables: { equals: [] },
-    },
-    select: { variables: true, id: true },
-  })) as Pick<Result, "variables" | "id">[];
+  const results = resultSchema
+    .pick({ id: true, variables: true })
+    .array()
+    .parse(
+      await prisma.result.findMany({
+        where: {
+          variables: { equals: [] },
+        },
+        select: { variables: true, id: true },
+      }),
+    );
 
   const queries = results
     .map((result) => {
@@ -36,6 +41,9 @@ const bulkUpdate = async () => {
     })
     .filter(isDefined);
 
+  console.log(`Found ${queries.length} production results to update.`);
+  if (!(await confirmAction({ message: "Apply these bulk updates?" }))) return;
+
   await prisma.$transaction(queries);
 };
 
@@ -50,4 +58,4 @@ export const safeStringify = (val: unknown): string | null => {
   }
 };
 
-bulkUpdate();
+runScript(bulkUpdate);

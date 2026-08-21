@@ -1,6 +1,5 @@
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import * as p from "@clack/prompts";
 import {
   computeResultTranscript,
   parseTranscriptMessageText,
@@ -8,23 +7,24 @@ import {
 import { typebotInSessionStateSchema } from "@typebot.io/chat-session/schemas";
 import { logSchema } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
-import type { Answer } from "@typebot.io/results/schemas/answers";
+import { type Answer, answerSchema } from "@typebot.io/results/schemas/answers";
 import { streamAllResultsToCsv } from "@typebot.io/results/streamAllResultsToCsv";
 import { SessionStore } from "@typebot.io/runtime-session-store";
+import { setVariableHistoryItemSchema } from "@typebot.io/variables/schemas";
 import { z } from "zod";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const inspectResult = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const resultId = await p.text({
+  const resultId = await getRequiredInput({
     message: "Result ID?",
+    name: "result-id",
   });
-
-  if (!resultId || typeof resultId !== "string") {
-    console.log("No ID provided");
-    return;
-  }
 
   const result = await prisma.result.findUnique({
     where: {
@@ -160,7 +160,7 @@ const inspectResult = async () => {
       content: answer.content,
       attachedFileUrls:
         "attachedFileUrls" in answer && answer.attachedFileUrls
-          ? (answer.attachedFileUrls as string[])
+          ? answerSchema.shape.attachedFileUrls.parse(answer.attachedFileUrls)
           : undefined,
     }));
 
@@ -173,7 +173,7 @@ const inspectResult = async () => {
     .map(({ blockId, variableId, value, blockIndex }) => ({
       blockId,
       variableId,
-      value: value as string | (string | null)[] | null,
+      value: setVariableHistoryItemSchema.shape.value.parse(value),
       blockIndex,
     }));
 
@@ -216,4 +216,4 @@ const beautifyDetails = (details: string | null) => {
   }
 };
 
-inspectResult();
+runScript(inspectResult);

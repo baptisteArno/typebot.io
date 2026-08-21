@@ -1,29 +1,23 @@
-import * as p from "@clack/prompts";
-import { isCancel } from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  getIdentifierInput,
+  runScript,
+} from "./cli";
 
 const inspectTypebot = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const type = await p.select<"id" | "publicId" | "customDomain">({
+  const { type, value } = await getIdentifierInput({
     message: "Select way",
     options: [
-      { label: "ID", value: "id" },
-      { label: "Public ID", value: "publicId" },
-      { label: "Custom domain", value: "customDomain" },
+      { label: "ID", name: "id" },
+      { label: "Public ID", name: "public-id" },
+      { label: "Custom domain", name: "custom-domain" },
     ],
   });
 
-  if (!type || isCancel(type)) process.exit();
-
-  const val = await p.text({
-    message: "Enter value",
-  });
-
-  if (!val || isCancel(val)) process.exit();
-
-  const where = parseWhere(type, val);
+  const where = parseWhere(type, value);
 
   const typebot = await prisma.typebot.findFirst({
     where,
@@ -84,11 +78,14 @@ const inspectTypebot = async () => {
   console.log(JSON.stringify(typebot, null, 2));
 };
 
-const parseWhere = (type: "id" | "publicId" | "customDomain", val: string) => {
+const parseWhere = (
+  type: "id" | "public-id" | "custom-domain",
+  val: string,
+) => {
   if (type === "id") return { id: val };
-  if (type === "publicId") return { publicId: val };
-  if (type === "customDomain")
+  if (type === "public-id") return { publicId: val };
+  if (type === "custom-domain")
     return { customDomain: val.replace("https://", "") };
 };
 
-inspectTypebot();
+runScript(inspectTypebot);

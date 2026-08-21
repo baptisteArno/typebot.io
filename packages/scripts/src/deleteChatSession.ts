@@ -1,18 +1,25 @@
-import * as p from "@clack/prompts";
 import prisma from "@typebot.io/prisma";
-import { promptAndSetEnvironment } from "./utils";
+import {
+  assertProductionEnvironment,
+  confirmAction,
+  getRequiredInput,
+  runScript,
+} from "./cli";
 
 const deleteChatSession = async () => {
-  await promptAndSetEnvironment("production");
+  assertProductionEnvironment();
 
-  const id = await p.text({
+  const id = await getRequiredInput({
     message: "Session ID?",
+    name: "session-id",
   });
 
-  if (!id || typeof id !== "string") {
-    console.log("No ID provided");
+  if (
+    !(await confirmAction({
+      message: `Delete production chat session ${id}?`,
+    }))
+  )
     return;
-  }
 
   const chatSession = await prisma.chatSession.delete({
     where: {
@@ -23,4 +30,4 @@ const deleteChatSession = async () => {
   console.log(JSON.stringify(chatSession, null, 2));
 };
 
-deleteChatSession();
+runScript(deleteChatSession);
