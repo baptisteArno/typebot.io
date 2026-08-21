@@ -2,6 +2,7 @@ import { ORPCError } from "@orpc/server";
 import { isHttpRequestBlock } from "@typebot.io/blocks-core/helpers";
 import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
+import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
 
@@ -19,7 +20,19 @@ export const handleGetZapierSteps = async ({
   const typebot = await prisma.typebot.findFirst({
     where: {
       id: typebotId,
-      workspace: { members: { some: { userId: user.id } } },
+      OR: [
+        {
+          workspace: {
+            members: {
+              some: {
+                userId: user.id,
+                role: { not: WorkspaceRole.GUEST },
+              },
+            },
+          },
+        },
+        { collaborators: { some: { userId: user.id } } },
+      ],
     },
     select: { groups: true, version: true },
   });

@@ -52,6 +52,7 @@ export async function* handleStreamExportJob({
       name: true,
       groups: true,
       collaborators: {
+        where: { userId: user.id },
         select: {
           userId: true,
           type: true,
@@ -62,8 +63,10 @@ export async function* handleStreamExportJob({
           isSuspended: true,
           isPastDue: true,
           members: {
+            where: { userId: user.id },
             select: {
               userId: true,
+              role: true,
             },
           },
         },

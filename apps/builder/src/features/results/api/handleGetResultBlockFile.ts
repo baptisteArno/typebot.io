@@ -26,6 +26,7 @@ export const handleGetResultBlockFile = async ({
     select: {
       whatsAppCredentialsId: true,
       collaborators: {
+        where: { userId: user.id },
         select: {
           userId: true,
         },
@@ -36,8 +37,10 @@ export const handleGetResultBlockFile = async ({
           isSuspended: true,
           isPastDue: true,
           members: {
+            where: { userId: user.id },
             select: {
               userId: true,
+              role: true,
             },
           },
         },

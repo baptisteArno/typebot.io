@@ -53,13 +53,16 @@ export const handleExecuteWebhook = async ({
           isSuspended: true,
           isPastDue: true,
           members: {
+            where: { userId: user.id },
             select: {
               userId: true,
+              role: true,
             },
           },
         },
       },
       collaborators: {
+        where: { userId: user.id },
         select: {
           userId: true,
         },

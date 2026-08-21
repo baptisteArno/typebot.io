@@ -1,4 +1,5 @@
 import prisma from "@typebot.io/prisma";
+import { WorkspaceRole } from "@typebot.io/prisma/enum";
 
 type Props = {
   id: string;
@@ -10,7 +11,13 @@ export const findTypebot = ({ id, userId }: Props) =>
     where: {
       id,
       OR: [
-        { workspace: { members: { some: { userId } } } },
+        {
+          workspace: {
+            members: {
+              some: { userId, role: { not: WorkspaceRole.GUEST } },
+            },
+          },
+        },
         { collaborators: { some: { userId } } },
       ],
     },

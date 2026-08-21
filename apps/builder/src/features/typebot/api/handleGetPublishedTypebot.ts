@@ -34,15 +34,20 @@ export const handleGetPublishedTypebot = async ({
       id: typebotId,
     },
     include: {
-      collaborators: true,
+      collaborators: {
+        where: { userId: user.id },
+        select: { userId: true },
+      },
       publishedTypebot: true,
       workspace: {
         select: {
           isSuspended: true,
           isPastDue: true,
           members: {
+            where: { userId: user.id },
             select: {
               userId: true,
+              role: true,
             },
           },
         },

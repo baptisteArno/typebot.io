@@ -24,7 +24,7 @@ describe("handleGetCollaborators", () => {
     typebotFindFirst.mockReset();
   });
 
-  it("does not expose collaborators of a publicly shared typebot to an outsider", async () => {
+  it("does not expose collaborators to a non-collaborating guest", async () => {
     typebotFindFirst.mockResolvedValue(null);
 
     await expect(
@@ -39,11 +39,16 @@ describe("handleGetCollaborators", () => {
     expect(typebotFindFirst).toHaveBeenCalledWith({
       where: {
         id: "public-typebot-id",
-        workspace: {
-          members: {
-            some: { userId: user.id },
+        OR: [
+          {
+            workspace: {
+              members: {
+                some: { userId: user.id, role: { not: "GUEST" } },
+              },
+            },
           },
-        },
+          { collaborators: { some: { userId: user.id } } },
+        ],
       },
       include: {
         collaborators: {

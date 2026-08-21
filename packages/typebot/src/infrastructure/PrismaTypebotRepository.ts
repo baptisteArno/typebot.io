@@ -1,4 +1,5 @@
 import { PrismaService } from "@typebot.io/prisma/effect";
+import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { TypebotId, UserId } from "@typebot.io/shared-core/domain";
 import { Effect, Layer } from "effect";
 import { TypebotRepo } from "../application/TypebotRepo";
@@ -15,7 +16,13 @@ export const PrismaTypebotRepository = Layer.effect(
             where: {
               id: typebotId,
               OR: [
-                { workspace: { members: { some: { userId } } } },
+                {
+                  workspace: {
+                    members: {
+                      some: { userId, role: { not: WorkspaceRole.GUEST } },
+                    },
+                  },
+                },
                 { collaborators: { some: { userId } } },
               ],
             },
@@ -35,7 +42,13 @@ export const PrismaTypebotRepository = Layer.effect(
           where: {
             id: typebotId,
             OR: [
-              { workspace: { members: { some: { userId } } } },
+              {
+                workspace: {
+                  members: {
+                    some: { userId, role: { not: WorkspaceRole.GUEST } },
+                  },
+                },
+              },
               {
                 collaborators: {
                   some: {

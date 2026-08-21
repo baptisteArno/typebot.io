@@ -37,6 +37,7 @@ export const handleTriggerSendExportResultsToEmail = async ({
       name: true,
       groups: true,
       collaborators: {
+        where: { userId: user.id },
         select: {
           userId: true,
           type: true,
@@ -47,8 +48,10 @@ export const handleTriggerSendExportResultsToEmail = async ({
           isSuspended: true,
           isPastDue: true,
           members: {
+            where: { userId: user.id },
             select: {
               userId: true,
+              role: true,
             },
           },
         },

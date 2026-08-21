@@ -39,14 +39,19 @@ export const handleGetTypebot = async ({
       id: typebotId,
     },
     include: {
-      collaborators: true,
+      collaborators: {
+        where: { userId: user?.id ?? "" },
+        select: { userId: true, type: true },
+      },
       workspace: {
         select: {
           isSuspended: true,
           isPastDue: true,
           members: {
+            where: { userId: user?.id ?? "" },
             select: {
               userId: true,
+              role: true,
             },
           },
         },

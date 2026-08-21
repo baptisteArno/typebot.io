@@ -62,13 +62,16 @@ export const getLinkedTypebots = authenticatedProcedure
             isSuspended: true,
             isPastDue: true,
             members: {
+              where: { userId: user.id },
               select: {
                 userId: true,
+                role: true,
               },
             },
           },
         },
         collaborators: {
+          where: { userId: user.id },
           select: {
             type: true,
             userId: true,
@@ -114,13 +117,16 @@ export const getLinkedTypebots = authenticatedProcedure
             isSuspended: true,
             isPastDue: true,
             members: {
+              where: { userId: user.id },
               select: {
                 userId: true,
+                role: true,
               },
             },
           },
         },
         collaborators: {
+          where: { userId: user.id },
           select: {
             type: true,
             userId: true,

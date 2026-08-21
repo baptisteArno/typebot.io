@@ -1,15 +1,16 @@
 import { env } from "@typebot.io/env";
-import type { CollaborationType } from "@typebot.io/prisma/enum";
+import { type CollaborationType, WorkspaceRole } from "@typebot.io/prisma/enum";
 
 export const getTypebotAccessRight = (
   user: { email: string | null; id: string } | undefined | null,
   typebot: { collaborators: { userId: string; type: CollaborationType }[] } & {
-    workspace: { members: { userId: string }[] };
+    workspace: { members: { userId: string; role: WorkspaceRole }[] };
   },
 ): "read" | "write" | "guest" => {
   const collaborator = typebot.collaborators.find((c) => c.userId === user?.id);
   const isMemberOfWorkspace = typebot.workspace.members.some(
-    (m) => m.userId === user?.id,
+    (member) =>
+      member.userId === user?.id && member.role !== WorkspaceRole.GUEST,
   );
   if (
     collaborator?.type === "WRITE" ||

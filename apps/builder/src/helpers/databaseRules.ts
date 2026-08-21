@@ -34,15 +34,21 @@ export const canWriteTypebots = (
 export const canReadTypebots = (
   typebotIds: string | string[],
   user: Pick<Prisma.User, "email" | "id">,
-) => ({
+): Prisma.Prisma.TypebotWhereInput => ({
   id: typeof typebotIds === "string" ? typebotIds : { in: typebotIds },
-  workspace: env.ADMIN_EMAIL?.some((email) => email === user.email)
-    ? undefined
-    : {
-        members: {
-          some: { userId: user.id },
-        },
-      },
+  OR:
+    user.email && env.ADMIN_EMAIL?.includes(user.email)
+      ? undefined
+      : [
+          {
+            workspace: {
+              members: {
+                some: { userId: user.id, role: { not: WorkspaceRole.GUEST } },
+              },
+            },
+          },
+          { collaborators: { some: { userId: user.id } } },
+        ],
 });
 
 export const canEditGuests = (user: Pick<User, "id">, typebotId: string) => ({
