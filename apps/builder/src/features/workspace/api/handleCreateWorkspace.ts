@@ -1,9 +1,9 @@
 import { ORPCError } from "@orpc/server";
+import type { Plan, Prisma } from "@prisma/client";
 import prisma from "@typebot.io/prisma";
 import { trackEvents } from "@typebot.io/telemetry/trackEvents";
 import type { User } from "@typebot.io/user/schemas";
 import { parseWorkspaceDefaultPlan } from "@typebot.io/workspaces/parseWorkspaceDefaultPlan";
-import type { Workspace } from "@typebot.io/workspaces/schemas";
 import { z } from "zod";
 
 const MAX_FREE_WORKSPACES_PER_USER = 2;
@@ -23,32 +23,14 @@ export const handleCreateWorkspace = async ({
 }) => {
   const plan = parseWorkspaceDefaultPlan(user.email);
 
-  if (plan === "FREE") await enforceFreeTierLimits(user.id);
-
-  const existingWorkspaceNames = (await prisma.workspace.findMany({
-    where: {
-      members: {
-        some: {
-          userId: user.id,
-        },
-      },
-    },
-    select: { name: true },
-  })) as Pick<Workspace, "name">[];
-
-  if (existingWorkspaceNames.some((workspace) => workspace.name === name))
-    throw new ORPCError("BAD_REQUEST", {
-      message: "Workspace with same name already exists",
-    });
-
-  const newWorkspace = (await prisma.workspace.create({
-    data: {
-      name,
-      icon,
-      members: { create: [{ role: "ADMIN", userId: user.id }] },
-      plan,
-    },
-  })) as Workspace;
+  const newWorkspace =
+    plan === "FREE"
+      ? await prisma.$transaction(async (transaction) => {
+          await lockUserForWorkspaceCreation(transaction, user.id);
+          await enforceFreeTierLimits(transaction, user.id);
+          return createWorkspace(transaction, { name, icon, plan, user });
+        })
+      : await createWorkspace(prisma, { name, icon, plan, user });
 
   await trackEvents([
     {
@@ -63,8 +45,66 @@ export const handleCreateWorkspace = async ({
   };
 };
 
-const enforceFreeTierLimits = async (userId: string) => {
-  const ownedFreeWorkspaces = await prisma.workspace.findMany({
+const lockUserForWorkspaceCreation = async (
+  transaction: Prisma.TransactionClient,
+  userId: string,
+) => {
+  if (process.env.DATABASE_URL?.startsWith("mysql://")) {
+    await transaction.$queryRaw`SELECT \`id\` FROM \`User\` WHERE \`id\` = ${userId} FOR UPDATE`;
+    return;
+  }
+
+  await transaction.$queryRaw`SELECT "id" FROM "User" WHERE "id" = ${userId} FOR UPDATE`;
+};
+
+const createWorkspace = async (
+  database: Prisma.TransactionClient,
+  {
+    name,
+    icon,
+    plan,
+    user,
+  }: {
+    name: string;
+    icon?: string;
+    plan: Plan;
+    user: Pick<User, "id">;
+  },
+) => {
+  const existingWorkspaceNames = await database.workspace.findMany({
+    where: {
+      members: {
+        some: {
+          userId: user.id,
+        },
+      },
+    },
+    select: { name: true },
+  });
+
+  if (existingWorkspaceNames.some((workspace) => workspace.name === name))
+    throw new ORPCError("BAD_REQUEST", {
+      message: "Workspace with same name already exists",
+    });
+
+  return {
+    ...(await database.workspace.create({
+      data: {
+        name,
+        icon,
+        members: { create: [{ role: "ADMIN", userId: user.id }] },
+        plan,
+      },
+    })),
+    settings: null,
+  };
+};
+
+const enforceFreeTierLimits = async (
+  database: Prisma.TransactionClient,
+  userId: string,
+) => {
+  const ownedFreeWorkspaces = await database.workspace.findMany({
     where: {
       plan: "FREE",
       members: {
