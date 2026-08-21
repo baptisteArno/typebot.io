@@ -1,5 +1,77 @@
 # Changelog
 
+<a name="3.18.0"></a>
+## 3.18.0 (2026-08-21)
+
+### New features
+
+- 👌 Add camera capture options to file uploads (#2560) [[512c988](https://github.com/baptisteArno/typebot.io/commit/512c9889515c19eb0e2c8bf9d68f877fc78786c4)]
+- 👌 Add a separator label for date range answers (#2573) [[6e6b0b2](https://github.com/baptisteArno/typebot.io/commit/6e6b0b20b7bf6001ecd6707d9fa021e7ba4cc510)]
+
+### Fixed
+
+- 🐛 Fix stored WhatsApp phone lookup fallback (#2531) [[f00ccba](https://github.com/baptisteArno/typebot.io/commit/f00ccba8ed7593b154a7bba9677f46c5d7c79234)]
+- 🐛 Fix embed video overlay in preview (#2532) [[9224f4f](https://github.com/baptisteArno/typebot.io/commit/9224f4f7701f140cfcfcd5031c56df8a31bdacbe)]
+- 🐛 Fix S3 operations without full config (#2533) [[248f751](https://github.com/baptisteArno/typebot.io/commit/248f7515d8ee4cbd7c93318665f887858cbcaf05)]
+- 🐛 Improve expired data cleanup reliability (#2536) [[b86864c](https://github.com/baptisteArno/typebot.io/commit/b86864ca60102bab60d495b0de2f34402ccb04b6)]
+- 🐛 Fix WhatsApp audio file upload URLs (#2539) [[54e1fa1](https://github.com/baptisteArno/typebot.io/commit/54e1fa1a0fd71f5470fe8b8ccfbf1517f88ab320)]
+- 🐛 Fix miscellaneous errors (#2540) [[c7ae1c1](https://github.com/baptisteArno/typebot.io/commit/c7ae1c162e0ae0e5d82a1096214b999bd3f17786)]
+- 🐛 Restore automatic dev database sync (#2550) [[9900fc7](https://github.com/baptisteArno/typebot.io/commit/9900fc7149da89bdb3624d28ad0b9757140dd141)]
+- 🐛 Fix Android camera for image extension uploads (#2558) [[e7be877](https://github.com/baptisteArno/typebot.io/commit/e7be877bc101929c8d4574104b4d5ec5d61cc6f5)]
+- 🐛 Fix export workflow startup status [[5da37e4](https://github.com/baptisteArno/typebot.io/commit/5da37e47935135d33d1e41318eaab9f35a8d7ee0)]
+- 🐛 Fix transcripts with removed input answers [[248433d](https://github.com/baptisteArno/typebot.io/commit/248433dd8dd460bd91870a8897ad5288aa131416)]
+- 🐛 Honor the DATABASE_URL schema parameter in the Prisma PostgreSQL adapter (#2582) [[f9a57c4](https://github.com/baptisteArno/typebot.io/commit/f9a57c449d19b18f660a4c230e1c66eba7397165)]
+- 🐛 Fix sidebar block drag on Android touch devices (#2569) [[6796f58](https://github.com/baptisteArno/typebot.io/commit/6796f583ed7b3ba3938d0bcb3c3be33e6e27151d)]
+- 🐛 Support BSUID-only WhatsApp webhooks [[570d538](https://github.com/baptisteArno/typebot.io/commit/570d5385c2d8a7e2ddc5eb32b6908998d31de669)]
+- 🐛 Fix production workspace suspension [[b14f756](https://github.com/baptisteArno/typebot.io/commit/b14f756d060827db6d5303a856432192bf9f2394)]
+
+### Security
+
+- 🐛 Fix custom domain deletion ownership checks (#2541) [[06575df](https://github.com/baptisteArno/typebot.io/commit/06575dfcd461ba76071012869d4b1f4046f9a6b8)]
+- 🐛 Harden email login codes (#2542) [[03c8dd9](https://github.com/baptisteArno/typebot.io/commit/03c8dd967f21e48e128340e369901d595d89bfd9)]
+- 🐛 Secure Send Email attachment handling (#2543) [[9c81300](https://github.com/baptisteArno/typebot.io/commit/9c81300e5abb28a68a5af2920b92043e3512899d)]
+- 🐛 Secure deprecated file upload URLs (#2544) [[ab72956](https://github.com/baptisteArno/typebot.io/commit/ab729561d47b7e063446fc8c0d1deb6dee5fe0fb)]
+- 🔒️ Upgrade vulnerable dependencies [[70b4d5d](https://github.com/baptisteArno/typebot.io/commit/70b4d5d77f5c2ab22e64744fd0322514214a8e5e)]
+- 🔒️ Fix TAC scan header findings (#2549) [[d039794](https://github.com/baptisteArno/typebot.io/commit/d0397947977a74cc5bfbc09affee1ae320f46cf9)]
+- 🐛 Stop guest invitation email abuse [[390dddd](https://github.com/baptisteArno/typebot.io/commit/390dddd4cc3d284b33aa1d9e9f690ea4ab8cec54)]
+- 🐛 Fix preview workspace credential binding (#2551) [[33aa58d](https://github.com/baptisteArno/typebot.io/commit/33aa58d638ac68002bf01c7b87afc82a9907cb3e)]
+- 🐛 Prevent cross-workspace invitation takeover [[7ad9ec1](https://github.com/baptisteArno/typebot.io/commit/7ad9ec1dba2d3f453c9f71a54236650eaed9a105)]
+- 🐛 Prevent webhook credential leaks in logs [[53f6461](https://github.com/baptisteArno/typebot.io/commit/53f646142ec0b230a4875eeb3f3494aab17ab072)]
+- 🐛 Protect Typebot collaborator identities [[9b9d52d](https://github.com/baptisteArno/typebot.io/commit/9b9d52d2f60aa464ad46135a28e1ac7f0bb535f9)]
+- 🐛 Sanitize embed bubble URLs [[cc19553](https://github.com/baptisteArno/typebot.io/commit/cc195532aa2b2a2432ef196c869844577c1d41eb)]
+- 🐛 Protect AI provider base URLs from SSRF [[4b63182](https://github.com/baptisteArno/typebot.io/commit/4b63182363e17a823d35ee80ee5f7edfee47c4f6)]
+- 🐛 Secure server-side HTTP request execution [[5c7cd4c](https://github.com/baptisteArno/typebot.io/commit/5c7cd4c3ab3681ca98e6ac7c5ddc4d5513dd5fd8)]
+- 🐛 Fix free workspace creation race [[a6bed8b](https://github.com/baptisteArno/typebot.io/commit/a6bed8b48cabf68351d9a1872040d1d783e3d989)]
+- 🐛 Secure HTTP proxy destinations [[63b1e2f](https://github.com/baptisteArno/typebot.io/commit/63b1e2fe174f0bc3cfa14c3cdc88920ed1c9a345)]
+- 🐛 Protect Dify endpoints against SSRF [[cfb2e7a](https://github.com/baptisteArno/typebot.io/commit/cfb2e7a8ec8f84967e8ce23fc0d6abb0e5e6306c)]
+- 🐛 Prevent workspace seat limit races [[eec8ac4](https://github.com/baptisteArno/typebot.io/commit/eec8ac449cb40152d4bacd982d2d00bdb342e4ea)]
+- 🐛 Protect NocoDB and PostHog requests against SSRF [[d87c171](https://github.com/baptisteArno/typebot.io/commit/d87c171d69bc4a1a079cb7c272dfcf87276f5615)]
+- 🐛 Restrict guest access to collaborative Typebots [[0db8673](https://github.com/baptisteArno/typebot.io/commit/0db8673b502756cf754da6c1b0f1f24e43d1c11b)]
+
+### Content
+
+- 📝 Add June content batch [[b647b3e](https://github.com/baptisteArno/typebot.io/commit/b647b3e941da3536b0dac80f8c69902819d9df17)]
+- 📝 Fix blog canonical URLs [[17fb696](https://github.com/baptisteArno/typebot.io/commit/17fb6960d0dec99ef0eb812c8a45e75cafddc855)]
+- 📝 Add July content part 1 (#2559) [[a880e3a](https://github.com/baptisteArno/typebot.io/commit/a880e3a53cba33a1d10ff5e244018d6b1cb26e32)]
+- 📝 Add July content part 2 [[183be54](https://github.com/baptisteArno/typebot.io/commit/183be5404a9b8d7c3a2d8fb5ed6dd3a37f12dfb0)]
+- 📝 Fix chatbot guide links [[6e9ab23](https://github.com/baptisteArno/typebot.io/commit/6e9ab2343925fa4074252157d10d5dc6006815cb)]
+
+### Internal
+
+- 🔧 Restore OpenAPI docs generation pipeline (#2553) [[9d2d7ea](https://github.com/baptisteArno/typebot.io/commit/9d2d7ead8ebd2477b55787b4e7098fdf29e3dae2)]
+- 🔧 Disable daily churn analysis cron [[fa2e2e9](https://github.com/baptisteArno/typebot.io/commit/fa2e2e92f4bf62d3342e3315309d9381f288fbb5)]
+- 🔧 Prepare Ask Assistant migration campaign [[ef1b4c6](https://github.com/baptisteArno/typebot.io/commit/ef1b4c67c520ff00018db709620dc101f717e9ac)]
+- 🔧 Sync commit skill conventions [[76df665](https://github.com/baptisteArno/typebot.io/commit/76df665e14bc2129cb930a704b7cd54eb01ab822)]
+- 🔧 Add Typebot suspension tooling [[e791f1a](https://github.com/baptisteArno/typebot.io/commit/e791f1a17883a5ca69858cdbf237142e421d113e)]
+- 🔧 Add guest invitation abuse telemetry [[6ab5211](https://github.com/baptisteArno/typebot.io/commit/6ab5211de380b8ccd842cbf060b278ae69614c25)]
+- 🔧 Revert guest invitation abuse telemetry [[cf83dd3](https://github.com/baptisteArno/typebot.io/commit/cf83dd3c8ed42a42b27640d54678c0ef12cb988b)]
+- 🔧 Run in-depth analytics aggregations concurrently (#2572) [[7fa9ab4](https://github.com/baptisteArno/typebot.io/commit/7fa9ab423a6ab56d304302edbf983225235dc62d)]
+- 🔧 Run operational scripts with production MySQL [[5879d94](https://github.com/baptisteArno/typebot.io/commit/5879d94acb38458aad9e6f008e18b80951819c2d)]
+- 🔧 Add T3 worktree setup [[f795644](https://github.com/baptisteArno/typebot.io/commit/f795644eec7ed46602e1350f8a889e222f05ec86)]
+- ♻️ Format in-depth analytics handler [[aac5819](https://github.com/baptisteArno/typebot.io/commit/aac5819c2fc63df0184148a1d674365ece4ff1dc)]
+- 🔧 Harden operational scripts for agents [[56c1dbd](https://github.com/baptisteArno/typebot.io/commit/56c1dbd01ca8aab88e5b3609f24b41fa2efacd95)]
+- 🔧 Restore secret log regression test isolation [[6c88346](https://github.com/baptisteArno/typebot.io/commit/6c88346c9d9bd020ec418aab3d474955057b42c0)]
+
 <a name="3.17.2"></a>
 ## 3.17.2 (2026-06-17)
 
