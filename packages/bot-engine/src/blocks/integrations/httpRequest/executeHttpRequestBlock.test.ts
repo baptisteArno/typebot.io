@@ -1,31 +1,6 @@
-import { beforeEach, describe, expect, it, mock, spyOn } from "bun:test";
+import { afterEach, describe, expect, it, mock, spyOn } from "bun:test";
 import { HttpMethod } from "@typebot.io/blocks-integrations/httpRequest/constants";
 import { TimeoutError } from "ky";
-
-let nextRequestError: unknown;
-
-const safeKyMock = mock(async () => {
-  if (nextRequestError) throw nextRequestError;
-  return new Response('{"status":"ok"}', { status: 200 });
-});
-
-mock.module("@typebot.io/lib/ky", () => ({
-  rebuildFetchWithoutChunkedEncoding: mock(
-    async () => new Response(undefined, { status: 200 }),
-  ),
-  safeKy: safeKyMock,
-}));
-
-mock.module("@typebot.io/lib/parseUnknownError", () => ({
-  parseUnknownError: mock(async () => ({
-    description: "Network request failed",
-  })),
-}));
-
-mock.module("@typebot.io/lib/ssrf/validateHttpReqUrl", () => ({
-  validateHttpReqHeaders: mock(),
-  validateHttpReqUrl: mock(async () => undefined),
-}));
 
 mock.module("@typebot.io/prisma", () => ({
   default: {
@@ -45,17 +20,16 @@ const { filterPotentiallySensitiveLogs } = await import(
 const headerSecret = "header-secret-value";
 const basicAuthUsername = "basic-auth-user";
 const basicAuthPassword = "basic-auth-password";
+const webhookUrl = "https://93.184.216.34/webhook";
+const originalFetch = globalThis.fetch;
 
 describe("executeHttpRequest", () => {
-  beforeEach(() => {
-    nextRequestError = undefined;
-    safeKyMock.mockClear();
+  afterEach(() => {
+    globalThis.fetch = originalFetch;
   });
 
   it("keeps headers and basic auth credentials out of timeout logs", async () => {
-    nextRequestError = new TimeoutError(
-      new Request("https://example.com/webhook"),
-    );
+    replaceFetchWithError(new TimeoutError(new Request(webhookUrl)));
 
     const result = await executeHttpRequest(buildHttpRequest());
 
@@ -64,7 +38,7 @@ describe("executeHttpRequest", () => {
   });
 
   it("keeps headers and basic auth credentials out of generic failure logs", async () => {
-    nextRequestError = new Error("Network request failed");
+    replaceFetchWithError(new Error("Network request failed"));
     const consoleErrorSpy = spyOn(console, "error").mockImplementation(
       () => undefined,
     );
@@ -82,7 +56,7 @@ describe("executeHttpRequest", () => {
 });
 
 const buildHttpRequest = () => ({
-  url: "https://example.com/webhook",
+  url: webhookUrl,
   method: HttpMethod.POST,
   headers: {
     Authorization: `Bearer ${headerSecret}`,
@@ -104,11 +78,20 @@ const assertWebhookErrorLogIsSafe = (
 
   expect(log.description).toBe(webhookErrorDescription);
   expect(filterPotentiallySensitiveLogs(log)).toBe(false);
-  expect(log.details).toContain("https://example.com/webhook");
+  expect(log.details).toContain(webhookUrl);
   expect(log.details).not.toContain('"headers"');
   expect(log.details).not.toContain('"username"');
   expect(log.details).not.toContain('"password"');
   expect(log.details).not.toContain(headerSecret);
   expect(log.details).not.toContain(basicAuthUsername);
   expect(log.details).not.toContain(basicAuthPassword);
+};
+
+const replaceFetchWithError = (error: unknown) => {
+  globalThis.fetch = Object.assign(
+    async () => {
+      throw error;
+    },
+    { preconnect: originalFetch.preconnect },
+  );
 };
