@@ -26,10 +26,7 @@ export const handleCreateWorkspaceInvitation = async ({
     if (!success) throw new ORPCError("TOO_MANY_REQUESTS");
   }
 
-  const existingUser = await prisma.user.findUnique({
-    where: { email },
-  });
-
+  const existingUser = await prisma.user.findUnique({ where: { email } });
   const workspace = await prisma.workspace.findFirst({
     where: {
       id: workspaceId,
@@ -42,56 +39,61 @@ export const handleCreateWorkspaceInvitation = async ({
       message: "You don't have permission to invite members to this workspace",
     });
 
-  const [existingMembersCount, existingInvitationsCount] =
-    await prisma.$transaction([
-      prisma.memberInWorkspace.count({
-        where: {
-          workspaceId: workspace.id,
-          role: { not: WorkspaceRole.GUEST },
-        },
-      }),
-      prisma.workspaceInvitation.count({
-        where: { workspaceId: workspace.id },
-      }),
-    ]);
+  const createdMemberOrInvitation = await prisma.$transaction(
+    async (transaction) => {
+      // Serialize seat reservations for this workspace until the transaction ends.
+      await transaction.workspace.update({
+        where: { id: workspaceId },
+        data: { id: workspaceId },
+      });
 
-  const seatsLimit = getSeatsLimit(workspace);
-  if (
-    seatsLimit !== "inf" &&
-    seatsLimit <= existingMembersCount + existingInvitationsCount
-  )
-    throw new ORPCError("BAD_REQUEST", { message: "Seats limit reached" });
+      const [existingMembersCount, existingInvitationsCount] =
+        await Promise.all([
+          transaction.memberInWorkspace.count({
+            where: {
+              workspaceId,
+              role: { not: WorkspaceRole.GUEST },
+            },
+          }),
+          transaction.workspaceInvitation.count({ where: { workspaceId } }),
+        ]);
 
-  if (existingUser) {
-    await prisma.memberInWorkspace.create({
-      data: {
-        role: type,
-        workspaceId,
-        userId: existingUser.id,
-      },
-    });
+      const seatsLimit = getSeatsLimit(workspace);
+      if (
+        seatsLimit !== "inf" &&
+        seatsLimit <= existingMembersCount + existingInvitationsCount
+      )
+        throw new ORPCError("BAD_REQUEST", {
+          message: "Seats limit reached",
+        });
 
-    await sendWorkspaceMemberInvitationEmail({
-      workspaceName: workspace.name,
-      guestEmail: email,
-      url: `${env.NEXTAUTH_URL}/typebots?redirectPath=${encodeURIComponent(`/w/${workspace.id}/typebots`)}`,
-      hostEmail: user.email ?? "",
-    });
+      if (existingUser) {
+        await transaction.memberInWorkspace.create({
+          data: {
+            role: type,
+            workspaceId,
+            userId: existingUser.id,
+          },
+        });
 
-    return {
-      member: {
-        userId: existingUser.id,
-        name: existingUser.name,
-        email: existingUser.email,
-        role: type,
-        workspaceId,
-      },
-    };
-  }
+        return {
+          member: {
+            userId: existingUser.id,
+            name: existingUser.name,
+            email: existingUser.email,
+            role: type,
+            workspaceId,
+          },
+        };
+      }
 
-  const invitation = await prisma.workspaceInvitation.create({
-    data: { email, type, workspaceId },
-  });
+      return {
+        invitation: await transaction.workspaceInvitation.create({
+          data: { email, type, workspaceId },
+        }),
+      };
+    },
+  );
 
   await sendWorkspaceMemberInvitationEmail({
     workspaceName: workspace.name,
@@ -100,5 +102,5 @@ export const handleCreateWorkspaceInvitation = async ({
     hostEmail: user.email ?? "",
   });
 
-  return { invitation };
+  return createdMemberOrInvitation;
 };
