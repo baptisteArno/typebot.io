@@ -1,5 +1,5 @@
 import { createActionHandler } from "@typebot.io/forge";
-import { ky } from "@typebot.io/lib/ky";
+import { safeKy } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { updateExistingRecord } from "../actions/updateExistingRecord";
 import { defaultBaseUrl, defaultLimitForSearch } from "../constants";
@@ -23,7 +23,7 @@ export const updateExistingRecordHandler = createActionHandler(
       if (!filter?.comparisons || filter.comparisons.length === 0)
         return logs.add("At least one filter is required");
       try {
-        const listData = await ky
+        const listData = await safeKy
           .get(
             `${baseUrl ?? defaultBaseUrl}/api/v2/tables/${tableId}/records`,
             {
@@ -39,7 +39,7 @@ export const updateExistingRecordHandler = createActionHandler(
           )
           .json<ListTableRecordsResponse>();
 
-        await ky.patch(
+        await safeKy.patch(
           `${baseUrl ?? defaultBaseUrl}/api/v2/tables/${tableId}/records`,
           {
             headers: {

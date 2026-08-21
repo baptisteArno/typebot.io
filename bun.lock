@@ -581,6 +581,7 @@
       "name": "@typebot.io/legacy",
       "version": "0.0.1",
       "dependencies": {
+        "@typebot.io/lib": "workspace:*",
         "openai": "4.81.0",
       },
     },
@@ -746,6 +747,7 @@
         "@ai-sdk/deepseek": "^1.0.40",
         "@typebot.io/ai": "workspace:*",
         "@typebot.io/forge": "workspace:*",
+        "@typebot.io/lib": "workspace:*",
       },
       "devDependencies": {
         "@types/react": "^19.2.14",

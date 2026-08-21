@@ -21,6 +21,9 @@
     },
     "./package.json": "./package.json"
   },
+  "scripts": {
+    "test": "bun test"
+  },
   "devDependencies": {
     "@typebot.io/forge": "workspace:*",
     "@types/react": "^19.2.14"

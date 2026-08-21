@@ -1,4 +1,4 @@
-import { ky } from "@typebot.io/lib/ky";
+import { safeKy } from "@typebot.io/lib/ky";
 import { isDefined } from "@typebot.io/lib/utils";
 import { defaultBaseUrl } from "../constants";
 import type { TableMetaResponse } from "../types";
@@ -17,7 +17,7 @@ export const linkRelationUpdatesIfAny = async ({
   updates,
   recordIdsToUpdate,
 }: Params) => {
-  const tableMeta = await ky
+  const tableMeta = await safeKy
     .get(`${baseUrl ?? defaultBaseUrl}/api/v2/meta/tables/${tableId}`, {
       headers: {
         "xc-token": apiKey,
@@ -37,7 +37,7 @@ export const linkRelationUpdatesIfAny = async ({
 
   for (const relationUpdate of relationUpdates) {
     for (const record of recordIdsToUpdate) {
-      await ky
+      await safeKy
         .post(
           `${baseUrl ?? defaultBaseUrl}/api/v2/tables/${tableId}/links/${relationUpdate.id}/records/${record}`,
           {

@@ -21,6 +21,9 @@
     },
     "./package.json": "./package.json"
   },
+  "scripts": {
+    "test": "bun test"
+  },
   "dependencies": {
     "ky": "^1.2.4",
     "@typebot.io/forge": "workspace:*",
