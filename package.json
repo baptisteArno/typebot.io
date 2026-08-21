@@ -81,5 +81,8 @@
     "prisma",
     "sharp",
     "inngest-cli"
-  ]
+  ],
+  "patchedDependencies": {
+    "dify-ai-provider@1.1.0": "patches/dify-ai-provider@1.1.0.patch"
+  }
 }

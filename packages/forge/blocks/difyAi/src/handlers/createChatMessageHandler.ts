@@ -1,11 +1,10 @@
 import { processDataStream } from "@ai-sdk/ui-utils";
 import { runChatCompletionStream } from "@typebot.io/ai/runChatCompletionStream";
 import { createActionHandler } from "@typebot.io/forge";
-import { createDifyProvider } from "dify-ai-provider";
 import { createChatMessage } from "../actions/createChatMessage";
-import { defaultAppId, defaultUserId } from "../constants";
-import { transformKeyValueListToObject } from "../helpers/transformKeyValueListToObject";
+import { defaultUserId } from "../constants";
 import { validateCredentials } from "../helpers/validateCredentials";
+import { createDifyChatLanguageModel } from "./createDifyChatLanguageModel";
 
 export const createChatMessageHandler = createActionHandler(createChatMessage, {
   server: async ({
@@ -18,11 +17,10 @@ export const createChatMessageHandler = createActionHandler(createChatMessage, {
     const credentials = validateCredentials(apiEndpoint, apiKey);
     if (!credentials.success) return logs.add(credentials.error);
 
-    const difyModel = createDifyProvider({
-      baseURL: `${credentials.apiEndpoint}/v1`,
-    })(defaultAppId, {
+    const difyModel = createDifyChatLanguageModel({
+      apiEndpoint: credentials.apiEndpoint,
       apiKey: credentials.apiKey,
-      inputs: transformKeyValueListToObject(options.inputs),
+      inputs: options.inputs,
       responseMode: "blocking",
     });
 
@@ -89,11 +87,10 @@ export const createChatMessageHandler = createActionHandler(createChatMessage, {
       if (!credentials.success)
         return { error: { description: credentials.error } };
 
-      const difyModel = createDifyProvider({
-        baseURL: `${credentials.apiEndpoint}/v1`,
-      })(defaultAppId, {
+      const difyModel = createDifyChatLanguageModel({
+        apiEndpoint: credentials.apiEndpoint,
         apiKey: credentials.apiKey,
-        inputs: transformKeyValueListToObject(options.inputs),
+        inputs: options.inputs,
         responseMode: "streaming",
       });
 

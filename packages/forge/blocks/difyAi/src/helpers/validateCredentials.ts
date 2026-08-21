@@ -7,7 +7,7 @@ export const validateCredentials = (
   | {
       success: true;
       apiKey: string;
-      apiEndpoint: string | undefined;
+      apiEndpoint: string;
     }
   | { success: false; error: string } => {
   if (!apiKey?.trim()) return { success: false, error: "No API key provided" };

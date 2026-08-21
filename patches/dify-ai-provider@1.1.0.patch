@@ -1,0 +1,118 @@
+diff --git a/dist/index.js b/dist/index.js
+index d4e0218cbce24c4320389dc9e1a556059ba9d6b7..cd2198377e206b46b481a194c5fd358b4ffb247b 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -442,7 +442,7 @@ Call tools with JSON format:
+ ${toolDescriptions.join("\n")}`;
+   return { prompt, toolNames };
+ }
+-async function uploadFileToDify(data, mimeType, filename, user, baseURL, headers, logger) {
++async function uploadFileToDify(data, mimeType, filename, user, baseURL, headers, logger, customFetch) {
+   try {
+     let blob;
+     if (typeof data === "string") {
+@@ -455,7 +455,7 @@ async function uploadFileToDify(data, mimeType, filename, user, baseURL, headers
+     form.append("file", blob, filename);
+     form.append("user", user);
+     const { "content-type": _, "Content-Type": __, ...authHeaders } = headers();
+-    const res = await fetch(`${baseURL}/files/upload`, {
++    const res = await (customFetch ?? fetch)(`${baseURL}/files/upload`, {
+       method: "POST",
+       headers: { ...authHeaders },
+       body: form
+@@ -472,7 +472,7 @@ async function uploadFileToDify(data, mimeType, filename, user, baseURL, headers
+     return void 0;
+   }
+ }
+-async function extractFileAttachments(messages, userId, baseURL, headers, logger) {
++async function extractFileAttachments(messages, userId, baseURL, headers, logger, customFetch) {
+   const uploadPromises = [];
+   for (const msg of messages) {
+     if (!Array.isArray(msg.content)) continue;
+@@ -489,7 +489,7 @@ async function extractFileAttachments(messages, userId, baseURL, headers, logger
+         uploadData = part.data;
+       }
+       if (uploadData) {
+-        const task = uploadFileToDify(uploadData, mimeType, filename, userId, baseURL, headers, logger).then((uploadId) => {
++        const task = uploadFileToDify(uploadData, mimeType, filename, userId, baseURL, headers, logger, customFetch).then((uploadId) => {
+           if (uploadId) {
+             return {
+               type: mimeType.startsWith("image/") ? "image" : "document",
+@@ -849,7 +849,7 @@ var DifyChatLanguageModel = class {
+     }
+     const userId = (_e = (_d = options.headers) == null ? void 0 : _d["user-id"]) != null ? _e : "you_should_pass_user-id";
+     const { "chat-id": _h1, "user-id": _h2, ...cleanHeaders } = options.headers || {};
+-    const files = await extractFileAttachments(messages, userId, this.config.baseURL, this.config.headers, this.logger);
++    const files = await extractFileAttachments(messages, userId, this.config.baseURL, this.config.headers, this.logger, this.config.fetch);
+     const systemPrompt = this.extractSystemPrompt(messages);
+     const injectTools = this.settings.injectToolsPrompt !== false;
+     const { prompt: generatedPrompt, toolNames } = formatToolsPrompt(options.tools);
+@@ -965,7 +965,8 @@ function createDifyProvider(options = {}) {
+       })}`,
+       "Content-Type": "application/json",
+       ...options.headers
+-    })
++    }),
++    fetch: options.fetch
+   });
+   const provider = function(modelId, settings) {
+     if (new.target) {
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 33773e8597eb3d86881d5a26ab887f83f1e665fe..80fbf785e32f7387423a655135eac9de098680fc 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -424,7 +424,7 @@ Call tools with JSON format:
+ ${toolDescriptions.join("\n")}`;
+   return { prompt, toolNames };
+ }
+-async function uploadFileToDify(data, mimeType, filename, user, baseURL, headers, logger) {
++async function uploadFileToDify(data, mimeType, filename, user, baseURL, headers, logger, customFetch) {
+   try {
+     let blob;
+     if (typeof data === "string") {
+@@ -437,7 +437,7 @@ async function uploadFileToDify(data, mimeType, filename, user, baseURL, headers
+     form.append("file", blob, filename);
+     form.append("user", user);
+     const { "content-type": _, "Content-Type": __, ...authHeaders } = headers();
+-    const res = await fetch(`${baseURL}/files/upload`, {
++    const res = await (customFetch ?? fetch)(`${baseURL}/files/upload`, {
+       method: "POST",
+       headers: { ...authHeaders },
+       body: form
+@@ -454,7 +454,7 @@ async function uploadFileToDify(data, mimeType, filename, user, baseURL, headers
+     return void 0;
+   }
+ }
+-async function extractFileAttachments(messages, userId, baseURL, headers, logger) {
++async function extractFileAttachments(messages, userId, baseURL, headers, logger, customFetch) {
+   const uploadPromises = [];
+   for (const msg of messages) {
+     if (!Array.isArray(msg.content)) continue;
+@@ -471,7 +471,7 @@ async function extractFileAttachments(messages, userId, baseURL, headers, logger
+         uploadData = part.data;
+       }
+       if (uploadData) {
+-        const task = uploadFileToDify(uploadData, mimeType, filename, userId, baseURL, headers, logger).then((uploadId) => {
++        const task = uploadFileToDify(uploadData, mimeType, filename, userId, baseURL, headers, logger, customFetch).then((uploadId) => {
+           if (uploadId) {
+             return {
+               type: mimeType.startsWith("image/") ? "image" : "document",
+@@ -831,7 +831,7 @@ var DifyChatLanguageModel = class {
+     }
+     const userId = (_e = (_d = options.headers) == null ? void 0 : _d["user-id"]) != null ? _e : "you_should_pass_user-id";
+     const { "chat-id": _h1, "user-id": _h2, ...cleanHeaders } = options.headers || {};
+-    const files = await extractFileAttachments(messages, userId, this.config.baseURL, this.config.headers, this.logger);
++    const files = await extractFileAttachments(messages, userId, this.config.baseURL, this.config.headers, this.logger, this.config.fetch);
+     const systemPrompt = this.extractSystemPrompt(messages);
+     const injectTools = this.settings.injectToolsPrompt !== false;
+     const { prompt: generatedPrompt, toolNames } = formatToolsPrompt(options.tools);
+@@ -947,7 +947,8 @@ function createDifyProvider(options = {}) {
+       })}`,
+       "Content-Type": "application/json",
+       ...options.headers
+-    })
++    }),
++    fetch: options.fetch
+   });
+   const provider = function(modelId, settings) {
+     if (new.target) {

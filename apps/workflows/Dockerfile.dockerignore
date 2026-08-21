@@ -6,6 +6,9 @@
 !tsconfig.json
 !tsconfig.base.json
 
+!patches
+!patches/**
+
 !apps
 !apps/workflows
 !apps/workflows/**

@@ -759,7 +759,7 @@
         "@typebot.io/ai": "workspace:*",
         "@typebot.io/forge": "workspace:*",
         "@typebot.io/lib": "workspace:*",
-        "dify-ai-provider": "^1.1.0",
+        "dify-ai-provider": "1.1.0",
         "ky": "^1.2.4",
       },
       "devDependencies": {
@@ -1383,6 +1383,9 @@
     "prisma",
     "@sentry/cli",
   ],
+  "patchedDependencies": {
+    "dify-ai-provider@1.1.0": "patches/dify-ai-provider@1.1.0.patch",
+  },
   "packages": {
     "@ai-sdk/anthropic": ["@ai-sdk/anthropic@2.0.79", "", { "dependencies": { "@ai-sdk/provider": "2.0.3", "@ai-sdk/provider-utils": "3.0.25" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-K0U09FPDO1kmLPjRLXFcNSvmnKHJBMARCb8r3Ulw7wU6/+Zh9djWcFDiPPNsklg6yAezcdLTcYPszgWJJ6iOTA=="],
 

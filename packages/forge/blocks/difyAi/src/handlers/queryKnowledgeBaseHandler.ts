@@ -1,5 +1,5 @@
 import { createActionHandler } from "@typebot.io/forge";
-import { ky } from "@typebot.io/lib/ky";
+import { safeKy } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
 import { queryKnowledgeBase } from "../actions/queryKnowledgeBase";
 import { defaultBaseUrl } from "../constants";
@@ -18,7 +18,7 @@ export const queryKnowledgeBaseHandler = createActionHandler(
       if (!options.query) return logs.add("Query is empty");
       if (!options.responseMapping) return logs.add("Missing result variable");
       try {
-        const response = await ky
+        const response = await safeKy
           .post(
             `${apiEndpoint ?? defaultBaseUrl}/v1/datasets/${options.datasetId}/retrieve`,
             {

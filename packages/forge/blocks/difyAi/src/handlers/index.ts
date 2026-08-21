@@ -1,5 +1,5 @@
 import { createFetcherHandler } from "@typebot.io/forge";
-import { ky } from "@typebot.io/lib/ky";
+import { safeKy } from "@typebot.io/lib/ky";
 import {
   knowledgeBasesFetcher,
   queryKnowledgeBase,
@@ -20,7 +20,7 @@ export default [
         return {
           data: [],
         };
-      const response = await ky
+      const response = await safeKy
         .get(`${apiEndpoint ?? defaultBaseUrl}/v1/datasets`, {
           headers: { Authorization: `Bearer ${knowledgeApiKey}` },
           searchParams: {
