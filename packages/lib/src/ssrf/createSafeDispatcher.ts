@@ -14,36 +14,36 @@ type LookupCallback = Parameters<LookupFunction>[2];
  * Handles both single-address and all-addresses modes since undici may pass
  * `{ all: true }` in lookup options.
  */
-export const validatingLookup: LookupFunction = (
-  hostname,
-  options,
-  callback,
-) => {
-  dnsLookup(hostname, options, (err, address, family) => {
-    if (err) return callLookupCallback(callback, err, address, family);
-    if (env.NODE_ENV === "development" && hostname === "localhost") {
-      return callLookupCallback(callback, null, address, family);
-    }
-    try {
-      if (Array.isArray(address)) {
-        for (const entry of address)
-          validateResolvedAddress(hostname, entry.address);
-      } else if (typeof address === "string") {
-        validateResolvedAddress(hostname, address);
+export const createValidatingLookup =
+  (lookupHost: LookupFunction): LookupFunction =>
+  (hostname, options, callback) => {
+    lookupHost(hostname, options, (err, address, family) => {
+      if (err) return callLookupCallback(callback, err, address, family);
+      if (env.NODE_ENV === "development" && hostname === "localhost") {
+        return callLookupCallback(callback, null, address, family);
       }
-    } catch (validationError) {
-      return callLookupCallback(
-        callback,
-        validationError instanceof Error
-          ? validationError
-          : new Error(String(validationError)),
-        address,
-        family,
-      );
-    }
-    callLookupCallback(callback, null, address, family);
-  });
-};
+      try {
+        if (Array.isArray(address)) {
+          for (const entry of address)
+            validateResolvedAddress(hostname, entry.address);
+        } else if (typeof address === "string") {
+          validateResolvedAddress(hostname, address);
+        }
+      } catch (validationError) {
+        return callLookupCallback(
+          callback,
+          validationError instanceof Error
+            ? validationError
+            : new Error(String(validationError)),
+          address,
+          family,
+        );
+      }
+      callLookupCallback(callback, null, address, family);
+    });
+  };
+
+export const validatingLookup = createValidatingLookup(dnsLookup);
 
 export const validateResolvedAddress = (
   hostname: string,

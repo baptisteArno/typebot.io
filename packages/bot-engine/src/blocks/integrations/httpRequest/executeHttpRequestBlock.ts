@@ -1,4 +1,4 @@
-import { isIP } from "node:net";
+import type { LookupFunction } from "node:net";
 import {
   defaultHttpRequestAttributes,
   defaultTimeout,
@@ -30,6 +30,7 @@ import {
   safeKy,
 } from "@typebot.io/lib/ky";
 import { parseUnknownError } from "@typebot.io/lib/parseUnknownError";
+import { createSafeProxyAgent } from "@typebot.io/lib/ssrf/createSafeProxyAgent";
 import {
   validateHttpReqHeaders,
   validateHttpReqUrl,
@@ -44,7 +45,7 @@ import { parseVariables } from "@typebot.io/variables/parseVariables";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { HTTPError, type Options, TimeoutError } from "ky";
 import { stringify } from "qs";
-import { ProxyAgent } from "undici";
+import type { ProxyAgent } from "undici";
 import type { ExecuteIntegrationResponse } from "../../../types";
 import { saveDataInResponseVariableMapping } from "./saveDataInResponseVariableMapping";
 
@@ -65,6 +66,17 @@ export const webhookSuccessDescription = "Webhook successfuly executed.";
 export const webhookErrorDescription = "Webhook returned an error.";
 
 type Params = { disableRequestTimeout?: boolean; timeout?: number };
+
+type SafeProxyRequestDependencies = {
+  proxyLookup?: LookupFunction;
+  proxyAgentFactory?: NonNullable<Parameters<typeof createSafeProxyAgent>[1]>;
+};
+
+type ExecuteHttpRequestDependencies = SafeProxyRequestDependencies & {
+  proxyUrlValidationOptions?: NonNullable<
+    Parameters<typeof validateHttpReqUrl>[1]
+  >;
+};
 
 export const executeHttpRequestBlock = async (
   block: HttpRequestBlock | ZapierBlock | MakeComBlock | PabblyConnectBlock,
@@ -234,6 +246,11 @@ export const parseHttpRequestAttributes = async ({
 export const executeHttpRequest = async (
   httpRequest: ParsedHttpRequest,
   params: Params = {},
+  {
+    proxyUrlValidationOptions,
+    proxyLookup,
+    proxyAgentFactory,
+  }: ExecuteHttpRequestDependencies = {},
 ): Promise<{
   response: HttpResponse;
   logs?: LogInSession[];
@@ -245,6 +262,8 @@ export const executeHttpRequest = async (
 
   try {
     await validateHttpReqUrl(url);
+    if (httpRequest.proxyUrl)
+      await validateHttpReqUrl(httpRequest.proxyUrl, proxyUrlValidationOptions);
     validateHttpReqHeaders(headers);
   } catch (error) {
     logs.push({
@@ -283,7 +302,7 @@ export const executeHttpRequest = async (
 
   const proxyUrl = httpRequest.proxyUrl;
   const safeProxyRequest = proxyUrl
-    ? createSafeProxyRequest(proxyUrl)
+    ? createSafeProxyRequest(proxyUrl, { proxyLookup, proxyAgentFactory })
     : undefined;
   const baseRequest = {
     url,
@@ -388,18 +407,23 @@ export const executeHttpRequest = async (
   }
 };
 
-const createSafeProxyRequest = (proxyUrl: string) => {
+const createSafeProxyRequest = (
+  proxyUrl: string,
+  { proxyLookup, proxyAgentFactory }: SafeProxyRequestDependencies,
+) => {
   const proxyAgents = new Map<string, ProxyAgent>();
   return {
     fetch: createSafeFetchWithoutChunkedEncoding((validatedUrl) => {
       const proxyAgent =
         proxyAgents.get(validatedUrl.hostname) ??
-        new ProxyAgent({
-          uri: proxyUrl,
-          ...(isIP(validatedUrl.hostname) === 0
-            ? { requestTls: { servername: validatedUrl.hostname } }
-            : {}),
-        });
+        createSafeProxyAgent(
+          {
+            proxyUrl,
+            targetHostname: validatedUrl.hostname,
+            proxyLookup,
+          },
+          proxyAgentFactory,
+        );
       proxyAgents.set(validatedUrl.hostname, proxyAgent);
       return createPinnedDispatcher(proxyAgent, validatedUrl);
     }),

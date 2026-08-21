@@ -1,7 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it } from "bun:test";
+import type { LookupFunction } from "node:net";
 import { HttpMethod } from "@typebot.io/blocks-integrations/httpRequest/constants";
 import { createPinnedDispatcher } from "@typebot.io/lib/ky";
-import { getSafeDispatcher } from "@typebot.io/lib/ssrf/createSafeDispatcher";
+import {
+  createValidatingLookup,
+  getSafeDispatcher,
+  validatingLookup,
+} from "@typebot.io/lib/ssrf/createSafeDispatcher";
+import type { createSafeProxyAgent } from "@typebot.io/lib/ssrf/createSafeProxyAgent";
 import { SessionStore } from "@typebot.io/runtime-session-store";
 import { Dispatcher, ProxyAgent } from "undici";
 import {
@@ -142,12 +148,112 @@ describe("executeHttpRequest SSRF protection", () => {
       method: HttpMethod.POST,
       headers: {},
       isJson: false,
-      proxyUrl: "http://proxy.example:8080",
+      proxyUrl: "http://93.184.216.35:8080",
     });
 
     expect(fetchCallCount).toBe(1);
     expect(result.response.statusCode).toBe(500);
     expect(fetchInit?.redirect).toBe("manual");
+    expect(
+      fetchInit && "dispatcher" in fetchInit ? fetchInit.dispatcher : undefined,
+    ).toBeInstanceOf(ProxyAgent);
+  });
+
+  it("blocks unsafe proxy endpoints before opening a connection", async () => {
+    let fetchCallCount = 0;
+    replaceFetch(async () => {
+      fetchCallCount++;
+      return new Response("unexpected request");
+    });
+
+    for (const proxyUrl of [
+      "http://127.0.0.1:8080",
+      "http://10.0.0.1:8080",
+      "http://169.254.169.254:80",
+      "http://[::1]:8080",
+      "file:///tmp/proxy.sock",
+    ]) {
+      const result = await executeHttpRequest({
+        url: "http://93.184.216.34/resource",
+        method: HttpMethod.GET,
+        headers: {},
+        isJson: false,
+        proxyUrl,
+      });
+
+      expect(result.response.statusCode).toBe(400);
+      expect(result.logs?.[0]?.description).toStartWith(
+        "Security validation failed:",
+      );
+    }
+
+    expect(fetchCallCount).toBe(0);
+  });
+
+  it("blocks a proxy hostname that rebinds after preflight validation", async () => {
+    const proxyUrl = "http://proxy.example:8080";
+    const proxyAgentCapture = createProxyAgentCapture();
+    let validatedProxyHostname: string | undefined;
+    replaceFetch(async () => new Response("ok"));
+
+    const result = await executeHttpRequest(
+      {
+        url: "http://93.184.216.34/resource",
+        method: HttpMethod.GET,
+        headers: {},
+        isJson: false,
+        proxyUrl,
+      },
+      {},
+      {
+        proxyUrlValidationOptions: {
+          lookupHost: async (hostname) => {
+            validatedProxyHostname = hostname;
+            return [{ address: "93.184.216.35", family: 4 }];
+          },
+        },
+        proxyLookup: createValidatingLookup(rebindingLookup),
+        proxyAgentFactory: proxyAgentCapture.proxyAgentFactory,
+      },
+    );
+
+    expect(result.response.statusCode).toBe(200);
+    expect(validatedProxyHostname).toBe("proxy.example");
+    await expect(
+      callLookup(
+        proxyAgentCapture.getConfiguration().proxyLookup,
+        "proxy.example",
+      ),
+    ).rejects.toThrow("loopback addresses");
+  });
+
+  it.each([
+    ["HTTP", "http://alice:p%40ssword@93.184.216.35:8080"],
+    ["HTTPS", "https://alice:p%40ssword@93.184.216.35:8443"],
+  ])("preserves authenticated %s proxy URLs", async (_protocol, proxyUrl) => {
+    const proxyAgentCapture = createProxyAgentCapture();
+    let fetchInit: RequestInit | undefined;
+    replaceFetch(async (_input, init) => {
+      fetchInit = init;
+      return new Response("ok");
+    });
+
+    const result = await executeHttpRequest(
+      {
+        url: "https://93.184.216.34/resource",
+        method: HttpMethod.GET,
+        headers: {},
+        isJson: false,
+        proxyUrl,
+      },
+      {},
+      { proxyAgentFactory: proxyAgentCapture.proxyAgentFactory },
+    );
+    const proxyAgentConfiguration = proxyAgentCapture.getConfiguration();
+
+    expect(result.response.statusCode).toBe(200);
+    expect(proxyAgentConfiguration.proxyUrl).toBe(proxyUrl);
+    expect(proxyAgentConfiguration.proxyLookup).toBe(validatingLookup);
     expect(
       fetchInit && "dispatcher" in fetchInit ? fetchInit.dispatcher : undefined,
     ).toBeInstanceOf(ProxyAgent);
@@ -260,3 +366,38 @@ class RecordingDispatcher extends Dispatcher {
     return true;
   }
 }
+
+const rebindingLookup: LookupFunction = (_hostname, _options, callback) => {
+  callback(null, "127.0.0.1", 4);
+};
+
+const callLookup = (lookupHost: LookupFunction, hostname: string) =>
+  new Promise<{ address: string; family: number }>((resolve, reject) => {
+    lookupHost(hostname, { family: 4 }, (error, address, family) => {
+      if (error) return reject(error);
+      resolve({ address: String(address), family: Number(family) });
+    });
+  });
+
+const createProxyAgentCapture = () => {
+  let proxyAgentConfiguration:
+    | { proxyUrl: string; proxyLookup: LookupFunction }
+    | undefined;
+  const proxyAgentFactory: NonNullable<
+    Parameters<typeof createSafeProxyAgent>[1]
+  > = (options) => {
+    proxyAgentConfiguration = {
+      proxyUrl: options.uri,
+      proxyLookup: options.proxyTls.lookup,
+    };
+    return new ProxyAgent(options);
+  };
+  return {
+    proxyAgentFactory,
+    getConfiguration: () => {
+      if (!proxyAgentConfiguration)
+        throw new Error("Expected the proxy agent factory to be called.");
+      return proxyAgentConfiguration;
+    },
+  };
+};
