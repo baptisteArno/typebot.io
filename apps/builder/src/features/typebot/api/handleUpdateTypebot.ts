@@ -11,6 +11,7 @@ import {
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
 import { isCloudProdInstance } from "@/helpers/isCloudProdInstance";
+import { isPublicIdValid } from "../helpers/isPublicIdValid";
 import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
 import {
   isCustomDomainNotAvailable,
@@ -230,9 +231,6 @@ export const handleUpdateTypebot = async ({
 
   return { typebot: migratedTypebot };
 };
-
-const isPublicIdValid = (str: string) =>
-  /^([a-z0-9]+-[a-z0-9]*)*$/.test(str) || /^[a-z0-9]*$/.test(str);
 
 const disableWhatsAppSettings = (settings: unknown) => {
   const parsedSettings = settingsSchema.parse(settings);
