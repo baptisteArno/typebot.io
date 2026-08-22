@@ -21,7 +21,7 @@
         "options": {
           "configFile": "{projectRoot}/vitest.config.ts",
           "project": "@typebot.io/auth",
-          "reportsDirectory": "../../coverage/packages/auth"
+          "reportsDirectory": "{projectRoot}/../../coverage/packages/auth"
         }
       }
     }

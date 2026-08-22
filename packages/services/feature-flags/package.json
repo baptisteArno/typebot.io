@@ -29,7 +29,7 @@
         "options": {
           "configFile": "vitest.config.ts",
           "project": "@typebot.io/feature-flags",
-          "reportsDirectory": "../../../coverage/packages/services/feature-flags"
+          "reportsDirectory": "{projectRoot}/../../../coverage/packages/services/feature-flags"
         }
       }
     }

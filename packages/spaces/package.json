@@ -33,7 +33,7 @@
         "options": {
           "configFile": "vitest.config.ts",
           "project": "@typebot.io/spaces",
-          "reportsDirectory": "../../coverage/packages/spaces"
+          "reportsDirectory": "{projectRoot}/../../coverage/packages/spaces"
         }
       }
     }

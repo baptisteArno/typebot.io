@@ -21,7 +21,7 @@
         "options": {
           "configFile": "{projectRoot}/vitest.config.mts",
           "project": "@typebot.io/whatsapp",
-          "reportsDirectory": "../../coverage/packages/whatsapp"
+          "reportsDirectory": "{projectRoot}/../../coverage/packages/whatsapp"
         }
       }
     }

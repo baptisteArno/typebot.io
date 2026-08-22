@@ -103,3 +103,7 @@ content-collections.d.ts
 .claude/skills/typebot-stripe
 .claude/skills/vercel
 .claude/skills/suspend-typebot
+
+.claude/worktrees
+.nx/polygraph
+.nx/self-healing
