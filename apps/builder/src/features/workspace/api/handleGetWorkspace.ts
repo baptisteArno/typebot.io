@@ -46,8 +46,6 @@ export const handleGetWorkspace = async ({
       where: { id: workspaceId },
       data: {
         lastActivityAt: new Date(),
-        inactiveFirstEmailSentAt: null,
-        inactiveSecondEmailSentAt: null,
       },
     });
   }

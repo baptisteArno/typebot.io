@@ -208,7 +208,7 @@
           "production": {}
         }
       },
-      "recurringCheckInactiveUsers": {
+      "auditInactiveWorkspaces": {
         "defaultConfiguration": "production",
         "configurations": {
           "production": {}
@@ -270,7 +270,7 @@
     "deleteResultsRange": "bun run run:prod:mysql src/deleteResultsRange.ts",
     "checkDependencies": "tsx --tsconfig ./tsconfig.json src/checkDependencies.ts",
     "readCsvAndDoSomething": "bun run run:prod:mysql src/readCsvAndDoSomething.ts",
-    "recurringCheckInactiveUsers": "bun run run:prod:mysql src/recurringCheckInactiveUsers.ts",
+    "auditInactiveWorkspaces": "bun run run:prod:mysql src/auditInactiveWorkspaces.ts",
     "addHttpProxyCredentials": "bun run run:prod:mysql src/addHttpProxyCredentials.ts",
     "deleteS3Object": "bun run run:prod:mysql src/deleteS3Object.ts",
     "cron:hourly": "SKIP_ENV_CHECK=true tsx --tsconfig ./tsconfig.json src/cronJobs/hourly.tsx",
@@ -310,6 +310,7 @@
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/rich-text": "workspace:*",
     "ai": "^5.0.52",
+    "effect": "4.0.0-beta.38",
     "p-limit": "^7.2.0",
     "zod": "^4.3.5"
   },

@@ -252,8 +252,6 @@ export const checkAndReportLastHourResults = async () => {
     },
     data: {
       lastActivityAt: new Date(),
-      inactiveFirstEmailSentAt: null,
-      inactiveSecondEmailSentAt: null,
     },
   });
 

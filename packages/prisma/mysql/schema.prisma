@@ -116,8 +116,6 @@ model Workspace {
   // TODO: remove
   settings                      Json?
   lastActivityAt                DateTime?
-  inactiveFirstEmailSentAt      DateTime?
-  inactiveSecondEmailSentAt     DateTime?
   spaces                        Space[]
 }
 

@@ -13,9 +13,6 @@ export const main = async () => {
   const uniqueVisitors = await getLandingPageVisitors();
   const subscriptionTransitions = await getSubscriptionTransitions();
 
-  // const { totalDeletedWorkspaces } = await deleteOrWarnInactiveWorkspaces();
-  // reportMessage += `🔥 ${totalDeletedWorkspaces} workspaces were deleted.\n`;
-
   await sendDiscordMessage(
     `Daily report:
     

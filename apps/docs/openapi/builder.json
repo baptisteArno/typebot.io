@@ -26752,30 +26752,6 @@
                               "type": "null"
                             }
                           ]
-                        },
-                        "inactiveFirstEmailSentAt": {
-                          "anyOf": [
-                            {
-                              "type": "string",
-                              "format": "date-time",
-                              "x-native-type": "date"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
-                        },
-                        "inactiveSecondEmailSentAt": {
-                          "anyOf": [
-                            {
-                              "type": "string",
-                              "format": "date-time",
-                              "x-native-type": "date"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
                         }
                       },
                       "required": [
@@ -26791,9 +26767,7 @@
                         "isPastDue",
                         "isVerified",
                         "chatsHardLimit",
-                        "lastActivityAt",
-                        "inactiveFirstEmailSentAt",
-                        "inactiveSecondEmailSentAt"
+                        "lastActivityAt"
                       ]
                     }
                   },
@@ -27257,30 +27231,6 @@
                               "type": "null"
                             }
                           ]
-                        },
-                        "inactiveFirstEmailSentAt": {
-                          "anyOf": [
-                            {
-                              "type": "string",
-                              "format": "date-time",
-                              "x-native-type": "date"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
-                        },
-                        "inactiveSecondEmailSentAt": {
-                          "anyOf": [
-                            {
-                              "type": "string",
-                              "format": "date-time",
-                              "x-native-type": "date"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
                         }
                       },
                       "required": [
@@ -27298,9 +27248,7 @@
                         "isPastDue",
                         "isVerified",
                         "chatsHardLimit",
-                        "lastActivityAt",
-                        "inactiveFirstEmailSentAt",
-                        "inactiveSecondEmailSentAt"
+                        "lastActivityAt"
                       ]
                     },
                     "currentUserMode": {

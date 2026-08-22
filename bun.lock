@@ -1159,6 +1159,7 @@
         "@typebot.io/workspaces": "workspace:*",
         "ai": "^5.0.52",
         "cli-progress": "^3.12.0",
+        "effect": "4.0.0-beta.38",
         "ky": "^1.2.4",
         "p-limit": "^7.2.0",
         "papaparse": "^5.4.1",
