@@ -11,6 +11,9 @@
     },
     "./package.json": "./package.json"
   },
+  "scripts": {
+    "test": "bun test .test.ts --external isolated-vm"
+  },
   "dependencies": {
     "@typebot.io/lib": "workspace:*",
     "isolated-vm": "^6.0.2",

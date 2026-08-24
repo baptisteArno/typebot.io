@@ -56,14 +56,15 @@ export const deepParseVariables = <T>(
       }
 
       if (Array.isArray(currentValue)) {
-        (newObj as Record<string, unknown>)[key] = currentValue.map((value) =>
-          deepParseVariables(value, {
+        (newObj as Record<string, unknown>)[key] = deepParseVariables(
+          currentValue,
+          {
             variables,
             guessCorrectTypes,
             removeEmptyStrings,
             sessionStore,
             ...parseVariablesOptions,
-          }),
+          },
         );
         return newObj;
       }
@@ -71,6 +72,6 @@ export const deepParseVariables = <T>(
       (newObj as Record<string, unknown>)[key] = currentValue;
       return newObj;
     },
-    {} as WithoutVariables<T>,
+    (Array.isArray(object) ? [] : {}) as WithoutVariables<T>,
   );
 };
