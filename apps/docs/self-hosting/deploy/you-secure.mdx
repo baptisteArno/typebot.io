@@ -1,0 +1,100 @@
+---
+title: You Secure
+description: How to deploy Typebot on a You Secure VPS (Brazil)
+---
+
+<Note>
+  The easiest way to get started with Typebot is with [the official managed
+  service in the Cloud](https://app.typebot.io). You'll have high availability,
+  backups, security, and maintenance all managed for you by me, Baptiste,
+  Typebot's founder. The cloud version can save a substantial amount of
+  developer time and resources. For most sites this ends up being the best value
+  option and the revenue goes to funding the maintenance and further development
+  of Typebot. So you'll be supporting fair source software and getting a great
+  service!
+</Note>
+
+[You Secure](https://yousecure.io/hosting) is a VPS provider with infrastructure
+in São Paulo, Brazil. It is a useful option if your users are in Brazil or
+LatAm and you want to keep round-trip latency low, or if you need the Postgres
+database holding your typebot results to stay inside the country.
+
+The deployment is a standard Docker Compose stack — builder, viewer, and
+Postgres behind Traefik — so nothing here is specific to the provider beyond
+where the machine lives. If you prefer to set it up by hand on any VPS, follow
+the [Docker guide](./docker) instead.
+
+## Requirements
+
+- A You Secure VPS. Typebot's builder, viewer and Postgres run comfortably on
+  4 GB RAM / 2 vCPU; give it more if you expect heavy concurrent traffic.
+- A domain name you control, with DNS pointing at the VPS.
+
+## DNS
+
+Typebot needs two hostnames. Create two `A` records pointing at your VPS IP:
+
+| Record            | Points to  |
+| ----------------- | ---------- |
+| `builder.yourdomain.com` | VPS IPv4 |
+| `viewer.yourdomain.com`  | VPS IPv4 |
+
+`builder` is where you build your typebots, `viewer` is what your users
+interact with.
+
+## Deploy
+
+From the You Secure dashboard, open your VPS and choose Typebot from the
+application list. You'll be asked for the domain you configured above. The
+installer provisions:
+
+- `postgres:15` with a generated password and a persistent volume
+- `baptistearno/typebot-builder:latest` on `builder.yourdomain.com`
+- `baptistearno/typebot-viewer:latest` on `viewer.yourdomain.com`
+- Traefik as the reverse proxy, with Let's Encrypt certificates issued
+  automatically for both hostnames
+
+The Compose file lands in `/root/typebot` on the VPS, so everything below
+still applies if you'd rather manage it over SSH.
+
+## Configure
+
+`ENCRYPTION_SECRET` is generated at install time and set identically on the
+builder and the viewer, and `ADMIN_EMAIL` is taken from your account. The
+variable you will most likely want to add yourself is SMTP, so the instance can
+send invitation and password emails:
+
+```bash
+cd /root/typebot
+nano docker-compose.yml   # edit the typebot-builder environment block
+docker compose up -d
+```
+
+See [Configuration](../configuration) for the full list of supported
+environment variables.
+
+<Warning>
+  Back up `ENCRYPTION_SECRET` somewhere outside the server. It encrypts every
+  credential stored in your typebots — a database restore without it leaves
+  those credentials unreadable.
+</Warning>
+
+## Upgrade
+
+```bash
+cd /root/typebot
+docker compose pull
+docker compose up -d
+```
+
+Self-hosted Typebot follows a monthly release cadence — see
+[Releases](../get-started#releases).
+
+## Backups
+
+Snapshot the Postgres volume regularly; it holds your typebots and all
+submitted results. A minimal dump:
+
+```bash
+docker exec postgres_typebot pg_dump -U typebot typebot > typebot-$(date +%F).sql
+```
