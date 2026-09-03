@@ -13,6 +13,11 @@ const variables = [
     name: "Vector store IDs",
     value: ["vs_123", "vs_456"],
   },
+  {
+    id: "big-integer-id",
+    name: "Big integer ID",
+    value: "12345678901234567",
+  },
 ];
 
 describe("deepParseVariables", () => {
@@ -128,6 +133,25 @@ describe("deepParseVariables", () => {
     ).toEqual({
       values: [42, true, null, { enabled: true }, "text"],
       nested: { value: false },
+    });
+  });
+
+  test("keeps integers above Number.MAX_SAFE_INTEGER as strings when guessing types", () => {
+    expect<unknown>(
+      deepParseVariables(
+        {
+          wabaId: "{{Big integer ID}}",
+          values: ["12345678901234567", "42"],
+        },
+        {
+          variables,
+          guessCorrectTypes: true,
+          sessionStore: new SessionStore(),
+        },
+      ),
+    ).toEqual({
+      wabaId: "12345678901234567",
+      values: ["12345678901234567", 42],
     });
   });
 
