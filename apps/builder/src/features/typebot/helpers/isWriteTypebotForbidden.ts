@@ -17,7 +17,8 @@ export const isWriteTypebotForbidden = async (
     (!typebot.collaborators.some(
       (collaborator) =>
         collaborator.userId === user.id &&
-        collaborator.type === CollaborationType.WRITE,
+        (collaborator.type === CollaborationType.WRITE ||
+          collaborator.type === CollaborationType.FULL_ACCESS),
     ) &&
       !typebot.workspace.members.some(
         (m) => m.userId === user.id && m.role !== "GUEST",

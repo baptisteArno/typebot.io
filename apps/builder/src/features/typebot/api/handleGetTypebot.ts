@@ -11,6 +11,7 @@ import {
 } from "@typebot.io/typebot/schemas/typebot";
 import type { User } from "@typebot.io/user/schemas";
 import { z } from "zod";
+import { isWriteTypebotForbidden } from "../helpers/isWriteTypebotForbidden";
 
 export const getTypebotInputSchema = z.object({
   typebotId: z
@@ -78,7 +79,11 @@ export const handleGetTypebot = async ({
       | { typebot: TypebotV6; wasMigrated: true }
       | { typebot: Typebot; wasMigrated: false };
 
-    if (wasMigrated)
+    if (
+      wasMigrated &&
+      user &&
+      !(await isWriteTypebotForbidden(existingTypebot, user))
+    )
       await prisma.typebot.update({
         where: {
           id: existingTypebot.id,
