@@ -42,8 +42,6 @@ type Props = {
   onNewCredentials: (id: string) => void;
 };
 
-const credentialsId = createId();
-
 export const WhatsAppCredentialsDialog = ({
   isOpen,
   onClose,
@@ -82,6 +80,8 @@ export const WhatsAppCreateDialogBody = ({
   const [systemUserAccessToken, setSystemUserAccessToken] = useState("");
   const [appSecret, setAppSecret] = useState("");
   const [apiKey, setApiKey] = useState("");
+  // Generated client-side because the webhook URL shown in the wizard needs it before the credentials exist
+  const [credentialsId, setCredentialsId] = useState(createId);
   const [webhookSecret, setWebhookSecret] = useState(createId);
   const [wabaId, setWabaId] = useState("");
   const [phoneNumberId, setPhoneNumberId] = useState("");
@@ -124,6 +124,7 @@ export const WhatsAppCreateDialogBody = ({
     setActiveStep(0);
     setSystemUserAccessToken("");
     setAppSecret("");
+    setCredentialsId(createId());
     setWebhookSecret(createId());
     setWabaId("");
     setPhoneNumberId("");
