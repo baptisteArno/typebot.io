@@ -7,7 +7,7 @@ import { byId } from "@typebot.io/lib/utils";
 import prisma from "@typebot.io/prisma";
 import type { Prisma } from "@typebot.io/prisma/types";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
-import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
+import { getTypebotAccessRight } from "@typebot.io/typebot/helpers/getTypebotAccessRight";
 import { resumeWhatsAppFlow } from "@typebot.io/whatsapp/resumeWhatsAppFlow";
 import PartySocket from "partysocket";
 import { z } from "zod";
@@ -45,7 +45,6 @@ export const handleExecuteWebhook = async ({
     select: {
       version: true,
       groups: true,
-      settings: true,
       whatsAppCredentialsId: true,
       workspace: {
         select: {
@@ -65,12 +64,19 @@ export const handleExecuteWebhook = async ({
         where: { userId: user.id },
         select: {
           userId: true,
+          type: true,
         },
       },
     },
   });
 
-  if (!typebot || (await isReadTypebotForbidden(typebot, user)))
+  // Resuming a flow requires write access, independently of public sharing.
+  if (
+    !typebot ||
+    typebot.workspace.isSuspended ||
+    typebot.workspace.isPastDue ||
+    getTypebotAccessRight(user, typebot) !== "write"
+  )
     throw new ORPCError("NOT_FOUND", {
       message: "Typebot not found",
     });
