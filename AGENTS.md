@@ -20,6 +20,7 @@ All scripts must be ran with `bunx nx`:
   - fastest way to typecheck `builder` and/or `viewer`: run root `bunx nx typecheck` (runs `tsc --build --emitDeclarationOnly`)
   - typecheck a particular package: `bunx nx typecheck package_name`.
   - test a package: `bunx nx test package_name`
+  - filter builder Bun tests: `bunx nx test builder --args=src/features/typebot/api/handleGetTypebot.test.ts` (Bun ignores `--testPathPattern`).
   - typecheck all afffected packages: `bunx nx affected -t typecheck` (**IMPORTANT**: Rely first on IDE's TS server diagnostics first for faster feedback loop)
 - To check format and lint, run: `bunx nx format-and-lint` (with `--write --unsafe` to run autofix)
 - Never run plain `bunx tsc`, use `bunx nx`
