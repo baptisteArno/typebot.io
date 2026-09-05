@@ -120,12 +120,20 @@ const accessScenarios = [
     canWrite: true,
   },
   {
-    name: "FULL_ACCESS collaborator without workspace write permission",
+    name: "FULL_ACCESS collaborator without workspace membership",
     user,
     publicShare: false,
     collaboration: CollaborationType.FULL_ACCESS,
     role: undefined,
-    canWrite: false,
+    canWrite: true,
+  },
+  {
+    name: "FULL_ACCESS guest collaborator",
+    user,
+    publicShare: false,
+    collaboration: CollaborationType.FULL_ACCESS,
+    role: WorkspaceRole.GUEST,
+    canWrite: true,
   },
   {
     name: "WRITE guest collaborator",
@@ -179,6 +187,13 @@ for (const version of ["3", "4", "5"]) {
             migrateToLatestVersion ? latestTypebotVersion : version,
           );
           expect(result.typebot.name).toBe(storedTypebot.name);
+          expect(result.currentUserMode).toBe(
+            scenario.canWrite
+              ? "write"
+              : scenario.collaboration
+                ? "read"
+                : "guest",
+          );
           expect(storedTypebot).toEqual(snapshot);
           if (migrateToLatestVersion) {
             expect(typebotV6Schema.safeParse(result.typebot).success).toBe(
@@ -212,23 +227,27 @@ for (const version of ["3", "4", "5"]) {
 }
 
 for (const restriction of ["isSuspended", "isPastDue"]) {
-  it(`does not persist migration in a publicly shared ${restriction} workspace`, async () => {
-    const storedTypebot = createLegacyTypebot("5", {
-      publicShare: true,
-      role: WorkspaceRole.ADMIN,
-      collaboration: CollaborationType.WRITE,
+  for (const collaboration of [
+    CollaborationType.WRITE,
+    CollaborationType.FULL_ACCESS,
+  ]) {
+    it(`does not persist migration for ${collaboration} in a publicly shared ${restriction} workspace`, async () => {
+      const storedTypebot = createLegacyTypebot("5", {
+        publicShare: true,
+        collaboration,
+      });
+      typebotFindFirst.mockResolvedValue({
+        ...storedTypebot,
+        workspace: { ...storedTypebot.workspace, [restriction]: true },
+      });
+      const result = await handleGetTypebot({
+        input: { typebotId: storedTypebot.id, migrateToLatestVersion: true },
+        context: { user },
+      });
+      expect(result.typebot.version).toBe(latestTypebotVersion);
+      expect(typebotUpdate).not.toHaveBeenCalled();
     });
-    typebotFindFirst.mockResolvedValue({
-      ...storedTypebot,
-      workspace: { ...storedTypebot.workspace, [restriction]: true },
-    });
-    const result = await handleGetTypebot({
-      input: { typebotId: storedTypebot.id, migrateToLatestVersion: true },
-      context: { user },
-    });
-    expect(result.typebot.version).toBe(latestTypebotVersion);
-    expect(typebotUpdate).not.toHaveBeenCalled();
-  });
+  }
 }
 
 it("does not write an already migrated bot on subsequent reads", async () => {
