@@ -188,28 +188,37 @@ export const createAuthPrismaAdapter = (p: Prisma.PrismaClient): Adapter => ({
     }
     return verificationToken;
   },
-  async useVerificationToken(identifier_token) {
-    try {
-      const verificationToken = await p.verificationToken.delete({
-        where: { identifier_token },
+  useVerificationToken(identifier_token) {
+    return p.$transaction(async (tx) => {
+      // Acquire database row locks before comparing any candidate. Keep them
+      // until consumption or failed-attempt accounting commits, so concurrent
+      // guesses cannot race ahead of the failure budget. Incrementing by zero
+      // preserves the counter and works with both PostgreSQL and MySQL.
+      await tx.verificationToken.updateMany({
+        where: { identifier: identifier_token.identifier },
+        data: { failedAttempts: { increment: 0 } },
       });
-      if ("id" in verificationToken && verificationToken.id) {
-        return omit(verificationToken, "id");
+
+      try {
+        const verificationToken = await tx.verificationToken.delete({
+          where: { identifier_token },
+        });
+        if ("id" in verificationToken && verificationToken.id) {
+          return omit(verificationToken, "id");
+        }
+        return verificationToken;
+      } catch (error: unknown) {
+        // If token already used/deleted
+        if (
+          error instanceof PrismaClientKnownRequestError &&
+          error.code === "P2025"
+        ) {
+          await recordFailedEmailSignInAttempt(tx, identifier_token.identifier);
+          return null;
+        }
+        throw error;
       }
-      return verificationToken;
-    } catch (error: unknown) {
-      // If token already used/deleted
-      if (
-        error instanceof PrismaClientKnownRequestError &&
-        error.code === "P2025"
-      ) {
-        await p.$transaction((tx) =>
-          recordFailedEmailSignInAttempt(tx, identifier_token.identifier),
-        );
-        return null;
-      }
-      throw error;
-    }
+    });
   },
   async getAccount(providerAccountId, provider) {
     return p.account.findFirst({
