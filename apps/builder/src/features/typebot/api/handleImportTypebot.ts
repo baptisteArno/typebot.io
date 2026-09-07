@@ -63,10 +63,11 @@ type ImportingTypebot = z.infer<typeof importingTypebotSchema>;
 
 const migrateImportingTypebot = async (
   typebot: ImportingTypebot,
+  newTypebotId: string,
 ): Promise<TypebotV6> => {
   const fullTypebot = {
     ...typebot,
-    id: "dummy id",
+    id: newTypebotId,
     workspaceId: "dummy workspace id",
     resultsTablePreferences: typebot.resultsTablePreferences ?? null,
     selectedThemeTemplateId: typebot.selectedThemeTemplateId ?? null,
@@ -159,6 +160,7 @@ export const handleImportTypebot = async ({
 
   const duplicatingBot = await migrateImportingTypebot(
     newUploadUrlsResponse.typebot,
+    newBotId,
   );
 
   const groups = (

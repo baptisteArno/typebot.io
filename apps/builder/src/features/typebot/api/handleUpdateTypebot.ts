@@ -1,4 +1,5 @@
 import { ORPCError } from "@orpc/server";
+import { parseGroups } from "@typebot.io/groups/helpers/parseGroups";
 import prisma from "@typebot.io/prisma";
 import { DbNull } from "@typebot.io/prisma/enum";
 import { settingsSchema } from "@typebot.io/settings/schemas";
@@ -75,6 +76,7 @@ export const handleUpdateTypebot = async ({
     },
     select: {
       version: true,
+      groups: true,
       id: true,
       customDomain: true,
       publicId: true,
@@ -147,11 +149,20 @@ export const handleUpdateTypebot = async ({
       });
   }
 
-  const groups = typebot.groups
-    ? await sanitizeGroups(typebot.groups, {
-        workspace: existingTypebot.workspace,
-      })
-    : undefined;
+  // A version-only downgrade can reactivate persisted legacy references.
+  const groups =
+    typebot.groups || typebot.version !== undefined
+      ? await sanitizeGroups(
+          typebot.groups ??
+            parseGroups(existingTypebot.groups, {
+              typebotVersion: existingTypebot.version,
+            }),
+          {
+            workspace: existingTypebot.workspace,
+            typebotId: existingTypebot.id,
+          },
+        )
+      : undefined;
 
   const newTypebot = await prisma.typebot.update({
     where: {

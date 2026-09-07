@@ -15,6 +15,7 @@ export const migrateTypebotFromV3ToV4 = async (
     .filter(isHttpRequestBlock);
   const webhooks = await prisma.webhook.findMany({
     where: {
+      typebotId: "typebotId" in typebot ? typebot.typebotId : typebot.id,
       id: {
         in: webhookBlocks
           .map((block) => ("webhookId" in block ? block.webhookId : undefined))

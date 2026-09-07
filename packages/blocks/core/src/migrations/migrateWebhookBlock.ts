@@ -11,6 +11,7 @@ export const migrateWebhookBlock =
   (webhooks: Prisma.Webhook[]) =>
   (block: BlockV5): BlockV5 => {
     if (!isHttpRequestBlock(block)) return block;
+    if (block.options?.webhook) return { ...block, webhookId: undefined };
     const webhook = webhooks.find(
       (webhook) => "webhookId" in block && webhook.id === block.webhookId,
     );
