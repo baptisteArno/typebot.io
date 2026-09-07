@@ -1,4 +1,5 @@
 import { lookup } from "node:dns/promises";
+import { isIP } from "node:net";
 import { URL } from "node:url";
 import { env } from "@typebot.io/env";
 
@@ -16,6 +17,7 @@ const BLOCKED_HEADERS = [
  * - Localhost and loopback addresses (127.0.0.0/8, ::1)
  * - Unspecified addresses (0.0.0.0/8, ::/128)
  * - Link-local addresses (169.254.0.0/16, fe80::/10)
+ * - Shared address space (100.64.0.0/10) and other special-use destinations
  * - Various IP encoding bypass attempts (decimal, hex, octal)
  * - Hostnames that resolve to blocked IP ranges
  *
@@ -189,9 +191,8 @@ export const parseIPAddress = (hostname: string): ParsedIP | null => {
     }
   }
 
-  // Try IPv6 - check if hostname contains colons (characteristic of IPv6)
-  // Note: URL parser already removes brackets, so we get the raw IPv6 address
-  if (hostname.includes(":")) {
+  // DNS answers must be valid IPs too, not merely strings containing colons.
+  if (isIP(hostname) === 6 && !hostname.includes("%")) {
     return { version: 6, address: hostname };
   }
 
@@ -226,7 +227,7 @@ export type ValidatedHttpReqUrl = {
  *
  * When `allowPrivateRanges` is true (set by the caller for hostnames in
  * SSRF_ALLOWED_HOSTS), RFC1918 private ranges are skipped — but link-local,
- * loopback, 0.0.0.0/8, IPv6 unspecified, and IPv6 unique local ranges remain
+ * loopback, shared/special-use ranges, IPv6 unspecified and unique local remain
  * blocked. This preserves protection against the metadata-service vector
  * (169.254.169.254) even for allowlisted hostnames whose DNS could be
  * hijacked.
@@ -238,7 +239,31 @@ export const validateIPAddress = (
   { allowPrivateRanges = false }: { allowPrivateRanges?: boolean } = {},
 ) => {
   if (ip.version === 4) {
-    const [first, second] = ip.octets;
+    const [first, second, third, fourth] = ip.octets;
+
+    // Non-public special-use destinations are never covered by the RFC1918 opt-out.
+    // https://www.iana.org/assignments/iana-ipv4-special-registry/
+    if (first === 100 && second >= 64 && second <= 127)
+      throw new Error(
+        "Access to shared address space (100.64.0.0/10) is not allowed for security reasons.",
+      );
+
+    if (
+      (first === 192 &&
+        second === 0 &&
+        third === 0 &&
+        fourth !== 9 &&
+        fourth !== 10) ||
+      (first === 192 && second === 0 && third === 2) ||
+      (first === 192 && second === 88 && third === 99) ||
+      (first === 198 && (second === 18 || second === 19)) ||
+      (first === 198 && second === 51 && third === 100) ||
+      (first === 203 && second === 0 && third === 113) ||
+      first >= 224
+    )
+      throw new Error(
+        "Access to special-use IPv4 addresses is not allowed for security reasons.",
+      );
 
     // Block 127.0.0.0/8 (loopback)
     if (first === 127) {
@@ -284,102 +309,108 @@ export const validateIPAddress = (
   }
 
   if (ip.version === 6) {
-    const addr = ip.address.toLowerCase();
+    // Normalize DNS answers too: unlike URL literals, they can use any valid
+    // compression, leading zeros, or a dotted IPv4 suffix.
+    if (isIP(ip.address) !== 6 || ip.address.includes("%"))
+      throw new Error("Invalid IPv6 address.");
+    const address = new URL(`http://[${ip.address}]`).hostname.slice(1, -1);
+    const halves = address.split("::");
+    const leadingGroups = halves[0] ? halves[0].split(":") : [];
+    const trailingGroups = halves[1] ? halves[1].split(":") : [];
+    const groups = (
+      halves.length === 1
+        ? leadingGroups
+        : [
+            ...leadingGroups,
+            ...Array.from(
+              { length: 8 - leadingGroups.length - trailingGroups.length },
+              () => "0",
+            ),
+            ...trailingGroups,
+          ]
+    ).map((group) => Number.parseInt(group, 16));
 
-    // Handle IPv6-mapped IPv4 addresses (e.g., ::ffff:1.2.3.4 or ::ffff:a9fe:a9fe)
-    if (addr.startsWith("::ffff:") || addr.startsWith("0:0:0:0:0:ffff:")) {
-      const parts = addr.split("ffff:");
-      const ipv4Part = parts[parts.length - 1];
-
-      // Check for dotted decimal format
-      if (ipv4Part.includes(".")) {
-        const octets = ipv4Part.split(".").map(Number);
-        if (
-          octets.length === 4 &&
-          octets.every((o) => !Number.isNaN(o) && o >= 0 && o <= 255)
-        ) {
-          validateIPAddress({ version: 4, octets }, { allowPrivateRanges });
-          return;
-        }
-      }
-
-      // Check for hex format (2 groups of 16-bit hex)
-      const hexGroups = ipv4Part.split(":");
-      if (hexGroups.length === 2) {
-        const group1 = parseInt(hexGroups[0], 16);
-        const group2 = parseInt(hexGroups[1], 16);
-
-        if (!Number.isNaN(group1) && !Number.isNaN(group2)) {
-          const octets = [
-            (group1 >> 8) & 0xff,
-            group1 & 0xff,
-            (group2 >> 8) & 0xff,
-            group2 & 0xff,
-          ];
-          validateIPAddress({ version: 4, octets }, { allowPrivateRanges });
-          return;
-        }
-      }
+    if (groups.slice(0, 6).every((group) => group === 0) && groups[6] === 0) {
+      if (groups[7] === 0)
+        throw new Error(
+          "Access to IPv6 unspecified address (::/128) is not allowed for security reasons.",
+        );
+      if (groups[7] === 1)
+        throw new Error(
+          "Access to IPv6 loopback (::1) is not allowed for security reasons.",
+        );
     }
 
-    // Block ::/128 (unspecified)
-    if (isIPv6UnspecifiedAddress(addr)) {
-      throw new Error(
-        "Access to IPv6 unspecified address (::/128) is not allowed for security reasons.",
+    const isMappedIPv4 =
+      groups.slice(0, 5).every((group) => group === 0) && groups[5] === 0xffff;
+    const isWellKnownNat64 =
+      groups[0] === 0x64 &&
+      groups[1] === 0xff9b &&
+      groups.slice(2, 6).every((group) => group === 0);
+    if (isMappedIPv4 || isWellKnownNat64) {
+      validateIPAddress(
+        {
+          version: 4,
+          octets: [
+            groups[6] >> 8,
+            groups[6] & 0xff,
+            groups[7] >> 8,
+            groups[7] & 0xff,
+          ],
+        },
+        {
+          // NAT64 is a translation route, not the RFC1918/mapped address itself.
+          allowPrivateRanges: isMappedIPv4 && allowPrivateRanges,
+        },
       );
+      return;
     }
 
-    // Block ::1 (loopback)
-    if (
-      addr === "::1" ||
-      addr === "0:0:0:0:0:0:0:1" ||
-      addr === "0000:0000:0000:0000:0000:0000:0000:0001"
-    ) {
-      throw new Error(
-        "Access to IPv6 loopback (::1) is not allowed for security reasons.",
-      );
-    }
-
-    // Block fe80::/10 (link-local)
-    if (
-      addr.startsWith("fe8") ||
-      addr.startsWith("fe9") ||
-      addr.startsWith("fea") ||
-      addr.startsWith("feb")
-    ) {
+    if ((groups[0] & 0xffc0) === 0xfe80)
       throw new Error(
         "Access to IPv6 link-local addresses (fe80::/10) is not allowed for security reasons.",
       );
-    }
-
-    // Block fc00::/7 (unique local)
-    if (addr.startsWith("fc") || addr.startsWith("fd")) {
+    if ((groups[0] & 0xfe00) === 0xfc00)
       throw new Error(
         "Access to IPv6 unique local addresses (fc00::/7) is not allowed for security reasons.",
       );
-    }
+
+    // Known non-public ranges and transition mechanisms whose routing cannot be
+    // validated from a single embedded IPv4 destination (Teredo, 6to4, local NAT64).
+    // https://www.iana.org/assignments/iana-ipv6-special-registry/
+    if (
+      groups.slice(0, 6).every((group) => group === 0) || // deprecated IPv4-compatible ::/96
+      (groups.slice(0, 4).every((group) => group === 0) &&
+        groups[4] === 0xffff &&
+        groups[5] === 0) || // translated IPv4
+      (groups[0] === 0x64 && groups[1] === 0xff9b && groups[2] === 1) ||
+      (groups[0] === 0x100 &&
+        groups[1] === 0 &&
+        groups[2] === 0 &&
+        groups[3] <= 1) ||
+      // 2001::/23 is non-global except for the specific IANA allocations below.
+      (groups[0] === 0x2001 &&
+        groups[1] <= 0x1ff &&
+        !(
+          (groups[1] === 1 &&
+            groups.slice(2, 7).every((group) => group === 0) &&
+            groups[7] >= 1 &&
+            groups[7] <= 3) || // PCP, TURN and DNS-SD anycast /128s
+          groups[1] === 3 || // AMT 2001:3::/32
+          (groups[1] === 4 && groups[2] === 0x112) || // AS112 2001:4:112::/48
+          (groups[1] & 0xfff0) === 0x20 || // ORCHIDv2 2001:20::/28
+          // DETs 2001:30::/28
+          (groups[1] & 0xfff0) === 0x30
+        )) ||
+      (groups[0] === 0x2001 && groups[1] === 0xdb8) ||
+      groups[0] === 0x2002 ||
+      (groups[0] === 0x3fff && groups[1] <= 0xfff) ||
+      groups[0] === 0x5f00 ||
+      (groups[0] & 0xffc0) === 0xfec0 || // deprecated site-local
+      (groups[0] & 0xff00) === 0xff00 // multicast
+    )
+      throw new Error(
+        "Access to special-use IPv6 addresses is not allowed for security reasons.",
+      );
   }
 };
-
-const isIPv6UnspecifiedAddress = (address: string) => {
-  const compressionIndex = address.indexOf("::");
-  const hasCompression = compressionIndex !== -1;
-
-  if (hasCompression && compressionIndex !== address.lastIndexOf("::")) {
-    return false;
-  }
-
-  const groups = address.split(":").filter((group) => group.length > 0);
-
-  if (!groups.every(isIPv6ZeroGroup)) {
-    return false;
-  }
-
-  if (!hasCompression) {
-    return groups.length === 8;
-  }
-
-  return groups.length < 8;
-};
-
-const isIPv6ZeroGroup = (group: string) => /^0{1,4}$/.test(group);
