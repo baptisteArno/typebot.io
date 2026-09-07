@@ -7,12 +7,19 @@ import { UsageProgressBars } from "./UsageProgressBars";
 export const BillingSettingsLayout = () => {
   const { workspace, currentUserMode } = useWorkspace();
 
-  if (!workspace) return null;
+  if (
+    !workspace ||
+    currentUserMode === "guest" ||
+    workspace.stripeId === undefined
+  )
+    return null;
   return (
     <div className="flex flex-col gap-10 w-full">
       <UsageProgressBars workspace={workspace} />
       <div className="flex flex-col gap-4">
-        <CurrentSubscriptionSummary workspace={workspace} />
+        <CurrentSubscriptionSummary
+          workspace={{ ...workspace, stripeId: workspace.stripeId }}
+        />
         <ChangePlanForm
           workspace={workspace}
           currentUserMode={currentUserMode}

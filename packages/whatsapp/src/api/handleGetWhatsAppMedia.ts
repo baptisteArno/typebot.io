@@ -2,9 +2,9 @@ import { ORPCError } from "@orpc/server";
 import { decrypt } from "@typebot.io/credentials/decrypt";
 import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import prisma from "@typebot.io/prisma";
+import { isReadTypebotForbidden } from "@typebot.io/typebot/helpers/isReadTypebotForbidden";
 import type { User } from "@typebot.io/user/schemas";
 import { downloadMedia } from "@typebot.io/whatsapp/downloadMedia";
-import { isReadWorkspaceFobidden } from "@typebot.io/workspaces/isReadWorkspaceFobidden";
 import { z } from "zod";
 
 export const getWhatsAppMediaInputSchema = z.object({
@@ -25,8 +25,11 @@ export const handleGetWhatsAppMedia = async ({
     },
     select: {
       whatsAppCredentialsId: true,
+      collaborators: { where: { userId: user.id }, select: { userId: true } },
       workspace: {
         select: {
+          isSuspended: true,
+          isPastDue: true,
           credentials: {
             where: {
               type: "whatsApp",
@@ -35,6 +38,7 @@ export const handleGetWhatsAppMedia = async ({
           members: {
             select: {
               userId: true,
+              role: true,
             },
           },
         },
@@ -42,7 +46,7 @@ export const handleGetWhatsAppMedia = async ({
     },
   });
 
-  if (!typebot?.workspace || isReadWorkspaceFobidden(typebot.workspace, user))
+  if (!typebot || (await isReadTypebotForbidden(typebot, user)))
     throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
 
   const mediaIdWithoutExtension = mediaId.split(".")[0];

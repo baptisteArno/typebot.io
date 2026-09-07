@@ -7,7 +7,7 @@ import { z } from "zod";
 import { getUserModeInWorkspace } from "../helpers/getUserRoleInWorkspace";
 import { isReadWorkspaceFobidden } from "../helpers/isReadWorkspaceFobidden";
 
-export const inAppWorkspaceSchema = workspaceSchema.omit({
+const memberWorkspaceSchema = workspaceSchema.omit({
   chatsLimitFirstEmailSentAt: true,
   chatsLimitSecondEmailSentAt: true,
   storageLimitFirstEmailSentAt: true,
@@ -17,6 +17,25 @@ export const inAppWorkspaceSchema = workspaceSchema.omit({
   additionalStorageIndex: true,
   isQuarantined: true,
 });
+
+// Guests need navigation and bot availability context, not workspace billing data.
+const guestWorkspaceSchema = memberWorkspaceSchema.pick({
+  id: true,
+  name: true,
+  icon: true,
+  plan: true,
+  isSuspended: true,
+  isPastDue: true,
+  isVerified: true,
+});
+
+export const inAppWorkspaceSchema = z.union([
+  memberWorkspaceSchema,
+  guestWorkspaceSchema,
+]);
+
+export type InAppWorkspace = z.infer<typeof guestWorkspaceSchema> &
+  Partial<z.infer<typeof memberWorkspaceSchema>>;
 
 export const getWorkspaceInputSchema = z.object({
   workspaceId: z
@@ -38,8 +57,25 @@ export const handleGetWorkspace = async ({
     include: { members: true },
   });
 
+  if (!workspace)
+    throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
+
+  if (isReadWorkspaceFobidden(workspace, user)) {
+    if (
+      !workspace.members.some(
+        (member) => member.userId === user.id && member.role === "GUEST",
+      )
+    )
+      throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
+
+    return {
+      workspace: guestWorkspaceSchema.parse(workspace),
+      currentUserMode: z.literal("guest").parse("guest"),
+    };
+  }
+
   if (
-    !workspace?.lastActivityAt ||
+    !workspace.lastActivityAt ||
     !datesAreOnSameDay(workspace.lastActivityAt, new Date())
   ) {
     await prisma.workspace.updateMany({
@@ -50,13 +86,10 @@ export const handleGetWorkspace = async ({
     });
   }
 
-  if (!workspace || isReadWorkspaceFobidden(workspace, user))
-    throw new ORPCError("NOT_FOUND", { message: "Workspace not found" });
-
   const currentUserMode = getUserModeInWorkspace(user.id, workspace.members);
 
   return {
-    workspace: inAppWorkspaceSchema.parse(workspace),
-    currentUserMode: currentUserMode as "read" | "write" | "guest",
+    workspace: memberWorkspaceSchema.parse(workspace),
+    currentUserMode: z.enum(["read", "write", "guest"]).parse(currentUserMode),
   };
 };

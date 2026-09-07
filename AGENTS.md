@@ -51,3 +51,7 @@ To check the source code and documentation of a dependency, run `bunx opensrc pa
 - To navigate to an authenticated session with Playwright, you need to inject cookies from `apps/viewer/src/test/.auth/user.json`.
 - Do not pass those stored cookie objects directly to `browserContext.addCookies()`. Remap them to a minimal Playwright shape such as `{ name, value, url: "http://localhost:3000", expires, httpOnly, secure, sameSite }`.
 - Prefer `http://localhost:3000` over `127.0.0.1:3000` when reusing that auth file, since the saved session cookies are scoped for `localhost`.
+
+## Authorization regression tests
+
+- With `SKIP_ENV_CHECK=true`, environment transformations are skipped. In isolated Bun tests, supply parsed values such as `ADMIN_EMAIL: ["admin@example.com"]` in the env module mock; setting only `process.env.ADMIN_EMAIL` leaves a string and does not exercise the administrator policy correctly.
