@@ -1,3 +1,4 @@
+import { ORPCError } from "@orpc/server";
 import { isInputBlock } from "@typebot.io/blocks-core/helpers";
 import type { Block } from "@typebot.io/blocks-core/schemas/schema";
 import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
@@ -44,12 +45,36 @@ export const sanitizeGroups = async (
   {
     enableSafetyFlags,
     workspace,
+    typebotId,
   }: {
     enableSafetyFlags?: boolean;
+    // The authorized existing bot ID; new bots cannot reuse legacy rows.
+    typebotId?: string;
     workspace: Pick<Workspace, "id" | "plan">;
   },
-): Promise<Typebot["groups"]> =>
-  Promise.all(
+): Promise<Typebot["groups"]> => {
+  const webhookIds = groups.flatMap((group) =>
+    group.blocks.flatMap((block) =>
+      "webhookId" in block && block.webhookId ? [block.webhookId] : [],
+    ),
+  );
+  if (webhookIds.length > 0) {
+    const ownedWebhooks = typebotId
+      ? await prisma.webhook.findMany({
+          where: { id: { in: webhookIds }, typebotId },
+          select: { id: true },
+        })
+      : [];
+    if (
+      webhookIds.some(
+        (id) => !ownedWebhooks.some((webhook) => webhook.id === id),
+      )
+    )
+      throw new ORPCError("BAD_REQUEST", {
+        message: "Invalid legacy webhook reference",
+      });
+  }
+  return Promise.all(
     groups.map(async (group) => ({
       ...group,
       blocks: await Promise.all(
@@ -59,6 +84,7 @@ export const sanitizeGroups = async (
       ),
     })),
   ) as Promise<Typebot["groups"]>;
+};
 
 const sanitizeBlock = async (
   block: Block,

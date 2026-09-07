@@ -78,9 +78,9 @@ export const handleUnsubscribeHttpRequest = async ({
       },
     });
   } else {
-    if ("webhookId" in httpRequestBlock)
+    if ("webhookId" in httpRequestBlock && httpRequestBlock.webhookId)
       await prisma.webhook.update({
-        where: { id: httpRequestBlock.webhookId },
+        where: { id: httpRequestBlock.webhookId, typebotId },
         data: { url: null },
       });
     else
