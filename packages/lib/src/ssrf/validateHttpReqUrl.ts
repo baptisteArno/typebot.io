@@ -388,8 +388,20 @@ export const validateIPAddress = (
         groups[1] === 0 &&
         groups[2] === 0 &&
         groups[3] <= 1) ||
-      (groups[0] === 0x2001 && groups[1] === 0) ||
-      (groups[0] === 0x2001 && groups[1] === 2 && groups[2] === 0) ||
+      // 2001::/23 is non-global except for the specific IANA allocations below.
+      (groups[0] === 0x2001 &&
+        groups[1] <= 0x1ff &&
+        !(
+          (groups[1] === 1 &&
+            groups.slice(2, 7).every((group) => group === 0) &&
+            groups[7] >= 1 &&
+            groups[7] <= 3) || // PCP, TURN and DNS-SD anycast /128s
+          groups[1] === 3 || // AMT 2001:3::/32
+          (groups[1] === 4 && groups[2] === 0x112) || // AS112 2001:4:112::/48
+          (groups[1] & 0xfff0) === 0x20 || // ORCHIDv2 2001:20::/28
+          // DETs 2001:30::/28
+          (groups[1] & 0xfff0) === 0x30
+        )) ||
       (groups[0] === 0x2001 && groups[1] === 0xdb8) ||
       groups[0] === 0x2002 ||
       (groups[0] === 0x3fff && groups[1] <= 0xfff) ||

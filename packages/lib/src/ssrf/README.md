@@ -23,6 +23,7 @@ is globally routable or every special-use address is exploitable.
 | --- | --- |
 | Shared IPv4 100.64/10 | Block, including both boundaries |
 | IPv4 protocol assignments 192.0.0/24 | Block except globally reachable anycast 192.0.0.9 and 192.0.0.10 |
+| IPv6 protocol assignments 2001::/23 | Block except the IANA global allocations: anycast 2001:1::1, ::2 and ::3 (each /128), AMT 2001:3::/32, AS112 2001:4:112::/48, ORCHIDv2 2001:20::/28 and DETs 2001:30::/28 |
 | IPv4 documentation, benchmarking, deprecated relay 192.88.99/24 | Block |
 | IPv4 multicast 224/4, reserved 240/4 and limited broadcast | Block |
 | IPv6 mapped IPv4 ::ffff:0:0/96 | Normalize and apply IPv4 policy, preserving the RFC1918 exception |
@@ -32,7 +33,11 @@ is globally routable or every special-use address is exploitable.
 | IPv6 discard 100::/64, dummy 100:0:0:1::/64, benchmark 2001:2::/48 | Block |
 | IPv6 documentation 2001:db8::/32 and 3fff::/20, SRv6 5f00::/16 | Block |
 | IPv6 deprecated site-local fec0::/10 and multicast ff00::/8 | Block |
-| Globally reachable anycast/AMT/AS112 allocations | Preserve; do not blanket-block their parent protocol-assignment space |
+| Globally reachable special allocations | Preserve only their exact allocation boundaries within blocked protocol-assignment space |
+
+The IPv6 exceptions were checked against IANA on 2026-09-07. In particular,
+2001:1::3/128 is globally reachable DNS-SD anycast (RFC 9665), whereas the
+deprecated ORCHID allocation 2001:10::/28 remains blocked by its parent range.
 
 IPv6 parsing validates DNS answers and normalizes compression, leading zeros,
 case and dotted suffixes before inspecting numeric groups. Arbitrary
