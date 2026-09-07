@@ -8,20 +8,11 @@ import { orpc, queryClient } from "@/lib/queryClient";
 import { toast } from "@/lib/toast";
 import { useTypebot } from "../editor/providers/TypebotProvider";
 import { useUser } from "../user/hooks/useUser";
+import type { InAppWorkspace } from "./api/handleGetWorkspace";
 import { parseNewName } from "./helpers/parseNewName";
 import { setWorkspaceIdInLocalStorage } from "./helpers/setWorkspaceIdInLocalStorage";
 
-export type WorkspaceInApp = Omit<
-  Workspace,
-  | "chatsLimitFirstEmailSentAt"
-  | "chatsLimitSecondEmailSentAt"
-  | "storageLimitFirstEmailSentAt"
-  | "storageLimitSecondEmailSentAt"
-  | "customStorageLimit"
-  | "additionalChatsIndex"
-  | "additionalStorageIndex"
-  | "isQuarantined"
->;
+export type WorkspaceInApp = InAppWorkspace;
 
 type WorkspaceUpdateProps = {
   icon?: string;

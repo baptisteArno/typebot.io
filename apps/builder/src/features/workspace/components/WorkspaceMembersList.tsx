@@ -214,7 +214,13 @@ const useSeatsLimit = () => {
     members.filter((member) => member.role !== WorkspaceRole.GUEST).length +
     invitations.length;
 
-  const seatsLimit = workspace ? getSeatsLimit(workspace) : undefined;
+  const seatsLimit =
+    workspace?.customSeatsLimit !== undefined
+      ? getSeatsLimit({
+          plan: workspace.plan,
+          customSeatsLimit: workspace.customSeatsLimit,
+        })
+      : undefined;
 
   return {
     membersCount,

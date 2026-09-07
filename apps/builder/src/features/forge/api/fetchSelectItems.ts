@@ -57,6 +57,7 @@ export const fetchSelectItems = authenticatedProcedure
           members: {
             select: {
               userId: true,
+              role: true,
             },
           },
           credentials: input.options.credentialsId
