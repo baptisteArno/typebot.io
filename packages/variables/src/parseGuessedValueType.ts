@@ -18,5 +18,8 @@ export const parseGuessedValueType = (
   if (value === "undefined") return;
   const num = Number(value);
   if (Number.isNaN(num)) return value;
+  // Integers outside the safe range (e.g. WhatsApp Business Account IDs)
+  // can't be represented exactly as a JS number, keep them as strings
+  if (Number.isInteger(num) && !Number.isSafeInteger(num)) return value;
   return num;
 };
