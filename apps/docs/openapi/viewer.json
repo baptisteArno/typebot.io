@@ -197,6 +197,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "previewWebhookRoom": {
+                      "type": "string",
+                      "description": "Webhook channel for a preview, independent of its session ID."
+                    },
                     "sessionId": {
                       "type": "string",
                       "description": "To save and use for /continueChat requests."
@@ -2529,9 +2533,6 @@
                                   "content": {
                                     "type": "string"
                                   },
-                                  "isUnsafe": {
-                                    "type": "boolean"
-                                  },
                                   "isCode": {
                                     "type": "boolean"
                                   },
@@ -2651,9 +2652,6 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
-                                      },
-                                      "isUnsafe": {
-                                        "type": "boolean"
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -2814,9 +2812,6 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
-                                      },
-                                      "isUnsafe": {
-                                        "type": "boolean"
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -5419,9 +5414,6 @@
                                   "content": {
                                     "type": "string"
                                   },
-                                  "isUnsafe": {
-                                    "type": "boolean"
-                                  },
                                   "isCode": {
                                     "type": "boolean"
                                   },
@@ -5541,9 +5533,6 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
-                                      },
-                                      "isUnsafe": {
-                                        "type": "boolean"
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -5704,9 +5693,6 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
-                                      },
-                                      "isUnsafe": {
-                                        "type": "boolean"
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -6978,6 +6964,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "previewWebhookRoom": {
+                      "type": "string",
+                      "description": "Webhook channel for a preview, independent of its session ID."
+                    },
                     "sessionId": {
                       "type": "string",
                       "description": "To save and use for /continueChat requests."
@@ -9307,9 +9297,6 @@
                                   "content": {
                                     "type": "string"
                                   },
-                                  "isUnsafe": {
-                                    "type": "boolean"
-                                  },
                                   "isCode": {
                                     "type": "boolean"
                                   },
@@ -9429,9 +9416,6 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
-                                      },
-                                      "isUnsafe": {
-                                        "type": "boolean"
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -9592,9 +9576,6 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
-                                      },
-                                      "isUnsafe": {
-                                        "type": "boolean"
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -10491,6 +10472,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "previewWebhookRoom": {
+                      "type": "string",
+                      "description": "Webhook channel for a preview, independent of its session ID."
+                    },
                     "sessionId": {
                       "type": "string",
                       "description": "To save and use for /continueChat requests."
@@ -12820,9 +12805,6 @@
                                   "content": {
                                     "type": "string"
                                   },
-                                  "isUnsafe": {
-                                    "type": "boolean"
-                                  },
                                   "isCode": {
                                     "type": "boolean"
                                   },
@@ -12942,9 +12924,6 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
-                                      },
-                                      "isUnsafe": {
-                                        "type": "boolean"
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -13105,9 +13084,6 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
-                                      },
-                                      "isUnsafe": {
-                                        "type": "boolean"
                                       },
                                       "isCode": {
                                         "type": "boolean"

@@ -3,25 +3,17 @@ import { parseUnknownClientError } from "@typebot.io/lib/parseUnknownClientError
 import { safeStringify } from "@typebot.io/lib/safeStringify";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import type { ClientSideActionContext } from "../../../../types";
-import { runUserCodeInWorker } from "../script/scriptRunner";
 
 const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
 
 export const executeSetVariable = async (
-  { content, args, isCode, isUnsafe }: ScriptToExecute,
-  { isPreview }: Pick<ClientSideActionContext, "isPreview">,
+  { content, args, isCode }: ScriptToExecute,
+  _context: Pick<ClientSideActionContext, "isPreview">,
 ): Promise<{
   replyToSend: string | undefined;
   logs?: LogInSession[];
 }> => {
   try {
-    if (isPreview && isUnsafe) {
-      const argsRecord = Object.fromEntries(args.map((a) => [a.id, a.value]));
-      const result = await runUserCodeInWorker(content, argsRecord);
-      return {
-        replyToSend: safeStringify(result) ?? undefined,
-      };
-    }
     // To avoid octal number evaluation
     if (!Number.isNaN(Number(content)) && /0[^.].+/.test(content))
       return {

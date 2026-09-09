@@ -1,5 +1,4 @@
 import { useTranslate } from "@tolgee/react";
-import { reload } from "@typebot.io/react";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Cancel01Icon } from "@typebot.io/ui/icons/Cancel01Icon";
 import { useDrag } from "@use-gesture/react";
@@ -26,6 +25,7 @@ export const PreviewDrawer = () => {
   const { typebot, save, isSavingLoading } = useTypebot();
   const { t } = useTranslate();
   const { setPreviewingBlock } = useGraph();
+  const [restartKey, setRestartKey] = useState(0);
   const [width, setWidth] = useState(500);
   const [selectedRuntime, setSelectedRuntime] = useState<
     (typeof runtimes)[number]
@@ -34,7 +34,7 @@ export const PreviewDrawer = () => {
 
   const handleRestartClick = async () => {
     if ((await save()) === "failed") return;
-    reload();
+    setRestartKey((value) => value + 1);
   };
 
   const handleCloseClick = () => {
@@ -89,7 +89,7 @@ export const PreviewDrawer = () => {
             <Cancel01Icon />
           </Button>
         </div>
-        <PreviewDrawerBody runtime={selectedRuntime.name} />
+        <PreviewDrawerBody key={restartKey} runtime={selectedRuntime.name} />
       </div>
     </div>
   );

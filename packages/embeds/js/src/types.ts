@@ -10,6 +10,7 @@ export type BotContext = {
   apiHost?: string;
   wsHost?: string;
   sessionId: string;
+  previewWebhookRoom?: string;
   storage: "local" | "session" | undefined;
 };
 
@@ -17,6 +18,7 @@ export type ClientSideActionContext = {
   apiHost?: string;
   wsHost?: string;
   sessionId: string;
+  previewWebhookRoom?: string;
   resultId?: string;
   isPreview: boolean;
 };

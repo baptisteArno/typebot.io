@@ -26,7 +26,6 @@ import { DebouncedTextareaWithVariablesButton } from "@/components/inputs/Deboun
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 import { WhatsAppLogo } from "@/components/logos/WhatsAppLogo";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
-import { UnsafeScriptAlert } from "../../script/components/UnsafeScriptAlert";
 
 type Props = {
   options: SetVariableBlock["options"];
@@ -233,9 +232,6 @@ const SetVariableValue = ({
     });
   };
 
-  const updateIsUnsafe = () =>
-    onOptionsChange({ ...baseOptions, isUnsafe: false });
-
   switch (options?.type) {
     case "Custom":
     case undefined:
@@ -287,11 +283,6 @@ const SetVariableValue = ({
                   </MoreInfoTooltip>
                 </Field.Label>
               </Field.Root>
-              {options?.isUnsafe === true &&
-                options?.isExecutedOnClient === true &&
-                options.isCode && (
-                  <UnsafeScriptAlert onTrustClick={updateIsUnsafe} />
-                )}
               <Field.Root>
                 <Field.Label>Save error</Field.Label>
                 <VariablesCombobox

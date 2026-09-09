@@ -189,6 +189,10 @@ const startPreviewSession = async ({
 
     return {
       sessionId: session.id,
+      previewWebhookRoom:
+        startParams.type === "preview" && startParams.userId
+          ? `${startParams.userId}/${typebot.id}/webhooks`
+          : undefined,
       typebot: {
         id: typebot.id,
         version: typebot.version,

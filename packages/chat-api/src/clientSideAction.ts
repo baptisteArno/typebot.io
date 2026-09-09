@@ -16,7 +16,6 @@ export type StartPropsToInject = z.infer<typeof startPropsToInjectSchema>;
 
 const scriptToExecuteSchema = z.object({
   content: z.string(),
-  isUnsafe: z.boolean().optional(),
   isCode: z.boolean().optional(),
   args: z.array(
     z.object({

@@ -333,6 +333,12 @@ const chatResponseBaseSchema = z.object({
 
 export const startChatResponseSchema = z
   .object({
+    previewWebhookRoom: z
+      .string()
+      .optional()
+      .describe(
+        "Webhook channel for a preview, independent of its session ID.",
+      ),
     sessionId: z
       .string()
       .describe("To save and use for /continueChat requests."),

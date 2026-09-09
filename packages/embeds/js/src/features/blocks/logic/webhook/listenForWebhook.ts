@@ -12,7 +12,7 @@ type Props = {
 export const listenForWebhook = ({ sessionId, resultId, context }: Props) => {
   const ws = new PartySocket({
     host: getPartyKitHost(context.wsHost),
-    room: getRoomName({ sessionId, resultId }),
+    room: getRoomName({ sessionId, resultId, context }),
   });
   return new Promise<{
     replyToSend: string | undefined;
@@ -38,11 +38,9 @@ export const listenForWebhook = ({ sessionId, resultId, context }: Props) => {
   });
 };
 
-const getRoomName = ({
-  sessionId,
-  resultId,
-}: Pick<Props, "sessionId" | "resultId">) => {
+const getRoomName = ({ sessionId, resultId, context }: Props) => {
   if (resultId) return `${resultId}/webhooks`;
+  if (context.previewWebhookRoom) return context.previewWebhookRoom;
   const [typebotId, userId] = sessionId.split("-");
   return `${userId}/${typebotId}/webhooks`;
 };
