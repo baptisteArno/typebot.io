@@ -8,9 +8,16 @@ import { initGoogleAnalytics } from "../lib/gtag";
 import { gtmBodyElement } from "../lib/gtm";
 import { initPixel } from "../lib/pixel";
 
+let hasInjectedPropsForTypebotId: string | boolean | undefined;
+
 export const injectStartProps = async (
   startPropsToInject: StartPropsToInject,
+  typebotId?: string,
 ) => {
+  const currentKey = typebotId ?? true;
+  if (hasInjectedPropsForTypebotId === currentKey) return;
+  hasInjectedPropsForTypebotId = currentKey;
+
   const customHeadCode = startPropsToInject.customHeadCode;
   if (isNotEmpty(customHeadCode)) injectCustomHeadCode(customHeadCode);
   const gtmId = startPropsToInject.gtmId;
