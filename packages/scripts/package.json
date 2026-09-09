@@ -58,6 +58,12 @@
           "production": {}
         }
       },
+      "applyEnterpriseChatsTier": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
       "migrateSubscriptionItemPriceId": {
         "defaultConfiguration": "production",
         "configurations": {
@@ -244,6 +250,7 @@
     "inspectUser": "bun run run:prod:mysql src/inspectUser.ts",
     "checkSubscriptionsStatus": "bun run run:prod:mysql src/checkSubscriptionsStatus.ts",
     "createChatsPrices": "bun run run:prod:mysql src/createChatsPrices.ts",
+    "applyEnterpriseChatsTier": "bun run run:prod:mysql src/applyEnterpriseChatsTier.ts",
     "migrateSubscriptionItemPriceId": "bun run run:prod:mysql src/migrateSubscriptionItemPriceId.ts",
     "migrateSubscriptionsToUsageBased": "bun run run:prod:mysql src/migrateSubscriptionsToUsageBased.ts",
     "insertUsersInBrevoList": "bun run run:prod:mysql src/insertUsersInBrevoList.ts",

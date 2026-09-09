@@ -67,34 +67,43 @@ export const checkAndReportLastHourResults = async () => {
 
   for (const workspace of workspaces) {
     if (workspace.isQuarantined) continue;
-    const chatsLimit = getChatsLimit(workspace);
     const subscription = await getSubscription(workspace, { stripe });
     const { totalChatsUsed } = await getUsage({
       workspaceId: workspace.id,
       subscription,
     });
-    if (chatsLimit === "inf") continue;
+    const isEnterpriseUsageBasedSubscription =
+      workspace.plan === Plan.ENTERPRISE &&
+      isDefined(subscription && findMeteredSubscriptionItem(subscription));
+    const chatsLimit = isEnterpriseUsageBasedSubscription
+      ? "inf"
+      : getChatsLimit(workspace);
 
-    limitWarningEmailEvents.push(
-      ...(await sendLimitWarningEmails({
-        chatsLimit,
-        totalChatsUsed,
-        workspace,
-      })),
-    );
+    if (chatsLimit !== "inf")
+      limitWarningEmailEvents.push(
+        ...(await sendLimitWarningEmails({
+          chatsLimit,
+          totalChatsUsed,
+          workspace,
+        })),
+      );
 
-    const isUsageBasedSubscription = isDefined(
-      subscription?.items.data.find(
-        (item) =>
-          item.price.id === env.STRIPE_STARTER_PRICE_ID ||
-          item.price.id === env.STRIPE_PRO_PRICE_ID,
-      ),
-    );
+    const isUsageBasedSubscription =
+      isEnterpriseUsageBasedSubscription ||
+      isDefined(
+        subscription?.items.data.find(
+          (item) =>
+            item.price.id === env.STRIPE_STARTER_PRICE_ID ||
+            item.price.id === env.STRIPE_PRO_PRICE_ID,
+        ),
+      );
 
     if (
       isUsageBasedSubscription &&
       subscription &&
-      (workspace.plan === "STARTER" || workspace.plan === "PRO")
+      (workspace.plan === "STARTER" ||
+        workspace.plan === "PRO" ||
+        workspace.plan === "ENTERPRISE")
     ) {
       if (workspace.plan === "STARTER" && totalChatsUsed >= 4000) {
         console.log(
@@ -217,10 +226,15 @@ export const checkAndReportLastHourResults = async () => {
       }
     }
 
+    const quarantineChatsLimit =
+      workspace.chatsHardLimit ??
+      (chatsLimit === "inf" ? undefined : chatsLimit);
     if (
-      (totalChatsUsed > chatsLimit * 1.5 && workspace.plan === Plan.FREE) ||
-      (isDefined(workspace.chatsHardLimit) &&
-        totalChatsUsed >= workspace.chatsHardLimit)
+      isDefined(quarantineChatsLimit) &&
+      ((workspace.plan === Plan.FREE &&
+        totalChatsUsed > quarantineChatsLimit * 1.5) ||
+        (isDefined(workspace.chatsHardLimit) &&
+          totalChatsUsed >= workspace.chatsHardLimit))
     ) {
       console.log(`Automatically quarantine workspace ${workspace.id}...`);
       await prisma.workspace.updateMany({
@@ -236,7 +250,7 @@ export const checkAndReportLastHourResults = async () => {
             workspaceId: workspace.id,
             data: {
               totalChatsUsed,
-              chatsLimit: workspace.chatsHardLimit ?? chatsLimit,
+              chatsLimit: quarantineChatsLimit,
               reason: "free limit reached" as const,
             },
           })),
@@ -269,7 +283,9 @@ const getSubscription = async (
 ) => {
   if (
     !workspace.stripeId ||
-    (workspace.plan !== "STARTER" && workspace.plan !== "PRO")
+    (workspace.plan !== "STARTER" &&
+      workspace.plan !== "PRO" &&
+      workspace.plan !== "ENTERPRISE")
   )
     return;
   const subscriptions = await stripe.subscriptions.list({
@@ -295,11 +311,12 @@ const reportUsageToStripe = async (
     throw new Error(
       "Missing STRIPE_STARTER_CHATS_PRICE_ID or STRIPE_PRO_CHATS_PRICE_ID env variable",
     );
-  const subscriptionItem = subscription.items.data.find(
-    (item) =>
-      item.price.id === env.STRIPE_STARTER_CHATS_PRICE_ID ||
-      item.price.id === env.STRIPE_PRO_CHATS_PRICE_ID,
-  );
+  const subscriptionItem =
+    subscription.items.data.find(
+      (item) =>
+        item.price.id === env.STRIPE_STARTER_CHATS_PRICE_ID ||
+        item.price.id === env.STRIPE_PRO_CHATS_PRICE_ID,
+    ) ?? findMeteredSubscriptionItem(subscription);
 
   if (!subscriptionItem)
     throw new Error("Could not find subscription item for workspace");
@@ -317,6 +334,11 @@ const reportUsageToStripe = async (
     },
   );
 };
+
+const findMeteredSubscriptionItem = (subscription: Stripe.Subscription) =>
+  subscription.items.data.find(
+    (item) => item.price.recurring?.usage_type === "metered",
+  );
 
 const getUsage = async ({
   workspaceId,

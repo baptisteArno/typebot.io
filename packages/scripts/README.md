@@ -36,6 +36,7 @@ Frequently used inputs:
 | `destroyUser` | `--email --confirm` |
 | `updateTypebot` | `--typebot-id --confirm` |
 | `updateWorkspace` | `--workspace-id --confirm` |
+| `applyEnterpriseChatsTier` | `--workspace-id`, `--tier` (one of `enterprise_e1`..`enterprise_e4`), `--confirm` |
 | `updateUserEmail` | `--current-email`, `--new-email`, `--confirm` |
 | `updateWhatsAppStatusForwardUrl` | `--typebot-id`, `--url`, `--confirm` |
 | `insertUsersInBrevoList` | `--list-id --confirm` |
