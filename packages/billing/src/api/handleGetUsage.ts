@@ -46,19 +46,20 @@ export const handleGetUsage = async ({
       message: "Workspace not found",
     });
 
-  const currentSubscription =
+  const stripeLookup =
     env.STRIPE_SECRET_KEY &&
     workspace.stripeId &&
     (workspace.plan === "STARTER" ||
       workspace.plan === "PRO" ||
       workspace.plan === "ENTERPRISE")
-      ? await getCurrentSubscription({
-          stripeId: workspace.stripeId,
-          stripeSecretKey: env.STRIPE_SECRET_KEY,
-        })
+      ? { stripeId: workspace.stripeId, stripeSecretKey: env.STRIPE_SECRET_KEY }
       : undefined;
+  const currentSubscription = stripeLookup
+    ? await getCurrentSubscription(stripeLookup)
+    : undefined;
 
   if (
+    stripeLookup &&
     !currentSubscription &&
     (workspace.plan === "STARTER" || workspace.plan === "PRO")
   )

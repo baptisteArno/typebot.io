@@ -54,6 +54,10 @@ const applyEnterpriseChatsTier = async () => {
     .sort((a, b) => a.created - b.created)
     .at(0);
   if (!subscription) throw new Error("No active subscription found");
+  if (subscription.cancel_at_period_end || subscription.cancel_at)
+    throw new Error(
+      "The subscription has a pending cancellation. Remove it in Stripe before applying an enterprise tier.",
+    );
 
   const meteredItem = subscription.items.data.find(
     (item) => item.price.recurring?.usage_type === "metered",

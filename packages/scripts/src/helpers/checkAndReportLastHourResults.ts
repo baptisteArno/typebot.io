@@ -68,7 +68,7 @@ export const checkAndReportLastHourResults = async () => {
   for (const workspace of workspaces) {
     if (workspace.isQuarantined) continue;
     const subscription = await getSubscription(workspace, { stripe });
-    const { totalChatsUsed } = await getUsage({
+    const { totalChatsUsed, usagePeriodStart } = await getUsage({
       workspaceId: workspace.id,
       subscription,
     });
@@ -87,6 +87,7 @@ export const checkAndReportLastHourResults = async () => {
         ...(await sendLimitWarningEmails({
           chatsLimit: enforcedChatsLimit,
           totalChatsUsed,
+          usagePeriodStart,
           workspace,
         })),
       );
@@ -357,22 +358,23 @@ const getUsage = async ({
   });
 
   const now = new Date();
-  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const usagePeriodStart = subscription
+    ? new Date(subscription.current_period_start * 1000)
+    : new Date(now.getFullYear(), now.getMonth(), 1);
 
   const totalChatsUsed = await prisma.result.count({
     where: {
       typebotId: { in: typebots.map((typebot) => typebot.id) },
       hasStarted: true,
       createdAt: {
-        gte: subscription
-          ? new Date(subscription.current_period_start * 1000)
-          : firstDayOfMonth,
+        gte: usagePeriodStart,
       },
     },
   });
 
   return {
     totalChatsUsed,
+    usagePeriodStart,
   };
 };
 
@@ -437,10 +439,12 @@ const autoUpgradeToPro = async (
 async function sendLimitWarningEmails({
   chatsLimit,
   totalChatsUsed,
+  usagePeriodStart,
   workspace,
 }: {
   chatsLimit: number;
   totalChatsUsed: number;
+  usagePeriodStart: Date;
   workspace: Pick<
     Workspace,
     | "id"
@@ -464,7 +468,13 @@ async function sendLimitWarningEmails({
     (member) => member.role === WorkspaceRole.ADMIN,
   );
   const to = adminMembers.map((member) => member.user.email).filter(isDefined);
-  if (!workspace.chatsLimitFirstEmailSentAt) {
+  const hasSentFirstEmailThisPeriod =
+    isDefined(workspace.chatsLimitFirstEmailSentAt) &&
+    workspace.chatsLimitFirstEmailSentAt >= usagePeriodStart;
+  const hasSentSecondEmailThisPeriod =
+    isDefined(workspace.chatsLimitSecondEmailSentAt) &&
+    workspace.chatsLimitSecondEmailSentAt >= usagePeriodStart;
+  if (!hasSentFirstEmailThisPeriod) {
     console.log(`Send almost reached chats limit email to ${to.join(", ")}...`);
     try {
       await sendAlmostReachedChatsLimitEmail({
@@ -491,7 +501,7 @@ async function sendLimitWarningEmails({
 
   if (
     totalChatsUsed >= limit &&
-    !workspace.chatsLimitSecondEmailSentAt &&
+    !hasSentSecondEmailThisPeriod &&
     (workspace.plan === Plan.FREE || isDefined(workspace.chatsHardLimit))
   ) {
     console.log(`Send reached chats limit email to ${to.join(", ")}...`);
