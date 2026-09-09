@@ -16,7 +16,12 @@ export type StartPropsToInject = z.infer<typeof startPropsToInjectSchema>;
 
 const scriptToExecuteSchema = z.object({
   content: z.string(),
-  isUnsafe: z.boolean().optional(),
+  isUnsafe: z
+    .boolean()
+    .optional()
+    .describe(
+      "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field.",
+    ),
   isCode: z.boolean().optional(),
   args: z.array(
     z.object({

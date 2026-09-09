@@ -197,6 +197,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "previewWebhookRoom": {
+                      "type": "string",
+                      "description": "Webhook channel for a preview, independent of its session ID."
+                    },
                     "sessionId": {
                       "type": "string",
                       "description": "To save and use for /continueChat requests."
@@ -2530,7 +2534,8 @@
                                     "type": "string"
                                   },
                                   "isUnsafe": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                   },
                                   "isCode": {
                                     "type": "boolean"
@@ -2653,7 +2658,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -2816,7 +2822,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -5420,7 +5427,8 @@
                                     "type": "string"
                                   },
                                   "isUnsafe": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                   },
                                   "isCode": {
                                     "type": "boolean"
@@ -5543,7 +5551,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -5706,7 +5715,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -6978,6 +6988,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "previewWebhookRoom": {
+                      "type": "string",
+                      "description": "Webhook channel for a preview, independent of its session ID."
+                    },
                     "sessionId": {
                       "type": "string",
                       "description": "To save and use for /continueChat requests."
@@ -9308,7 +9322,8 @@
                                     "type": "string"
                                   },
                                   "isUnsafe": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                   },
                                   "isCode": {
                                     "type": "boolean"
@@ -9431,7 +9446,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -9594,7 +9610,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -10491,6 +10508,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "previewWebhookRoom": {
+                      "type": "string",
+                      "description": "Webhook channel for a preview, independent of its session ID."
+                    },
                     "sessionId": {
                       "type": "string",
                       "description": "To save and use for /continueChat requests."
@@ -12821,7 +12842,8 @@
                                     "type": "string"
                                   },
                                   "isUnsafe": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                   },
                                   "isCode": {
                                     "type": "boolean"
@@ -12944,7 +12966,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -13107,7 +13130,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"

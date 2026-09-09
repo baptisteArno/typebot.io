@@ -1,8 +1,8 @@
-import { Standard } from "@typebot.io/react";
 import { defaultBackgroundColor } from "@typebot.io/theme/constants";
 import { Seo } from "@/components/Seo";
 import { TypebotHeader } from "@/features/editor/components/TypebotHeader";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
+import { IsolatedPreview } from "@/features/preview/components/IsolatedPreview";
 import { ThemeSideMenu } from "./ThemeSideMenu";
 
 export const ThemePage = () => {
@@ -16,12 +16,10 @@ export const ThemePage = () => {
         <ThemeSideMenu />
         <div className="flex flex-1 h-[calc(100%-2rem)] w-full border rounded-xl mr-4 bg-gray-1">
           {typebot && (
-            <Standard
+            <IsolatedPreview
               typebot={typebot.id}
               previewSettings={typebot.settings}
               previewTheme={typebot.theme}
-              isPreview
-              apiHost={window.location.origin}
               style={{
                 borderRadius: "0.75rem",
                 width: "100%",

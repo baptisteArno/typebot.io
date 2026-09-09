@@ -9,7 +9,7 @@ import { type ChangeEvent, useId } from "react";
 import { toast } from "@/lib/toast";
 
 type Props = {
-  onNewTypebot: (typebot: Typebot, args: { enableSafetyFlags: true }) => void;
+  onNewTypebot: (typebot: Typebot) => void;
 } & ButtonProps;
 
 export const ImportTypebotFromFileButton = ({
@@ -26,15 +26,12 @@ export const ImportTypebotFromFileButton = ({
     const fileContent = await readFile(file);
     try {
       const typebot = JSON.parse(fileContent);
-      onNewTypebot(
-        {
-          ...typebot,
-          events: typebot.events ?? null,
-          icon: typebot.icon ?? null,
-          name: typebot.name ?? "My typebot",
-        } as Typebot,
-        { enableSafetyFlags: true },
-      );
+      onNewTypebot({
+        ...typebot,
+        events: typebot.events ?? null,
+        icon: typebot.icon ?? null,
+        name: typebot.name ?? "My typebot",
+      } as Typebot);
     } catch (err) {
       console.error(err);
       toast(await parseUnknownClientError({ err }));

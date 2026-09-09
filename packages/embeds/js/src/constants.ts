@@ -4,6 +4,7 @@ import type { PopupProps } from "./features/popup/components/Popup";
 
 export const defaultBotProps: BotProps = {
   typebot: undefined,
+  initialChatReply: undefined,
   templateSlug: undefined,
   previewSettings: undefined,
   previewTheme: undefined,

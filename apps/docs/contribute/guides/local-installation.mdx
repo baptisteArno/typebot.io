@@ -44,7 +44,11 @@ icon: "laptop"
 
    Builder is available at [`http://localhost:3000`](http://localhost:3000)
 
-   Viewer is available at [`http://localhost:3001`](http://localhost:3001)
+   Viewer is available at [`http://127.0.0.1:3001`](http://127.0.0.1:3001).
+
+   Keep the builder on `localhost` and the viewer on `127.0.0.1`: preview isolation
+   requires different hostnames because cookies are shared across ports. If you
+   already have a `.env`, update `NEXT_PUBLIC_VIEWER_URL` and restart both apps.
 
    By default, you can easily authenticate in the builder using the "Github Sign In" button. For other options, check out the [Configuration guide](https://docs.typebot.io/self-hosting/configuration).
 

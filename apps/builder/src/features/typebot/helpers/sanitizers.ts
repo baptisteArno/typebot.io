@@ -43,11 +43,9 @@ export const sanitizeSettings = (
 export const sanitizeGroups = async (
   groups: Typebot["groups"],
   {
-    enableSafetyFlags,
     workspace,
     typebotId,
   }: {
-    enableSafetyFlags?: boolean;
     // The authorized existing bot ID; new bots cannot reuse legacy rows.
     typebotId?: string;
     workspace: Pick<Workspace, "id" | "plan">;
@@ -78,9 +76,7 @@ export const sanitizeGroups = async (
     groups.map(async (group) => ({
       ...group,
       blocks: await Promise.all(
-        group.blocks.map((block) =>
-          sanitizeBlock(block, { enableSafetyFlags, workspace }),
-        ),
+        group.blocks.map((block) => sanitizeBlock(block, { workspace })),
       ),
     })),
   ) as Promise<Typebot["groups"]>;
@@ -88,34 +84,9 @@ export const sanitizeGroups = async (
 
 const sanitizeBlock = async (
   block: Block,
-  {
-    enableSafetyFlags,
-    workspace,
-  }: { enableSafetyFlags?: boolean; workspace: Pick<Workspace, "id" | "plan"> },
+  { workspace }: { workspace: Pick<Workspace, "id" | "plan"> },
 ): Promise<Block> => {
   if (!("options" in block) || !block.options) return block;
-
-  if (enableSafetyFlags && block.type === LogicBlockType.SCRIPT) {
-    return {
-      ...block,
-      options: {
-        ...block.options,
-        isUnsafe:
-          block.options.isExecutedOnClient === true ||
-          block.options.isExecutedOnClient === undefined,
-      },
-    };
-  }
-
-  if (enableSafetyFlags && block.type === LogicBlockType.SET_VARIABLE) {
-    return {
-      ...block,
-      options: {
-        ...block.options,
-        isUnsafe: block.options.isExecutedOnClient === true,
-      },
-    };
-  }
 
   switch (block.type) {
     case IntegrationBlockType.EMAIL:

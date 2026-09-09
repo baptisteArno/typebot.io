@@ -54,6 +54,7 @@ export type BotProps = {
   previewSettings?: StartTypebot["settings"];
   previewTheme?: StartTypebot["theme"];
   isPreview?: boolean;
+  initialChatReply?: StartChatResponse;
   resultId?: string;
   prefilledVariables?: Record<string, unknown>;
   apiHost?: string;
@@ -97,6 +98,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
     const resultIdInStorage =
       getExistingResultIdFromStorage(typebotIdFromProps);
     const { data, error } = await startChatQuery({
+      initialChatReply: props.initialChatReply,
       stripeRedirectStatus: urlParams.get("redirect_status") ?? undefined,
       typebot: props.typebot,
       templateSlug: props.templateSlug,
@@ -263,6 +265,7 @@ export const Bot = (props: BotProps & { class?: string }) => {
               isPreview: isPreview(),
               resultId: initialChatReply.resultId,
               sessionId: initialChatReply.sessionId,
+              previewWebhookRoom: initialChatReply.previewWebhookRoom,
               typebot: initialChatReply.typebot,
               storage:
                 initialChatReply.typebot.settings.general?.rememberUser

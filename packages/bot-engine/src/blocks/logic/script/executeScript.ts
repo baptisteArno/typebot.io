@@ -55,21 +55,16 @@ export const executeScript = async (
     };
   }
 
-  const scriptToExecute = parseScriptToExecuteClientSideAction(
-    variables,
-    block.options.content,
-    sessionStore,
-  );
-
   return {
     outgoingEdgeId: block.outgoingEdgeId,
     clientSideActions: [
       {
         type: "scriptToExecute",
-        scriptToExecute: {
-          ...scriptToExecute,
-          isUnsafe: block.options.isUnsafe,
-        },
+        scriptToExecute: parseScriptToExecuteClientSideAction(
+          variables,
+          block.options.content,
+          sessionStore,
+        ),
       },
     ],
   };
@@ -94,5 +89,8 @@ export const parseScriptToExecuteClientSideAction = (
   return {
     content,
     args,
+    // Older builder tabs choose their sandbox using this flag. Never derive it
+    // from stored block options, even while those clients are still deployed.
+    isUnsafe: true,
   };
 };

@@ -1,14 +1,28 @@
+import {
+  parsePaymentInProgress,
+  paymentInProgressStorageKey,
+} from "@typebot.io/chat-api/parsePaymentInProgress";
 import type { StartChatResponse } from "@typebot.io/chat-api/schemas";
 
 export const setPaymentInProgressInStorage = (
-  state: Pick<StartChatResponse, "typebot" | "sessionId" | "resultId">,
+  state: Pick<
+    StartChatResponse,
+    "typebot" | "sessionId" | "resultId" | "previewWebhookRoom"
+  > & { isPreview?: boolean },
 ) => {
-  sessionStorage.setItem("typebotPaymentInProgress", JSON.stringify(state));
+  sessionStorage.setItem(paymentInProgressStorageKey, JSON.stringify(state));
 };
 
-export const getPaymentInProgressInStorage = () =>
-  sessionStorage.getItem("typebotPaymentInProgress");
+export const getPaymentInProgressInStorage = () => {
+  try {
+    return parsePaymentInProgress(
+      sessionStorage.getItem(paymentInProgressStorageKey),
+    );
+  } catch {
+    return;
+  }
+};
 
 export const removePaymentInProgressFromStorage = () => {
-  sessionStorage.removeItem("typebotPaymentInProgress");
+  sessionStorage.removeItem(paymentInProgressStorageKey);
 };

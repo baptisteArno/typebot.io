@@ -86,7 +86,7 @@ const nextConfig = {
               `connect-src 'self' https: wss:${
                 isDev ? " http://localhost:* ws://localhost:*" : ""
               }`,
-              "frame-src 'self' https:",
+              `frame-src 'self' https: ${new URL((process.env.NEXT_PUBLIC_VIEWER_URL || "https://typebot.co").split(",")[0]).origin}`,
               `img-src 'self' data: blob: https:${isDev ? " http://localhost:*" : ""}`,
               "font-src 'self' https: data:",
               `media-src 'self' blob: https:${isDev ? " http://localhost:* " : ""}`,
