@@ -33,6 +33,7 @@ export const handleGetSubscription = async ({
       members: {
         select: {
           userId: true,
+          role: true,
         },
       },
     },

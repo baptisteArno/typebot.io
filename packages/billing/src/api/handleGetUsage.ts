@@ -33,6 +33,7 @@ export const handleGetUsage = async ({
       members: {
         select: {
           userId: true,
+          role: true,
         },
       },
       typebots: {

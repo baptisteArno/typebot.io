@@ -92,9 +92,12 @@ export const executeHttpRequestBlock = async (
   const logs: LogInSession[] = [];
   const httpRequest =
     block.options?.webhook ??
-    ("webhookId" in block
+    ("webhookId" in block && block.webhookId
       ? ((await prisma.webhook.findUnique({
-          where: { id: block.webhookId },
+          where: {
+            id: block.webhookId,
+            typebotId: state.typebotsQueue[0].typebot.id,
+          },
         })) as HttpRequest | null)
       : null);
   if (!httpRequest) return { outgoingEdgeId: block.outgoingEdgeId };

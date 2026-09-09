@@ -21,6 +21,7 @@ export const handleListCustomDomains = async ({
       members: {
         select: {
           userId: true,
+          role: true,
         },
       },
       customDomains: true,

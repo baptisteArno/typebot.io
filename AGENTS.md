@@ -20,8 +20,10 @@ All scripts must be ran with `bunx nx`:
   - fastest way to typecheck `builder` and/or `viewer`: run root `bunx nx typecheck` (runs `tsc --build --emitDeclarationOnly`)
   - typecheck a particular package: `bunx nx typecheck package_name`.
   - test a package: `bunx nx test package_name`
+  - filter builder Bun tests: `bunx nx test builder --args=src/features/typebot/api/handleGetTypebot.test.ts` (Bun ignores `--testPathPattern`).
   - typecheck all afffected packages: `bunx nx affected -t typecheck` (**IMPORTANT**: Rely first on IDE's TS server diagnostics first for faster feedback loop)
 - To check format and lint, run: `bunx nx format-and-lint` (with `--write --unsafe` to run autofix)
+- Run format/lint from the repository root with `bunx nx format-and-lint` (add `--write` to fix). Avoid `nx exec` for workspace-relative paths: it also executes in dependency directories even when `--projects` selects only the root project.
 - Never run plain `bunx tsc`, use `bunx nx`
 - Avoid running multiple Vitest test targets in a single Nx command such as `bunx nx run-many -t test` or `bunx nx affected -t test`. Each Nx test target starts its own Vitest process and its own global setup.
 - When multiple Vitest projects need to share the same global setup and database container, run the root workspace test target instead: `bunx nx test`.
@@ -51,3 +53,7 @@ To check the source code and documentation of a dependency, run `bunx opensrc pa
 - To navigate to an authenticated session with Playwright, you need to inject cookies from `apps/viewer/src/test/.auth/user.json`.
 - Do not pass those stored cookie objects directly to `browserContext.addCookies()`. Remap them to a minimal Playwright shape such as `{ name, value, url: "http://localhost:3000", expires, httpOnly, secure, sameSite }`.
 - Prefer `http://localhost:3000` over `127.0.0.1:3000` when reusing that auth file, since the saved session cookies are scoped for `localhost`.
+
+## Authorization regression tests
+
+- With `SKIP_ENV_CHECK=true`, environment transformations are skipped. In isolated Bun tests, supply parsed values such as `ADMIN_EMAIL: ["admin@example.com"]` in the env module mock; setting only `process.env.ADMIN_EMAIL` leaves a string and does not exercise the administrator policy correctly.

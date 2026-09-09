@@ -1,4 +1,5 @@
 import { beforeEach, expect, it, mock } from "bun:test";
+import { IntegrationBlockType } from "@typebot.io/blocks-integrations/constants";
 import { LogicBlockType } from "@typebot.io/blocks-logic/constants";
 import { clientSideActionSchema } from "@typebot.io/chat-api/clientSideAction";
 import {
@@ -12,6 +13,7 @@ process.env.SKIP_ENV_CHECK = "true";
 const create = mock();
 const update = mock();
 const findFirst = mock();
+const findWebhooks = mock();
 const workspace = {
   id: "workspace",
   plan: Plan.FREE,
@@ -48,6 +50,7 @@ mock.module("@typebot.io/prisma", () => ({
   default: {
     workspace: { findUnique: async () => workspace },
     typebot: { create, update, findFirst },
+    webhook: { findMany: findWebhooks },
   },
 }));
 mock.module("@typebot.io/telemetry/trackEvents", () => ({
@@ -71,6 +74,8 @@ beforeEach(() => {
   create.mockReset();
   update.mockReset();
   findFirst.mockReset();
+  findWebhooks.mockReset();
+  findWebhooks.mockResolvedValue([]);
   // Stop at the persistence boundary: inspect the exact write, without mocking
   // the sanitizer, authorization, input schema, or import migration.
   create.mockRejectedValue(new Error("persist"));
@@ -173,6 +178,56 @@ it("import ignores the retired safety opt-out", async () => {
     handleImportTypebot({ input, context: { user: { id: "owner" } } }),
   ).rejects.toThrow("persist");
   expectLegacyFlagsRemoved(create.mock.calls[0][0].data.groups);
+});
+
+it.each([
+  true,
+  false,
+])("legacy update preserves script isolation and webhook ownership (owned: %s)", async (isOwned) => {
+  findWebhooks.mockResolvedValue(isOwned ? [{ id: "legacy-webhook" }] : []);
+
+  const updating = handleUpdateTypebot({
+    input: updateTypebotInputSchema.parse({
+      typebotId: stored.id,
+      typebot: {
+        version: "5",
+        groups: [
+          ...groups,
+          {
+            id: "legacy-webhooks",
+            title: "Legacy webhooks",
+            graphCoordinates: { x: 0, y: 0 },
+            blocks: [
+              {
+                id: "legacy-http",
+                type: IntegrationBlockType.HTTP_REQUEST,
+                webhookId: "legacy-webhook",
+              },
+            ],
+          },
+        ],
+      },
+    }),
+    context: { user: { id: "collaborator" } },
+  });
+
+  if (isOwned) {
+    await expect(updating).rejects.toThrow("persist");
+    expectLegacyFlagsRemoved(update.mock.calls[0][0].data.groups.slice(0, 1));
+    expect(update.mock.calls[0][0].data.groups[1].blocks[0]).toMatchObject({
+      webhookId: "legacy-webhook",
+    });
+  } else {
+    await expect(updating).rejects.toMatchObject({
+      code: "BAD_REQUEST",
+      message: "Invalid legacy webhook reference",
+    });
+    expect(update).not.toHaveBeenCalled();
+  }
+  expect(findWebhooks).toHaveBeenCalledWith({
+    where: { id: { in: ["legacy-webhook"] }, typebotId: stored.id },
+    select: { id: true },
+  });
 });
 
 it("still rejects a read-only collaborator", async () => {

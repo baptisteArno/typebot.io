@@ -3,6 +3,17 @@
   "version": "0.0.1",
   "type": "module",
   "private": true,
+  "nx": {
+    "targets": {
+      "test": {
+        "executor": "@nx/vitest:test",
+        "options": {
+          "configFile": "vitest.config.ts",
+          "project": "@typebot.io/webhook-block"
+        }
+      }
+    }
+  },
   "exports": {
     "./*": {
       "types": "./src/*.ts",

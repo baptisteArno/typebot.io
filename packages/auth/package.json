@@ -14,14 +14,13 @@
   "nx": {
     "targets": {
       "test": {
-        "executor": "@nx/vitest:test",
+        "executor": "nx:run-commands",
         "outputs": [
-          "{options.reportsDirectory}"
+          "{projectRoot}/test-output/vitest/coverage"
         ],
         "options": {
-          "configFile": "{projectRoot}/vitest.config.ts",
-          "project": "@typebot.io/auth",
-          "reportsDirectory": "{projectRoot}/../../coverage/packages/auth"
+          "cwd": ".",
+          "command": "vitest run --project=@typebot.io/auth"
         }
       }
     }

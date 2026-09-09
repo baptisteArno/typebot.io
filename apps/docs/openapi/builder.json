@@ -27021,142 +27021,205 @@
                   "type": "object",
                   "properties": {
                     "workspace": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "createdAt": {
-                          "type": "string",
-                          "format": "date-time",
-                          "x-native-type": "date"
-                        },
-                        "updatedAt": {
-                          "type": "string",
-                          "format": "date-time",
-                          "x-native-type": "date"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "icon": {
-                          "anyOf": [
-                            {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
                               "type": "string"
                             },
-                            {
-                              "type": "null"
-                            }
-                          ]
-                        },
-                        "plan": {
-                          "enum": [
-                            "FREE",
-                            "STARTER",
-                            "PRO",
-                            "LIFETIME",
-                            "OFFERED",
-                            "CUSTOM",
-                            "UNLIMITED",
-                            "ENTERPRISE"
-                          ],
-                          "type": "string"
-                        },
-                        "stripeId": {
-                          "anyOf": [
-                            {
-                              "type": "string"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
-                        },
-                        "settings": {
-                          "anyOf": [
-                            {
-                              "type": "object"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
-                        },
-                        "customChatsLimit": {
-                          "anyOf": [
-                            {
-                              "type": "number"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
-                        },
-                        "customSeatsLimit": {
-                          "anyOf": [
-                            {
-                              "type": "number"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
-                        },
-                        "isSuspended": {
-                          "type": "boolean"
-                        },
-                        "isPastDue": {
-                          "type": "boolean"
-                        },
-                        "isVerified": {
-                          "anyOf": [
-                            {
-                              "type": "boolean"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
-                        },
-                        "chatsHardLimit": {
-                          "anyOf": [
-                            {
-                              "type": "number"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
-                        },
-                        "lastActivityAt": {
-                          "anyOf": [
-                            {
+                            "createdAt": {
                               "type": "string",
                               "format": "date-time",
                               "x-native-type": "date"
                             },
-                            {
-                              "type": "null"
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time",
+                              "x-native-type": "date"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "icon": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "plan": {
+                              "enum": [
+                                "FREE",
+                                "STARTER",
+                                "PRO",
+                                "LIFETIME",
+                                "OFFERED",
+                                "CUSTOM",
+                                "UNLIMITED",
+                                "ENTERPRISE"
+                              ],
+                              "type": "string"
+                            },
+                            "stripeId": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "settings": {
+                              "anyOf": [
+                                {
+                                  "type": "object"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "customChatsLimit": {
+                              "anyOf": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "customSeatsLimit": {
+                              "anyOf": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "isSuspended": {
+                              "type": "boolean"
+                            },
+                            "isPastDue": {
+                              "type": "boolean"
+                            },
+                            "isVerified": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "chatsHardLimit": {
+                              "anyOf": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "lastActivityAt": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "format": "date-time",
+                                  "x-native-type": "date"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
                             }
+                          },
+                          "required": [
+                            "id",
+                            "createdAt",
+                            "updatedAt",
+                            "name",
+                            "icon",
+                            "plan",
+                            "stripeId",
+                            "settings",
+                            "customChatsLimit",
+                            "customSeatsLimit",
+                            "isSuspended",
+                            "isPastDue",
+                            "isVerified",
+                            "chatsHardLimit",
+                            "lastActivityAt"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "icon": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "plan": {
+                              "enum": [
+                                "FREE",
+                                "STARTER",
+                                "PRO",
+                                "LIFETIME",
+                                "OFFERED",
+                                "CUSTOM",
+                                "UNLIMITED",
+                                "ENTERPRISE"
+                              ],
+                              "type": "string"
+                            },
+                            "isSuspended": {
+                              "type": "boolean"
+                            },
+                            "isPastDue": {
+                              "type": "boolean"
+                            },
+                            "isVerified": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name",
+                            "icon",
+                            "plan",
+                            "isSuspended",
+                            "isPastDue",
+                            "isVerified"
                           ]
                         }
-                      },
-                      "required": [
-                        "id",
-                        "createdAt",
-                        "updatedAt",
-                        "name",
-                        "icon",
-                        "plan",
-                        "stripeId",
-                        "settings",
-                        "customChatsLimit",
-                        "customSeatsLimit",
-                        "isSuspended",
-                        "isPastDue",
-                        "isVerified",
-                        "chatsHardLimit",
-                        "lastActivityAt"
                       ]
                     },
                     "currentUserMode": {

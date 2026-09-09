@@ -40,7 +40,39 @@ describe("executeHttpRequest SSRF protection", () => {
     console.error = originalConsoleError;
   });
 
-  it("blocks a redirect to a private destination", async () => {
+  it.each([
+    "http://100.100.100.200/internal",
+    "http://[::ffff:6464:64c8]/internal",
+    "http://[64:ff9b::6464:64c8]/internal",
+    "http://198.18.0.1/internal",
+    "http://[fec0::1]/internal",
+  ])("blocks special-use destinations before fetching: %s", async (url) => {
+    let fetchCallCount = 0;
+    replaceFetch(async () => {
+      fetchCallCount++;
+      return new Response("unexpected request");
+    });
+    const result = await executeHttpRequest({
+      url,
+      method: HttpMethod.GET,
+      headers: {},
+      isJson: false,
+    });
+    expect(result.response.statusCode).toBe(400);
+    expect(result.logs?.[0]?.description).toStartWith(
+      "Security validation failed:",
+    );
+    expect(fetchCallCount).toBe(0);
+  });
+
+  it.each([
+    [301, "http://100.100.100.200/internal"],
+    [302, "http://[::ffff:6464:64c8]/internal"],
+    [303, "http://[64:ff9b::6464:64c8]/internal"],
+    [307, "http://198.18.0.1/internal"],
+    [308, "http://[fec0::1]/internal"],
+    [307, "http://127.0.0.1/internal"],
+  ])("blocks a %s redirect to %s", async (status, location) => {
     let fetchCallCount = 0;
     let redirectBodyWasCancelled = false;
     replaceFetch(async () => {
@@ -52,8 +84,8 @@ describe("executeHttpRequest SSRF protection", () => {
           },
         }),
         {
-          status: 307,
-          headers: { location: "http://127.0.0.1/internal" },
+          status,
+          headers: { location },
         },
       );
     });
@@ -131,7 +163,11 @@ describe("executeHttpRequest SSRF protection", () => {
     ).toBe(getSafeDispatcher());
   });
 
-  it("keeps redirect validation when a proxy is configured", async () => {
+  it.each([
+    "http://169.254.169.254/latest/meta-data",
+    "http://100.100.100.200/internal",
+    "http://[::ffff:6464:64c8]/internal",
+  ])("keeps proxy redirect validation for %s", async (location) => {
     let fetchCallCount = 0;
     let fetchInit: RequestInit | undefined;
     replaceFetch(async (_input, init) => {
@@ -139,7 +175,7 @@ describe("executeHttpRequest SSRF protection", () => {
       fetchInit = init;
       return new Response(null, {
         status: 307,
-        headers: { location: "http://169.254.169.254/latest/meta-data" },
+        headers: { location },
       });
     });
 
@@ -167,6 +203,8 @@ describe("executeHttpRequest SSRF protection", () => {
     });
 
     for (const proxyUrl of [
+      "http://100.100.100.200:8080",
+      "http://[::ffff:6464:64c8]:8080",
       "http://127.0.0.1:8080",
       "http://10.0.0.1:8080",
       "http://169.254.169.254:80",
