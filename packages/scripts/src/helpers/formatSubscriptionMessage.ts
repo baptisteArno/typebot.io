@@ -56,7 +56,8 @@ export const formatSubscriptionMessage = (
 
   const totalCancellationRemoved =
     subscriptionTransitions.downgrades.cancellationRemoved.starter +
-    subscriptionTransitions.downgrades.cancellationRemoved.pro;
+    subscriptionTransitions.downgrades.cancellationRemoved.pro +
+    subscriptionTransitions.downgrades.cancellationRemoved.enterprise;
 
   if (totalCancellationRemoved > 0) {
     const parts: string[] = [];
@@ -68,6 +69,11 @@ export const formatSubscriptionMessage = (
     if (subscriptionTransitions.downgrades.cancellationRemoved.pro > 0) {
       parts.push(
         `${subscriptionTransitions.downgrades.cancellationRemoved.pro} PRO`,
+      );
+    }
+    if (subscriptionTransitions.downgrades.cancellationRemoved.enterprise > 0) {
+      parts.push(
+        `${subscriptionTransitions.downgrades.cancellationRemoved.enterprise} ENTERPRISE`,
       );
     }
     messages.push(
@@ -84,10 +90,11 @@ export const formatSubscriptionMessage = (
   // Scheduled for cancellation (intentions) with 📅
   if (
     subscriptionTransitions.downgrades.scheduledForCancellation.starter > 0 ||
-    subscriptionTransitions.downgrades.scheduledForCancellation.pro > 0
+    subscriptionTransitions.downgrades.scheduledForCancellation.pro > 0 ||
+    subscriptionTransitions.downgrades.scheduledForCancellation.enterprise > 0
   ) {
     messages.push(
-      `😢 Scheduled for cancellation: ${subscriptionTransitions.downgrades.scheduledForCancellation.starter + subscriptionTransitions.downgrades.scheduledForCancellation.pro} (-$${scheduledForCancellationRevenue})`,
+      `😢 Scheduled for cancellation: ${subscriptionTransitions.downgrades.scheduledForCancellation.starter + subscriptionTransitions.downgrades.scheduledForCancellation.pro + subscriptionTransitions.downgrades.scheduledForCancellation.enterprise} (-$${scheduledForCancellationRevenue})`,
     );
   }
 

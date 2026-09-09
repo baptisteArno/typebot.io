@@ -53,6 +53,11 @@ export const handleUpdateSubscription = async ({
     throw new ORPCError("NOT_FOUND", {
       message: "Workspace not found",
     });
+  if (workspace.plan === Plan.ENTERPRISE)
+    throw new ORPCError("BAD_REQUEST", {
+      message:
+        "Enterprise subscriptions are managed by the Typebot team. Contact us to change your plan.",
+    });
 
   const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
     apiVersion: "2024-09-30.acacia",
@@ -73,6 +78,11 @@ export const handleUpdateSubscription = async ({
       item.price.id === env.STRIPE_STARTER_CHATS_PRICE_ID ||
       item.price.id === env.STRIPE_PRO_CHATS_PRICE_ID,
   )?.id;
+  if (subscription && (!currentPlanItemId || !currentUsageItemId))
+    throw new ORPCError("BAD_REQUEST", {
+      message:
+        "Your subscription is not a standard plan. Contact us to change your plan.",
+    });
 
   const items = [
     {

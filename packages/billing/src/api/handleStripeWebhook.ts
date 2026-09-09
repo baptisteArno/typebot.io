@@ -166,8 +166,7 @@ export const handleStripeWebhook = async ({
             workspaceId: existingWorkspace.id,
             userId: m.userId,
             data: {
-              plan:
-                existingWorkspace.plan === Plan.PRO ? Plan.PRO : Plan.STARTER,
+              plan: getCancellationTelemetryPlan(existingWorkspace.plan),
             },
           })),
         );
@@ -178,8 +177,7 @@ export const handleStripeWebhook = async ({
             workspaceId: existingWorkspace.id,
             userId: m.userId,
             data: {
-              plan:
-                existingWorkspace.plan === Plan.PRO ? Plan.PRO : Plan.STARTER,
+              plan: getCancellationTelemetryPlan(existingWorkspace.plan),
             },
           })),
         );
@@ -403,3 +401,6 @@ export const handleStripeWebhook = async ({
     }
   }
 };
+
+const getCancellationTelemetryPlan = (plan: Plan) =>
+  plan === Plan.PRO || plan === Plan.ENTERPRISE ? plan : Plan.STARTER;

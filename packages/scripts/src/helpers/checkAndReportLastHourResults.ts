@@ -78,11 +78,14 @@ export const checkAndReportLastHourResults = async () => {
     const chatsLimit = isEnterpriseUsageBasedSubscription
       ? "inf"
       : getChatsLimit(workspace);
+    const enforcedChatsLimit =
+      workspace.chatsHardLimit ??
+      (chatsLimit === "inf" ? undefined : chatsLimit);
 
-    if (chatsLimit !== "inf")
+    if (isDefined(enforcedChatsLimit))
       limitWarningEmailEvents.push(
         ...(await sendLimitWarningEmails({
-          chatsLimit,
+          chatsLimit: enforcedChatsLimit,
           totalChatsUsed,
           workspace,
         })),
@@ -226,13 +229,10 @@ export const checkAndReportLastHourResults = async () => {
       }
     }
 
-    const quarantineChatsLimit =
-      workspace.chatsHardLimit ??
-      (chatsLimit === "inf" ? undefined : chatsLimit);
     if (
-      isDefined(quarantineChatsLimit) &&
+      isDefined(enforcedChatsLimit) &&
       ((workspace.plan === Plan.FREE &&
-        totalChatsUsed > quarantineChatsLimit * 1.5) ||
+        totalChatsUsed > enforcedChatsLimit * 1.5) ||
         (isDefined(workspace.chatsHardLimit) &&
           totalChatsUsed >= workspace.chatsHardLimit))
     ) {
@@ -250,7 +250,7 @@ export const checkAndReportLastHourResults = async () => {
             workspaceId: workspace.id,
             data: {
               totalChatsUsed,
-              chatsLimit: quarantineChatsLimit,
+              chatsLimit: enforcedChatsLimit,
               reason: "free limit reached" as const,
             },
           })),

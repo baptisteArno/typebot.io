@@ -64,14 +64,19 @@ const applyEnterpriseChatsTier = async () => {
     (item) => item.id !== meteredItem.id,
   );
 
-  const price = await findOrCreateEnterprisePrice(tier, { stripe });
+  const existingPrice = (
+    await stripe.prices.list({ lookup_keys: [tier.lookupKey], active: true })
+  ).data.at(0);
 
   if (
     !(await confirmAction({
-      message: `Move workspace "${workspace.name}" (${workspace.plan}) to ${tier.nickname} (${price.id})? This removes ${licensedItems.length} licensed item(s) and keeps chats usage on ${meteredItem.id}, without proration.`,
+      message: `Move workspace "${workspace.name}" (${workspace.plan}) to ${tier.nickname} (${existingPrice ? existingPrice.id : "Stripe price will be created"})? This removes ${licensedItems.length} licensed item(s) and keeps chats usage on ${meteredItem.id}, without proration.`,
     }))
   )
     return;
+
+  const price =
+    existingPrice ?? (await createEnterprisePrice(tier, { stripe }));
 
   await stripe.subscriptions.update(subscription.id, {
     items: [
@@ -95,15 +100,10 @@ const applyEnterpriseChatsTier = async () => {
   );
 };
 
-const findOrCreateEnterprisePrice = async (
+const createEnterprisePrice = async (
   tier: (typeof enterpriseChatTiers)[number],
   { stripe }: { stripe: Stripe },
 ) => {
-  const existingPrice = (
-    await stripe.prices.list({ lookup_keys: [tier.lookupKey], active: true })
-  ).data.at(0);
-  if (existingPrice) return existingPrice;
-
   const product =
     (
       await stripe.products.search({

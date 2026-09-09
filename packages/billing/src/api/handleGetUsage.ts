@@ -46,62 +46,70 @@ export const handleGetUsage = async ({
       message: "Workspace not found",
     });
 
+  const currentSubscription =
+    env.STRIPE_SECRET_KEY &&
+    workspace.stripeId &&
+    (workspace.plan === "STARTER" ||
+      workspace.plan === "PRO" ||
+      workspace.plan === "ENTERPRISE")
+      ? await getCurrentSubscription({
+          stripeId: workspace.stripeId,
+          stripeSecretKey: env.STRIPE_SECRET_KEY,
+        })
+      : undefined;
+
   if (
-    !env.STRIPE_SECRET_KEY ||
-    !workspace.stripeId ||
-    (workspace.plan !== "STARTER" && workspace.plan !== "PRO")
-  ) {
-    const now = new Date();
-    const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-
-    const totalChatsUsed = await prisma.result.count({
-      where: {
-        typebotId: { in: workspace.typebots.map((typebot) => typebot.id) },
-        hasStarted: true,
-        createdAt: {
-          gte: firstDayOfMonth,
-        },
-      },
-    });
-
-    const firstDayOfNextMonth = new Date(
-      firstDayOfMonth.getFullYear(),
-      firstDayOfMonth.getMonth() + 1,
-      1,
-    );
-    return { totalChatsUsed, resetsAt: firstDayOfNextMonth };
-  }
-
-  const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-    apiVersion: "2024-09-30.acacia",
-  });
-
-  const subscriptions = await stripe.subscriptions.list({
-    customer: workspace.stripeId,
-  });
-
-  const currentSubscription = subscriptions.data
-    .filter((sub) => ["past_due", "active"].includes(sub.status))
-    .sort((a, b) => a.created - b.created)
-    .shift();
-
-  if (!currentSubscription)
+    !currentSubscription &&
+    (workspace.plan === "STARTER" || workspace.plan === "PRO")
+  )
     throw new ORPCError("INTERNAL_SERVER_ERROR", {
       message: `No subscription found on workspace: ${workspaceId}`,
     });
+
+  const now = new Date();
+  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
   const totalChatsUsed = await prisma.result.count({
     where: {
       typebotId: { in: workspace.typebots.map((typebot) => typebot.id) },
       hasStarted: true,
       createdAt: {
-        gte: new Date(currentSubscription.current_period_start * 1000),
+        gte: currentSubscription
+          ? new Date(currentSubscription.current_period_start * 1000)
+          : firstDayOfMonth,
       },
     },
   });
 
   return {
     totalChatsUsed,
-    resetsAt: new Date(currentSubscription.current_period_end * 1000),
+    resetsAt: currentSubscription
+      ? new Date(currentSubscription.current_period_end * 1000)
+      : new Date(
+          firstDayOfMonth.getFullYear(),
+          firstDayOfMonth.getMonth() + 1,
+          1,
+        ),
   };
+};
+
+const getCurrentSubscription = async ({
+  stripeId,
+  stripeSecretKey,
+}: {
+  stripeId: string;
+  stripeSecretKey: string;
+}) => {
+  const stripe = new Stripe(stripeSecretKey, {
+    apiVersion: "2024-09-30.acacia",
+  });
+
+  const subscriptions = await stripe.subscriptions.list({
+    customer: stripeId,
+  });
+
+  return subscriptions.data
+    .filter((sub) => ["past_due", "active"].includes(sub.status))
+    .sort((a, b) => a.created - b.created)
+    .shift();
 };

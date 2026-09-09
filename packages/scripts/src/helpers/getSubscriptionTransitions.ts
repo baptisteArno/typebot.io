@@ -13,10 +13,12 @@ export interface SubscriptionTransitions {
     scheduledForCancellation: {
       starter: number;
       pro: number;
+      enterprise: number;
     };
     cancellationRemoved: {
       starter: number;
       pro: number;
+      enterprise: number;
     };
     starterToFree: number;
     proToStarter: number;
@@ -40,10 +42,12 @@ export const getSubscriptionTransitions =
         scheduledForCancellation: {
           starter: 0,
           pro: 0,
+          enterprise: 0,
         },
         cancellationRemoved: {
           starter: 0,
           pro: 0,
+          enterprise: 0,
         },
         starterToFree: 0,
         proToStarter: 0,
@@ -131,6 +135,8 @@ export const getSubscriptionTransitions =
           transitions.downgrades.scheduledForCancellation.starter++;
         } else if (plan === Plan.PRO) {
           transitions.downgrades.scheduledForCancellation.pro++;
+        } else if (plan === Plan.ENTERPRISE) {
+          transitions.downgrades.scheduledForCancellation.enterprise++;
         }
       }
 
@@ -141,6 +147,8 @@ export const getSubscriptionTransitions =
           transitions.downgrades.cancellationRemoved.starter++;
         } else if (plan === Plan.PRO) {
           transitions.downgrades.cancellationRemoved.pro++;
+        } else if (plan === Plan.ENTERPRISE) {
+          transitions.downgrades.cancellationRemoved.enterprise++;
         }
       }
 
