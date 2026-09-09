@@ -165,7 +165,9 @@ test("ignores forged sources, invalid messages and arbitrary request instruction
       "*",
     );
     const sibling = document.createElement("iframe");
-    sibling.src = "http://127.0.0.1:5199/__preview";
+    const preview = document.querySelector("iframe");
+    if (!preview) throw new Error("Missing preview frame");
+    sibling.src = preview.src;
     sibling.id = "sibling";
     document.body.append(sibling);
   });

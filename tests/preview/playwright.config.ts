@@ -7,7 +7,17 @@ export default defineConfig({
   workers: 1,
   reporter: "list",
   outputDir: "../../test-results/preview-isolation",
-  use: { browserName: "chromium", baseURL: "http://localhost:5198" },
+  use: {
+    browserName: "chromium",
+    baseURL: "http://localhost:5198",
+    ignoreHTTPSErrors: true,
+    launchOptions: {
+      args: [
+        "--host-resolver-rules=MAP *.typebot.test 127.0.0.1",
+        "--no-proxy-server",
+      ],
+    },
+  },
   webServer: {
     command: "bun tests/preview/server.ts",
     cwd: "../..",

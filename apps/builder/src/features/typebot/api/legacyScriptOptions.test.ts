@@ -190,7 +190,7 @@ it("still rejects a read-only collaborator", async () => {
   expect(update).not.toHaveBeenCalled();
 });
 
-it("accepts old Code and Set Variable actions and drops their flags", () => {
+it("accepts legacy action flags for clients on either side of the rollout", () => {
   for (const action of [
     {
       type: "scriptToExecute",
@@ -204,7 +204,7 @@ it("accepts old Code and Set Variable actions and drops their flags", () => {
     },
   ]) {
     const parsed = clientSideActionSchema.parse(action);
-    expect(JSON.stringify(parsed)).not.toContain('"isUnsafe"');
+    expect(parsed).toEqual(action);
     expect(JSON.stringify(parsed)).toContain('"content":"40 + 2"');
   }
 });

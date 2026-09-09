@@ -75647,6 +75647,10 @@
                                   "content": {
                                     "type": "string"
                                   },
+                                  "isUnsafe": {
+                                    "type": "boolean",
+                                    "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
+                                  },
                                   "isCode": {
                                     "type": "boolean"
                                   },
@@ -75766,6 +75770,10 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
+                                      },
+                                      "isUnsafe": {
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -75926,6 +75934,10 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
+                                      },
+                                      "isUnsafe": {
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -78300,6 +78312,10 @@
                                   "content": {
                                     "type": "string"
                                   },
+                                  "isUnsafe": {
+                                    "type": "boolean",
+                                    "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
+                                  },
                                   "isCode": {
                                     "type": "boolean"
                                   },
@@ -78419,6 +78435,10 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
+                                      },
+                                      "isUnsafe": {
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -78579,6 +78599,10 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
+                                      },
+                                      "isUnsafe": {
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -80950,6 +80974,10 @@
                                   "content": {
                                     "type": "string"
                                   },
+                                  "isUnsafe": {
+                                    "type": "boolean",
+                                    "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
+                                  },
                                   "isCode": {
                                     "type": "boolean"
                                   },
@@ -81069,6 +81097,10 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
+                                      },
+                                      "isUnsafe": {
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -81229,6 +81261,10 @@
                                     "properties": {
                                       "content": {
                                         "type": "string"
+                                      },
+                                      "isUnsafe": {
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"

@@ -26,6 +26,7 @@ export const previewFrameMessageSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("typebot-preview:ready"),
     documentId: z.uuid(),
+    paymentSessionId: z.string().max(256).optional(),
   }),
   z.object({
     type: z.literal("typebot-preview:input"),

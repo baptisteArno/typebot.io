@@ -97,26 +97,22 @@ export const Bot = (props: BotProps & { class?: string }) => {
     const typebotIdFromProps = props.typebot;
     const resultIdInStorage =
       getExistingResultIdFromStorage(typebotIdFromProps);
-    const { data, error } = props.initialChatReply
-      ? { data: props.initialChatReply, error: undefined }
-      : await startChatQuery({
-          stripeRedirectStatus: urlParams.get("redirect_status") ?? undefined,
-          typebot: props.typebot,
-          templateSlug: props.templateSlug,
-          apiHost: props.apiHost,
-          isPreview: isPreview(),
-          isProgressBarEnabled:
-            props.previewTheme?.general?.progressBar?.isEnabled,
-          resultId: isNotEmpty(props.resultId)
-            ? props.resultId
-            : resultIdInStorage,
-          prefilledVariables: {
-            ...prefilledVariables,
-            ...props.prefilledVariables,
-          },
-          startFrom: props.startFrom,
-          sessionId: props.sessionId,
-        });
+    const { data, error } = await startChatQuery({
+      initialChatReply: props.initialChatReply,
+      stripeRedirectStatus: urlParams.get("redirect_status") ?? undefined,
+      typebot: props.typebot,
+      templateSlug: props.templateSlug,
+      apiHost: props.apiHost,
+      isPreview: isPreview(),
+      isProgressBarEnabled: props.previewTheme?.general?.progressBar?.isEnabled,
+      resultId: isNotEmpty(props.resultId) ? props.resultId : resultIdInStorage,
+      prefilledVariables: {
+        ...prefilledVariables,
+        ...props.prefilledVariables,
+      },
+      startFrom: props.startFrom,
+      sessionId: props.sessionId,
+    });
     if (error instanceof HTTPError) {
       if (isPreview()) {
         return setError(

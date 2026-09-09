@@ -4,8 +4,9 @@ import { IsolatedPreview } from "../../apps/builder/src/features/preview/compone
 import { Preview } from "../../apps/viewer/src/features/preview/Preview";
 import { executeScript } from "../../packages/embeds/js/src/features/blocks/logic/script/executeScript";
 import { executeSetVariable } from "../../packages/embeds/js/src/features/blocks/logic/setVariable/executeSetVariable";
+import { startChatQuery } from "../../packages/embeds/js/src/queries/startChatQuery";
 
-Object.assign(window, { executeScript, executeSetVariable });
+Object.assign(window, { executeScript, executeSetVariable, startChatQuery });
 
 const receivedLogs: unknown[] = [];
 

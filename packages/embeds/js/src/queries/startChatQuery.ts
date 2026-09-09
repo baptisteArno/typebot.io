@@ -11,7 +11,6 @@ import {
   getPaymentInProgressInStorage,
   removePaymentInProgressFromStorage,
 } from "../features/blocks/inputs/payment/helpers/paymentInProgressStorage";
-import type { BotContext } from "../types";
 import { getIframeReferrerOrigin } from "../utils/getIframeReferrerOrigin";
 import { guessApiHost } from "../utils/guessApiHost";
 
@@ -26,6 +25,7 @@ type Props = {
   prefilledVariables?: Record<string, unknown>;
   resultId?: string;
   sessionId?: string;
+  initialChatReply?: StartChatResponse;
 };
 
 export async function startChatQuery({
@@ -39,25 +39,26 @@ export async function startChatQuery({
   stripeRedirectStatus,
   startFrom,
   sessionId,
+  initialChatReply,
 }: Props) {
   if (isNotDefined(typebot) && !isNotEmpty(templateSlug))
     throw new Error("Typebot ID is required to get initial messages");
 
-  const paymentInProgressStateStr =
-    getPaymentInProgressInStorage() ?? undefined;
-  const paymentInProgressState = paymentInProgressStateStr
-    ? (JSON.parse(paymentInProgressStateStr) as {
-        sessionId: string;
-        typebot: BotContext["typebot"];
-      })
-    : undefined;
-  if (paymentInProgressState) {
+  const paymentInProgressState = getPaymentInProgressInStorage();
+  if (
+    paymentInProgressState &&
+    (paymentInProgressState.isPreview === undefined ||
+      paymentInProgressState.isPreview === isPreview) &&
+    (!initialChatReply ||
+      initialChatReply.typebot.id === paymentInProgressState.typebot.id)
+  ) {
     return resumeChatAfterPaymentRedirect({
       apiHost,
       stripeRedirectStatus,
       paymentInProgressState,
     });
   }
+  if (initialChatReply) return { data: initialChatReply, error: undefined };
   if (isNotEmpty(templateSlug)) {
     return startTemplatePreviewChat({
       apiHost,
@@ -116,10 +117,9 @@ const resumeChatAfterPaymentRedirect = async ({
 }: {
   apiHost?: string;
   stripeRedirectStatus?: string;
-  paymentInProgressState: {
-    sessionId: string;
-    typebot: BotContext["typebot"];
-  };
+  paymentInProgressState: NonNullable<
+    ReturnType<typeof getPaymentInProgressInStorage>
+  >;
 }) => {
   removePaymentInProgressFromStorage();
 
@@ -127,9 +127,9 @@ const resumeChatAfterPaymentRedirect = async ({
     const iframeReferrerOrigin = getIframeReferrerOrigin();
     const data = await ky
       .post(
-        `${getApiHost(apiHost)}/api/v1/sessions/${
-          paymentInProgressState.sessionId
-        }/continueChat`,
+        `${getApiHost(apiHost)}/api/v1/sessions/${encodeURIComponent(
+          paymentInProgressState.sessionId,
+        )}/continueChat`,
         {
           headers: {
             "x-typebot-iframe-referrer-origin": iframeReferrerOrigin,
@@ -146,7 +146,7 @@ const resumeChatAfterPaymentRedirect = async ({
       data: {
         ...data,
         ...paymentInProgressState,
-      } as StartChatResponse,
+      } satisfies StartChatResponse,
     };
   } catch (error) {
     return { error };

@@ -1,6 +1,7 @@
 import { previewFrameMessageSchema } from "@typebot.io/chat-api/previewMessages";
 import {
   type ContinueChatResponse,
+  type StartChatResponse,
   type StartFrom,
   startChatResponseSchema,
 } from "@typebot.io/chat-api/schemas";
@@ -56,6 +57,7 @@ export const IsolatedPreview = ({
     }
     let currentRequest: AbortController | undefined;
     let currentDocumentId: string | undefined;
+    let previousInitialChatReply: StartChatResponse | undefined;
     const timeout = setTimeout(() => {
       setError(
         "The preview could not connect. Check the viewer URL and its frame policy.",
@@ -89,27 +91,34 @@ export const IsolatedPreview = ({
       setReadyDocumentId(undefined);
       setError(undefined);
       try {
-        const response = await fetch(
-          templateSlug
-            ? `/api/v1/templates/${encodeURIComponent(templateSlug)}/preview/startChat`
-            : `/api/v1/typebots/${encodeURIComponent(typebot ?? "")}/preview/startChat`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "same-origin",
-            signal: controller.signal,
-            body: JSON.stringify({
-              isStreamEnabled: true,
-              isProgressBarEnabled,
-              startFrom: JSON.parse(startFromKey ?? "null") ?? undefined,
-            }),
-          },
-        );
-        if (!response.ok) throw new Error("Could not start preview.");
-        const initialChatReply = startChatResponseSchema.parse(
-          await response.json(),
-        );
+        let initialChatReply =
+          message.data.paymentSessionId === previousInitialChatReply?.sessionId
+            ? previousInitialChatReply
+            : undefined;
+        if (!initialChatReply) {
+          const response = await fetch(
+            templateSlug
+              ? `/api/v1/templates/${encodeURIComponent(templateSlug)}/preview/startChat`
+              : `/api/v1/typebots/${encodeURIComponent(typebot ?? "")}/preview/startChat`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "same-origin",
+              signal: controller.signal,
+              body: JSON.stringify({
+                isStreamEnabled: true,
+                isProgressBarEnabled,
+                startFrom: JSON.parse(startFromKey ?? "null") ?? undefined,
+              }),
+            },
+          );
+          if (!response.ok) throw new Error("Could not start preview.");
+          initialChatReply = startChatResponseSchema.parse(
+            await response.json(),
+          );
+        }
         if (controller.signal.aborted) return;
+        previousInitialChatReply = initialChatReply;
         // No account token, deterministic user session ID, or full bot is sent.
         frame.current?.contentWindow?.postMessage(
           {
@@ -173,7 +182,7 @@ export const IsolatedPreview = ({
         title="Bot preview"
         src={previewUrl.href}
         sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-popups"
-        allow="microphone; camera; clipboard-write"
+        allow="autoplay; fullscreen; microphone; camera; clipboard-write"
         referrerPolicy="no-referrer"
         className="flex-1 w-full min-h-0 border-0 rounded-[inherit]"
         hidden={Boolean(error)}

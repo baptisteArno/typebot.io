@@ -89,5 +89,8 @@ export const parseScriptToExecuteClientSideAction = (
   return {
     content,
     args,
+    // Older builder tabs choose their sandbox using this flag. Never derive it
+    // from stored block options, even while those clients are still deployed.
+    isUnsafe: true,
   };
 };

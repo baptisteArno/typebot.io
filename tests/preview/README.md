@@ -14,7 +14,12 @@ bunx nx format-and-lint
 The browser target builds the React embed, then bundles the actual builder
 IsolatedPreview, viewer Preview and Code / Set Variable executors. Only the
 environment, visual Button component and chat API responses are fixture-specific.
-Two loopback servers use localhost:5198 (host) and 127.0.0.1:5199 (preview).
+Loopback servers use localhost:5198 (host) and 127.0.0.1:5199 (preview), plus
+HTTPS sibling hosts builder.typebot.test:5200 and viewer.typebot.test:5201.
+Chromium resolves these test hosts locally; OpenSSL generates a disposable test
+certificate. The HTTPS fixture uses the actual builder proxy and verifies that
+credentialed fetch, XHR, beacon, form, image and redirected requests arrive with
+the owner's host-only SameSite=Lax cookie but cannot authenticate a mutation.
 A synthetic HttpOnly cookie protects a counted endpoint. No database, production
 credentials or external service is needed. Chromium must be installed for
 Playwright. Artifacts live in the ignored test-results/preview-isolation folder.
@@ -41,9 +46,12 @@ Builder origin, authenticated
 Flow, Theme, Settings and template previews all use this boundary. There is no
 same-origin fallback and no block option that can select the execution context.
 Stored bots with missing/false/true isUnsafe values use the same frame.
-The removed isUnsafe and enableSafetyFlags fields are ignored when reading old
-JSON. Create/update/import strip them instead of persisting them. The schemas,
-chat actions and UI no longer expose a safety toggle.
+Stored isUnsafe and enableSafetyFlags fields are ignored when reading old
+JSON. Create/update/import strip them instead of persisting them. Bot schemas
+and UI no longer expose a safety toggle. Code and Set Variable API actions keep
+emitting isUnsafe:true as a compatibility field: older builder tabs still use
+it to select their Worker. Current isolated clients ignore it. Do not remove this
+wire field until a minimum preview-client version is enforced.
 No data migration is needed for execution isolation.
 
 The initial reply contains a conversation session ID, not an account credential
@@ -66,12 +74,29 @@ its reply is available. Logs are sent in batches of at most 100 without loss. Th
 Input/log events are untrusted presentation data. The viewer never receives
 the builder session cookie through this protocol.
 
+A payment-return document can identify its saved session in the ready message.
+The builder reuses its cached bootstrap only when that session ID matches the
+one it already started, avoiding repeated server-side start effects. The embed
+resumes payment before consuming an initial reply, preserving the old session,
+published result ID or preview webhook channel. Malformed storage and mismatched
+bot/mode state cannot replace a newly supplied preview. Stripe redirect results
+are simulated in the tests; no payment or provider redirect is performed.
+
 The browser origin boundary prevents reading the builder document, storage and
-non-CORS authenticated responses. It does not by itself prevent cookie-bearing
-requests, especially between same-site subdomains. This patch adds no global
-CSRF guard to builder APIs; authenticated mutation protection needs a separate
-endpoint audit. Preserve host-only session cookies. The fixture uses different
-sites (localhost and 127.0.0.1), not same-site production subdomains.
+non-CORS authenticated responses. Same-site sibling subdomains can still send
+cookie-bearing requests. The builder proxy therefore strips Cookie before API
+authentication unless Fetch Metadata or a validated Origin/Referer establishes
+a same-origin request. Missing evidence and opaque origins fail closed. This
+covers REST, oRPC and streaming, including GET requests and redirects. Bearer
+tokens remain available to clients that explicitly supply them. Preserve
+host-only session cookies: filtering cannot protect a cookie exposed directly
+to the viewer through a shared Domain attribute.
+
+Auth.js routes retain their CSRF/OAuth checks. The exact GET Google Sheets OAuth
+callback also keeps its cookies: it verifies a signed, expiring state, the
+signed-in user and a matching HttpOnly nonce before writing credentials. Ordinary
+page navigation is unchanged. These are bounded exceptions, not exemptions for
+all navigations or arbitrary callback paths.
 
 ## Configuration and rollout
 
@@ -89,8 +114,10 @@ allows framing only by its configured builder. If the viewer is missing,
 misconfigured, or blocked by CSP, preview stops with a retryable error; scripts
 never fall back to the builder. On a split rollout the viewer route and updated
 embed must be available before the builder is switched. Rebuild the JS and React
-embeds together with the apps. Older builder/preview clients must be refreshed;
-removing these fields does not fix an already loaded vulnerable client. No deployment is performed by these tests.
+embeds together with the apps. Older builder/preview clients should be refreshed
+to receive the separate-origin UI; newly emitted actions keep their legacy
+sandbox selection during the rollout. Actions already cached in an old client
+cannot be retroactively changed. No deployment is performed by these tests.
 
 The public viewer origin must not host builder authentication or authenticated
 builder endpoints. The boundary isolates the builder account; it does not create
@@ -104,11 +131,18 @@ viewer pages remain part of that origin's trust domain.
   iframe's viewport. Relative URLs resolve against the viewer.
 - Scripts cannot access the builder document, its localStorage, or read non-CORS authenticated
   builder API responses. Code that intentionally relied on those capabilities must change.
+- Cross-origin clients can no longer use a browser session cookie for builder
+  API authentication; use an API token. Clients or reverse proxies that remove
+  Fetch Metadata, Origin and Referer also lose cookie authentication. Published
+  viewer execution is unchanged, but scripts intentionally calling the builder
+  with the owner's cookie are subject to this API protection too.
 - Theme/settings updates are sent to the frame. Enabling progress tracking
   restarts preview so the engine can calculate progress.
 - The iframe allows scripts, same-origin viewer access, forms, downloads and
   popups, but not top-level navigation or popups escaping its sandbox.
   Page redirects affect the preview rather than the builder.
+- Autoplay and fullscreen permissions are delegated to the viewer. Browser
+  autoplay policies still apply; delegation does not bypass user preferences.
 - The preview bootstrap CSP blocks workers. This limits Worker-based scripts;
   it is defense in depth, not a claim of per-bot storage or persistence isolation.
   Unlike the former Worker approach, ordinary scripts have no execution timeout

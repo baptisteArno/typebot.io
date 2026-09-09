@@ -1,4 +1,8 @@
 import {
+  parsePaymentInProgress,
+  paymentInProgressStorageKey,
+} from "@typebot.io/chat-api/parsePaymentInProgress";
+import {
   maxPreviewLogBatchSize,
   previewHostMessageSchema,
 } from "@typebot.io/chat-api/previewMessages";
@@ -40,8 +44,17 @@ export const Preview = () => {
       setPreviewSettings(message.data.previewSettings);
     };
     window.addEventListener("message", onMessage);
+    let paymentSessionId: string | undefined;
+    try {
+      if (new URLSearchParams(window.location.search).has("redirect_status"))
+        paymentSessionId = parsePaymentInProgress(
+          sessionStorage.getItem(paymentInProgressStorageKey),
+        )?.sessionId;
+    } catch {
+      // Unavailable storage must not prevent an ordinary preview from starting.
+    }
     window.parent.postMessage(
-      { type: "typebot-preview:ready", documentId },
+      { type: "typebot-preview:ready", documentId, paymentSessionId },
       builderOrigin,
     );
     return () => window.removeEventListener("message", onMessage);
