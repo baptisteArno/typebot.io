@@ -161,6 +161,7 @@ export const handleSendMessageV1 = async ({
     } = await continueBotFlow(
       message ? { type: "text", text: message } : undefined,
       {
+        sessionId: session.id,
         version: 1,
         state: session.state,
         textBubbleContentFormat: "richText",

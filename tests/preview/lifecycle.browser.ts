@@ -300,7 +300,15 @@ for (const mode of ["preview", "legacy", "published"])
       if (mode !== "legacy") body.previewWebhookRoom = "owner/fixture/webhooks";
       if (mode === "published") body.resultId = "published-result";
       body.clientSideActions = [
-        { type: "listenForWebhook", expectsDedicatedReply: true },
+        {
+          type: "listenForWebhook",
+          expectsDedicatedReply: true,
+          room:
+            mode === "published"
+              ? "published-result/webhooks"
+              : "owner/fixture/webhooks",
+          token: "fixture-subscription-token",
+        },
       ];
       delete body.input;
       await route.fulfill({ response, json: body });
@@ -311,8 +319,8 @@ for (const mode of ["preview", "legacy", "published"])
     await page.goto("/");
     expect(await connected.promise).toBe(
       mode === "published"
-        ? "/parties/main/published-result/webhooks"
-        : "/parties/main/owner/fixture/webhooks",
+        ? "/parties/main/published-result%2Fwebhooks"
+        : "/parties/main/owner%2Ffixture%2Fwebhooks",
     );
     expect((await continuation).url()).toContain(
       mode === "legacy"

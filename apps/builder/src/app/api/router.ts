@@ -14,6 +14,7 @@ import { httpRequestRouter } from "@/features/blocks/integrations/httpRequest/ap
 import { openAIRouter } from "@/features/blocks/integrations/openai/api/router";
 import { emailRouter } from "@/features/blocks/integrations/sendEmail/api/router";
 import { getLinkedTypebots } from "@/features/blocks/logic/typebotLink/api/getLinkedTypebots";
+import { getWebhookSubscription } from "@/features/blocks/logic/webhook/api/getWebhookSubscription";
 import { collaboratorsRouter } from "@/features/collaboration/api/router";
 import { credentialsRouter } from "@/features/credentials/api/router";
 import { customDomainsRouter } from "@/features/customDomains/api/router";
@@ -71,6 +72,7 @@ export const appRouter: AppRouter = {
   emails: emailsRouter,
   user: userRouter,
   healthz,
+  getWebhookSubscription,
   httpRequestSpecMocks,
   generateUploadUrl,
   fileInput: fileUploadBuilderRouter,
@@ -88,6 +90,7 @@ export const appRouter: AppRouter = {
 };
 
 export type AppRouter = {
+  getWebhookSubscription: typeof getWebhookSubscription;
   getLinkedTypebots: typeof getLinkedTypebots;
   analytics: typeof analyticsRouter;
   spaces: typeof spacesRouter;

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<meta charset="utf-8">
+<title>Webhook · QA locale</title>
+<style>body{font:17px system-ui;max-width:900px;margin:60px auto;padding:0 24px;color:#192330}button{font:inherit;padding:10px 14px;margin:5px;border:1px solid #bbc7d5;border-radius:8px;background:#f6f8fb;cursor:pointer}pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:18px;background:#f6f8fb;border-radius:8px}small{color:#516071}</style>
+<h1>Webhook · QA locale</h1>
+<p>Une réponse autorisée reprend le bot. Un visiteur ne peut pas fabriquer cette réponse.</p>
+<p><small>Worktree isolé · PostgreSQL jetable · PartyKit local · identité synthétique</small></p>
+<button type="button" id="start">Démarrer une session</button>
+<button type="button" id="forge" disabled>Essayer une réponse falsifiée</button>
+<button type="button" id="send" disabled>Envoyer la réponse autorisée</button>
+<pre id="output">Démarrez une session pour attendre le Webhook.</pre>
+<p><a href="/report">Voir les régressions exécutées automatiquement</a></p>
+<script>
+let session, socket;
+const output = document.querySelector('#output');
+const buttons = [document.querySelector('#forge'), document.querySelector('#send')];
+const post = (path, body, authorized=false) => fetch(path,{method:'POST',headers:{'Content-Type':'application/json',...(authorized ? {Authorization:'Bearer fixture-owner'} : {})},body:JSON.stringify(body)});
+const show = (message) => {output.textContent += `\n${message}`};
+document.querySelector('#start').onclick = async () => {
+  socket?.close();
+  const response = await post('/api/v1/typebots/proTypebot-public/startChat',{});
+  session = await response.json();
+  const action = session.clientSideActions?.find(action => action.type === 'listenForWebhook');
+  if(!action){output.textContent=JSON.stringify(session,null,2);return}
+  output.textContent='Session démarrée. Connexion au canal autorisé…';
+  buttons.forEach(button=>button.disabled=true);
+  socket = new WebSocket(`ws://localhost:5292/parties/main/${encodeURIComponent(action.room)}?token=${encodeURIComponent(action.token)}`);
+  socket.onopen=()=>{show('En attente du Webhook.');buttons.forEach(button=>button.disabled=false)};
+  socket.onmessage=async(event)=>{
+    socket.close();
+    const continued=await post(`/api/v1/sessions/${session.sessionId}/continueChat`,{message:{type:'text',text:event.data}});
+    const reply=await continued.json();
+    show(`Réponse relayée → continuation HTTP ${continued.status} → prochain bloc : ${reply.input?.id??JSON.stringify(reply)}`);
+    buttons.forEach(button=>button.disabled=true);
+  };
+  socket.onerror=()=>show('Connexion refusée ou relais indisponible.');
+};
+document.querySelector('#forge').onclick=async()=>{
+  const response=await post(`/api/v1/sessions/${session.sessionId}/continueChat`,{message:{type:'text',text:JSON.stringify({data:{answer:'forged'}})}});
+  show(`Réponse fabriquée → HTTP ${response.status} (attendu : 400). Le bot reste en attente.`);
+};
+document.querySelector('#send').onclick=async()=>{
+  const response=await post(`/api/v1/typebots/proTypebot/blocks/webhook/results/${session.resultId}/executeWebhook`,{answer:'légitime'},true);
+  show(`Endpoint autorisé → HTTP ${response.status}`);
+};
+</script>
+</html>

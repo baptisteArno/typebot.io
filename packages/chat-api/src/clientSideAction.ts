@@ -127,6 +127,8 @@ export const clientSideActionSchema = z.discriminatedUnion("type", [
   z
     .object({
       type: z.literal("listenForWebhook"),
+      room: z.string(),
+      token: z.string(),
     })
     .merge(clientSideActionBaseSchema),
 ]);

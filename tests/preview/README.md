@@ -59,10 +59,12 @@ or the complete bot definition. This is the existing conversation bearer
 capability, with the existing session lifecycle, not a new expiring access token.
 Restart creates a fresh random session; deterministic bot/user IDs are not reused.
 Treat the conversation content sent to a script as visible to that script.
-The server also returns previewWebhookRoom, derived from the authorized user and
-bot. This existing webhook channel is distinct from the random conversation ID.
-Published result channels and old API clients with legacy session IDs keep their
-existing routing.
+The server also returns previewWebhookRoom as compatibility metadata. Webhook
+listeners now use the signed listenForWebhook action's room and token, with the
+entire room URL-encoded as one PartyKit room ID. Legacy session-ID formats remain
+supported by updated clients, but unsigned listeners and old waits must restart.
+See [Webhook authentication and rollout](../webhook/README.md) for the required
+shared secret and coordinated builder/viewer/PartyKit deployment.
 
 Both message receivers validate the exact origin, source window and message
 schema. The builder issues a random nonce per iframe mount, carried as the document ID by every message.
