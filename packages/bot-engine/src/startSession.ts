@@ -130,6 +130,8 @@ export const startSession = async ({
   let initialState: SessionState = {
     version: "3",
     workspaceId: typebot.workspaceId,
+    previewUserId:
+      startParams.type === "preview" ? startParams.userId : undefined,
     publicTypebotId: typebot.publicTypebotId,
     typebotsQueue: [
       {

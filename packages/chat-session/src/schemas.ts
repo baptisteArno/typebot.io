@@ -151,6 +151,7 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
     setVariableIdsForHistory: z.array(z.string()).optional(),
     currentSetVariableHistoryIndex: z.number().optional(),
     workspaceId: z.string(),
+    previewUserId: z.string().optional(),
     previewMetadata: z
       .object({
         answers: z.array(answerSchema).optional(),

@@ -358,7 +358,36 @@ export const replay = async (prisma: PrismaClient) => {
           JSON.stringify({ data: { answer: "forged-wa" } }),
         )
       ).status,
-      400,
+      404,
+    );
+    const { continueBotFlow } = await import(
+      "../../packages/bot-engine/src/continueBotFlow.ts"
+    );
+    const { SessionStore } = await import(
+      "../../packages/runtime-session-store/src/index.ts"
+    );
+    const waState = sessionStateSchema.parse(
+      (
+        await prisma.chatSession.findUniqueOrThrow({
+          where: { id: waSessionId },
+        })
+      ).state,
+    );
+    await assert.rejects(
+      continueBotFlow(
+        {
+          type: "text",
+          text: JSON.stringify({ data: { answer: "forged-wa" } }),
+        },
+        {
+          version: 2,
+          sessionId: waSessionId,
+          state: waState,
+          textBubbleContentFormat: "richText",
+          sessionStore: new SessionStore(),
+        },
+      ),
+      { code: "BAD_REQUEST" },
     );
     const endpoint = preview
       ? "/api/v1/typebots/proTypebot/blocks/webhook/whatsapp/33600000000/executeTestWebhook"

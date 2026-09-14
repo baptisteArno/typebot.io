@@ -18,7 +18,7 @@ export const startPreviewChatInputSchema = z.object({
     .string()
     .optional()
     .describe(
-      "If provided, will be used as the session ID and will overwrite any existing session with the same ID.",
+      "Deprecated and ignored. Preview creation always returns a new session ID. Use the returned sessionId to continue the conversation; existing sessions are never replaced.",
     ),
   startFrom: startFromSchema.optional(),
   message: messageSchema
@@ -74,7 +74,6 @@ export const handleStartChatPreview = async ({
     typebotId,
     prefilledVariables,
     isProgressBarEnabled,
-    sessionId: sessionIdProp,
     textBubbleContentFormat,
   },
   context: { user },
@@ -83,7 +82,6 @@ export const handleStartChatPreview = async ({
   context: Context;
 }) => {
   return startPreviewSession({
-    sessionIdProp,
     startParams: {
       type: "preview",
       isOnlyRegistering,
@@ -107,14 +105,12 @@ export const handleStartTemplatePreviewChat = async ({
     startFrom,
     templateSlug,
     prefilledVariables,
-    sessionId: sessionIdProp,
     textBubbleContentFormat,
   },
 }: {
   input: z.infer<typeof startTemplatePreviewChatInputSchema>;
 }) => {
   return startPreviewSession({
-    sessionIdProp,
     startParams: {
       type: "template",
       templateSlug,
@@ -129,16 +125,14 @@ export const handleStartTemplatePreviewChat = async ({
 };
 
 const startPreviewSession = async ({
-  sessionIdProp,
   startParams,
 }: {
-  sessionIdProp?: string;
   startParams: Extract<
     Parameters<typeof startSession>[0]["startParams"],
     { type: "preview" | "template" }
   >;
 }) => {
-  const sessionId = sessionIdProp ?? createId();
+  const sessionId = createId();
   return withSessionStore(sessionId, async (sessionStore) => {
     const {
       typebot,
@@ -165,7 +159,7 @@ const startPreviewSession = async ({
             state: newSessionState,
           },
           sessionId: {
-            type: "new",
+            type: "newPreview",
             id: sessionId,
           },
           input,

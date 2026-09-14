@@ -27,7 +27,15 @@ export const handleSendMessageV2 = async ({
   context: Context;
 }) => {
   const session = sessionId ? await getSession(sessionId) : null;
-  const newSessionId = sessionId ?? createId();
+  if (session?.state?.whatsApp)
+    throw new ORPCError("NOT_FOUND", {
+      message: "Session not found.",
+    });
+
+  const newSessionId =
+    !session?.state && startParams?.isPreview
+      ? createId()
+      : (sessionId ?? createId());
 
   const isSessionExpired =
     session?.state &&
@@ -108,7 +116,7 @@ export const handleSendMessageV2 = async ({
           })
         : await saveStateToDatabase({
             sessionId: {
-              type: "new",
+              type: startParams.isPreview ? "newPreview" : "new",
               id: newSessionId,
             },
             session: {

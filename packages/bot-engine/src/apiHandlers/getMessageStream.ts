@@ -43,7 +43,7 @@ export const getMessageStream = async ({
 }> => {
   const session = await getSession(sessionId);
 
-  if (!session?.state)
+  if (!session?.state || session.state.whatsApp)
     return { status: 404, message: "Could not find session" };
 
   const sessionState = session.state;

@@ -36,7 +36,7 @@ export const handleContinueChat = async ({
 }) => {
   const session = await getSession(sessionId);
 
-  if (!session?.state) {
+  if (!session?.state || session.state.whatsApp) {
     throw new ORPCError("NOT_FOUND", {
       message: "Session not found.",
     });

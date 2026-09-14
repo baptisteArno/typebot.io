@@ -38,6 +38,37 @@
           "command": "bunx playwright test --config tests/preview/playwright.config.ts"
         }
       },
+      "test-whatsapp-session-access": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "bun test --preload ./packages/bot-engine/src/test-preload.ts tests/whatsapp-session-access/access.test.ts"
+        }
+      },
+      "preview-whatsapp-session-access": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "bun tests/whatsapp-session-access/preview.ts"
+        }
+      },
+      "test-preview-sessions": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "bun test tests/preview-sessions/storage.test.ts"
+        }
+      },
+      "serve-preview-sessions": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "bun tests/preview-sessions/server.ts"
+        }
+      },
+      "test-linked-preview": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "apps/builder",
+          "command": "bun test --preload ../../tests/linked-preview/preload.ts ../../tests/linked-preview/access.test.ts"
+        }
+      },
       "test-webhook-authentication": {
         "executor": "nx:run-commands",
         "options": {
