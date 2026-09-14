@@ -37,6 +37,18 @@
         "options": {
           "command": "bunx playwright test --config tests/preview/playwright.config.ts"
         }
+      },
+      "test-whatsapp-session-access": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "bun test --preload ./packages/bot-engine/src/test-preload.ts tests/whatsapp-session-access/access.test.ts"
+        }
+      },
+      "preview-whatsapp-session-access": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "bun tests/whatsapp-session-access/preview.ts"
+        }
       }
     }
   },

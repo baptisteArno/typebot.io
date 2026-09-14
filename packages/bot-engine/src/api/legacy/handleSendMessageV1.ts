@@ -27,6 +27,11 @@ export const handleSendMessageV1 = async ({
   context: Context;
 }) => {
   const session = sessionId ? await getSession(sessionId) : null;
+  if (session?.state?.whatsApp)
+    throw new ORPCError("NOT_FOUND", {
+      message: "Session not found.",
+    });
+
   const newSessionId = sessionId ?? createId();
 
   const isSessionExpired =
