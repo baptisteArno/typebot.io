@@ -46,6 +46,7 @@ SMTP configuration tests now validate destinations and pin the connection to a v
 
 ### Maintenance
 
+- 🔧 Move Docker images to Debian Bookworm after Bullseye reached end of support.
 - 🔧 Add enterprise chat tier billing support.
 - 🔧 Replace inactive cleanup with a retention audit.
 
