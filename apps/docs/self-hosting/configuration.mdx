@@ -362,6 +362,7 @@ PartyKit is optional and is used to make the webhook block work. The PartyKit co
 | Parameter                 | Default | Description                               |
 | ------------------------- | ------- | ----------------------------------------- |
 | NEXT_PUBLIC_PARTYKIT_HOST |         | PartyKit host. i.e. `partykit.typebot.io` |
+| WEBHOOK_RELAY_SECRET | | Required for Webhook blocks, including previews and WhatsApp. Use the same server-only secret in builder, viewer and PartyKit, generated from at least 32 random bytes. See the [upgrade instructions](./breaking-changes#webhook-signing-secret-and-coordinated-upgrade). |
 
 ## Others
 
