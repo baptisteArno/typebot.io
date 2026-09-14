@@ -1,5 +1,26 @@
 # Changelog
 
+## Unreleased
+
+### Breaking changes
+
+#### Webhook signing secret and coordinated upgrade
+
+If you use Webhook blocks, you must now set `WEBHOOK_RELAY_SECRET` to the **same secret in builder, viewer and your PartyKit server**. This also applies to Webhook blocks used in previews and WhatsApp flows. Missing or mismatched secrets prevent Webhook responses from resuming conversations.
+
+Generate an independent secret from at least 32 random bytes (for example, `openssl rand -hex 32`). Keep it server-side: do not prefix it with `NEXT_PUBLIC_` or reuse `ENCRYPTION_SECRET`. Keep `NEXT_PUBLIC_PARTYKIT_HOST` configured as before. See [configuration](https://docs.typebot.io/self-hosting/configuration#partykit).
+
+Plan a maintenance window for this protocol change:
+
+1. Provision the shared secret on builder, viewer and PartyKit.
+2. Deploy the updated PartyKit worker and stop the old relay, including its existing connections.
+3. Upgrade builder and viewer together, along with the updated JS/React embeds. Update any separately hosted or pinned embeds before resuming Webhook traffic.
+4. Refresh open tabs and restart conversations waiting on a Webhook created before the upgrade. Confirm that an authorized callback resumes a new conversation.
+
+Older publishers and listeners are incompatible with the new relay. Existing authenticated callback URLs and JSON-object request bodies remain unchanged; non-object callback bodies are now rejected. Explicitly client-executed HTTP Request blocks keep their existing contract.
+
+Webhook waits now expire with the configured session timeout, or after 24 hours if no timeout is set. The builder settings listener expires after 15 minutes and can be restarted. Expired waits require a new conversation. Rotating the secret also invalidates outstanding waits and subscriptions.
+
 <a name="3.18.0"></a>
 ## 3.18.0 (2026-08-21)
 
