@@ -1,0 +1,32 @@
+{
+  "name": "@typebot.io/gandr-block",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./schemas": {
+      "types": "./src/schemas.ts",
+      "import": "./src/schemas.ts",
+      "default": "./src/schemas.ts"
+    },
+    "./handlers": {
+      "types": "./src/handlers.ts",
+      "import": "./src/handlers.ts",
+      "default": "./src/handlers.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "ky": "^1.2.4",
+    "@typebot.io/forge": "workspace:*",
+    "@typebot.io/lib": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14"
+  }
+}
