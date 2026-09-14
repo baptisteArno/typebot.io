@@ -8,7 +8,7 @@ executed on the client retain their separate client-result contract.
 ```text
 Authenticated executeWebhook / executeTestWebhook
   -> signed publication (room + block + payload, 60-second validity)
-  -> PartyKit validates publisher
+  -> PartyKit validates publisher and durably claims the publication nonce
      -> validates each subscription (room + block + wait nonce + expiry)
      -> signs response for that wait
   -> embed forwards the opaque response
@@ -23,7 +23,11 @@ Authenticated WhatsApp executeWebhook / executeTestWebhook
 
 Subscribers can receive their authorized data but cannot sign or publish payloads.
 PartyKit validates before upgrading the connection and again before delivery,
-including after hibernation. WebSocket client messages never broadcast. Names
+including after hibernation. Publication nonces are single-use in durable storage;
+concurrent or replayed POSTs return 409, even after the subscriber enters a new wait.
+Expired nonce records are pruned on the next accepted publication. The embed keeps
+its signed action pending while PartySocket reconnects after a transient disconnect.
+WebSocket client messages never broadcast. Names
 with slashes are URL-encoded as a single room ID: otherwise PartyKit uses only
 the first segment and merges unrelated preview channels for the same user.
 Known result/user/bot IDs are not subscription credentials. Access to a foreign
@@ -80,7 +84,8 @@ clients. This is a compatibility cost for previously unbounded waits.
 The database compare-and-swap claims a response before downstream effects, so
 concurrent copies cannot execute them twice. This favors at-most-once execution:
 a crash after claiming but before saving the continuation leaves the wait
-unresumable and requires a restart. It does not provide transactional exactly-once
+unresumable and requires a restart. Similarly, relay failure after claiming a
+publication requires a fresh authenticated callback; replaying that POST is rejected. It does not provide transactional exactly-once
 external effects or fix general concurrent session updates outside Webhook waits.
 
 ## Run the real local path

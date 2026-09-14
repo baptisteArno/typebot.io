@@ -33,6 +33,24 @@ export default class Server implements Party.Server {
     )
       return new Response("Unauthorized", { status: 401 });
 
+    // Claim durably before delivery: a replay must never be re-signed for a
+    // later wait. Transactions also serialize concurrent copies of a POST.
+    const claimed = await this.room.storage.transaction(async (storage) => {
+      const publications = await storage.list<number>({
+        prefix: "publication:",
+      });
+      const key = `publication:${publication.nonce}`;
+      if (publications.has(key)) return false;
+      const expired = [...publications]
+        .filter(([, expiresAt]) => expiresAt <= Date.now())
+        .map(([publicationKey]) => publicationKey);
+      if (expired.length > 0) await storage.delete(expired);
+      await storage.put(key, publication.expiresAt);
+      return true;
+    });
+    if (!claimed)
+      return new Response("Publication already used", { status: 409 });
+
     // Revalidate on delivery, including after hibernation and expiry.
     // Client WebSocket messages never publish data.
     for (const connection of this.room.getConnections()) {

@@ -210,6 +210,55 @@ export const replay = async (prisma: PrismaClient) => {
     "A previous response cannot satisfy a later wait on the same block",
   );
 
+  const nextWaitAction = getAction((await loop.json()).clientSideActions);
+  const nextWaitListener = listenForWebhook({
+    room: nextWaitAction.room,
+    token: nextWaitAction.token,
+    context: {
+      sessionId: first.sessionId,
+      isPreview: false,
+      wsHost: "localhost:5292",
+    },
+  });
+  await setTimeout(300);
+  const copies = await Promise.all([
+    fetch(relayUrl, { method: "POST", body: publication }),
+    fetch(relayUrl, { method: "POST", body: publication }),
+  ]);
+  assert.deepEqual(
+    copies.map((response) => response.status).sort(),
+    [200, 409],
+  );
+  const nextWaitReply = await Promise.race([
+    nextWaitListener,
+    setTimeout(5000).then(() => {
+      throw new Error("No single-use publication response");
+    }),
+  ]);
+  assert.equal(
+    (await continueChat(first.sessionId, nextWaitReply.replyToSend)).status,
+    200,
+  );
+  assert.equal((await continueChat(first.sessionId, "again")).status, 200);
+  const beforePublicationReplay = await prisma.chatSession.findUniqueOrThrow({
+    where: { id: first.sessionId },
+  });
+  assert.equal(
+    (await fetch(relayUrl, { method: "POST", body: publication })).status,
+    409,
+  );
+  assert.deepEqual(
+    (
+      await prisma.chatSession.findUniqueOrThrow({
+        where: { id: first.sessionId },
+      })
+    ).state,
+    beforePublicationReplay.state,
+  );
+  checks.push(
+    "Concurrent signed publications are single-use; replay cannot be re-signed for a later wait on the same room and block",
+  );
+
   const preview = await start(true);
   const previewAction = getAction(preview.clientSideActions);
   const previewListener = listenForWebhook({
