@@ -1,6 +1,6 @@
-import { sanitizeUrl } from "@braintree/sanitize-url";
 import { useTranslate } from "@tolgee/react";
 import { createEmailMagicLink } from "@typebot.io/auth/helpers/createEmailMagicLink";
+import { sanitizeRedirectPath } from "@typebot.io/auth/helpers/sanitizeRedirectPath";
 import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -45,7 +45,7 @@ export const SignInForm = ({ defaultEmail, className }: Props) => {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.replace(redirectPath ? sanitizeUrl(redirectPath) : "/typebots");
+      router.replace(sanitizeRedirectPath(redirectPath) ?? "/typebots");
       return;
     }
     (async () => {
@@ -53,7 +53,7 @@ export const SignInForm = ({ defaultEmail, className }: Props) => {
       setProviders(providers ?? undefined);
       setIsLoadingProviders(false);
     })();
-  }, [status, router]);
+  }, [status, router, redirectPath]);
 
   useEffect(() => {
     if (authError === "ip-banned") {

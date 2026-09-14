@@ -1,3 +1,5 @@
+import { sanitizeRedirectPath } from "./sanitizeRedirectPath";
+
 export const createEmailMagicLink = (
   token: string,
   email: string,
@@ -9,7 +11,7 @@ export const createEmailMagicLink = (
   url.searchParams.set("email", normalizedEmail);
   url.searchParams.set(
     "callbackUrl",
-    `${window.location.origin}${redirectPath ?? "/typebots"}`,
+    `${window.location.origin}${sanitizeRedirectPath(redirectPath) ?? "/typebots"}`,
   );
   return url.toString();
 };
