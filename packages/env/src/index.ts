@@ -467,6 +467,9 @@ const keycloakEnv = {
 };
 
 const partykitEnv = {
+  server: {
+    WEBHOOK_RELAY_SECRET: z.string().min(32).optional(),
+  },
   client: {
     NEXT_PUBLIC_PARTYKIT_HOST: z.string().min(1).optional(),
   },
@@ -533,6 +536,7 @@ export const env = createEnv({
     ...posthogEnv.server,
     ...inngestEnv.server,
     ...otelEnv.server,
+    ...partykitEnv.server,
   },
   client: {
     ...baseEnv.client,

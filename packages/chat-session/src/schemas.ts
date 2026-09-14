@@ -138,6 +138,15 @@ const sessionStateSchemaV3 = sessionStateSchemaV2
   .extend({
     version: z.literal("3"),
     currentBlockId: z.string().optional(),
+    webhookRoom: z.string().optional(),
+    pendingWebhook: z
+      .object({
+        room: z.string(),
+        blockId: z.string(),
+        nonce: z.string(),
+        expiresAt: z.number(),
+      })
+      .optional(),
     allowedOrigins: z.array(z.string()).optional(),
     setVariableIdsForHistory: z.array(z.string()).optional(),
     currentSetVariableHistoryIndex: z.number().optional(),

@@ -76377,6 +76377,12 @@
                               "type": {
                                 "const": "listenForWebhook"
                               },
+                              "room": {
+                                "type": "string"
+                              },
+                              "token": {
+                                "type": "string"
+                              },
                               "lastBubbleBlockId": {
                                 "type": "string"
                               },
@@ -76385,7 +76391,9 @@
                               }
                             },
                             "required": [
-                              "type"
+                              "type",
+                              "room",
+                              "token"
                             ]
                           }
                         ]
@@ -79042,6 +79050,12 @@
                               "type": {
                                 "const": "listenForWebhook"
                               },
+                              "room": {
+                                "type": "string"
+                              },
+                              "token": {
+                                "type": "string"
+                              },
                               "lastBubbleBlockId": {
                                 "type": "string"
                               },
@@ -79050,7 +79064,9 @@
                               }
                             },
                             "required": [
-                              "type"
+                              "type",
+                              "room",
+                              "token"
                             ]
                           }
                         ]
@@ -81704,6 +81720,12 @@
                               "type": {
                                 "const": "listenForWebhook"
                               },
+                              "room": {
+                                "type": "string"
+                              },
+                              "token": {
+                                "type": "string"
+                              },
                               "lastBubbleBlockId": {
                                 "type": "string"
                               },
@@ -81712,7 +81734,9 @@
                               }
                             },
                             "required": [
-                              "type"
+                              "type",
+                              "room",
+                              "token"
                             ]
                           }
                         ]

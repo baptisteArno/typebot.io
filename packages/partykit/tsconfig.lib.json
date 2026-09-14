@@ -6,5 +6,9 @@
     "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
   },
   "include": ["src/**/*.ts"],
-  "references": []
+  "references": [
+    {
+      "path": "../lib/tsconfig.lib.json"
+    }
+  ]
 }

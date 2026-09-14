@@ -52,7 +52,7 @@ export const executeLogic = async ({
     case LogicBlockType.AB_TEST:
       return executeAbTest(block);
     case LogicBlockType.WEBHOOK:
-      return executeWebhookBlock(block);
+      return executeWebhookBlock(block, state);
     case LogicBlockType.RETURN:
       return executeReturnBlock(state);
   }

@@ -149,6 +149,7 @@ export const resumeWhatsAppFlow = async ({
       newSessionState,
       isWaitingForWebhook,
     } = await resumeFlowAndSendWhatsAppMessages({
+      sessionId,
       to: receivedMessages[0].from || receivedMessages[0].from_user_id || "",
       messageId: receivedMessages[0].id,
       credentials,
@@ -292,6 +293,7 @@ const aggregateParallelMediaMessagesIfRedisEnabled = async ({
 };
 
 const resumeFlowAndSendWhatsAppMessages = async (props: {
+  sessionId: string;
   to: string;
   messageId: string | undefined;
   state: SessionState | null | undefined;
@@ -356,6 +358,7 @@ const resumeFlowAndSendWhatsAppMessages = async (props: {
 };
 
 const resumeFlow = ({
+  sessionId,
   state,
   isSessionExpired,
   reply,
@@ -366,6 +369,7 @@ const resumeFlow = ({
   workspaceId,
   sessionStore,
 }: {
+  sessionId: string;
   reply: Message | undefined;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
   referral?: WhatsAppMessageReferral;
@@ -378,6 +382,7 @@ const resumeFlow = ({
 }) => {
   if (state && !isSessionExpired)
     return continueBotFlow(reply, {
+      sessionId,
       version: 2,
       sessionStore,
       state: contact

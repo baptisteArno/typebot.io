@@ -57,6 +57,9 @@
       "path": "../../packages/blocks/fileInput"
     },
     {
+      "path": "../../packages/blocks/webhook"
+    },
+    {
       "path": "../../packages/workspaces"
     },
     {
@@ -75,22 +78,22 @@
       "path": "../../packages/theme"
     },
     {
-      "path": "../../packages/telemetry"
-    },
-    {
       "path": "../../packages/templates"
     },
     {
-      "path": "../../packages/settings"
+      "path": "../../packages/telemetry"
+    },
+    {
+      "path": "../../packages/shared-core"
     },
     {
       "path": "../../packages/spaces"
     },
     {
-      "path": "../../packages/runtime-session-store"
+      "path": "../../packages/settings"
     },
     {
-      "path": "../../packages/services/feature-flags"
+      "path": "../../packages/runtime-session-store"
     },
     {
       "path": "../../packages/embeds/react"
@@ -100,6 +103,9 @@
     },
     {
       "path": "../../packages/groups"
+    },
+    {
+      "path": "../../packages/services/feature-flags"
     },
     {
       "path": "../../packages/events"
@@ -115,9 +121,6 @@
     },
     {
       "path": "../../packages/conditions"
-    },
-    {
-      "path": "../../packages/shared-core"
     },
     {
       "path": "../../packages/chat-session"

@@ -70,6 +70,7 @@ export const handleContinueChat = async ({
       visitedEdges,
       setVariableHistory,
     } = await continueBotFlow(message ? message : undefined, {
+      sessionId,
       version: 2,
       state: sessionState,
       textBubbleContentFormat,

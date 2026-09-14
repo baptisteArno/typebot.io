@@ -18,6 +18,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock("@typebot.io/env", () => ({
   env: {
     NEXT_PUBLIC_PARTYKIT_HOST: "localhost:1999",
+    WEBHOOK_RELAY_SECRET: "synthetic-webhook-secret-for-unit-tests",
     ADMIN_EMAIL: ["admin@example.com"],
   },
 }));
@@ -73,7 +74,19 @@ const createTypebot = () => ({
 beforeEach(() => {
   vi.resetAllMocks();
   mocks.findResult.mockResolvedValue({ lastChatSessionId: "session" });
-  mocks.getSession.mockResolvedValue({ id: "session", state: {} });
+  mocks.getSession.mockResolvedValue({
+    id: "session",
+    state: {
+      typebotsQueue: [{ typebot: { id: "bot" }, resultId: "result" }],
+      currentBlockId: "webhook",
+      pendingWebhook: {
+        room: "result/webhooks",
+        blockId: "webhook",
+        nonce: "test-nonce",
+        expiresAt: Date.now() + 60_000,
+      },
+    },
+  });
   mocks.sendWeb.mockResolvedValue(new Response());
   mocks.resumeWhatsApp.mockResolvedValue(undefined);
 });
@@ -180,15 +193,25 @@ describe.each([true, false])("public sharing enabled: %s", (isPublic) => {
     });
     expect(mocks.getSession).toHaveBeenCalledWith("session");
     expect(mocks.sendWeb).toHaveBeenCalledExactlyOnceWith(
-      { host: "localhost:1999", room: "result/webhooks" },
-      { method: "POST", body: JSON.stringify(input.body, null, 2) },
+      { host: "localhost:1999", room: "result%2Fwebhooks" },
+      { method: "POST", body: expect.any(String) },
     );
     expect(mocks.resumeWhatsApp).not.toHaveBeenCalled();
 
     mocks.sendWeb.mockClear();
     mocks.getSession.mockResolvedValue({
       id: "wa-phone-33600000000",
-      state: { whatsApp: {} },
+      state: {
+        whatsApp: {},
+        typebotsQueue: [{ typebot: { id: "bot" }, resultId: "result" }],
+        currentBlockId: "webhook",
+        pendingWebhook: {
+          room: "result/webhooks",
+          blockId: "webhook",
+          nonce: "test-nonce",
+          expiresAt: Date.now() + 60_000,
+        },
+      },
     });
     await expect(
       handleExecuteWebhook({ input, context: { user } }),
@@ -200,7 +223,7 @@ describe.each([true, false])("public sharing enabled: %s", (isPublic) => {
           from: "33600000000",
           timestamp: expect.any(String),
           type: "webhook",
-          webhook: { data: JSON.stringify({ data: input.body }, null, 2) },
+          webhook: { data: expect.any(String) },
         },
       ],
       workspaceId: "workspace",
@@ -259,4 +282,54 @@ it("preserves public reads for anonymous users and non-members", async () => {
   typebot.settings.publicShare.isEnabled = false;
   await expect(isReadTypebotForbidden(typebot)).resolves.toBe(true);
   await expect(isReadTypebotForbidden(typebot, user)).resolves.toBe(true);
+});
+
+it.each([
+  "typebot",
+  "result",
+  "block",
+  "legacy",
+  "expired",
+])("rejects a mismatched or obsolete wait: %s", async (mismatch) => {
+  const typebot = createTypebot();
+  typebot.workspace.members = [{ userId: user.id, role: WorkspaceRole.ADMIN }];
+  mocks.findTypebot.mockResolvedValue(typebot);
+  mocks.getSession.mockResolvedValue({
+    id: "session",
+    state: {
+      typebotsQueue: [
+        {
+          typebot: { id: mismatch === "typebot" ? "foreign" : "bot" },
+          resultId: mismatch === "result" ? "foreign" : "result",
+        },
+      ],
+      currentBlockId: mismatch === "block" ? "another-block" : "webhook",
+      pendingWebhook:
+        mismatch === "legacy"
+          ? undefined
+          : {
+              room: "result/webhooks",
+              blockId: "webhook",
+              nonce: "nonce",
+              expiresAt: Date.now() + (mismatch === "expired" ? -1 : 60_000),
+            },
+    },
+  });
+  await expect(
+    handleExecuteWebhook({ input, context: { user } }),
+  ).rejects.toMatchObject({ code: "BAD_REQUEST" });
+  expect(mocks.sendWeb).not.toHaveBeenCalled();
+  expect(mocks.resumeWhatsApp).not.toHaveBeenCalled();
+});
+
+it("does not report success when PartyKit rejects the signature", async () => {
+  const typebot = createTypebot();
+  typebot.workspace.members = [{ userId: user.id, role: WorkspaceRole.ADMIN }];
+  mocks.findTypebot.mockResolvedValue(typebot);
+  mocks.sendWeb.mockResolvedValue(
+    new Response("Unauthorized", { status: 401 }),
+  );
+  await expect(
+    handleExecuteWebhook({ input, context: { user } }),
+  ).rejects.toMatchObject({ code: "BAD_GATEWAY" });
 });

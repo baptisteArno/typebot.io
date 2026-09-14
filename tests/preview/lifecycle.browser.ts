@@ -283,50 +283,69 @@ test("all logs survive batching on start and continuation", async ({
   ]);
 });
 
-for (const mode of ["preview", "legacy", "published"])
-  test(`webhook replies resume the correct ${mode} session`, async ({
-    page,
-  }) => {
-    const connected = Promise.withResolvers<string>();
-    await page.routeWebSocket("**/*", (socket) => {
-      connected.resolve(new URL(socket.url()).pathname);
-      socket.send('{"value":"webhook received"}');
+for (const disconnect of [false, true])
+  for (const mode of ["preview", "legacy", "published"])
+    test(`webhook replies resume the correct ${mode} session${disconnect ? " after disconnect" : ""}`, async ({
+      page,
+    }) => {
+      const connected = Promise.withResolvers<string>();
+      let connections = 0;
+      await page.routeWebSocket("**/*", (socket) => {
+        connected.resolve(new URL(socket.url()).pathname);
+        connections++;
+        if (disconnect && connections === 1) {
+          socket.close({ code: 1012, reason: "Fixture server restart" });
+          return;
+        }
+        socket.send('{"value":"webhook received"}');
+      });
+      await page.route("**/preview/startChat", async (route) => {
+        const response = await route.fetch();
+        const body = await response.json();
+        body.sessionId =
+          mode === "legacy" ? "fixture-owner" : "cm123456789012345678901234";
+        if (mode !== "legacy")
+          body.previewWebhookRoom = "owner/fixture/webhooks";
+        if (mode === "published") body.resultId = "published-result";
+        body.clientSideActions = [
+          {
+            type: "listenForWebhook",
+            expectsDedicatedReply: true,
+            room:
+              mode === "published"
+                ? "published-result/webhooks"
+                : "owner/fixture/webhooks",
+            token: "fixture-subscription-token",
+          },
+        ];
+        delete body.input;
+        await route.fulfill({ response, json: body });
+      });
+      const continuation = page.waitForRequest((request) =>
+        request.url().endsWith("/continueChat"),
+      );
+      await page.goto("/");
+      expect(await connected.promise).toBe(
+        mode === "published"
+          ? "/parties/main/published-result%2Fwebhooks"
+          : "/parties/main/owner%2Ffixture%2Fwebhooks",
+      );
+      expect((await continuation).url()).toContain(
+        mode === "legacy"
+          ? "/sessions/fixture-owner/"
+          : "/sessions/cm123456789012345678901234/",
+      );
+      expect(connections).toBe(disconnect ? 2 : 1);
+      expect((await continuation).postDataJSON().message).toEqual({
+        type: "text",
+        text: '{"value":"webhook received"}',
+      });
+      await expect(
+        page
+          .frameLocator("iframe")
+          .getByText("Continuation OK", { exact: true }),
+      ).toBeVisible();
     });
-    await page.route("**/preview/startChat", async (route) => {
-      const response = await route.fetch();
-      const body = await response.json();
-      body.sessionId =
-        mode === "legacy" ? "fixture-owner" : "cm123456789012345678901234";
-      if (mode !== "legacy") body.previewWebhookRoom = "owner/fixture/webhooks";
-      if (mode === "published") body.resultId = "published-result";
-      body.clientSideActions = [
-        { type: "listenForWebhook", expectsDedicatedReply: true },
-      ];
-      delete body.input;
-      await route.fulfill({ response, json: body });
-    });
-    const continuation = page.waitForRequest((request) =>
-      request.url().endsWith("/continueChat"),
-    );
-    await page.goto("/");
-    expect(await connected.promise).toBe(
-      mode === "published"
-        ? "/parties/main/published-result/webhooks"
-        : "/parties/main/owner/fixture/webhooks",
-    );
-    expect((await continuation).url()).toContain(
-      mode === "legacy"
-        ? "/sessions/fixture-owner/"
-        : "/sessions/cm123456789012345678901234/",
-    );
-    expect((await continuation).postDataJSON().message).toEqual({
-      type: "text",
-      text: '{"value":"webhook received"}',
-    });
-    await expect(
-      page.frameLocator("iframe").getByText("Continuation OK", { exact: true }),
-    ).toBeVisible();
-  });
 
 const getPreviewDocumentId = async (page: Page) => {
   const documentId = await page.evaluate(() =>

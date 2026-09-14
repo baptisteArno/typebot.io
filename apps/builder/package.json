@@ -115,6 +115,7 @@
     "@typebot.io/typebot": "workspace:*",
     "@typebot.io/ui": "workspace:*",
     "@typebot.io/user": "workspace:*",
+    "@typebot.io/webhook-block": "workspace:*",
     "@typebot.io/whatsapp": "workspace:*",
     "@typebot.io/workspaces": "workspace:*",
     "@uiw/codemirror-extensions-langs": "^4.25.8",

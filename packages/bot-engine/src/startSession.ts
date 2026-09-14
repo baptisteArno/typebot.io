@@ -166,6 +166,10 @@ export const startSession = async ({
       },
     ],
     dynamicTheme: parseDynamicThemeInState(typebot.theme),
+    webhookRoom:
+      startParams.type === "preview" && startParams.userId
+        ? `${startParams.userId}/${typebot.id}/webhooks`
+        : undefined,
     isStreamEnabled: startParams.isStreamEnabled,
     typingEmulation: typebot.settings.typingEmulation,
     allowedOrigins:

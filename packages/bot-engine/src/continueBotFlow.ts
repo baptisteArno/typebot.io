@@ -38,6 +38,7 @@ import type {
 } from "@typebot.io/variables/schemas";
 import { saveDataInResponseVariableMapping } from "./blocks/integrations/httpRequest/saveDataInResponseVariableMapping";
 import { resumeChatCompletion } from "./blocks/integrations/legacy/openai/resumeChatCompletion";
+import { consumeWebhookResponse } from "./blocks/logic/webhook/consumeWebhookResponse";
 import { executeCommandEvent } from "./events/executeCommandEvent";
 import { executeInvalidReplyEvent } from "./events/executeInvalidReplyEvent";
 import { executeReplyEvent } from "./events/executeReplyEvent";
@@ -52,6 +53,7 @@ import { validateAndParseInputMessage } from "./validateAndParseInputMessage";
 import { walkFlowForward } from "./walkFlowForward";
 
 type Params = {
+  sessionId?: string;
   version: 1 | 2;
   state: SessionState;
   textBubbleContentFormat: "richText" | "markdown";
@@ -62,6 +64,7 @@ type Params = {
 export const continueBotFlow = async (
   reply: Message | undefined,
   {
+    sessionId,
     state,
     version,
     textBubbleContentFormat,
@@ -79,7 +82,22 @@ export const continueBotFlow = async (
     });
 
   let newSessionState = state;
+  let webhookResponseIsVerified = false;
   const setVariableHistory: SetVariableHistoryItem[] = [];
+
+  if (
+    getBlockById(state.currentBlockId, state.typebotsQueue[0].typebot.groups)
+      .block?.type === LogicBlockType.WEBHOOK
+  ) {
+    const payload = await consumeWebhookResponse(
+      reply?.type === "text" ? reply.text : undefined,
+      state,
+      sessionId,
+    );
+    reply = { type: "text", text: payload };
+    webhookResponseIsVerified = true;
+    newSessionState = { ...state, pendingWebhook: undefined };
+  }
 
   if (reply?.type === "command") {
     newSessionState = executeCommandEvent({
@@ -102,6 +120,9 @@ export const continueBotFlow = async (
     throw new ORPCError("INTERNAL_SERVER_ERROR", {
       message: "Group / block not found",
     });
+
+  if (block.type === LogicBlockType.WEBHOOK && !webhookResponseIsVerified)
+    throw new ORPCError("BAD_REQUEST", { message: "Invalid webhook response" });
 
   const nonInputProcessResult = await processNonInputBlock({
     block,
@@ -396,6 +417,8 @@ const processNonInputBlock = async ({
       sessionStore,
     });
     if (result.newSessionState) newSessionState = result.newSessionState;
+    if (block.type === LogicBlockType.WEBHOOK)
+      setVariableHistory.push(...(result.newSetVariableHistory ?? []));
   } else if (isForgedBlockType(block.type)) {
     if (reply) {
       const options = (block as ForgedBlock).options;
