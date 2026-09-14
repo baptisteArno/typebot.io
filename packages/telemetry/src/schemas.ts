@@ -108,7 +108,7 @@ const subscriptionScheduledForCancellationEventSchema = workspaceEvent.merge(
   z.object({
     name: z.literal("Subscription scheduled for cancellation"),
     data: z.object({
-      plan: z.enum([Plan.STARTER, Plan.PRO]),
+      plan: z.enum([Plan.STARTER, Plan.PRO, Plan.ENTERPRISE]),
     }),
   }),
 );
@@ -117,7 +117,7 @@ const removedCancellationEventSchema = workspaceEvent.merge(
   z.object({
     name: z.literal("Subscription cancellation removed"),
     data: z.object({
-      plan: z.enum([Plan.STARTER, Plan.PRO]),
+      plan: z.enum([Plan.STARTER, Plan.PRO, Plan.ENTERPRISE]),
     }),
   }),
 );

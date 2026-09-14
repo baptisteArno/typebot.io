@@ -67,34 +67,47 @@ export const checkAndReportLastHourResults = async () => {
 
   for (const workspace of workspaces) {
     if (workspace.isQuarantined) continue;
-    const chatsLimit = getChatsLimit(workspace);
     const subscription = await getSubscription(workspace, { stripe });
-    const { totalChatsUsed } = await getUsage({
+    const { totalChatsUsed, usagePeriodStart } = await getUsage({
       workspaceId: workspace.id,
       subscription,
     });
-    if (chatsLimit === "inf") continue;
+    const isEnterpriseUsageBasedSubscription =
+      workspace.plan === Plan.ENTERPRISE &&
+      isDefined(subscription && findMeteredSubscriptionItem(subscription));
+    const chatsLimit = isEnterpriseUsageBasedSubscription
+      ? "inf"
+      : getChatsLimit(workspace);
+    const enforcedChatsLimit =
+      workspace.chatsHardLimit ??
+      (chatsLimit === "inf" ? undefined : chatsLimit);
 
-    limitWarningEmailEvents.push(
-      ...(await sendLimitWarningEmails({
-        chatsLimit,
-        totalChatsUsed,
-        workspace,
-      })),
-    );
+    if (isDefined(enforcedChatsLimit))
+      limitWarningEmailEvents.push(
+        ...(await sendLimitWarningEmails({
+          chatsLimit: enforcedChatsLimit,
+          totalChatsUsed,
+          usagePeriodStart,
+          workspace,
+        })),
+      );
 
-    const isUsageBasedSubscription = isDefined(
-      subscription?.items.data.find(
-        (item) =>
-          item.price.id === env.STRIPE_STARTER_PRICE_ID ||
-          item.price.id === env.STRIPE_PRO_PRICE_ID,
-      ),
-    );
+    const isUsageBasedSubscription =
+      isEnterpriseUsageBasedSubscription ||
+      isDefined(
+        subscription?.items.data.find(
+          (item) =>
+            item.price.id === env.STRIPE_STARTER_PRICE_ID ||
+            item.price.id === env.STRIPE_PRO_PRICE_ID,
+        ),
+      );
 
     if (
       isUsageBasedSubscription &&
       subscription &&
-      (workspace.plan === "STARTER" || workspace.plan === "PRO")
+      (workspace.plan === "STARTER" ||
+        workspace.plan === "PRO" ||
+        workspace.plan === "ENTERPRISE")
     ) {
       if (workspace.plan === "STARTER" && totalChatsUsed >= 4000) {
         console.log(
@@ -218,9 +231,11 @@ export const checkAndReportLastHourResults = async () => {
     }
 
     if (
-      (totalChatsUsed > chatsLimit * 1.5 && workspace.plan === Plan.FREE) ||
-      (isDefined(workspace.chatsHardLimit) &&
-        totalChatsUsed >= workspace.chatsHardLimit)
+      isDefined(enforcedChatsLimit) &&
+      ((workspace.plan === Plan.FREE &&
+        totalChatsUsed > enforcedChatsLimit * 1.5) ||
+        (isDefined(workspace.chatsHardLimit) &&
+          totalChatsUsed >= workspace.chatsHardLimit))
     ) {
       console.log(`Automatically quarantine workspace ${workspace.id}...`);
       await prisma.workspace.updateMany({
@@ -236,7 +251,7 @@ export const checkAndReportLastHourResults = async () => {
             workspaceId: workspace.id,
             data: {
               totalChatsUsed,
-              chatsLimit: workspace.chatsHardLimit ?? chatsLimit,
+              chatsLimit: enforcedChatsLimit,
               reason: "free limit reached" as const,
             },
           })),
@@ -269,7 +284,9 @@ const getSubscription = async (
 ) => {
   if (
     !workspace.stripeId ||
-    (workspace.plan !== "STARTER" && workspace.plan !== "PRO")
+    (workspace.plan !== "STARTER" &&
+      workspace.plan !== "PRO" &&
+      workspace.plan !== "ENTERPRISE")
   )
     return;
   const subscriptions = await stripe.subscriptions.list({
@@ -295,11 +312,12 @@ const reportUsageToStripe = async (
     throw new Error(
       "Missing STRIPE_STARTER_CHATS_PRICE_ID or STRIPE_PRO_CHATS_PRICE_ID env variable",
     );
-  const subscriptionItem = subscription.items.data.find(
-    (item) =>
-      item.price.id === env.STRIPE_STARTER_CHATS_PRICE_ID ||
-      item.price.id === env.STRIPE_PRO_CHATS_PRICE_ID,
-  );
+  const subscriptionItem =
+    subscription.items.data.find(
+      (item) =>
+        item.price.id === env.STRIPE_STARTER_CHATS_PRICE_ID ||
+        item.price.id === env.STRIPE_PRO_CHATS_PRICE_ID,
+    ) ?? findMeteredSubscriptionItem(subscription);
 
   if (!subscriptionItem)
     throw new Error("Could not find subscription item for workspace");
@@ -318,6 +336,11 @@ const reportUsageToStripe = async (
   );
 };
 
+const findMeteredSubscriptionItem = (subscription: Stripe.Subscription) =>
+  subscription.items.data.find(
+    (item) => item.price.recurring?.usage_type === "metered",
+  );
+
 const getUsage = async ({
   workspaceId,
   subscription,
@@ -335,22 +358,23 @@ const getUsage = async ({
   });
 
   const now = new Date();
-  const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const usagePeriodStart = subscription
+    ? new Date(subscription.current_period_start * 1000)
+    : new Date(now.getFullYear(), now.getMonth(), 1);
 
   const totalChatsUsed = await prisma.result.count({
     where: {
       typebotId: { in: typebots.map((typebot) => typebot.id) },
       hasStarted: true,
       createdAt: {
-        gte: subscription
-          ? new Date(subscription.current_period_start * 1000)
-          : firstDayOfMonth,
+        gte: usagePeriodStart,
       },
     },
   });
 
   return {
     totalChatsUsed,
+    usagePeriodStart,
   };
 };
 
@@ -415,10 +439,12 @@ const autoUpgradeToPro = async (
 async function sendLimitWarningEmails({
   chatsLimit,
   totalChatsUsed,
+  usagePeriodStart,
   workspace,
 }: {
   chatsLimit: number;
   totalChatsUsed: number;
+  usagePeriodStart: Date;
   workspace: Pick<
     Workspace,
     | "id"
@@ -442,7 +468,13 @@ async function sendLimitWarningEmails({
     (member) => member.role === WorkspaceRole.ADMIN,
   );
   const to = adminMembers.map((member) => member.user.email).filter(isDefined);
-  if (!workspace.chatsLimitFirstEmailSentAt) {
+  const hasSentFirstEmailThisPeriod =
+    isDefined(workspace.chatsLimitFirstEmailSentAt) &&
+    workspace.chatsLimitFirstEmailSentAt >= usagePeriodStart;
+  const hasSentSecondEmailThisPeriod =
+    isDefined(workspace.chatsLimitSecondEmailSentAt) &&
+    workspace.chatsLimitSecondEmailSentAt >= usagePeriodStart;
+  if (!hasSentFirstEmailThisPeriod) {
     console.log(`Send almost reached chats limit email to ${to.join(", ")}...`);
     try {
       await sendAlmostReachedChatsLimitEmail({
@@ -469,7 +501,7 @@ async function sendLimitWarningEmails({
 
   if (
     totalChatsUsed >= limit &&
-    !workspace.chatsLimitSecondEmailSentAt &&
+    !hasSentSecondEmailThisPeriod &&
     (workspace.plan === Plan.FREE || isDefined(workspace.chatsHardLimit))
   ) {
     console.log(`Send reached chats limit email to ${to.join(", ")}...`);

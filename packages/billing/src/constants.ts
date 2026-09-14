@@ -167,3 +167,34 @@ export const proChatTiers = [
     unit_amount_decimal: "0.442",
   },
 ] satisfies Stripe.PriceCreateParams.Tier[];
+
+export const enterpriseChatTiers = [
+  {
+    lookupKey: "enterprise_e1",
+    nickname: "E1 - 600k chats included",
+    monthlyPriceInCents: 250000,
+    includedChats: 600000,
+    overageUnitAmountDecimal: "0.35",
+  },
+  {
+    lookupKey: "enterprise_e2",
+    nickname: "E2 - 1.2M chats included",
+    monthlyPriceInCents: 400000,
+    includedChats: 1200000,
+    overageUnitAmountDecimal: "0.3",
+  },
+  {
+    lookupKey: "enterprise_e3",
+    nickname: "E3 - 2.5M chats included",
+    monthlyPriceInCents: 650000,
+    includedChats: 2500000,
+    overageUnitAmountDecimal: "0.22",
+  },
+  {
+    lookupKey: "enterprise_e4",
+    nickname: "E4 - 5M chats included",
+    monthlyPriceInCents: 1000000,
+    includedChats: 5000000,
+    overageUnitAmountDecimal: "0.18",
+  },
+] as const;

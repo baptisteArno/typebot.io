@@ -32,12 +32,10 @@ All scripts must be ran with `bunx nx`:
 ## Coding style
 
 - Write Effect code whenever possible. We use Effect V4 Beta. **IMPORTANT** Always inspect the Effect source through `opensrc` first (see "Source Code Reference" below) — start from `LLMS.md` at the source tree root and follow the linked docs. Never guess at Effect patterns.
-- Never use `as`. You should always narrow / parse the value to get the right type.
+- Avoid `as` type assertions: narrow or parse the value to get the right type. `as const` is fine.
 - Rely heavily on type inference, we tend not to declare types.
 - Prefer files exporting a single primary function and the file name should match the exported function name. On that file, the main exported function is at the top while local helpers are at the bottom.
 - Use very explicit variable names.
-- Extract a helper function only if the logic is used at least twice in the main function.
-- Declare a variable only if it is used at least twice.
 
 ## Source Code Reference
 
