@@ -1,6 +1,7 @@
 # Changelog
 
-## Unreleased
+<a name="3.19.0"></a>
+## 3.19.0 (2026-09-14)
 
 ### Breaking changes
 
@@ -20,6 +21,33 @@ Plan a maintenance window for this protocol change:
 Older publishers and listeners are incompatible with the new relay. Existing authenticated callback URLs and JSON-object request bodies remain unchanged; non-object callback bodies are now rejected. Explicitly client-executed HTTP Request blocks keep their existing contract. If no matching listener is connected, the callback returns HTTP 502; retry the authenticated callback after the client reconnects.
 
 Webhook waits now expire with the configured session timeout, or after 24 hours if no timeout is set. The builder settings listener expires after 15 minutes and can be restarted. Expired waits require a new conversation. Rotating the secret also invalidates outstanding waits and subscriptions.
+
+#### Separate viewer hostname for previews
+
+The first URL in `NEXT_PUBLIC_VIEWER_URL` must use a different hostname from `NEXTAUTH_URL`. Different ports on the same hostname are insufficient. Configure a separate viewer hostname before upgrading so builder previews remain available.
+
+#### SMTP configuration tests
+
+SMTP configuration tests now validate destinations and pin the connection to a validated IP address. Private SMTP servers require an exact hostname entry in `SSRF_ALLOWED_HOSTS`; this instance-wide allowlist permits RFC1918 addresses only. Loopback, link-local and metadata endpoints remain blocked.
+
+### Fixed
+
+- 🐛 Resolve variables in Forge option arrays.
+
+### Security
+
+- 🐛 Strengthen preview isolation, linked draft permissions and preview session creation.
+- 🐛 Restrict WhatsApp sessions to internal runtime access.
+- 🐛 Authenticate webhook responses and relay subscriptions, and enforce webhook ownership and write access.
+- 🐛 Protect SMTP configuration tests and special-use IP ranges against SSRF.
+- 🐛 Block external sign-in redirects and serialize concurrent email verification attempts.
+- 🐛 Restrict guest workspace access and prevent writes during read-only typebot migrations.
+- 🐛 Prevent public ID validation backtracking and upgrade security-sensitive dependencies.
+
+### Maintenance
+
+- 🔧 Add enterprise chat tier billing support.
+- 🔧 Replace inactive cleanup with a retention audit.
 
 <a name="3.18.0"></a>
 ## 3.18.0 (2026-08-21)
