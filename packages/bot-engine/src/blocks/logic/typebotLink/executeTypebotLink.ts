@@ -9,6 +9,7 @@ import {
 import { byId, isNotDefined } from "@typebot.io/lib/utils";
 import type { LogInSession } from "@typebot.io/logs/schemas";
 import prisma from "@typebot.io/prisma";
+import { WorkspaceRole } from "@typebot.io/prisma/enum";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { isTypebotVersionAtLeastV6 } from "@typebot.io/schemas/helpers/isTypebotVersionAtLeastV6";
 import { settingsSchema } from "@typebot.io/settings/schemas";
@@ -237,8 +238,23 @@ const fetchTypebot = async (state: SessionState, typebotId: string) => {
   const { resultId } = state.typebotsQueue[0];
   const isPreview = !resultId;
   if (isPreview) {
+    const userId = state.previewUserId;
+    if (!userId) return null;
     const typebot = await prisma.typebot.findUnique({
-      where: { id: typebotId, workspaceId: state.workspaceId },
+      where: {
+        id: typebotId,
+        workspaceId: state.workspaceId,
+        OR: [
+          {
+            workspace: {
+              members: {
+                some: { userId, role: { not: WorkspaceRole.GUEST } },
+              },
+            },
+          },
+          { collaborators: { some: { userId } } },
+        ],
+      },
       select: {
         version: true,
         id: true,

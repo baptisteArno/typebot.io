@@ -61,6 +61,13 @@
         "options": {
           "command": "bun tests/preview-sessions/server.ts"
         }
+      },
+      "test-linked-preview": {
+        "executor": "nx:run-commands",
+        "options": {
+          "cwd": "apps/builder",
+          "command": "bun test --preload ../../tests/linked-preview/preload.ts ../../tests/linked-preview/access.test.ts"
+        }
       }
     }
   },

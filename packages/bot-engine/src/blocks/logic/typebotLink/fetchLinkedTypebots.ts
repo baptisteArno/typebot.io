@@ -1,4 +1,5 @@
 import prisma from "@typebot.io/prisma";
+import { WorkspaceRole } from "@typebot.io/prisma/enum";
 
 type Props = {
   isPreview?: boolean;
@@ -11,34 +12,24 @@ export const fetchLinkedTypebots = async ({
   isPreview,
   typebotIds,
 }: Props) => {
-  if (!userId || !isPreview)
+  if (!isPreview)
     return prisma.publicTypebot.findMany({
       where: { typebotId: { in: typebotIds } },
     });
-  const linkedTypebots = await prisma.typebot.findMany({
-    where: { id: { in: typebotIds } },
-    include: {
-      collaborators: {
-        select: {
-          userId: true,
-        },
-      },
-      workspace: {
-        select: {
-          members: {
-            select: {
-              userId: true,
+  if (!userId) return [];
+  return prisma.typebot.findMany({
+    where: {
+      id: { in: typebotIds },
+      OR: [
+        {
+          workspace: {
+            members: {
+              some: { userId, role: { not: WorkspaceRole.GUEST } },
             },
           },
         },
-      },
+        { collaborators: { some: { userId } } },
+      ],
     },
   });
-
-  return linkedTypebots.filter(
-    (typebot) =>
-      typebot.collaborators.some(
-        (collaborator) => collaborator.userId === userId,
-      ) || typebot.workspace.members.some((member) => member.userId === userId),
-  );
 };
