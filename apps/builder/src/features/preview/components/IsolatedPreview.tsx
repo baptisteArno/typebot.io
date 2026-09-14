@@ -10,8 +10,29 @@ import type { Settings } from "@typebot.io/settings/schemas";
 import type { Theme } from "@typebot.io/theme/schemas";
 import { Button } from "@typebot.io/ui/components/Button";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
+import { createPreviewDocumentId } from "../helpers/createPreviewDocumentId";
 
-export const IsolatedPreview = ({
+export const IsolatedPreview = (
+  props: Omit<Parameters<typeof PreviewFrame>[0], "onRetry">,
+) => {
+  const [attempt, setAttempt] = useState(0);
+  return (
+    <PreviewFrame
+      key={JSON.stringify([
+        props.typebot,
+        props.templateSlug,
+        props.startFrom,
+        props.previewTheme?.general?.progressBar?.isEnabled,
+        env.NEXT_PUBLIC_VIEWER_URL[0],
+        attempt,
+      ])}
+      {...props}
+      onRetry={() => setAttempt((value) => value + 1)}
+    />
+  );
+};
+
+const PreviewFrame = ({
   typebot,
   templateSlug,
   startFrom,
@@ -20,7 +41,9 @@ export const IsolatedPreview = ({
   style,
   onNewInputBlock,
   onNewLogs,
+  onRetry,
 }: {
+  onRetry: () => void;
   typebot?: string;
   templateSlug?: string;
   startFrom?: StartFrom;
@@ -34,7 +57,7 @@ export const IsolatedPreview = ({
   const callbacks = useRef({ onNewInputBlock, onNewLogs });
   const appearance = useRef({ previewTheme, previewSettings });
   const [error, setError] = useState<string>();
-  const [attempt, setAttempt] = useState(0);
+  const [documentId, setDocumentId] = useState<string>();
   const [readyDocumentId, setReadyDocumentId] = useState<string>();
   callbacks.current = { onNewInputBlock, onNewLogs };
   appearance.current = { previewTheme, previewSettings };
@@ -44,6 +67,11 @@ export const IsolatedPreview = ({
   const isProgressBarEnabled = previewTheme?.general?.progressBar?.isEnabled;
 
   useEffect(() => {
+    setDocumentId(createPreviewDocumentId());
+  }, []);
+
+  useEffect(() => {
+    if (!documentId) return;
     setReadyDocumentId(undefined);
     setError(undefined);
     if (
@@ -70,7 +98,7 @@ export const IsolatedPreview = ({
       )
         return;
       const message = previewFrameMessageSchema.safeParse(event.data);
-      if (!message.success) return;
+      if (!message.success || message.data.documentId !== documentId) return;
       if (message.data.type === "typebot-preview:input") {
         if (message.data.documentId !== currentDocumentId) return;
         callbacks.current.onNewInputBlock?.({ id: message.data.blockId });
@@ -81,7 +109,12 @@ export const IsolatedPreview = ({
         callbacks.current.onNewLogs?.(message.data.logs);
         return;
       }
-      if (message.data.documentId === currentDocumentId) return;
+      if (
+        currentDocumentId &&
+        (!previousInitialChatReply ||
+          message.data.paymentSessionId !== previousInitialChatReply.sessionId)
+      )
+        return;
       // The frame connected. Server-side blocks may legitimately take longer.
       clearTimeout(timeout);
       currentRequest?.abort();
@@ -150,7 +183,7 @@ export const IsolatedPreview = ({
     templateSlug,
     startFromKey,
     isProgressBarEnabled,
-    attempt,
+    documentId,
   ]);
 
   useEffect(() => {
@@ -171,22 +204,22 @@ export const IsolatedPreview = ({
       {error ? (
         <div role="alert" className="flex flex-col gap-2 p-4">
           <p>{error}</p>
-          <Button onClick={() => setAttempt((value) => value + 1)}>
-            Retry preview
-          </Button>
+          <Button onClick={onRetry}>Retry preview</Button>
         </div>
       ) : null}
-      <iframe
-        key={`${typebot ?? templateSlug}-${startFromKey}-${isProgressBarEnabled}-${attempt}`}
-        ref={frame}
-        title="Bot preview"
-        src={previewUrl.href}
-        sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-popups"
-        allow="autoplay; fullscreen; microphone; camera; clipboard-write"
-        referrerPolicy="no-referrer"
-        className="flex-1 w-full min-h-0 border-0 rounded-[inherit]"
-        hidden={Boolean(error)}
-      />
+      {documentId ? (
+        <iframe
+          name={documentId}
+          ref={frame}
+          title="Bot preview"
+          src={previewUrl.href}
+          sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-popups"
+          allow="autoplay; fullscreen; microphone; camera; clipboard-write"
+          referrerPolicy="no-referrer"
+          className="flex-1 w-full min-h-0 border-0 rounded-[inherit]"
+          hidden={Boolean(error)}
+        />
+      ) : null}
     </div>
   );
 };

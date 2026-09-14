@@ -4,6 +4,7 @@ import {
 } from "@typebot.io/chat-api/parsePaymentInProgress";
 import {
   maxPreviewLogBatchSize,
+  previewFrameMessageSchema,
   previewHostMessageSchema,
 } from "@typebot.io/chat-api/previewMessages";
 import type { StartChatResponse } from "@typebot.io/chat-api/schemas";
@@ -12,10 +13,11 @@ import { Standard } from "@typebot.io/react";
 import type { Settings } from "@typebot.io/settings/schemas";
 import type { Theme } from "@typebot.io/theme/schemas";
 import { useEffect, useState } from "react";
-import { createPreviewDocumentId } from "./createPreviewDocumentId";
 
 export const Preview = () => {
-  const [documentId] = useState(createPreviewDocumentId);
+  const [documentId] = useState(() =>
+    typeof window === "undefined" ? "" : window.name,
+  );
   const [initialChatReply, setInitialChatReply] = useState<StartChatResponse>();
   const [previewTheme, setPreviewTheme] = useState<Theme>();
   const [previewSettings, setPreviewSettings] = useState<Settings>();
@@ -26,6 +28,10 @@ export const Preview = () => {
     // parent to proxy arbitrary requests. Only presentation events go back.
     if (
       !builderOrigin ||
+      !previewFrameMessageSchema.safeParse({
+        type: "typebot-preview:ready",
+        documentId,
+      }).success ||
       window.parent === window ||
       window.location.origin === builderOrigin
     )

@@ -209,6 +209,8 @@ for (const storedState of ["malformed", "another-bot", "published-session"])
     await frame.goto(
       "http://127.0.0.1:5199/__preview?redirect_status=succeeded",
     );
+    await expect(page.frameLocator("iframe").locator("body")).toBeEmpty();
+    await page.getByRole("button", { name: "Restart", exact: true }).click();
     await expect(
       page.frameLocator("iframe").getByPlaceholder("Your answer"),
     ).toBeVisible();

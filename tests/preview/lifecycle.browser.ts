@@ -24,6 +24,35 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
+for (const nonce of ["", "invalid-nonce"])
+  test(`viewer fails closed with nonce ${JSON.stringify(nonce)}`, async ({
+    page,
+  }) => {
+    await page.clock.install();
+    await page.addInitScript((nonce) => {
+      if (window.parent !== window) window.name = nonce;
+    }, nonce);
+    const starts: string[] = [];
+    page.on("request", (request) => {
+      if (request.url().endsWith("/preview/startChat"))
+        starts.push(request.url());
+    });
+    await page.goto("/");
+    await expect
+      .poll(() =>
+        page
+          .frameLocator("iframe")
+          .locator("body")
+          .evaluate(() => typeof window.executeScript),
+      )
+      .toBe("function");
+    await page.clock.fastForward(25_000);
+    await expect(page.getByRole("alert")).toContainText("could not connect");
+    await expect(page.frameLocator("iframe").locator("body")).toBeEmpty();
+    expect(await page.evaluate(() => window.previewDocumentIds)).toEqual([]);
+    expect(starts).toEqual([]);
+  });
+
 test("server-side execution may outlast the frame connection timeout", async ({
   page,
 }) => {
@@ -47,7 +76,7 @@ test("server-side execution may outlast the frame connection timeout", async ({
   ).toBeVisible();
 });
 
-test("a reloaded frame starts a fresh session and ignores stale messages", async ({
+test("a reload without payment context is ignored and Restart mints a fresh nonce and session", async ({
   page,
 }) => {
   const sessions: string[] = [];
@@ -64,11 +93,22 @@ test("a reloaded frame starts a fresh session and ignores stale messages", async
     .find((frame) => frame.url().includes("/__preview"));
   if (!frame) throw new Error("Missing preview frame");
   await frame.goto(frame.url());
+  await expect
+    .poll(() => page.evaluate(() => window.previewDocumentIds.length))
+    .toBe(2);
+  expect(await getPreviewDocumentId(page)).toBe(oldDocumentId);
+  await expect(page.frameLocator("iframe").locator("body")).toBeEmpty();
+  expect(sessions).toHaveLength(1);
+  await page.getByRole("button", { name: "Restart", exact: true }).click();
   await page.frameLocator("iframe").getByPlaceholder("Your answer").waitFor();
   expect(await getPreviewDocumentId(page)).not.toBe(oldDocumentId);
   expect(sessions).toHaveLength(2);
   expect(new Set(sessions).size).toBe(2);
-  await frame.evaluate((documentId) => {
+  const restartedFrame = page
+    .frames()
+    .find((frame) => frame.url().includes("/__preview"));
+  if (!restartedFrame) throw new Error("Missing restarted preview frame");
+  await restartedFrame.evaluate((documentId) => {
     parent.postMessage(
       { type: "typebot-preview:input", documentId, blockId: "obsolete" },
       "http://localhost:5198",
@@ -114,6 +154,11 @@ for (const action of ["restart", "reload"])
         .find((frame) => frame.url().includes("/__preview"));
       if (!frame) throw new Error("Missing preview frame");
       await frame.goto(frame.url());
+      await expect
+        .poll(() => page.evaluate(() => window.previewDocumentIds.length))
+        .toBe(2);
+      expect(calls).toBe(1);
+      await page.getByRole("button", { name: "Restart", exact: true }).click();
     }
     await page.frameLocator("iframe").getByPlaceholder("Your answer").waitFor();
     release.resolve();

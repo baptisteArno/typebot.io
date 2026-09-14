@@ -190,6 +190,20 @@ test("ignores forged sources, invalid messages and arbitrary request instruction
     .find((frame) => frame.url().includes("/__preview"));
   if (!frame) throw new Error("Missing preview frame");
   await frame.evaluate(() => {
+    for (let index = 0; index < 5; index++)
+      parent.postMessage(
+        { type: "typebot-preview:ready", documentId: crypto.randomUUID() },
+        "http://localhost:5198",
+      );
+    // A valid event after the forged ready messages proves the real nonce still works.
+    parent.postMessage(
+      {
+        type: "typebot-preview:input",
+        documentId: window.name,
+        blockId: "still-active",
+      },
+      "http://localhost:5198",
+    );
     parent.postMessage(
       {
         type: "typebot-preview:input",
@@ -209,7 +223,10 @@ test("ignores forged sources, invalid messages and arbitrary request instruction
       "*",
     );
   });
-  await expect(page.locator("body")).toHaveAttribute("data-input", "answer");
+  await expect(page.locator("body")).toHaveAttribute(
+    "data-input",
+    "still-active",
+  );
   expect(
     await page.evaluate(() => fetch("/counts").then((r) => r.json())),
   ).toEqual(before);

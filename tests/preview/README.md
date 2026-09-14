@@ -65,9 +65,8 @@ Published result channels and old API clients with legacy session IDs keep their
 existing routing.
 
 Both message receivers validate the exact origin, source window and message
-schema. Each preview document has a random document ID carried by every message.
-Reload starts a fresh conversation, aborts the previous start request, and rejects
-messages intended for the old document. Repeated ready/init messages for the same
+schema. The builder issues a random nonce per iframe mount, carried as the document ID by every message.
+Reload without matching payment context is ignored; Restart or Retry mounts a new iframe with a fresh nonce and conversation, rejecting messages with the old nonce. Repeated ready/init messages for the same
 document do not restart it. The 20-second timeout covers frame connection only;
 server-side execution retains the API's own timeouts. The frame stays blank until
 its reply is available. Logs are sent in batches of at most 100 without loss. The builder does not relay arbitrary requests or execute messages.
