@@ -1,3 +1,4 @@
+import { sanitizeRedirectPath } from "@typebot.io/auth/helpers/sanitizeRedirectPath";
 import { env } from "@typebot.io/env";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -54,32 +55,23 @@ export function proxy(req: NextRequest) {
     const redirectPath = sanitizeRedirectPath(
       searchParams.get("redirectPath") ??
         (callbackUrl
-          ? new URL(callbackUrl).searchParams.get("redirectPath")
+          ? getCallbackRedirectPath(callbackUrl, req.url)
           : undefined),
     );
     if (!redirectPath) return NextResponse.next();
     const url = req.nextUrl.clone();
-    url.pathname = redirectPath;
-    url.searchParams.delete("callbackUrl");
-    url.searchParams.delete("redirectPath");
+    const destination = new URL(redirectPath, req.url);
+    url.pathname = destination.pathname;
+    url.search = destination.search;
+    url.hash = destination.hash;
     return NextResponse.redirect(url);
   }
   return NextResponse.next();
 }
 
-function sanitizeRedirectPath(
-  redirectPath: string | null | undefined,
-): string | null {
-  if (!redirectPath) return null;
-
+function getCallbackRedirectPath(callbackUrl: string, baseUrl: string) {
   try {
-    // Prevent absolute URLs
-    const url = new URL(redirectPath, "http://dummy"); // base needed for parsing
-    if (url.origin !== "http://dummy") return null; // absolute external URL → reject
-
-    const safePath = url.pathname + url.search + url.hash;
-
-    return safePath;
+    return new URL(callbackUrl, baseUrl).searchParams.get("redirectPath");
   } catch {
     return null;
   }

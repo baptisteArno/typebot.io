@@ -68,6 +68,18 @@
           "cwd": "apps/builder",
           "command": "bun test --preload ../../tests/linked-preview/preload.ts ../../tests/linked-preview/access.test.ts"
         }
+      },
+      "test-auth-redirect": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "bunx playwright test --config tests/auth-redirect/playwright.config.ts"
+        }
+      },
+      "preview-auth-redirect": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "bun tests/auth-redirect/serve.ts"
+        }
       }
     }
   },
