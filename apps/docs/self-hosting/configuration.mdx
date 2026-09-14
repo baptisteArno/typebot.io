@@ -46,6 +46,12 @@ Used for sending email notifications and authentication
 | SMTP_IGNORE_TLS       | undefined | If true and SMTP_SECURE is false then TLS is not used while connecting to server even if server supports STARTTLS extension.                                                                                                                               |
 | SMTP_AUTH_DISABLED    | false     | To disable the authentication by email but still use the provided config for notifications                                                                                                                                                                 |
 
+## SMTP configuration tests in the builder
+
+The Send Email block's SMTP configuration test permits public SMTP destinations by default. To permit an internal IPv4 SMTP relay, add its exact hostname to `SSRF_ALLOWED_HOSTS` (comma-separated), for example `SSRF_ALLOWED_HOSTS=smtp.internal.example`. This existing setting only permits RFC1918 ranges (10/8, 172.16/12 and 192.168/16, including IPv4-mapped addresses). It never permits metadata, loopback, link-local, IPv6 unique-local or other blocked special-use destinations, even in development. This instance-wide exception makes that relay available to every authenticated user who can test an SMTP configuration; it is not a workspace permission.
+
+Every DNS answer must pass the policy. The test connects to the first validated IP, preserving the hostname for TLS certificate verification and STARTTLS. Automatic fallback to another IP is disabled; if the first address is unreachable, the test fails. Use an ASCII/punycode hostname or an IP literal and an integer port between 1 and 65535. The notification/authentication SMTP settings above and execution of stored Send Email credentials are separate paths and are unchanged by this test endpoint policy.
+
 ## Google Auth
 
 <Accordion title="Requirements">
