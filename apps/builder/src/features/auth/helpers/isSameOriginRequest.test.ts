@@ -3,6 +3,7 @@ import { isSameOriginRequest } from "./isSameOriginRequest";
 
 for (const headers of [
   { "sec-fetch-site": "same-origin" },
+  { "sec-fetch-site": "same-origin", origin: "https://other.example" },
   { origin: "https://builder.example.com" },
   { referer: "https://builder.example.com/typebots" },
 ])

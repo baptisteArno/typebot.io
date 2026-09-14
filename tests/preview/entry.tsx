@@ -2,11 +2,17 @@ import { createElement, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { IsolatedPreview } from "../../apps/builder/src/features/preview/components/IsolatedPreview";
 import { Preview } from "../../apps/viewer/src/features/preview/Preview";
+import { executeRedirect } from "../../packages/embeds/js/src/features/blocks/logic/redirect/utils/executeRedirect";
 import { executeScript } from "../../packages/embeds/js/src/features/blocks/logic/script/executeScript";
 import { executeSetVariable } from "../../packages/embeds/js/src/features/blocks/logic/setVariable/executeSetVariable";
 import { startChatQuery } from "../../packages/embeds/js/src/queries/startChatQuery";
 
-Object.assign(window, { executeScript, executeSetVariable, startChatQuery });
+Object.assign(window, {
+  executeRedirect,
+  executeScript,
+  executeSetVariable,
+  startChatQuery,
+});
 
 const receivedLogs: unknown[] = [];
 

@@ -51,7 +51,7 @@ export const IsolatedPreview = ({
       new URL(previewOrigin).hostname === window.location.hostname
     ) {
       setError(
-        "Preview requires a viewer on a different hostname from the builder.",
+        "The first URL in NEXT_PUBLIC_VIEWER_URL must use a different hostname from NEXTAUTH_URL. A different port is not enough because browser cookies ignore ports.",
       );
       return;
     }

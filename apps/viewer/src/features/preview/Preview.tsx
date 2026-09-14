@@ -12,9 +12,10 @@ import { Standard } from "@typebot.io/react";
 import type { Settings } from "@typebot.io/settings/schemas";
 import type { Theme } from "@typebot.io/theme/schemas";
 import { useEffect, useState } from "react";
+import { createPreviewDocumentId } from "./createPreviewDocumentId";
 
 export const Preview = () => {
-  const [documentId] = useState(() => crypto.randomUUID());
+  const [documentId] = useState(createPreviewDocumentId);
   const [initialChatReply, setInitialChatReply] = useState<StartChatResponse>();
   const [previewTheme, setPreviewTheme] = useState<Theme>();
   const [previewSettings, setPreviewSettings] = useState<Settings>();

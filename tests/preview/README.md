@@ -106,10 +106,10 @@ origin. The static preview reads NEXT_PUBLIC_BUILDER_ORIGIN from /__ENV.js;
 Next configuration and the Docker entrypoint derive it from NEXTAUTH_URL.
 No additional operator setting or getServerSideProps is needed. A viewer proxy
 matched only on /__preview applies framing and Referrer-Policy headers at runtime.
-HTTPS is expected outside local development. A local example is builder
+HTTP self-hosted previews are supported too. A local example is builder
 http://localhost:3000 and viewer http://127.0.0.1:3001.
 
-The builder CSP permits the configured preview origin. The /__preview response
+The builder CSP allows framing any HTTP or HTTPS origin. The /__preview response
 allows framing only by its configured builder. If the viewer is missing,
 misconfigured, or blocked by CSP, preview stops with a retryable error; scripts
 never fall back to the builder. On a split rollout the viewer route and updated
@@ -140,7 +140,7 @@ viewer pages remain part of that origin's trust domain.
   restarts preview so the engine can calculate progress.
 - The iframe allows scripts, same-origin viewer access, forms, downloads and
   popups, but not top-level navigation or popups escaping its sandbox.
-  Page redirects affect the preview rather than the builder.
+  Page redirects open a new tab, with a clickable link if the popup is blocked.
 - Autoplay and fullscreen permissions are delegated to the viewer. Browser
   autoplay policies still apply; delegation does not bypass user preferences.
 - The preview bootstrap CSP blocks workers. This limits Worker-based scripts;

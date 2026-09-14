@@ -187,7 +187,24 @@ for (const port of [5198, 5199, 5200, 5201])
           ],
         });
       }
-      if (url.pathname.endsWith("/continueChat"))
+      if (url.pathname.endsWith("/continueChat")) {
+        const { message } = await request.json();
+        if (
+          message?.text === "redirect" ||
+          message?.text === "redirect-new-tab"
+        )
+          return Response.json({
+            messages: [],
+            clientSideActions: [
+              {
+                type: "redirect",
+                redirect: {
+                  url: "http://127.0.0.1:5199/public",
+                  isNewTab: message.text === "redirect-new-tab",
+                },
+              },
+            ],
+          });
         return Response.json({
           messages: [
             {
@@ -203,6 +220,7 @@ for (const port of [5198, 5199, 5200, 5201])
           ],
           logs: [{ status: "info", description: "Conversation continued" }],
         });
+      }
       return new Response(
         '<!doctype html><title>Preview fixture</title><body><script src="/__ENV.js"></script><script type="module" src="/entry.js"></script>',
         {

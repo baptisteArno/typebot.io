@@ -29,6 +29,8 @@ Parameters marked with <span style={{color: '#ef5151'}}>\*</span> are required.
 | NEXT_PUBLIC_BOT_FILE_UPLOAD_MAX_SIZE                              |         | Limits the size of each file that can be uploaded in the bots (i.e. Set `10` to limit the file upload to 10MB)                                                                                                            |
 | CHAT_API_TIMEOUT                                                  |         | The chat API execution timeout (in ms). It limits the chat API exection time. Useful to avoid getting stuck into an unwanted infinite loop. Note that it does not apply to known long-running blocks like OpenAI or else. |
 
+For previews, the first URL in `NEXT_PUBLIC_VIEWER_URL` must use a different hostname from `NEXTAUTH_URL`. A different port is not enough because browser cookies ignore ports. For example, locally use `NEXTAUTH_URL=http://localhost:3000` and `NEXT_PUBLIC_VIEWER_URL=http://127.0.0.1:3001`.
+
 ## Email (Auth, notifications)
 
 Used for sending email notifications and authentication
