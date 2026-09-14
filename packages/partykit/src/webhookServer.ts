@@ -53,6 +53,7 @@ export default class Server implements Party.Server {
 
     // Revalidate on delivery, including after hibernation and expiry.
     // Client WebSocket messages never publish data.
+    let delivered = 0;
     for (const connection of this.room.getConnections()) {
       const subscription = await verifyWebhookToken(
         new URL(connection.uri).searchParams.get("token"),
@@ -66,7 +67,12 @@ export default class Server implements Party.Server {
         connection.close(1008, "Expired subscription");
         continue;
       }
-      if (subscription.blockId !== publication.blockId) continue;
+      if (
+        subscription.blockId !== publication.blockId ||
+        (publication.waitNonce !== undefined &&
+          subscription.nonce !== publication.waitNonce)
+      )
+        continue;
       connection.send(
         await signWebhookToken(
           {
@@ -77,7 +83,12 @@ export default class Server implements Party.Server {
           secret,
         ),
       );
+      delivered++;
     }
+    if (delivered === 0)
+      return new Response("No matching webhook listener; retry the callback", {
+        status: 503,
+      });
     return new Response("OK");
   }
 }

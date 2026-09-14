@@ -6,6 +6,9 @@ on:
       - main
     paths:
       - "packages/partykit/**"
+      - "packages/lib/src/signWebhookToken.ts"
+      - "packages/lib/src/verifyWebhookToken.ts"
+      - ".github/workflows/deploy-partykit.yml"
 
 permissions:
   contents: read

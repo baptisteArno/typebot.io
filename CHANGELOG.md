@@ -17,7 +17,7 @@ Plan a maintenance window for this protocol change:
 3. Upgrade builder and viewer together, along with the updated JS/React embeds. Update any separately hosted or pinned embeds before resuming Webhook traffic.
 4. Refresh open tabs and restart conversations waiting on a Webhook created before the upgrade. Confirm that an authorized callback resumes a new conversation.
 
-Older publishers and listeners are incompatible with the new relay. Existing authenticated callback URLs and JSON-object request bodies remain unchanged; non-object callback bodies are now rejected. Explicitly client-executed HTTP Request blocks keep their existing contract.
+Older publishers and listeners are incompatible with the new relay. Existing authenticated callback URLs and JSON-object request bodies remain unchanged; non-object callback bodies are now rejected. Explicitly client-executed HTTP Request blocks keep their existing contract. If no matching listener is connected, the callback returns HTTP 502; retry the authenticated callback after the client reconnects.
 
 Webhook waits now expire with the configured session timeout, or after 24 hours if no timeout is set. The builder settings listener expires after 15 minutes and can be restarted. Expired waits require a new conversation. Rotating the secret also invalidates outstanding waits and subscriptions.
 

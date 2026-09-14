@@ -5,6 +5,7 @@ export type WebhookToken = {
   nonce: string;
   expiresAt: number;
   payload?: string;
+  waitNonce?: string;
 };
 
 export const signWebhookToken = async (

@@ -168,6 +168,7 @@ try {
     },
   ];
   const flow = {
+    settings: { general: { rememberUser: { isEnabled: true } } },
     groups,
     edges: [
       { id: "edge1", from: { eventId: "event1" }, to: { groupId: "group1" } },

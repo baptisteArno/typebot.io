@@ -8,6 +8,7 @@ export const publishWebhook = async (
   room: string,
   blockId: string,
   body: unknown,
+  waitNonce?: string,
 ) => {
   if (!env.NEXT_PUBLIC_PARTYKIT_HOST)
     throw new ORPCError("NOT_FOUND", { message: "PartyKit not configured" });
@@ -20,6 +21,7 @@ export const publishWebhook = async (
           purpose: "publish",
           room,
           blockId,
+          waitNonce,
           nonce: crypto.randomUUID(),
           expiresAt: Date.now() + 60_000,
           payload: serializeWebhookResponse(body),

@@ -47,4 +47,5 @@ const isWebhookToken = (value: unknown): value is WebhookToken =>
   "expiresAt" in value &&
   typeof value.expiresAt === "number" &&
   Number.isFinite(value.expiresAt) &&
+  (!("waitNonce" in value) || typeof value.waitNonce === "string") &&
   (!("payload" in value) || typeof value.payload === "string");

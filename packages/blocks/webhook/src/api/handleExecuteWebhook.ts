@@ -159,6 +159,11 @@ export const handleExecuteWebhook = async ({
     return { message: "OK" };
   }
 
-  await publishWebhook(`${resultId}/webhooks`, blockId, body);
+  await publishWebhook(
+    chatSession.state.pendingWebhook.room,
+    blockId,
+    body,
+    chatSession.state.pendingWebhook.nonce,
+  );
   return { message: "OK" };
 };

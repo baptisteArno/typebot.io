@@ -8,6 +8,7 @@ executed on the client retain their separate client-result contract.
 ```text
 Authenticated executeWebhook / executeTestWebhook
   -> signed publication (room + block + payload, 60-second validity)
+     production also binds the selected session's wait nonce
   -> PartyKit validates publisher and durably claims the publication nonce
      -> validates each subscription (room + block + wait nonce + expiry)
      -> signs response for that wait
@@ -25,6 +26,9 @@ Subscribers can receive their authorized data but cannot sign or publish payload
 PartyKit validates before upgrading the connection and again before delivery,
 including after hibernation. Publication nonces are single-use in durable storage;
 concurrent or replayed POSTs return 409, even after the subscriber enters a new wait.
+Production delivery must match the selected session's wait nonce, so sessions
+sharing a remembered result cannot consume each other's callback. Authenticated
+test publications retain their preview-room broadcast contract.
 Expired nonce records are pruned on the next accepted publication. The embed keeps
 its signed action pending while PartySocket reconnects after a transient disconnect.
 WebSocket client messages never broadcast. Names
@@ -56,6 +60,8 @@ The existing PartyKit-host configuration check on execution endpoints is retaine
 Deploy as a coordinated protocol change:
 
 1. Provision the shared server secret on all three services.
+   The PartyKit main-branch deployment workflow also watches the shared signing
+   and verification helpers, so changes there rebuild the relay.
 2. Deploy the protected PartyKit worker and ensure the old public relay is no
    longer serving clients (including existing unauthenticated sockets). Its new
    delivery path revalidates every connection. Accept a maintenance window:
@@ -87,6 +93,13 @@ a crash after claiming but before saving the continuation leaves the wait
 unresumable and requires a restart. Similarly, relay failure after claiming a
 publication requires a fresh authenticated callback; replaying that POST is rejected. It does not provide transactional exactly-once
 external effects or fix general concurrent session updates outside Webhook waits.
+
+If no matching listener is connected, the relay returns 503 and the callback API
+returns 502. Retry the original authenticated callback after reconnecting; each
+attempt creates a new publication nonce. A successful relay response means the
+payload was sent to a matching socket, not that the browser or engine acknowledged
+consumption. Durable offline delivery and end-to-end acknowledgements are not
+provided.
 
 ## Run the real local path
 

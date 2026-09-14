@@ -24,12 +24,12 @@ const post = (path: string, body: unknown, authorized = false) =>
   });
 const continueChat = (sessionId: string, message: unknown) =>
   post(`/api/v1/sessions/${sessionId}/continueChat`, { message });
-const start = async (preview = false) => {
+const start = async (preview = false, resultId?: string) => {
   const response = await post(
     preview
       ? "/api/v1/typebots/proTypebot/preview/startChat"
       : "/api/v1/typebots/proTypebot-public/startChat",
-    {},
+    { resultId },
     preview,
   );
   assert.equal(response.status, 200, await response.clone().text());
@@ -136,6 +136,10 @@ export const replay = async (prisma: PrismaClient) => {
     ("resultId" in first ? first.resultId : "") +
     "/executeWebhook";
   assert.equal((await post(webhookPath, { answer: "no-auth" })).status, 401);
+  assert.equal(
+    (await post(webhookPath, { answer: "offline" }, true)).status,
+    502,
+  );
   const foreign = await start();
   const listener = listenForWebhook({
     room: action.room,
@@ -257,6 +261,79 @@ export const replay = async (prisma: PrismaClient) => {
   );
   checks.push(
     "Concurrent signed publications are single-use; replay cannot be re-signed for a later wait on the same room and block",
+  );
+
+  const remembered = await start();
+  assert.ok("resultId" in remembered && remembered.resultId);
+  const rememberedAction = getAction(remembered.clientSideActions);
+  const oldWait = await prisma.chatSession.findUniqueOrThrow({
+    where: { id: remembered.sessionId },
+  });
+  const oldMessages: string[] = [];
+  const oldSocket = new WebSocket(
+    `ws://localhost:5292/parties/main/${encodeURIComponent(rememberedAction.room)}?token=${encodeURIComponent(rememberedAction.token)}`,
+  );
+  await new Promise<void>((resolve, reject) => {
+    oldSocket.addEventListener("open", () => resolve());
+    oldSocket.addEventListener("error", () =>
+      reject(new Error("Old subscription did not open")),
+    );
+  });
+  oldSocket.addEventListener("message", (event) =>
+    oldMessages.push(String(event.data)),
+  );
+  const latest = await start(false, remembered.resultId);
+  assert.ok("resultId" in latest);
+  assert.equal(latest.resultId, remembered.resultId);
+  assert.notEqual(latest.sessionId, remembered.sessionId);
+  const rememberedPath = `/api/v1/typebots/proTypebot/blocks/webhook/results/${remembered.resultId}/executeWebhook`;
+  // An older session on the same result/block is not a delivery target.
+  assert.equal(
+    (await post(rememberedPath, { answer: "wrong-session" }, true)).status,
+    502,
+  );
+  const latestAction = getAction(latest.clientSideActions);
+  const latestListener = listenForWebhook({
+    room: latestAction.room,
+    token: latestAction.token,
+    context: {
+      sessionId: latest.sessionId,
+      isPreview: false,
+      wsHost: "localhost:5292",
+    },
+  });
+  await setTimeout(300);
+  assert.equal(
+    (await post(rememberedPath, { answer: "latest-only" }, true)).status,
+    200,
+  );
+  const latestReply = await Promise.race([
+    latestListener,
+    setTimeout(5000).then(() => {
+      throw new Error("No response for selected session");
+    }),
+  ]);
+  assert.equal(
+    (await continueChat(latest.sessionId, latestReply.replyToSend)).status,
+    200,
+  );
+  assert.equal(
+    (await continueChat(remembered.sessionId, latestReply.replyToSend)).status,
+    400,
+  );
+  await setTimeout(100);
+  assert.deepEqual(oldMessages, []);
+  oldSocket.close();
+  assert.deepEqual(
+    (
+      await prisma.chatSession.findUniqueOrThrow({
+        where: { id: remembered.sessionId },
+      })
+    ).state,
+    oldWait.state,
+  );
+  checks.push(
+    "Offline or non-target listeners cause a retryable callback failure; retry delivers only to the selected session when two starts remember the same result",
   );
 
   const preview = await start(true);
