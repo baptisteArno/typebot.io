@@ -56,7 +56,7 @@ test("preview room follows the authenticated user while session IDs stay random"
   expect(collaborator.previewWebhookRoom).toBe(
     "collaborator-id/bot-id/webhooks",
   );
-  expect(collaborator.sessionId).toBe("legacy-session");
+  expect(collaborator.sessionId).not.toBe("legacy-session");
 });
 
 test("templates do not receive a user webhook channel", async () => {

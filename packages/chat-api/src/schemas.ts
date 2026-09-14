@@ -239,7 +239,7 @@ export const startPreviewChatInputSchema = z
       .string()
       .optional()
       .describe(
-        "If provided, will be used as the session ID and will overwrite any existing session with the same ID.",
+        "Deprecated and ignored. Preview creation always returns a new session ID. Use the returned sessionId to continue the conversation; existing sessions are never replaced.",
       ),
     startFrom: startFromSchema.optional(),
     isProgressBarEnabled: z

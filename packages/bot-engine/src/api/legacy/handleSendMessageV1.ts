@@ -32,7 +32,10 @@ export const handleSendMessageV1 = async ({
       message: "Session not found.",
     });
 
-  const newSessionId = sessionId ?? createId();
+  const newSessionId =
+    !session?.state && startParams?.isPreview
+      ? createId()
+      : (sessionId ?? createId());
 
   const isSessionExpired =
     session?.state &&
@@ -113,7 +116,7 @@ export const handleSendMessageV1 = async ({
           })
         : await saveStateToDatabase({
             sessionId: {
-              type: "new",
+              type: startParams.isPreview ? "newPreview" : "new",
               id: newSessionId,
             },
             session: {

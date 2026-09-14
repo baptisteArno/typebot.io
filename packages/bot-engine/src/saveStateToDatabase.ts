@@ -18,7 +18,7 @@ type Props = {
   isWaitingForExternalEvent?: boolean;
   initialSessionId?: string;
   sessionId: {
-    type: "existing" | "new";
+    type: "existing" | "new" | "newPreview";
     id: string;
   };
 };
@@ -62,10 +62,18 @@ export const saveStateToDatabase = async ({
   const session =
     sessionId.type === "existing"
       ? { state, id: sessionId.id }
-      : await upsertSession(sessionId.id, {
-          state,
-          isReplying: isWaitingForExternalEvent ?? false,
-        });
+      : sessionId.type === "newPreview"
+        ? await prisma.chatSession.create({
+            data: {
+              id: sessionId.id,
+              state,
+              isReplying: isWaitingForExternalEvent ?? false,
+            },
+          })
+        : await upsertSession(sessionId.id, {
+            state,
+            isReplying: isWaitingForExternalEvent ?? false,
+          });
 
   if (!resultId) {
     if (queries.length > 0) await prisma.$transaction(queries);
