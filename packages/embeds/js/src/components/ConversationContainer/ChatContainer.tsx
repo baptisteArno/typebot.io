@@ -350,6 +350,7 @@ export const ChatContainer = (props: Props) => {
           wsHost: props.context.wsHost,
           sessionId: props.initialChatReply.sessionId,
           resultId: props.initialChatReply.resultId,
+          previewWebhookRoom: props.context.previewWebhookRoom,
         },
         onMessageStream: streamMessage,
         onStreamError: async (error) => {

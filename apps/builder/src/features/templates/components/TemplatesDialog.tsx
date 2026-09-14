@@ -1,10 +1,10 @@
 import { useTranslate } from "@tolgee/react";
-import { Standard } from "@typebot.io/react";
 import { templates as templatesData } from "@typebot.io/templates";
 import { Badge } from "@typebot.io/ui/components/Badge";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { useState } from "react";
+import { IsolatedPreview } from "@/features/preview/components/IsolatedPreview";
 import type { TemplateProps } from "../types";
 
 type Props = {
@@ -142,12 +142,9 @@ export const TemplatesDialog = ({
           }}
           className="flex flex-col w-full gap-4 items-center pb-4"
         >
-          <Standard
+          <IsolatedPreview
             key={selectedTemplate.slug}
             templateSlug={selectedTemplate.slug}
-            apiHost={
-              typeof window === "undefined" ? undefined : window.location.origin
-            }
             style={{
               borderRadius: "0.25rem",
               backgroundColor: "#fff",

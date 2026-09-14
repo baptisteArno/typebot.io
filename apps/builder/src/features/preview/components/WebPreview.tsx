@@ -1,16 +1,14 @@
 import type { ContinueChatResponse } from "@typebot.io/chat-api/schemas";
-import { Standard } from "@typebot.io/react";
 import { defaultBackgroundColor } from "@typebot.io/theme/constants";
 import { Button } from "@typebot.io/ui/components/Button";
 import { useEffect, useRef, useState } from "react";
 import { useEditor } from "@/features/editor/providers/EditorProvider";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { useGraph } from "@/features/graph/providers/GraphProvider";
-import { useUser } from "@/features/user/hooks/useUser";
 import { toast } from "@/lib/toast";
+import { IsolatedPreview } from "./IsolatedPreview";
 
 export const WebPreview = () => {
-  const { user } = useUser();
   const { typebot, save } = useTypebot();
   const { startPreviewFrom } = useEditor();
   const { setPreviewingBlock } = useGraph();
@@ -86,12 +84,9 @@ export const WebPreview = () => {
   if (saveState.status === "saving") return null;
 
   return (
-    <Standard
+    <IsolatedPreview
       key={`web-preview-${startPreviewFrom?.id ?? ""}`}
       typebot={typebot.id}
-      isPreview
-      apiHost={window.location.origin}
-      sessionId={user ? `${typebot.id}-${user.id}` : undefined}
       startFrom={
         startPreviewFrom?.type === "group"
           ? { type: "group", groupId: startPreviewFrom.id }

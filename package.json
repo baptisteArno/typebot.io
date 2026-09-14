@@ -23,6 +23,20 @@
             "target": "build"
           }
         ]
+      },
+      "test-preview-isolation": {
+        "executor": "nx:run-commands",
+        "dependsOn": [
+          {
+            "projects": [
+              "@typebot.io/react"
+            ],
+            "target": "build"
+          }
+        ],
+        "options": {
+          "command": "bunx playwright test --config tests/preview/playwright.config.ts"
+        }
       }
     }
   },
@@ -55,6 +69,7 @@
     "@nx/next": "22.7.7",
     "@nx/vite": "22.7.7",
     "@nx/vitest": "22.7.7",
+    "@playwright/test": "^1.57.0",
     "@tolgee/cli": "^2.16.1",
     "@types/node": "^24.10.13",
     "esbuild": "^0.28.1",

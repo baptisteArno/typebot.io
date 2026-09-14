@@ -69,6 +69,8 @@ export const StripePaymentForm = (props: Props) => {
       sessionId: props.context.sessionId,
       resultId: props.context.resultId,
       typebot: props.context.typebot,
+      isPreview: props.context.isPreview,
+      previewWebhookRoom: props.context.previewWebhookRoom,
     });
     const { postalCode, ...address } =
       props.options?.additionalInformation?.address ?? {};

@@ -26,8 +26,6 @@ const injectViewerUrlIfVercelPreview = (val) => {
 
 injectViewerUrlIfVercelPreview(process.env.NEXT_PUBLIC_VIEWER_URL);
 
-configureRuntimeEnv();
-
 const landingPagePaths = [
   "/",
   "/pricing",
@@ -118,7 +116,11 @@ export default async function config() {
   // Avoid loading env package when NX is creating the graph (nx-ignore command)
   if (global.NX_GRAPH_CREATION) return nextConfig;
 
-  await import("@typebot.io/env/compiled");
+  const { env } = await import("@typebot.io/env/compiled");
+  // Publish only the builder origin, derived from the existing server config.
+  if (env.NEXTAUTH_URL)
+    process.env.NEXT_PUBLIC_BUILDER_ORIGIN = new URL(env.NEXTAUTH_URL).origin;
+  configureRuntimeEnv();
 
   return process.env.SENTRY_DSN
     ? withSentryConfig(nextConfig, {

@@ -107,21 +107,13 @@ export const importTypebotInputSchema = z
     templateSlug: z.string().optional(),
     folderId: z.string().nullable().optional(),
     fromTemplate: z.string().optional(),
-    enableSafetyFlags: z.boolean().optional(),
   })
   .refine(({ typebot, templateSlug }) => typebot || templateSlug, {
     message: "Either typebot or templateSlug is required",
   });
 
 export const handleImportTypebot = async ({
-  input: {
-    typebot,
-    workspaceId,
-    templateSlug,
-    folderId,
-    fromTemplate,
-    enableSafetyFlags,
-  },
+  input: { typebot, workspaceId, templateSlug, folderId, fromTemplate },
   context: { user },
 }: {
   input: z.infer<typeof importTypebotInputSchema>;
@@ -167,7 +159,6 @@ export const handleImportTypebot = async ({
     duplicatingBot.groups
       ? await sanitizeGroups(duplicatingBot.groups, {
           workspace,
-          enableSafetyFlags,
         })
       : []
   ) as TypebotV6["groups"];

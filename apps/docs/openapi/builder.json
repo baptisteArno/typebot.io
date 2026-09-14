@@ -4813,10 +4813,6 @@
               "isExecutedOnClient": {
                 "type": "boolean"
               },
-              "isUnsafe": {
-                "type": "boolean",
-                "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
-              },
               "shouldExecuteInParentContext": {
                 "type": "boolean"
               }
@@ -4886,10 +4882,6 @@
                   "isExecutedOnClient": {
                     "type": "boolean"
                   },
-                  "isUnsafe": {
-                    "type": "boolean",
-                    "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
-                  },
                   "expressionToEvaluate": {
                     "type": "string"
                   },
@@ -4942,10 +4934,6 @@
           "isExecutedOnClient": {
             "type": "boolean"
           },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
-          },
           "expressionToEvaluate": {
             "type": "string"
           },
@@ -4975,10 +4963,6 @@
           "isExecutedOnClient": {
             "type": "boolean"
           },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
-          },
           "type": {
             "enum": [
               "Now",
@@ -5003,10 +4987,6 @@
           },
           "isExecutedOnClient": {
             "type": "boolean"
-          },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
           },
           "type": {
             "enum": [
@@ -5033,10 +5013,6 @@
           "isExecutedOnClient": {
             "type": "boolean"
           },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
-          },
           "type": {
             "enum": [
               "Now",
@@ -5061,10 +5037,6 @@
           },
           "isExecutedOnClient": {
             "type": "boolean"
-          },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
           },
           "type": {
             "enum": [
@@ -5098,10 +5070,6 @@
           "isExecutedOnClient": {
             "type": "boolean"
           },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
-          },
           "type": {
             "enum": [
               "Today",
@@ -5133,10 +5101,6 @@
           },
           "isExecutedOnClient": {
             "type": "boolean"
-          },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
           },
           "type": {
             "enum": [
@@ -5170,10 +5134,6 @@
           "isExecutedOnClient": {
             "type": "boolean"
           },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
-          },
           "type": {
             "enum": [
               "Today",
@@ -5205,10 +5165,6 @@
           },
           "isExecutedOnClient": {
             "type": "boolean"
-          },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
           },
           "type": {
             "enum": [
@@ -5242,10 +5198,6 @@
           "isExecutedOnClient": {
             "type": "boolean"
           },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
-          },
           "type": {
             "enum": [
               "Today",
@@ -5277,10 +5229,6 @@
           },
           "isExecutedOnClient": {
             "type": "boolean"
-          },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
           },
           "type": {
             "enum": [
@@ -5314,10 +5262,6 @@
           "isExecutedOnClient": {
             "type": "boolean"
           },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
-          },
           "type": {
             "enum": [
               "Today",
@@ -5349,10 +5293,6 @@
           },
           "isExecutedOnClient": {
             "type": "boolean"
-          },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
           },
           "type": {
             "enum": [
@@ -5386,10 +5326,6 @@
           "isExecutedOnClient": {
             "type": "boolean"
           },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
-          },
           "type": {
             "enum": [
               "Today",
@@ -5421,10 +5357,6 @@
           },
           "isExecutedOnClient": {
             "type": "boolean"
-          },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
           },
           "type": {
             "enum": [
@@ -5458,10 +5390,6 @@
           "isExecutedOnClient": {
             "type": "boolean"
           },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
-          },
           "type": {
             "enum": [
               "Today",
@@ -5493,10 +5421,6 @@
           },
           "isExecutedOnClient": {
             "type": "boolean"
-          },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
           },
           "type": {
             "enum": [
@@ -5530,10 +5454,6 @@
           "isExecutedOnClient": {
             "type": "boolean"
           },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
-          },
           "type": {
             "const": "Map item with same index"
           },
@@ -5565,10 +5485,6 @@
           "isExecutedOnClient": {
             "type": "boolean"
           },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
-          },
           "type": {
             "const": "Append value(s)"
           },
@@ -5588,10 +5504,6 @@
           },
           "isExecutedOnClient": {
             "type": "boolean"
-          },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
           },
           "type": {
             "enum": [
@@ -5616,10 +5528,6 @@
           },
           "isExecutedOnClient": {
             "type": "boolean"
-          },
-          "isUnsafe": {
-            "type": "boolean",
-            "description": "Enabled by default for imported bots to prevent code to be executed in preview with priviledged access"
           },
           "type": {
             "enum": [
@@ -54002,9 +53910,6 @@
                   },
                   "fromTemplate": {
                     "type": "string"
-                  },
-                  "enableSafetyFlags": {
-                    "type": "boolean"
                   }
                 },
                 "required": [
@@ -75806,7 +75711,8 @@
                                     "type": "string"
                                   },
                                   "isUnsafe": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                   },
                                   "isCode": {
                                     "type": "boolean"
@@ -75929,7 +75835,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -76092,7 +75999,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -77012,6 +76920,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "previewWebhookRoom": {
+                      "type": "string",
+                      "description": "Webhook channel for a preview, independent of its session ID."
+                    },
                     "sessionId": {
                       "type": "string",
                       "description": "To save and use for /continueChat requests."
@@ -78464,7 +78376,8 @@
                                     "type": "string"
                                   },
                                   "isUnsafe": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                   },
                                   "isCode": {
                                     "type": "boolean"
@@ -78587,7 +78500,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -78750,7 +78664,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -79667,6 +79582,10 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "previewWebhookRoom": {
+                      "type": "string",
+                      "description": "Webhook channel for a preview, independent of its session ID."
+                    },
                     "sessionId": {
                       "type": "string",
                       "description": "To save and use for /continueChat requests."
@@ -81119,7 +81038,8 @@
                                     "type": "string"
                                   },
                                   "isUnsafe": {
-                                    "type": "boolean"
+                                    "type": "boolean",
+                                    "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                   },
                                   "isCode": {
                                     "type": "boolean"
@@ -81242,7 +81162,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
@@ -81405,7 +81326,8 @@
                                         "type": "string"
                                       },
                                       "isUnsafe": {
-                                        "type": "boolean"
+                                        "type": "boolean",
+                                        "description": "Deprecated compatibility field. Servers emit true so older preview clients keep using their sandbox. Current clients ignore this field."
                                       },
                                       "isCode": {
                                         "type": "boolean"
