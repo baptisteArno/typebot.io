@@ -257,6 +257,7 @@
         "self-hosting/deploy/docker",
         "self-hosting/deploy/vercel",
         "self-hosting/deploy/alibaba-cloud",
+        "self-hosting/deploy/you-secure",
         "self-hosting/deploy/manual"
       ]
     },
