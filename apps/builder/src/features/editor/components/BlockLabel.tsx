@@ -41,7 +41,7 @@ export const BlockLabel = ({ type, ...props }: Props): JSX.Element => {
       )
     case BubbleBlockType.EMBED:
       return (
-        <Text fontSize="sm" {...props}>
+        <Text fontSize="xs" noOfLines={1} {...props}>
           {t('editor.sidebarBlock.embed.label')}
         </Text>
       )

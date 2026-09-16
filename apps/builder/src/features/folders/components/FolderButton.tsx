@@ -90,6 +90,7 @@ const FolderButton = ({
       pos="relative"
       cursor="pointer"
       variant="outline"
+      rounded="lg"
       colorScheme={isTypebotOver || draggedTypebot ? 'orange' : 'gray'}
       borderWidth={isTypebotOver ? '2px' : '1px'}
       transition={'border-width 0.1s ease'}
@@ -182,6 +183,7 @@ export const ButtonSkeleton = () => (
     pos="relative"
     cursor="pointer"
     variant="outline"
+    rounded="lg"
   >
     <VStack spacing="6" w="full">
       <SkeletonCircle boxSize="45px" />

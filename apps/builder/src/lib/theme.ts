@@ -26,6 +26,9 @@ const fonts = {
   body: "Open Sans, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
 }
 
+// Note: the `orange` key name is kept for now to avoid touching every
+// colorScheme="orange"/orange.NNN reference across the app (~94 files) —
+// its values are the app's actual accent color (currently indigo/purple).
 export const colors = {
   gray: {
     50: '#fafafa',
@@ -53,16 +56,16 @@ export const colors = {
     900: '#1a202c',
   },
   orange: {
-    50: '#fff1da',
-    100: '#ffd7ae',
-    200: '#ffbf7d',
-    300: '#ffa54c',
-    400: '#ff8b1a',
-    500: '#e67200',
-    600: '#b45800',
-    700: '#813e00',
-    800: '#4f2500',
-    900: '#200b00',
+    50: '#eef2ff',
+    100: '#e0e7ff',
+    200: '#c7d2fe',
+    300: '#a5b4fc',
+    400: '#818cf8',
+    500: '#6366f1',
+    600: '#4f46e5',
+    700: '#4338ca',
+    800: '#3730a3',
+    900: '#312e81',
   },
   yellow: {
     50: '#fff9da',
@@ -82,7 +85,7 @@ const Modal = createMultiStyleConfigHelpers(
   modalAnatomy.keys
 ).defineMultiStyleConfig({
   baseStyle: ({ colorMode }) => ({
-    dialog: { bg: colorMode === 'dark' ? 'orange.800' : 'white' },
+    dialog: { bg: colorMode === 'dark' ? 'gray.800' : 'white' },
   }),
 })
 
@@ -95,7 +98,7 @@ const Popover = createMultiStyleConfigHelpers(
       maxWidth: 'fit-content',
     },
     content: {
-      bg: colorMode === 'dark' ? 'orange.800' : 'white',
+      bg: colorMode === 'dark' ? 'gray.800' : 'white',
     },
   }),
 })
@@ -106,12 +109,12 @@ const Menu = createMultiStyleConfigHelpers(
   baseStyle: ({ colorMode }) => ({
     list: {
       shadow: 'lg',
-      bg: colorMode === 'dark' ? 'orange.800' : 'white',
+      bg: colorMode === 'dark' ? 'gray.800' : 'white',
     },
     item: {
-      bg: colorMode === 'dark' ? 'orange.800' : 'white',
+      bg: colorMode === 'dark' ? 'gray.800' : 'white',
       _hover: {
-        bg: colorMode === 'dark' ? 'orange.700' : 'orange.100',
+        bg: colorMode === 'dark' ? 'gray.700' : 'orange.100',
       },
     },
   }),
@@ -131,7 +134,7 @@ const Accordion = createMultiStyleConfigHelpers(
 
 const Button = defineStyleConfig({
   baseStyle: ({ colorMode }) => ({
-    bg: colorMode === 'dark' ? 'orange.800' : 'white',
+    bg: colorMode === 'dark' ? 'gray.800' : 'white',
   }),
   variants: {
     solid: ({ colorMode, colorScheme }) => {
@@ -231,9 +234,19 @@ const components = {
 const styles = {
   global: (props: StyleFunctionProps) => ({
     body: {
-      bg: mode('white', 'orange.900')(props),
+      bg: mode('white', 'gray.900')(props),
     },
   }),
+}
+
+const radii = {
+  sm: '6px',
+  base: '8px',
+  md: '10px',
+  lg: '16px',
+  xl: '20px',
+  '2xl': '24px',
+  '3xl': '28px',
 }
 
 export const customTheme = extendTheme({
@@ -242,4 +255,5 @@ export const customTheme = extendTheme({
   components,
   config,
   styles,
+  radii,
 })

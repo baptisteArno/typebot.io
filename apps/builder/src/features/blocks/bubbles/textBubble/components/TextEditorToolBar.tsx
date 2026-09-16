@@ -10,16 +10,8 @@ import {
   MARK_UNDERLINE,
 } from '@udecode/plate-basic-marks'
 import { getPluginType, useEditorRef } from '@udecode/plate-core'
-import {
-  BoldIcon,
-  ItalicIcon,
-  UnderlineIcon,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  LinkIcon,
-  UserIcon,
-} from '@/components/icons'
+import { BoldIcon, ItalicIcon, UnderlineIcon, UserIcon } from '@/components/icons'
 import { MarkToolbarButton } from './plate/MarkToolbarButton'
-import { LinkToolbarButton } from './plate/LinkToolbarButton'
 
 type Props = {
   onVariablesButtonClick: () => void
@@ -72,9 +64,6 @@ export const TextEditorToolBar = ({
           icon={<UnderlineIcon />}
           aria-label="Toggle underline"
         />
-      </span>
-      <span data-testid="link-button">
-        <LinkToolbarButton icon={<LinkIcon />} aria-label="Add link" />
       </span>
     </HStack>
   )

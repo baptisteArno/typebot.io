@@ -74,6 +74,7 @@ export interface LeafType {
   strikeThrough?: boolean
   bold?: boolean
   italic?: boolean
+  underline?: boolean
   code?: boolean
   parentType?: string
 }

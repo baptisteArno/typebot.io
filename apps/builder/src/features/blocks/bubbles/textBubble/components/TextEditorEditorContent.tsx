@@ -89,19 +89,6 @@ export const TextEditorEditorContent = ({ closeEditor }: Props) => {
         '.slate-ToolbarButton-active': {
           color: useColorModeValue('orange.500', 'orange.300') + ' !important',
         },
-        '[class^="PlateFloatingLink___Styled"]': {
-          '--tw-bg-opacity': useColorModeValue('1', '.1') + '!important',
-          backgroundColor: useColorModeValue('white', 'gray.800'),
-          borderRadius: 'md',
-          transitionProperty: 'background-color',
-          transitionDuration: 'normal',
-        },
-        '[class^="FloatingVerticalDivider___"]': {
-          '--tw-bg-opacity': useColorModeValue('1', '.4') + '!important',
-        },
-        '.slate-a': {
-          color: useColorModeValue('orange.500', 'orange.300'),
-        },
       }}
     >
       <TextEditorToolBar
