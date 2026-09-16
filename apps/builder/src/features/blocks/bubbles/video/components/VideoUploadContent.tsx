@@ -1,45 +1,34 @@
-import { Button, HStack, Stack } from '@chakra-ui/react'
+import { Button, Flex, HStack, Stack, Text } from '@chakra-ui/react'
 import { VideoBubbleBlock } from '@typebot.io/schemas'
 import { parseVideoUrl } from '@typebot.io/schemas/features/blocks/bubbles/video/helpers'
 import { useState } from 'react'
-import { PexelsPicker } from '@/components/VideoUploadContent/PexelsPicker'
+import { useTranslate } from '@tolgee/react'
+import { TElement } from '@udecode/plate-common'
+import { UploadButton } from '@/components/ImageUploadContent/UploadButton'
+import { RichTextCaptionEditor } from '@/components/RichTextCaptionEditor'
+import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
 import { VideoLinkEmbedContent } from '@/components/VideoUploadContent/VideoLinkEmbedContent'
 
-type Tabs = 'link' | 'pexels'
+const acceptedVideoFileTypes = ['video/mp4']
+const maxVideoUploadSizeInMB = 16
+
+type Tabs = 'upload' | 'link'
 
 type Props = {
+  blockId: string
+  uploadFileProps: FilePathUploadProps
   content?: VideoBubbleBlock['content']
   onSubmit: (content: VideoBubbleBlock['content']) => void
-  initialTab?: Tabs
-} & (
-  | {
-      includedTabs?: Tabs[]
-    }
-  | {
-      excludedTabs?: Tabs[]
-    }
-)
-
-const defaultDisplayedTabs: Tabs[] = ['link', 'pexels']
+}
 
 export const VideoUploadContent = ({
+  blockId,
+  uploadFileProps,
   content,
   onSubmit,
-  initialTab,
-  ...props
 }: Props) => {
-  const includedTabs =
-    'includedTabs' in props
-      ? props.includedTabs ?? defaultDisplayedTabs
-      : defaultDisplayedTabs
-  const excludedTabs = 'excludedTabs' in props ? props.excludedTabs ?? [] : []
-  const displayedTabs = defaultDisplayedTabs.filter(
-    (tab) => !excludedTabs.includes(tab) && includedTabs.includes(tab)
-  )
-
-  const [currentTab, setCurrentTab] = useState<Tabs>(
-    initialTab ?? displayedTabs[0]
-  )
+  const { t } = useTranslate()
+  const [currentTab, setCurrentTab] = useState<Tabs>('upload')
 
   const updateUrl = (url: string) => {
     const {
@@ -48,10 +37,6 @@ export const VideoUploadContent = ({
       id,
       videoSizeSuggestion,
     } = parseVideoUrl(url)
-    if (currentTab !== 'link') {
-      // Allow user to update video settings after selection
-      setCurrentTab('link')
-    }
     return onSubmit({
       ...content,
       type,
@@ -63,10 +48,21 @@ export const VideoUploadContent = ({
     })
   }
 
+  const updateCaption = (caption: TElement[]) => {
+    onSubmit({ ...content, caption })
+  }
+
   return (
-    <Stack>
-      <HStack>
-        {displayedTabs.includes('link') && (
+    <Stack p="2" spacing={4}>
+      <Stack spacing={1}>
+        <HStack>
+          <Button
+            variant={currentTab === 'upload' ? 'solid' : 'ghost'}
+            onClick={() => setCurrentTab('upload')}
+            size="sm"
+          >
+            Upload
+          </Button>
           <Button
             variant={currentTab === 'link' ? 'solid' : 'ghost'}
             onClick={() => setCurrentTab('link')}
@@ -74,29 +70,42 @@ export const VideoUploadContent = ({
           >
             Link
           </Button>
-        )}
-        {displayedTabs.includes('pexels') && (
-          <Button
-            variant={currentTab === 'pexels' ? 'solid' : 'ghost'}
-            onClick={() => setCurrentTab('pexels')}
-            size="sm"
-          >
-            Pexels
-          </Button>
-        )}
-      </HStack>
+        </HStack>
 
-      {/* Body content to be displayed below conditionally based on currentTab */}
-      {currentTab === 'link' && (
-        <VideoLinkEmbedContent
-          content={content}
-          updateUrl={updateUrl}
-          onSubmit={onSubmit}
+        {currentTab === 'upload' && (
+          <Flex justify="center" py="2">
+            <UploadButton
+              fileType="video"
+              filePathProps={uploadFileProps}
+              onFileUploaded={updateUrl}
+              acceptedFileTypes={acceptedVideoFileTypes}
+              maxSizeInMB={maxVideoUploadSizeInMB}
+              colorScheme="orange"
+            >
+              {t('editor.header.uploadTab.uploadButton.label')}
+            </UploadButton>
+          </Flex>
+        )}
+        {currentTab === 'link' && (
+          <VideoLinkEmbedContent content={content} updateUrl={updateUrl} />
+        )}
+        <Text fontSize="sm" color="gray.500">
+          {t('video.helperText.label')}
+        </Text>
+      </Stack>
+      <Stack spacing={1}>
+        <Text fontSize="sm" fontWeight="medium">
+          {t('video.caption.label')}
+        </Text>
+        <RichTextCaptionEditor
+          id={`video-caption-${blockId}`}
+          initialValue={content?.caption ?? []}
+          onChange={updateCaption}
         />
-      )}
-      {currentTab === 'pexels' && (
-        <PexelsPicker videoSize="medium" onVideoSelect={updateUrl} />
-      )}
+        <Text fontSize="sm" color="gray.500">
+          {t('video.caption.helperText')}
+        </Text>
+      </Stack>
     </Stack>
   )
 }

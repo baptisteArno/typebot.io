@@ -24,8 +24,12 @@ test.describe.parallel('Templates page', () => {
   test('Templates should be previewable and usable', async ({ page }) => {
     await page.goto('/typebots/create')
     await page.click('text=Start from a template')
-    await page.click('text=Customer Support')
-    await expect(page.locator('text=How can I help you?')).toBeVisible()
+    await page.click('text=FAQ')
+    await expect(
+      page.locator(
+        "text=If you have a question about our product, you're in the right place"
+      )
+    ).toBeVisible()
     await page.click('text=Use this template')
     await expect(page).toHaveURL(new RegExp(`/edit`), { timeout: 20000 })
   })

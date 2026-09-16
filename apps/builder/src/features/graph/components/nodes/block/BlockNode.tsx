@@ -3,6 +3,8 @@ import {
   HStack,
   Popover,
   PopoverTrigger,
+  Tag,
+  Tooltip,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
@@ -20,7 +22,9 @@ import {
   isInputBlock,
   isBubbleBlock,
   isTextBubbleBlock,
+  isDeprecatedBlockType,
 } from '@typebot.io/schemas/helpers'
+import { useTranslate } from '@tolgee/react'
 import { BlockNodeContent } from './BlockNodeContent'
 import { BlockSettings, SettingsPopoverContent } from './SettingsPopoverContent'
 import { BlockNodeContextMenu } from './BlockNodeContextMenu'
@@ -61,6 +65,7 @@ export const BlockNode = ({
   indices: { blockIndex: number; groupIndex: number }
   onMouseDown?: (blockNodePosition: NodePosition, block: BlockV6) => void
 }) => {
+  const { t } = useTranslate()
   const bg = useColorModeValue('gray.50', 'gray.850')
   const previewingBorderColor = useColorModeValue('orange.400', 'orange.300')
   const borderColor = useColorModeValue('gray.200', 'gray.800')
@@ -319,6 +324,20 @@ export const BlockNode = ({
                     />
                   )}
               </HStack>
+              {isDeprecatedBlockType(block.type) && (
+                <Tooltip label={t('editor.blocks.deprecated.tooltip.label')}>
+                  <Tag
+                    pos="absolute"
+                    top="-10px"
+                    right="8px"
+                    size="sm"
+                    colorScheme="orange"
+                    zIndex={1}
+                  >
+                    {t('editor.blocks.deprecated.tag.label')}
+                  </Tag>
+                </Tooltip>
+              )}
             </Flex>
           </PopoverTrigger>
           {hasSettingsPopover(block) && (

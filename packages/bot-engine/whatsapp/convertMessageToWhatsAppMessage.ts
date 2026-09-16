@@ -33,10 +33,16 @@ export const convertMessageToWhatsAppMessage = (
     case BubbleBlockType.IMAGE: {
       if (!message.content.url || isImageUrlNotCompatible(message.content.url))
         return null
+      const caption = message.content.caption?.length
+        ? convertRichTextToMarkdown(message.content.caption, {
+            flavour: 'whatsapp',
+          })
+        : undefined
       return {
         type: 'image',
         image: {
           link: message.content.url,
+          ...(caption ? { caption } : {}),
         },
       }
     }
@@ -51,13 +57,20 @@ export const convertMessageToWhatsAppMessage = (
     }
     case BubbleBlockType.VIDEO: {
       if (!message.content.url) return null
-      if (message.content.type === VideoBubbleContentType.URL)
+      if (message.content.type === VideoBubbleContentType.URL) {
+        const caption = message.content.caption?.length
+          ? convertRichTextToMarkdown(message.content.caption, {
+              flavour: 'whatsapp',
+            })
+          : undefined
         return {
           type: 'video',
           video: {
             link: message.content.url,
+            ...(caption ? { caption } : {}),
           },
         }
+      }
       if (
         embeddableVideoTypes.includes(
           message.content.type as EmbeddableVideoBubbleContentType
@@ -78,6 +91,21 @@ export const convertMessageToWhatsAppMessage = (
     }
     case BubbleBlockType.EMBED: {
       if (!message.content.url) return null
+      if (message.content.fileName) {
+        const caption = message.content.caption?.length
+          ? convertRichTextToMarkdown(message.content.caption, {
+              flavour: 'whatsapp',
+            })
+          : undefined
+        return {
+          type: 'document',
+          document: {
+            link: message.content.url,
+            filename: message.content.fileName,
+            ...(caption ? { caption } : {}),
+          },
+        }
+      }
       return {
         type: 'text',
         text: {

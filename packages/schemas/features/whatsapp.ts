@@ -63,7 +63,7 @@ const sendingMessageSchema = z.discriminatedUnion('type', [
   }),
   z.object({
     type: z.literal('image'),
-    image: mediaSchema,
+    image: mediaSchema.extend({ caption: z.string().optional() }),
   }),
   z.object({
     type: z.literal('audio'),
@@ -71,7 +71,14 @@ const sendingMessageSchema = z.discriminatedUnion('type', [
   }),
   z.object({
     type: z.literal('video'),
-    video: mediaSchema,
+    video: mediaSchema.extend({ caption: z.string().optional() }),
+  }),
+  z.object({
+    type: z.literal('document'),
+    document: mediaSchema.extend({
+      filename: z.string().optional(),
+      caption: z.string().optional(),
+    }),
   }),
   z.object({
     type: z.literal('interactive'),

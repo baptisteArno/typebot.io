@@ -35,6 +35,7 @@ const inputSchema = z.object({
       })
     ),
   fileType: z.string().optional(),
+  maxFileSize: z.number().optional(),
 })
 
 export type FilePathUploadProps = z.infer<
@@ -43,7 +44,7 @@ export type FilePathUploadProps = z.infer<
 
 export const generateUploadUrl = authenticatedProcedure
   .input(inputSchema)
-  .mutation(async ({ input: { filePathProps, fileType }, ctx: { user } }) => {
+  .mutation(async ({ input: { filePathProps, fileType, maxFileSize }, ctx: { user } }) => {
     if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
@@ -65,6 +66,7 @@ export const generateUploadUrl = authenticatedProcedure
     const presignedPostPolicy = await generatePresignedPostPolicy({
       fileType,
       filePath,
+      maxFileSize,
     })
 
     return {
