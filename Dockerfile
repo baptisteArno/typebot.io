@@ -2,9 +2,24 @@ FROM node:20-bullseye-slim AS base
 WORKDIR /app
 ARG SCOPE
 ENV SCOPE=${SCOPE}
-RUN apt-get -qy update \
+# bullseye-security's mirror pool intermittently 404s on a package whose index
+# entry it still advertises (edge-routing dependent, not a real network
+# outage) — retry a few times, and if the patched build is genuinely
+# unavailable, fall back to the unpatched build in the plain bullseye suite
+# rather than blocking the build entirely.
+RUN success=; \
+    for i in 1 2 3 4 5; do \
+    apt-get -qy update \
     && apt-get -qy --no-install-recommends install \
     openssl \
+    && { success=1; break; }; \
+    echo "apt-get install openssl failed (attempt $i/5), retrying in 10s..."; \
+    sleep 10; \
+    done; \
+    if [ "$success" != 1 ]; then \
+    echo "Falling back to openssl from the plain bullseye suite (unpatched build)"; \
+    apt-get -qy --no-install-recommends install -t bullseye openssl; \
+    fi \
     && apt-get autoremove -yq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -17,7 +32,22 @@ COPY . .
 RUN turbo prune ${SCOPE} --docker
 
 FROM base AS builder
-RUN apt-get -qy update && apt-get -qy --no-install-recommends install openssl git python3 g++ build-essential
+# Same intermittent bullseye-security 404 as the base stage — see comment
+# there. Only openssl comes from the security suite; git/python3/g++/
+# build-essential are unaffected either way, so pinning the whole fallback
+# install to bullseye main is safe.
+RUN success=; \
+    for i in 1 2 3 4 5; do \
+    apt-get -qy update \
+    && apt-get -qy --no-install-recommends install openssl git python3 g++ build-essential \
+    && { success=1; break; }; \
+    echo "apt-get install failed (attempt $i/5), retrying in 10s..."; \
+    sleep 10; \
+    done; \
+    if [ "$success" != 1 ]; then \
+    echo "Falling back to openssl from the plain bullseye suite (unpatched build)"; \
+    apt-get -qy --no-install-recommends install -t bullseye openssl git python3 g++ build-essential; \
+    fi
 WORKDIR /app
 COPY .gitignore .gitignore
 COPY .npmrc .pnpmfile.cjs ./
