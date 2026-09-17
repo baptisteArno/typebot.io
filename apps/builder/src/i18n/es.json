@@ -127,7 +127,6 @@
   "editor.blockCard.logicBlock.tooltip.code.label": "Ejecutar código Javascript",
   "editor.blockCard.logicBlock.tooltip.jump.label": "Saltar al flujo de otro grupo",
   "editor.blockCard.logicBlock.tooltip.typebotLink.label": "Enlazar y avanzar a otro typebot",
-  "editor.blocks.bubbles.audio.settings.autoplay.label": "Habilitar reproducción automática",
   "editor.blocks.bubbles.audio.settings.chooseFile.label": "Elegir un archivo",
   "editor.blocks.bubbles.audio.settings.embedLink.label": "Adicionar link",
   "editor.blocks.bubbles.audio.settings.upload.label": "Subir",

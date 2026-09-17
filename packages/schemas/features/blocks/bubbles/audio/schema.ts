@@ -4,7 +4,6 @@ import { BubbleBlockType } from '../constants'
 
 export const audioBubbleContentSchema = z.object({
   url: z.string().optional(),
-  isAutoplayEnabled: z.boolean().optional(),
 })
 
 export const audioBubbleBlockSchema = blockBaseSchema.merge(

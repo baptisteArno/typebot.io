@@ -2,9 +2,37 @@ FROM node:20-bullseye-slim AS base
 WORKDIR /app
 ARG SCOPE
 ENV SCOPE=${SCOPE}
-RUN apt-get -qy update \
+# bullseye-security's mirror pool intermittently 404s on packages whose index
+# still advertises them (edge-routing dependent, not a real network outage —
+# during a broader outage a whole swath of security-suite packages can be
+# affected at once, sometimes leaving a partial, version-inconsistent state
+# behind after failed retries: some dependencies get upgraded before a later
+# package in the same transaction 404s and aborts it).
+#
+# Retry a few times first (cheap fix for the common transient case). If still
+# broken, drop the security suite from apt's sources entirely and reconcile
+# EVERY already-installed package plus the target(s) to the plain bullseye
+# suite in one transaction — `-t bullseye` on just the named packages is not
+# enough, since apt only reconsiders packages actually listed in the install
+# command, not their already-installed dependencies, and `--allow-downgrades`
+# alone won't touch a package apt wasn't explicitly asked to change.
+RUN success=; \
+    for i in 1 2 3 4 5; do \
+    apt-get -qy update \
     && apt-get -qy --no-install-recommends install \
     openssl \
+    && { success=1; break; }; \
+    echo "apt-get install openssl failed (attempt $i/5), retrying in 10s..."; \
+    sleep 10; \
+    done; \
+    if [ "$success" != 1 ]; then \
+    echo "bullseye-security unavailable after retries — falling back to the plain bullseye suite for the whole system"; \
+    grep -v 'bullseye-security' /etc/apt/sources.list > /tmp/sources.list.nosecurity \
+    && mv /tmp/sources.list.nosecurity /etc/apt/sources.list \
+    && apt-get -qy update \
+    && INSTALLED=$(dpkg-query -W -f='${Package}/bullseye\n' 2>/dev/null | tr '\n' ' ') \
+    && apt-get -qy --no-install-recommends --allow-downgrades install $INSTALLED openssl; \
+    fi \
     && apt-get autoremove -yq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -17,7 +45,25 @@ COPY . .
 RUN turbo prune ${SCOPE} --docker
 
 FROM base AS builder
-RUN apt-get -qy update && apt-get -qy --no-install-recommends install openssl git python3 g++ build-essential
+# Same intermittent bullseye-security 404 as the base stage — see comment
+# there for why the fallback reconciles every installed package, not just
+# these named ones.
+RUN success=; \
+    for i in 1 2 3 4 5; do \
+    apt-get -qy update \
+    && apt-get -qy --no-install-recommends install openssl git python3 g++ build-essential \
+    && { success=1; break; }; \
+    echo "apt-get install failed (attempt $i/5), retrying in 10s..."; \
+    sleep 10; \
+    done; \
+    if [ "$success" != 1 ]; then \
+    echo "bullseye-security unavailable after retries — falling back to the plain bullseye suite for the whole system"; \
+    grep -v 'bullseye-security' /etc/apt/sources.list > /tmp/sources.list.nosecurity \
+    && mv /tmp/sources.list.nosecurity /etc/apt/sources.list \
+    && apt-get -qy update \
+    && INSTALLED=$(dpkg-query -W -f='${Package}/bullseye\n' 2>/dev/null | tr '\n' ' ') \
+    && apt-get -qy --no-install-recommends --allow-downgrades install $INSTALLED openssl git python3 g++ build-essential; \
+    fi
 WORKDIR /app
 COPY .gitignore .gitignore
 COPY .npmrc .pnpmfile.cjs ./

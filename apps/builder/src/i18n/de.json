@@ -126,7 +126,6 @@
   "editor.blockCard.logicBlock.tooltip.code.label": "JavaScript-Code ausführen",
   "editor.blockCard.logicBlock.tooltip.jump.label": "Ablauf zu einer anderen Gruppe beschleunigen",
   "editor.blockCard.logicBlock.tooltip.typebotLink.label": "Verlinkung zu einem anderen Typebot",
-  "editor.blocks.bubbles.audio.settings.autoplay.label": "Autoplay aktivieren",
   "editor.blocks.bubbles.audio.settings.chooseFile.label": "Datei auswählen",
   "editor.blocks.bubbles.audio.settings.embedLink.label": "Link einbetten",
   "editor.blocks.bubbles.audio.settings.upload.label": "Hochladen",

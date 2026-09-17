@@ -3868,9 +3868,6 @@
                             "properties": {
                               "url": {
                                 "type": "string"
-                              },
-                              "isAutoplayEnabled": {
-                                "type": "boolean"
                               }
                             }
                           }
@@ -8163,9 +8160,6 @@
                 "properties": {
                   "url": {
                     "type": "string"
-                  },
-                  "isAutoplayEnabled": {
-                    "type": "boolean"
                   }
                 }
               }
@@ -13600,9 +13594,6 @@
             "properties": {
               "url": {
                 "type": "string"
-              },
-              "isAutoplayEnabled": {
-                "type": "boolean"
               }
             }
           }

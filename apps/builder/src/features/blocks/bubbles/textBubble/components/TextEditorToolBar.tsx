@@ -10,7 +10,12 @@ import {
   MARK_UNDERLINE,
 } from '@udecode/plate-basic-marks'
 import { getPluginType, useEditorRef } from '@udecode/plate-core'
-import { BoldIcon, ItalicIcon, UnderlineIcon, UserIcon } from '@/components/icons'
+import {
+  BoldIcon,
+  ItalicIcon,
+  UnderlineIcon,
+  UserIcon,
+} from '@/components/icons'
 import { MarkToolbarButton } from './plate/MarkToolbarButton'
 
 type Props = {
