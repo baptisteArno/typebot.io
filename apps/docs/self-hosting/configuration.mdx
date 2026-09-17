@@ -323,6 +323,16 @@ In Typebot, Redis is optional and is used to:
 | --------- | ------- | -------------------------------------------------------------------- |
 | REDIS_URL |         | The database URL. i.e. `redis://<username>:<password>@<host>:<port>` |
 
+## Webhook block
+
+The [Webhook block](/editor/blocks/logic/webhook) pauses a conversation until an
+external service calls its callback URL. That endpoint is guarded by a single
+shared secret.
+
+| Parameter     | Default                | Description                                                                                                                  |
+| ------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| WEBHOOK_TOKEN | `Bearer typebot_12345` | Expected `Authorization` header on webhook callbacks. **Change this**: the default is public and it guards every bot you host. |
+
 ## Others
 
 The [official Typebot managed service](https://app.typebot.io/) uses other services such as [Stripe](https://stripe.com/) for processing payments, [Sentry](https://sentry.io/) for tracking bugs and [Sleekplan](https://sleekplan.com/) for user feedbacks.

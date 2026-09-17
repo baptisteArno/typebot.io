@@ -333,6 +333,8 @@
   "editor.sidebarBlock.file.label": "File",
   "editor.sidebarBlock.image.label": "Image",
   "editor.sidebarBlock.globalJump.label": "Global Jump",
+  "editor.sidebarBlock.webhook.label": "Webhook",
+  "editor.sidebarBlock.triggerWhatsappFlow.label": "Flow",
   "editor.sidebarBlock.jump.label": "Jump",
   "editor.sidebarBlock.assignChat.label": "Assign Chat",
   "editor.sidebarBlock.closeChat.label": "Close Chat",

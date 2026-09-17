@@ -92,4 +92,15 @@ export const executeClientSideAction = async ({
   if ('codeToExecute' in clientSideAction) {
     return executeCode(clientSideAction.codeToExecute)
   }
+  if (clientSideAction.type === 'listenForWebhook') {
+    // The Webhook listener block is resumed server-side, by a call to the
+    // block's callback URL. This embed holds no channel to be notified over, so
+    // the conversation legitimately stops here for this client. Matched
+    // explicitly (the action carries no payload key) so it is visible rather
+    // than silently falling through the checks above.
+    console.warn(
+      'Reached a Webhook block. This conversation resumes server-side and will not continue in this embed.'
+    )
+    return undefined
+  }
 }

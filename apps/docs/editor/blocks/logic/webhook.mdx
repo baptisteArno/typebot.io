@@ -1,0 +1,171 @@
+---
+title: Webhook
+icon: webhook
+---
+
+<Warning>
+
+The **Webhook block** is easily confused with the **HTTP request block** (listed
+under Integrations).
+
+- Use the **Webhook block** when you want the bot to **pause and wait** until an
+  external service calls it back.
+- Use the **HTTP request block** when you want the bot to **immediately call an
+  API** and carry on with the response.
+
+</Warning>
+
+The Webhook block pauses the conversation until its callback URL is called. It
+is useful when something out of the bot's control has to finish first — a
+payment clearing, a human approving a request, a long-running job completing.
+
+It has two callback URLs, shown as tabs in the block's settings panel. Pick
+whichever fits how your external system already identifies the conversation.
+
+## By result ID — resume only
+
+```
+POST {VIEWER_URL}/api/v1/typebots/{typebotId}/blocks/{blockId}/results/{resultId}/executeWebhook
+```
+
+Use this when you already have a `resultId` — typically because your own
+system called [`/startChat`](/api-reference/chat/start-chat) itself and got one
+back, or read it into a variable with a [Set variable](/editor/blocks/logic/set-variable)
+block (the `Result ID` value) and passed it along earlier in the flow.
+
+This URL **only resumes** an existing, live conversation that is currently
+parked on this exact block. It never starts a new one — if there's no matching
+result, or the conversation has moved on, it fails rather than guessing.
+
+## By external ID — start or resume
+
+```
+POST {VIEWER_URL}/api/v1/typebots/{typebotId}/blocks/{blockId}/external/{externalId}/executeWebhook
+```
+
+Use this when you have no prior session at all — a phone number, a lead ID, or
+any other identifier from your own system that uniquely names this contact.
+`externalId` is entirely yours; the platform never issues it.
+
+- **First call** with a given `externalId`: starts a brand-new conversation,
+  entering directly at the group this block's outgoing edge connects to — the
+  Start event and everything else in the flow is skipped entirely.
+- **Later calls** with the **same** `externalId`: resume that conversation,
+  feeding the posted body in as the next reply, wherever it currently is (the
+  same way an inbound WhatsApp message is treated, not necessarily still on
+  this exact block).
+- If that conversation's session has since expired, the next call simply
+  starts a fresh one again, same as a brand-new `externalId` would.
+
+Requirements specific to this URL: the typebot must be **published** (it reads
+the published version, same as `/startChat`), and this block must have an
+**outgoing connection** — with nothing to connect to, there's nowhere to enter
+the flow at.
+
+Optionally, save the caller's `externalId` itself into a variable (configured
+in the settings panel) so later blocks can reference it — e.g. to text a
+confirmation back to that same number.
+
+### Authentication
+
+Both endpoints are guarded by a single static shared secret, configured server-side
+as the `WEBHOOK_TOKEN` environment variable. Send it as the `Authorization`
+header:
+
+```
+Authorization: Bearer typebot_12345
+```
+
+`WEBHOOK_TOKEN` defaults to `Bearer typebot_12345`. It may be configured with or
+without the `Bearer ` prefix, and the incoming header is matched either way.
+
+<Warning>
+
+This one secret guards both callback endpoints for **every** bot on the
+deployment, and the default value is public. Set your own `WEBHOOK_TOKEN`
+before going to production — otherwise anyone who can guess a `resultId` (or
+simply choose an `externalId`) can drive conversations.
+
+</Warning>
+
+## Reading the payload
+
+The JSON body you post is exposed to the block's variable mappings as `data`.
+For this request body:
+
+```json
+{ "order": { "id": 12 }, "status": "paid" }
+```
+
+`data.order.id` maps to `12` and `data.status` maps to `"paid"`. Add those
+mappings under **Save in variables** in the block's settings.
+
+A body is optional — calling the URL with no body simply resumes the flow.
+
+## Response
+
+Unlike typebot.io — which pushes the payload over a websocket to a waiting
+browser — this endpoint **advances the conversation server-side** and returns
+the resulting chat chunk, in the same shape as
+[Continue chat](/api-reference/chat/continue-chat):
+
+```json
+{
+  "sessionId": "...",
+  "messages": [...],
+  "input": {...},
+  "clientSideActions": [...],
+  "logs": [...]
+}
+```
+
+The caller is responsible for relaying those messages to the end user.
+
+<Note>
+
+This means the service calling the webhook receives the bot's next messages in
+the HTTP response. If the external service is not the same system that delivers
+messages to the user, have it forward the response on.
+
+</Note>
+
+## Status codes
+
+### By result ID
+
+| Code  | Meaning                                                                                |
+| ----- | --------------------------------------------------------------------------------------- |
+| `200` | The conversation was resumed. The body holds the next chat chunk.                       |
+| `403` | Missing or invalid webhook token.                                                       |
+| `404` | Unknown typebot, block is not a Webhook block, or no live session for that result.       |
+| `409` | The conversation is not waiting on this block (already resumed, or moved on).           |
+| `500` | The session cannot be resumed on this channel (for example the built-in WhatsApp one). |
+
+The `409` makes this URL safe to retry: a duplicate call cannot inject its
+payload at some later point in the conversation.
+
+### By external ID
+
+| Code  | Meaning                                                                     |
+| ----- | ---------------------------------------------------------------------------- |
+| `200` | The conversation was started or resumed. The body holds the next chat chunk. |
+| `400` | Missing/too-long `externalId`, typebot not published, or block not connected to anything. |
+| `403` | Missing or invalid webhook token.                                            |
+| `404` | Unknown typebot, or block is not a Webhook block.                            |
+
+There's no `409` here: a call always succeeds, either by resuming the matching
+conversation or starting a fresh one.
+
+## Limitations
+
+- **By result ID** requires the conversation to already have a `resultId`, so
+  it does not work in the builder's preview (preview runs create no result).
+- **By external ID** always creates a Result, so it works from a cold start,
+  but requires the typebot to be published and this block to have an outgoing
+  connection.
+- Sessions on the built-in WhatsApp channel can't be resumed by the result ID
+  URL (rejected with `500`) — nothing on that path delivers the resumed
+  messages to the WhatsApp Cloud API. The external ID URL never encounters
+  this, since it only ever creates its own sessions.
+- The browser JS embed will not continue by itself on either URL, as it holds
+  no channel to be notified over.

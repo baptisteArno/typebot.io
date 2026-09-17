@@ -10,6 +10,8 @@ import { waitBlockSchema } from './wait'
 import { abTestBlockSchemas } from './abTest'
 import { closeChatBlockSchema } from './closeChat'
 import { globalJumpBlockSchema } from './globalJump'
+import { webhookBlockSchema } from './webhook'
+import { triggerWhatsappFlowBlockSchema } from './triggerWhatsappFlow'
 
 export const logicBlockSchemas = {
   v5: [
@@ -37,6 +39,8 @@ export const logicBlockSchemas = {
     closeChatBlockSchema,
     abTestBlockSchemas.v6,
     globalJumpBlockSchema,
+    webhookBlockSchema,
+    triggerWhatsappFlowBlockSchema,
   ],
 } as const
 

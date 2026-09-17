@@ -16,6 +16,7 @@ import { getNextGroup } from './getNextGroup'
 import { formatEmail } from './blocks/inputs/email/formatEmail'
 import { formatPhoneNumber } from './blocks/inputs/phone/formatPhoneNumber'
 import { resumeWebhookExecution } from './blocks/integrations/webhook/resumeWebhookExecution'
+import { saveDataInResponseVariableMapping } from './blocks/integrations/webhook/saveDataInResponseVariableMapping'
 import { saveAnswer } from './queries/saveAnswer'
 import { parseButtonsReply } from './blocks/inputs/buttons/parseButtonsReply'
 import { ParsedReply, Reply } from './types'
@@ -80,8 +81,24 @@ export const continueBotFlow = async (
       textBubbleContentFormat,
     })
 
-  let nextBlockId: string = newSessionState.currentBlockId
-  if (reply && reply.type === 'text') {
+  const parkedBlockId: string = newSessionState.currentBlockId
+
+  const isParkedOnWebhookListener = () => {
+    try {
+      return (
+        getBlockById(parkedBlockId, state.typebotsQueue[0].typebot.groups).block
+          .type === LogicBlockType.WEBHOOK
+      )
+    } catch (err) {
+      return false
+    }
+  }
+
+  let nextBlockId: string = parkedBlockId
+  // A Webhook listener is resumed with the raw callback payload as its reply.
+  // Global Jump matches against reply text, so a wildcard pattern would
+  // otherwise swallow that payload and jump away instead of resuming the block.
+  if (reply && reply.type === 'text' && !isParkedOnWebhookListener()) {
     let result = getGlobalJumpGroup(newSessionState, reply?.text)
 
     if (result?.blockId) nextBlockId = result.blockId
@@ -128,6 +145,24 @@ export const continueBotFlow = async (
       state,
       block,
       response: JSON.parse(reply.text),
+    })
+    if (result.newSessionState) newSessionState = result.newSessionState
+  } else if (reply && block.type === LogicBlockType.WEBHOOK) {
+    let response: { statusCode?: number; data?: unknown }
+    try {
+      response = JSON.parse(reply.text)
+    } catch (err) {
+      // A caller is free to post a non-JSON body; expose it as raw data rather
+      // than failing the whole conversation.
+      response = { data: reply.text }
+    }
+    const result = saveDataInResponseVariableMapping({
+      state,
+      blockType: block.type,
+      blockId: block.id,
+      responseVariableMapping: block.options?.responseVariableMapping,
+      outgoingEdgeId: block.outgoingEdgeId,
+      response,
     })
     if (result.newSessionState) newSessionState = result.newSessionState
   } else if (isForgedBlockType(block.type)) {

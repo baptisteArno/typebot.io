@@ -362,6 +362,15 @@ const redisEnv = {
   },
 }
 
+const webhookEnv = {
+  server: {
+    // Shared secret accepted by the Webhook block's callback endpoint. Set as
+    // the full Authorization header value; a bare token (no "Bearer " prefix)
+    // is accepted too. Override this in production — the default is public.
+    WEBHOOK_TOKEN: z.string().min(1).optional().default('Bearer typebot_12345'),
+  },
+}
+
 const sentryEnv = {
   client: {
     NEXT_PUBLIC_SENTRY_DSN: z.string().min(1).optional(),
@@ -463,6 +472,7 @@ export const env = createEnv({
     ...sleekPlanEnv.server,
     ...whatsAppEnv.server,
     ...redisEnv.server,
+    ...webhookEnv.server,
     ...gitlabEnv.server,
     ...azureEnv.server,
     ...customOAuthEnv.server,

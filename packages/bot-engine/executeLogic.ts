@@ -12,6 +12,8 @@ import { executeTypebotLink } from './blocks/logic/typebotLink/executeTypebotLin
 import { executeAbTest } from './blocks/logic/abTest/executeAbTest'
 import { LogicBlockType } from '@typebot.io/schemas/features/blocks/logic/constants'
 import { executeGlobalJumpBlock } from './blocks/logic/globalJump/executeGlobalJumpBlock'
+import { executeWebhookBlock } from './blocks/logic/webhook/executeWebhookBlock'
+import { executeTriggerWhatsappFlow } from './blocks/logic/triggerWhatsappFlow/executeTriggerWhatsappFlow'
 
 export const executeLogic =
   (state: SessionState) =>
@@ -39,5 +41,9 @@ export const executeLogic =
         return executeAbTest(state, block)
       case LogicBlockType.GLOBAL_JUMP:
         return executeGlobalJumpBlock(state, block.options)
+      case LogicBlockType.WEBHOOK:
+        return executeWebhookBlock(block)
+      case LogicBlockType.TRIGGER_WHATSAPP_FLOW:
+        return executeTriggerWhatsappFlow(state, block)
     }
   }
