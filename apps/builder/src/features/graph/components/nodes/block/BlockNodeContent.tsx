@@ -41,6 +41,8 @@ import { IntegrationBlockType } from '@typebot.io/schemas/features/blocks/integr
 import { ForgedBlockNodeContent } from '@/features/forge/components/ForgedBlockNodeContent'
 import { OpenAINodeBody } from '@/features/blocks/integrations/openai/components/OpenAINodeBody'
 import { GlobalJumpNodeBody } from '../../../../blocks/logic/globalJump/components/GlobalJumpNodeBody'
+import { WebhookNodeContent } from '@/features/blocks/logic/webhook/components/WebhookNodeContent'
+import { TriggerWhatsappFlowNodeContent } from '@/features/blocks/logic/triggerWhatsappFlow/components/TriggerWhatsappFlowNodeContent'
 
 type Props = {
   block: BlockV6
@@ -115,6 +117,12 @@ export const BlockNodeContent = ({
     }
     case LogicBlockType.GLOBAL_JUMP: {
       return <GlobalJumpNodeBody options={block.options} />
+    }
+    case LogicBlockType.WEBHOOK: {
+      return <WebhookNodeContent options={block.options} />
+    }
+    case LogicBlockType.TRIGGER_WHATSAPP_FLOW: {
+      return <TriggerWhatsappFlowNodeContent options={block.options} />
     }
     case LogicBlockType.JUMP: {
       return <JumpNodeBody options={block.options} />

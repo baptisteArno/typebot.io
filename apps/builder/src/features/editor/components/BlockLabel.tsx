@@ -41,7 +41,7 @@ export const BlockLabel = ({ type, ...props }: Props): JSX.Element => {
       )
     case BubbleBlockType.EMBED:
       return (
-        <Text fontSize="sm" {...props}>
+        <Text fontSize="xs" noOfLines={1} {...props}>
           {t('editor.sidebarBlock.embed.label')}
         </Text>
       )
@@ -151,6 +151,18 @@ export const BlockLabel = ({ type, ...props }: Props): JSX.Element => {
       return (
         <Text fontSize="sm" {...props}>
           {t('editor.sidebarBlock.globalJump.label')}
+        </Text>
+      )
+    case LogicBlockType.WEBHOOK:
+      return (
+        <Text fontSize="sm" {...props}>
+          {t('editor.sidebarBlock.webhook.label')}
+        </Text>
+      )
+    case LogicBlockType.TRIGGER_WHATSAPP_FLOW:
+      return (
+        <Text fontSize="sm" noOfLines={1} {...props}>
+          {t('editor.sidebarBlock.triggerWhatsappFlow.label')}
         </Text>
       )
     case LogicBlockType.JUMP:

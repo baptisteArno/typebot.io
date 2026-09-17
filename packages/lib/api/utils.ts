@@ -19,6 +19,14 @@ export const badRequest = (res: NextApiResponse, customMessage?: any) =>
 export const forbidden = (res: NextApiResponse, customMessage?: string) =>
   res.status(403).json({ message: customMessage ?? 'Forbidden' })
 
+export const conflict = (res: NextApiResponse, customMessage?: string) =>
+  res.status(409).json({ message: customMessage ?? 'Conflict' })
+
+export const internalServerError = (
+  res: NextApiResponse,
+  customMessage?: string
+) => res.status(500).json({ message: customMessage ?? 'Internal server error' })
+
 export const initMiddleware =
   (
     handler: (

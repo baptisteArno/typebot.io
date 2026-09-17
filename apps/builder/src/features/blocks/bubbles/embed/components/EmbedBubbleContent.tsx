@@ -15,7 +15,10 @@ export const EmbedBubbleContent = ({ block }: Props) => {
     return <Text color="gray.500">{t('clickToEdit')}</Text>
   return (
     <Stack>
-      <Text>{t('editor.blocks.bubbles.embed.node.show.text')}</Text>
+      <Text>
+        {block.content.fileName ??
+          t('editor.blocks.bubbles.embed.node.show.text')}
+      </Text>
       {typebot &&
         block.content.waitForEvent?.isEnabled &&
         block.content.waitForEvent.saveDataInVariableId && (

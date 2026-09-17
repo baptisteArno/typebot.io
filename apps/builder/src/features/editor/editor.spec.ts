@@ -40,7 +40,7 @@ test('Edges connection should work', async ({ page }) => {
     '[data-testid="group"] >> nth=0'
   )
   await expect(page.locator('[data-testid="edge"]')).toBeVisible()
-  await page.dragAndDrop('text=Date', '#editor-container', {
+  await page.dragAndDrop('text=Wait', '#editor-container', {
     targetPosition: { x: 1000, y: 800 },
   })
   await page.dragAndDrop(

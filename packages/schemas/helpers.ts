@@ -98,6 +98,26 @@ export const blockHasItems = (
 ): block is ConditionBlock | ChoiceInputBlock =>
   'items' in block && block.items !== undefined && block.items !== null
 
+// Components removed from the create panel. Existing blocks of these types
+// keep parsing, rendering and executing normally; only new creation is blocked.
+export const deprecatedBlockTypes: Block['type'][] = [
+  InputBlockType.DATE,
+  InputBlockType.EMAIL,
+  InputBlockType.NUMBER,
+  InputBlockType.PHONE,
+  InputBlockType.URL,
+  InputBlockType.FILE,
+  InputBlockType.PICTURE_CHOICE,
+  InputBlockType.RATING,
+  InputBlockType.PAYMENT,
+  LogicBlockType.AB_TEST,
+  LogicBlockType.REDIRECT,
+  IntegrationBlockType.ZAPIER,
+]
+
+export const isDeprecatedBlockType = (type: Block['type']): boolean =>
+  deprecatedBlockTypes.includes(type)
+
 export const getBlockById = (
   blockId: string,
   groups: Group[]

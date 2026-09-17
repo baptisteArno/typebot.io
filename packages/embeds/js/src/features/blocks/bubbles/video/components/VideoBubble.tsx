@@ -1,7 +1,8 @@
 import { TypingBubble } from '@/components'
 import { isMobile } from '@/utils/isMobileSignal'
-import { createSignal, Match, onCleanup, onMount, Switch } from 'solid-js'
+import { For, Match, Switch, createSignal, onCleanup, onMount } from 'solid-js'
 import { clsx } from 'clsx'
+import { PlateElement } from '../../textBubble/components/plate/PlateBlock'
 import {
   defaultVideoBubbleContent,
   embedBaseUrls,
@@ -148,6 +149,15 @@ export const VideoBubble = (props: Props) => {
           </Switch>
         </div>
       </div>
+      {!isTyping() && props.content?.caption && (
+        <div class="flex relative z-10 items-start typebot-host-bubble max-w-full mt-1">
+          <div class="overflow-hidden text-fade-in mx-4 my-2 whitespace-pre-wrap slate-html-container relative text-ellipsis">
+            <For each={props.content.caption}>
+              {(element) => <PlateElement element={element} />}
+            </For>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -31,7 +31,12 @@ export const MediaBubblePopoverContent = (props: Props) => {
     <Portal>
       <PopoverContent
         onMouseDown={handleMouseDown}
-        w={props.block.type === BubbleBlockType.IMAGE ? '500px' : '400px'}
+        w={
+          props.block.type === BubbleBlockType.IMAGE ||
+          props.block.type === BubbleBlockType.EMBED
+            ? '500px'
+            : '400px'
+        }
       >
         <PopoverArrow />
         <PopoverBody ref={ref} shadow="lg">
@@ -60,6 +65,8 @@ export const MediaBubbleContent = ({
     case BubbleBlockType.VIDEO: {
       return (
         <VideoUploadContent
+          blockId={block.id}
+          uploadFileProps={uploadFileProps}
           content={block.content}
           onSubmit={onContentChange}
         />
@@ -68,6 +75,8 @@ export const MediaBubbleContent = ({
     case BubbleBlockType.EMBED: {
       return (
         <EmbedUploadContent
+          blockId={block.id}
+          uploadFileProps={uploadFileProps}
           content={block.content}
           onSubmit={onContentChange}
         />

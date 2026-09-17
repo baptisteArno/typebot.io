@@ -59,6 +59,11 @@ type StartParams =
     } & StartPreviewChatInput)
   | ({
       type: 'live'
+      // Internal-only: lets a server-side caller (the webhook trigger) start a
+      // live session at an arbitrary group instead of the typebot's Start
+      // event. Not part of the public startChat schema, so it can never be
+      // set by an external API caller.
+      startFrom?: StartFrom
     } & StartChatInput)
 
 type Props = {
@@ -177,8 +182,7 @@ export const startSession = async ({
     }
   }
 
-  let startFrom: StartFrom | undefined =
-    startParams.type === 'preview' ? startParams.startFrom : undefined
+  let startFrom: StartFrom | undefined = startParams.startFrom
 
   if (startParams.message && startParams.message.type === 'text') {
     let result = getGlobalJumpGroup(initialState, startParams.message?.text)

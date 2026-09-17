@@ -99,9 +99,12 @@ export const sendChatReplyToWhatsApp = async ({
     }
     const whatsAppMessage = convertMessageToWhatsAppMessage(message)
     if (isNotDefined(whatsAppMessage)) continue
-    const lastSentMessageIsMedia = ['audio', 'video', 'image'].includes(
-      sentMessages.at(-1)?.type ?? ''
-    )
+    const lastSentMessageIsMedia = [
+      'audio',
+      'video',
+      'image',
+      'document',
+    ].includes(sentMessages.at(-1)?.type ?? '')
 
     const typingDuration = lastSentMessageIsMedia
       ? messageAfterMediaTimeout
@@ -170,9 +173,12 @@ export const sendChatReplyToWhatsApp = async ({
     )
     for (const message of inputWhatsAppMessages) {
       try {
-        const lastSentMessageIsMedia = ['audio', 'video', 'image'].includes(
-          sentMessages.at(-1)?.type ?? ''
-        )
+        const lastSentMessageIsMedia = [
+          'audio',
+          'video',
+          'image',
+          'document',
+        ].includes(sentMessages.at(-1)?.type ?? '')
         const typingDuration = lastSentMessageIsMedia
           ? messageAfterMediaTimeout
           : getTypingDuration({
@@ -222,6 +228,7 @@ const getTypingDuration = ({
     case 'audio':
     case 'video':
     case 'image':
+    case 'document':
     case 'template':
       return
   }

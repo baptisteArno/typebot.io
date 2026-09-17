@@ -10,4 +10,6 @@ export enum LogicBlockType {
   ASSIGN_CHAT = 'Assign Chat',
   CLOSE_CHAT = 'Close Chat',
   GLOBAL_JUMP = 'Global Jump',
+  WEBHOOK = 'webhook',
+  TRIGGER_WHATSAPP_FLOW = 'Trigger WhatsApp Flow',
 }

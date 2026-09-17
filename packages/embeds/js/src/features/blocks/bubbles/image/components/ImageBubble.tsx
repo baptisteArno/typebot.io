@@ -1,9 +1,10 @@
 import { TypingBubble } from '@/components'
-import { createSignal, onCleanup, onMount } from 'solid-js'
+import { For, createSignal, onCleanup, onMount } from 'solid-js'
 import { clsx } from 'clsx'
 import { isMobile } from '@/utils/isMobileSignal'
 import { ImageBubbleBlock } from '@typebot.io/schemas'
 import { defaultImageBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/image/constants'
+import { PlateElement } from '../../textBubble/components/plate/PlateBlock'
 
 type Props = {
   content: ImageBubbleBlock['content']
@@ -105,6 +106,19 @@ export const ImageBubble = (props: Props) => {
           )}
         </div>
       </div>
+      {!isTyping() && props.content?.caption && (
+        <div
+          class={clsx(
+            'flex relative z-10 items-start typebot-host-bubble max-w-full mt-1'
+          )}
+        >
+          <div class="overflow-hidden text-fade-in mx-4 my-2 whitespace-pre-wrap slate-html-container relative text-ellipsis">
+            <For each={props.content.caption}>
+              {(element) => <PlateElement element={element} />}
+            </For>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

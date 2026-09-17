@@ -17,6 +17,8 @@ type Props = {
   imageSize?: 'small' | 'regular' | 'thumb'
   initialTab?: Tabs
   linkWithVariableButton?: boolean
+  acceptedFileTypes?: string[]
+  maxUploadFileSizeInMB?: number
   onSubmit: (url: string) => void
   onClose?: () => void
 } & (
@@ -45,6 +47,8 @@ export const ImageUploadContent = ({
   onClose,
   initialTab,
   linkWithVariableButton,
+  acceptedFileTypes,
+  maxUploadFileSizeInMB,
   ...props
 }: Props) => {
   const includedTabs =
@@ -131,6 +135,8 @@ export const ImageUploadContent = ({
         onSubmit={handleSubmit}
         defaultUrl={defaultUrl}
         linkWithVariableButton={linkWithVariableButton}
+        acceptedFileTypes={acceptedFileTypes}
+        maxUploadFileSizeInMB={maxUploadFileSizeInMB}
       />
     </Stack>
   )
@@ -142,6 +148,8 @@ const BodyContent = ({
   defaultUrl,
   imageSize,
   linkWithVariableButton,
+  acceptedFileTypes,
+  maxUploadFileSizeInMB,
   onSubmit,
 }: {
   uploadFileProps?: FilePathUploadProps
@@ -149,6 +157,8 @@ const BodyContent = ({
   defaultUrl?: string
   imageSize: 'small' | 'regular' | 'thumb'
   linkWithVariableButton?: boolean
+  acceptedFileTypes?: string[]
+  maxUploadFileSizeInMB?: number
   onSubmit: (url: string) => void
 }) => {
   switch (tab) {
@@ -158,6 +168,8 @@ const BodyContent = ({
         <UploadFileContent
           uploadFileProps={uploadFileProps}
           onNewUrl={onSubmit}
+          acceptedFileTypes={acceptedFileTypes}
+          maxSizeInMB={maxUploadFileSizeInMB}
         />
       )
     }
@@ -185,7 +197,13 @@ type ContentProps = { onNewUrl: (url: string) => void }
 const UploadFileContent = ({
   uploadFileProps,
   onNewUrl,
-}: ContentProps & { uploadFileProps: FilePathUploadProps }) => {
+  acceptedFileTypes,
+  maxSizeInMB,
+}: ContentProps & {
+  uploadFileProps: FilePathUploadProps
+  acceptedFileTypes?: string[]
+  maxSizeInMB?: number
+}) => {
   const { t } = useTranslate()
 
   return (
@@ -194,6 +212,8 @@ const UploadFileContent = ({
         fileType="image"
         filePathProps={uploadFileProps}
         onFileUploaded={onNewUrl}
+        acceptedFileTypes={acceptedFileTypes}
+        maxSizeInMB={maxSizeInMB}
         colorScheme="orange"
       >
         {t('editor.header.uploadTab.uploadButton.label')}

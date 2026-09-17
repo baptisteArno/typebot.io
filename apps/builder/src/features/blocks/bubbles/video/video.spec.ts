@@ -26,6 +26,7 @@ test.describe.parallel('Video bubble block', () => {
       await page.goto(`/typebots/${typebotId}/edit`)
 
       await page.click('text=Click to edit...')
+      await page.click('button:text("Link")')
       await page.fill('input[placeholder="Paste the video link..."]', videoSrc)
       await expect(page.locator('video > source')).toHaveAttribute(
         'src',

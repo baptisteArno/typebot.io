@@ -118,6 +118,24 @@ export const clientSideActionSchema = z.discriminatedUnion('type', [
     }),
   z
     .object({
+      type: z.literal('triggerWhatsappFlow'),
+      triggerWhatsappFlow: z.object({
+        flowId: z.string(),
+        body: z.string().optional(),
+        cta: z.string().optional(),
+        // Already-resolved literal values, keyed by the flow's field name —
+        // never a `{{Variable}}` placeholder. Resolution happens server-side,
+        // at execution time, before this action is ever emitted.
+        data: z.record(z.string(), z.unknown()).optional(),
+      }),
+    })
+    .merge(clientSideActionBaseSchema)
+    .openapi({
+      ref: 'csaTriggerWhatsappFlow',
+      title: 'Trigger WhatsApp Flow',
+    }),
+  z
+    .object({
       type: z.literal('setVariable'),
       setVariable: z.object({ scriptToExecute: scriptToExecuteSchema }),
     })
@@ -193,4 +211,15 @@ export const clientSideActionSchema = z.discriminatedUnion('type', [
       ref: 'csaCodeToExecute',
       title: 'Execute code',
     }),
+  z
+    .object({
+      type: z.literal('listenForWebhook'),
+    })
+    .merge(clientSideActionBaseSchema)
+    .openapi({
+      ref: 'csaListenForWebhook',
+      title: 'Listen to webhook',
+    }),
 ])
+
+export type ClientSideAction = z.infer<typeof clientSideActionSchema>

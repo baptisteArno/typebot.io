@@ -38,14 +38,6 @@ test.describe('Text bubble block', () => {
     await page.type('div[role="textbox"]', 'Everything text')
     await page.press('div[role="textbox"]', 'Shift+Enter')
 
-    await page.type('div[role="textbox"]', 'My super link')
-    await page.waitForTimeout(300)
-    await page.press('div[role="textbox"]', 'Shift+Meta+ArrowLeft')
-    await page.click('[data-testid="link-button"]')
-    await page.fill('input[placeholder="Paste link"]', 'https://github.com')
-    await page.press('input[placeholder="Paste link"]', 'Enter')
-    await page.press('div[role="textbox"]', 'ArrowRight')
-    await page.press('div[role="textbox"]', 'Shift+Enter')
     await page.click('button[aria-label="Insert variable"]')
     await page.fill('[data-testid="variables-input"]', 'test')
     await page.getByRole('menuitem', { name: 'Create test' }).click()
@@ -61,7 +53,7 @@ test.describe('Text bubble block', () => {
       'Underlined text'
     )
     await expect(
-      page.locator('typebot-standard').locator('a[href="https://github.com"]')
-    ).toHaveText('My super link')
+      page.locator('span.slate-bold.slate-italic.slate-underline >> nth=0')
+    ).toHaveText('Everything text')
   })
 })

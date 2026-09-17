@@ -49,6 +49,8 @@ import { useForgedBlock } from '@/features/forge/hooks/useForgedBlock'
 import { VideoOnboardingPopover } from '@/features/onboarding/components/VideoOnboardingPopover'
 import { hasOnboardingVideo } from '@/features/onboarding/helpers/hasOnboardingVideo'
 import { GlobalJumpSettings } from '../../../../blocks/logic/globalJump/components/GlobalJumpSettings'
+import { WebhookSettings } from '@/features/blocks/logic/webhook/components/WebhookSettings'
+import { TriggerWhatsappFlowSettings } from '@/features/blocks/logic/triggerWhatsappFlow/components/TriggerWhatsappFlowSettings'
 
 type Props = {
   block: BlockWithOptions
@@ -355,6 +357,23 @@ export const BlockSettings = ({
     case IntegrationBlockType.PIXEL: {
       return (
         <PixelSettings
+          options={block.options}
+          onOptionsChange={updateOptions}
+        />
+      )
+    }
+    case LogicBlockType.WEBHOOK: {
+      return (
+        <WebhookSettings
+          blockId={block.id}
+          options={block.options}
+          onOptionsChange={updateOptions}
+        />
+      )
+    }
+    case LogicBlockType.TRIGGER_WHATSAPP_FLOW: {
+      return (
+        <TriggerWhatsappFlowSettings
           options={block.options}
           onOptionsChange={updateOptions}
         />

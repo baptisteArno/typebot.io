@@ -8,6 +8,9 @@ export const videoBubbleContentSchema = z.object({
   url: z.string().optional(),
   id: z.string().optional(),
   type: z.nativeEnum(VideoBubbleContentType).optional(),
+  caption: z.array(z.any()).optional(),
+  // Deprecated: kept so existing flows that already set these keep
+  // rendering as before. No longer configurable from the settings UI.
   height: z.number().or(variableStringSchema).optional(),
   aspectRatio: z.string().optional(),
   maxWidth: z.string().optional(),

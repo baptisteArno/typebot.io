@@ -143,6 +143,12 @@ export default function serialize(
   // "Text foo bar **baz**" resulting in "**Text foo bar **baz****"
   // which is invalid markup and can mess everything up
   if (children !== BREAK_TAG && isLeafNode(chunk)) {
+    // Applied first (innermost) so it composes with any bold/italic/
+    // strikeThrough combination below, instead of needing a dedicated
+    // branch for every combo that includes underline.
+    if (chunk.underline) {
+      children = applyUnderline(children)
+    }
     if (chunk.strikeThrough && chunk.bold && chunk.italic) {
       if (opts.flavour === 'whatsapp') {
         children = retainWhitespaceAndFormat(children, '*_~')
@@ -284,3 +290,22 @@ function retainWhitespaceAndFormat(string: string, format: string) {
 }
 
 const reverseStr = (string: string) => string.split('').reverse().join('')
+
+// Neither CommonMark nor WhatsApp's markdown-lite have a native underline
+// syntax (and the output here is HTML-escaped at the end, so a raw `<u>`
+// tag would just come out as literal "&lt;u&gt;" text). Emulate it visually
+// instead with the Unicode combining low line (U+0332) under every
+// character — this survives HTML-escaping since it introduces no `<`/`>`.
+const underlineCombiningChar = '̲'
+function applyUnderline(text: string) {
+  // Trim first (like retainWhitespaceAndFormat) so a trailing space doesn't
+  // get a combining mark attached to it — that would stop a later
+  // .trim() (e.g. when bold/italic wraps this same string) from
+  // recognizing it as trimmable whitespace anymore.
+  const trimmed = text.trim()
+  if (trimmed === '') return text
+  const underlined = [...trimmed]
+    .map((char) => char + underlineCombiningChar)
+    .join('')
+  return text.replace(trimmed, underlined)
+}
