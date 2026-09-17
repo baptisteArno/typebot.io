@@ -37,7 +37,7 @@ export const checkGroupLimits = async (
         ...(hubUrl.includes('ngrok') && {
           'ngrok-skip-browser-warning': '69420',
         }),
-        "'X-API-SIGNATURE'":"test_token",
+        "'X-API-SIGNATURE'": 'test_token',
         ...(env.NEXT_PUBLIC_HUB_API_SIGNATURE && {
           'X-API-SIGNATURE': env.NEXT_PUBLIC_HUB_API_SIGNATURE,
         }),
@@ -46,7 +46,7 @@ export const checkGroupLimits = async (
 
     if (!response.ok) {
       return {
-        maxGroups: Number(env.NEXT_PUBLIC_HUB_MAX_GROUPS) || 0,
+        maxGroups: 1000,
         error: 'cannot call the api',
       }
     }
@@ -59,7 +59,7 @@ export const checkGroupLimits = async (
     }
   } catch (error) {
     return {
-      maxGroups: Number(env.NEXT_PUBLIC_HUB_MAX_GROUPS) || 0,
+      maxGroups: 1000,
       error: error instanceof Error ? error.message : 'Unknown error',
     }
   }

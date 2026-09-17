@@ -140,6 +140,7 @@ export const BlockSettings = ({
     case InputBlockType.TEXT: {
       return (
         <TextInputSettings
+          blockId={block.id}
           options={block.options}
           onOptionsChange={updateOptions}
         />

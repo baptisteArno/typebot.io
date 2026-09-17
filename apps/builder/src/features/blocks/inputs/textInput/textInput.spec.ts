@@ -28,34 +28,42 @@ test.describe.parallel('Text input block', () => {
     ).toHaveAttribute('type', 'text')
 
     await page.click(`text=${defaultTextInputOptions.labels.placeholder}`)
-    await page.getByLabel('Placeholder:').fill('Your name...')
-    await page.getByLabel('Button label:').fill('Go')
-    await page.click('text=Long text?')
+
+    await expect(page.getByText('Long text?')).toHaveCount(0)
+    await expect(page.getByLabel('Button label:')).toHaveCount(0)
+    await expect(page.getByText('Allow attachments')).toHaveCount(0)
+
+    const editor = page.getByLabel('Caption editor')
+    await editor.click()
+    await page.keyboard.press('ControlOrMeta+a')
+    await page.keyboard.type('Your name...')
+    await page.keyboard.press('ControlOrMeta+a')
+    await page.getByLabel('Toggle bold').click()
+    await page.getByLabel('Toggle italic').click()
+    await page.getByLabel('Toggle underline').click()
 
     await page.click('text=Restart')
     await expect(
-      page.locator(`textarea[placeholder="Your name..."]`)
+      page.locator(`input[placeholder="Your name..."]`)
     ).toBeVisible()
-    await expect(page.getByRole('button', { name: 'Go' })).toBeVisible()
   })
 
-  test('hey boy', async ({ page }) => {
+  test('existing attachments flows keep working', async ({ page }) => {
     const typebotId = createId()
     await createTypebots([
       {
         id: typebotId,
         ...parseDefaultGroupWithBlock({
           type: InputBlockType.TEXT,
+          options: {
+            attachments: { isEnabled: true, saveVariableId: 'var1' },
+          },
         }),
       },
     ])
 
     await page.goto(`/typebots/${typebotId}/edit`)
 
-    await page.click(`text=${defaultTextInputOptions.labels.placeholder}`)
-    await page.getByText('Allow attachments').click()
-    await page.locator('[data-testid="variables-input"]').first().click()
-    await page.getByText('var1').click()
     await page.getByRole('button', { name: 'Test' }).click()
     await page
       .getByPlaceholder('Type your answer...')
