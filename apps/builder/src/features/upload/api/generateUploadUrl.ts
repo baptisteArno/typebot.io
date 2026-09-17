@@ -44,39 +44,44 @@ export type FilePathUploadProps = z.infer<
 
 export const generateUploadUrl = authenticatedProcedure
   .input(inputSchema)
-  .mutation(async ({ input: { filePathProps, fileType, maxFileSize }, ctx: { user } }) => {
-    if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message:
-          'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY',
+  .mutation(
+    async ({
+      input: { filePathProps, fileType, maxFileSize },
+      ctx: { user },
+    }) => {
+      if (!env.S3_ENDPOINT || !env.S3_ACCESS_KEY || !env.S3_SECRET_KEY)
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message:
+            'S3 not properly configured. Missing one of those variables: S3_ENDPOINT, S3_ACCESS_KEY, S3_SECRET_KEY',
+        })
+
+      if ('resultId' in filePathProps && !user)
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'You must be logged in to upload a file',
+        })
+
+      const filePath = await parseFilePath({
+        authenticatedUserId: user?.id,
+        uploadProps: filePathProps,
       })
 
-    if ('resultId' in filePathProps && !user)
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'You must be logged in to upload a file',
+      const presignedPostPolicy = await generatePresignedPostPolicy({
+        fileType,
+        filePath,
+        maxFileSize,
       })
 
-    const filePath = await parseFilePath({
-      authenticatedUserId: user?.id,
-      uploadProps: filePathProps,
-    })
-
-    const presignedPostPolicy = await generatePresignedPostPolicy({
-      fileType,
-      filePath,
-      maxFileSize,
-    })
-
-    return {
-      presignedUrl: presignedPostPolicy.postURL,
-      formData: presignedPostPolicy.formData,
-      fileUrl: env.S3_PUBLIC_CUSTOM_DOMAIN
-        ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
-        : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
+      return {
+        presignedUrl: presignedPostPolicy.postURL,
+        formData: presignedPostPolicy.formData,
+        fileUrl: env.S3_PUBLIC_CUSTOM_DOMAIN
+          ? `${env.S3_PUBLIC_CUSTOM_DOMAIN}/${filePath}`
+          : `${presignedPostPolicy.postURL}/${presignedPostPolicy.formData.key}`,
+      }
     }
-  })
+  )
 
 type Props = {
   authenticatedUserId?: string

@@ -1,5 +1,10 @@
 import { VariableSearchInput } from '@/components/inputs/VariableSearchInput'
-import { BoldIcon, ItalicIcon, UnderlineIcon, UserIcon } from '@/components/icons'
+import {
+  BoldIcon,
+  ItalicIcon,
+  UnderlineIcon,
+  UserIcon,
+} from '@/components/icons'
 import { editorStyle, platePlugins } from '@/lib/plate'
 import { colors } from '@/lib/theme'
 import {
@@ -16,7 +21,12 @@ import {
 import { Variable } from '@typebot.io/schemas'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslate } from '@tolgee/react'
-import { Plate, PlateContent, getPluginType, useEditorRef } from '@udecode/plate-core'
+import {
+  Plate,
+  PlateContent,
+  getPluginType,
+  useEditorRef,
+} from '@udecode/plate-core'
 import { focusEditor, insertText, TElement } from '@udecode/plate-common'
 import {
   MARK_BOLD,
@@ -31,7 +41,11 @@ type Props = {
   onChange: (content: TElement[]) => void
 }
 
-export const RichTextCaptionEditor = ({ id, initialValue, onChange }: Props) => (
+export const RichTextCaptionEditor = ({
+  id,
+  initialValue,
+  onChange,
+}: Props) => (
   <Plate
     id={id}
     plugins={platePlugins}
