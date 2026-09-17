@@ -234,7 +234,6 @@
   "editor.blockCard.logicBlock.tooltip.code.label": "Εκτέλεση κώδικα Javascript",
   "editor.blockCard.logicBlock.tooltip.jump.label": "Προωθήστε γρήγορα τη ροή σε μια άλλη ομάδα",
   "editor.blockCard.logicBlock.tooltip.typebotLink.label": "Σύνδεσμος και μετάβαση σε άλλο typebot",
-  "editor.blocks.bubbles.audio.settings.autoplay.label": "Ενεργοποίηση αυτόματης αναπαραγωγής",
   "editor.blocks.bubbles.audio.settings.chooseFile.label": "Επιλογή αρχείου",
   "editor.blocks.bubbles.audio.settings.embedLink.label": "Ενσωματώστε σύνδεσμο",
   "editor.blocks.bubbles.audio.settings.upload.label": "Μεταφόρτωση",

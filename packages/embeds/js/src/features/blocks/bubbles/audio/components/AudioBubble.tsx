@@ -2,7 +2,6 @@ import { TypingBubble } from '@/components'
 import { isMobile } from '@/utils/isMobileSignal'
 import { AudioBubbleBlock } from '@typebot.io/schemas'
 import { createSignal, onCleanup, onMount } from 'solid-js'
-import { defaultAudioBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/audio/constants'
 import clsx from 'clsx'
 
 type Props = {
@@ -58,12 +57,7 @@ export const AudioBubble = (props: Props) => {
           <audio
             ref={audioElement}
             src={props.content?.url}
-            autoplay={
-              props.onTransitionEnd
-                ? props.content?.isAutoplayEnabled ??
-                  defaultAudioBubbleContent.isAutoplayEnabled
-                : false
-            }
+            autoplay={props.onTransitionEnd ? true : false}
             class={
               'z-10 text-fade-in ' +
               (isTyping() ? 'opacity-0' : 'opacity-100 m-2')

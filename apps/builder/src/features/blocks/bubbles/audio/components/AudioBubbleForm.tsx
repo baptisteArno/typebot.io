@@ -1,12 +1,20 @@
-import { Button, Flex, HStack, Stack, Text } from '@chakra-ui/react'
+import { Button, Flex, HStack, Stack, Text, VStack } from '@chakra-ui/react'
 import { TextInput } from '@/components/inputs'
 import { useState } from 'react'
 import { UploadButton } from '@/components/ImageUploadContent/UploadButton'
-import { SwitchWithLabel } from '@/components/inputs/SwitchWithLabel'
 import { useTranslate } from '@tolgee/react'
 import { FilePathUploadProps } from '@/features/upload/api/generateUploadUrl'
 import { AudioBubbleBlock } from '@typebot.io/schemas'
-import { defaultAudioBubbleContent } from '@typebot.io/schemas/features/blocks/bubbles/audio/constants'
+import { AudioBubbleIcon } from './AudioBubbleIcon'
+
+const acceptedAudioFileTypes = [
+  'audio/mpeg',
+  'audio/mp3',
+  'audio/wav',
+  'audio/x-wav',
+  'audio/ogg',
+]
+const maxAudioUploadSizeInMB = 16
 
 type Props = {
   uploadFileProps: FilePathUploadProps
@@ -20,12 +28,9 @@ export const AudioBubbleForm = ({
   onContentChange,
 }: Props) => {
   const { t } = useTranslate()
-  const [currentTab, setCurrentTab] = useState<'link' | 'upload'>('link')
+  const [currentTab, setCurrentTab] = useState<'link' | 'upload'>('upload')
 
   const updateUrl = (url: string) => onContentChange({ ...content, url })
-
-  const updateAutoPlay = (isAutoplayEnabled: boolean) =>
-    onContentChange({ ...content, isAutoplayEnabled })
 
   return (
     <Stack>
@@ -53,9 +58,27 @@ export const AudioBubbleForm = ({
                 fileType="audio"
                 filePathProps={uploadFileProps}
                 onFileUploaded={updateUrl}
-                colorScheme="orange"
+                acceptedFileTypes={acceptedAudioFileTypes}
+                maxSizeInMB={maxAudioUploadSizeInMB}
+                variant="outline"
+                borderStyle="dashed"
+                borderWidth="2px"
+                height="auto"
+                w="full"
+                py="6"
+                whiteSpace="normal"
               >
-                {t('editor.blocks.bubbles.audio.settings.chooseFile.label')}
+                <VStack spacing={1}>
+                  <AudioBubbleIcon boxSize={6} />
+                  <Text fontWeight="medium">
+                    {t('editor.blocks.bubbles.audio.settings.chooseFile.label')}
+                  </Text>
+                  <Text fontSize="sm" color="gray.500">
+                    {t(
+                      'editor.blocks.bubbles.audio.settings.acceptedFormats.text'
+                    )}
+                  </Text>
+                </VStack>
               </UploadButton>
             </Flex>
           )}
@@ -74,14 +97,9 @@ export const AudioBubbleForm = ({
             </>
           )}
         </Stack>
-        <SwitchWithLabel
-          label={t('editor.blocks.bubbles.audio.settings.autoplay.label')}
-          initialValue={
-            content?.isAutoplayEnabled ??
-            defaultAudioBubbleContent.isAutoplayEnabled
-          }
-          onCheckChange={updateAutoPlay}
-        />
+        <Text fontSize="sm" color="gray.400" textAlign="center">
+          {t('editor.blocks.bubbles.audio.settings.helperText.text')}
+        </Text>
       </Stack>
     </Stack>
   )
