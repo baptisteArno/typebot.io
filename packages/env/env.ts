@@ -442,6 +442,11 @@ const hubEnv = {
     NEXT_PUBLIC_HUB_URL: z.string().optional(),
     NEXT_PUBLIC_HUB_API_SIGNATURE: z.string().optional(),
     NEXT_PUBLIC_HUB_MAX_GROUPS: z.string().optional(),
+    NEXT_PUBLIC_GROUPS_LIMIT_EXCLUDED_WORKSPACE_IDS: z
+      .string()
+      .min(1)
+      .optional()
+      .transform((val) => val?.split(',')),
   },
   runtimeEnv: {
     NEXT_PUBLIC_HUB_URL: getRuntimeVariable('NEXT_PUBLIC_HUB_URL'),
@@ -450,6 +455,9 @@ const hubEnv = {
     ),
     NEXT_PUBLIC_HUB_MAX_GROUPS: getRuntimeVariable(
       'NEXT_PUBLIC_HUB_MAX_GROUPS'
+    ),
+    NEXT_PUBLIC_GROUPS_LIMIT_EXCLUDED_WORKSPACE_IDS: getRuntimeVariable(
+      'NEXT_PUBLIC_GROUPS_LIMIT_EXCLUDED_WORKSPACE_IDS'
     ),
   },
 }

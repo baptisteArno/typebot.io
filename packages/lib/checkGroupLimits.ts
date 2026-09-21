@@ -5,9 +5,19 @@ export interface GroupLimitResponse {
   error?: string
 }
 
+export const isWorkspaceExcludedFromGroupsLimit = (
+  workspaceId: string
+): boolean =>
+  env.NEXT_PUBLIC_GROUPS_LIMIT_EXCLUDED_WORKSPACE_IDS?.includes(
+    workspaceId
+  ) ?? false
+
 export const checkGroupLimits = async (
   workspaceId: string
 ): Promise<GroupLimitResponse> => {
+  if (isWorkspaceExcludedFromGroupsLimit(workspaceId)) {
+    return { maxGroups: Number.MAX_SAFE_INTEGER }
+  }
   const maxGroupsNumber = Number(env.NEXT_PUBLIC_HUB_MAX_GROUPS)
   try {
     // Use environment variable for hub URL, fallback to hardcoded URL if not set
