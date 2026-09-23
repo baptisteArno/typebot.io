@@ -6,6 +6,10 @@ import {
   deleteResultsInputSchema,
   handleDeleteResults,
 } from "./handleDeleteResults";
+import {
+  getExportJobStatusInputSchema,
+  handleGetExportJobStatus,
+} from "./handleGetExportJobStatus";
 import { getResultInputSchema, handleGetResult } from "./handleGetResult";
 import {
   getResultBlockFileInputSchema,
@@ -25,9 +29,9 @@ import {
   handleGetResultTranscript,
 } from "./handleGetResultTranscript";
 import {
-  handleStreamExportJob,
-  streamExportJobInputSchema,
-} from "./handleStreamExportJob";
+  handleStartExportJob,
+  startExportJobInputSchema,
+} from "./handleStartExportJob";
 import {
   handleTriggerSendExportResultsToEmail,
   triggerSendExportResultsToEmailInputSchema,
@@ -150,9 +154,13 @@ export const resultsRouter = {
     )
     .handler(handleGetResultBlockFile),
 
-  streamExportJob: authenticatedProcedure
-    .input(streamExportJobInputSchema)
-    .handler(handleStreamExportJob),
+  startExportJob: authenticatedProcedure
+    .input(startExportJobInputSchema)
+    .handler(handleStartExportJob),
+
+  getExportJobStatus: authenticatedProcedure
+    .input(getExportJobStatusInputSchema)
+    .handler(handleGetExportJobStatus),
 
   triggerSendExportResultsToEmail: authenticatedProcedure
     .output(

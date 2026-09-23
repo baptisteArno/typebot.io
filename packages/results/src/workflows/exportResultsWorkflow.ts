@@ -88,161 +88,180 @@ export const ExportResultsWorkflow = Workflow.make({
 });
 
 export const ExportResultsWorkflowLayer = ExportResultsWorkflow.toLayer(
-  Effect.fnUntraced(function* (payload, executionId) {
-    yield* Effect.annotateLogsScoped({
-      workflowId: payload.id,
-      typebotId: payload.typebotId,
-      executionId,
-    });
+  Effect.fnUntraced(
+    function* (payload, executionId) {
+      yield* Effect.annotateLogsScoped({
+        workflowId: payload.id,
+        typebotId: payload.typebotId,
+        executionId,
+      });
 
-    const { nextAuthUrl } = yield* NextAuthConfig;
+      const { nextAuthUrl } = yield* NextAuthConfig;
 
-    const typebot = yield* Activity.make({
-      name: "GetTypebot",
-      error: Schema.Union([
-        PrismaConnectionError,
-        TypebotNotFoundError,
-        TooManyAttemptsError,
-        TypebotVersionTooLowError,
-      ]),
-      success: Schema.Struct({
-        id: Schema.String,
-        groups: Schema.Any,
-        variables: Schema.Any,
-        name: Schema.String,
-        publicId: Schema.NullOr(Schema.String),
-        resultsTablePreferences: Schema.Any,
-        workspaceId: Schema.String,
-      }),
-      execute: Effect.gen(function* () {
-        const totalAttempts = yield* Activity.CurrentAttempt;
-        if (totalAttempts >= 3) {
-          return yield* new TooManyAttemptsError({
-            message: `Typebot lookup failed after ${totalAttempts} attempts`,
-          });
-        }
-        const typebotService = yield* TypebotService;
-        const typebot = yield* typebotService.findUnique({
-          where: {
-            id: payload.typebotId,
-          },
-          select: {
-            id: true,
-            name: true,
-            publicId: true,
-            version: true,
-            groups: true,
-            variables: true,
-            workspaceId: true,
-            resultsTablePreferences: true,
-          },
-        });
-
-        if (!typebot) return yield* new TypebotNotFoundError();
-
-        if (Number(typebot.version) < 6)
-          return yield* new TypebotVersionTooLowError();
-
-        return {
-          ...typebot,
-          groups: parseGroups(typebot.groups, {
-            typebotVersion: typebot.version,
-          }),
-        };
-      }).pipe(
-        Effect.tapError((error) => Effect.logError(error)),
-        Activity.retry({
-          times: 3,
+      const typebot = yield* Activity.make({
+        name: "GetTypebot",
+        error: Schema.Union([
+          PrismaConnectionError,
+          TypebotNotFoundError,
+          TooManyAttemptsError,
+          TypebotVersionTooLowError,
+        ]),
+        success: Schema.Struct({
+          id: Schema.String,
+          groups: Schema.Any,
+          variables: Schema.Any,
+          name: Schema.String,
+          publicId: Schema.NullOr(Schema.String),
+          resultsTablePreferences: Schema.Any,
+          workspaceId: Schema.String,
         }),
-      ),
-    });
-
-    const fileName = getExportFileName(
-      {
-        id: payload.typebotId,
-        name: typebot.name,
-        publicId: typebot.publicId,
-      },
-      payload.timeFilter,
-    );
-
-    const s3Key = `private/tmp/workspaces/${typebot.workspaceId}/typebots/${payload.typebotId}/results-exports/${fileName}`;
-
-    yield* Activity.make({
-      name: "ExportResultsToS3",
-      error: Schema.Union([
-        PrismaConnectionError,
-        Schema.instanceOf(PlatformError),
-        TooManyAttemptsError,
-        RedisConfigError,
-        ProgressReporterError,
-        S3UploadError,
-      ]),
-      success: Schema.Struct({
-        totalRowsExported: Schema.Number,
-      }),
-      execute: Effect.gen(function* () {
-        const totalAttempts = yield* Activity.CurrentAttempt;
-        if (totalAttempts > 2) {
-          return yield* new TooManyAttemptsError({
-            message: `ExportResultsToS3 failed after ${totalAttempts} attempts`,
-          });
-        }
-
-        const { csvStream, totalRowsExportedRef } = yield* streamResultsToCsvV2(
-          typebot,
-          {
-            includeDeletedBlocks: payload.includeDeletedBlocks,
-            timeFilter: payload.timeFilter,
-            timeZone: payload.timeZone,
-          },
-        );
-
-        const s3UploadClient = yield* S3UploadClient;
-
-        yield* s3UploadClient
-          .uploadObject({
-            key: s3Key,
-            body: csvStream,
-            metadata: {
-              "Content-Type": "text/csv",
-              "Content-Disposition": `attachment; filename="${fileName}"`,
+        execute: Effect.gen(function* () {
+          const totalAttempts = yield* Activity.CurrentAttempt;
+          if (totalAttempts >= 3) {
+            return yield* new TooManyAttemptsError({
+              message: `Typebot lookup failed after ${totalAttempts} attempts`,
+            });
+          }
+          const typebotService = yield* TypebotService;
+          const typebot = yield* typebotService.findUnique({
+            where: {
+              id: payload.typebotId,
             },
-          })
-          .pipe(
-            Effect.tapError((error) => Effect.logError(error)),
-            Effect.mapError(
-              (error) =>
-                new S3UploadError({
-                  message:
-                    error instanceof Error ? error.message : "Unknown error",
-                }),
+            select: {
+              id: true,
+              name: true,
+              publicId: true,
+              version: true,
+              groups: true,
+              variables: true,
+              workspaceId: true,
+              resultsTablePreferences: true,
+            },
+          });
+
+          if (!typebot) return yield* new TypebotNotFoundError();
+
+          if (Number(typebot.version) < 6)
+            return yield* new TypebotVersionTooLowError();
+
+          return {
+            ...typebot,
+            groups: parseGroups(typebot.groups, {
+              typebotVersion: typebot.version,
+            }),
+          };
+        }).pipe(
+          Effect.tapError((error) => Effect.logError(error)),
+          Activity.retry({
+            times: 3,
+          }),
+        ),
+      });
+
+      const fileName = getExportFileName(
+        {
+          id: payload.typebotId,
+          name: typebot.name,
+          publicId: typebot.publicId,
+        },
+        payload.timeFilter,
+      );
+
+      const s3Key = `private/tmp/workspaces/${typebot.workspaceId}/typebots/${payload.typebotId}/results-exports/${fileName}`;
+
+      yield* Activity.make({
+        name: "ExportResultsToS3",
+        error: Schema.Union([
+          PrismaConnectionError,
+          Schema.instanceOf(PlatformError),
+          TooManyAttemptsError,
+          RedisConfigError,
+          ProgressReporterError,
+          S3UploadError,
+        ]),
+        success: Schema.Struct({
+          totalRowsExported: Schema.Number,
+        }),
+        execute: Effect.gen(function* () {
+          const totalAttempts = yield* Activity.CurrentAttempt;
+          if (totalAttempts > 2) {
+            return yield* new TooManyAttemptsError({
+              message: `ExportResultsToS3 failed after ${totalAttempts} attempts`,
+            });
+          }
+
+          const { csvStream, totalRowsExportedRef } =
+            yield* streamResultsToCsvV2(typebot, {
+              includeDeletedBlocks: payload.includeDeletedBlocks,
+              timeFilter: payload.timeFilter,
+              timeZone: payload.timeZone,
+            });
+
+          const s3UploadClient = yield* S3UploadClient;
+
+          yield* s3UploadClient
+            .uploadObject({
+              key: s3Key,
+              body: csvStream,
+              metadata: {
+                "Content-Type": "text/csv",
+                "Content-Disposition": `attachment; filename="${fileName}"`,
+              },
+            })
+            .pipe(
+              Effect.tapError((error) => Effect.logError(error)),
+              Effect.mapError(
+                (error) =>
+                  new S3UploadError({
+                    message:
+                      error instanceof Error ? error.message : "Unknown error",
+                  }),
+              ),
+            );
+
+          const totalRowsExported = yield* Ref.get(totalRowsExportedRef);
+
+          return { totalRowsExported };
+        }).pipe(
+          Effect.provide(
+            ProgressReporterRedisLayer.pipe(
+              Layer.provide(Layer.succeed(WorkflowId, payload.id)),
             ),
-          );
+          ),
+          Effect.tapError((error) => Effect.logError(error)),
+          Activity.retry({
+            times: 2,
+          }),
+        ),
+      });
 
-        const totalRowsExported = yield* Ref.get(totalRowsExportedRef);
+      const fileUrl = new URL(`/api/s3/${s3Key}`, nextAuthUrl);
 
-        return { totalRowsExported };
-      }).pipe(
-        Effect.provide(
-          ProgressReporterRedisLayer.pipe(
-            Layer.provide(Layer.succeed(WorkflowId, payload.id)),
+      return {
+        fileUrl,
+        typebotName: typebot.name,
+      };
+    },
+    (effect, payload) =>
+      effect.pipe(
+        Effect.tapCause((cause) =>
+          Effect.logError("Export results workflow failed", cause).pipe(
+            Effect.annotateLogs({
+              workflowId: payload.id,
+              typebotId: payload.typebotId,
+            }),
           ),
         ),
-        Effect.tapError((error) => Effect.logError(error)),
-        Activity.retry({
-          times: 2,
-        }),
+        Effect.tapError((error) =>
+          reportWorkflowFailureToSentry(error, {
+            rpc: "StartExportResultsWorkflow",
+            workflow: "ExportResultsWorkflow",
+            workflowId: payload.id,
+            typebotId: payload.typebotId,
+          }),
+        ),
       ),
-    });
-
-    const fileUrl = new URL(`/api/s3/${s3Key}`, nextAuthUrl);
-
-    return {
-      fileUrl,
-      typebotName: typebot.name,
-    };
-  }),
+  ),
 );
 
 export const SendExportToEmailWorkflow = Workflow.make({
@@ -346,6 +365,7 @@ class WorkflowId extends ServiceMap.Service<WorkflowId, string>()(
 ) {}
 
 export const EXPORT_PROGRESS_CHANNEL_PREFIX = "export-progress-";
+const EXPORT_PROGRESS_EXPIRATION_SECONDS = 24 * 60 * 60;
 
 export const ProgressReporterRedisLayer = Layer.unwrap(
   Effect.gen(function* () {
@@ -357,9 +377,10 @@ export const ProgressReporterRedisLayer = Layer.unwrap(
       ProgressReporter.of({
         report: (progress) =>
           redis
-            .publish(
+            .set(
               `${EXPORT_PROGRESS_CHANNEL_PREFIX}${exportId}`,
               progress.toString(),
+              EXPORT_PROGRESS_EXPIRATION_SECONDS,
             )
             .pipe(
               Effect.mapError(

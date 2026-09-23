@@ -1,50 +1,35 @@
 import { describe, expect, it } from "bun:test";
-import {
-  RedisClient,
-  RedisGetError,
-  RedisPublishError,
-  RedisSetError,
-} from "@typebot.io/lib/redis/RedisClient";
-import { Effect, Exit, Fiber, Layer, Queue, Stream } from "effect";
+import { RedisClient } from "@typebot.io/lib/redis/RedisClient";
+import { Effect, Layer, Stream } from "effect";
 import { WorkflowEngine } from "effect/unstable/workflow";
 import {
   ExportResultsWorkflow,
   TypebotNotFoundError,
 } from "./exportResultsWorkflow";
-import { executeExportResultsWorkflowHandler } from "./rpc";
+import {
+  getExportResultsWorkflowStatusHandler,
+  startExportResultsWorkflowHandler,
+} from "./rpc";
 
-describe("ExecuteExportResultsWorkflow", () => {
-  it("should emit starting, in_progress, and completed messages in sequence", async () => {
-    const progressQueue = await Effect.runPromise(Queue.unbounded<string>());
+const testPayload = {
+  id: "test-typebot-id:test-workflow-id",
+  typebotId: "test-typebot-id",
+};
 
-    const mockRedisClientLayer = Layer.succeed(RedisClient, {
-      get: () =>
-        Effect.fail(
-          new RedisGetError({
-            message: "Not implemented",
-            cause: "Not implemented",
-          }),
-        ),
-      set: () =>
-        Effect.fail(
-          new RedisSetError({
-            message: "Not implemented",
-            cause: "Not implemented",
-          }),
-        ),
-      subscribe: () => Stream.fromQueue(progressQueue),
-      publish: () =>
-        Effect.fail(
-          new RedisPublishError({
-            message: "Not implemented",
-            cause: "Not implemented",
-          }),
-        ),
-    });
+const createRedisLayer = (getProgress: () => string | null) =>
+  Layer.succeed(RedisClient, {
+    get: () => Effect.sync(getProgress),
+    set: () => Effect.void,
+    publish: () => Effect.void,
+    subscribe: () => Stream.empty,
+  });
 
+describe("export results workflow RPC", () => {
+  it("starts without waiting for export, then reports progress and completion", async () => {
+    let progress: string | null = null;
     const mockWorkflowLayer = ExportResultsWorkflow.toLayer(
       Effect.fn(function* () {
-        yield* Effect.sleep("50 millis");
+        yield* Effect.sleep("100 millis");
         return {
           fileUrl: new URL("http://example.com/file.csv"),
           typebotName: "Test Typebot",
@@ -52,83 +37,51 @@ describe("ExecuteExportResultsWorkflow", () => {
       }),
     );
 
-    const testPayload = {
-      id: "test-workflow-id",
-      typebotId: "test-typebot-id",
-    };
-
     const program = Effect.gen(function* () {
-      const streamFiber = yield* executeExportResultsWorkflowHandler(
-        testPayload,
-      ).pipe(Stream.runCollect, Effect.forkChild);
-
-      yield* Effect.sleep("5 millis");
-      yield* Queue.offer(progressQueue, "0");
-      yield* Effect.sleep("5 millis");
-      yield* Queue.offer(progressQueue, "25");
-      yield* Effect.sleep("5 millis");
-      yield* Queue.offer(progressQueue, "50");
-      yield* Effect.sleep("5 millis");
-      yield* Queue.offer(progressQueue, "75");
-      yield* Effect.sleep("5 millis");
-      yield* Queue.offer(progressQueue, "100");
-
-      return yield* Fiber.join(streamFiber);
+      const start = yield* startExportResultsWorkflowHandler(testPayload);
+      const starting = yield* getExportResultsWorkflowStatusHandler({
+        workflowId: start.workflowId,
+        typebotId: testPayload.typebotId,
+      });
+      progress = "25";
+      const inProgress = yield* getExportResultsWorkflowStatusHandler({
+        workflowId: start.workflowId,
+        typebotId: testPayload.typebotId,
+      });
+      yield* Effect.sleep("150 millis");
+      const completed = yield* getExportResultsWorkflowStatusHandler({
+        workflowId: start.workflowId,
+        typebotId: testPayload.typebotId,
+      });
+      return { start, starting, inProgress, completed };
     }).pipe(
+      Effect.timeout("2 seconds"),
       Effect.provide(
         mockWorkflowLayer.pipe(
           Layer.provideMerge(
-            Layer.mergeAll(mockRedisClientLayer, WorkflowEngine.layerMemory),
+            Layer.mergeAll(
+              createRedisLayer(() => progress),
+              WorkflowEngine.layerMemory,
+            ),
           ),
         ),
       ),
     );
 
     const result = await Effect.runPromise(program);
-
-    expect(result.length).toBe(6);
-    expect(result[0]).toEqual({
+    expect(result.start).toEqual({ workflowId: testPayload.id });
+    expect(result.starting).toEqual({
       status: "starting",
-      workflowId: "test-workflow-id",
+      workflowId: testPayload.id,
     });
-    expect(result[1]).toEqual({ status: "in_progress", progress: 0 });
-    expect(result[2]).toEqual({ status: "in_progress", progress: 25 });
-    expect(result[3]).toEqual({ status: "in_progress", progress: 50 });
-    expect(result[4]).toEqual({ status: "in_progress", progress: 75 });
-    expect(result[5]).toEqual({
+    expect(result.inProgress).toEqual({ status: "in_progress", progress: 25 });
+    expect(result.completed).toEqual({
       status: "completed",
       fileUrl: "http://example.com/file.csv",
     });
   });
 
-  it("should fail when workflow fails (and not hang)", async () => {
-    const progressQueue = await Effect.runPromise(Queue.unbounded<string>());
-
-    const mockRedisClientLayer = Layer.succeed(RedisClient, {
-      get: () =>
-        Effect.fail(
-          new RedisGetError({
-            message: "Not implemented",
-            cause: "Not implemented",
-          }),
-        ),
-      set: () =>
-        Effect.fail(
-          new RedisSetError({
-            message: "Not implemented",
-            cause: "Not implemented",
-          }),
-        ),
-      subscribe: () => Stream.fromQueue(progressQueue),
-      publish: () =>
-        Effect.fail(
-          new RedisPublishError({
-            message: "Not implemented",
-            cause: "Not implemented",
-          }),
-        ),
-    });
-
+  it("reports workflow failure through status instead of a broken stream", async () => {
     const mockWorkflowLayer = ExportResultsWorkflow.toLayer(
       Effect.fn(function* () {
         yield* Effect.sleep("40 millis");
@@ -136,37 +89,28 @@ describe("ExecuteExportResultsWorkflow", () => {
       }),
     );
 
-    const testPayload = {
-      id: "test-workflow-id",
-      typebotId: "test-typebot-id",
-    };
-
     const program = Effect.gen(function* () {
-      const streamFiber = yield* executeExportResultsWorkflowHandler(
-        testPayload,
-      ).pipe(Stream.runCollect, Effect.forkChild);
-
-      yield* Effect.sleep("5 millis");
-      yield* Queue.offer(progressQueue, "0");
-      yield* Effect.sleep("5 millis");
-      yield* Queue.offer(progressQueue, "25");
-      yield* Effect.sleep("5 millis");
-      yield* Queue.offer(progressQueue, "50");
-
-      return yield* Fiber.join(streamFiber).pipe(Effect.exit);
+      yield* startExportResultsWorkflowHandler(testPayload);
+      yield* Effect.sleep("80 millis");
+      return yield* getExportResultsWorkflowStatusHandler({
+        workflowId: testPayload.id,
+        typebotId: testPayload.typebotId,
+      });
     }).pipe(
-      Effect.timeout("1 second"),
+      Effect.timeout("2 seconds"),
       Effect.provide(
         mockWorkflowLayer.pipe(
           Layer.provideMerge(
-            Layer.mergeAll(mockRedisClientLayer, WorkflowEngine.layerMemory),
+            Layer.mergeAll(
+              createRedisLayer(() => null),
+              WorkflowEngine.layerMemory,
+            ),
           ),
         ),
       ),
     );
 
     const result = await Effect.runPromise(program);
-
-    expect(Exit.isFailure(result)).toBe(true);
-  }, 2_000);
+    expect(result.status).toBe("error");
+  });
 });

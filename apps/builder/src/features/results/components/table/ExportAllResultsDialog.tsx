@@ -12,8 +12,8 @@ import {
   type TimeFilter,
   timeFilterLabels,
 } from "@typebot.io/results/timeFilter";
-import type { ExportResultsWorkflowStatusChunk } from "@typebot.io/results/workflows/rpc";
 import type { Typebot } from "@typebot.io/typebot/schemas/typebot";
+import { Alert } from "@typebot.io/ui/components/Alert";
 import { Button } from "@typebot.io/ui/components/Button";
 import { Dialog } from "@typebot.io/ui/components/Dialog";
 import { Field } from "@typebot.io/ui/components/Field";
@@ -21,7 +21,7 @@ import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Progress } from "@typebot.io/ui/components/Progress";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import { unparse } from "papaparse";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { TimeFilterSelect } from "@/features/analytics/components/TimeFilterSelect";
 import { useTypebot } from "@/features/editor/providers/TypebotProvider";
 import { orpc, orpcClient } from "@/lib/queryClient";
@@ -51,21 +51,35 @@ export const ExportAllResultsDialog = ({
   const [exportProgressValue, setExportProgressValue] = useState(0);
   const [isSchedulingEmail, setIsSchedulingEmail] = useState(false);
   const [exportWorkflowId, setExportWorkflowId] = useState<string>();
-  const [lastExportWorkflowChunk, setLastExportWorkflowChunk] =
-    useState<ExportResultsWorkflowStatusChunk>();
   const [exportWorkflowError, setExportWorkflowError] = useState<string>();
 
   const [areDeletedBlocksIncluded, setAreDeletedBlocksIncluded] =
     useState(false);
   const [timeFilterOverride, setTimeFilterOverride] = useState<TimeFilter>();
-  const exportIteratorRef =
-    useRef<AsyncIterator<ExportResultsWorkflowStatusChunk> | null>(null);
-  const typebotIdRef = useRef<string | undefined>(typebotId);
-  const exportWorkflowIdRef = useRef<string | undefined>(undefined);
-
-  typebotIdRef.current = typebotId;
-  exportWorkflowIdRef.current = exportWorkflowId;
   const selectedTimeFilter = timeFilterOverride ?? timeFilter;
+
+  const { data: exportJobStatus, error: exportJobStatusError } = useQuery({
+    queryKey: ["resultsExportJob", typebotId, exportWorkflowId],
+    queryFn: () => {
+      if (!typebotId || !exportWorkflowId)
+        throw new Error("Export job ID is missing");
+      return orpcClient.results.getExportJobStatus({
+        typebotId,
+        workflowId: exportWorkflowId,
+      });
+    },
+    enabled: isOpen && isDefined(typebotId) && isDefined(exportWorkflowId),
+    refetchInterval: (query) => {
+      const status = query.state.data?.status;
+      return status === "completed" || status === "error" ? false : 2000;
+    },
+    refetchIntervalInBackground: true,
+  });
+  const exportWorkflowChunk =
+    exportJobStatus ??
+    (exportWorkflowId
+      ? { status: "starting" as const, workflowId: exportWorkflowId }
+      : undefined);
 
   const { data: linkedTypebotsData } = useQuery(
     orpc.getLinkedTypebots.queryOptions({
@@ -118,7 +132,7 @@ export const ExportAllResultsDialog = ({
     });
 
     if (totalStarts > TOTAL_RESULTS_THRESHOLD_FOR_BACKGROUND_EXPORT) {
-      consumeExportIterator(typebotId, areDeletedBlocksIncluded);
+      startBackgroundExport(typebotId, areDeletedBlocksIncluded);
       return;
     }
 
@@ -184,37 +198,42 @@ export const ExportAllResultsDialog = ({
     setIsExportLoading(false);
   };
 
-  const consumeExportIterator = async (
+  const startBackgroundExport = async (
     typebotId: string,
     includeDeletedBlocks: boolean,
   ) => {
+    setExportWorkflowError(undefined);
     try {
-      const iterator = await orpcClient.results.streamExportJob({
+      const { workflowId } = await orpcClient.results.startExportJob({
         typebotId,
         includeDeletedBlocks,
         timeFilter: selectedTimeFilter,
         timeZone,
       });
-      exportIteratorRef.current = iterator;
-      for await (const chunk of iterator) {
-        if (chunk.status === "starting") setExportWorkflowId(chunk.workflowId);
-        setLastExportWorkflowChunk(chunk);
-      }
+      setExportWorkflowId(workflowId);
     } catch (error) {
       console.error(error);
       if (error instanceof ORPCError) setExportWorkflowError(error.message);
       else if (error instanceof Error) setExportWorkflowError(error.message);
+    } finally {
+      setIsExportLoading(false);
     }
   };
 
   const sendExportedResultsToEmail = async () => {
-    if (!lastExportWorkflowChunk || !exportWorkflowId || !typebotId) return;
+    if (!exportWorkflowId || !typebotId) return;
     setIsSchedulingEmail(true);
-    await orpcClient.results.triggerSendExportResultsToEmail({
-      workflowId: exportWorkflowId,
-      typebotId,
-    });
-    onClose();
+    try {
+      await orpcClient.results.triggerSendExportResultsToEmail({
+        workflowId: exportWorkflowId,
+        typebotId,
+      });
+    } catch (error) {
+      console.error(error);
+      toast({ description: "Could not schedule the export email" });
+    } finally {
+      setIsSchedulingEmail(false);
+    }
   };
 
   const exportTitle =
@@ -229,8 +248,8 @@ export const ExportAllResultsDialog = ({
       onCloseComplete={() => {
         const shouldSendEmail =
           exportWorkflowId &&
-          (lastExportWorkflowChunk?.status === "starting" ||
-            lastExportWorkflowChunk?.status === "in_progress") &&
+          (exportWorkflowChunk?.status === "starting" ||
+            exportWorkflowChunk?.status === "in_progress") &&
           !isSchedulingEmail &&
           !exportWorkflowError;
         setTimeFilterOverride(undefined);
@@ -240,11 +259,17 @@ export const ExportAllResultsDialog = ({
       <Dialog.Popup className="max-w-md">
         <Dialog.Title>{exportTitle}</Dialog.Title>
         <Dialog.CloseButton />
-        {lastExportWorkflowChunk ? (
-          <ExportJobProgress
-            chunk={lastExportWorkflowChunk}
-            error={exportWorkflowError}
-          />
+        {exportWorkflowChunk ? (
+          <div className="flex flex-col gap-3">
+            <ExportJobProgress chunk={exportWorkflowChunk} />
+            {exportJobStatusError && (
+              <Alert.Root variant="error">
+                <Alert.Description>
+                  Could not refresh export status. Retrying...
+                </Alert.Description>
+              </Alert.Root>
+            )}
+          </div>
         ) : isExportLoading ? (
           <div className="flex flex-col gap-2">
             <p>Fetching all results...</p>
@@ -252,6 +277,11 @@ export const ExportAllResultsDialog = ({
           </div>
         ) : (
           <div className="flex flex-col gap-4">
+            {exportWorkflowError && (
+              <Alert.Root variant="error">
+                <Alert.Description>{exportWorkflowError}</Alert.Description>
+              </Alert.Root>
+            )}
             <Field.Root>
               <Field.Label>Time period</Field.Label>
               <TimeFilterSelect
@@ -274,7 +304,7 @@ export const ExportAllResultsDialog = ({
             </Field.Root>
           </div>
         )}
-        {!lastExportWorkflowChunk && (
+        {!exportWorkflowChunk && (
           <Dialog.Footer>
             <Button onClick={onClose} variant="ghost" size="sm">
               Cancel

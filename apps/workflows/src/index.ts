@@ -23,8 +23,9 @@ import {
   SendExportToEmailWorkflowLayer,
 } from "@typebot.io/results/workflows/exportResultsWorkflow";
 import {
-  executeExportResultsWorkflowHandler,
+  getExportResultsWorkflowStatusHandler,
   ResultsWorkflowsRpc,
+  startExportResultsWorkflowHandler,
 } from "@typebot.io/results/workflows/rpc";
 import { createTelemetryLayer } from "@typebot.io/telemetry/createTelemetryLayer";
 import {
@@ -37,7 +38,7 @@ import {
   StartUserOnboardingWorkflow,
   StartUserOnboardingWorkflowLayer,
 } from "@typebot.io/user/workflows/startUserOnboardingWorkflow";
-import { Effect, Equivalence, Layer, Redacted, Stream } from "effect";
+import { Effect, Equivalence, Layer, Redacted } from "effect";
 import { ClusterWorkflowEngine } from "effect/unstable/cluster";
 import {
   HttpRouter,
@@ -105,17 +106,18 @@ const WorkflowsRpcGroup = ResultsWorkflowsRpc.merge(UsersWorkflowsRpc);
 
 const ResultsWorkflowsRpcLayer = ResultsWorkflowsRpc.toLayer(
   Effect.succeed({
-    ExecuteExportResultsWorkflow: (payload) =>
-      executeExportResultsWorkflowHandler(payload).pipe(
-        Stream.tapError((error) =>
+    StartExportResultsWorkflow: (payload) =>
+      startExportResultsWorkflowHandler(payload).pipe(
+        Effect.tapError((error) =>
           reportWorkflowFailureToSentry(error, {
-            rpc: "ExecuteExportResultsWorkflow",
+            rpc: "StartExportResultsWorkflow",
             workflow: "ExportResultsWorkflow",
             workflowId: payload.id,
             typebotId: payload.typebotId,
           }),
         ),
       ),
+    GetExportResultsWorkflowStatus: getExportResultsWorkflowStatusHandler,
     SendExportToEmail: (payload) =>
       SendExportToEmailWorkflow.execute(payload, {
         discard: true,

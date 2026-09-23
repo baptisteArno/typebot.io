@@ -55,7 +55,11 @@ export class RedisClient extends ServiceMap.Service<
   RedisClient,
   {
     get: (key: string) => Effect.Effect<string | null, RedisGetError>;
-    set: (key: string, value: string) => Effect.Effect<void, RedisSetError>;
+    set: (
+      key: string,
+      value: string,
+      expirationSeconds?: number,
+    ) => Effect.Effect<void, RedisSetError>;
     publish: (
       channel: string,
       message: string,
@@ -107,15 +111,19 @@ export class RedisClient extends ServiceMap.Service<
         }),
       );
 
-      const set = Effect.fn("RedisClient.set")((key: string, value: string) =>
-        Effect.tryPromise({
-          try: () => client.set(key, value),
-          catch: (error) =>
-            new RedisSetError({
-              message: formatUnknownError(error),
-              cause: error,
-            }),
-        }).pipe(Effect.asVoid),
+      const set = Effect.fn("RedisClient.set")(
+        (key: string, value: string, expirationSeconds?: number) =>
+          Effect.tryPromise({
+            try: () =>
+              expirationSeconds
+                ? client.set(key, value, "EX", expirationSeconds)
+                : client.set(key, value),
+            catch: (error) =>
+              new RedisSetError({
+                message: formatUnknownError(error),
+                cause: error,
+              }),
+          }).pipe(Effect.asVoid),
       );
 
       const publish = Effect.fn("RedisClient.publish")(

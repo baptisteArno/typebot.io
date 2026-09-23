@@ -16,35 +16,30 @@ const MainLayer = Layer.provideMerge(
   createGlobalTelemetryLayer("builder"),
 );
 
-export const triggerSendExportResultsToEmailInputSchema = z.object({
+export const getExportJobStatusInputSchema = z.object({
   typebotId: z.string(),
   workflowId: z.string(),
 });
 
-export const handleTriggerSendExportResultsToEmail = async ({
+export const handleGetExportJobStatus = async ({
   input: { typebotId, workflowId },
   context: { user },
 }: {
-  input: z.infer<typeof triggerSendExportResultsToEmailInputSchema>;
+  input: z.infer<typeof getExportJobStatusInputSchema>;
   context: { user: Pick<User, "id" | "email"> };
 }) => {
   if (!workflowId.startsWith(`${typebotId}:`))
     throw new ORPCError("NOT_FOUND", { message: "Export job not found" });
 
   const typebot = await prisma.typebot.findUnique({
-    where: {
-      id: typebotId,
-    },
+    where: { id: typebotId },
     select: {
       id: true,
       name: true,
       groups: true,
       collaborators: {
         where: { userId: user.id },
-        select: {
-          userId: true,
-          type: true,
-        },
+        select: { userId: true, type: true },
       },
       workspace: {
         select: {
@@ -52,10 +47,7 @@ export const handleTriggerSendExportResultsToEmail = async ({
           isPastDue: true,
           members: {
             where: { userId: user.id },
-            select: {
-              userId: true,
-              role: true,
-            },
+            select: { userId: true, role: true },
           },
         },
       },
@@ -65,25 +57,17 @@ export const handleTriggerSendExportResultsToEmail = async ({
     throw new ORPCError("NOT_FOUND", { message: "Typebot not found" });
 
   const program = Effect.gen(function* () {
-    const client = yield* ResultsWorkflowsRpcClient;
-    yield* client.SendExportToEmail({
-      exportResultsWorkflowId: workflowId,
-      email: user.email,
+    const rpcClient = yield* ResultsWorkflowsRpcClient;
+    return yield* rpcClient.GetExportResultsWorkflowStatus({
+      workflowId,
       typebotId,
     });
   }).pipe(
-    Effect.tapError((error) =>
-      Effect.logError("SendExportToEmail trigger failed").pipe(
-        Effect.annotateLogs({ typebotId, workflowId, error: String(error) }),
-      ),
-    ),
-    Effect.withSpan("handleTriggerSendExportResultsToEmail", {
-      attributes: { typebotId },
+    Effect.withSpan("handleGetExportJobStatus", {
+      attributes: { typebotId, workflowId },
       root: true,
     }),
   );
 
-  await Effect.runPromise(program.pipe(Effect.provide(MainLayer)));
-
-  return { message: "Workflow sent to email" };
+  return Effect.runPromise(program.pipe(Effect.provide(MainLayer)));
 };
