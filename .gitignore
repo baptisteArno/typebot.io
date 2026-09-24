@@ -95,6 +95,8 @@ content-collections.d.ts
 .agents/skills/typebot-stripe
 .agents/skills/vercel
 .agents/skills/suspend-typebot
+.agents/skills/daily-discord-help-and-questions-support
+.agents/skills/daily-gmail-support-drafts
 .claude/skills/typebot-customer-support
 .claude/skills/typebot-discord-bot
 .claude/skills/typebot-posthog
