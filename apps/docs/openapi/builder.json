@@ -704,6 +704,9 @@
                             "$ref": "#/components/schemas/Groq"
                           },
                           {
+                            "$ref": "#/components/schemas/Litellm"
+                          },
+                          {
                             "$ref": "#/components/schemas/Zendesk"
                           },
                           {
@@ -2363,6 +2366,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/Groq"
+                          },
+                          {
+                            "$ref": "#/components/schemas/Litellm"
                           },
                           {
                             "$ref": "#/components/schemas/Zendesk"
@@ -10850,6 +10856,300 @@
           },
           "type": {
             "const": "groq"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "not": {}
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "const": "Create chat completion"
+                  },
+                  "model": {
+                    "type": "string"
+                  },
+                  "messages": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "role": {
+                              "not": {}
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "role": {
+                              "const": "system"
+                            },
+                            "content": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "role"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "role": {
+                              "const": "user"
+                            },
+                            "content": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "role"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "role": {
+                              "const": "assistant"
+                            },
+                            "content": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "role"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "role": {
+                              "const": "Dialogue"
+                            },
+                            "dialogueVariableId": {
+                              "type": "string"
+                            },
+                            "startsBy": {
+                              "enum": [
+                                "user",
+                                "assistant"
+                              ],
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "role"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "tools": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "not": {}
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "const": "function"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "description": {
+                              "type": "string"
+                            },
+                            "parameters": {
+                              "type": "array",
+                              "items": {
+                                "anyOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "not": {}
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "const": "string"
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "description": {
+                                        "type": "string"
+                                      },
+                                      "required": {
+                                        "type": "boolean"
+                                      }
+                                    },
+                                    "required": [
+                                      "type"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "const": "number"
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "description": {
+                                        "type": "string"
+                                      },
+                                      "required": {
+                                        "type": "boolean"
+                                      }
+                                    },
+                                    "required": [
+                                      "type"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "const": "boolean"
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "description": {
+                                        "type": "string"
+                                      },
+                                      "required": {
+                                        "type": "boolean"
+                                      }
+                                    },
+                                    "required": [
+                                      "type"
+                                    ]
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "const": "enum"
+                                      },
+                                      "values": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "description": {
+                                        "type": "string"
+                                      },
+                                      "required": {
+                                        "type": "boolean"
+                                      }
+                                    },
+                                    "required": [
+                                      "type"
+                                    ]
+                                  }
+                                ]
+                              }
+                            },
+                            "code": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "temperature": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "responseMapping": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "item": {
+                          "enum": [
+                            "Message content",
+                            "Total tokens",
+                            "Prompt tokens",
+                            "Completion tokens"
+                          ],
+                          "type": "string"
+                        },
+                        "variableId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "action"
+                ]
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ]
+      },
+      "Litellm": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "outgoingEdgeId": {
+            "type": "string"
+          },
+          "type": {
+            "const": "litellm"
           },
           "options": {
             "anyOf": [
@@ -22016,6 +22316,9 @@
                             "$ref": "#/components/schemas/Groq"
                           },
                           {
+                            "$ref": "#/components/schemas/Litellm"
+                          },
+                          {
                             "$ref": "#/components/schemas/Zendesk"
                           },
                           {
@@ -24430,6 +24733,30 @@
                                                   },
                                                   "type": {
                                                     "const": "groq"
+                                                  },
+                                                  "options": {
+                                                    "anyOf": [
+                                                      {},
+                                                      {}
+                                                    ]
+                                                  }
+                                                },
+                                                "required": [
+                                                  "id",
+                                                  "type"
+                                                ]
+                                              },
+                                              {
+                                                "type": "object",
+                                                "properties": {
+                                                  "id": {
+                                                    "type": "string"
+                                                  },
+                                                  "outgoingEdgeId": {
+                                                    "type": "string"
+                                                  },
+                                                  "type": {
+                                                    "const": "litellm"
                                                   },
                                                   "options": {
                                                     "anyOf": [
@@ -29547,6 +29874,9 @@
                                         "$ref": "#/components/schemas/Groq"
                                       },
                                       {
+                                        "$ref": "#/components/schemas/Litellm"
+                                      },
+                                      {
                                         "$ref": "#/components/schemas/Zendesk"
                                       },
                                       {
@@ -32301,6 +32631,90 @@
                                             },
                                             "type": {
                                               "const": "groq"
+                                            },
+                                            "options": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "credentialsId": {
+                                                      "type": "string"
+                                                    },
+                                                    "action": {
+                                                      "not": {}
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "credentialsId": {
+                                                      "type": "string"
+                                                    },
+                                                    "action": {
+                                                      "const": "Create chat completion"
+                                                    },
+                                                    "model": {
+                                                      "type": "string"
+                                                    },
+                                                    "messages": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "tools": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "temperature": {},
+                                                    "responseMapping": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "action"
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "id",
+                                            "type"
+                                          ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "id": {
+                                              "type": "string"
+                                            },
+                                            "outgoingEdgeId": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "const": "litellm"
                                             },
                                             "options": {
                                               "anyOf": [
@@ -35488,6 +35902,47 @@
                                                 },
                                                 "type": {
                                                   "const": "groq"
+                                                },
+                                                "options": {
+                                                  "anyOf": [
+                                                    {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "credentialsId": {},
+                                                        "action": {}
+                                                      }
+                                                    },
+                                                    {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "credentialsId": {},
+                                                        "action": {},
+                                                        "model": {},
+                                                        "messages": {},
+                                                        "tools": {},
+                                                        "temperature": {},
+                                                        "responseMapping": {}
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              "required": [
+                                                "id",
+                                                "type"
+                                              ]
+                                            },
+                                            {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "outgoingEdgeId": {
+                                                  "type": "string"
+                                                },
+                                                "type": {
+                                                  "const": "litellm"
                                                 },
                                                 "options": {
                                                   "anyOf": [
@@ -39301,6 +39756,9 @@
                                           },
                                           {
                                             "$ref": "#/components/schemas/Groq"
+                                          },
+                                          {
+                                            "$ref": "#/components/schemas/Litellm"
                                           },
                                           {
                                             "$ref": "#/components/schemas/Zendesk"
@@ -43840,6 +44298,90 @@
                                           ]
                                         },
                                         {
+                                          "type": "object",
+                                          "properties": {
+                                            "id": {
+                                              "type": "string"
+                                            },
+                                            "outgoingEdgeId": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "const": "litellm"
+                                            },
+                                            "options": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "credentialsId": {
+                                                      "type": "string"
+                                                    },
+                                                    "action": {
+                                                      "not": {}
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "credentialsId": {
+                                                      "type": "string"
+                                                    },
+                                                    "action": {
+                                                      "const": "Create chat completion"
+                                                    },
+                                                    "model": {
+                                                      "type": "string"
+                                                    },
+                                                    "messages": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "tools": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "temperature": {},
+                                                    "responseMapping": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "action"
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "id",
+                                            "type"
+                                          ]
+                                        },
+                                        {
                                           "$ref": "#/components/schemas/Zendesk"
                                         },
                                         {
@@ -47473,6 +48015,47 @@
                                                     },
                                                     "type": {
                                                       "const": "groq"
+                                                    },
+                                                    "options": {
+                                                      "anyOf": [
+                                                        {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "credentialsId": {},
+                                                            "action": {}
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "credentialsId": {},
+                                                            "action": {},
+                                                            "model": {},
+                                                            "messages": {},
+                                                            "tools": {},
+                                                            "temperature": {},
+                                                            "responseMapping": {}
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "id",
+                                                    "type"
+                                                  ]
+                                                },
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "id": {
+                                                      "type": "string"
+                                                    },
+                                                    "outgoingEdgeId": {
+                                                      "type": "string"
+                                                    },
+                                                    "type": {
+                                                      "const": "litellm"
                                                     },
                                                     "options": {
                                                       "anyOf": [
@@ -51366,6 +51949,9 @@
                                           },
                                           {
                                             "$ref": "#/components/schemas/Groq"
+                                          },
+                                          {
+                                            "$ref": "#/components/schemas/Litellm"
                                           },
                                           {
                                             "$ref": "#/components/schemas/Zendesk"
@@ -55599,6 +56185,90 @@
                                             },
                                             "type": {
                                               "const": "groq"
+                                            },
+                                            "options": {
+                                              "anyOf": [
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "credentialsId": {
+                                                      "type": "string"
+                                                    },
+                                                    "action": {
+                                                      "not": {}
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "credentialsId": {
+                                                      "type": "string"
+                                                    },
+                                                    "action": {
+                                                      "const": "Create chat completion"
+                                                    },
+                                                    "model": {
+                                                      "type": "string"
+                                                    },
+                                                    "messages": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "tools": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "temperature": {},
+                                                    "responseMapping": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "action"
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "id",
+                                            "type"
+                                          ]
+                                        },
+                                        {
+                                          "type": "object",
+                                          "properties": {
+                                            "id": {
+                                              "type": "string"
+                                            },
+                                            "outgoingEdgeId": {
+                                              "type": "string"
+                                            },
+                                            "type": {
+                                              "const": "litellm"
                                             },
                                             "options": {
                                               "anyOf": [

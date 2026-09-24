@@ -17,6 +17,8 @@ import { gmailBlock } from "@typebot.io/gmail-block";
 import gmailBlockHandlers from "@typebot.io/gmail-block/handlers";
 import { groqBlock } from "@typebot.io/groq-block";
 import groqBlockHandlers from "@typebot.io/groq-block/handlers";
+import { litellmBlock } from "@typebot.io/litellm-block";
+import litellmBlockHandlers from "@typebot.io/litellm-block/handlers";
 import { mistralBlock } from "@typebot.io/mistral-block";
 import mistralBlockHandlers from "@typebot.io/mistral-block/handlers";
 import { nocodbBlock } from "@typebot.io/nocodb-block";
@@ -52,6 +54,7 @@ export const forgedBlockHandlers = {
   [nocodbBlock.id]: nocodbBlockHandlers,
   [segmentBlock.id]: segmentBlockHandlers,
   [groqBlock.id]: groqBlockHandlers,
+  [litellmBlock.id]: litellmBlockHandlers,
   [zendeskBlock.id]: zendeskBlockHandlers,
   [posthogBlock.id]: posthogBlockHandlers,
   [perplexityBlock.id]: perplexityBlockHandlers,

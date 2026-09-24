@@ -811,6 +811,20 @@
         "@types/react": "^19.2.14",
       },
     },
+    "packages/forge/blocks/litellm": {
+      "name": "@typebot.io/litellm-block",
+      "version": "1.0.0",
+      "dependencies": {
+        "ky": "^1.2.4",
+      },
+      "devDependencies": {
+        "@ai-sdk/openai-compatible": "^1.0.39",
+        "@typebot.io/ai": "workspace:*",
+        "@typebot.io/forge": "workspace:*",
+        "@typebot.io/lib": "workspace:*",
+        "@types/react": "^19.2.14",
+      },
+    },
     "packages/forge/blocks/mistral": {
       "name": "@typebot.io/mistral-block",
       "version": "1.0.0",
@@ -970,6 +984,7 @@
         "@typebot.io/elevenlabs-block": "workspace:*",
         "@typebot.io/gmail-block": "workspace:*",
         "@typebot.io/groq-block": "workspace:*",
+        "@typebot.io/litellm-block": "workspace:*",
         "@typebot.io/mistral-block": "workspace:*",
         "@typebot.io/nocodb-block": "workspace:*",
         "@typebot.io/open-router-block": "workspace:*",
@@ -3226,6 +3241,8 @@
     "@typebot.io/legacy": ["@typebot.io/legacy@workspace:packages/deprecated/legacy"],
 
     "@typebot.io/lib": ["@typebot.io/lib@workspace:packages/lib"],
+
+    "@typebot.io/litellm-block": ["@typebot.io/litellm-block@workspace:packages/forge/blocks/litellm"],
 
     "@typebot.io/logs": ["@typebot.io/logs@workspace:packages/logs"],
 
