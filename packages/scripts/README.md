@@ -24,6 +24,7 @@ Frequently used inputs:
 | `inspectPublishedTypebot` | exactly one of `--id`, `--public-id` |
 | `inspectWorkspace` | `--workspace-id` |
 | `inspectChatSession` / `deleteChatSession` | `--session-id` (deletion also needs `--confirm`) |
+| `cleanExpiredData` | `--date=YYYY-MM-DD --confirm` (UTC date; cleanup only) |
 | `inspectResult` | `--result-id` |
 | `inspectCredentials` | `--credentials-id` |
 | `getCoupon` / `redeemCoupon` | `--code` (redemption also needs `--confirm`) |
@@ -47,6 +48,14 @@ Frequently used inputs:
 | `sendEmailCampaign` | `--csv-path` or `CAMPAIGN_CSV_PATH` |
 
 `db:bulkUpdate`, `createChatsPrices`, `migrateSubscriptionItemPriceId`, and `migrateSubscriptionsToUsageBased` do not need record identifiers, but they do require `--confirm`. `sendEmailCampaign` remains a dry run unless `SEND_EMAILS=true`.
+
+To rerun only the expired-data cleanup for a specific UTC day:
+
+```sh
+bunx nx run @typebot.io/scripts:cleanExpiredData -- --date=2026-09-30 --confirm
+```
+
+The cleanup uses the same UTC expiration cutoffs as the daily cron. Deletes start with 100 records per transaction and reduce the batch size on transient errors. Each delete rechecks expiration so a refreshed session is preserved. A single record that fails three times stops the run with an error.
 
 Database backup and restore can select `local`, `staging`, or `production` explicitly with an Nx configuration:
 

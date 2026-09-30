@@ -52,6 +52,12 @@
           "production": {}
         }
       },
+      "cleanExpiredData": {
+        "defaultConfiguration": "production",
+        "configurations": {
+          "production": {}
+        }
+      },
       "createChatsPrices": {
         "defaultConfiguration": "production",
         "configurations": {
@@ -249,6 +255,7 @@
     "db:bulkUpdate": "bun run run:prod:mysql src/bulkUpdate.ts",
     "inspectUser": "bun run run:prod:mysql src/inspectUser.ts",
     "checkSubscriptionsStatus": "bun run run:prod:mysql src/checkSubscriptionsStatus.ts",
+    "cleanExpiredData": "bun run run:prod:mysql src/cleanExpiredData.ts",
     "createChatsPrices": "bun run run:prod:mysql src/createChatsPrices.ts",
     "applyEnterpriseChatsTier": "bun run run:prod:mysql src/applyEnterpriseChatsTier.ts",
     "migrateSubscriptionItemPriceId": "bun run run:prod:mysql src/migrateSubscriptionItemPriceId.ts",
@@ -284,7 +291,8 @@
     "cron:daily": "SKIP_ENV_CHECK=true tsx --tsconfig ./tsconfig.json src/cronJobs/daily.tsx",
     "cron:monthly": "SKIP_ENV_CHECK=true tsx --tsconfig ./tsconfig.json src/cronJobs/monthly.tsx",
     "generateWorkspaceSummary": "bun run run:prod:mysql src/generateWorkspaceSummary.ts",
-    "verify:cli": "bun test src/cli.test.ts src/cliContract.test.ts src/helpers/destroyUser.test.ts"
+    "verify:cli": "bun test src/cli.test.ts src/cliContract.test.ts src/helpers/destroyUser.test.ts",
+    "verify:cleanup": "bun test src/helpers/deleteRecordsInBatches.test.ts src/helpers/cleanExpiredData.test.ts"
   },
   "exports": {
     "./*": {

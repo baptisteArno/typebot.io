@@ -1,23 +1,27 @@
 import prisma from "@typebot.io/prisma/withReadReplica";
+import { Effect } from "effect";
+import { deleteRecordsInBatches } from "./deleteRecordsInBatches";
 
-export const cleanExpiredData = async () => {
+export const cleanExpiredData = async (cleanupDate = new Date()) => {
   console.log("[cleanExpiredData] Starting expired data cleanup...");
   const startedAt = Date.now();
-  const { totalDeletedChatSessions } = await deleteOldChatSessions();
-  await deleteExpiredAppSessions();
-  await deleteExpiredVerificationTokens();
+  const totalDeletedChatSessions = await deleteOldChatSessions(cleanupDate);
+  const totalDeletedAppSessions = await deleteExpiredAppSessions(cleanupDate);
+  const totalDeletedVerificationTokens =
+    await deleteExpiredVerificationTokens(cleanupDate);
   console.log(
     `[cleanExpiredData] Finished expired data cleanup in ${formatElapsedTime(startedAt)}.`,
   );
-  return { totalDeletedChatSessions };
+  return {
+    totalDeletedChatSessions,
+    totalDeletedAppSessions,
+    totalDeletedVerificationTokens,
+  };
 };
 
 const CHAT_SESSIONS_BATCH_SIZE = 80000;
-const CHAT_SESSIONS_DELETE_CHUNK_SIZE = 400;
-const deleteOldChatSessions = async () => {
-  const twoDaysAgo = new Date();
-  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-  twoDaysAgo.setHours(0, 0, 0, 0);
+const deleteOldChatSessions = async (cleanupDate: Date) => {
+  const twoDaysAgo = getExpirationCutoff(cleanupDate, 2);
   let totalDeletedChatSessions = 0;
   let deletingChatSessions: number;
   let batchNumber = 0;
@@ -52,84 +56,74 @@ const deleteOldChatSessions = async () => {
       });
 
     deletingChatSessions = chatSessions.length;
-    totalDeletedChatSessions += deletingChatSessions;
     console.log(
       `[cleanExpiredData] Chat sessions batch ${batchNumber}: fetched ${deletingChatSessions} records in ${formatElapsedTime(fetchStartedAt)}.`,
     );
 
-    const totalChunks = Math.ceil(
-      chatSessions.length / CHAT_SESSIONS_DELETE_CHUNK_SIZE,
-    );
-    for (
-      let i = 0;
-      i < chatSessions.length;
-      i += CHAT_SESSIONS_DELETE_CHUNK_SIZE
-    ) {
-      const chunk = chatSessions.slice(i, i + CHAT_SESSIONS_DELETE_CHUNK_SIZE);
-      const chunkNumber = Math.floor(i / CHAT_SESSIONS_DELETE_CHUNK_SIZE) + 1;
-      const deleteStartedAt = Date.now();
-      console.log(
-        `[cleanExpiredData] Chat sessions batch ${batchNumber}: deleting chunk ${chunkNumber}/${totalChunks} (${chunk.length} records, offset ${i})...`,
-      );
-      const { count } = await prisma.chatSession
-        .deleteMany({
-          where: {
-            id: {
-              in: chunk.map((chatSession) => chatSession.id),
+    totalDeletedChatSessions += await Effect.runPromise(
+      deleteRecordsInBatches({
+        recordIds: chatSessions.map((chatSession) => chatSession.id),
+        label: `Chat sessions batch ${batchNumber}`,
+        deleteRecords: (recordIds) =>
+          prisma.chatSession.deleteMany({
+            where: {
+              id: {
+                in: recordIds,
+              },
+              updatedAt: { lte: twoDaysAgo },
             },
-          },
-        })
-        .catch((error) => {
-          logCleanupError(
-            `[cleanExpiredData] Chat sessions batch ${batchNumber}: delete chunk ${chunkNumber}/${totalChunks} failed after ${formatElapsedTime(deleteStartedAt)} (${chunk.length} records, offset ${i}).`,
-            error,
-          );
-          throw error;
-        });
-      console.log(
-        `[cleanExpiredData] Chat sessions batch ${batchNumber}: deleted ${count}/${chunk.length} records from chunk ${chunkNumber}/${totalChunks} in ${formatElapsedTime(deleteStartedAt)}.`,
-      );
-    }
+          }),
+      }),
+    );
   } while (deletingChatSessions === CHAT_SESSIONS_BATCH_SIZE);
   console.log(
     `[cleanExpiredData] Deleted ${totalDeletedChatSessions} old chat sessions.`,
   );
-  return { totalDeletedChatSessions };
+  return totalDeletedChatSessions;
 };
 
-const deleteExpiredAppSessions = async () => {
-  const threeDaysAgo = new Date();
-  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-  threeDaysAgo.setHours(0, 0, 0, 0);
+const deleteExpiredAppSessions = async (cleanupDate: Date) => {
+  const threeDaysAgo = getExpirationCutoff(cleanupDate, 3);
   console.log(
     `[cleanExpiredData] Deleting app sessions expiring before ${threeDaysAgo.toISOString()}...`,
   );
   const startedAt = Date.now();
-  const { count } = await prisma.session
-    .deleteMany({
-      where: {
-        expires: {
-          lte: threeDaysAgo,
-        },
-      },
-    })
-    .catch((error) => {
+  let totalDeletedAppSessions = 0;
+  let fetchedSessions: number;
+  do {
+    const sessions = await prisma.$primary().session.findMany({
+      where: { expires: { lte: threeDaysAgo } },
+      select: { id: true },
+      take: CHAT_SESSIONS_BATCH_SIZE,
+    });
+    fetchedSessions = sessions.length;
+    totalDeletedAppSessions += await Effect.runPromise(
+      deleteRecordsInBatches({
+        recordIds: sessions.map((session) => session.id),
+        label: "Expired app sessions",
+        deleteRecords: (recordIds) =>
+          prisma.session.deleteMany({
+            where: { id: { in: recordIds }, expires: { lte: threeDaysAgo } },
+          }),
+      }),
+    ).catch((error) => {
       logCleanupError(
         `[cleanExpiredData] Expired app sessions delete failed after ${formatElapsedTime(startedAt)}.`,
         error,
       );
       throw error;
     });
+  } while (fetchedSessions === CHAT_SESSIONS_BATCH_SIZE);
   console.log(
-    `[cleanExpiredData] Deleted ${count} expired user sessions in ${formatElapsedTime(startedAt)}.`,
+    `[cleanExpiredData] Deleted ${totalDeletedAppSessions} expired user sessions in ${formatElapsedTime(startedAt)}.`,
   );
+  return totalDeletedAppSessions;
 };
 
-const deleteExpiredVerificationTokens = async () => {
-  const threeDaysAgo = new Date();
-  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-  threeDaysAgo.setHours(0, 0, 0, 0);
+const deleteExpiredVerificationTokens = async (cleanupDate: Date) => {
+  const threeDaysAgo = getExpirationCutoff(cleanupDate, 3);
   let totalVerificationTokens: number;
+  let totalDeletedVerificationTokens = 0;
   let batchNumber = 0;
   console.log(
     `[cleanExpiredData] Looking for verification tokens expiring before ${threeDaysAgo.toISOString()}.`,
@@ -140,8 +134,9 @@ const deleteExpiredVerificationTokens = async () => {
     console.log(
       `[cleanExpiredData] Verification tokens batch ${batchNumber}: fetching up to 80000 records...`,
     );
-    const verificationTokens = await prisma.verificationToken
-      .findMany({
+    const verificationTokens = await prisma
+      .$primary()
+      .verificationToken.findMany({
         where: {
           expires: {
             lte: threeDaysAgo,
@@ -165,36 +160,33 @@ const deleteExpiredVerificationTokens = async () => {
     console.log(
       `[cleanExpiredData] Verification tokens batch ${batchNumber}: fetched ${verificationTokens.length} records in ${formatElapsedTime(fetchStartedAt)}.`,
     );
-    const chunkSize = 1000;
-    const totalChunks = Math.ceil(verificationTokens.length / chunkSize);
-    for (let i = 0; i < verificationTokens.length; i += chunkSize) {
-      const chunk = verificationTokens.slice(i, i + chunkSize);
-      const chunkNumber = Math.floor(i / chunkSize) + 1;
-      const deleteStartedAt = Date.now();
-      console.log(
-        `[cleanExpiredData] Verification tokens batch ${batchNumber}: deleting chunk ${chunkNumber}/${totalChunks} (${chunk.length} records, offset ${i})...`,
-      );
-      const { count } = await prisma.verificationToken
-        .deleteMany({
-          where: {
-            token: {
-              in: chunk.map((verificationToken) => verificationToken.token),
+    totalDeletedVerificationTokens += await Effect.runPromise(
+      deleteRecordsInBatches({
+        recordIds: verificationTokens.map(
+          (verificationToken) => verificationToken.token,
+        ),
+        label: `Verification tokens batch ${batchNumber}`,
+        deleteRecords: (recordIds) =>
+          prisma.verificationToken.deleteMany({
+            where: {
+              token: {
+                in: recordIds,
+              },
+              expires: { lte: threeDaysAgo },
             },
-          },
-        })
-        .catch((error) => {
-          logCleanupError(
-            `[cleanExpiredData] Verification tokens batch ${batchNumber}: delete chunk ${chunkNumber}/${totalChunks} failed after ${formatElapsedTime(deleteStartedAt)} (${chunk.length} records, offset ${i}).`,
-            error,
-          );
-          throw error;
-        });
-      console.log(
-        `[cleanExpiredData] Verification tokens batch ${batchNumber}: deleted ${count}/${chunk.length} records from chunk ${chunkNumber}/${totalChunks} in ${formatElapsedTime(deleteStartedAt)}.`,
-      );
-    }
+          }),
+      }),
+    );
   } while (totalVerificationTokens === 80000);
   console.log("[cleanExpiredData] Done deleting expired verification tokens.");
+  return totalDeletedVerificationTokens;
+};
+
+const getExpirationCutoff = (cleanupDate: Date, daysAgo: number) => {
+  const expirationCutoff = new Date(cleanupDate);
+  expirationCutoff.setUTCDate(expirationCutoff.getUTCDate() - daysAgo);
+  expirationCutoff.setUTCHours(0, 0, 0, 0);
+  return expirationCutoff;
 };
 
 const formatElapsedTime = (startedAt: number) =>

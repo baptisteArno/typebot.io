@@ -97,6 +97,7 @@ const destructiveEntryPoints = [
   "addHttpProxyCredentials.ts",
   "blockTypebot.ts",
   "bulkUpdate.ts",
+  "cleanExpiredData.ts",
   "createChatsPrices.ts",
   "deleteChatSession.ts",
   "deleteResultsRange.ts",
