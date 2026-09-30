@@ -25,6 +25,7 @@
     "@typebot.io/nocodb-block": "workspace:*",
     "@typebot.io/segment-block": "workspace:*",
     "@typebot.io/groq-block": "workspace:*",
+    "@typebot.io/litellm-block": "workspace:*",
     "@typebot.io/zendesk-block": "workspace:*",
     "@typebot.io/posthog-block": "workspace:*",
     "@typebot.io/perplexity-block": "workspace:*",
