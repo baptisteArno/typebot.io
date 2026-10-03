@@ -23,6 +23,7 @@ import { WhatsAppError } from "./WhatsAppError";
 
 type Props = {
   incomingMessage?: Message;
+  convertIncomingMessage?: (typebotId: string) => Promise<Message | undefined>;
   workspaceId: string;
   credentials: WhatsAppCredentials["data"] & Pick<WhatsAppCredentials, "id">;
   contact: NonNullable<SessionState["whatsApp"]>["contact"];
@@ -32,6 +33,7 @@ type Props = {
 
 export const startWhatsAppSession = async ({
   incomingMessage,
+  convertIncomingMessage,
   workspaceId,
   credentials,
   contact,
@@ -53,12 +55,13 @@ export const startWhatsAppSession = async ({
         settings: true,
         typebot: {
           select: {
+            id: true,
             publicId: true,
           },
         },
       },
     })) as (Pick<PublicTypebot, "settings"> & {
-      typebot: Pick<Typebot, "publicId">;
+      typebot: Pick<Typebot, "id" | "publicId">;
     })[];
 
   const botsWithWhatsAppEnabled = publicTypebotsWithWhatsAppEnabled.filter(
@@ -103,7 +106,9 @@ export const startWhatsAppSession = async ({
       isOnlyRegistering: false,
       isStreamEnabled: false,
       textBubbleContentFormat: "richText",
-      message: incomingMessage,
+      message: convertIncomingMessage
+        ? await convertIncomingMessage(publicTypebot.typebot.id)
+        : incomingMessage,
     },
     initialSessionState: {
       whatsApp: {
