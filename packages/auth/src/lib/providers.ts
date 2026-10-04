@@ -120,6 +120,7 @@ if (env.CUSTOM_OAUTH_ISSUER) {
     id: "custom-oauth",
     name: env.CUSTOM_OAUTH_NAME,
     type: "oidc",
+    idToken: false,
     authorization: {
       params: {
         scope: env.CUSTOM_OAUTH_SCOPE,
