@@ -2,6 +2,7 @@ import type { StandardSchemaV1 } from "@t3-oss/env-core";
 import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
 import { getRuntimeVariable } from "./getRuntimeVariable";
+import { isAllowedHostStudioOrigin } from "./hostStudioEmbedOrigins";
 
 declare const window: {
   __ENV?: any;
@@ -72,6 +73,24 @@ const baseEnv = {
       guessNextAuthUrlForVercelPreview,
       z.string().url(),
     ),
+    HOST_STUDIO_EMBED_ALLOWED_ORIGINS: z
+      .string()
+      .optional()
+      .transform((value) =>
+        value?.trim()
+          ? [...new Set(value.split(",").map((origin) => origin.trim()))]
+          : [],
+      )
+      .refine(
+        (origins) =>
+          origins.every((origin) =>
+            isAllowedHostStudioOrigin(origin, process.env.NODE_ENV),
+          ),
+        {
+          message:
+            "HOST_STUDIO_EMBED_ALLOWED_ORIGINS must contain exact HTTPS origins (or development localhost HTTP origins) without paths or wildcards",
+        },
+      ),
     DISABLE_SIGNUP: boolean.optional().default(false),
     ADMIN_EMAIL: z
       .string()

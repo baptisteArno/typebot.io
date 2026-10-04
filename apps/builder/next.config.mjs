@@ -47,6 +47,27 @@ const noStoreHeaders = [
   },
 ];
 
+const contentSecurityPolicy = (isDev, frameAncestors) =>
+  [
+    "default-src 'self'",
+    `script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https:${
+      isDev ? " http://localhost:* " : ""
+    }`,
+    "style-src 'self' 'unsafe-inline' https:",
+    `connect-src 'self' https: wss:${
+      isDev ? " http://localhost:* ws://localhost:*" : ""
+    }`,
+    "frame-src 'self' https: http:",
+    `img-src 'self' data: blob: https:${isDev ? " http://localhost:*" : ""}`,
+    "font-src 'self' https: data:",
+    `media-src 'self' blob: https:${isDev ? " http://localhost:* " : ""}`,
+    "worker-src 'self' blob:",
+    "object-src 'none'",
+    `frame-ancestors ${frameAncestors}`,
+    "form-action 'self'",
+    "base-uri 'self'",
+  ].join("; ");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
@@ -67,7 +88,7 @@ const nextConfig = {
     const isDev = process.env.NODE_ENV !== "production";
     return [
       {
-        source: "/(.*)?",
+        source: "/((?!typebots).*)",
         headers: [
           {
             key: "X-Frame-Options",
@@ -79,23 +100,17 @@ const nextConfig = {
           },
           {
             key: "Content-Security-Policy",
-            value: [
-              "default-src 'self'",
-              `script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https:${isDev ? " http://localhost:* " : ""}`,
-              "style-src 'self' 'unsafe-inline' https:",
-              `connect-src 'self' https: wss:${
-                isDev ? " http://localhost:* ws://localhost:*" : ""
-              }`,
-              "frame-src 'self' https: http:",
-              `img-src 'self' data: blob: https:${isDev ? " http://localhost:*" : ""}`,
-              "font-src 'self' https: data:",
-              `media-src 'self' blob: https:${isDev ? " http://localhost:* " : ""}`,
-              "worker-src 'self' blob:",
-              "object-src 'none'",
-              "frame-ancestors 'self'",
-              "form-action 'self'",
-              "base-uri 'self'",
-            ].join("; "),
+            value: contentSecurityPolicy(isDev, "'self'"),
+          },
+        ],
+      },
+      {
+        source: "/typebots/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          {
+            key: "Content-Security-Policy",
+            value: contentSecurityPolicy(isDev, "'self'"),
           },
         ],
       },

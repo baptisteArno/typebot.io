@@ -3,6 +3,10 @@ import { env } from "@typebot.io/env";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { isSameOriginRequest } from "./features/auth/helpers/isSameOriginRequest";
+import {
+  getStudioFramePolicyHeaders,
+  isStudioRoute,
+} from "./hostStudioFramePolicy";
 
 const disallowedMethods = new Set(["OPTIONS", "TRACE", "TRACK"]);
 
@@ -58,7 +62,8 @@ export function proxy(req: NextRequest) {
           ? getCallbackRedirectPath(callbackUrl, req.url)
           : undefined),
     );
-    if (!redirectPath) return NextResponse.next();
+    if (!redirectPath)
+      return withStudioFramePolicy(pathname, NextResponse.next());
     const url = req.nextUrl.clone();
     const destination = new URL(redirectPath, req.url);
     url.pathname = destination.pathname;
@@ -66,7 +71,24 @@ export function proxy(req: NextRequest) {
     url.hash = destination.hash;
     return NextResponse.redirect(url);
   }
-  return NextResponse.next();
+  return withStudioFramePolicy(pathname, NextResponse.next());
+}
+
+function withStudioFramePolicy(
+  pathname: string,
+  response: NextResponse,
+): NextResponse {
+  if (!isStudioRoute(pathname)) return response;
+
+  const headers = getStudioFramePolicyHeaders(
+    env.HOST_STUDIO_EMBED_ALLOWED_ORIGINS,
+    process.env.NODE_ENV,
+  );
+  for (const [name, value] of Object.entries(headers))
+    response.headers.set(name, value);
+  if (!("X-Frame-Options" in headers))
+    response.headers.delete("X-Frame-Options");
+  return response;
 }
 
 function getCallbackRedirectPath(callbackUrl: string, baseUrl: string) {
@@ -82,6 +104,8 @@ export const config = {
     "/api/:path*",
     "/",
     "/typebots",
+    "/typebots/:path*",
+    "/:locale/typebots/:path*",
     "/signin",
     "/register",
     "/__ENV.js",
