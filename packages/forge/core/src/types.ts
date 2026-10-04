@@ -65,6 +65,7 @@ export type ActionHandler<
     variables: VariableStore;
     logs: LogsStore;
     sessionStore: SessionStore;
+    isPreview?: boolean;
   }) => Promise<void> | void;
   /**
    * Used to stream a text bubble. Will only be used if the block following the integration block is a text bubble containing the variable returned by `getStreamVariableId`.

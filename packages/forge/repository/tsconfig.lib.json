@@ -8,6 +8,9 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
+      "path": "../blocks/hostAction/tsconfig.lib.json"
+    },
+    {
       "path": "../blocks/gmail/tsconfig.lib.json"
     },
     {

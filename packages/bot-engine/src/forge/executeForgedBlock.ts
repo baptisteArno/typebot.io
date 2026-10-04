@@ -15,7 +15,7 @@ import type {
 import { forgedBlocks } from "@typebot.io/forge-repository/definitions";
 import { forgedBlockHandlers } from "@typebot.io/forge-repository/handlers";
 import type { ForgedBlock } from "@typebot.io/forge-repository/schemas";
-import { isDefined } from "@typebot.io/lib/utils";
+import { isDefined, isNotDefined } from "@typebot.io/lib/utils";
 import type { SessionStore } from "@typebot.io/runtime-session-store";
 import { deepParseVariables } from "@typebot.io/variables/deepParseVariables";
 import {
@@ -184,6 +184,7 @@ export const executeForgedBlock = async (
     variables,
     logs: logsStore,
     sessionStore,
+    isPreview: isNotDefined(state.typebotsQueue[0].resultId),
   });
 
   const clientSideActions: ExecuteIntegrationResponse["clientSideActions"] = [];

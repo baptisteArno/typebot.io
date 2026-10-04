@@ -811,6 +811,13 @@
         "@types/react": "^19.2.14",
       },
     },
+    "packages/forge/blocks/hostAction": {
+      "name": "@typebot.io/host-action-block",
+      "dependencies": {
+        "@typebot.io/forge": "workspace:*",
+        "@typebot.io/runtime-session-store": "workspace:*",
+      },
+    },
     "packages/forge/blocks/mistral": {
       "name": "@typebot.io/mistral-block",
       "version": "1.0.0",
@@ -970,6 +977,7 @@
         "@typebot.io/elevenlabs-block": "workspace:*",
         "@typebot.io/gmail-block": "workspace:*",
         "@typebot.io/groq-block": "workspace:*",
+        "@typebot.io/host-action-block": "workspace:*",
         "@typebot.io/mistral-block": "workspace:*",
         "@typebot.io/nocodb-block": "workspace:*",
         "@typebot.io/open-router-block": "workspace:*",
@@ -3220,6 +3228,8 @@
     "@typebot.io/groq-block": ["@typebot.io/groq-block@workspace:packages/forge/blocks/groq"],
 
     "@typebot.io/groups": ["@typebot.io/groups@workspace:packages/groups"],
+
+    "@typebot.io/host-action-block": ["@typebot.io/host-action-block@workspace:packages/forge/blocks/hostAction"],
 
     "@typebot.io/js": ["@typebot.io/js@workspace:packages/embeds/js"],
 

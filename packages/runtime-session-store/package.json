@@ -9,6 +9,11 @@
       "import": "./src/index.ts",
       "default": "./src/index.ts"
     },
+    "./hostExecutionContext": {
+      "types": "./src/hostExecutionContext.ts",
+      "import": "./src/hostExecutionContext.ts",
+      "default": "./src/hostExecutionContext.ts"
+    },
     "./package.json": "./package.json"
   },
   "dependencies": {

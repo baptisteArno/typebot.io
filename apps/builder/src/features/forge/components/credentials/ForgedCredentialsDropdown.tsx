@@ -22,7 +22,11 @@ type Props = Omit<ButtonProps, "type"> & {
 };
 
 const getAuthTypeFromBlockId = (blockId: ForgedBlockDefinition["id"]) => {
-  if (blockId === "cal-com" || blockId === "qr-code")
+  if (
+    blockId === "cal-com" ||
+    blockId === "qr-code" ||
+    blockId === "host-action"
+  )
     throw new Error("Block has no auth");
   return blockId;
 };
