@@ -224,13 +224,15 @@ Your provider needs to support the [OpenID Connect](https://openid.net/connect/)
 | CUSTOM_OAUTH_ISSUER <span style={{color: '#ef5151'}}>\*</span>        |                                                        | OAuth issuer URL (i.e. `https://auth.domain.com/openid`) |
 | CUSTOM_OAUTH_NAME                                                     | Custom OAuth                                           | Provider name. Will be displayed in the sign in form.    |
 | CUSTOM_OAUTH_WELL_KNOWN_URL                                           | `CUSTOM_OAUTH_ISSUER`/.well-known/openid-configuration | Provider .well-known URL                                 |
-| CUSTOM_OAUTH_USER_ID_PATH                                             | id                                                     | Used to map the id from the user info object             |
-| CUSTOM_OAUTH_USER_NAME_PATH                                           | name                                                   | Used to map the name from the user info object           |
-| CUSTOM_OAUTH_USER_EMAIL_PATH                                          | email                                                  | Used to map the email from the user info object          |
-| CUSTOM_OAUTH_USER_IMAGE_PATH                                          | image                                                  | Used to map the image from the user info object          |
+| CUSTOM_OAUTH_USER_ID_PATH                                             | id                                                     | Claim path used to map the user ID                       |
+| CUSTOM_OAUTH_USER_NAME_PATH                                           | name                                                   | Claim path used to map the user name                     |
+| CUSTOM_OAUTH_USER_EMAIL_PATH                                          | email                                                  | Claim path used to map the user email                    |
+| CUSTOM_OAUTH_USER_IMAGE_PATH                                          | image                                                  | Claim path used to map the user image                    |
 | CUSTOM_OAUTH_SCOPE                                                    | openid profile email                                   | OAuth scope                                              |
+| CUSTOM_OAUTH_USE_USERINFO                                             | false                                                  | Use the provider's UserInfo endpoint for profile claims  |
 
 For `*_PATH` parameters, you can use dot notation to access nested properties (i.e. `account.name`).
+By default, profile claims come from the ID Token. Set `CUSTOM_OAUTH_USE_USERINFO=true` to use UserInfo instead. This changes the claim source used by the configured `*_PATH` values; claims are not merged.
 
 The Authorization callback URL should be: `$NEXTAUTH_URL/api/auth/callback/custom-oauth`
 

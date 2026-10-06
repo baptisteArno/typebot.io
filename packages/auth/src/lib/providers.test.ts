@@ -1,26 +1,43 @@
 import { Auth, type AuthConfig, customFetch } from "@auth/core";
 import { exportJWK, generateKeyPair, SignJWT } from "jose";
-import { expect, it, vi } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
+
+const testEnv = vi.hoisted(() => ({
+  CUSTOM_OAUTH_ISSUER: "https://identity.example.test",
+  CUSTOM_OAUTH_CLIENT_ID: "generic-builder",
+  CUSTOM_OAUTH_CLIENT_SECRET: "test-only-client-secret",
+  CUSTOM_OAUTH_SCOPE: "openid profile email",
+  CUSTOM_OAUTH_USER_ID_PATH: "sub",
+  CUSTOM_OAUTH_USER_EMAIL_PATH: "email",
+  CUSTOM_OAUTH_USER_NAME_PATH: "name",
+  CUSTOM_OAUTH_USER_IMAGE_PATH: "picture",
+  CUSTOM_OAUTH_NAME: "Generic Host",
+  CUSTOM_OAUTH_USE_USERINFO: undefined as boolean | undefined,
+}));
 
 vi.mock("../helpers/sendVerificationRequest", () => ({
   sendVerificationRequest: vi.fn(),
 }));
+vi.mock("@typebot.io/env", () => ({ env: testEnv }));
 
-vi.mock("@typebot.io/env", () => ({
-  env: {
-    CUSTOM_OAUTH_ISSUER: "https://identity.example.test",
-    CUSTOM_OAUTH_CLIENT_ID: "generic-builder",
-    CUSTOM_OAUTH_CLIENT_SECRET: "test-only-client-secret",
-    CUSTOM_OAUTH_SCOPE: "openid profile email",
-    CUSTOM_OAUTH_USER_ID_PATH: "sub",
-    CUSTOM_OAUTH_USER_EMAIL_PATH: "email",
-    CUSTOM_OAUTH_USER_NAME_PATH: "name",
-    CUSTOM_OAUTH_USER_IMAGE_PATH: "picture",
-    CUSTOM_OAUTH_NAME: "Generic Host",
-  },
-}));
+beforeEach(() => {
+  testEnv.CUSTOM_OAUTH_USER_ID_PATH = "sub";
+  testEnv.CUSTOM_OAUTH_USER_EMAIL_PATH = "email";
+  testEnv.CUSTOM_OAUTH_USER_NAME_PATH = "name";
+  testEnv.CUSTOM_OAUTH_USE_USERINFO = undefined;
+  vi.resetModules();
+});
 
-it("completes Custom OAuth when profile claims are only in UserInfo", async () => {
+const signInWithCustomOAuth = async ({
+  idTokenClaims,
+  userInfo,
+  userIdPath = "sub",
+}: {
+  idTokenClaims: Record<string, unknown>;
+  userInfo?: Record<string, unknown>;
+  userIdPath?: string;
+}) => {
+  testEnv.CUSTOM_OAUTH_USER_ID_PATH = userIdPath;
   const { providers } = await import("./providers");
   const provider = providers.find(
     (value) => typeof value !== "function" && value.id === "custom-oauth",
@@ -31,7 +48,7 @@ it("completes Custom OAuth when profile claims are only in UserInfo", async () =
   const issuer = "https://identity.example.test";
   const origin = "https://builder.example.test";
   const { privateKey, publicKey } = await generateKeyPair("RS256");
-  const idToken = await new SignJWT({ sub: "immutable-demo-user" })
+  const idToken = await new SignJWT(idTokenClaims)
     .setProtectedHeader({ alg: "RS256", kid: "test-key" })
     .setIssuer(issuer)
     .setAudience("generic-builder")
@@ -72,12 +89,7 @@ it("completes Custom OAuth when profile claims are only in UserInfo", async () =
         token_type: "Bearer",
       });
     }
-    if (url.endsWith("/userinfo"))
-      return Response.json({
-        sub: "immutable-demo-user",
-        email: "manager@example.test",
-        name: "Project B Manager",
-      });
+    if (url.endsWith("/userinfo")) return Response.json(userInfo ?? {});
     throw new Error("Unexpected OIDC endpoint");
   }) as typeof fetch;
   const signIn = vi.fn(() => true);
@@ -137,16 +149,98 @@ it("completes Custom OAuth when profile claims are only in UserInfo", async () =
     config,
   );
 
-  expect(result.headers.get("location")).toBe(`${origin}/typebots`);
+  return { result, signIn, requests, pkceVerified };
+};
+
+it.each([
+  ["absent", undefined],
+  ["false", false],
+] as const)("preserves ID Token profile behavior when the flag is %s", async (_, flag) => {
+  testEnv.CUSTOM_OAUTH_USE_USERINFO = flag;
+  const { result, signIn, requests, pkceVerified } =
+    await signInWithCustomOAuth({
+      idTokenClaims: {
+        sub: "token-subject",
+        email: "manager@example.test",
+        account_id: "configured-account-id",
+      },
+      userInfo: {
+        sub: "different-userinfo-subject",
+        email: "different@example.test",
+      },
+      userIdPath: "account_id",
+    });
+
+  expect(result.headers.get("location")).toBe(
+    "https://builder.example.test/typebots",
+  );
   expect(signIn).toHaveBeenCalledWith(
     expect.objectContaining({
-      user: expect.objectContaining({ email: "manager@example.test" }),
+      user: expect.objectContaining({
+        email: "manager@example.test",
+      }),
+      profile: expect.objectContaining({
+        account_id: "configured-account-id",
+      }),
+      account: expect.objectContaining({
+        provider: "custom-oauth",
+        providerAccountId: "configured-account-id",
+      }),
+    }),
+  );
+  expect(requests).not.toContain("https://identity.example.test/userinfo");
+  expect(pkceVerified).toBe(true);
+});
+
+it("does not switch linked account identity to a differing UserInfo subject by default", async () => {
+  const { signIn, requests } = await signInWithCustomOAuth({
+    idTokenClaims: {
+      sub: "existing-user-id",
+      email: "manager@example.test",
+    },
+    userInfo: {
+      sub: "different-user-id",
+      email: "manager@example.test",
+    },
+  });
+
+  expect(signIn).toHaveBeenCalledWith(
+    expect.objectContaining({
+      account: expect.objectContaining({
+        providerAccountId: "existing-user-id",
+      }),
+    }),
+  );
+  expect(requests).not.toContain("https://identity.example.test/userinfo");
+});
+
+it("uses UserInfo profile claims only when explicitly enabled", async () => {
+  testEnv.CUSTOM_OAUTH_USE_USERINFO = true;
+  const { result, signIn, requests, pkceVerified } =
+    await signInWithCustomOAuth({
+      idTokenClaims: { sub: "immutable-demo-user" },
+      userInfo: {
+        sub: "immutable-demo-user",
+        email: "manager@example.test",
+        name: "Project B Manager",
+      },
+    });
+
+  expect(result.headers.get("location")).toBe(
+    "https://builder.example.test/typebots",
+  );
+  expect(signIn).toHaveBeenCalledWith(
+    expect.objectContaining({
+      user: expect.objectContaining({
+        email: "manager@example.test",
+        name: "Project B Manager",
+      }),
       account: expect.objectContaining({
         provider: "custom-oauth",
         providerAccountId: "immutable-demo-user",
       }),
     }),
   );
-  expect(requests).toContain(`${issuer}/userinfo`);
+  expect(requests).toContain("https://identity.example.test/userinfo");
   expect(pkceVerified).toBe(true);
 });

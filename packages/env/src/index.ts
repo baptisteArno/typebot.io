@@ -233,6 +233,7 @@ const customOAuthEnv = {
       .default("openid profile email"),
     CUSTOM_OAUTH_CLIENT_ID: z.string().min(1).optional(),
     CUSTOM_OAUTH_CLIENT_SECRET: z.string().min(1).optional(),
+    CUSTOM_OAUTH_USE_USERINFO: boolean.optional().default(false),
     CUSTOM_OAUTH_WELL_KNOWN_URL: z.string().url().optional(),
     CUSTOM_OAUTH_USER_ID_PATH: z.string().min(1).optional().default("id"),
     CUSTOM_OAUTH_USER_EMAIL_PATH: z.string().min(1).optional().default("email"),
