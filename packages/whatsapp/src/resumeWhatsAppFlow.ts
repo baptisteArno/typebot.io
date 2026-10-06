@@ -131,14 +131,20 @@ export const resumeWhatsAppFlow = async ({
     (!isSessionExpired && currentTypebot && session?.state?.currentBlockId
       ? getBlockById(session.state.currentBlockId, currentTypebot.groups)
       : undefined) ?? {};
-  const reply = await convertWhatsAppMessageToTypebotMessage({
-    messages: aggregationResponse.incomingMessages,
-    workspaceId,
-    credentials,
-    typebotId: currentTypebot?.id,
-    resultId: session?.state?.typebotsQueue[0].resultId,
-    block,
-  });
+  const convertMessages = (typebotId: string | undefined) =>
+    convertWhatsAppMessageToTypebotMessage({
+      messages: aggregationResponse.incomingMessages,
+      workspaceId,
+      credentials,
+      typebotId,
+      resultId: session?.state?.typebotsQueue[0].resultId,
+      block,
+    });
+  const reply = await convertMessages(currentTypebot?.id);
+  // A new session has no typebot yet, so media URLs have to be rebuilt once
+  // the typebot to start is known.
+  const convertReply =
+    !session?.state || isSessionExpired ? convertMessages : undefined;
 
   await withSessionStore(sessionId, async (sessionStore) => {
     const {
@@ -155,6 +161,7 @@ export const resumeWhatsAppFlow = async ({
       credentials,
       isSessionExpired,
       reply,
+      convertReply,
       state: session?.state,
       sessionStore,
       contact,
@@ -299,6 +306,7 @@ const resumeFlowAndSendWhatsAppMessages = async (props: {
   state: SessionState | null | undefined;
   sessionStore: SessionStore;
   reply: Message | undefined;
+  convertReply?: (typebotId: string) => Promise<Message | undefined>;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
   referral?: WhatsAppMessageReferral;
   credentials: WhatsAppCredentials["data"];
@@ -362,6 +370,7 @@ const resumeFlow = ({
   state,
   isSessionExpired,
   reply,
+  convertReply,
   contact,
   referral,
   credentials,
@@ -369,6 +378,7 @@ const resumeFlow = ({
   workspaceId,
   sessionStore,
 }: {
+  convertReply?: (typebotId: string) => Promise<Message | undefined>;
   sessionId: string;
   reply: Message | undefined;
   contact?: NonNullable<SessionState["whatsApp"]>["contact"];
@@ -407,6 +417,7 @@ const resumeFlow = ({
     );
   return startWhatsAppSession({
     incomingMessage: reply,
+    convertIncomingMessage: convertReply,
     workspaceId,
     credentials: { ...credentials, id: credentialsId as string },
     contact,
