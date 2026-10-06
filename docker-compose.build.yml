@@ -15,7 +15,6 @@ services:
   typebot-builder:
     build:
       context: .
-      target: builder-release
       args:
         - SCOPE=builder
     depends_on:
@@ -30,7 +29,6 @@ services:
   typebot-viewer:
     build:
       context: .
-      target: release
       args:
         - SCOPE=viewer
     depends_on:

@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG BUN_VERSION=1.3.9
+ARG SCOPE
 
 FROM oven/bun:${BUN_VERSION}-slim AS bun
 
@@ -32,13 +33,13 @@ FROM build-base AS dependencies
 COPY package.json bun.lock bunfig.toml ./
 COPY --parents apps/**/package.json packages/**/package.json ./
 COPY patches ./patches
-RUN --mount=type=cache,id=botflow-bun,target=/root/.bun/install/cache,sharing=locked \
+RUN --mount=type=cache,id=typebot-bun,target=/root/.bun/install/cache,sharing=locked \
     node -e 'const fs=require("node:fs");const p=JSON.parse(fs.readFileSync("package.json","utf8"));delete p.scripts.postinstall;delete p.scripts.prepare;fs.writeFileSync("package.json",JSON.stringify(p,null,2)+"\n")' \
     && SENTRYCLI_SKIP_DOWNLOAD=1 bun install --frozen-lockfile
 
 # Prisma CLI and its production dependency closure are installed separately for the Builder image.
 FROM dependencies AS prisma-dependencies
-RUN --mount=type=cache,id=botflow-bun,target=/root/.bun/install/cache,sharing=locked \
+RUN --mount=type=cache,id=typebot-bun,target=/root/.bun/install/cache,sharing=locked \
     rm -rf node_modules \
     && SENTRYCLI_SKIP_DOWNLOAD=1 bun install --frozen-lockfile --production --filter '@typebot.io/prisma'
 
@@ -71,7 +72,7 @@ RUN DATABASE_URL=postgresql:// bunx nx db:generate prisma
 
 # ================== RELEASE ======================
 
-FROM runtime AS release
+FROM runtime AS release-base
 ARG SCOPE
 ENV SCOPE=${SCOPE}
 COPY --from=builder --chown=node:node /app/apps/${SCOPE}/.next/standalone ./
@@ -88,10 +89,15 @@ ENTRYPOINT ./${SCOPE}-entrypoint.sh
 EXPOSE 3000
 ENV PORT=3000
 
-FROM release AS builder-release
+FROM release-base AS release-viewer
+
+FROM release-base AS release-builder
 COPY --from=builder --chown=node:node /app/packages/prisma/postgresql ./packages/prisma/postgresql
 COPY --from=builder --chown=node:node /app/packages/prisma/prisma.config.ts ./packages/prisma/prisma.config.ts
 COPY --from=prisma-dependencies --chown=node:node /app/node_modules ./node_modules
 COPY --from=builder --chown=node:node /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder --chown=node:node /app/node_modules/@prisma/client ./node_modules/@prisma/client
 COPY --from=runtime-env-dependencies /runtime/node_modules ./node_modules
+
+# Default target: release workflow and self-hosting docs build without --target.
+FROM release-${SCOPE} AS release
