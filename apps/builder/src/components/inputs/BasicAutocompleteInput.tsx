@@ -29,11 +29,21 @@ export const BasicAutocompleteInput = forwardRef<HTMLInputElement, Props>(
     inputRef,
   ) => {
     const { onOpen, onClose, isOpen } = useOpenControls();
-    const [inputValue, setInputValue] = useState(value ?? defaultValue);
+    const externalValue = value ?? defaultValue;
+    const [inputValue, setInputValue] = useState(externalValue);
+    const lastSyncedValue = useRef(externalValue);
 
     useEffect(() => {
-      setInputValue(value ?? defaultValue);
-    }, [value, defaultValue]);
+      if (externalValue === lastSyncedValue.current) return;
+      if (
+        inputValue !== lastSyncedValue.current &&
+        inputValue !== externalValue
+      )
+        return;
+
+      lastSyncedValue.current = externalValue;
+      setInputValue(externalValue);
+    }, [externalValue, inputValue]);
 
     const _onChange = (value: string | undefined) => {
       setInputValue(value);
