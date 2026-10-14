@@ -10,12 +10,25 @@
       { "name": "PARTYKIT_DURABLE", "class_name": "PartyKitDurable" }
     ]
   },
-  // PartyKit created this class with the key-value backend, which can't be
-  // changed for an existing class.
   "exports": {
-    "PartyKitDurable": { "type": "durable-object", "storage": "legacy-kv" }
+    "PartyKitDurable": { "type": "durable-object", "storage": "sqlite" }
   },
   // Keeps variables set outside this file, such as those from `partykit env`.
   "keep_vars": true,
-  "dev": { "port": 1999 }
+  "dev": { "port": 1999 },
+  "env": {
+    // For a Worker first deployed with `partykit deploy`, which created the
+    // class with the key-value backend. A class can't change its backend.
+    "partykit": {
+      "name": "typebot",
+      "durable_objects": {
+        "bindings": [
+          { "name": "PARTYKIT_DURABLE", "class_name": "PartyKitDurable" }
+        ]
+      },
+      "exports": {
+        "PartyKitDurable": { "type": "durable-object", "storage": "legacy-kv" }
+      }
+    }
+  }
 }
