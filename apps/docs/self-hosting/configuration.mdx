@@ -365,7 +365,9 @@ In Typebot, Redis is optional and is used to:
 
 ## PartyKit
 
-PartyKit is optional and is used to make the webhook block work. The PartyKit configuration is located in `packages/partykit` folder. You can deploy the server into production using `bun deploy`. You can find more information about PartyKit deployment in their [official documentation](https://docs.partykit.io/guides/deploying-your-partykit-server/).
+PartyKit is optional and is used to make the webhook block work. The relay is a [PartyServer](https://github.com/cloudflare/partykit/tree/main/packages/partyserver) Worker located in the `packages/partykit` folder and configured by its `wrangler.jsonc`. Set its secret with `bunx wrangler secret put WEBHOOK_RELAY_SECRET`, then deploy it to your Cloudflare account with `bunx wrangler deploy --domain <your-domain>` from that folder.
+
+If you previously deployed it with `partykit deploy` to your own Cloudflare account, `wrangler deploy` reuses the same Worker, Durable Object class, rooms and the `WEBHOOK_RELAY_SECRET` set with `partykit env`. Hosted `*.partykit.dev` projects can't be reused: deploy a new Worker and update `NEXT_PUBLIC_PARTYKIT_HOST`.
 
 | Parameter                 | Default | Description                               |
 | ------------------------- | ------- | ----------------------------------------- |

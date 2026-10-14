@@ -1,0 +1,21 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  // Keeps the Worker, class and binding names created by `partykit deploy`, so
+  // existing rooms resolve to the same Durable Objects and their storage.
+  "name": "typebot",
+  "main": "src/webhookServer.ts",
+  "compatibility_date": "2026-10-01",
+  "durable_objects": {
+    "bindings": [
+      { "name": "PARTYKIT_DURABLE", "class_name": "PartyKitDurable" }
+    ]
+  },
+  // PartyKit created this class with the key-value backend, which can't be
+  // changed for an existing class.
+  "exports": {
+    "PartyKitDurable": { "type": "durable-object", "storage": "legacy-kv" }
+  },
+  // Keeps variables set outside this file, such as those from `partykit env`.
+  "keep_vars": true,
+  "dev": { "port": 1999 }
+}
