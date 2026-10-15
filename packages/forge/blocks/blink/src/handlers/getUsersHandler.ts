@@ -27,9 +27,9 @@ export const getUsersHandler = createActionHandler(getUsers, {
     try {
       const filterSearchParams =
         options.filter?.type === "Employee ID" && options.filter.employeeId
-          ? { employeeId: options.filter.employeeId }
+          ? { employee_id: options.filter.employeeId }
           : options.filter?.type === "User ID" && options.filter.userId
-            ? { userId: options.filter.userId }
+            ? { user_id: options.filter.userId }
             : undefined;
 
       const users = filterSearchParams
@@ -80,7 +80,7 @@ const fetchFilteredUsers = async ({
   searchParams,
 }: {
   apiKey: string;
-  searchParams: { employeeId: string } | { userId: string };
+  searchParams: { employee_id: string } | { user_id: string };
 }) => {
   const { data } = await ky
     .get(`${baseUrl}/user`, {

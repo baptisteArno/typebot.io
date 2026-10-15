@@ -44,6 +44,33 @@ describe("getUsersHandler", () => {
     ]);
   });
 
+  it("filters users with the query parameters Blink expects", async () => {
+    const requestedUrls: string[] = [];
+    globalThis.fetch = Object.assign(
+      async (input: string | URL | Request) => {
+        requestedUrls.push(
+          input instanceof Request ? input.url : input.toString(),
+        );
+        return Response.json({ data: [{ id: "u-1" }] });
+      },
+      { preconnect: originalFetch.preconnect },
+    );
+
+    await getUsersHandler.server?.({
+      credentials: { apiKey: "legacy-token" },
+      options: Object.assign(Object.create(null), {
+        filter: { type: "Employee ID", employeeId: "42" },
+      }),
+      variables: createVariablesStore([]),
+      logs: createLogsStore([]),
+      sessionStore: Object.create(null),
+    });
+
+    expect(requestedUrls).toEqual([
+      "https://api.joinblink.com/v2/user?employee_id=42",
+    ]);
+  });
+
   it("does not list every user when a selected filter has no value", async () => {
     let requestCount = 0;
     globalThis.fetch = Object.assign(
