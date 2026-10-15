@@ -69,14 +69,15 @@ globalThis.fetch = async (input, init) => {
 const relay = spawn(
   process.execPath,
   [
-    "node_modules/partykit/dist/bin.mjs",
+    "node_modules/wrangler/bin/wrangler.js",
     "dev",
     "--config",
-    "packages/partykit/partykit.json",
+    "packages/partykit/wrangler.jsonc",
     "--port",
     "5292",
+    "--show-interactive-dev-session=false",
     "--var",
-    `WEBHOOK_RELAY_SECRET=${relaySecret}`,
+    `WEBHOOK_RELAY_SECRET:${relaySecret}`,
   ],
   { stdio: ["ignore", "pipe", "pipe"] },
 );

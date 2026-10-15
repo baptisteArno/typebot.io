@@ -1,41 +1,35 @@
 import { signWebhookToken } from "@typebot.io/lib/signWebhookToken";
 import { verifyWebhookToken } from "@typebot.io/lib/verifyWebhookToken";
-import type * as Party from "partykit/server";
+import { Server } from "partyserver";
 
-export default class Server implements Party.Server {
-  options: Party.ServerOptions = { hibernate: true };
-  constructor(readonly room: Party.Room) {}
+type Env = {
+  PARTYKIT_DURABLE: DurableObjectNamespace<PartyKitDurable>;
+  WEBHOOK_RELAY_SECRET?: string;
+  // Set by `partykit env`, which prefixed every variable.
+  "pkvar-WEBHOOK_RELAY_SECRET"?: string;
+};
 
-  static async onBeforeConnect(request: Party.Request, lobby: Party.Lobby) {
-    const claims = await verifyWebhookToken(
-      new URL(request.url).searchParams.get("token"),
-      getSecret(lobby.env),
-    );
-    if (
-      !claims ||
-      claims.purpose !== "subscribe" ||
-      encodeURIComponent(claims.room) !== lobby.id
-    )
-      return new Response("Unauthorized", { status: 401 });
-    return request;
-  }
+// Keeps the class and binding names created by `partykit deploy` so existing
+// rooms resolve to the same Durable Objects.
+export class PartyKitDurable extends Server<Env> {
+  static override options = { hibernate: true };
 
-  async onRequest(request: Party.Request) {
+  override async onRequest(request: Request) {
     if (request.method !== "POST")
       return new Response("Method not allowed", { status: 405 });
-    const secret = getSecret(this.room.env);
+    const secret = getSecret(this.env);
     const publication = await verifyWebhookToken(await request.text(), secret);
     if (
       !publication ||
       publication.purpose !== "publish" ||
-      encodeURIComponent(publication.room) !== this.room.id ||
+      encodeURIComponent(publication.room) !== this.name ||
       publication.payload === undefined
     )
       return new Response("Unauthorized", { status: 401 });
 
     // Claim durably before delivery: a replay must never be re-signed for a
     // later wait. Transactions also serialize concurrent copies of a POST.
-    const claimed = await this.room.storage.transaction(async (storage) => {
+    const claimed = await this.ctx.storage.transaction(async (storage) => {
       const publications = await storage.list<number>({
         prefix: "publication:",
       });
@@ -54,15 +48,15 @@ export default class Server implements Party.Server {
     // Revalidate on delivery, including after hibernation and expiry.
     // Client WebSocket messages never publish data.
     let delivered = 0;
-    for (const connection of this.room.getConnections()) {
+    for (const connection of this.getConnections()) {
       const subscription = await verifyWebhookToken(
-        new URL(connection.uri).searchParams.get("token"),
+        getToken(connection.uri),
         secret,
       );
       if (
         !subscription ||
         subscription.purpose !== "subscribe" ||
-        encodeURIComponent(subscription.room) !== this.room.id
+        encodeURIComponent(subscription.room) !== this.name
       ) {
         connection.close(1008, "Expired subscription");
         continue;
@@ -93,9 +87,33 @@ export default class Server implements Party.Server {
   }
 }
 
-const getSecret = (env: Party.Lobby["env"]) =>
-  typeof env.WEBHOOK_RELAY_SECRET === "string"
-    ? env.WEBHOOK_RELAY_SECRET
-    : undefined;
+export default {
+  async fetch(request, env) {
+    // PartySocket clients address `/parties/main/:room`. The room stays the raw
+    // path segment, as PartyKit used it for `idFromName`.
+    const [, prefix, party, room] = new URL(request.url).pathname.split("/");
+    if (prefix !== "parties" || party !== "main" || !room)
+      return new Response("Not found", { status: 404 });
 
-Server satisfies Party.Worker;
+    if (request.headers.get("Upgrade")?.toLowerCase() === "websocket") {
+      const claims = await verifyWebhookToken(
+        getToken(request.url),
+        getSecret(env),
+      );
+      if (
+        !claims ||
+        claims.purpose !== "subscribe" ||
+        encodeURIComponent(claims.room) !== room
+      )
+        return new Response("Unauthorized", { status: 401 });
+    }
+
+    return env.PARTYKIT_DURABLE.getByName(room).fetch(request);
+  },
+} satisfies ExportedHandler<Env>;
+
+const getToken = (url: string | null) =>
+  url ? new URL(url).searchParams.get("token") : null;
+
+const getSecret = (env: Env) =>
+  env.WEBHOOK_RELAY_SECRET ?? env["pkvar-WEBHOOK_RELAY_SECRET"];

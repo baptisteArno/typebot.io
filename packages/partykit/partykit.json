@@ -1,6 +1,0 @@
-{
-  "$schema": "https://www.partykit.io/schema.json",
-  "name": "typebot",
-  "main": "src/webhookServer.ts",
-  "compatibilityDate": "2024-10-01"
-}

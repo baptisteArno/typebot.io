@@ -1,13 +1,15 @@
 {
   "name": "@typebot.io/partykit",
   "scripts": {
-    "dev": "partykit dev --live",
-    "deploy": "partykit deploy"
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
   },
   "devDependencies": {
-    "partykit": "^0.0.110"
+    "@cloudflare/workers-types": "5.20261014.1",
+    "wrangler": "4.151.0"
   },
   "dependencies": {
-    "@typebot.io/lib": "workspace:*"
+    "@typebot.io/lib": "workspace:*",
+    "partyserver": "0.5.10"
   }
 }
