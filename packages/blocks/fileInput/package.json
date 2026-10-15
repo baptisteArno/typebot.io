@@ -15,7 +15,7 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@orpc/server": "^1.13.9",
+    "@orpc/server": "^1.15.7",
     "@typebot.io/groups": "workspace:*",
     "@typebot.io/blocks-inputs": "workspace:*",
     "@typebot.io/lib": "workspace:*",

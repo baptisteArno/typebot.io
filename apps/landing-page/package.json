@@ -18,8 +18,8 @@
     "check-broken-links": "mdx-local-link-checker content public '*/(index.mdx|blog|about|pricing?isTiersModalOpened=true)'"
   },
   "dependencies": {
-    "@tanstack/react-router": "1.167.4",
-    "@tanstack/react-start": "1.166.16",
+    "@tanstack/react-router": "1.170.44",
+    "@tanstack/react-start": "1.169.2",
     "@typebot.io/billing": "workspace:*",
     "@typebot.io/lib": "workspace:*",
     "@typebot.io/prisma": "workspace:*",
@@ -41,7 +41,7 @@
     "@shikijs/transformers": "2.4.2",
     "@tailwindcss/typography": "0.5.16",
     "@tailwindcss/vite": "^4.1.16",
-    "@tanstack/react-router-devtools": "1.166.9",
+    "@tanstack/react-router-devtools": "1.167.2",
     "@types/node": "^24.10.13",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
