@@ -24937,7 +24937,6 @@
           {
             "name": "timeFilter",
             "in": "query",
-            "required": false,
             "schema": {
               "enum": [
                 "today",
@@ -24957,7 +24956,6 @@
           {
             "name": "timeZone",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "string"
             },
@@ -25370,7 +25368,6 @@
           {
             "name": "timeFilter",
             "in": "query",
-            "required": false,
             "schema": {
               "enum": [
                 "today",
@@ -25390,7 +25387,6 @@
           {
             "name": "timeZone",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "string"
             },
@@ -25823,7 +25819,6 @@
                     ]
                   }
                 },
-                "required": [],
                 "additionalProperties": false
               }
             }
@@ -27576,8 +27571,7 @@
                   "icon": {
                     "type": "string"
                   }
-                },
-                "required": []
+                }
               }
             }
           }
@@ -27944,18 +27938,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {},
-                "required": []
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -34304,7 +34286,6 @@
           {
             "name": "migrateToLatestVersion",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "boolean",
               "default": false,
@@ -45355,18 +45336,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {},
-                "required": []
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -45712,18 +45681,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {},
-                "required": []
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -46090,18 +46047,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {},
-                "required": []
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -46449,7 +46394,6 @@
           {
             "name": "migrateToLatestVersion",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "boolean",
               "default": false,
@@ -58309,18 +58253,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {},
-                "required": []
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -58679,7 +58611,6 @@
           {
             "name": "limit",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "number",
               "minimum": 1,
@@ -58692,7 +58623,6 @@
           {
             "name": "cursor",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "number"
             },
@@ -58702,7 +58632,6 @@
           {
             "name": "timeFilter",
             "in": "query",
-            "required": false,
             "schema": {
               "enum": [
                 "today",
@@ -58722,7 +58651,6 @@
           {
             "name": "timeZone",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "string"
             },
@@ -59220,8 +59148,7 @@
                     "type": "string",
                     "description": "Comma separated list of ids. If not provided, all results will be deleted. ⚠️"
                   }
-                },
-                "required": []
+                }
               }
             }
           }
@@ -67185,13 +67112,7 @@
                 "required": true
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "not": {}
-                }
-              }
-            }
+            "content": {}
           },
           "400": {
             "description": "400",
@@ -67539,13 +67460,7 @@
                 "required": true
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "not": {}
-                }
-              }
-            }
+            "content": {}
           },
           "400": {
             "description": "400",
@@ -71907,18 +71822,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {},
-                "required": []
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -72598,11 +72501,7 @@
       "post": {
         "operationId": "httpRequestSpecMocks.mirrorBody",
         "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
+          "content": {}
         },
         "responses": {
           "200": {
@@ -74826,8 +74725,7 @@
                     "type": "string",
                     "default": "richText"
                   }
-                },
-                "required": []
+                }
               }
             }
           }
@@ -76914,8 +76812,7 @@
                     "type": "string",
                     "default": "richText"
                   }
-                },
-                "required": []
+                }
               }
             }
           }
@@ -79584,8 +79481,7 @@
                     "type": "string",
                     "default": "richText"
                   }
-                },
-                "required": []
+                }
               }
             }
           }
@@ -82119,7 +82015,6 @@
           {
             "name": "clientId",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "string"
             },
@@ -82129,7 +82024,6 @@
           {
             "name": "state",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "string"
             },
