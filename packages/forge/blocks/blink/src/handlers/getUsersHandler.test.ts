@@ -81,18 +81,21 @@ describe("getUsersHandler", () => {
       { preconnect: originalFetch.preconnect },
     );
     const logs: unknown[] = [];
+    const variables: { id: string; value: unknown }[] = [];
 
     await getUsersHandler.server?.({
       credentials: { apiKey: "legacy-token" },
       options: Object.assign(Object.create(null), {
         filter: { type: "User ID" },
+        responseMapping: [{ item: "User IDs", variableId: "user-ids" }],
       }),
-      variables: createVariablesStore([]),
+      variables: createVariablesStore(variables),
       logs: createLogsStore(logs),
       sessionStore: Object.create(null),
     });
 
     expect(requestCount).toBe(0);
+    expect(variables).toEqual([{ id: "user-ids", value: null }]);
     expect(logs).toEqual(["No user ID provided in the filter."]);
   });
 

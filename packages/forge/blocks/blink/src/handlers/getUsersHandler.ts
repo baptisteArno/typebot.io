@@ -14,15 +14,31 @@ type BlinkUser = {
 
 export const getUsersHandler = createActionHandler(getUsers, {
   server: async ({ credentials, options, variables, logs }) => {
-    if (!credentials?.apiKey)
+    // Avoid leaving users from a previous run in the mapped variables
+    const clearMappedVariables = () => {
+      const variablesToClear = options.responseMapping
+        ?.map((mapping) => mapping.variableId)
+        .filter(isDefined)
+        .map((variableId) => ({ id: variableId, value: null }));
+      if (variablesToClear && variablesToClear.length > 0)
+        variables.set(variablesToClear);
+    };
+
+    if (!credentials?.apiKey) {
+      clearMappedVariables();
       return logs.add(
         "Get Users needs Blink credentials created from a Legacy app token.",
       );
+    }
 
-    if (options.filter?.type === "User ID" && !options.filter.userId)
+    if (options.filter?.type === "User ID" && !options.filter.userId) {
+      clearMappedVariables();
       return logs.add("No user ID provided in the filter.");
-    if (options.filter?.type === "Employee ID" && !options.filter.employeeId)
+    }
+    if (options.filter?.type === "Employee ID" && !options.filter.employeeId) {
+      clearMappedVariables();
       return logs.add("No employee ID provided in the filter.");
+    }
 
     try {
       const filterSearchParams =
@@ -63,6 +79,7 @@ export const getUsersHandler = createActionHandler(getUsers, {
 
       variables.set(variablesToSet);
     } catch (error) {
+      clearMappedVariables();
       if (error instanceof HTTPError)
         return logs.add(
           await parseUnknownError({
