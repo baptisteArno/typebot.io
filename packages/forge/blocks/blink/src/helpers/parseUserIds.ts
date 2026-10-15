@@ -1,11 +1,7 @@
 // List variables are injected as JSON arrays, e.g. `["u-1","u-2"]`
-export const parseUserIds = (
-  rawUserIds: (string | undefined)[] | undefined,
-) => {
-  const userIds = (rawUserIds ?? []).flatMap((rawUserId) =>
-    rawUserId ? parseRawUserId(rawUserId) : [],
-  );
-  return [...new Set(userIds)];
+export const parseUserIds = (rawUserIds: string | undefined) => {
+  if (!rawUserIds) return [];
+  return [...new Set(parseRawUserId(rawUserIds))];
 };
 
 const parseRawUserId = (rawUserId: string): string[] => {

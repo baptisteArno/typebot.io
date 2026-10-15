@@ -44,6 +44,31 @@ describe("getUsersHandler", () => {
     ]);
   });
 
+  it("does not list every user when a selected filter has no value", async () => {
+    let requestCount = 0;
+    globalThis.fetch = Object.assign(
+      async () => {
+        requestCount++;
+        return Response.json({ data: [] });
+      },
+      { preconnect: originalFetch.preconnect },
+    );
+    const logs: unknown[] = [];
+
+    await getUsersHandler.server?.({
+      credentials: { apiKey: "legacy-token" },
+      options: Object.assign(Object.create(null), {
+        filter: { type: "User ID" },
+      }),
+      variables: createVariablesStore([]),
+      logs: createLogsStore(logs),
+      sessionStore: Object.create(null),
+    });
+
+    expect(requestCount).toBe(0);
+    expect(logs).toEqual(["No user ID provided in the filter."]);
+  });
+
   it("asks for a legacy app token when given App Identity credentials", async () => {
     const logs: unknown[] = [];
 

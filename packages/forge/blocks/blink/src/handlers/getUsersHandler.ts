@@ -19,6 +19,11 @@ export const getUsersHandler = createActionHandler(getUsers, {
         "Get Users needs Blink credentials created from a Legacy app token.",
       );
 
+    if (options.filter?.type === "User ID" && !options.filter.userId)
+      return logs.add("No user ID provided in the filter.");
+    if (options.filter?.type === "Employee ID" && !options.filter.employeeId)
+      return logs.add("No employee ID provided in the filter.");
+
     try {
       const filterSearchParams =
         options.filter?.type === "Employee ID" && options.filter.employeeId

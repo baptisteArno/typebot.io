@@ -18,7 +18,7 @@ describe("sendChatMessageHandler", () => {
     const requests = mockBlinkApi();
 
     const result = await executeSendChatMessage({
-      userIds: ['["u-1","u-2"]', "u-1"],
+      userIds: '["u-1","u-2","u-1"]',
       message: "Fill in the survey: https://example.com",
     });
 
@@ -70,11 +70,15 @@ describe("sendChatMessageHandler", () => {
 
     const result = await executeSendChatMessage({
       credentials: { apiKey: "legacy-token" },
-      userIds: ["u-1"],
+      userIds: "u-1",
       message: "Hello",
     });
 
     expect(requests.tokenRequests).toBe(0);
+    expect(result.variables).toEqual([
+      { id: "sent-count", value: 0 },
+      { id: "failed-user-ids", value: ["u-1"] },
+    ]);
     expect(result.logs).toEqual([
       "Send Chat Message needs Blink credentials created from an App Identity (client ID and client secret).",
     ]);
@@ -89,7 +93,7 @@ describe("sendChatMessageHandler", () => {
     });
 
     const result = await executeSendChatMessage({
-      userIds: ["u-1", "u-2", "u-3"],
+      userIds: "u-1, u-2, u-3",
       message: "Hello",
     });
 
@@ -117,7 +121,7 @@ describe("sendChatMessageHandler", () => {
     });
 
     const result = await executeSendChatMessage({
-      userIds: ["u-1"],
+      userIds: "u-1",
       message: "Hello",
     });
 
@@ -135,7 +139,7 @@ describe("sendChatMessageHandler", () => {
     });
 
     const result = await executeSendChatMessage({
-      userIds: ["u-1", "u-2"],
+      userIds: "u-1, u-2",
       message: "Hello",
     });
 
@@ -152,7 +156,7 @@ describe("sendChatMessageHandler", () => {
   it("refreshes the access token before it expires", async () => {
     const requests = mockBlinkApi({ accessTokenExpiresInSeconds: 1 });
 
-    await executeSendChatMessage({ userIds: ["u-1"], message: "Hello" });
+    await executeSendChatMessage({ userIds: "u-1", message: "Hello" });
 
     expect(requests.chatRequests.map((r) => r.authorization)).toEqual([
       "Bearer access-token-2",
@@ -167,7 +171,7 @@ describe("sendChatMessageHandler", () => {
     });
 
     const result = await executeSendChatMessage({
-      userIds: ["u-1"],
+      userIds: "u-1",
       message: "Hello",
     });
 
@@ -184,7 +188,7 @@ describe("sendChatMessageHandler", () => {
       tokenResponseDelayMs: 500,
     });
 
-    await executeSendChatMessage({ userIds: ["u-1"], message: "Hello" });
+    await executeSendChatMessage({ userIds: "u-1", message: "Hello" });
 
     const [chatRequestTime, messageRequestTime] = requests.chatRequestTimes;
     expect(messageRequestTime! - chatRequestTime!).toBeGreaterThanOrEqual(
@@ -199,7 +203,7 @@ describe("sendChatMessageHandler", () => {
     });
 
     const result = await executeSendChatMessage({
-      userIds: ["u-1", "u-2"],
+      userIds: "u-1, u-2",
       message: "Hello",
     });
 
@@ -219,7 +223,7 @@ const executeSendChatMessage = async ({
   message,
 }: {
   credentials?: { apiKey?: string; clientId?: string; clientSecret?: string };
-  userIds: string[];
+  userIds: string;
   message: string;
 }) => {
   const logs: unknown[] = [];

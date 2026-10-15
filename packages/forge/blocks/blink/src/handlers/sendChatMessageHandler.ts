@@ -9,16 +9,32 @@ import { parseUserIds } from "../helpers/parseUserIds";
 
 export const sendChatMessageHandler = createActionHandler(sendChatMessage, {
   server: async ({ credentials, options, variables, logs }) => {
-    if (!credentials?.clientId || !credentials.clientSecret)
+    const userIds = parseUserIds(options.userIds);
+    const setNothingSentVariables = () =>
+      setResultVariables({
+        variables,
+        responseMapping: options.responseMapping,
+        sentCount: 0,
+        notSentUserIds: userIds,
+      });
+
+    if (!credentials?.clientId || !credentials.clientSecret) {
+      setNothingSentVariables();
       return logs.add(
         "Send Chat Message needs Blink credentials created from an App Identity (client ID and client secret).",
       );
+    }
 
-    const userIds = parseUserIds(options.userIds);
-    if (userIds.length === 0) return logs.add("No recipient user ID provided.");
+    if (userIds.length === 0) {
+      setNothingSentVariables();
+      return logs.add("No recipient user ID provided.");
+    }
 
     const message = options.message?.trim();
-    if (!message) return logs.add("No message provided.");
+    if (!message) {
+      setNothingSentVariables();
+      return logs.add("No message provided.");
+    }
 
     let chatClient: Awaited<ReturnType<typeof createBlinkChatClient>>;
     try {
@@ -27,12 +43,7 @@ export const sendChatMessageHandler = createActionHandler(sendChatMessage, {
         clientSecret: credentials.clientSecret,
       });
     } catch (err) {
-      setResultVariables({
-        variables,
-        responseMapping: options.responseMapping,
-        sentCount: 0,
-        notSentUserIds: userIds,
-      });
+      setNothingSentVariables();
       return logs.add(
         await parseUnknownError({
           err,

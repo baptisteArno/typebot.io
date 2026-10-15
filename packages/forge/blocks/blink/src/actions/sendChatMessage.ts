@@ -6,16 +6,14 @@ export const sendChatMessage = createAction({
   name: "Send Chat Message",
   auth,
   options: option.object({
-    userIds: option
-      .array(option.string.meta({ layout: { placeholder: "u-..." } }))
-      .meta({
-        layout: {
-          label: "Recipient user IDs",
-          itemLabel: "user ID",
-          moreInfoTooltip:
-            "Each recipient gets the message in a direct chat with your App Identity. You can insert a list variable, for example the User IDs saved by the Get Users action.",
-        },
-      }),
+    userIds: option.string.meta({
+      layout: {
+        label: "Recipient user IDs",
+        placeholder: "u-..., u-...",
+        helperText:
+          "Separate IDs with commas or insert a list variable, for example the User IDs saved by the Get Users action. Each recipient gets the message in a direct chat with your App Identity.",
+      },
+    }),
     message: option.string.meta({
       layout: {
         label: "Message",
