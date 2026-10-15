@@ -29,14 +29,14 @@ export const conditionBlockSchemas = {
     z.object({
       type: z.enum([LogicBlockType.CONDITION]),
       items: z.array(conditionItemSchemas.v5),
-      options: z.undefined(),
+      options: z.undefined().optional(),
     }),
   ),
   v6: blockBaseSchema.merge(
     z.object({
       type: z.enum([LogicBlockType.CONDITION]),
       items: z.array(conditionItemSchemas.v6),
-      options: z.undefined(),
+      options: z.undefined().optional(),
     }),
   ),
 };

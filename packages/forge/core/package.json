@@ -16,6 +16,9 @@
     },
     "./package.json": "./package.json"
   },
+  "scripts": {
+    "test": "bun test"
+  },
   "dependencies": {
     "@typebot.io/variables": "workspace:*",
     "@typebot.io/runtime-session-store": "workspace:*",

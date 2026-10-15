@@ -99,11 +99,11 @@ export const parseBlockSchema = <
     blockDefinition.options
       ? blockDefinition.options.extend({
           credentialsId: z.string().optional(),
-          action: z.undefined(),
+          action: z.undefined().optional(),
         })
       : z.object({
           credentialsId: z.string().optional(),
-          action: z.undefined(),
+          action: z.undefined().optional(),
         }),
     ...blockDefinition.actions.map((action) =>
       blockDefinition.options
@@ -184,7 +184,7 @@ export const option = {
     schemas: J,
   ) =>
     z.discriminatedUnion(field, [
-      z.object({ [field]: z.undefined() }),
+      z.object({ [field]: z.undefined().optional() }),
       ...schemas,
     ] as const),
   saveResponseArray: <I extends readonly [string, ...string[]]>(

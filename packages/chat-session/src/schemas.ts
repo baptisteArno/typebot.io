@@ -58,7 +58,7 @@ export const typebotInSessionStateSchema = z.preprocess(
 export type TypebotInSession = TypebotInSessionV6 | TypebotInSessionV5;
 
 const sessionStateSchemaV1 = z.object({
-  version: z.undefined(),
+  version: z.undefined().optional(),
   typebot: typebotInSessionStateSchema,
   dynamicTheme: dynamicThemeSchema.optional(),
   linkedTypebots: z.object({
