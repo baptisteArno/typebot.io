@@ -11956,6 +11956,9 @@
                 "$ref": "#/components/schemas/SendFeedEvent"
               },
               {
+                "$ref": "#/components/schemas/SendChatMessage"
+              },
+              {
                 "type": "object",
                 "properties": {
                   "credentialsId": {
@@ -12437,6 +12440,50 @@
                 "item": {
                   "enum": [
                     "Event ID"
+                  ],
+                  "type": "string"
+                },
+                "variableId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "action"
+        ]
+      },
+      "SendChatMessage": {
+        "type": "object",
+        "properties": {
+          "credentialsId": {
+            "type": "string"
+          },
+          "action": {
+            "const": "Send Chat Message"
+          },
+          "userIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "message": {
+            "type": "string"
+          },
+          "unfurlLinks": {
+            "type": "boolean"
+          },
+          "responseMapping": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "item": {
+                  "enum": [
+                    "Sent count",
+                    "Failed user IDs"
                   ],
                   "type": "string"
                 },
@@ -24514,6 +24561,7 @@
                                                       {},
                                                       {},
                                                       {},
+                                                      {},
                                                       {}
                                                     ]
                                                   }
@@ -32642,6 +32690,48 @@
                                                       "type": "string"
                                                     },
                                                     "action": {
+                                                      "const": "Send Chat Message"
+                                                    },
+                                                    "userIds": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "message": {
+                                                      "type": "string"
+                                                    },
+                                                    "unfurlLinks": {
+                                                      "type": "boolean"
+                                                    },
+                                                    "responseMapping": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "action"
+                                                  ]
+                                                },
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "credentialsId": {
+                                                      "type": "string"
+                                                    },
+                                                    "action": {
                                                       "const": "Redirect"
                                                     },
                                                     "url": {
@@ -35624,6 +35714,17 @@
                                                         "userIds": {},
                                                         "groupIds": {},
                                                         "pushNotification": {},
+                                                        "responseMapping": {}
+                                                      }
+                                                    },
+                                                    {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "credentialsId": {},
+                                                        "action": {},
+                                                        "userIds": {},
+                                                        "message": {},
+                                                        "unfurlLinks": {},
                                                         "responseMapping": {}
                                                       }
                                                     },
@@ -44106,6 +44207,48 @@
                                                       "type": "string"
                                                     },
                                                     "action": {
+                                                      "const": "Send Chat Message"
+                                                    },
+                                                    "userIds": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "message": {
+                                                      "type": "string"
+                                                    },
+                                                    "unfurlLinks": {
+                                                      "type": "boolean"
+                                                    },
+                                                    "responseMapping": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "action"
+                                                  ]
+                                                },
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "credentialsId": {
+                                                      "type": "string"
+                                                    },
+                                                    "action": {
                                                       "const": "Redirect"
                                                     },
                                                     "url": {
@@ -47572,6 +47715,17 @@
                                                             "userIds": {},
                                                             "groupIds": {},
                                                             "pushNotification": {},
+                                                            "responseMapping": {}
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "object",
+                                                          "properties": {
+                                                            "credentialsId": {},
+                                                            "action": {},
+                                                            "userIds": {},
+                                                            "message": {},
+                                                            "unfurlLinks": {},
                                                             "responseMapping": {}
                                                           }
                                                         },
@@ -55878,6 +56032,48 @@
                                                         "title": {},
                                                         "text": {}
                                                       }
+                                                    },
+                                                    "responseMapping": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "action"
+                                                  ]
+                                                },
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "credentialsId": {
+                                                      "type": "string"
+                                                    },
+                                                    "action": {
+                                                      "const": "Send Chat Message"
+                                                    },
+                                                    "userIds": {
+                                                      "type": "array",
+                                                      "items": {
+                                                        "anyOf": [
+                                                          {},
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    },
+                                                    "message": {
+                                                      "type": "string"
+                                                    },
+                                                    "unfurlLinks": {
+                                                      "type": "boolean"
                                                     },
                                                     "responseMapping": {
                                                       "type": "array",

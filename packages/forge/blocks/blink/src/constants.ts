@@ -18,3 +18,10 @@ export const responseDataLabels = {
 } as const;
 
 export const baseUrl = "https://api.joinblink.com/v2";
+
+export const chatApiBaseUrl = "https://api.joinblink.com/api/platform";
+
+export const appIdentityTokenUrl = "https://api.joinblink.com/oidc/token";
+
+// Blink rate limits each app to ~2-3 requests per second
+export const minDelayBetweenChatRequestsMs = 400;

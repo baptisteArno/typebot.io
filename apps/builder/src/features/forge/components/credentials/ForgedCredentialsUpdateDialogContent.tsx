@@ -123,6 +123,7 @@ export const ForgedCredentialsUpdateDialogContent = ({
               : z.object({})
           }
           data={data}
+          blockOptions={data}
           onDataChange={setData}
         />
       )}

@@ -2,23 +2,51 @@
 title: Blink
 ---
 
-The Blink integration allows you to interact with your [Blink](https://joinblink.com) workplace communication platform directly from your typebot. You can retrieve user information and send rich feed events to keep your team informed and engaged.
+The Blink integration allows you to interact with your [Blink](https://joinblink.com) workplace communication platform directly from your typebot. You can retrieve user information, send rich feed events to keep your team informed and engaged, and send chat messages to employees.
 
 ## Authentication
 
-To get started, you'll need to create a Blink app and generate an API token:
+New Blink credentials are created from a Blink **App Identity**.
 
-1. Follow the [official Blink instructions](https://developer.joinblink.com/docs/creating-an-integration) to create your integration
-2. Generate an app token from your Blink admin dashboard
-3. Add your app token to the Typebot credentials section
+### Create a Blink App Identity
+
+1. In your Blink Admin portal, go to **Manage Apps**, open the **Created apps** tab and click **Create app**.
+2. Choose **App identity**.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/blink/create-app.png"
+    alt="Blink app type selection"
+  />
+</Frame>
+
+3. Give it a name and a tagline. Employees will see them in their chat with your typebot. You can leave the webhook URL and events empty.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/blink/create-app-identity.png"
+    alt="Blink App Identity form"
+  />
+</Frame>
+
+4. Click **Create**, then copy the **Client ID** and **Client Secret**. Blink only shows the client secret once. If you lose it, you can regenerate it from the same page.
+5. In your typebot, open a Blink block, click **Add Blink app** and paste the client ID and client secret.
+
+### Legacy app tokens
+
+Credentials created before App Identities were available use a Blink legacy app token. They keep working with the **Get Users** and **Send Feed Event** actions. The **Send Chat Message** action needs App Identity credentials.
+
+Blink App Identities don't support the Feed and Users APIs yet. If you need to send chat messages and also use **Get Users** or **Send Feed Event**, keep your legacy app credentials for those actions.
 
 ## Get Users
 
-The "Get Users" action allows you to retrieve user information from your Blink workspace. You can filter users by either User ID or Employee ID.
+The "Get Users" action allows you to retrieve user information from your Blink workspace. You can filter users by either User ID or Employee ID. Without a filter, it retrieves every user of your organisation.
+
+This action requires legacy app credentials.
 
 ### Configuration
 
-- **Filter**: Choose between filtering by "User ID" or "Employee ID"
+- **Filter**: Choose between filtering by "User ID" or "Employee ID". Leave it empty to retrieve every user.
 - **Save in variables**: Select which user data fields to save in your typebot variables
 
 ### Available User Data
@@ -43,6 +71,8 @@ The block can retrieve the following user information:
 
 The "Send Feed Event" action allows you to create rich, interactive cards in your Blink feed. These cards support various content types and interactive elements.
 
+This action requires legacy app credentials.
+
 ### Basic Configuration
 
 - **Category ID**: The Blink category where the event should be posted
@@ -62,3 +92,32 @@ The Blink integration supports a rich variety of content types for your feed car
 ### Push Notifications
 
 Optionally configure a push notifications to receive whenever the feed event is posted.
+
+## Send Chat Message
+
+The "Send Chat Message" action sends a message to each recipient in a direct chat with your App Identity. The message lands in the recipient's Blink chats, like a message from a colleague.
+
+<Frame>
+  <img
+    src="/images/blocks/integrations/blink/chat-message.png"
+    alt="Blink chat message sent by a typebot"
+  />
+</Frame>
+
+This action requires App Identity credentials.
+
+### Configuration
+
+- **Recipient user IDs**: The Blink user IDs (`u-...`) of the recipients. You can insert a list variable, for example the **User IDs** saved by the **Get Users** action.
+- **Message**: The message to send. Supports Markdown, for example `**bold**` and links.
+- **Show link previews**: Display a preview of the links in the message.
+- **Save in variables**: Save the number of recipients who received the message, and the user IDs of those who didn't.
+
+Sending the message again to the same recipient reuses the existing direct chat.
+
+### Send a message to every employee
+
+1. Add a Blink block with the **Get Users** action, using your legacy app credentials, without filter. Save the **User IDs** in a variable.
+2. Add a Blink block with the **Send Chat Message** action, using your App Identity credentials, and insert that variable in **Recipient user IDs**.
+
+Blink limits how many requests an app can make per second, so sending to a large number of employees takes a while: count about one second per recipient.

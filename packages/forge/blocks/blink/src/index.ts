@@ -1,6 +1,7 @@
 import { createBlock } from "@typebot.io/forge";
 import { getUsers } from "./actions/getUsers";
 import { redirect } from "./actions/redirect";
+import { sendChatMessage } from "./actions/sendChatMessage";
 import { sendFeedEvent } from "./actions/sendFeedEvent";
 import { auth } from "./auth";
 import { BlinkLogo } from "./logo";
@@ -11,6 +12,6 @@ export const blinkBlock = createBlock({
   tags: ["CRM", "HR"],
   LightLogo: BlinkLogo,
   auth,
-  actions: [getUsers, sendFeedEvent, redirect],
+  actions: [getUsers, sendFeedEvent, sendChatMessage, redirect],
   docsUrl: "https://docs.typebot.com/editor/blocks/integrations/blink",
 });

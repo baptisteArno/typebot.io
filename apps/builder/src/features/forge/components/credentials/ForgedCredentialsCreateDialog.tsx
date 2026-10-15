@@ -132,6 +132,7 @@ export const ForgedCredentialsCreateDialogBody = ({
             : z.object({})
         }
         data={data}
+        blockOptions={data}
         onDataChange={setData}
       />
 
