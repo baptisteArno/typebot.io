@@ -27,6 +27,7 @@ export const CredentialsUpdateDialog = ({
     <Dialog.Root isOpen={isOpen} onClose={onClose}>
       {editingCredentials && (
         <CredentialsUpdateDialogPopup
+          key={editingCredentials.id}
           editingCredentials={editingCredentials}
           onSubmit={onSubmit}
           scope={scope}

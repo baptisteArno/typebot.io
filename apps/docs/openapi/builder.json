@@ -11956,6 +11956,9 @@
                 "$ref": "#/components/schemas/SendFeedEvent"
               },
               {
+                "$ref": "#/components/schemas/SendChatMessage"
+              },
+              {
                 "type": "object",
                 "properties": {
                   "credentialsId": {
@@ -12437,6 +12440,47 @@
                 "item": {
                   "enum": [
                     "Event ID"
+                  ],
+                  "type": "string"
+                },
+                "variableId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "action"
+        ]
+      },
+      "SendChatMessage": {
+        "type": "object",
+        "properties": {
+          "credentialsId": {
+            "type": "string"
+          },
+          "action": {
+            "const": "Send Chat Message"
+          },
+          "userIds": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "unfurlLinks": {
+            "type": "boolean"
+          },
+          "responseMapping": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "item": {
+                  "enum": [
+                    "Sent count",
+                    "Failed user IDs"
                   ],
                   "type": "string"
                 },
@@ -24514,6 +24558,7 @@
                                                       {},
                                                       {},
                                                       {},
+                                                      {},
                                                       {}
                                                     ]
                                                   }
@@ -32636,6 +32681,9 @@
                                                   ]
                                                 },
                                                 {
+                                                  "$ref": "#/components/schemas/SendChatMessage"
+                                                },
+                                                {
                                                   "type": "object",
                                                   "properties": {
                                                     "credentialsId": {
@@ -35626,6 +35674,9 @@
                                                         "pushNotification": {},
                                                         "responseMapping": {}
                                                       }
+                                                    },
+                                                    {
+                                                      "$ref": "#/components/schemas/SendChatMessage"
                                                     },
                                                     {
                                                       "type": "object",
@@ -44100,6 +44151,9 @@
                                                   ]
                                                 },
                                                 {
+                                                  "$ref": "#/components/schemas/SendChatMessage"
+                                                },
+                                                {
                                                   "type": "object",
                                                   "properties": {
                                                     "credentialsId": {
@@ -47574,6 +47628,9 @@
                                                             "pushNotification": {},
                                                             "responseMapping": {}
                                                           }
+                                                        },
+                                                        {
+                                                          "$ref": "#/components/schemas/SendChatMessage"
                                                         },
                                                         {
                                                           "type": "object",
@@ -55894,6 +55951,9 @@
                                                   "required": [
                                                     "action"
                                                   ]
+                                                },
+                                                {
+                                                  "$ref": "#/components/schemas/SendChatMessage"
                                                 },
                                                 {
                                                   "type": "object",

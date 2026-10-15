@@ -10,7 +10,10 @@ import { baseUrl } from "../constants";
 
 export const sendFeedEventHandler = createActionHandler(sendFeedEvent, {
   server: async ({ credentials, options, variables, logs }) => {
-    if (!credentials?.apiKey) return logs.add("No API key provided.");
+    if (!credentials?.apiKey)
+      return logs.add(
+        "Send Feed Event needs Blink credentials created from a Legacy app token.",
+      );
 
     if (!options.userIds && !options.groupIds)
       return logs.add("You must supply at least one user ID or group ID.");

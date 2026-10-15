@@ -6,14 +6,41 @@ export const auth = createAuth({
   schema: option.object({
     apiKey: option.string.meta({
       layout: {
-        label: "App token",
-        isRequired: true,
+        label: "Legacy app token",
         inputType: "password",
         helperText:
-          "You can generate an app token by following [the official Blink instructions](https://developer.joinblink.com/docs/creating-an-integration).",
+          "Used by the Get Users and Send Feed Event actions. New Blink credentials use an App Identity instead.",
         withVariableButton: false,
         isDebounceDisabled: true,
+        isHidden: (credentials: Record<string, unknown> | undefined) =>
+          !isLegacyAppCredentials(credentials),
+      },
+    }),
+    clientId: option.string.meta({
+      layout: {
+        label: "Client ID",
+        placeholder: "aid-...",
+        helperText:
+          "Create an App Identity in your Blink Admin portal (Manage Apps > Created apps > Create app > App identity), then copy its client ID and client secret. [See how](https://docs.typebot.com/editor/blocks/integrations/blink#create-a-blink-app-identity).",
+        withVariableButton: false,
+        isDebounceDisabled: true,
+        isHidden: isLegacyAppCredentials,
+      },
+    }),
+    clientSecret: option.string.meta({
+      layout: {
+        label: "Client secret",
+        inputType: "password",
+        withVariableButton: false,
+        isDebounceDisabled: true,
+        isHidden: isLegacyAppCredentials,
       },
     }),
   }),
 });
+
+function isLegacyAppCredentials(
+  credentials: Record<string, unknown> | undefined,
+) {
+  return credentials !== undefined && Object.hasOwn(credentials, "apiKey");
+}

@@ -17,8 +17,14 @@ const Label = ({ className, ...props }: LabelProps) => (
   />
 );
 
-const Description = ({ ...props }: PrimitiveField.Description.Props) => (
-  <PrimitiveField.Description {...props} />
+const Description = ({
+  className,
+  ...props
+}: PrimitiveField.Description.Props) => (
+  <PrimitiveField.Description
+    {...props}
+    className={cn("text-sm text-gray-11", className)}
+  />
 );
 
 const Container = ({
