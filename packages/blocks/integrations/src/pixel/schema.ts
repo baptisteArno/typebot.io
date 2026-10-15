@@ -19,7 +19,7 @@ const basePixelOptionSchema = z.object({
 
 const initialPixelOptionSchema = basePixelOptionSchema.merge(
   z.object({
-    eventType: z.undefined(),
+    eventType: z.undefined().optional(),
   }),
 );
 

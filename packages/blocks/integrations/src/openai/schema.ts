@@ -17,7 +17,7 @@ const openAIBaseOptionsSchema = z.object({
 
 const initialOptionsSchema = z
   .object({
-    task: z.undefined(),
+    task: z.undefined().optional(),
   })
   .merge(openAIBaseOptionsSchema);
 

@@ -34,7 +34,7 @@ const rowsFilterComparisonSchema = z.object({
 
 const initialGoogleSheetsOptionsSchema = googleSheetsOptionsBaseSchema.merge(
   z.object({
-    action: z.undefined(),
+    action: z.undefined().optional(),
   }),
 );
 

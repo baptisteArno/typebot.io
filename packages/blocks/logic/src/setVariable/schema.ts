@@ -47,7 +47,7 @@ const appendItemToListOptionsSchema = baseOptions.extend({
 
 export const setVariableOptionsSchema = z.discriminatedUnion("type", [
   customSetVariableOptionsSchema.extend({
-    type: z.undefined(),
+    type: z.undefined().optional(),
   }),
   customSetVariableOptionsSchema.extend({
     type: z.literal("Custom"),
