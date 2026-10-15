@@ -11,7 +11,7 @@ export const sendChatMessage = createAction({
         label: "Recipient user IDs",
         placeholder: "u-..., u-...",
         helperText:
-          "Separate IDs with commas or insert a list variable, for example the User IDs saved by the Get Users action. Each recipient gets the message in a direct chat with your App Identity.",
+          "Comma-separated IDs or a list variable, like the User IDs saved by Get Users.",
       },
     }),
     message: option.string.meta({
