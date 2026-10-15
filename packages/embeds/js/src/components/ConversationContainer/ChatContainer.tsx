@@ -41,6 +41,7 @@ import { mergeThemes } from "../../utils/dynamicTheme";
 import { isNetworkError } from "../../utils/error";
 import { executeClientSideAction } from "../../utils/executeClientSideActions";
 import { getAnswerContent } from "../../utils/getAnswerContent";
+import { injectStartProps } from "../../utils/injectStartProps";
 import { migrateLegacyChatChunks } from "../../utils/migrateLegacyChatChunks";
 import { persist } from "../../utils/persist";
 import { setGeneralBackground } from "../../utils/setCssVariablesValue";
@@ -102,6 +103,19 @@ export const ChatContainer = (props: Props) => {
   onMount(() => {
     window.addEventListener("message", processIncomingEvent);
     (async () => {
+      const initialStartPropsAction =
+        props.initialChatReply.clientSideActions?.find(
+          (action) => "startPropsToInject" in action,
+        );
+      if (
+        initialStartPropsAction &&
+        "startPropsToInject" in initialStartPropsAction
+      )
+        await injectStartProps(
+          initialStartPropsAction.startPropsToInject,
+          props.context.typebot.id,
+        );
+
       const isRecoveredFromStorage = chatChunks().length > 1;
       if (isRecoveredFromStorage) {
         cleanupRecoveredChatChunks();
