@@ -9,24 +9,28 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as HealthzRouteImport } from './routes/healthz'
-import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as LayoutPricingRouteImport } from './routes/_layout/pricing'
-import { Route as LayoutOssFriendsRouteImport } from './routes/_layout/oss-friends'
-import { Route as LayoutAboutRouteImport } from './routes/_layout/about'
+import { Route as LayoutRouteImport } from './routes/_layout'
+import { Route as HealthzRouteImport } from './routes/healthz'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as LayoutSlugRouteImport } from './routes/_layout/$slug'
-import { Route as LayoutTemplatesIndexRouteImport } from './routes/_layout/templates/index'
-import { Route as LayoutFaqIndexRouteImport } from './routes/_layout/faq/index'
+import { Route as LayoutAboutRouteImport } from './routes/_layout/about'
+import { Route as LayoutOssFriendsRouteImport } from './routes/_layout/oss-friends'
+import { Route as LayoutPricingRouteImport } from './routes/_layout/pricing'
 import { Route as LayoutBlogIndexRouteImport } from './routes/_layout/blog/index'
-import { Route as LayoutTemplatesSlugRouteImport } from './routes/_layout/templates/$slug'
-import { Route as LayoutFaqSlugRouteImport } from './routes/_layout/faq/$slug'
 import { Route as LayoutBlogSlugRouteImport } from './routes/_layout/blog/$slug'
+import { Route as LayoutFaqIndexRouteImport } from './routes/_layout/faq/index'
+import { Route as LayoutFaqSlugRouteImport } from './routes/_layout/faq/$slug'
+import { Route as LayoutTemplatesIndexRouteImport } from './routes/_layout/templates/index'
+import { Route as LayoutTemplatesSlugRouteImport } from './routes/_layout/templates/$slug'
 
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LayoutRoute = LayoutRouteImport.update({
+  id: '/_layout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HealthzRoute = HealthzRouteImport.update({
@@ -34,23 +38,14 @@ const HealthzRoute = HealthzRouteImport.update({
   path: '/healthz',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LayoutRoute = LayoutRouteImport.update({
-  id: '/_layout',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LayoutPricingRoute = LayoutPricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => LayoutRoute,
-} as any)
-const LayoutOssFriendsRoute = LayoutOssFriendsRouteImport.update({
-  id: '/oss-friends',
-  path: '/oss-friends',
+const LayoutSlugRoute = LayoutSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutAboutRoute = LayoutAboutRouteImport.update({
@@ -58,19 +53,14 @@ const LayoutAboutRoute = LayoutAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => LayoutRoute,
 } as any)
-const LayoutSlugRoute = LayoutSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
+const LayoutOssFriendsRoute = LayoutOssFriendsRouteImport.update({
+  id: '/oss-friends',
+  path: '/oss-friends',
   getParentRoute: () => LayoutRoute,
 } as any)
-const LayoutTemplatesIndexRoute = LayoutTemplatesIndexRouteImport.update({
-  id: '/templates/',
-  path: '/templates/',
-  getParentRoute: () => LayoutRoute,
-} as any)
-const LayoutFaqIndexRoute = LayoutFaqIndexRouteImport.update({
-  id: '/faq/',
-  path: '/faq/',
+const LayoutPricingRoute = LayoutPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutBlogIndexRoute = LayoutBlogIndexRouteImport.update({
@@ -78,9 +68,14 @@ const LayoutBlogIndexRoute = LayoutBlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => LayoutRoute,
 } as any)
-const LayoutTemplatesSlugRoute = LayoutTemplatesSlugRouteImport.update({
-  id: '/templates/$slug',
-  path: '/templates/$slug',
+const LayoutBlogSlugRoute = LayoutBlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutFaqIndexRoute = LayoutFaqIndexRouteImport.update({
+  id: '/faq/',
+  path: '/faq/',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutFaqSlugRoute = LayoutFaqSlugRouteImport.update({
@@ -88,9 +83,14 @@ const LayoutFaqSlugRoute = LayoutFaqSlugRouteImport.update({
   path: '/faq/$slug',
   getParentRoute: () => LayoutRoute,
 } as any)
-const LayoutBlogSlugRoute = LayoutBlogSlugRouteImport.update({
-  id: '/blog/$slug',
-  path: '/blog/$slug',
+const LayoutTemplatesIndexRoute = LayoutTemplatesIndexRouteImport.update({
+  id: '/templates/',
+  path: '/templates/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutTemplatesSlugRoute = LayoutTemplatesSlugRouteImport.update({
+  id: '/templates/$slug',
+  path: '/templates/$slug',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -199,18 +199,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/healthz': {
-      id: '/healthz'
-      path: '/healthz'
-      fullPath: '/healthz'
-      preLoaderRoute: typeof HealthzRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_layout': {
@@ -220,25 +213,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/healthz': {
+      id: '/healthz'
+      path: '/healthz'
+      fullPath: '/healthz'
+      preLoaderRoute: typeof HealthzRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_layout/pricing': {
-      id: '/_layout/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof LayoutPricingRouteImport
-      parentRoute: typeof LayoutRoute
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_layout/oss-friends': {
-      id: '/_layout/oss-friends'
-      path: '/oss-friends'
-      fullPath: '/oss-friends'
-      preLoaderRoute: typeof LayoutOssFriendsRouteImport
+    '/_layout/$slug': {
+      id: '/_layout/$slug'
+      path: '/$slug'
+      fullPath: '/$slug'
+      preLoaderRoute: typeof LayoutSlugRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/about': {
@@ -248,25 +241,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAboutRouteImport
       parentRoute: typeof LayoutRoute
     }
-    '/_layout/$slug': {
-      id: '/_layout/$slug'
-      path: '/$slug'
-      fullPath: '/$slug'
-      preLoaderRoute: typeof LayoutSlugRouteImport
+    '/_layout/oss-friends': {
+      id: '/_layout/oss-friends'
+      path: '/oss-friends'
+      fullPath: '/oss-friends'
+      preLoaderRoute: typeof LayoutOssFriendsRouteImport
       parentRoute: typeof LayoutRoute
     }
-    '/_layout/templates/': {
-      id: '/_layout/templates/'
-      path: '/templates'
-      fullPath: '/templates/'
-      preLoaderRoute: typeof LayoutTemplatesIndexRouteImport
-      parentRoute: typeof LayoutRoute
-    }
-    '/_layout/faq/': {
-      id: '/_layout/faq/'
-      path: '/faq'
-      fullPath: '/faq/'
-      preLoaderRoute: typeof LayoutFaqIndexRouteImport
+    '/_layout/pricing': {
+      id: '/_layout/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof LayoutPricingRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/blog/': {
@@ -276,11 +262,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutBlogIndexRouteImport
       parentRoute: typeof LayoutRoute
     }
-    '/_layout/templates/$slug': {
-      id: '/_layout/templates/$slug'
-      path: '/templates/$slug'
-      fullPath: '/templates/$slug'
-      preLoaderRoute: typeof LayoutTemplatesSlugRouteImport
+    '/_layout/blog/$slug': {
+      id: '/_layout/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof LayoutBlogSlugRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/faq/': {
+      id: '/_layout/faq/'
+      path: '/faq'
+      fullPath: '/faq/'
+      preLoaderRoute: typeof LayoutFaqIndexRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/faq/$slug': {
@@ -290,11 +283,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutFaqSlugRouteImport
       parentRoute: typeof LayoutRoute
     }
-    '/_layout/blog/$slug': {
-      id: '/_layout/blog/$slug'
-      path: '/blog/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof LayoutBlogSlugRouteImport
+    '/_layout/templates/': {
+      id: '/_layout/templates/'
+      path: '/templates'
+      fullPath: '/templates/'
+      preLoaderRoute: typeof LayoutTemplatesIndexRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/templates/$slug': {
+      id: '/_layout/templates/$slug'
+      path: '/templates/$slug'
+      fullPath: '/templates/$slug'
+      preLoaderRoute: typeof LayoutTemplatesSlugRouteImport
       parentRoute: typeof LayoutRoute
     }
   }

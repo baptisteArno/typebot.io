@@ -23,7 +23,7 @@
     "./package.json": "./package.json"
   },
   "dependencies": {
-    "@orpc/server": "^1.13.9",
+    "@orpc/server": "^1.15.7",
     "@typebot.io/blocks-logic": "workspace:*",
     "@typebot.io/chat-session": "workspace:*",
     "@typebot.io/config": "workspace:*",

@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import {
+  appendResponseHeader,
   getCookies,
   getRequestHeaders,
-  setResponseHeaders,
 } from "@tanstack/react-start/server";
 import { env } from "@typebot.io/env";
 import {
@@ -29,7 +29,7 @@ export const trackPageViewBodySchema = z.object({
 export const trackPageView = createServerFn({
   method: "POST",
 })
-  .inputValidator(trackPageViewBodySchema)
+  .validator(trackPageViewBodySchema)
   .handler(async (ctx) => {
     if (!env.LANDING_PAGE_URL || !env.NEXT_PUBLIC_POSTHOG_KEY)
       return new Response("NO ENV, SKIPPING...", { status: 200 });
@@ -81,9 +81,7 @@ export const trackPageView = createServerFn({
       },
     ]);
 
-    setResponseHeaders({
-      "Set-Cookie": serializeTypebotCookie(typebotCookie),
-    });
+    appendResponseHeader("set-cookie", serializeTypebotCookie(typebotCookie));
 
     return new Response("OK", { status: 200 });
   });

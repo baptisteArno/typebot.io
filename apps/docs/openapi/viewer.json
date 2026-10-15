@@ -183,8 +183,7 @@
                     "type": "string",
                     "default": "richText"
                   }
-                },
-                "required": []
+                }
               }
             }
           }
@@ -3683,8 +3682,7 @@
                     "type": "string",
                     "default": "richText"
                   }
-                },
-                "required": []
+                }
               }
             }
           }
@@ -6990,8 +6988,7 @@
                     "type": "string",
                     "default": "richText"
                   }
-                },
-                "required": []
+                }
               }
             }
           }
@@ -10518,8 +10515,7 @@
                     "type": "string",
                     "default": "richText"
                   }
-                },
-                "required": []
+                }
               }
             }
           }
@@ -13985,18 +13981,6 @@
             }
           }
         ],
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {},
-                "required": []
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK",
@@ -16395,11 +16379,7 @@
         ],
         "requestBody": {
           "required": false,
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
+          "content": {}
         },
         "responses": {
           "200": {
@@ -16756,11 +16736,7 @@
         ],
         "requestBody": {
           "required": false,
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
+          "content": {}
         },
         "responses": {
           "200": {
@@ -17125,11 +17101,7 @@
         ],
         "requestBody": {
           "required": false,
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
+          "content": {}
         },
         "responses": {
           "200": {
