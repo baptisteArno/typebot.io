@@ -12464,10 +12464,7 @@
             "const": "Send Chat Message"
           },
           "userIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "type": "string"
           },
           "message": {
             "type": "string"
@@ -32684,46 +32681,7 @@
                                                   ]
                                                 },
                                                 {
-                                                  "type": "object",
-                                                  "properties": {
-                                                    "credentialsId": {
-                                                      "type": "string"
-                                                    },
-                                                    "action": {
-                                                      "const": "Send Chat Message"
-                                                    },
-                                                    "userIds": {
-                                                      "type": "array",
-                                                      "items": {
-                                                        "anyOf": [
-                                                          {},
-                                                          {
-                                                            "type": "null"
-                                                          }
-                                                        ]
-                                                      }
-                                                    },
-                                                    "message": {
-                                                      "type": "string"
-                                                    },
-                                                    "unfurlLinks": {
-                                                      "type": "boolean"
-                                                    },
-                                                    "responseMapping": {
-                                                      "type": "array",
-                                                      "items": {
-                                                        "anyOf": [
-                                                          {},
-                                                          {
-                                                            "type": "null"
-                                                          }
-                                                        ]
-                                                      }
-                                                    }
-                                                  },
-                                                  "required": [
-                                                    "action"
-                                                  ]
+                                                  "$ref": "#/components/schemas/SendChatMessage"
                                                 },
                                                 {
                                                   "type": "object",
@@ -35718,15 +35676,7 @@
                                                       }
                                                     },
                                                     {
-                                                      "type": "object",
-                                                      "properties": {
-                                                        "credentialsId": {},
-                                                        "action": {},
-                                                        "userIds": {},
-                                                        "message": {},
-                                                        "unfurlLinks": {},
-                                                        "responseMapping": {}
-                                                      }
+                                                      "$ref": "#/components/schemas/SendChatMessage"
                                                     },
                                                     {
                                                       "type": "object",
@@ -44201,46 +44151,7 @@
                                                   ]
                                                 },
                                                 {
-                                                  "type": "object",
-                                                  "properties": {
-                                                    "credentialsId": {
-                                                      "type": "string"
-                                                    },
-                                                    "action": {
-                                                      "const": "Send Chat Message"
-                                                    },
-                                                    "userIds": {
-                                                      "type": "array",
-                                                      "items": {
-                                                        "anyOf": [
-                                                          {},
-                                                          {
-                                                            "type": "null"
-                                                          }
-                                                        ]
-                                                      }
-                                                    },
-                                                    "message": {
-                                                      "type": "string"
-                                                    },
-                                                    "unfurlLinks": {
-                                                      "type": "boolean"
-                                                    },
-                                                    "responseMapping": {
-                                                      "type": "array",
-                                                      "items": {
-                                                        "anyOf": [
-                                                          {},
-                                                          {
-                                                            "type": "null"
-                                                          }
-                                                        ]
-                                                      }
-                                                    }
-                                                  },
-                                                  "required": [
-                                                    "action"
-                                                  ]
+                                                  "$ref": "#/components/schemas/SendChatMessage"
                                                 },
                                                 {
                                                   "type": "object",
@@ -47719,15 +47630,7 @@
                                                           }
                                                         },
                                                         {
-                                                          "type": "object",
-                                                          "properties": {
-                                                            "credentialsId": {},
-                                                            "action": {},
-                                                            "userIds": {},
-                                                            "message": {},
-                                                            "unfurlLinks": {},
-                                                            "responseMapping": {}
-                                                          }
+                                                          "$ref": "#/components/schemas/SendChatMessage"
                                                         },
                                                         {
                                                           "type": "object",
@@ -56050,46 +55953,7 @@
                                                   ]
                                                 },
                                                 {
-                                                  "type": "object",
-                                                  "properties": {
-                                                    "credentialsId": {
-                                                      "type": "string"
-                                                    },
-                                                    "action": {
-                                                      "const": "Send Chat Message"
-                                                    },
-                                                    "userIds": {
-                                                      "type": "array",
-                                                      "items": {
-                                                        "anyOf": [
-                                                          {},
-                                                          {
-                                                            "type": "null"
-                                                          }
-                                                        ]
-                                                      }
-                                                    },
-                                                    "message": {
-                                                      "type": "string"
-                                                    },
-                                                    "unfurlLinks": {
-                                                      "type": "boolean"
-                                                    },
-                                                    "responseMapping": {
-                                                      "type": "array",
-                                                      "items": {
-                                                        "anyOf": [
-                                                          {},
-                                                          {
-                                                            "type": "null"
-                                                          }
-                                                        ]
-                                                      }
-                                                    }
-                                                  },
-                                                  "required": [
-                                                    "action"
-                                                  ]
+                                                  "$ref": "#/components/schemas/SendChatMessage"
                                                 },
                                                 {
                                                   "type": "object",
