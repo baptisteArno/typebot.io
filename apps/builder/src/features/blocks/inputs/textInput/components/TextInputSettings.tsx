@@ -7,6 +7,7 @@ import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { useRef } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { DebouncedTextareaWithVariablesButton } from "@/components/inputs/DebouncedTextarea";
 import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
@@ -22,10 +23,15 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
   const isLong = options?.isLong ?? defaultTextInputOptions.isLong;
   const placeholder =
     options?.labels?.placeholder ?? defaultTextInputOptions.labels.placeholder;
+  const latestOptionsRef = useRef(options);
+  latestOptionsRef.current = options;
+
+  // Read the latest options: the placeholder field remounts when "Long text"
+  // toggles and flushes its pending value with this callback.
   const updatePlaceholder = (placeholder: string) =>
     onOptionsChange({
-      ...options,
-      labels: { ...options?.labels, placeholder },
+      ...latestOptionsRef.current,
+      labels: { ...latestOptionsRef.current?.labels, placeholder },
     });
 
   const updateButtonLabel = (button: string) =>
