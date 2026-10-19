@@ -8,6 +8,7 @@ process.env.NEXTAUTH_URL = "https://app.typebot.io";
 process.env.ADMIN_EMAIL = "admin@example.com";
 process.env.STRIPE_SECRET_KEY = "sk_test_local";
 process.env.META_SYSTEM_USER_TOKEN = "local-test-token";
+process.env.WHATSAPP_CLOUD_API_URL = "https://graph.facebook.com";
 
 // SKIP_ENV_CHECK bypasses env transformations, including the ADMIN_EMAIL array.
 mock.module("@typebot.io/env", () => ({
@@ -20,11 +21,13 @@ const workspaceUpdateMany = mock();
 const typebotFindFirst = mock();
 const resultCount = mock();
 const userCredentialsFindMany = mock();
+const credentialsFindFirst = mock();
 const getGoogleSpreadsheet = mock();
 const decrypt = mock();
 const decryptAndRefreshCredentialsData = mock();
 const downloadMedia = mock();
 const fetchItems = mock();
+const metaRequest = mock();
 
 mock.module("@typebot.io/prisma", () => ({
   default: {
@@ -36,6 +39,7 @@ mock.module("@typebot.io/prisma", () => ({
     typebot: { findFirst: typebotFindFirst },
     result: { count: resultCount },
     userCredentials: { findMany: userCredentialsFindMany },
+    credentials: { findFirst: credentialsFindFirst },
   },
 }));
 mock.module("@typebot.io/credentials/getGoogleSpreadsheet", () => ({
@@ -46,6 +50,9 @@ mock.module("@typebot.io/credentials/decryptAndRefreshCredentials", () => ({
   decryptAndRefreshCredentialsData,
 }));
 mock.module("@typebot.io/whatsapp/downloadMedia", () => ({ downloadMedia }));
+mock.module("@typebot.io/lib/ky", () => ({
+  ky: { get: () => ({ json: metaRequest }) },
+}));
 mock.module("@typebot.io/forge-repository/definitions", () => ({
   forgedBlocks: { openai: {} },
 }));
@@ -96,6 +103,12 @@ const { handleGetWhatsAppMedia } = await import(
 const { handleGetWhatsAppMediaPreview } = await import(
   "@typebot.io/whatsapp/api/handleGetWhatsAppMediaPreview"
 );
+const { handleGetPhoneNumber } = await import(
+  "@typebot.io/whatsapp/api/handleGetPhoneNumber"
+);
+const { handleGetSystemTokenInfo } = await import(
+  "@typebot.io/whatsapp/api/handleGetSystemTokenInfo"
+);
 
 const user = { id: "guest-id", email: "guest@example.com" };
 const context = { user };
@@ -144,11 +157,13 @@ beforeEach(() => {
     typebotFindFirst,
     resultCount,
     userCredentialsFindMany,
+    credentialsFindFirst,
     getGoogleSpreadsheet,
     decrypt,
     decryptAndRefreshCredentialsData,
     downloadMedia,
     fetchItems,
+    metaRequest,
   ])
     fn.mockReset();
   workspaceFindFirst.mockResolvedValue(workspace);
@@ -431,5 +446,77 @@ describe.each([
       }),
     ).rejects.toMatchObject({ code: "NOT_FOUND" });
     expect(typebotFindFirst.mock.calls[0]?.[0].select.settings).toBeUndefined();
+  });
+});
+
+describe.each([
+  [
+    "phone number",
+    (context: { user: { id: string; email: string } }) =>
+      handleGetPhoneNumber({
+        input: { credentialsId: "whatsapp-credential-id" },
+        context,
+      }),
+  ],
+  [
+    "system token info",
+    (context: { user: { id: string; email: string } }) =>
+      handleGetSystemTokenInfo({
+        input: { credentialsId: "whatsapp-credential-id" },
+        context,
+      }),
+  ],
+])("WhatsApp credential %s", (_name, read) => {
+  const mockCredentials = (members: typeof workspace.members) =>
+    credentialsFindFirst.mockResolvedValue({
+      name: "+33 6 00 00 00 00",
+      data: "encrypted",
+      iv: "iv",
+      workspace: { members },
+    });
+  beforeEach(() => {
+    mockCredentials(workspace.members);
+    decrypt.mockResolvedValue({
+      provider: "meta",
+      systemUserAccessToken: "test",
+      phoneNumberId: "test",
+    });
+    metaRequest.mockResolvedValue({
+      display_phone_number: "+33 6 00 00 00 00",
+      data: { app_id: "app", application: "App", expires_at: 0, scopes: [] },
+    });
+  });
+  it("denies guests before decrypting or calling Meta", async () => {
+    await expect(read(context)).rejects.toMatchObject({ code: "NOT_FOUND" });
+    expect(decrypt).not.toHaveBeenCalled();
+    expect(metaRequest).not.toHaveBeenCalled();
+  });
+  it("denies outsiders", async () => {
+    mockCredentials([{ userId: "other-id", role: WorkspaceRole.ADMIN }]);
+    await expect(read(context)).rejects.toMatchObject({ code: "NOT_FOUND" });
+    expect(decrypt).not.toHaveBeenCalled();
+  });
+  it.each([
+    WorkspaceRole.MEMBER,
+    WorkspaceRole.ADMIN,
+  ])("preserves %s access and selects roles", async (role) => {
+    mockCredentials([{ userId: user.id, role }]);
+    await expect(read(context)).resolves.toBeDefined();
+    expect(credentialsFindFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: "whatsapp-credential-id", type: "whatsApp" },
+        select: expect.objectContaining({
+          workspace: {
+            select: { members: { select: { userId: true, role: true } } },
+          },
+        }),
+      }),
+    );
+  });
+  it("preserves instance administrator access", async () => {
+    mockCredentials([]);
+    await expect(
+      read({ user: { id: "admin-id", email: "admin@example.com" } }),
+    ).resolves.toBeDefined();
   });
 });

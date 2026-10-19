@@ -6,6 +6,7 @@ import { createToastORPCError } from "@typebot.io/lib/createToastORPCError";
 import { ky } from "@typebot.io/lib/ky";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
+import { isReadWorkspaceFobidden } from "@typebot.io/workspaces/isReadWorkspaceFobidden";
 import { z } from "zod";
 import { formatPhoneNumberDisplayName } from "../formatPhoneNumberDisplayName";
 
@@ -79,12 +80,18 @@ const getCredentials = async (
     where: {
       id: input.credentialsId,
       type: "whatsApp",
-      workspace: env.ADMIN_EMAIL?.includes(user.email)
-        ? undefined
-        : { members: { some: { userId: user.id } } },
+    },
+    select: {
+      data: true,
+      iv: true,
+      name: true,
+      workspace: {
+        select: { members: { select: { userId: true, role: true } } },
+      },
     },
   });
-  if (!credentials) return;
+  if (!credentials || isReadWorkspaceFobidden(credentials.workspace, user))
+    return;
   const parsedData = whatsAppCredentialsDataSchema.safeParse(
     await decrypt(credentials.data, credentials.iv),
   );

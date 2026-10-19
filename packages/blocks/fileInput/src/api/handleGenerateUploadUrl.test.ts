@@ -96,6 +96,42 @@ describe("handleGenerateUploadUrl", () => {
     ).rejects.toThrow("File type application/pdf not allowed");
   });
 
+  it.each([
+    ["published", resultIdFromSession],
+    ["preview", undefined],
+  ])("rejects %s WhatsApp sessions like missing sessions", async (_name, resultId) => {
+    const generateUploadUrl = () =>
+      handleGenerateUploadUrl({
+        input: {
+          sessionId: "wa-phone-number-id-33600000000",
+          blockId: blockIdFromSession,
+          fileName: "file.png",
+          fileType: "image/png",
+        },
+        context: { apiOrigin: "http://localhost:3001" },
+      });
+    const missingSessionError = {
+      code: "BAD_REQUEST",
+      message: "Can't find session",
+    };
+
+    getSessionMock.mockResolvedValue(null);
+    await expect(generateUploadUrl()).rejects.toMatchObject(
+      missingSessionError,
+    );
+
+    getSessionMock.mockResolvedValue(
+      buildSession({ resultId, isWhatsApp: true }),
+    );
+    await expect(generateUploadUrl()).rejects.toMatchObject(
+      missingSessionError,
+    );
+    expect(publicTypebotFindFirstMock).not.toHaveBeenCalled();
+
+    getSessionMock.mockResolvedValue(buildSession({ resultId }));
+    await expect(generateUploadUrl()).resolves.toHaveProperty("presignedUrl");
+  });
+
   it("fails closed when an enabled allowlist cannot be resolved", async () => {
     publicTypebotFindFirstMock.mockResolvedValue(
       buildPublicTypebot(["image/x-unknown"]),
@@ -115,14 +151,24 @@ describe("handleGenerateUploadUrl", () => {
   });
 });
 
-const buildSession = () => ({
+const buildSession = ({
+  resultId = resultIdFromSession,
+  isWhatsApp = false,
+}: {
+  resultId?: string;
+  isWhatsApp?: boolean;
+} = {}) => ({
   state: {
     currentBlockId: blockIdFromSession,
+    whatsApp: isWhatsApp
+      ? { contact: { name: "Contact", phoneNumber: "33600000000" } }
+      : undefined,
     typebotsQueue: [
       {
-        resultId: resultIdFromSession,
+        resultId,
         typebot: {
           id: typebotIdFromSession,
+          ...(resultId ? {} : buildPublicTypebot()),
         },
       },
     ],

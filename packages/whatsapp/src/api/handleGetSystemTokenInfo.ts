@@ -4,6 +4,7 @@ import type { WhatsAppCredentials } from "@typebot.io/credentials/schemas";
 import { createToastORPCError } from "@typebot.io/lib/createToastORPCError";
 import prisma from "@typebot.io/prisma";
 import type { User } from "@typebot.io/user/schemas";
+import { isReadWorkspaceFobidden } from "@typebot.io/workspaces/isReadWorkspaceFobidden";
 import { z } from "zod";
 import { getMetaSystemTokenInfo } from "./getMetaSystemTokenInfo";
 
@@ -18,13 +19,13 @@ export const handleGetSystemTokenInfo = async ({
   context: { user },
 }: {
   input: z.infer<typeof getSystemTokenInfoInputSchema>;
-  context: { user: Pick<User, "id"> };
+  context: { user: Pick<User, "id" | "email"> };
 }) => {
   if (!input.token && !input.credentialsId)
     throw new ORPCError("BAD_REQUEST", {
       message: "Either token or credentialsId must be provided",
     });
-  const credentials = await getCredentials(user.id, input);
+  const credentials = await getCredentials(user, input);
   if (!credentials)
     throw new ORPCError("NOT_FOUND", { message: "Credentials not found" });
 
@@ -56,20 +57,29 @@ export const handleGetSystemTokenInfo = async ({
 };
 
 const getCredentials = async (
-  userId: string,
+  user: Pick<User, "id" | "email">,
   input: z.infer<typeof getSystemTokenInfoInputSchema>,
 ): Promise<{ systemUserAccessToken: string } | undefined> => {
   if (input.token)
     return {
       systemUserAccessToken: input.token,
     };
-  const credentials = await prisma.credentials.findUnique({
+  if (!input.credentialsId) return;
+  const credentials = await prisma.credentials.findFirst({
     where: {
       id: input.credentialsId,
-      workspace: { members: { some: { userId } } },
+      type: "whatsApp",
+    },
+    select: {
+      data: true,
+      iv: true,
+      workspace: {
+        select: { members: { select: { userId: true, role: true } } },
+      },
     },
   });
-  if (!credentials) return;
+  if (!credentials || isReadWorkspaceFobidden(credentials.workspace, user))
+    return;
   const decryptedData = (await decrypt(
     credentials.data,
     credentials.iv,
