@@ -8,6 +8,7 @@ import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { DebouncedTextareaWithVariablesButton } from "@/components/inputs/DebouncedTextarea";
 import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 
@@ -18,6 +19,9 @@ type Props = {
 
 export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
   const { t } = useTranslate();
+  const isLong = options?.isLong ?? defaultTextInputOptions.isLong;
+  const placeholder =
+    options?.labels?.placeholder ?? defaultTextInputOptions.labels.placeholder;
   const updatePlaceholder = (placeholder: string) =>
     onOptionsChange({
       ...options,
@@ -82,10 +86,7 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <div className="flex flex-col gap-4">
       <Field.Root className="flex-row items-center">
-        <Switch
-          checked={options?.isLong ?? defaultTextInputOptions.isLong}
-          onCheckedChange={updateIsLong}
-        />
+        <Switch checked={isLong} onCheckedChange={updateIsLong} />
         <Field.Label>
           {t("blocks.inputs.text.settings.longText.label")}
         </Field.Label>
@@ -94,13 +95,17 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
         <Field.Label>
           {t("blocks.inputs.settings.placeholder.label")}
         </Field.Label>
-        <DebouncedTextInputWithVariablesButton
-          defaultValue={
-            options?.labels?.placeholder ??
-            defaultTextInputOptions.labels.placeholder
-          }
-          onValueChange={updatePlaceholder}
-        />
+        {isLong ? (
+          <DebouncedTextareaWithVariablesButton
+            defaultValue={placeholder}
+            onValueChange={updatePlaceholder}
+          />
+        ) : (
+          <DebouncedTextInputWithVariablesButton
+            defaultValue={placeholder}
+            onValueChange={updatePlaceholder}
+          />
+        )}
       </Field.Root>
       <Field.Root>
         <Field.Label>{t("blocks.inputs.settings.button.label")}</Field.Label>
