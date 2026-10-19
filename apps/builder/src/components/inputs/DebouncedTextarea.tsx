@@ -52,7 +52,8 @@ export const DebouncedTextareaWithVariablesButton = ({
         onValueChange={handleChange}
         ref={ref}
         className={cn(className, "pr-8")}
-        onBlur={() => {
+        onBlur={(event) => {
+          props.onBlur?.(event);
           commitValue.flush();
         }}
       />

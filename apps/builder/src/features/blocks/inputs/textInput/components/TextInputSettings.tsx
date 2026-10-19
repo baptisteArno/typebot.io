@@ -7,7 +7,7 @@ import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
 import { DebouncedTextareaWithVariablesButton } from "@/components/inputs/DebouncedTextarea";
 import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
@@ -25,14 +25,21 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
     options?.labels?.placeholder ?? defaultTextInputOptions.labels.placeholder;
   const latestOptionsRef = useRef(options);
   latestOptionsRef.current = options;
+  const [placeholderEditorKey, setPlaceholderEditorKey] = useState(0);
 
-  // Read the latest options: the placeholder field remounts when "Long text"
-  // toggles and flushes its pending value with this callback.
-  const updatePlaceholder = (placeholder: string) =>
+  // The placeholder editor is replaced when "Long text" toggles, and the
+  // replaced editor flushes its pending value through this callback afterwards.
+  // Read the latest options so the toggle is kept, and remount the new editor
+  // since it was initialized with the previous placeholder.
+  const updatePlaceholder = (placeholder: string) => {
     onOptionsChange({
       ...latestOptionsRef.current,
       labels: { ...latestOptionsRef.current?.labels, placeholder },
     });
+    const latestIsLong =
+      latestOptionsRef.current?.isLong ?? defaultTextInputOptions.isLong;
+    if (latestIsLong !== isLong) setPlaceholderEditorKey((key) => key + 1);
+  };
 
   const updateButtonLabel = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } });
@@ -103,11 +110,13 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
         </Field.Label>
         {isLong ? (
           <DebouncedTextareaWithVariablesButton
+            key={placeholderEditorKey}
             defaultValue={placeholder}
             onValueChange={updatePlaceholder}
           />
         ) : (
           <DebouncedTextInputWithVariablesButton
+            key={placeholderEditorKey}
             defaultValue={placeholder}
             onValueChange={updatePlaceholder}
           />
