@@ -1,5 +1,33 @@
 # Changelog
 
+<a name="3.19.1"></a>
+## 3.19.1 (2026-10-20)
+
+### New features
+
+- 👌 Add a Send Chat Message action to the Blink block. New Blink credentials use App Identities; existing legacy credentials keep working with Get Users and Send Feed Event.
+- 👌 Allow multi-line placeholders on long Text inputs.
+- 👌 Load Custom OAuth profiles from the OIDC UserInfo endpoint when `CUSTOM_OAUTH_USE_USERINFO` is `true`.
+
+### Fixed
+
+- 🐛 Keep integers above `Number.MAX_SAFE_INTEGER` as strings when guessing variable types.
+- 🐛 Use the right typebot ID in WhatsApp media URLs of the first message.
+- 🐛 Allow creating several WhatsApp credentials in the same builder session.
+- 🐛 Keep large results exports running in the background.
+- 🐛 Keep the daily cleanup below transaction timeouts.
+- 🐛 Truncate long share links instead of overlapping the Copy button.
+
+### Security
+
+- 🐛 Extend the WhatsApp session restriction to file uploads and restrict WhatsApp credential details to workspace members.
+
+### Maintenance
+
+- 🔧 Deploy the webhook relay with PartyServer and Wrangler, since `partykit deploy` stops working on 2026-10-23. Running relays are unaffected; to redeploy one, follow the [PartyKit configuration](https://docs.typebot.io/self-hosting/configuration#partykit).
+- 🔧 Slim the production Builder and Viewer Docker images.
+- 🔧 Upgrade TanStack Start, Zod and oRPC.
+
 <a name="3.19.0"></a>
 ## 3.19.0 (2026-09-14)
 
