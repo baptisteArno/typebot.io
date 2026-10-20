@@ -42,7 +42,7 @@ export const handleGenerateUploadUrl = async ({
 
   const session = await getSession(sessionId);
 
-  if (!session?.state)
+  if (!session?.state || session.state.whatsApp)
     throw new ORPCError("BAD_REQUEST", {
       message: "Can't find session",
     });

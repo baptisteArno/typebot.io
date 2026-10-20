@@ -3,7 +3,9 @@
 Public continueChat, clientLogs v1/v2, legacy sendMessage v1/v2 and the shared
 streaming handler reject persisted `state.whatsApp` sessions as not found, before
 engine, session store, log or provider side effects. The guard also covers builder
-continuation/streaming callers. No public input can opt out.
+continuation/streaming callers. No public input can opt out. The public
+generate-upload-url endpoint applies the same rule; its regression lives in
+`packages/blocks/fileInput/src/api/handleGenerateUploadUrl.test.ts`.
 
 This deliberately leaves `getSession`, internal WhatsApp resume and authorized
 webhook paths unchanged. Existing WhatsApp sessions are protected without an ID
