@@ -52,11 +52,16 @@ export const DebouncedTextareaWithVariablesButton = ({
         onValueChange={handleChange}
         ref={ref}
         className={cn(className, "pr-8")}
+        onBlur={(event) => {
+          props.onBlur?.(event);
+          commitValue.flush();
+        }}
       />
       <VariablesButton
         variant="ghost"
         className="[&_svg]:opacity-60 size-7 absolute top-1 right-1"
         onSelectVariable={(variable) => {
+          commitValue.cancel();
           props.onValueChange?.(injectVariable(variable));
         }}
       />

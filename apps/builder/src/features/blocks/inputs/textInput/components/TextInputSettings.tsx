@@ -7,7 +7,9 @@ import { Field } from "@typebot.io/ui/components/Field";
 import { MoreInfoTooltip } from "@typebot.io/ui/components/MoreInfoTooltip";
 import { Switch } from "@typebot.io/ui/components/Switch";
 import type { Variable } from "@typebot.io/variables/schemas";
+import { useRef, useState } from "react";
 import { BasicSelect } from "@/components/inputs/BasicSelect";
+import { DebouncedTextareaWithVariablesButton } from "@/components/inputs/DebouncedTextarea";
 import { DebouncedTextInputWithVariablesButton } from "@/components/inputs/DebouncedTextInput";
 import { VariablesCombobox } from "@/components/inputs/VariablesCombobox";
 
@@ -18,11 +20,26 @@ type Props = {
 
 export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
   const { t } = useTranslate();
-  const updatePlaceholder = (placeholder: string) =>
+  const isLong = options?.isLong ?? defaultTextInputOptions.isLong;
+  const placeholder =
+    options?.labels?.placeholder ?? defaultTextInputOptions.labels.placeholder;
+  const latestOptionsRef = useRef(options);
+  latestOptionsRef.current = options;
+  const [placeholderEditorKey, setPlaceholderEditorKey] = useState(0);
+
+  // The placeholder editor is replaced when "Long text" toggles, and the
+  // replaced editor flushes its pending value through this callback afterwards.
+  // Read the latest options so the toggle is kept, and remount the new editor
+  // since it was initialized with the previous placeholder.
+  const updatePlaceholder = (placeholder: string) => {
     onOptionsChange({
-      ...options,
-      labels: { ...options?.labels, placeholder },
+      ...latestOptionsRef.current,
+      labels: { ...latestOptionsRef.current?.labels, placeholder },
     });
+    const latestIsLong =
+      latestOptionsRef.current?.isLong ?? defaultTextInputOptions.isLong;
+    if (latestIsLong !== isLong) setPlaceholderEditorKey((key) => key + 1);
+  };
 
   const updateButtonLabel = (button: string) =>
     onOptionsChange({ ...options, labels: { ...options?.labels, button } });
@@ -82,10 +99,7 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
   return (
     <div className="flex flex-col gap-4">
       <Field.Root className="flex-row items-center">
-        <Switch
-          checked={options?.isLong ?? defaultTextInputOptions.isLong}
-          onCheckedChange={updateIsLong}
-        />
+        <Switch checked={isLong} onCheckedChange={updateIsLong} />
         <Field.Label>
           {t("blocks.inputs.text.settings.longText.label")}
         </Field.Label>
@@ -94,13 +108,19 @@ export const TextInputSettings = ({ options, onOptionsChange }: Props) => {
         <Field.Label>
           {t("blocks.inputs.settings.placeholder.label")}
         </Field.Label>
-        <DebouncedTextInputWithVariablesButton
-          defaultValue={
-            options?.labels?.placeholder ??
-            defaultTextInputOptions.labels.placeholder
-          }
-          onValueChange={updatePlaceholder}
-        />
+        {isLong ? (
+          <DebouncedTextareaWithVariablesButton
+            key={placeholderEditorKey}
+            defaultValue={placeholder}
+            onValueChange={updatePlaceholder}
+          />
+        ) : (
+          <DebouncedTextInputWithVariablesButton
+            key={placeholderEditorKey}
+            defaultValue={placeholder}
+            onValueChange={updatePlaceholder}
+          />
+        )}
       </Field.Root>
       <Field.Root>
         <Field.Label>{t("blocks.inputs.settings.button.label")}</Field.Label>

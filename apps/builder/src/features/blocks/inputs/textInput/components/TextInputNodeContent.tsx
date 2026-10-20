@@ -23,7 +23,7 @@ export const TextInputNodeContent = ({ options }: Props) => {
       <p
         className={cx(
           "overflow-y-hidden text-gray-9",
-          options?.isLong ? "h-[100px]" : undefined,
+          options?.isLong ? "h-[100px] whitespace-pre-wrap" : undefined,
         )}
       >
         {options?.labels?.placeholder ??
