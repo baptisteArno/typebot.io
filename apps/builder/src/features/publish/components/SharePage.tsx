@@ -97,7 +97,7 @@ export const SharePage = () => {
       <div className="flex h-full w-full justify-center">
         <div className="flex flex-col max-w-5xl w-full pt-10 gap-10">
           <div className="flex gap-4">
-            <div className="flex flex-col gap-4 flex-1/2">
+            <div className="flex flex-col gap-4 flex-1/2 min-w-0">
               <h2>{t("sharePage.links.heading")}</h2>
               <div className="flex flex-col gap-4 p-4 rounded-lg border bg-gray-1">
                 {typebot && env.NEXT_PUBLIC_VIEWER_URL?.[0] && (
