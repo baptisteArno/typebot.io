@@ -59,6 +59,12 @@ export const BillingCycleResetEmail = ({
             full monthly chat allowance again.
             <br />
             <br />
+            If this unusual usage continues during the new billing cycle, we
+            will pause your workspace to protect you from further charges. If
+            you expect this traffic, please contact our support team before that
+            happens.
+            <br />
+            <br />
             You can view your invoice and usage details in your workspace
             billing settings.
           </Text>

@@ -292,7 +292,8 @@
     "cron:monthly": "SKIP_ENV_CHECK=true tsx --tsconfig ./tsconfig.json src/cronJobs/monthly.tsx",
     "generateWorkspaceSummary": "bun run run:prod:mysql src/generateWorkspaceSummary.ts",
     "verify:cli": "bun test src/cli.test.ts src/cliContract.test.ts src/helpers/destroyUser.test.ts",
-    "verify:cleanup": "bun test src/helpers/deleteRecordsInBatches.test.ts src/helpers/cleanExpiredData.test.ts"
+    "verify:cleanup": "bun test src/helpers/deleteRecordsInBatches.test.ts src/helpers/cleanExpiredData.test.ts",
+    "verify:billing": "bun test src/helpers/checkAndReportLastHourResults.test.ts"
   },
   "exports": {
     "./*": {
