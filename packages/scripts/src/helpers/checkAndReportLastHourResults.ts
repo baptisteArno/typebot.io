@@ -5,6 +5,7 @@ import { sendAlmostReachedChatsLimitEmail } from "@typebot.io/emails/transaction
 import { sendBillingCycleResetEmail } from "@typebot.io/emails/transactional/BillingCycleResetEmail";
 import { sendBillingCycleResetFailedEmail } from "@typebot.io/emails/transactional/BillingCycleResetFailedEmail";
 import { sendReachedChatsLimitEmail } from "@typebot.io/emails/transactional/ReachedChatsLimitEmail";
+import { sendUnusualUsagePausedEmail } from "@typebot.io/emails/transactional/UnusualUsagePausedEmail";
 import { env } from "@typebot.io/env";
 import { isDefined, isEmpty } from "@typebot.io/lib/utils";
 import { Plan, WorkspaceRole } from "@typebot.io/prisma/enum";
@@ -161,7 +162,8 @@ export const checkAndReportLastHourResults = async () => {
       } else {
         await reportUsageToStripe(totalChatsUsed, { stripe, subscription });
 
-        if (workspace.plan === "PRO") {
+        // A chats hard limit already caps the bill, so it opts the workspace out of this protection
+        if (workspace.plan === "PRO" && !isDefined(workspace.chatsHardLimit)) {
           const isSuspicious = await isSuspiciousWorkspace(
             subscription,
             totalChatsUsed,
@@ -170,9 +172,6 @@ export const checkAndReportLastHourResults = async () => {
           );
 
           if (isSuspicious) {
-            console.log(
-              `Suspicious Pro workspace ${workspace.id} collected ${totalChatsUsed} chats, resetting billing cycle...`,
-            );
             const adminMembers = workspace.members.filter(
               (member) => member.role === WorkspaceRole.ADMIN,
             );
@@ -180,6 +179,39 @@ export const checkAndReportLastHourResults = async () => {
               .map((member) => member.user.email)
               .filter(isDefined);
 
+            // Resetting again would only start another cycle with a fresh chats allowance
+            if (isFirstBillingCycleAfterReset(subscription)) {
+              console.log(
+                `Suspicious Pro workspace ${workspace.id} collected ${totalChatsUsed} chats since its billing cycle reset, quarantining...`,
+              );
+              await prisma.workspace.updateMany({
+                where: { id: workspace.id },
+                data: { isQuarantined: true },
+              });
+              await sendUnusualUsagePausedEmail({
+                to: adminEmails,
+                workspaceName: workspace.name,
+                totalChatsUsed,
+                billingCycleResetAt: usagePeriodStart,
+              });
+              quarantineEvents.push(
+                ...adminMembers.map((member) => ({
+                  name: "Workspace automatically quarantined" as const,
+                  userId: member.user.id,
+                  workspaceId: workspace.id,
+                  data: {
+                    reason:
+                      "suspicious usage after billing cycle reset" as const,
+                    totalChatsUsed,
+                  },
+                })),
+              );
+              continue;
+            }
+
+            console.log(
+              `Suspicious Pro workspace ${workspace.id} collected ${totalChatsUsed} chats, resetting billing cycle...`,
+            );
             try {
               await chargeAndResetBillingCycle(subscription, { stripe });
               console.log(
@@ -600,49 +632,47 @@ const isSuspiciousWorkspace = async (
     subscription: subscription.id,
     status: "paid",
     limit: 12,
-    expand: ["data.lines"],
+    expand: ["data.lines", "data.charge"],
   });
 
-  const { totalPaidOverageCents, paidInvoiceWithOverageCount } =
-    invoices.data.reduce(
-      (acc, invoice) => {
-        const overageLines = invoice.lines.data.filter(
-          (line) =>
-            line.price?.id === env.STRIPE_PRO_CHATS_PRICE_ID && line.amount > 0,
-        );
-        const overageAmount = overageLines.reduce(
-          (sum, line) => sum + line.amount,
-          0,
-        );
-        return {
-          totalPaidOverageCents: acc.totalPaidOverageCents + overageAmount,
-          paidInvoiceWithOverageCount:
-            acc.paidInvoiceWithOverageCount + (overageLines.length > 0 ? 1 : 0),
-        };
-      },
-      { totalPaidOverageCents: 0, paidInvoiceWithOverageCount: 0 },
+  // Early reset invoices are issued by this protection, so only regular cycles show a payment pattern
+  const totalPaidOverageCents = invoices.data
+    .filter((invoice) => invoice.billing_reason === "subscription_cycle")
+    .reduce(
+      (sum, invoice) =>
+        sum + getNetPaidOverageCents(invoice, env.STRIPE_PRO_CHATS_PRICE_ID),
+      0,
     );
-
-  // Multiple invoices with overage payments establishes a payment pattern
-  if (paidInvoiceWithOverageCount >= 2) return false;
 
   const currentOverageValueCents = computeProPlanChatsCost(totalChatsUsed);
 
   // Trust if they've historically paid at least 30% of equivalent current overage
-  if (
+  return !(
     totalPaidOverageCents > 0 &&
     totalPaidOverageCents >= currentOverageValueCents * 0.3
-  ) {
-    return false;
-  }
-
-  // Trust if subscription is at least 2 months old with at least one paid overage
-  const cycleLength = 30 * 24 * 60 * 60;
-  const monthsActive = (Date.now() / 1000 - subscription.created) / cycleLength;
-  if (monthsActive >= 2 && paidInvoiceWithOverageCount >= 1) return false;
-
-  return true;
+  );
 };
+
+const getNetPaidOverageCents = (
+  invoice: Stripe.Invoice,
+  chatsPriceId: string | undefined,
+) => {
+  const overageCents = invoice.lines.data
+    .filter((line) => line.price?.id === chatsPriceId && line.amount > 0)
+    .reduce((sum, line) => sum + line.amount, 0);
+  const refundedCents = Math.max(
+    invoice.charge && typeof invoice.charge !== "string"
+      ? invoice.charge.amount_refunded
+      : 0,
+    invoice.post_payment_credit_notes_amount,
+  );
+  return Math.max(overageCents - refundedCents, 0);
+};
+
+// `billing_cycle_anchor: "now"` moves the anchor to the reset date, which regular renewals keep
+const isFirstBillingCycleAfterReset = (subscription: Stripe.Subscription) =>
+  subscription.billing_cycle_anchor === subscription.current_period_start &&
+  subscription.start_date < subscription.current_period_start;
 
 const chargeAndResetBillingCycle = async (
   subscription: Stripe.Subscription,
@@ -654,16 +684,13 @@ const chargeAndResetBillingCycle = async (
     payment_behavior: "error_if_incomplete",
   });
 
+// Chats prices use volume tiers: the tier reached prices every chat of the period
 const computeProPlanChatsCost = (totalChatsUsed: number): number => {
   for (const tier of proChatTiers) {
     if (tier.up_to === "inf") {
-      const previousTierLimit =
-        proChatTiers[proChatTiers.indexOf(tier) - 1]?.up_to;
-      if (typeof previousTierLimit !== "number") return 0;
-      const chatsInThisTier = totalChatsUsed - previousTierLimit;
       const unitAmount =
         "unit_amount_decimal" in tier ? tier.unit_amount_decimal : 0;
-      return chatsInThisTier * Number(unitAmount);
+      return totalChatsUsed * Number(unitAmount);
     }
     if (totalChatsUsed <= tier.up_to) {
       return "flat_amount" in tier ? tier.flat_amount : 0;

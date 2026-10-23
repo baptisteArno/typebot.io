@@ -160,6 +160,10 @@ const workspaceAutoQuarantinedEventSchema = workspaceEvent.merge(
       z.object({
         reason: z.literal("suspicious billing cycle reset payment failed"),
       }),
+      z.object({
+        reason: z.literal("suspicious usage after billing cycle reset"),
+        totalChatsUsed: z.number(),
+      }),
     ]),
   }),
 );
