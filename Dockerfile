@@ -1,11 +1,13 @@
 # syntax=docker/dockerfile:1
 
 ARG BUN_VERSION=1.3.9
+# Keep in sync with .node-version. Pinned so builds cannot reuse a stale, unpatched node:24 image.
+ARG NODE_VERSION=24.22.1
 ARG SCOPE
 
 FROM oven/bun:${BUN_VERSION}-slim AS bun
 
-FROM node:24-bookworm-slim AS runtime
+FROM node:${NODE_VERSION}-bookworm-slim AS runtime
 RUN apt-get update -qq \
     && apt-get install -qq --no-install-recommends \
     ca-certificates \
@@ -13,7 +15,7 @@ RUN apt-get update -qq \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 
-FROM node:24-bookworm-slim AS build-base
+FROM node:${NODE_VERSION}-bookworm-slim AS build-base
 WORKDIR /app
 
 COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun
