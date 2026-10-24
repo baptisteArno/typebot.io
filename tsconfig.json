@@ -64,6 +64,9 @@
       "path": "./packages/forge/blocks/gmail"
     },
     {
+      "path": "./packages/forge/blocks/famulor"
+    },
+    {
       "path": "./packages/forge/blocks/groq"
     },
     {
