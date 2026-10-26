@@ -13,6 +13,8 @@ import { difyAiBlock } from "@typebot.io/dify-ai-block";
 import difyAiBlockHandlers from "@typebot.io/dify-ai-block/handlers";
 import { elevenlabsBlock } from "@typebot.io/elevenlabs-block";
 import elevenlabsBlockHandlers from "@typebot.io/elevenlabs-block/handlers";
+import { famulorBlock } from "@typebot.io/famulor-block";
+import famulorBlockHandlers from "@typebot.io/famulor-block/handlers";
 import { gmailBlock } from "@typebot.io/gmail-block";
 import gmailBlockHandlers from "@typebot.io/gmail-block/handlers";
 import { groqBlock } from "@typebot.io/groq-block";
@@ -58,4 +60,5 @@ export const forgedBlockHandlers = {
   [deepSeekBlock.id]: deepSeekBlockHandlers,
   [blinkBlock.id]: blinkBlockHandlers,
   [gmailBlock.id]: gmailBlockHandlers,
+  [famulorBlock.id]: famulorBlockHandlers,
 };

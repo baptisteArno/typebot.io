@@ -720,6 +720,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/Gmail"
+                          },
+                          {
+                            "$ref": "#/components/schemas/Famulor"
                           }
                         ]
                       }
@@ -2381,6 +2384,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/Gmail"
+                          },
+                          {
+                            "$ref": "#/components/schemas/Famulor"
                           }
                         ]
                       }
@@ -12586,6 +12592,136 @@
           "action"
         ]
       },
+      "Famulor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "outgoingEdgeId": {
+            "type": "string"
+          },
+          "type": {
+            "const": "famulor"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "credentialsId": {
+                    "type": "string"
+                  },
+                  "action": {
+                    "not": {}
+                  }
+                }
+              },
+              {
+                "$ref": "#/components/schemas/StartCall"
+              },
+              {
+                "$ref": "#/components/schemas/GetCall"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "type"
+        ]
+      },
+      "StartCall": {
+        "type": "object",
+        "properties": {
+          "credentialsId": {
+            "type": "string"
+          },
+          "action": {
+            "const": "Start call"
+          },
+          "assistantId": {
+            "type": "string"
+          },
+          "toNumber": {
+            "type": "string"
+          },
+          "phoneNumberId": {
+            "type": "string"
+          },
+          "leadName": {
+            "type": "string"
+          },
+          "leadEmail": {
+            "type": "string"
+          },
+          "leadPhone": {
+            "type": "string"
+          },
+          "leadCompany": {
+            "type": "string"
+          },
+          "responseMapping": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "item": {
+                  "enum": [
+                    "Call ID",
+                    "Status"
+                  ],
+                  "type": "string"
+                },
+                "variableId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "action"
+        ]
+      },
+      "GetCall": {
+        "type": "object",
+        "properties": {
+          "credentialsId": {
+            "type": "string"
+          },
+          "action": {
+            "const": "Get call"
+          },
+          "callId": {
+            "type": "string"
+          },
+          "responseMapping": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "item": {
+                  "enum": [
+                    "Status",
+                    "Transcript",
+                    "Summary",
+                    "Duration (seconds)",
+                    "Recording URL"
+                  ],
+                  "type": "string"
+                },
+                "variableId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "action"
+        ]
+      },
       "Google": {
         "type": "object",
         "properties": {
@@ -22076,6 +22212,9 @@
                           },
                           {
                             "$ref": "#/components/schemas/Gmail"
+                          },
+                          {
+                            "$ref": "#/components/schemas/Famulor"
                           }
                         ]
                       }
@@ -24570,6 +24709,9 @@
                                               },
                                               {
                                                 "$ref": "#/components/schemas/Gmail"
+                                              },
+                                              {
+                                                "$ref": "#/components/schemas/Famulor"
                                               }
                                             ]
                                           }
@@ -29590,6 +29732,9 @@
                                       },
                                       {
                                         "$ref": "#/components/schemas/Gmail"
+                                      },
+                                      {
+                                        "$ref": "#/components/schemas/Famulor"
                                       }
                                     ]
                                   }
@@ -32710,6 +32855,9 @@
                                         },
                                         {
                                           "$ref": "#/components/schemas/Gmail"
+                                        },
+                                        {
+                                          "$ref": "#/components/schemas/Famulor"
                                         }
                                       ]
                                     }
@@ -35696,6 +35844,9 @@
                                             },
                                             {
                                               "$ref": "#/components/schemas/Gmail"
+                                            },
+                                            {
+                                              "$ref": "#/components/schemas/Famulor"
                                             }
                                           ]
                                         }
@@ -39351,6 +39502,9 @@
                                           },
                                           {
                                             "$ref": "#/components/schemas/Gmail"
+                                          },
+                                          {
+                                            "$ref": "#/components/schemas/Famulor"
                                           }
                                         ]
                                       }
@@ -44180,6 +44334,9 @@
                                         },
                                         {
                                           "$ref": "#/components/schemas/Gmail"
+                                        },
+                                        {
+                                          "$ref": "#/components/schemas/Famulor"
                                         }
                                       ]
                                     }
@@ -47650,6 +47807,9 @@
                                                 },
                                                 {
                                                   "$ref": "#/components/schemas/Gmail"
+                                                },
+                                                {
+                                                  "$ref": "#/components/schemas/Famulor"
                                                 }
                                               ]
                                             }
@@ -51385,6 +51545,9 @@
                                           },
                                           {
                                             "$ref": "#/components/schemas/Gmail"
+                                          },
+                                          {
+                                            "$ref": "#/components/schemas/Famulor"
                                           }
                                         ]
                                       }
@@ -55982,6 +56145,9 @@
                                         },
                                         {
                                           "$ref": "#/components/schemas/Gmail"
+                                        },
+                                        {
+                                          "$ref": "#/components/schemas/Famulor"
                                         }
                                       ]
                                     }

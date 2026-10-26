@@ -1,0 +1,39 @@
+---
+title: Famulor
+---
+
+The Famulor block starts an outbound phone call with a [Famulor](https://www.famulor.io) AI voice assistant and can read that call afterwards.
+
+It uses the [Famulor Platform API v1](https://docs.famulor.io/api-reference/introduction) (`https://app.famulor.io/api/v1`).
+
+## Authentication
+
+1. In Famulor, open **Settings → API & MCP** and create an API key.
+2. In the Famulor block, add a Famulor account and paste the key. Keys start with `fam_`.
+3. Leave **API base URL** as `https://app.famulor.io`. Set it only when your workspace runs on a white-label host. The block always calls `/api/v1` on that origin.
+
+The API key already identifies the workspace. There is no separate workspace header.
+
+## Start call
+
+Places an outbound call with `POST /calls`. The assistant must be active and needs an outbound-capable phone number, either assigned to the assistant or selected as the caller ID. Famulor returns the call immediately with status `queued`.
+
+- **Assistant**: assistants loaded from your workspace
+- **To**: destination phone number in E.164 format, for example `+4930123456`
+- **Caller ID**: optional outbound number. Leave it empty to use the number assigned to the assistant
+- **Lead**: optional contact context (`name`, `email`, `phone`, `company`) sent with the call
+- **Save response**: Call ID and Status
+
+Use the saved Call ID in a later **Get call** block. The call result is not available at the moment the call is queued. Read it again after the conversation ends, or use the assistant webhook in Famulor.
+
+## Get call
+
+Reads one call with `GET /calls/{id}`.
+
+- **Status**
+- **Transcript**
+- **Summary**
+- **Duration (seconds)**
+- **Recording URL**
+
+The transcript uses Famulor's structured transcript when the API includes one. A recording URL is a temporary signed link and is empty until a recording exists.
