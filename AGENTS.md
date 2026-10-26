@@ -47,6 +47,7 @@ To check the source code and documentation of a dependency, run `bunx opensrc pa
 
 ## Workflow
 
+- Changes land on `main` through pull requests, never by a direct push.
 - Use `trash` instead of `rm` when deleting files or directories.
 - To navigate to an authenticated session with Playwright, you need to inject cookies from `apps/viewer/src/test/.auth/user.json`.
 - Do not pass those stored cookie objects directly to `browserContext.addCookies()`. Remap them to a minimal Playwright shape such as `{ name, value, url: "http://localhost:3000", expires, httpOnly, secure, sameSite }`.
