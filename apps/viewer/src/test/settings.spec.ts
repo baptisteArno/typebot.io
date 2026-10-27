@@ -173,4 +173,18 @@ test("Should correctly parse metadata", async ({ page }) => {
           .content,
     ),
   ).toBe("John Doe");
+
+  await page.reload();
+  await expect(
+    page.locator(
+      `input[placeholder="${defaultTextInputOptions.labels.placeholder}"]`,
+    ),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () =>
+        (document.querySelector('meta[name="author"]') as HTMLMetaElement)
+          .content,
+    ),
+  ).toBe("John Doe");
 });
