@@ -34,7 +34,7 @@ export const JumpNodeBody = ({ options }: Props) => {
       Jump to <Badge colorScheme="purple">{groupTitle}</Badge>{" "}
       {isDefined(blockIndex) && blockIndex >= 0 ? (
         <>
-          at block <Badge colorScheme="purple">{blockIndex + 1}</Badge>
+          at block <Badge colorScheme="purple">{blockIndex}</Badge>
         </>
       ) : null}
       {isBlockMissing ? (
