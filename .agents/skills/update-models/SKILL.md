@@ -23,7 +23,7 @@ Ajouter `.md` à l'URL donne souvent une version Markdown de la page.
 
 ## Fichiers à modifier
 
-- `packages/forge/blocks/openai/src/constants.ts` : `models`, `responsesOnlyModels`, `transcriptionModels`, `ttsModels`, `modelsWithImageUrlSupport`
+- `packages/forge/blocks/openai/src/constants.ts` : `models`, `chatCompletionModels`, `transcriptionModels`, `ttsModels`, `modelsWithImageUrlSupport`
 - `packages/forge/blocks/anthropic/src/constants.ts` : `anthropicModels`, `modelsWithImageUrlSupport`
 - `packages/forge/blocks/mistral/src/constants.ts` : `models`
 - `packages/forge/blocks/deepseek/src/constants.ts` : `deepSeekModels`
@@ -36,7 +36,7 @@ Groq et OpenRouter récupèrent leurs modèles via l'API, et Together AI attend 
 1. Relever les IDs exacts dans la documentation de chaque fournisseur.
 2. Ajouter les nouveaux modèles **en haut** des listes (les plus récents d'abord).
 3. Garder en bas de liste les anciens modèles encore servis, même dépréciés, et retirer ceux que le fournisseur a arrêtés. Le champ Model accepte un texte libre, donc retirer une suggestion ne casse pas un bot existant.
-4. OpenAI : « Create chat completion » appelle Chat Completions, alors que « Ask Model » et « Generate variables » appellent Responses. Ajouter à `responsesOnlyModels` les modèles dont la page indique Chat Completions « Not supported » (les variantes Pro, par exemple).
+4. OpenAI : « Create chat completion » appelle Chat Completions, alors que « Ask Model » et « Generate variables » appellent Responses. Ajuster le filtre de `chatCompletionModels` pour exclure les modèles dont la page indique Chat Completions « Not supported » (les variantes Pro) ou que le guide de migration du dernier modèle réserve à Responses pour les appels d'outils (GPT-6).
 5. Mettre à jour `modelsWithImageUrlSupport` si les patterns de nommage changent.
 6. Vérifier que la version installée du provider AI SDK reconnaît les nouveaux modèles (son catalogue de modèles dans `opensrc`), surtout pour les paramètres de raisonnement et `temperature`.
 7. Mettre à jour l'exemple de modèle dans `apps/docs/editor/blocks/integrations/openai.mdx` et le modèle du template `packages/templates/src/typebots/openai-assistant-chat.json`.

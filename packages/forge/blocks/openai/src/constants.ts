@@ -43,10 +43,9 @@ export const models = [
   "o3",
 ];
 
-const responsesOnlyModels = ["gpt-5.5-pro", "gpt-5.4-pro", "gpt-5.2-pro"];
-
+// Pro models only support the Responses API, and GPT-6 models need it for tool calling.
 export const chatCompletionModels = models.filter(
-  (model) => !responsesOnlyModels.includes(model),
+  (model) => !model.startsWith("gpt-6") && !model.endsWith("-pro"),
 );
 
 export const modelsWithImageUrlSupport = [
