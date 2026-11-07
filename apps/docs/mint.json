@@ -146,7 +146,8 @@
                 "editor/blocks/integrations/segment",
                 "editor/blocks/integrations/zendesk",
                 "editor/blocks/integrations/blink",
-                "editor/blocks/integrations/gmail"
+                "editor/blocks/integrations/gmail",
+                "editor/blocks/integrations/famulor"
               ]
             }
           ]

@@ -11,6 +11,9 @@
       "path": "../blocks/gmail/tsconfig.lib.json"
     },
     {
+      "path": "../blocks/famulor/tsconfig.lib.json"
+    },
+    {
       "path": "../blocks/blink/tsconfig.lib.json"
     },
     {
