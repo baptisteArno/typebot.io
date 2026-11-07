@@ -4,7 +4,7 @@ import { parseChatCompletionOptions } from "@typebot.io/ai/parseChatCompletionOp
 import { createAction } from "@typebot.io/forge";
 import { auth } from "../auth";
 import { baseOptions } from "../baseOptions";
-import { models } from "../constants";
+import { chatCompletionModels } from "../constants";
 
 export const createChatCompletion = createAction({
   name: "Create chat completion",
@@ -13,7 +13,7 @@ export const createChatCompletion = createAction({
   options: parseChatCompletionOptions({
     models: {
       type: "static",
-      models,
+      models: chatCompletionModels,
     },
   }),
   getSetVariableIds: getChatCompletionSetVarIds,

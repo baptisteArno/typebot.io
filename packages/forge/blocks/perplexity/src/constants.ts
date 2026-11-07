@@ -1,7 +1,6 @@
 export const perplexityModels = [
   "sonar-deep-research",
   "sonar-reasoning-pro",
-  "sonar-reasoning",
   "sonar-pro",
   "sonar",
 ];

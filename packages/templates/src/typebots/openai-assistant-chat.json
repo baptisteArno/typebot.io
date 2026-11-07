@@ -27,7 +27,7 @@
           "options": {
             "credentialsId": "clvqq3hey0007pub4almxnhk2",
             "action": "Ask Model",
-            "model": "gpt-5.4",
+            "model": "gpt-6.1-sol",
             "responseIdVariableId": "vf5gxmpqddsy4qugev6o0qs5c",
             "message": "{{User last message}}",
             "responseMapping": [{ "variableId": "vn8h1gigkjwv40godw2hrgclh" }]
