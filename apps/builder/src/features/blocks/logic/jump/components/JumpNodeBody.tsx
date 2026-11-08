@@ -12,7 +12,7 @@ type Props = {
 export const JumpNodeBody = ({ options }: Props) => {
   const { typebot } = useTypebot();
 
-  const { groupTitle, blockIndex } = useMemo(() => {
+  const { groupTitle, blockIndex, isBlockMissing } = useMemo(() => {
     if (!options?.groupId) return {};
     if (isSingleVariable(options.groupId))
       return {
@@ -24,6 +24,7 @@ export const JumpNodeBody = ({ options }: Props) => {
     return {
       groupTitle: group.title,
       blockIndex: blockIndex >= 0 ? blockIndex + 1 : undefined,
+      isBlockMissing: Boolean(options.blockId) && blockIndex < 0,
     };
   }, [options?.groupId, options?.blockId, typebot?.groups]);
 
@@ -33,8 +34,11 @@ export const JumpNodeBody = ({ options }: Props) => {
       Jump to <Badge colorScheme="purple">{groupTitle}</Badge>{" "}
       {isDefined(blockIndex) && blockIndex >= 0 ? (
         <>
-          at block <Badge colorScheme="purple">{blockIndex + 1}</Badge>
+          at block <Badge colorScheme="purple">{blockIndex}</Badge>
         </>
+      ) : null}
+      {isBlockMissing ? (
+        <Badge colorScheme="orange">Target block not found</Badge>
       ) : null}
     </p>
   );
