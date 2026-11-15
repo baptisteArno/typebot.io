@@ -282,6 +282,34 @@ const createResponseStream = async ({
         ({ response, functionCalls } = await forwardStream(continuationStream));
       }
 
+      // Answer the calls left over at the limit, or the saved response id can't be continued next turn.
+      if (functionCalls.length > 0) {
+        logs?.add(
+          `Reached the limit of ${maxToolCalls} function call rounds, the remaining calls were not executed`,
+        );
+        ({ response } = await forwardStream(
+          openai.responses.stream({
+            model,
+            input: functionCalls.map((fnCall) => ({
+              type: "function_call_output" as const,
+              call_id: fnCall.call_id,
+              output: JSON.stringify({
+                error: `Function call limit reached, "${fnCall.name}" was not executed`,
+              }),
+            })),
+            previous_response_id: response.id,
+            store: true,
+            instructions: instructions || undefined,
+            tools: tools.length > 0 ? tools : undefined,
+            tool_choice: "none",
+            temperature:
+              parsedTemperature != null && !Number.isNaN(parsedTemperature)
+                ? parsedTemperature
+                : undefined,
+          }),
+        ));
+      }
+
       const responseIdMapping = responseMapping?.find(
         (m) => m.item === "Response ID",
       );
